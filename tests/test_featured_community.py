@@ -25,9 +25,9 @@ from invenio.base.wrappers import lazy_import
 from invenio.testsuite import InvenioTestCase, make_test_suite, run_test_suite
 from invenio.ext.sqlalchemy import db
 
-FeaturedCommunity = lazy_import('invenio.modules.communities.models:'
+FeaturedCommunity = lazy_import('invenio_communities.models:'
                                 'FeaturedCommunity')
-Community = lazy_import('invenio.modules.communities.models:Community')
+Community = lazy_import('invenio_communities.models:Community')
 
 
 class FeaturedCommunityModelTest(InvenioTestCase):

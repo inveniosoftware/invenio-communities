@@ -22,14 +22,14 @@ from __future__ import absolute_import, unicode_literals
 
 from invenio.ext.admin.views import ModelView
 from invenio.ext.sqlalchemy import db
-from invenio.modules.communities.models import Community, FeaturedCommunity
+from invenio_communities.models import Community, FeaturedCommunity
 
 
 class CommunitiesAdmin(ModelView):
 
     """Administrative view for communities."""
 
-    #acc_edit_action = 'cfgmymodel'
+    # acc_edit_action = 'cfgmymodel'
 
     _can_create = True
     _can_edit = True

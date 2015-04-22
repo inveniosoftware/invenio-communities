@@ -33,15 +33,15 @@ from invenio.testsuite import InvenioTestCase, \
 from invenio.ext.sqlalchemy import db
 from flask_login import current_user
 
-from invenio.modules.communities.config import COMMUNITIES_ID_PREFIX, \
+from invenio_communities.config import COMMUNITIES_ID_PREFIX, \
     COMMUNITIES_ID_PREFIX_PROVISIONAL, \
     COMMUNITIES_OUTPUTFORMAT, \
     COMMUNITIES_OUTPUTFORMAT_PROVISIONAL
 
-Community = lazy_import('invenio.modules.communities.models:Community')
+Community = lazy_import('invenio_communities.models:Community')
 Collection = lazy_import('invenio.modules.collections.models:Collection')
 calculate_rank_for_community = lazy_import(
-    'invenio.modules.communities.tasks:calculate_rank_for_community')
+    'invenio_communities.tasks:calculate_rank_for_community')
 
 
 class CommunityModelTest(InvenioTestCase):

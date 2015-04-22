@@ -23,7 +23,7 @@
 A layer around Invenio's collections and portalboxes for easier allowing
 end-users to create their own collections.
 
-    from invenio.modules.communities.models import Community
+    from invenio_communities.models import Community
     from invenio.ext.sqlalchemy import db
 
     u = Community.query.get('test5')
@@ -57,7 +57,7 @@ from invenio.modules.access.models import \
     AccACTION, AccARGUMENT, \
     AccAuthorization, AccROLE, UserAccROLE
 from invenio.modules.accounts.models import User
-from invenio.modules.communities.signals import before_save_collection, \
+from invenio_communities.signals import before_save_collection, \
     after_save_collection, before_save_collections, after_save_collections, \
     before_delete_collection, after_delete_collection, \
     before_delete_collections, after_delete_collections, \

@@ -98,8 +98,10 @@ def communities(bfo, is_owner=False, provisional=False, public=True,
     for cid in bfo.fields('980__a'):
         if exclude is not None and cid in exclude:
             continue
-        if provisional and cid.startswith(cfg['COMMUNITIES_ID_PREFIX_PROVISIONAL'] + "-"):
-            colls.append(cid[len(cfg['COMMUNITIES_ID_PREFIX_PROVISIONAL'] + "-"):])
+        if provisional and cid.startswith(
+                cfg['COMMUNITIES_ID_PREFIX_PROVISIONAL'] + "-"):
+            colls.append(
+                cid[len(cfg['COMMUNITIES_ID_PREFIX_PROVISIONAL'] + "-"):])
         elif public and cid.startswith(cfg['COMMUNITIES_ID_PREFIX'] + "-"):
             colls.append(cid[len(cfg['COMMUNITIES_ID_PREFIX'] + "-"):])
 
@@ -116,7 +118,8 @@ def community_state(bfo, ucoll_id=None):
 
     :param coll: Collection object
     """
-    coll_id_reject = cfg['COMMUNITIES_ID_PREFIX_PROVISIONAL'] + ("-%s" % ucoll_id)
+    coll_id_reject = cfg[
+        'COMMUNITIES_ID_PREFIX_PROVISIONAL'] + ("-%s" % ucoll_id)
     coll_id_accept = cfg['COMMUNITIES_ID_PREFIX'] + ("-%s" % ucoll_id)
     for cid in bfo.fields('980__a'):
         if cid == coll_id_accept:
@@ -131,7 +134,8 @@ def mycommunities_ctx():
     """Helper method for return ctx used by many views."""
     return {
         'mycommunities': Community.query.filter_by(
-            id_user=current_user.get_id()).order_by(db.asc(Community.title)).all()
+            id_user=current_user.get_id()
+        ).order_by(db.asc(Community.title)).all()
     }
 
 
@@ -157,14 +161,14 @@ def index(p, so, page):
     p = Pagination(page, per_page, communities.count())
 
     ctx.update({
-        'r_from': max(p.per_page*(p.page-1), 0),
-        'r_to': min(p.per_page*p.page, p.total_count),
+        'r_from': max(p.per_page * (p.page - 1), 0),
+        'r_to': min(p.per_page * p.page, p.total_count),
         'r_total': p.total_count,
         'pagination': p,
         'form': form,
         'title': _('Community Collections'),
         'communities': communities.slice(
-            per_page*(page-1), per_page*page).all(),
+            per_page * (page - 1), per_page * page).all(),
         'featured_community': featured_community,
         'format_record': format_record,
     })
@@ -230,7 +234,8 @@ def curate():
             if email != current_user['email']:
                 abort(403)
             # inform interested parties of removing collection/community
-            curate_record.send(u, action=action, recid=recid, user=current_user)
+            curate_record.send(
+                u, action=action, recid=recid, user=current_user)
         except (IndexError, KeyError):
             abort(403)
 
@@ -249,7 +254,7 @@ def curate():
         res = u.reject_record(recid)
     if res:
         # Set 5 min cache to allow bibupload/webcoll to finish
-        cache.set(key, action, timeout=5*60)
+        cache.set(key, action, timeout=5 * 60)
         return jsonify({'status': 'success', 'cache': 0})
     else:
         return jsonify({'status': 'failure', 'cache': 0})
