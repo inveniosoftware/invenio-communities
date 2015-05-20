@@ -88,3 +88,5 @@ COMMUNITIES_PERIODIC_TASKS = {
         'run_every': timedelta(seconds=20),
     },
 }
+
+COMMUNITIES_LOGO_EXTENSIONS = ['.png', '.jpg', '.jpeg']
