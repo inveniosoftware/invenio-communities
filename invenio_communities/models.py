@@ -178,8 +178,9 @@ class Community(db.Model):
     def logo_url(self):
         """Get URL to collection logo."""
         if self.logo_ext:
-            return url_for('static',
-                           filename='user' + '/' + self.id + self.logo_ext)
+            return url_for(
+                'static',
+                filename='media/communities' + '/' + self.id + self.logo_ext)
         else:
             return None
 
