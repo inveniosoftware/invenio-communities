@@ -17,7 +17,7 @@
 # along with Invenio; if not, write to the Free Software Foundation,
 # Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-"""Invenio Communities module."""
+"""Invenio module for user communities."""
 
 import os
 import sys
@@ -77,7 +77,7 @@ with open(os.path.join("invenio_communities", "version.py"), "rt") as fp:
     version = g["__version__"]
 
 setup(
-    name='Invenio Communities',
+    name='invenio-communities',
     version=version,
     description=__doc__,
     long_description=readme + '\n\n' + history,
