@@ -21,24 +21,3 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-include *.in
-include *.py
-include *.rst
-include *.txt
-include .editorconfig .dockerignore
-include LICENSE
-include babel.ini
-include pytest.ini
-include tox.ini
-recursive-include docs *.bat
-recursive-include docs *.py
-recursive-include docs *.rst
-recursive-include docs Makefile
-recursive-include invenio_oaiharvester *.html
-recursive-include invenio_oaiharvester *.mo
-recursive-include invenio_oaiharvester *.po
-recursive-include invenio_oaiharvester *.pot
-recursive-include invenio_oaiharvester *.py
-recursive-include tests *.py
-recursive-include tests *.xml
