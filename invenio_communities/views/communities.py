@@ -3,26 +3,31 @@
 # This file is part of Invenio.
 # Copyright (C) 2013, 2014, 2015 CERN.
 #
-# Invenio is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
+# Invenio is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# Invenio is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
+# Invenio is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Invenio; if not, write to the Free Software Foundation, Inc.,
-# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# along with Invenio; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Community Module Blueprint."""
+"""Main Communities Blueprint."""
 
 from __future__ import absolute_import, unicode_literals
 
-from flask import Blueprint, abort, flash, jsonify, redirect, \
-    render_template, request, url_for
+from flask import Blueprint, abort, jsonify, \
+    render_template, request
 
 from flask_breadcrumbs import register_breadcrumb
 
@@ -40,19 +45,16 @@ from invenio.ext.sslify import ssl_required
 from invenio.modules.formatter import format_record
 from invenio.utils.pagination import Pagination
 
-from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
-    SearchForm
-from .helpers import save_and_validate_logo
-from .models import Community, FeaturedCommunity
-from .signals import curate_record
+from ..models import Community, FeaturedCommunity
+from ..signals import curate_record
 
 
 blueprint = Blueprint(
     'communities',
     __name__,
     url_prefix="/communities",
-    template_folder='templates',
-    static_folder='static',
+    template_folder='../templates',
+    static_folder='../static',
 )
 
 
@@ -156,7 +158,6 @@ def index(p, so, page):
 
     communities = Community.filter_communities(p, so)
     featured_community = FeaturedCommunity.get_current()
-    form = SearchForm(p=p)
     per_page = cfg.get('COMMUNITIES_DISPLAYED_PER_PAGE', 10)
     page = max(page, 1)
     p = Pagination(page, per_page, communities.count())
@@ -166,7 +167,6 @@ def index(p, so, page):
         'r_to': min(p.per_page * p.page, p.total_count),
         'r_total': p.total_count,
         'pagination': p,
-        'form': form,
         'title': _('Community Collections'),
         'communities': communities.slice(
             per_page * (page - 1), per_page * page).all(),
@@ -175,12 +175,18 @@ def index(p, so, page):
     })
 
     return render_template(
-        "communities/index.html",
+        "communities/communities.html",
         **ctx
     )
 
 
 @blueprint.route('/about/<string:community_id>/', methods=['GET'])
+def detail_old(community_id=None):
+    """Old detial page."""
+    return detail(community_id)
+
+
+@blueprint.route('/<string:community_id>/about', methods=['GET'])
 def detail(community_id=None):
     """Index page with uploader and list of existing depositions."""
     # Check existence of community
@@ -259,143 +265,3 @@ def curate():
         return jsonify({'status': 'success', 'cache': 0})
     else:
         return jsonify({'status': 'failure', 'cache': 0})
-
-
-@blueprint.route('/new/', methods=['GET', 'POST'])
-@ssl_required
-@login_required
-@permission_required('submit')
-@register_breadcrumb(blueprint, '.new', _('Create new'))
-def new():
-    """Create or edit a community."""
-    uid = current_user.get_id()
-    form = CommunityForm(request.values, crsf_enabled=False)
-
-    ctx = mycommunities_ctx()
-    ctx.update({
-        'form': form,
-        'is_new': True,
-        'community': None,
-    })
-
-    if request.method == 'POST' and form.validate():
-        # Map form
-        data = form.data
-        data['id'] = data['identifier']
-        del data['identifier']
-        del data['logo']
-        logo_ext = None
-        logo_file = request.files.get('logo', None)
-        if logo_file:
-            logo_ext = save_and_validate_logo(logo_file, data['id'])
-            if not logo_ext:
-                form.logo.errors.append(
-                    _(
-                        'Cannot add this file as a logo.'
-                        ' Supported formats: png and jpg.'
-                        ' Max file size: 1.5MB'
-                    )
-                )
-            else:
-                data['logo_ext'] = logo_ext
-        if not logo_file or (logo_file and logo_ext):
-            c = Community(id_user=uid, **data)
-            db.session.add(c)
-            db.session.commit()
-            c.save_collections()
-            flash("Community was successfully created.", category='success')
-            return redirect(url_for('.index'))
-
-    return render_template(
-        "communities/new.html",
-        **ctx
-    )
-
-
-@blueprint.route('/edit/<string:community_id>/', methods=['GET', 'POST'])
-@ssl_required
-@login_required
-@permission_required('submit')
-@register_breadcrumb(blueprint, '.edit', _('Edit'))
-def edit(community_id):
-    """Create or edit a community."""
-    # Check existence of community
-    u = Community.query.filter_by(id=community_id).first_or_404()
-    uid = current_user.get_id()
-
-    # Check ownership
-    if u.id_user != uid:
-        abort(404)
-
-    form = EditCommunityForm(request.values, u, crsf_enabled=False)
-    deleteform = DeleteCommunityForm()
-    ctx = mycommunities_ctx()
-    ctx.update({
-        'form': form,
-        'is_new': False,
-        'community': u,
-        'deleteform': deleteform,
-    })
-
-    if request.method == 'POST' and form.validate():
-        logo_file = request.files.get('logo', None)
-        if logo_file:
-            logo_ext = save_and_validate_logo(logo_file, u.id, u.logo_ext)
-            if not logo_ext:
-                form.logo.errors.append(
-                    _(
-                        'Cannot add this file as a logo.'
-                        ' Supported formats: png and jpg.'
-                        ' Max file size: 1.5MB'
-                    )
-                )
-            else:
-                setattr(u, 'logo_ext', logo_ext)
-        if not logo_file or (logo_file and logo_ext):
-            for field, val in form.data.items():
-                if field == "logo":
-                    continue
-                setattr(u, field, val)
-            db.session.commit()
-            u.save_collections()
-            flash("Community successfully edited.", category='success')
-            return redirect(url_for('.edit', community_id=u.id))
-
-    return render_template(
-        "communities/new.html",
-        **ctx
-    )
-
-
-@blueprint.route('/delete/<string:community_id>/', methods=['POST'])
-@ssl_required
-@login_required
-@permission_required('submit')
-@register_breadcrumb(blueprint, '.delete', _('Delete'))
-def delete(community_id):
-    """Delete a community."""
-    # Check existence of community
-    u = Community.query.filter_by(id=community_id).first_or_404()
-    uid = current_user.get_id()
-
-    # Check ownership
-    if u.id_user != uid:
-        abort(404)
-
-    deleteform = DeleteCommunityForm(request.values)
-    ctx = mycommunities_ctx()
-    ctx.update({
-        'deleteform': deleteform,
-        'is_new': False,
-        'community': u,
-    })
-
-    if request.method == 'POST' and deleteform.validate():
-        u.delete_collections()
-        db.session.delete(u)
-        db.session.commit()
-        flash("Community was successfully deleted.", category='success')
-        return redirect(url_for('.index'))
-    else:
-        flash("Community could not be deleted.", category='warning')
-        return redirect(url_for('.edit', community_id=u.id))
