@@ -56,12 +56,7 @@ from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.access.models import \
     AccACTION, AccARGUMENT, \
     AccAuthorization, AccROLE, UserAccROLE
-from invenio.modules.accounts.models import User
-from invenio_communities.signals import before_save_collection, \
-    after_save_collection, before_save_collections, after_save_collections, \
-    before_delete_collection, after_delete_collection, \
-    before_delete_collections, after_delete_collections, \
-    pre_curation, post_curation
+from invenio.modules.accounts.models import User, Usergroup
 from invenio.modules.collections.models import \
     Collection, \
     CollectionCollection, \
@@ -70,8 +65,15 @@ from invenio.modules.collections.models import \
     Collectiondetailedrecordpagetabs, \
     Collectionname, \
     Portalbox
-from invenio.modules.records.api import get_record
 from invenio.modules.oaiharvester.models import OaiREPOSITORY
+from invenio.modules.records.api import get_record
+
+from invenio_communities.signals import after_delete_collection, \
+    after_delete_collections, after_save_collection, after_save_collections, \
+    before_delete_collection, before_delete_collections, \
+    before_save_collection, before_save_collections, post_curation, pre_curation
+
+from sqlalchemy_utils.types.choice import ChoiceType
 
 
 class Community(db.Model):
@@ -837,3 +839,38 @@ class FeaturedCommunity(db.Model):
             'community.collection')).filter(
             cls.start_date <= start_date).order_by(
             cls.start_date.desc()).first()
+
+
+class CommunityTeam(db.Model):
+
+    """Represent a CommunityTeam record."""
+
+    __tablename__ = "communityTEAM"
+
+    TEAM_RIGHTS = {
+        'ADMIN': 'Admin',
+        'WRITE': 'Write',
+        'READ': 'Read'
+    }
+
+    id_community = db.Column(db.String(100), db.ForeignKey(Community.id),
+                             primary_key=True, nullable=False)
+
+    id_usergroup = db.Column(db.Integer(15, unsigned=True),
+                             db.ForeignKey(Usergroup.id),
+                             primary_key=True, nullable=False)
+
+    team_rights = db.Column(
+        ChoiceType(
+            TEAM_RIGHTS,
+        ), nullable=False, server_default='')
+
+    usergroup = db.relationship(
+        Usergroup,
+        backref=db.backref('communityteam',
+                           cascade="all, delete-orphan"),
+        cascade="all, delete-orphan", single_parent=True)
+
+    community = db.relationship(
+        Community,
+        backref=db.backref('teams', cascade="all, delete-orphan"))

@@ -38,6 +38,8 @@ js = Bundle(
 
 styles = Bundle(
     "css/communities/communities.less",
+    "css/communities/manage.less",
+    "css/communities/settings.less",
     filters="less,cleancss",
     output="communities.css",
     weight=91

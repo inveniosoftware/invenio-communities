@@ -24,19 +24,10 @@ from __future__ import absolute_import
 from invenio.base.i18n import _
 from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
 
-from wtforms import FileField, HiddenField, StringField, TextAreaField, \
-    validators
+from wtforms import FileField, HiddenField, SelectField, StringField, \
+    TextAreaField, validators
 
 from .models import Community
-
-
-class SearchForm(Form):
-
-    """Search Form."""
-
-    p = StringField(
-        validators=[validators.DataRequired()]
-    )
 
 
 class CommunityForm(Form):
@@ -59,31 +50,12 @@ class CommunityForm(Form):
     #
     # Methods
     #
-    def get_field_icon(self, name):
-        """Return field icon."""
-        return self.field_icons.get(name, '')
-
     def get_field_by_name(self, name):
         """Return field by name."""
         try:
             return self._fields[name]
         except KeyError:
             return None
-
-    def get_field_placeholder(self, name):
-        """Return field placeholder."""
-        return self.field_placeholders.get(name, "")
-
-    def get_field_state_mapping(self, field):
-        """Return field state mapping."""
-        try:
-            return self.field_state_mapping[field.short_name]
-        except KeyError:
-            return None
-
-    def has_field_state_mapping(self, field):
-        """Check if field has state mapping."""
-        return field.short_name in self.field_state_mapping
 
     def has_autocomplete(self, field):
         """Check if filed has autocomplete."""
@@ -140,13 +112,6 @@ class CommunityForm(Form):
             ' the index page.'),
     )
 
-    field_icons = {
-        'identifier': 'barcode',
-        'title': 'file-alt',
-        'description': 'pencil',
-        'curation_policy': 'check',
-    }
-
     #
     # Validation
     #
@@ -175,3 +140,24 @@ class DeleteCommunityForm(InvenioBaseForm):
     """Confirm deletion of a collection."""
 
     delete = HiddenField(default='yes', validators=[validators.DataRequired()])
+
+
+class EditTeamForm(InvenioBaseForm):
+
+    """Edit team form."""
+
+    name = StringField(
+        description='Required. A name of this team.',
+        validators=[validators.DataRequired()]
+    )
+
+    description = TextAreaField(
+        description=_(
+            "Optional. A short description of the team which "
+            "will be displayed on the index page of the team."
+        )
+    )
+
+    permissions = SelectField(
+        choices=[('ADMIN', 'Admin'), ('WRITE', 'Write'), ('READ', 'Read')]
+    )
