@@ -36,6 +36,8 @@ from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db
 from invenio.ext.sslify import ssl_required
 
+from .communities import mycommunities_ctx
+
 from ..forms import CommunityForm
 from ..helpers import save_and_validate_logo
 from ..models import Community
@@ -49,23 +51,13 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.app_template_filter('mycommunities_ctx')
-def mycommunities_ctx():
-    """Helper method for return ctx used by many views."""
-    return {
-        'mycommunities': Community.query.filter_by(
-            id_user=current_user.get_id()).order_by(
-                db.asc(Community.title)).all()
-    }
-
-
 @blueprint.route("/", methods=['GET'])
 @ssl_required
 @login_required
 @register_menu(
     blueprint, 'settings.communities',
     _('%(icon)s My Communities', icon='<i class="fa fa-users fa-fw"></i>'),
-    order=12,  # FIXME how to choose proper order
+    order=12,  # FIXME what are we basing order on?
     active_when=lambda: request.endpoint.startswith("communities_settings.")
 )
 @register_breadcrumb(
@@ -82,7 +74,6 @@ def index(page, per_page, p):
         page = 1
         if per_page <= 0:
             per_page = 5
-
     if p:
         communities = Community.query.filter(
             db.or_(
@@ -111,7 +102,7 @@ def index(page, per_page, p):
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @ssl_required
 @login_required
-@permission_required('submit')  # FIXME what's that persmission?
+@permission_required('submit')
 @register_breadcrumb(
     blueprint, 'breadcrumbs.settings.communities.new', _('New')
 )

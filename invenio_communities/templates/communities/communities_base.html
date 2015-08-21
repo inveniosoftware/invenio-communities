@@ -2,19 +2,24 @@
 # This file is part of Invenio.
 # Copyright (C) 2013, 2014, 2015 CERN.
 #
-# Invenio is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
+# Invenio is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# Invenio is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
+# Invenio is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Invenio; if not, write to the Free Software Foundation, Inc.,
-# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# along with Invenio; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
 {%- from "communities/helpers.html" import searchbar with context %}
@@ -114,9 +119,8 @@
       </div>
       <!-- end control panel -->
       <br />
-
-      <-- communities list -->
-      {% if communities %}
+      <!-- communities list -->
+      {%- if communities %}
       {%- for row in communities|batch(3) %}
         <div class="row">
         {%- for obj in row %}
@@ -132,24 +136,25 @@
                   </div>
                   <div class="btn-group" role="group" style="margin-top:5px;">
                     <a href="{{url_for('community_manage.manage', community_id=obj.id)}}" class="btn btn-xs btn-info">Manage</a>
-                    </div>
+                  </div>
                 </div>
+                <h4 style="margin-top:30px">{{ obj.title }}</h4><br /><br />
+                <p>{{ obj.description|striptags|truncate }}</p>
+                <small class="text-muted">Curated by: {{ obj.owner.nickname }}</small>
               </div>
-              </div>
-            {% endif %}
-          {%- endfor %}
+            </div>
+          {% endif %}
+        {%- endfor %}
         </div>
       {%- endfor %}
-
-    <!-- end communities list -->
-    {{ paginate(pagination, '.index') }}
-    {%- else %}
-    <br />
-    {% else %}
+      <!-- end communities list -->
+      {{ paginate(pagination, '.index') }}
+      {%- else %}
+      <br />
       <p class="text-muted text-center">
         <strong>{{ _("Your search did not match any communities. Please try again.") }}</strong>
       </p>
-    {%- endif %}
+      {%- endif %}
+    </div>
   </div>
-</div>
 {% endblock %}

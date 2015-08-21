@@ -49,7 +49,6 @@ from datetime import datetime
 from flask import url_for
 
 from invenio.base.globals import cfg
-from invenio.config import CFG_SITE_LANG
 from invenio.ext.sqlalchemy import db
 from invenio.ext.template import render_template_to_string
 from invenio.legacy.bibrecord import record_add_field
@@ -441,7 +440,7 @@ class Community(db.Model):
         """Create or update Collectionname object."""
         if collection.id:
             c_name = Collectionname.query.filter_by(
-                id_collection=collection.id, ln=CFG_SITE_LANG, type='ln'
+                id_collection=collection.id, ln=cfg['CFG_SITE_LANG'], type='ln'
             ).first()
             if c_name:
                 update_changed_fields(c_name, dict(value=title))
@@ -449,7 +448,7 @@ class Community(db.Model):
 
         c_name = Collectionname(
             collection=collection,
-            ln=CFG_SITE_LANG,
+            ln=cfg['CFG_SITE_LANG'],
             type='ln',
             value=title,
         )
@@ -525,7 +524,7 @@ class Community(db.Model):
         if collection.id:
             c_pboxes = CollectionPortalbox.query.filter_by(
                 id_collection=collection.id,
-                ln=CFG_SITE_LANG,
+                ln=cfg['CFG_SITE_LANG'],
             ).all()
             if len(c_pboxes) == len(bodies):
                 for score, elem in enumerate(zip(c_pboxes, bodies)):
@@ -552,7 +551,7 @@ class Community(db.Model):
             update_changed_fields(c_pbox, dict(
                 collection=collection,
                 portalbox=p,
-                ln=CFG_SITE_LANG,
+                ln=cfg['CFG_SITE_LANG'],
                 position=cfg['COMMUNITIES_PORTALBOX_POSITION'],
                 score=score,
             ))

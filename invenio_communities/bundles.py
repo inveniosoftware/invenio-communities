@@ -26,13 +26,9 @@ from invenio.ext.assets import Bundle, RequireJSFilter
 
 
 js = Bundle(
-    "js/communities/init.js",
     "js/communities/custom.js",
     filters=RequireJSFilter(exclude=[_j, _i]),
     output="communities.js",
-    bower={
-        "ckeditor": "latest",
-    },
     weight=91
 )
 

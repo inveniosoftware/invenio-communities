@@ -3,19 +3,24 @@
 # This file is part of Invenio.
 # Copyright (C) 2013, 2014, 2015 CERN.
 #
-# Invenio is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
+# Invenio is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# Invenio is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
+# Invenio is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Invenio; if not, write to the Free Software Foundation, Inc.,
-# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# along with Invenio; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 """Community Manage Blueprint."""
 
@@ -31,7 +36,6 @@ from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db
 from invenio.ext.sslify import ssl_required
 from invenio.modules.accounts.models import Usergroup
-from invenio.modules.groups.api import GroupsAPI
 
 from .communities import mycommunities_ctx
 from ..forms import DeleteCommunityForm, EditCommunityForm, EditTeamForm
@@ -89,22 +93,22 @@ def guides(community_id):
 )
 def people(community_id):
     """People view."""
-    u = Community.query.filter_by(id=community_id).first_or_404()
+    community = Community.query.filter_by(id=community_id).first_or_404()
     uid = current_user.get_id()
 
     members = []
 
-    for team in u.teams:
+    for team in community.teams:
         for uug in team.usergroup.users:
             members.append(uug.user)
 
     # Check ownership
-    if u.id_user != uid:
+    if community.id_user != uid:
         abort(404)
 
     ctx = mycommunities_ctx()
     ctx.update({
-        'community': u,
+        'community': community,
     })
 
     return render_template(
@@ -242,7 +246,8 @@ def teams_new(community_id):
             description=form.data['description']
         )
         try:
-            ug = GroupsAPI.create(uid=uid, group=ug)
+            db.session.add(ug)
+            db.session.commit()
         except Exception as e:
             db.session.rollback()
             flash(str(e), 'error')

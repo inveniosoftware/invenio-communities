@@ -43,6 +43,7 @@ Output format to use for provisional community, use empty string for default.
 """
 
 COMMUNITIES_PORTALBOXES = [
+    'communities/portalbox_manage.html',
     'communities/portalbox_main.html',
     'communities/portalbox_upload.html'
 ]

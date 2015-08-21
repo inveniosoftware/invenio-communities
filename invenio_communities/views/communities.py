@@ -150,7 +150,7 @@ def mycommunities_ctx():
                  'page': (int, 1),
                  })
 def index(p, so, page):
-    """Index page with uploader and list of existing depositions."""
+    """Index page."""
     ctx = mycommunities_ctx()
 
     if not so:
@@ -182,13 +182,13 @@ def index(p, so, page):
 
 @blueprint.route('/about/<string:community_id>/', methods=['GET'])
 def detail_old(community_id=None):
-    """Old detial page."""
+    """Old community detial view."""
     return detail(community_id)
 
 
 @blueprint.route('/<string:community_id>/about', methods=['GET'])
 def detail(community_id=None):
-    """Index page with uploader and list of existing depositions."""
+    """Community details view."""
     # Check existence of community
     u = Community.query.filter_by(id=community_id).first_or_404()
     uid = current_user.get_id()
@@ -211,7 +211,7 @@ def detail(community_id=None):
 @login_required
 @permission_required('submit')
 def curate():
-    """Index page with uploader and list of existing depositions."""
+    """Curate community view."""
     from invenio.legacy.search_engine import get_fieldvalues
     action = request.values.get('action')
     community_id = request.values.get('collection')
