@@ -46,6 +46,7 @@ requirements = [
     'SQLAlchemy>=1.0',
     'wtforms-alchemy>=0.13.1',
     'WTForms>=2.0.1',
+    'invenio-upgrader>=0.1.0',
 ]
 
 test_requirements = [
