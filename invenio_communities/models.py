@@ -53,7 +53,7 @@ from invenio.config import CFG_SITE_LANG
 from invenio.ext.sqlalchemy import db
 from invenio.ext.template import render_template_to_string
 from invenio.legacy.bibrecord import record_add_field
-from invenio.modules.access.models import \
+from invenio_access.models import \
     AccACTION, AccARGUMENT, \
     AccAuthorization, AccROLE, UserAccROLE
 from invenio.modules.accounts.models import User
