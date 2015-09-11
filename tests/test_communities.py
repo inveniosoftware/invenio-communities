@@ -25,7 +25,7 @@ import shutil
 from datetime import datetime, timedelta
 from mock import PropertyMock, patch
 
-from invenio.base.wrappers import lazy_import
+from invenio_base.wrappers import lazy_import
 from six import iteritems
 from invenio.testsuite import InvenioTestCase, \
     make_test_suite, \

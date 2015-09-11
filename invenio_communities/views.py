@@ -30,9 +30,9 @@ from flask_login import current_user, login_required
 
 from flask_menu import register_menu
 
-from invenio.base.decorators import wash_arguments
-from invenio.base.globals import cfg
-from invenio.base.i18n import _
+from invenio_base.decorators import wash_arguments
+from invenio_base.globals import cfg
+from invenio_base.i18n import _
 from invenio.ext.cache import cache
 from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db

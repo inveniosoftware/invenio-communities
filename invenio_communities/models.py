@@ -48,7 +48,7 @@ from datetime import datetime
 
 from flask import url_for
 
-from invenio.base.globals import cfg
+from invenio_base.globals import cfg
 from invenio.config import CFG_SITE_LANG
 from invenio.ext.sqlalchemy import db
 from invenio.ext.template import render_template_to_string

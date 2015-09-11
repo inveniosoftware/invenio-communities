@@ -21,7 +21,7 @@
 
 from __future__ import absolute_import
 
-from invenio.base.i18n import _
+from invenio_base.i18n import _
 from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
 
 from wtforms import HiddenField, StringField, TextAreaField, validators
