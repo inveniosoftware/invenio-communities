@@ -24,7 +24,7 @@ A layer around Invenio's collections and portalboxes for easier allowing
 end-users to create their own collections.
 
     from invenio_communities.models import Community
-    from invenio.ext.sqlalchemy import db
+    from invenio_ext.sqlalchemy import db
 
     u = Community.query.get('test5')
 
@@ -50,8 +50,8 @@ from flask import url_for
 
 from invenio_base.globals import cfg
 from invenio.config import CFG_SITE_LANG
-from invenio.ext.sqlalchemy import db
-from invenio.ext.template import render_template_to_string
+from invenio_ext.sqlalchemy import db
+from invenio_ext.template import render_template_to_string
 from invenio.legacy.bibrecord import record_add_field
 from invenio_access.models import \
     AccACTION, AccARGUMENT, \

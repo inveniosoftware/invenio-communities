@@ -30,7 +30,7 @@ from six import iteritems
 from invenio.testsuite import InvenioTestCase, \
     make_test_suite, \
     run_test_suite
-from invenio.ext.sqlalchemy import db
+from invenio_ext.sqlalchemy import db
 from flask_login import current_user
 
 from invenio_communities.config import COMMUNITIES_ID_PREFIX, \

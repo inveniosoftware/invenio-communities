@@ -20,7 +20,7 @@
 from __future__ import absolute_import
 
 from datetime import datetime
-from invenio.ext.sqlalchemy import db
+from invenio_ext.sqlalchemy import db
 from invenio.modules.collections.models import Collection
 from celery.task.base import PeriodicTask
 

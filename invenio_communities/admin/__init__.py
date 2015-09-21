@@ -20,8 +20,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from invenio.ext.admin.views import ModelView
-from invenio.ext.sqlalchemy import db
+from invenio_ext.admin.views import ModelView
+from invenio_ext.sqlalchemy import db
 from invenio_communities.models import Community, FeaturedCommunity
 
 
