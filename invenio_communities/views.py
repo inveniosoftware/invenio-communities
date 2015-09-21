@@ -33,10 +33,10 @@ from flask_menu import register_menu
 from invenio_base.decorators import wash_arguments
 from invenio_base.globals import cfg
 from invenio_base.i18n import _
-from invenio.ext.cache import cache
-from invenio.ext.principal import permission_required
-from invenio.ext.sqlalchemy import db
-from invenio.ext.sslify import ssl_required
+from invenio_ext.cache import cache
+from invenio_ext.principal import permission_required
+from invenio_ext.sqlalchemy import db
+from invenio_ext.sslify import ssl_required
 from invenio.modules.formatter import format_record
 from invenio.utils.pagination import Pagination
 
