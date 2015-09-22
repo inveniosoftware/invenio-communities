@@ -59,12 +59,12 @@ requirements = [
 ]
 
 test_requirements = [
+    'coverage>=4.0.0',
     'Flask-Testing>=0.4.1',
-    'coverage>=3.7.1',
     'invenio-testing>=0.1.0',
-    'pytest-cov>=1.8.1',
+    'pytest-cov>=2.1.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.7.0',
+    'pytest>=2.8.0',
 ]
 
 
@@ -96,9 +96,6 @@ class PyTest(TestCommand):
         """Run tests."""
         # import here, cause outside the eggs aren't loaded
         import pytest
-        import _pytest.config
-        pm = _pytest.config.get_plugin_manager()
-        pm.consider_setuptools_entrypoints()
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
