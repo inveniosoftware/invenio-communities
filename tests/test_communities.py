@@ -21,20 +21,24 @@
 
 import os
 import shutil
-
 from datetime import datetime, timedelta
-from mock import PropertyMock, patch
 
-from invenio_base.wrappers import lazy_import
-from six import iteritems
-from invenio_testing import InvenioTestCase
-from invenio_ext.sqlalchemy import db
 from flask_login import current_user
 
+from invenio_base.wrappers import lazy_import
+
 from invenio_communities.config import COMMUNITIES_ID_PREFIX, \
-    COMMUNITIES_ID_PREFIX_PROVISIONAL, \
-    COMMUNITIES_OUTPUTFORMAT, \
+    COMMUNITIES_ID_PREFIX_PROVISIONAL, COMMUNITIES_OUTPUTFORMAT, \
     COMMUNITIES_OUTPUTFORMAT_PROVISIONAL
+
+from invenio_ext.sqlalchemy import db
+
+from invenio_testing import InvenioTestCase
+
+from mock import PropertyMock, patch
+
+from six import iteritems
+
 
 Community = lazy_import('invenio_communities.models:Community')
 Collection = lazy_import('invenio_collections.models:Collection')
@@ -92,7 +96,8 @@ class CommunityModelTest(InvenioTestCase):
         """communities - checks if portalboxes were created for community"""
         c = self._find_community_info()
         self.assertTrue(len(c.collection.portalboxes[0].portalbox.body) > 0)
-        self.assertTrue(len(c.collection_provisional.portalboxes[0].portalbox.body) > 0)
+        self.assertTrue(
+            len(c.collection_provisional.portalboxes[0].portalbox.body) > 0)
 
     def test_5_delete_community(self):
         """communities - delete community"""
@@ -121,7 +126,7 @@ class CommunityRankerTest(InvenioTestCase):
             Collection has number of records set to 1.
         """
         c = Community()
-        for key,value in iteritems(options):
+        for key, value in iteritems(options):
             setattr(c, key, value)
         # add a collection with "one" record
         coll = Collection()
@@ -132,7 +137,7 @@ class CommunityRankerTest(InvenioTestCase):
         """communities - test community rank basic"""
         c = self._create_comunity({'id': self.test_name,
                                    'id_user': 1,
-                                   'last_record_accepted': datetime.now()-timedelta(days=100),
+                                   'last_record_accepted': datetime.now() - timedelta(days=100),
                                    'fixed_points': 0})
         with patch('invenio_collections.models.Collection.nbrecs',
                    new_callable=PropertyMock) as mock_nbrecs:
