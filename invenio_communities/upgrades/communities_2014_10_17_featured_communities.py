@@ -19,7 +19,7 @@
 
 """communityFEATURED table addition."""
 
-from invenio.ext.sqlalchemy import db
+from invenio_ext.sqlalchemy import db
 from invenio_upgrader.api import op
 
 depends_on = [u'communities_2014_03_07_ranker']

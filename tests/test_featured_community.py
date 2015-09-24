@@ -23,7 +23,7 @@ import datetime
 
 from invenio_base.wrappers import lazy_import
 from invenio.testsuite import InvenioTestCase, make_test_suite, run_test_suite
-from invenio.ext.sqlalchemy import db
+from invenio_ext.sqlalchemy import db
 
 FeaturedCommunity = lazy_import('invenio_communities.models:'
                                 'FeaturedCommunity')
