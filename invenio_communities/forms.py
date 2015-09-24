@@ -22,7 +22,7 @@
 from __future__ import absolute_import
 
 from invenio_base.i18n import _
-from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
+from invenio_utils.forms import InvenioBaseForm, InvenioForm as Form
 
 from wtforms import HiddenField, StringField, TextAreaField, validators
 
