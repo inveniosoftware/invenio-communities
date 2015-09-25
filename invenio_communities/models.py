@@ -56,7 +56,7 @@ from invenio.legacy.bibrecord import record_add_field
 from invenio_access.models import \
     AccACTION, AccARGUMENT, \
     AccAuthorization, AccROLE, UserAccROLE
-from invenio.modules.accounts.models import User
+from invenio_accounts.models import User
 from invenio_communities.signals import before_save_collection, \
     after_save_collection, before_save_collections, after_save_collections, \
     before_delete_collection, after_delete_collection, \

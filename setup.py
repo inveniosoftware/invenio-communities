@@ -44,6 +44,7 @@ requirements = [
     'WTForms>=2.0.1',
     'blinker>=1.3.0',
     'invenio-access>=0.1.0',
+    'invenio-accounts>=0.1.2',
     'invenio-base>=0.2.1',
     'invenio-collections>=0.1.2',
     'invenio-ext>=0.2.1',
