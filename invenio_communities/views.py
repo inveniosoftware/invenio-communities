@@ -37,7 +37,7 @@ from invenio_ext.cache import cache
 from invenio_ext.principal import permission_required
 from invenio_ext.sqlalchemy import db
 from invenio_ext.sslify import ssl_required
-from invenio.modules.formatter import format_record
+from invenio_formatter import format_record
 from invenio_utils.pagination import Pagination
 
 from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
