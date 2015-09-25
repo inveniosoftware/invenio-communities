@@ -49,6 +49,7 @@ requirements = [
     'invenio-collections>=0.1.2',
     'invenio-ext>=0.2.1',
     'invenio-formatter>=0.2.1',
+    'invenio-oaiharvester>=0.1.1',
     'invenio-records>=0.3.2',
     'invenio-upgrader>=0.1.0',
     'invenio-utils>=0.1.1',

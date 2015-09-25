@@ -71,7 +71,7 @@ from invenio_collections.models import \
     Collectionname, \
     Portalbox
 from invenio_records.api import get_record
-from invenio.modules.oaiharvester.models import OaiREPOSITORY
+from invenio_oaiharvester.models import OaiREPOSITORY
 
 
 class Community(db.Model):
