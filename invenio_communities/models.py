@@ -70,7 +70,7 @@ from invenio_collections.models import \
     Collectiondetailedrecordpagetabs, \
     Collectionname, \
     Portalbox
-from invenio.modules.records.api import get_record
+from invenio_records.api import get_record
 from invenio.modules.oaiharvester.models import OaiREPOSITORY
 
 
