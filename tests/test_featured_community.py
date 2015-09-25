@@ -22,7 +22,7 @@
 import datetime
 
 from invenio_base.wrappers import lazy_import
-from invenio.testsuite import InvenioTestCase, make_test_suite, run_test_suite
+from invenio_testing import InvenioTestCase, make_test_suite, run_test_suite
 from invenio_ext.sqlalchemy import db
 
 FeaturedCommunity = lazy_import('invenio_communities.models:'
@@ -74,9 +74,3 @@ class FeaturedCommunityModelTest(InvenioTestCase):
         """communities - get latest featured community."""
         fc = FeaturedCommunity.get_current()
         self.assertEqual(fc.community.id, self.test_name)
-
-
-TEST_SUITE = make_test_suite(FeaturedCommunityModelTest)
-
-if __name__ == "__main__":
-    run_test_suite(TEST_SUITE)

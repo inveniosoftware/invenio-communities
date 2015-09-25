@@ -27,9 +27,7 @@ from mock import PropertyMock, patch
 
 from invenio_base.wrappers import lazy_import
 from six import iteritems
-from invenio.testsuite import InvenioTestCase, \
-    make_test_suite, \
-    run_test_suite
+from invenio_testing import InvenioTestCase
 from invenio_ext.sqlalchemy import db
 from flask_login import current_user
 
@@ -151,10 +149,3 @@ class CommunityRankerTest(InvenioTestCase):
                    new_callable=PropertyMock) as mock_nbrecs:
             mock_nbrecs.return_value = 1
             self.assertEqual(calculate_rank_for_community(c, 2), 29)
-
-
-TEST_SUITE = make_test_suite(CommunityModelTest,
-                             CommunityRankerTest)
-
-if __name__ == "__main__":
-    run_test_suite(TEST_SUITE)

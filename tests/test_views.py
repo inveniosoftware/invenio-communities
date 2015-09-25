@@ -20,7 +20,7 @@
 """Tests for communities views."""
 
 from flask import url_for
-from invenio.testsuite import InvenioTestCase, make_test_suite, run_test_suite
+from invenio_testing import InvenioTestCase, make_test_suite, run_test_suite
 
 
 class CommunitiesViewTest(InvenioTestCase):
@@ -44,9 +44,3 @@ class CommunitiesViewTest(InvenioTestCase):
         response = self.client.get(url_for('communities.new'),
                                    follow_redirects=True)
         self.assert401(response)
-
-
-TEST_SUITE = make_test_suite(CommunitiesViewTest)
-
-if __name__ == "__main__":
-    run_test_suite(TEST_SUITE)
