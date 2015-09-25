@@ -62,7 +62,7 @@ from invenio_communities.signals import before_save_collection, \
     before_delete_collection, after_delete_collection, \
     before_delete_collections, after_delete_collections, \
     pre_curation, post_curation
-from invenio.modules.collections.models import \
+from invenio_collections.models import \
     Collection, \
     CollectionCollection, \
     CollectionFormat, \

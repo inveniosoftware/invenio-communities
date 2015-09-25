@@ -37,7 +37,7 @@ from invenio_communities.config import COMMUNITIES_ID_PREFIX, \
     COMMUNITIES_OUTPUTFORMAT_PROVISIONAL
 
 Community = lazy_import('invenio_communities.models:Community')
-Collection = lazy_import('invenio.modules.collections.models:Collection')
+Collection = lazy_import('invenio_collections.models:Collection')
 calculate_rank_for_community = lazy_import(
     'invenio_communities.tasks:calculate_rank_for_community')
 
@@ -134,7 +134,7 @@ class CommunityRankerTest(InvenioTestCase):
                                    'id_user': 1,
                                    'last_record_accepted': datetime.now()-timedelta(days=100),
                                    'fixed_points': 0})
-        with patch('invenio.modules.collections.models.Collection.nbrecs',
+        with patch('invenio_collections.models.Collection.nbrecs',
                    new_callable=PropertyMock) as mock_nbrecs:
             mock_nbrecs.return_value = 1
             self.assertEqual(calculate_rank_for_community(c, 2), 5)
@@ -145,7 +145,7 @@ class CommunityRankerTest(InvenioTestCase):
                                    'id_user': 1,
                                    'last_record_accepted': datetime.now(),
                                    'fixed_points': 20})
-        with patch('invenio.modules.collections.models.Collection.nbrecs',
+        with patch('invenio_collections.models.Collection.nbrecs',
                    new_callable=PropertyMock) as mock_nbrecs:
             mock_nbrecs.return_value = 1
             self.assertEqual(calculate_rank_for_community(c, 2), 29)
