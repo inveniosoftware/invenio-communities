@@ -42,6 +42,7 @@ from invenio_utils.pagination import Pagination
 
 from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
     SearchForm
+from .helpers import save_and_validate_logo
 from .models import Community, FeaturedCommunity
 from .signals import curate_record
 
@@ -282,12 +283,28 @@ def new():
         data = form.data
         data['id'] = data['identifier']
         del data['identifier']
-        c = Community(id_user=uid, **data)
-        db.session.add(c)
-        db.session.commit()
-        c.save_collections()
-        flash("Community was successfully created.", category='success')
-        return redirect(url_for('.index'))
+        del data['logo']
+        logo_ext = None
+        logo_file = request.files.get('logo', None)
+        if logo_file:
+            logo_ext = save_and_validate_logo(logo_file, data['id'])
+            if not logo_ext:
+                form.logo.errors.append(
+                    _(
+                        'Cannot add this file as a logo.'
+                        ' Supported formats: png and jpg.'
+                        ' Max file size: 1.5MB'
+                    )
+                )
+            else:
+                data['logo_ext'] = logo_ext
+        if not logo_file or (logo_file and logo_ext):
+            c = Community(id_user=uid, **data)
+            db.session.add(c)
+            db.session.commit()
+            c.save_collections()
+            flash("Community was successfully created.", category='success')
+            return redirect(url_for('.index'))
 
     return render_template(
         "communities/new.html",
@@ -321,12 +338,28 @@ def edit(community_id):
     })
 
     if request.method == 'POST' and form.validate():
-        for field, val in form.data.items():
-            setattr(u, field, val)
-        db.session.commit()
-        u.save_collections()
-        flash("Community successfully edited.", category='success')
-        return redirect(url_for('.edit', community_id=u.id))
+        logo_file = request.files.get('logo', None)
+        if logo_file:
+            logo_ext = save_and_validate_logo(logo_file, u.id, u.logo_ext)
+            if not logo_ext:
+                form.logo.errors.append(
+                    _(
+                        'Cannot add this file as a logo.'
+                        ' Supported formats: png and jpg.'
+                        ' Max file size: 1.5MB'
+                    )
+                )
+            else:
+                setattr(u, 'logo_ext', logo_ext)
+        if not logo_file or (logo_file and logo_ext):
+            for field, val in form.data.items():
+                if field == "logo":
+                    continue
+                setattr(u, field, val)
+            db.session.commit()
+            u.save_collections()
+            flash("Community successfully edited.", category='success')
+            return redirect(url_for('.edit', community_id=u.id))
 
     return render_template(
         "communities/new.html",
