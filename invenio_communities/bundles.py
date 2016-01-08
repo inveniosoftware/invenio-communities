@@ -21,24 +21,17 @@
 
 from __future__ import unicode_literals
 
-from invenio_base.bundles import invenio as _i, jquery as _j
-from invenio_ext.assets import Bundle, RequireJSFilter
-
+from flask_assets import Bundle
+from invenio_assets import RequireJSFilter
 
 js = Bundle(
-    "js/communities/init.js",
-    "js/communities/custom.js",
-    filters=RequireJSFilter(exclude=[_j, _i]),
-    output="communities.js",
-    bower={
-        "ckeditor": "latest",
-    },
-    weight=91
+    "js/invenio_communities/main.js",
+    filters=RequireJSFilter(),
+    output='gen/communities.%(version)s.js'
 )
 
-styles = Bundle(
-    "css/communities/communities.less",
-    filters="less,cleancss",
-    output="communities.css",
-    weight=91
+css = Bundle(
+    'scss/invenio_communities/communities.scss',
+    filters='scss, cleancss',
+    output='gen/communities.%(version)s.css'
 )

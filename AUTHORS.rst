@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015 CERN.
+    Copyright (C) 2015, 2016 CERN.
 
     Invenio is free software; you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -21,20 +21,18 @@
     waive the privileges and immunities granted to it by virtue of its status
     as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+
 Authors
 =======
 
-Invenio Communities is developed for use in `Invenio
-<http://invenio-software.org>`_ digital library software.
-
-Contact us at `info@invenio-software.org
-<mailto:info@invenio-software.org>`_
+Invenio module that adds support for communities.
 
 - Adrian Pawel Baran <adrian.pawel.baran@cern.ch>
 - Eirini Psallida <eirini.psallida@cern.ch>
 - Grzegorz Szpura <grzegorz.szpura@cern.ch>
 - Jiri Kuncar <jiri.kuncar@cern.ch>
 - Kamil Neczaj <kamil.neczaj@cern.ch>
+- Krzysztof Nowak <k.nowak@cern.ch>
 - Lars Holm Nielsen <lars.holm.nielsen@cern.ch>
 - Leonardo Rossi <leonardo.r@cern.ch>
 - Marco Neumann <marco@crepererum.net>

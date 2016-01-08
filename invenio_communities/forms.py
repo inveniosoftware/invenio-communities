@@ -1,52 +1,47 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2013, 2014, 2015 CERN.
+# Copyright (C) 2013, 2014, 2015, 2016 CERN.
 #
-# Invenio is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
+# Invenio is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# Invenio is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
+# Invenio is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Invenio; if not, write to the Free Software Foundation, Inc.,
-# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# along with Invenio; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Community forms."""
+"""Forms for communities."""
 
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
-from invenio_base.i18n import _
-from invenio_utils.forms import InvenioBaseForm, InvenioForm as Form
-
-from wtforms import HiddenField, StringField, TextAreaField, validators
+from flask_babelex import gettext as _
+from flask_wtf import Form
+from wtforms import FileField, HiddenField, StringField, TextAreaField, \
+    validators
 
 from .models import Community
 
 
-class SearchForm(Form):
-
-    """Search Form."""
-
-    p = StringField(
-        validators=[validators.DataRequired()]
-    )
-
-
 class CommunityForm(Form):
-
     """Community form."""
 
     field_sets = [
-        ('Information', [
-            'identifier', 'title', 'description', 'curation_policy',
-            'page'
-        ], {'classes': 'in'}),
+        ('Information',
+         ['identifier', 'title', 'description', 'curation_policy', 'page',
+          'logo', ],
+         {'classes': 'in'}),
     ]
 
     field_placeholders = {
@@ -108,7 +103,7 @@ class CommunityForm(Form):
     )
 
     title = StringField(
-        description='Required.',
+        description=_('Required.'),
         validators=[validators.DataRequired()]
     )
 
@@ -138,6 +133,14 @@ class CommunityForm(Form):
         'curation_policy': 'check',
     }
 
+    logo = FileField(
+        label=_('Logo'),
+        description=_(
+            "Optional. Image file used to aid and promote instant public"
+            " recognition. Supported formats: png and jpg."
+            " Max file size: 1.5MB")
+    )
+
     #
     # Validation
     #
@@ -152,7 +155,6 @@ class CommunityForm(Form):
 
 
 class EditCommunityForm(CommunityForm):
-
     """Edit community form.
 
     Same as collection form, except identifier is removed.
@@ -161,8 +163,15 @@ class EditCommunityForm(CommunityForm):
     identifier = None
 
 
-class DeleteCommunityForm(InvenioBaseForm):
-
+class DeleteCommunityForm(Form):
     """Confirm deletion of a collection."""
 
     delete = HiddenField(default='yes', validators=[validators.DataRequired()])
+
+
+class SearchForm(Form):
+    """Search Form."""
+
+    p = StringField(
+        validators=[validators.DataRequired()]
+    )

@@ -1,0 +1,95 @@
+{#
+# This file is part of Invenio.
+# Copyright (C) 2013, 2014 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+{% extends config.SEARCH_UI_BASE_TEMPLATE %}
+
+{%- block css %}
+  {{ super() }}
+  {% assets "invenio_communities_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{%- endblock css %}
+
+{%- block javascript -%}
+  {{ super() }}
+  {% assets "invenio_communities_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{%- endblock javascript -%}
+
+{% block page_body %}
+  {{ super() }}
+  <div class="container body-container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{{community.title}}</h1>
+        {{community.page|safe}}
+      </div>
+    </div>
+    <div id="invenio-search">
+      <!-- Searchbar -->
+      <div class="invenio-search-bar">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <invenio-search search-endpoint="/api/records/"
+              search-hidden-params='{"communities":"{{ community.id }}"}'>
+                <div class="row">
+                  <div class="col-md-8">
+                    <!-- SEARCHBAR -->
+                    <h3>Search community records:</h3>
+                    <invenio-search-bar
+                     template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/searchBar.html') }}"
+                     placeholder="{{ _('Start typing') }}">
+                    </invenio-search-bar>
+                    <!-- ERROR -->
+                    <invenio-search-error
+                     template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/error.html') }}"
+                     message="{{ _('Error') }}">
+                    </invenio-search-error>
+                    <!-- LOADING -->
+                    <invenio-search-loading
+                     template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/loading.html') }}"
+                     message="{{ _('Loading...') }}">
+                    </invenio-search-loading>
+                    <!-- COUNT -->
+                    <center>
+                      <invenio-search-count
+                       template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/count.html') }}">
+                      </invenio-search-count>
+                    </center>
+                    <!-- RESULTS -->
+                    <invenio-search-results
+                     template="{{ url_for('static', filename='templates/invenio_communities/ng_record_view.html') }}">
+                    </invenio-search-results>
+                    <!-- PAGINATION -->
+                    <center>
+                      <invenio-search-pagination
+                       template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/pagination.html') }}">
+                      </invenio-search-pagination>
+                    </center>
+                  </div> <!-- /.col-md-9 -->
+                  <div class="col-md-4">
+                    <div class="well">{% include "invenio_communities/portalbox_main.html" %}</div>
+                    <div class="well">{% include "invenio_communities/portalbox_upload.html" %}</div>
+                  </div>
+                </div>
+              </invenio-search>
+            </div> <!-- /.col-md-12 -->
+          </div> <!-- /.row -->
+        </div> <!-- /.container -->
+      </div> <!-- /.searchbar -->
+    </div> <!-- /#invenio-search -->
+  </div> <!-- /.container body-container -->
+{% endblock page_body %}
