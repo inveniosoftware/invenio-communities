@@ -51,14 +51,14 @@ def communities():
 @with_appcontext
 def request(community_id, record_id, accept):
     """Request a record acceptance to a community."""
-    u = Community.query.filter_by(id=community_id).first()
-    assert u is not None
+    c = Community.get(community_id)
+    assert c is not None
     if accept:
-        u.add_record(record_id)
+        c.add_record(record_id)
         db.session.commit()
     else:
         record = Record.get_record(record_id)
-        InclusionRequest.create(community=u, record=record)
+        InclusionRequest.create(community=c, record=record)
         db.session.commit()
 
 
@@ -68,7 +68,7 @@ def request(community_id, record_id, accept):
 @with_appcontext
 def remove(community_id, record_id):
     """Remove a record from community."""
-    u = Community.query.filter_by(id=community_id).first()
-    assert u is not None
-    u.remove_record(record_id)
+    c = Community.get(community_id)
+    assert c is not None
+    c.remove_record(record_id)
     db.session.commit()

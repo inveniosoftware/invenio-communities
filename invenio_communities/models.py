@@ -189,6 +189,11 @@ class Community(db.Model, Timestamp):
         """String representation of the community object."""
         return "<Community, ID: {}>".format(self.id)
 
+    @classmethod
+    def get(cls, community_id):
+        """Get a community."""
+        return cls.query.filter_by(id=community_id).one_or_none()
+
     @property
     def logo_url(self):
         """Get URL to collection logo.
