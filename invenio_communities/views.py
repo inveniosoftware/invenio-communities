@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 
 import uuid
 
-from flask import Blueprint, abort, flash, jsonify, redirect, \
+from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
 from flask_babelex import gettext as _
 # from invenio_ext.sslify import ssl_required
@@ -61,6 +61,8 @@ blueprint = Blueprint(
 def index(p, so, page):
     """Index page with uploader and list of existing depositions."""
     ctx = mycommunities_ctx()
+
+    so = so or current_app.config.get('COMMUNITIES_DEFAULT_SORTING_OPTION')
 
     communities = Community.filter_communities(p, so)
     featured_community = FeaturedCommunity.get_featured_or_none()
@@ -271,17 +273,17 @@ def curate(community_id):
 
         # Perform actions
         if action == "accept":
-            u.accept_record(record.id)
+            u.accept_record(record)
             return jsonify({'status': 'success'})
         elif action == "reject":
-            u.reject_record(record.id)
+            u.reject_record(record)
             return jsonify({'status': 'success'})
         else:  # action == "remove"
-            u.remove_record(record.id)
+            u.remove_record(record)
             return jsonify({'status': 'success'})
 
     ctx = {'community': u}
-    return render_template('invenio_communities/records.html', **ctx)
+    return render_template('invenio_communities/curate.html', **ctx)
 
 
 @blueprint.route('/request/', methods=['POST', ])

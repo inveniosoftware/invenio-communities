@@ -53,11 +53,11 @@ def request(community_id, record_id, accept):
     """Request a record acceptance to a community."""
     c = Community.get(community_id)
     assert c is not None
+    record = Record.get_record(record_id)
     if accept:
-        c.add_record(record_id)
+        c.add_record(record)
         db.session.commit()
     else:
-        record = Record.get_record(record_id)
         InclusionRequest.create(community=c, record=record)
         db.session.commit()
 

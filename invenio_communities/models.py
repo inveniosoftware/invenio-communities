@@ -175,6 +175,12 @@ class Community(db.Model, Timestamp):
     logo_ext = db.Column(db.String(length=5), nullable=True, default=None)
     """Extension of the logo."""
 
+    ranking = db.Column(db.Integer, nullable=False, default=0)
+    """Ranking of community. Updated by ranking deamon."""
+
+    fixed_points = db.Column(db.Integer, nullable=False, default=0)
+    """Points which will be always added to overall score of community."""
+
     #
     # Relationships
     #
@@ -307,9 +313,7 @@ class Community(db.Model, Timestamp):
                 cls.title.like("%" + p + "%"),
                 cls.description.like("%" + p + "%"),
             ))
-        # if so in cfg['COMMUNITIES_SORTING_OPTIONS']:
-        so = 'title'  # TODO: Set up the argument
-        if so in ['title']:
+        if so in current_app.config['COMMUNITIES_SORTING_OPTIONS']:
             order = so == 'title' and db.asc or db.desc
             query = query.order_by(order(getattr(cls, so)))
         else:

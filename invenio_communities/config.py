@@ -28,3 +28,11 @@ COMMUNITIES_LOGO_EXTENSIONS = ['.png', '.jpg', '.jpeg']
 
 COMMUNITIES_RECORD_KEY = 'communities'
 """Key inside the JSON record for communities."""
+
+COMMUNITIES_SORTING_OPTIONS = [
+    'title',
+    'ranking',
+]
+"""Possible communities sorting options."""
+
+COMMUNITIES_DEFAULT_SORTING_OPTION = 'ranking'

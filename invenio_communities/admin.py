@@ -37,7 +37,8 @@ class CommunityModelView(ModelView):
     can_delete = True
     can_view_details = True
     column_display_all_relations = True
-    form_columns = ('id', 'owner', 'title', 'description', 'page')
+    form_columns = ('id', 'owner', 'title', 'description', 'page', 'ranking',
+                    'fixed_points')
     column_list = (
         'id',
         'title',
@@ -45,6 +46,8 @@ class CommunityModelView(ModelView):
         'owner',
         'page',
         'last_record_accepted',
+        'ranking',
+        'fixed_points',
     )
     column_searchable_list = ('id', 'title', 'description')
 

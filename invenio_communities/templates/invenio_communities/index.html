@@ -42,6 +42,7 @@
       </div> <!-- /.page-header -->
     </div> <!-- /.col-xs-12 col-sm12 col-md-12 -->
     <div class="col-sm-8 col-md-8">
+      {%- set args = request.args.copy().to_dict() -%}
       <form action="." method="GET" id="search_form" role="form">
         {{ form.p(class_="form-control " + form.p.short_name, placeholder='Search communities', type='text') }}
       </form>
@@ -52,8 +53,27 @@
               {{ _('Showing communties %(x_from)d to %(x_to)d out of %(x_total)d results.', x_from=r_from, x_to=r_to, x_total=r_total) }}
             </p>
           </div>
+          <div class="form-group pull-right">
+            <div class="btn-group">
+              <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="glyphicon glyphicon-random"></i> {{ _('Sort by') }}
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+              {%- for opt in ['title', 'ranking'] -%}
+                {%- set new_args = args.copy() -%}
+                {%- do new_args.update({'so': opt}) -%}
+                <li>
+                  <a href="{{ url_for('invenio_communities.index', **new_args) }}" class="active">
+                    <i class="pull-right icon {{ 'glyphicon glyphicon-ok' if args.get('so', 'ranking')==opt }}"></i>
+                    {{ opt }}
+                  </a>
+                </li>
+              {%- endfor -%}
+              </ul>
+            </div>
+          </div>
         </div>
-      {%- set args = request.args.copy().to_dict() -%}
       {% if communities %}
         {% if featured_community %}
         <div class="wrapper">
@@ -87,9 +107,7 @@
           {%- endif %}
         </div>
         {% endif %}
-
         <br />
-
         {%- for row in communities|batch(2) %}
           <div class="row">
             {%- for obj in row %}
@@ -114,7 +132,6 @@
             {%- endfor %}
           </div>
         {%- endfor %}
-
         {% if pagination.total_count > pagination.per_page %}
           <div align="center">
             <ul class="pagination">
@@ -151,14 +168,12 @@
             </ul>
           </div>
         {% endif %}
-
       {% else %}
         <p class="text-muted text-center">
           <strong>{{ _('Your search did not match any communities. Please try again.') }}</strong>
         </p>
       {% endif %}
     </div> <!-- /.col-sm-8 col-md-8 -->
-
     <div class="col-sm-4 col-md-4">
       {% include "invenio_communities/mycommunities.html" %}
     </div>

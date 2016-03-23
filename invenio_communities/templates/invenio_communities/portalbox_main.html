@@ -28,17 +28,20 @@
 <hr>
 <h4>{{community.title}}</h4>
 {%- if community.description %}
-{{community.description|safe}}
+{{ community.description|safe }}
 {%- endif %}
-{% if community.page and not detail %}<a href="{{url_for('communities.detail', community_id=community.id)}}" class="pull-right">Read more</a><br>{% endif %}
-
-<hr>
-
+{% if community.page and not detail %}
+<a href="{{ url_for('invenio_communities.detail', community_id=community.id) }}" class="pull-right">
+  {{ _('Read more') }}
+</a>
+<br />
+{% endif %}
+<hr />
 <dl>
-    <dt>Title:</dt><dd>{{community.title}}</dd>
-    {# <dt>Curated by:</dt><dd><a href="{{url_for('yourmessages.write', sent_to_user_nicks=community.owner.nickname)}}">{{community.owner.nickname}}</a></dd> #}
-    <dt>Curated by:</dt><dd>{{community.owner.nickname}}</dd>
-    <dt>Curation policy:</dt><dd>{% if community.curation_policy %}{{community.curation_policy}}{% else %}Not specified{% endif %}</dd>
-    <dt>Created:</dt><dd>{{community.created.strftime('%Y-%m-%d')}}</dd>
-    <dt>Harvesting API:</dt><dd><a href="{{community.oai_url}}">OAI-PMH Interface</a></dd>
+  <dt>{{ _('Title:') }}</dt><dd>{{ community.title }}</dd>
+  {# <dt>{{ _('Curated by:') }}</dt><dd><a href="{{ url_for('yourmessages.write', sent_to_user_nicks=community.owner.nickname) }}">{{ community.owner.nickname }}</a></dd> #}
+  <dt>{{ _('Curated by:') }}</dt><dd>{{ community.owner.nickname }}</dd>
+  <dt>{{ _('Curation policy:') }}</dt><dd>{{ community.curation_policy|default(_('Not specified'), true) }}</dd>
+  <dt>{{ _('Created:') }}</dt><dd>{{ community.created.strftime('%Y-%m-%d') }}</dd>
+  <dt>{{ _('Harvesting API:') }}</dt><dd><a href="{{ community.oai_url }}">{{ _('OAI-PMH Interface') }}</a></dd>
 </dl>
