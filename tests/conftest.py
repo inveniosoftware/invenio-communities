@@ -40,6 +40,7 @@ from invenio_accounts import InvenioAccounts
 from invenio_assets import InvenioAssets
 from invenio_db import InvenioDB, db
 from invenio_indexer import InvenioIndexer
+from invenio_oaiserver import InvenioOAIServer
 from invenio_search import InvenioSearch
 from sqlalchemy_utils.functions import create_database, database_exists, \
     drop_database
@@ -58,6 +59,8 @@ def app(request):
         SECURITY_PASSWORD_SALT="CHANGE_ME_ALSO",
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             'SQLALCHEMY_DATABASE_URI', 'sqlite:///test.db'),
+        OAISERVER_REGISTER_RECORD_SIGNALS=True,
+        OAISERVER_REGISTER_SET_SIGNALS=False,
     )
     FlaskCLI(app)
     Menu(app)
@@ -67,6 +70,7 @@ def app(request):
     InvenioAssets(app)
     InvenioSearch(app)
     InvenioIndexer(app)
+    InvenioOAIServer(app)
     InvenioCommunities(app)
 
     with app.app_context():

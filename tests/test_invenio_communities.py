@@ -34,6 +34,7 @@ from flask import Flask
 from flask_cli import FlaskCLI
 from invenio_accounts.testutils import create_test_user
 from invenio_db import db
+from invenio_oaiserver.models import OAISet
 from invenio_records.api import Record
 
 from invenio_communities import InvenioCommunities
@@ -145,3 +146,22 @@ def test_model_featured_community(app):
             start_date=t1 + timedelta(days=2)) is comm1
         assert FeaturedCommunity.get_featured_or_none(
             start_date=t1 + timedelta(days=4)) is comm2
+
+
+def test_oaipmh_sets(app):
+    """Test the OAI-PMH Sets creation."""
+    with app.app_context():
+        # Create a user
+        user1 = create_test_user()
+        comm1 = Community(id='comm1',
+                          id_user=user1.id,
+                          title='Title1',
+                          description='Description1')
+        db.session.add(comm1)
+        db.session.commit()
+        assert OAISet.query.count() == 1
+        oai_set1 = OAISet.query.first()
+        assert oai_set1.spec == 'user-comm1'
+        assert oai_set1.name == 'Title1'
+        assert oai_set1.description == 'Description1'
+        assert oai_set1.search_pattern == 'community:"comm1"'

@@ -37,7 +37,7 @@ charset = utf-8
 indent_size = 4
 # isort plugin configuration
 known_first_party = invenio_communities
-known_third_party = invenio_accounts, invenio_db, invenio_records
+known_third_party = invenio_accounts, invenio_db, invenio_records, invenio_oaiserver
 multi_line_output = 2
 default_section = THIRDPARTY
 

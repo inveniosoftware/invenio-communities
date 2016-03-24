@@ -21,6 +21,8 @@
 
 from __future__ import unicode_literals
 
+import pkg_resources
+
 COMMUNITIES_REQUEST_EXPIRY_TIME = 7  # Default expiry time delta in days
 
 COMMUNITIES_LOGO_EXTENSIONS = ['.png', '.jpg', '.jpeg']
@@ -36,3 +38,15 @@ COMMUNITIES_SORTING_OPTIONS = [
 """Possible communities sorting options."""
 
 COMMUNITIES_DEFAULT_SORTING_OPTION = 'ranking'
+
+COMMUNITIES_USE_OAI = False
+"""Using OAIServer if available."""
+
+COMMUNITIES_OAI_PREFIX = 'user-'
+"""OAISet 'spec' prefix for community."""
+
+try:
+    pkg_resources.get_distribution('invenio_oaiserver')
+    COMMUNITIES_USE_OAI = True
+except pkg_resources.DistributionNotFound:  # pragma: no cover
+    pass

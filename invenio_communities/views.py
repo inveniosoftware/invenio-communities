@@ -143,8 +143,8 @@ def new():
             else:
                 data['logo_ext'] = logo_ext
         if not file or (file and logo_ext):
-            u = Community(id_user=uid, **data)
-            db.session.add(u)
+            c = Community(id_user=uid, **data)
+            db.session.add(c)
             db.session.commit()
             flash("Community was successfully created.", category='success')
             return redirect(url_for('.index'))

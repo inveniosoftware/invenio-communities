@@ -41,6 +41,7 @@ tests_require = [
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
+    'invenio-oaiserver>=1.0.0a2',
 ]
 
 extras_require = {
@@ -49,6 +50,9 @@ extras_require = {
     ],
     'docs': [
         'Sphinx>=1.3',
+    ],
+    'oai': [
+        'invenio-oaiserver>=1.0.0a2',
     ],
     'tests': tests_require,
 }

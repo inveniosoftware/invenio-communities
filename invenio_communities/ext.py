@@ -26,11 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_indexer import signals
+from invenio_indexer.signals import before_record_index
+from sqlalchemy.event import listen
 
 from . import config
 from .cli import communities as cmd
-from .receivers import inject_provisional_community
+from .models import Community
+from .receivers import create_oaipmh_set, inject_provisional_community
 from .views import blueprint
 
 
@@ -50,8 +52,13 @@ class InvenioCommunities(object):
         app.extensions['invenio-communities'] = self
         # Register the jinja do extension
         app.jinja_env.add_extension('jinja2.ext.do')
-        # Register the provisional community signal receiver
-        signals.before_record_index.connect(inject_provisional_community)
+        self.register_signals(app)
+
+    def register_signals(self, app):
+        """Register the signals."""
+        before_record_index.connect(inject_provisional_community)
+        if app.config['COMMUNITIES_USE_OAI']:
+            listen(Community, 'after_insert', create_oaipmh_set)
 
     def init_config(self, app):
         """Initialize configuration."""

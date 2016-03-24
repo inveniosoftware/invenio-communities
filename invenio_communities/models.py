@@ -40,7 +40,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.models import Timestamp
 from sqlalchemy_utils.types import UUIDType
 
-from invenio_communities.errors import InclusionRequestExistsError, \
+from .errors import InclusionRequestExistsError, \
     InclusionRequestExpiryTimeError, InclusionRequestMissingError, \
     InclusionRequestObsoleteError
 
