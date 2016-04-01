@@ -32,7 +32,8 @@ from sqlalchemy.event import listen
 from . import config
 from .cli import communities as cmd
 from .models import Community
-from .receivers import create_oaipmh_set, inject_provisional_community
+from .receivers import create_oaipmh_set, destroy_oaipmh_set, \
+    inject_provisional_community
 from .views import blueprint
 
 
@@ -57,8 +58,9 @@ class InvenioCommunities(object):
     def register_signals(self, app):
         """Register the signals."""
         before_record_index.connect(inject_provisional_community)
-        if app.config['COMMUNITIES_USE_OAI']:
+        if app.config['COMMUNITIES_OAI_ENABLED']:
             listen(Community, 'after_insert', create_oaipmh_set)
+            listen(Community, 'after_delete', destroy_oaipmh_set)
 
     def init_config(self, app):
         """Initialize configuration."""

@@ -219,3 +219,15 @@ def save_and_validate_logo(logo, filename, prev_ext=None):
             return ext
     else:
         return None
+
+
+def get_oaiset_spec(community_id):
+    """Return the OAISet 'spec' name for given community.
+
+    :param community_id: ID of the community.
+    :type community_id: str
+    :returns: Formatted OAISet ID ('spec').
+    :rtype: str
+    """
+    return current_app.config['COMMUNITIES_OAI_FORMAT'].format(
+        community_id=community_id)

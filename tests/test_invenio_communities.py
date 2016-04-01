@@ -165,3 +165,9 @@ def test_oaipmh_sets(app):
         assert oai_set1.name == 'Title1'
         assert oai_set1.description == 'Description1'
         assert oai_set1.search_pattern == 'community:"comm1"'
+
+        # Delete the community and make sure the set is also deleted
+        db.session.delete(comm1)
+        db.session.commit()
+        assert Community.query.count() == 0
+        assert OAISet.query.count() == 0

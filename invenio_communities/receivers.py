@@ -19,10 +19,14 @@
 
 """Community module receivers."""
 
-from flask import current_app
+import logging
+
 from invenio_db import db
 
 from .models import InclusionRequest
+from .utils import get_oaiset_spec
+
+logger = logging.getLogger('invenio-communities')
 
 
 def inject_provisional_community(sender, json=None, record=None):
@@ -36,10 +40,21 @@ def create_oaipmh_set(mapper, connection, community):
     """Signal for creating OAI-PMH sets during community creation."""
     from invenio_oaiserver.models import OAISet
     with db.session.begin_nested():
-        oai_spec = "{0}{1}".format(
-                current_app.config["COMMUNITIES_OAI_PREFIX"], community.id)
-        obj = OAISet(spec=oai_spec,
+        obj = OAISet(spec=get_oaiset_spec(community.id),
                      name=community.title,
                      description=community.description,
                      search_pattern='community:"{0}"'.format(community.id))
         db.session.add(obj)
+
+
+def destroy_oaipmh_set(mapper, connection, community):
+    """Signal for creating OAI-PMH sets during community creation."""
+    from invenio_oaiserver.models import OAISet
+    with db.session.begin_nested():
+        oaiset = OAISet.query.filter_by(
+            spec=get_oaiset_spec(community.id)).one_or_none()
+        if oaiset is None:
+            err = "OAISet for community {0} is missing".format(community.id)
+            logger.exception(err)
+            raise Exception(err)
+        db.session.delete(oaiset)

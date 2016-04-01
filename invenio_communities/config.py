@@ -38,15 +38,16 @@ COMMUNITIES_SORTING_OPTIONS = [
 """Possible communities sorting options."""
 
 COMMUNITIES_DEFAULT_SORTING_OPTION = 'ranking'
+"""Default sorting option."""
 
-COMMUNITIES_USE_OAI = False
+COMMUNITIES_OAI_FORMAT = 'user-{community_id}'
+"""String template for the community OAISet 'spec'."""
+
+COMMUNITIES_OAI_ENABLED = False
 """Using OAIServer if available."""
-
-COMMUNITIES_OAI_PREFIX = 'user-'
-"""OAISet 'spec' prefix for community."""
 
 try:
     pkg_resources.get_distribution('invenio_oaiserver')
-    COMMUNITIES_USE_OAI = True
+    COMMUNITIES_OAI_ENABLED = True
 except pkg_resources.DistributionNotFound:  # pragma: no cover
     pass
