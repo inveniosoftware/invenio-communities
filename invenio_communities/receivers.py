@@ -21,6 +21,7 @@
 
 import logging
 
+from flask import current_app
 from invenio_db import db
 
 from .models import InclusionRequest
@@ -28,11 +29,14 @@ from .utils import get_oaiset_spec
 
 logger = logging.getLogger('invenio-communities')
 
-logger = logging.getLogger('invenio-communities')
 
-
-def inject_provisional_community(sender, json=None, record=None):
+def inject_provisional_community(sender, json=None, record=None, index=None,
+                                 **kwargs):
     """Inject 'provisional_communities' key to ES index."""
+    if index and not index.startswith(
+            current_app.config['COMMUNITIES_INDEX_PREFIX']):
+        return
+
     q = InclusionRequest.query.filter_by(id_record=record.id)
     provisional_communities_ids = [r.id_community for r in q]
     json['provisional_communities'] = provisional_communities_ids

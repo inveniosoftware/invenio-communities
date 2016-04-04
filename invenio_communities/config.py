@@ -49,6 +49,9 @@ COMMUNITIES_OAI_ENABLED = False
 COMMUNITIES_BUCKET_UUID = '00000000-0000-0000-0000-000000000000'
 """UUID for the bucket corresponding to communities."""
 
+COMMUNITIES_INDEX_PREFIX = 'records-'
+"""Key inside the JSON record for communities."""
+
 try:
     pkg_resources.get_distribution('invenio_oaiserver')
     COMMUNITIES_OAI_ENABLED = True
