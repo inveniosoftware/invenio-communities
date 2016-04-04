@@ -23,8 +23,12 @@ import os
 import types
 from functools import wraps
 from math import ceil
+from uuid import UUID
 
 from flask import _request_ctx_stack, current_app, request
+from invenio_db import db
+from invenio_files_rest.errors import FilesException
+from invenio_files_rest.models import Bucket, Location, ObjectVersion
 
 
 class Pagination(object):
@@ -176,47 +180,19 @@ def render_template_to_string(input, _from_string=False, **context):
     return template.render(context)
 
 
-def save_and_validate_logo(logo, filename, prev_ext=None):
+def save_and_validate_logo(logo_stream, logo_filename, community_id):
     """Validate if communities logo is in limit size and save it."""
     cfg = current_app.config
-    base_path = os.path.join(cfg['COLLECT_STATIC_ROOT'], 'media',
-                             'communities')
-    ext = os.path.splitext(logo.filename)[1]
-    new_logo_path = os.path.join(base_path, filename + ext)
-    prev_logo_path = None
-    backup = None
-    CHUNK = 250 * 1024  # 250KB
-    CHUNKS_AMOUNT = 6  # 6 * 250KB = 1.5MB
+
+    logos_bucket_id = cfg['COMMUNITIES_BUCKET_UUID']
+    logos_bucket = Bucket.query.get(logos_bucket_id)
+    ext = os.path.splitext(logo_filename)[1]
+    ext = ext[1:] if ext.startswith('.') else ext
 
     if ext in cfg['COMMUNITIES_LOGO_EXTENSIONS']:
-
-        if not os.path.exists(base_path):
-            os.makedirs(base_path, 0o755)
-
-        if prev_ext:
-            prev_logo_path = os.path.join(base_path, filename + prev_ext)
-            if os.path.exists(prev_logo_path):
-                with open(prev_logo_path, 'rb') as fp:
-                    backup = fp.read()
-
-        with open(new_logo_path, 'wb') as fp:
-            for i in range(CHUNKS_AMOUNT):
-                chunk = logo.stream.read(CHUNK)
-                if not chunk:
-                    break
-                fp.write(chunk)
-        if logo.stream.read(CHUNK):
-            # File size exceeded
-            os.remove(new_logo_path)
-            if backup and prev_logo_path:
-                with open(prev_logo_path, 'wb') as fp:
-                        fp.write(backup)
-            return None
-        else:
-            # Success
-            if prev_ext != ext and backup:
-                os.remove(prev_logo_path)
-            return ext
+        key = "{0}/logo.{1}".format(community_id, ext)
+        ObjectVersion.create(logos_bucket, key, stream=logo_stream)
+        return ext
     else:
         return None
 
@@ -231,3 +207,23 @@ def get_oaiset_spec(community_id):
     """
     return current_app.config['COMMUNITIES_OAI_FORMAT'].format(
         community_id=community_id)
+
+
+def initialize_communities_bucket():
+    """Initialize the communities file bucket.
+
+    :raises: `invenio_files_rest.errors.FilesException`
+    """
+    bucket_id = UUID(current_app.config['COMMUNITIES_BUCKET_UUID'])
+
+    if Bucket.query.get(bucket_id):
+        raise FilesException("Bucket with UUID {} already exists.".format(
+            bucket_id))
+    else:
+        storage_class = current_app.config['FILES_REST_DEFAULT_STORAGE_CLASS']
+        location = Location.get_default()
+        bucket = Bucket(id=bucket_id,
+                        location=location,
+                        default_storage_class=storage_class)
+        db.session.add(bucket)
+        db.session.commit()

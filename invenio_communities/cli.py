@@ -29,19 +29,46 @@ from __future__ import absolute_import, print_function
 import click
 from flask_cli import with_appcontext
 from invenio_db import db
+from invenio_files_rest.errors import FilesException
 from invenio_records.api import Record
 
 from .models import Community, InclusionRequest
+from .utils import initialize_communities_bucket, save_and_validate_logo
 
 
 #
 # Communities management commands
 #
-
-
 @click.group()
 def communities():
     """Management commands for Communities."""
+
+
+@communities.command()
+@with_appcontext
+def init():
+    """Initialize the communities file storage."""
+    try:
+        initialize_communities_bucket()
+        click.secho('Community init successful.', fg='green')
+    except FilesException as e:
+        click.secho(e.message, fg='red')
+
+
+@communities.command()
+@click.argument('community_id')
+@click.argument('logo', type=click.File('rb'))
+@with_appcontext
+def addlogo(community_id, logo):
+    """Add logo to the community."""
+    # Create the bucket
+    c = Community.get(community_id)
+    if not c:
+        click.secho('Community {0} does nott exist.', fg='red')
+        return
+    ext = save_and_validate_logo(logo, logo.name, c.id)
+    c.logo_ext = ext
+    db.session.commit()
 
 
 @communities.command()

@@ -25,7 +25,7 @@ import pkg_resources
 
 COMMUNITIES_REQUEST_EXPIRY_TIME = 7  # Default expiry time delta in days
 
-COMMUNITIES_LOGO_EXTENSIONS = ['.png', '.jpg', '.jpeg']
+COMMUNITIES_LOGO_EXTENSIONS = ['png', 'jpg', 'jpeg']
 """Allowed file extensions for the communities logo."""
 
 COMMUNITIES_RECORD_KEY = 'communities'
@@ -45,6 +45,9 @@ COMMUNITIES_OAI_FORMAT = 'user-{community_id}'
 
 COMMUNITIES_OAI_ENABLED = False
 """Using OAIServer if available."""
+
+COMMUNITIES_BUCKET_UUID = '00000000-0000-0000-0000-000000000000'
+"""UUID for the bucket corresponding to communities."""
 
 try:
     pkg_resources.get_distribution('invenio_oaiserver')

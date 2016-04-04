@@ -56,6 +56,7 @@ before_install:
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
+  - "travis_retry pip install -e git+https://github.com/inveniosoftware/invenio-files-rest.git#egg=invenio-files-rest"  # TODO: Remove after release
   - "travis_retry pip install -e .[all]"
 
 script:

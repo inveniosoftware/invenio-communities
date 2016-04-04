@@ -28,6 +28,8 @@ from .utils import get_oaiset_spec
 
 logger = logging.getLogger('invenio-communities')
 
+logger = logging.getLogger('invenio-communities')
+
 
 def inject_provisional_community(sender, json=None, record=None):
     """Inject 'provisional_communities' key to ES index."""

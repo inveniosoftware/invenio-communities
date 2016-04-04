@@ -131,7 +131,8 @@ def new():
         logo_ext = None
         file = request.files.get('logo', None)
         if file:
-            logo_ext = save_and_validate_logo(file, data['id'])
+            logo_ext = save_and_validate_logo(file.stream, file.filename,
+                                              data['id'])
             if not logo_ext:
                 form.logo.errors.append(
                     _(
