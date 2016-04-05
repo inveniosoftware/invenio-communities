@@ -73,15 +73,18 @@ setup_requires = [
 
 install_requires = [
     'Flask-BabelEx>=0.9.2',
+    'marshmallow>=2.5.0',
+    'invenio-access>=1.0.0a5',
     'invenio-accounts>=1.0.0a6',
     'invenio-db>=1.0.0a9',
     'invenio-records>=1.0.0a8',
+    'invenio-records-rest>=1.0.0a10',
     'invenio-pidstore>=1.0.0a7',
     'invenio-assets>=1.0.0a4',
     'invenio-search>=1.0.0a3',
     'invenio-indexer>=1.0.0a2',
-    'invenio-files-rest>=1.0.0a1',
-    'invenio-access>=1.0.0a4',
+    'invenio-files-rest>=1.0.0.a1',
+    'invenio-rest>=1.0.0a6',
 ]
 
 packages = find_packages()
@@ -110,6 +113,10 @@ setup(
     entry_points={
         'invenio_base.apps': [
             'invenio_communities = invenio_communities:InvenioCommunities',
+        ],
+        'invenio_base.api_blueprints': [
+            'invenio_communities_rest = '
+            'invenio_communities.views:api_blueprint',
         ],
         'invenio_i18n.translations': [
             'messages = invenio_communities',

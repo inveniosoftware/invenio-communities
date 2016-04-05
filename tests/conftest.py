@@ -49,6 +49,7 @@ from sqlalchemy_utils.functions import create_database, database_exists, \
     drop_database
 
 from invenio_communities import InvenioCommunities
+from invenio_communities.views import api_blueprint
 
 
 @pytest.fixture()
@@ -88,6 +89,8 @@ def app(request):
     InvenioOAIServer(app)
     InvenioCommunities(app)
     InvenioMail(app)
+
+    app.register_blueprint(api_blueprint, url_prefix='/api/communities')
 
     with app.app_context():
         if not database_exists(str(db.engine.url)):

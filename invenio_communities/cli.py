@@ -65,7 +65,7 @@ def addlogo(community_id, logo):
     # Create the bucket
     c = Community.get(community_id)
     if not c:
-        click.secho('Community {0} does nott exist.', fg='red')
+        click.secho('Community {0} does not exist.', fg='red')
         return
     ext = save_and_validate_logo(logo, logo.name, c.id)
     c.logo_ext = ext

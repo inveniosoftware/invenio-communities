@@ -27,6 +27,7 @@
 
 from __future__ import absolute_import, print_function
 
+import json
 from datetime import datetime, timedelta
 
 import pytest
@@ -193,6 +194,40 @@ def test_oaipmh_sets(app):
         assert OAISet.query.count() == 0
 
 
+def test_communities_rest_all_communities(app):
+    """Test the OAI-PMH Sets creation."""
+    with app.app_context():
+        # Create a user and some communities
+        user1 = create_test_user()
+        comm1 = Community(id='comm1', id_user=user1.id)
+        comm2 = Community(id='comm2', id_user=user1.id)
+        db.session.add(comm1)
+        db.session.add(comm2)
+        db.session.commit()
+
+        with app.test_client() as client:
+            response = client.get('/api/communities/')
+            response_data = json.loads(response.get_data(as_text=True))
+            assert response_data == [
+                {
+                    'last_record_accepted': '2000-01-01 00:00:00',
+                    'description': '',
+                    'title': '',
+                    'page': '',
+                    'id': 'comm1',
+                    'curation_policy': '',
+                },
+                {
+                    'last_record_accepted': '2000-01-01 00:00:00',
+                    'description': '',
+                    'title': '',
+                    'page': '',
+                    'id': 'comm2',
+                    'curation_policy': '',
+                },
+            ]
+
+
 def test_community_delete(app):
     """Test deletion of communities."""
     with app.app_context():
@@ -214,3 +249,99 @@ def test_community_delete(app):
         # Try to delete community twice
         comm2.delete()
         pytest.raises(CommunitiesError, comm2.delete)
+
+
+def test_communities_rest_all_communities_query_and_sort(app):
+    """Test the OAI-PMH Sets creation."""
+    with app.app_context():
+        # Create a user and some communities
+        user1 = create_test_user()
+        comm0 = Community(id='com0', id_user=user1.id)
+        comm1 = Community(id='comm1', id_user=user1.id, title='B')
+        comm2 = Community(id='comm2', id_user=user1.id, title='A')
+        db.session.add(comm0)
+        db.session.add(comm1)
+        db.session.add(comm2)
+        db.session.commit()
+
+        with app.test_client() as client:
+            response = client.get('/api/communities/?q=comm&sort=title')
+            response_data = json.loads(response.get_data(as_text=True))
+            assert response_data == [
+                {
+                    'last_record_accepted': '2000-01-01 00:00:00',
+                    'description': '',
+                    'title': 'A',
+                    'page': '',
+                    'id': 'comm2',
+                    'curation_policy': '',
+                },
+                {
+                    'last_record_accepted': '2000-01-01 00:00:00',
+                    'description': '',
+                    'title': 'B',
+                    'page': '',
+                    'id': 'comm1',
+                    'curation_policy': '',
+                },
+            ]
+
+
+def test_communities_rest_pagination(app):
+    """Test the OAI-PMH Sets creation."""
+    with app.app_context():
+        # Create a user and some communities
+        user1 = create_test_user()
+        comm1 = Community(id='comm1', id_user=user1.id)
+        comm2 = Community(id='comm2', id_user=user1.id)
+        db.session.add(comm1)
+        db.session.add(comm2)
+        db.session.commit()
+
+        with app.test_client() as client:
+            response = client.get('/api/communities/?page=1&size=1')
+            response_data = json.loads(response.get_data(as_text=True))
+            assert response_data == [
+                {
+                    'last_record_accepted': '2000-01-01 00:00:00',
+                    'description': '',
+                    'title': '',
+                    'page': '',
+                    'id': 'comm1',
+                    'curation_policy': '',
+                },
+            ]
+
+            response = client.get('/api/communities/?page=2&size=1')
+            response_data = json.loads(response.get_data(as_text=True))
+            assert response_data == [
+                {
+                    'last_record_accepted': '2000-01-01 00:00:00',
+                    'description': '',
+                    'title': '',
+                    'page': '',
+                    'id': 'comm2',
+                    'curation_policy': '',
+                },
+            ]
+
+
+def test_communities_rest_get_details(app):
+    """Test the OAI-PMH Sets creation."""
+    with app.app_context():
+        # Create a user and a community
+        user1 = create_test_user()
+        comm1 = Community(id='comm1', id_user=user1.id)
+        db.session.add(comm1)
+        db.session.commit()
+
+        with app.test_client() as client:
+            response = client.get('/api/communities/comm1')
+            response_data = json.loads(response.get_data(as_text=True))
+            assert response_data['description'] == ''
+            assert response_data['title'] == ''
+            assert response_data['id'] == 'comm1'
+            assert response_data['page'] == ''
+            assert response_data['curation_policy'] == ''
+            assert response_data[
+                       'last_record_accepted'] == '2000-01-01 00:00:00'

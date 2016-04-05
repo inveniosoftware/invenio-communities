@@ -38,18 +38,19 @@ from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
 
-from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
-    SearchForm
-from .models import Community, FeaturedCommunity
-from .proxies import current_permission_factory
-from .utils import Pagination, render_template_to_string
+from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
+    EditCommunityForm, SearchForm
+from invenio_communities.models import Community, FeaturedCommunity
+from invenio_communities.proxies import current_permission_factory
+from invenio_communities.utils import Pagination, render_template_to_string
+
 
 blueprint = Blueprint(
     'invenio_communities',
     __name__,
     url_prefix='/communities',
-    template_folder='templates',
-    static_folder='static',
+    template_folder='../templates',
+    static_folder='../static',
 )
 
 
