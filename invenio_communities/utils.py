@@ -59,7 +59,7 @@ class Pagination(object):
                    right_edge=1):
         """Iterate the pages."""
         last = 0
-        for num in xrange(1, self.pages + 1):
+        for num in range(1, self.pages + 1):
             if num <= left_edge or \
                (num > self.page - left_current - 1 and
                 num < self.page + right_current) or \
@@ -68,95 +68,6 @@ class Pagination(object):
                     yield None
                 yield num
                 last = num
-
-
-def wash_urlargd(form, content):
-    """Wash the complete form based on the specification in content.
-
-    Content is a dictionary containing the field names as a
-    key, and a tuple (type, default) as value.
-    'type' can be list, unicode, legacy.wsgi.utils.StringField, int,
-    tuple, or legacy.wsgi.utils.Field (for file uploads).
-    The specification automatically includes the 'ln' field, which is
-    common to all queries.
-    Arguments that are not defined in 'content' are discarded.
-    .. note::
-        In case `list` or `tuple` were asked for, we assume that
-        `list` or `tuple` of strings is to be returned.  Therefore beware when
-        you want to use ``wash_urlargd()`` for multiple file upload forms.
-    :returns: argd dictionary that can be used for passing function
-        parameters by keywords.
-    """
-    result = {}
-
-    for k, (dst_type, default) in content.items():
-        try:
-            value = form[k]
-        except KeyError:
-            result[k] = default
-            continue
-
-        src_type = type(value)
-
-        # First, handle the case where we want all the results. In
-        # this case, we need to ensure all the elements are strings,
-        # and not Field instances.
-        if src_type in (list, tuple):
-            if dst_type is list:
-                result[k] = [x for x in value]
-                continue
-
-            if dst_type is tuple:
-                result[k] = tuple([x for x in value])
-                continue
-
-            # in all the other cases, we are only interested in the
-            # first value.
-            value = value[0]
-
-        # Allow passing argument modyfing function.
-        if isinstance(dst_type, types.FunctionType):
-            result[k] = dst_type(value)
-            continue
-
-        # Maybe we already have what is expected? Then don't change
-        # anything.
-        if isinstance(value, dst_type):
-            result[k] = value
-            continue
-
-        # Since we got here, 'value' is sure to be a single symbol,
-        # not a list kind of structure anymore.
-        if dst_type in (int, float, long, bool):
-            try:
-                result[k] = dst_type(value)
-            except:
-                result[k] = default
-
-        elif dst_type is tuple:
-            result[k] = (value, )
-
-        elif dst_type is list:
-            result[k] = [value]
-
-        else:
-            raise ValueError(
-                'cannot cast form value %s of type %r into type %r' % (
-                    value, src_type, dst_type))
-
-    return result
-
-
-def wash_arguments(config):
-    """Wash the arguments."""
-    def _decorated(f):
-        @wraps(f)
-        def decorator(*args, **kwargs):
-            argd = wash_urlargd(request.values, config)
-            argd.update(kwargs)
-            return f(*args, **argd)
-        return decorator
-    return _decorated
 
 
 def render_template_to_string(input, _from_string=False, **context):

@@ -36,13 +36,12 @@ from flask_login import current_user, login_required
 from invenio_db import db
 from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
-from six import text_type
 
 from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
     SearchForm
 from .models import Community, FeaturedCommunity, InclusionRequest
 from .utils import Pagination, render_template_to_string, \
-    save_and_validate_logo, wash_arguments
+    save_and_validate_logo
 
 blueprint = Blueprint(
     'invenio_communities',
@@ -54,13 +53,13 @@ blueprint = Blueprint(
 
 
 @blueprint.route('/', methods=['GET', ])
-@wash_arguments({'p': (text_type, ''),
-                 'so': (text_type, ''),
-                 'page': (int, 1),
-                 })
-def index(p, so, page):
+def index():
     """Index page with uploader and list of existing depositions."""
     ctx = mycommunities_ctx()
+
+    p = request.args.get('p', type=str)
+    so = request.args.get('so', type=str)
+    page = request.args.get('page', type=int, default=1)
 
     so = so or current_app.config.get('COMMUNITIES_DEFAULT_SORTING_OPTION')
 
