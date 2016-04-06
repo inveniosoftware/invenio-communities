@@ -30,7 +30,6 @@
 {%- endblock javascript -%}
 
 {% block page_body %}
-  {{ super() }}
 <div class="container body-container">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -75,14 +74,14 @@
           </div>
         </div>
       {% if communities %}
-        {% if featured_community %}
+        {% if featured_community and not request.args.get('p') and pagination.page == 1 %}
         <div class="wrapper">
           <div class="ribbon-wrapper-green">
             <div class="ribbon-green">{{ _("Featured") }}</div>
           </div>
           <h2>{{ featured_community.title }}</h2>
           <div>
-            {{ featured_community.description }}
+            {{ featured_community.description|striptags }}
           </div>
           <p style="position: absolute; right:25px;">
             <a class="btn btn-info" href="{{url_for('.detail', community_id=featured_community.id)}}">{{ _("View") }}</a>
@@ -90,7 +89,7 @@
             <a href="{{url_for('.curate', community_id=featured_community.id)}}" class="btn btn-info">{{ _("Curate") }}</a>
             {% endif %}
           </p>
-          <h3>{{ _("The most recent upload:") }}</h3>
+          <h3>{{ _("Most recent upload:") }}</h3>
           {% if featured_community.records %}
             {%- set record = featured_community.records[-1] -%}
             <div class="row recent-upload">
@@ -101,7 +100,7 @@
           {%- else %}
             <div class="row">
               <div class="col-md-12" align="center" style="margin-top: 40px;">
-                <em class="text-muted">{{ _("This collection is currently empty.") }}</em>
+                <em class="text-muted">{{ _("This community is currently empty.") }}</em>
               </div>
             </div>
           {%- endif %}

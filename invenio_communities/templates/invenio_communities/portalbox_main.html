@@ -30,8 +30,8 @@
 {%- if community.description %}
 {{ community.description|safe }}
 {%- endif %}
-{% if community.page and not detail %}
-<a href="{{ url_for('invenio_communities.detail', community_id=community.id) }}" class="pull-right">
+{% if community.page %}
+<a href="{{ url_for('invenio_communities.about', community_id=community.id) }}" class="pull-right">
   {{ _('Read more') }}
 </a>
 <br />
@@ -43,5 +43,5 @@
   <dt>{{ _('Curated by:') }}</dt><dd>{{ community.owner.nickname }}</dd>
   <dt>{{ _('Curation policy:') }}</dt><dd>{{ community.curation_policy|default(_('Not specified'), true) }}</dd>
   <dt>{{ _('Created:') }}</dt><dd>{{ community.created.strftime('%Y-%m-%d') }}</dd>
-  <dt>{{ _('Harvesting API:') }}</dt><dd><a href="{{ community.oai_url }}">{{ _('OAI-PMH Interface') }}</a></dd>
+  <dt>{{ _('Harvesting API:') }}</dt><dd><a href="{{ url_for('invenio_oaiserver.response', verb='ListRecords', metadataPrefix='oai_dc', set=community.oaiset_spec) }}">{{ _('OAI-PMH Interface') }}</a></dd>
 </dl>

@@ -40,8 +40,11 @@ COMMUNITIES_SORTING_OPTIONS = [
 COMMUNITIES_DEFAULT_SORTING_OPTION = 'ranking'
 """Default sorting option."""
 
-COMMUNITIES_OAI_FORMAT = 'user-{community_id}'
+COMMUNITIES_OAI_FORMAT = '{namespace}-{community_id}'
 """String template for the community OAISet 'spec'."""
+
+COMMUNITIES_OAI_NAMESPACE = 'user'
+"""OAI-PMH setspec namespace."""
 
 COMMUNITIES_OAI_ENABLED = False
 """Using OAIServer if available."""

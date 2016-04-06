@@ -240,6 +240,26 @@ def detail(community_id=None):
     )
 
 
+@blueprint.route('/<string:community_id>/about/', methods=['GET'])
+def about(community_id=None):
+    """Index page with uploader and list of existing depositions."""
+    # Check existence of community
+    u = Community.query.filter_by(id=community_id).first_or_404()
+    uid = current_user.get_id()
+
+    ctx = mycommunities_ctx()
+    ctx.update({
+        'is_owner': u.id_user == uid,
+        'community': u,
+        'detail': True,
+    })
+
+    return render_template(
+        "invenio_communities/about.html",
+        **ctx
+    )
+
+
 @blueprint.route('/<string:community_id>/curate/', methods=['GET', 'POST'])
 @login_required
 def curate(community_id):
