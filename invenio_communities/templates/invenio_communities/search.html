@@ -1,6 +1,6 @@
 {#
 # This file is part of Invenio.
-# Copyright (C) 2013, 2014, 2015, 2016 CERN.
+# Copyright (C) 2013, 2014 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -17,23 +17,21 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-<div class="record-brief">
-   {# bfe_fulltext(bfo, show_icons="yes", prefix='<ul class="nav nav-pills pull-right" style="margin-top: -10px;"><li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" rel="tooltip" title="Download" href="#"><i class="glyphicon glyphicon-download-alt"></i><span class="caret"></span></a>', suffix='</li></ul>', focus_on_main_file="yes") #}
-  <h4 class="record-header">
-     <a href="">
-        {{ record['title'] }}
-      </a>
-  </h4>
-  <div class="record-content">
+{% extends config.SEARCH_UI_SEARCH_TEMPLATE %}
 
-    <span class="pull-left record-leftside">
-    </span>
+{%- from "invenio_communities/macros.html" import community_header %}
 
-    <p class="record-abstract">
-    </p>
+{% set title = community.title + " | " + config.THEME_SITENAME %}
+{% set search_hidden_params = {"communities": community.id} %}
 
-    <p class="record-info">
-    </p>
-  </div>
+{%- block page_header %}
+{% set search_input_placeholder = "Search " + community.title %}
+{% include "invenio_search_ui/header.html" %}
+{%- endblock page_header %}
 
+{% block page_body %}
+<div class="communities">
+  {{ community_header(community) }}
+  {{super()}}
 </div>
+{% endblock page_body %}

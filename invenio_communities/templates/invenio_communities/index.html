@@ -30,16 +30,15 @@
 {%- endblock javascript -%}
 
 {% block page_body %}
-<div class="container body-container">
+<div class="container communities">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-      <div class="page-header">
-        <h2>
+        <h1>
           <i class="fa fa-group"></i>
           {{ _("Communities") }} <small>{{ _("created and curated by %(x_name)s users", x_name=config.CFG_SITE_NAME) }}</small>
-        </h2>
-      </div> <!-- /.page-header -->
-    </div> <!-- /.col-xs-12 col-sm12 col-md-12 -->
+        </h1>
+
+    </div>
     <div class="col-sm-8 col-md-8">
       {%- set args = request.args.copy().to_dict() -%}
       <form action="." method="GET" id="search_form" role="form">
@@ -49,7 +48,7 @@
         <div class="form-inline">
           <div class="form-group">
             <p class="help-block hidden-xs">
-              {{ _('Showing communties %(x_from)d to %(x_to)d out of %(x_total)d results.', x_from=r_from, x_to=r_to, x_total=r_total) }}
+              {{ _('Showing %(x_from)d to %(x_to)d out of %(x_total)d communities.', x_from=r_from, x_to=r_to, x_total=r_total) }}
             </p>
           </div>
           <div class="form-group pull-right">
@@ -75,35 +74,17 @@
         </div>
       {% if communities %}
         {% if featured_community and not request.args.get('p') and pagination.page == 1 %}
+        <br />
         <div class="wrapper">
           <div class="ribbon-wrapper-green">
             <div class="ribbon-green">{{ _("Featured") }}</div>
           </div>
+          <a href="{{url_for('.detail', community_id=featured_community.id)}}">
           <h2>{{ featured_community.title }}</h2>
+          </a>
           <div>
             {{ featured_community.description|striptags }}
           </div>
-          <p style="position: absolute; right:25px;">
-            <a class="btn btn-info" href="{{url_for('.detail', community_id=featured_community.id)}}">{{ _("View") }}</a>
-            {% if featured_community.id_user == current_user.id %}
-            <a href="{{url_for('.curate', community_id=featured_community.id)}}" class="btn btn-info">{{ _("Curate") }}</a>
-            {% endif %}
-          </p>
-          <h3>{{ _("Most recent upload:") }}</h3>
-          {% if featured_community.records %}
-            {%- set record = featured_community.records[-1] -%}
-            <div class="row recent-upload">
-              <div class="col-md-12 record-list-elem">
-                {{ record | format_item('invenio_communities/format_record.html', name='record') | safe}}
-              </div>
-            </div>
-          {%- else %}
-            <div class="row">
-              <div class="col-md-12" align="center" style="margin-top: 40px;">
-                <em class="text-muted">{{ _("This community is currently empty.") }}</em>
-              </div>
-            </div>
-          {%- endif %}
         </div>
         {% endif %}
         <br />

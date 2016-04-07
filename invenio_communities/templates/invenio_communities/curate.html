@@ -16,7 +16,18 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
-{%- extends config.COMMUNITIES_BASE_TEMPLATE -%}
+
+{% extends config.SEARCH_UI_SEARCH_TEMPLATE %}
+
+{%- from "invenio_communities/macros.html" import community_header %}
+
+{% set title = community.title + " | " + config.THEME_SITENAME %}
+{% set search_hidden_params = {"provisional_communities": community.id} %}
+
+{%- block page_header %}
+{% set search_input_placeholder = "Search " + community.title %}
+{% include "invenio_search_ui/header.html" %}
+{%- endblock page_header %}
 
 {%- block css %}
   {{ super() }}
@@ -29,72 +40,22 @@
 {%- endblock javascript -%}
 
 {% block page_body %}
-  {{ super() }}
-  <div class="container body-container">
-    <div class="row">
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-xs-12">
-              <h2>{{_('Curating community')}} {{ community.id }}</h2>
-          </div>
-        </div> <!-- /.row -->
-        <div id="invenio-communities-search">
-          <!-- Searchbar -->
-          <div class="invenio-search-bar">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12">
-                  <invenio-search search-endpoint="/api/records/"
-                  search-hidden-params='{"provisional_communities":"{{ community.id }}"}'>
-                    <div class="row">
-                      <div class="col-md-8">
-                        <!-- SEARCHBAR -->
-                        <h3>Search community records:</h3>
-                        <invenio-search-bar
-                         template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/searchBar.html') }}"
-                         placeholder="{{ _('Start typing') }}">
-                        </invenio-search-bar>
-                        <!-- ERROR -->
-                        <invenio-search-error
-                         template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/error.html') }}"
-                         message="{{ _('Error') }}">
-                        </invenio-search-error>
-                        <!-- LOADING -->
-                        <invenio-search-loading
-                         template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/loading.html') }}"
-                         message="{{ _('Loading...') }}">
-                        </invenio-search-loading>
-                        <!-- COUNT -->
-                        <center>
-                          <invenio-search-count
-                           template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/count.html') }}">
-                          </invenio-search-count>
-                        </center>
-  
-                        <!-- RESULTS -->
-                        <invenio-search-results-provisional
-                         template="{{ url_for('static', filename='templates/invenio_communities/ng_record_curate.html') }}"
-                         community-curation-endpoint="{{ url_for('invenio_communities.curate', community_id=community.id) }}">
-                        </invenio-search-results-provisional>
-                        <!-- PAGINATION -->
-                        <center>
-                          <invenio-search-pagination
-                           template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/pagination.html') }}">
-                          </invenio-search-pagination>
-                        </center>
-                      </div> <!-- /.col-md-9 -->
-                      <div class="col-md-4">
-                        <div class="well">{% include "invenio_communities/portalbox_main.html" %}</div>
-                        <div class="well">{% include "invenio_communities/portalbox_upload.html" %}</div>
-                      </div>
-                    </div>
-                  </invenio-search>
-                </div> <!-- /.col-md-12 -->
-              </div> <!-- /.row -->
-            </div> <!-- /.container -->
-          </div> <!-- /.searchbar -->
-        </div> <!-- /#invenio-communities-search -->
-      </div> <!-- /.col-md-8 -->
-    </div> <!-- /.row -->
-  </div> <!-- /.container body-container -->
-{%- endblock page_body %}
+<div class="communities">
+  {{ community_header(community, subtitle='Pending Requests') }}
+  {{super()}}
+</div>
+{% endblock page_body %}
+
+{%- block body_inner %}
+<div id="invenio-communities-search">
+  {{super()}}
+</div>
+{%- endblock body_inner %}
+
+{%- block search_results %}
+<invenio-search-results-provisional
+ template="{{ url_for('static', filename=config.COMMUNITIES_JSTEMPLATE_RESULTS_CURATE) }}"
+ community-curation-endpoint="{{ url_for('invenio_communities.curate', community_id=community.id) }}">
+</invenio-search-results-provisional>
+{%- endblock search_results %}
+

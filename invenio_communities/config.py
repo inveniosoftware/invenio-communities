@@ -40,11 +40,8 @@ COMMUNITIES_SORTING_OPTIONS = [
 COMMUNITIES_DEFAULT_SORTING_OPTION = 'ranking'
 """Default sorting option."""
 
-COMMUNITIES_OAI_FORMAT = '{namespace}-{community_id}'
+COMMUNITIES_OAI_FORMAT = 'user-{community_id}'
 """String template for the community OAISet 'spec'."""
-
-COMMUNITIES_OAI_NAMESPACE = 'user'
-"""OAI-PMH setspec namespace."""
 
 COMMUNITIES_OAI_ENABLED = False
 """Using OAIServer if available."""
@@ -60,3 +57,6 @@ try:
     COMMUNITIES_OAI_ENABLED = True
 except pkg_resources.DistributionNotFound:  # pragma: no cover
     pass
+
+COMMUNITIES_JSTEMPLATE_RESULTS_CURATE = \
+    'templates/invenio_communities/ng_record_curate.html'

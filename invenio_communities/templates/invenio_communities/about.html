@@ -1,6 +1,6 @@
 {#
 # This file is part of Invenio.
-# Copyright (C) 2013, 2014 CERN.
+# Copyright (C) 2013, 2014, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -16,25 +16,11 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
-{% extends config.SEARCH_UI_BASE_TEMPLATE %}
 
-{%- block css %}
-  {{ super() }}
-  {% assets "invenio_communities_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-{%- endblock css %}
+{% extends config.COMMUNITIES_COMMUNITY_TEMPLATE %}
 
-{%- block javascript -%}
-  {{ super() }}
-  {% assets "invenio_communities_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-{%- endblock javascript -%}
-
-{% block page_body %}
-  <div class="container body-container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>{{community.title}}</h1>
-      </div>
-    </div>
+{% block community_body %}
+  <div class="container">
     <div class="row">
       <div class="col-md-8">
         {{community.page|safe}}
@@ -44,5 +30,5 @@
         <div class="well">{% include "invenio_communities/portalbox_upload.html" %}</div>
       </div>
     </div>
-  </div> <!-- /.container body-container -->
-{% endblock page_body %}
+  </div>
+{% endblock community_body %}

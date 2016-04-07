@@ -69,7 +69,7 @@
 {% else %}
   <h4>
     <div class="pull-right">
-      &nbsp;<a href="/youraccount/register" class="btn btn-warning btn-large signup">{{ _('Sign Up') }}</a>
+      &nbsp;<a href="{{url_for('security.register')}}" class="btn btn-warning btn-large signup">{{ _('Sign Up') }}</a>
     </div>
     <strong>{{ _('Want your own community?') }}</strong>
   </h4>
@@ -80,4 +80,4 @@
     <li><strong>{{ _('Upload') }}</strong> &mdash; {{ _('get custom upload link to send to people') }}</li>
   </ul>
 {% endif %}
-</div> <!-- /.well -->
+</div>

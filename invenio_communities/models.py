@@ -118,8 +118,8 @@ class InclusionRequest(db.Model, Timestamp):
             raise InclusionRequestExpiryTimeError(community=community,
                                                   record=record)
         communities_key = current_app.config["COMMUNITIES_RECORD_KEY"]
-        if (communities_key in record) and \
-                (community.id in record[communities_key]):
+        if communities_key in record and \
+                community.id in record[communities_key]:
             logger.exception("Record {0} already in community '{1}'."
                              .format(record.id, community.id))
             raise InclusionRequestObsoleteError(community=community,
@@ -130,7 +130,6 @@ class InclusionRequest(db.Model, Timestamp):
                           id_record=record.id,
                           expiry_date=expiry_date)
                 db.session.add(obj)
-                RecordIndexer().index_by_id(record.id)
             logger.info("Created inclusion request for record {0} and "
                         "community '{1}'.".format(record.id, community.id))
         except IntegrityError:
@@ -329,8 +328,39 @@ class Community(db.Model, Timestamp):
         :rtype: str
         """
         return current_app.config['COMMUNITIES_OAI_FORMAT'].format(
-                namespace=current_app.config['COMMUNITIES_OAI_NAMESPACE'],
                 community_id=self.id)
+
+    @property
+    def community_url(self):
+        """Get provisional URL."""
+        return url_for(
+            'invenio_communities.detail', community_id=self.id,
+            _scheme='https', _external=True)
+
+    @property
+    def upload_url(self):
+        """Get provisional URL."""
+        return 'TODO'
+
+    @property
+    def community_provisional_url(self):
+        """Get provisional URL."""
+        return url_for(
+            'invenio_communities.curate', community_id=self.id,
+            _scheme='https', _external=True)
+
+    @property
+    def oaiset_url(self):
+        """Return the OAISet 'spec' name for given community.
+
+        :returns: name of corresponding OAISet ('spec').
+        :rtype: str
+        """
+        return url_for(
+            'invenio_oaiserver.response',
+            verb='ListRecords',
+            metadataPrefix='oai_dc', set=self.oaiset_spec, _scheme='https',
+            _external=True)
 
 
 class FeaturedCommunity(db.Model, Timestamp):

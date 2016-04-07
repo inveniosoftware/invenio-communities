@@ -31,7 +31,6 @@ import uuid
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
 from flask_babelex import gettext as _
-# from invenio_ext.sslify import ssl_required
 from flask_login import current_user, login_required
 from invenio_db import db
 from invenio_pidstore.resolver import Resolver
@@ -76,12 +75,10 @@ def index():
         'r_total': p.total_count,
         'pagination': p,
         'form': form,
-        'title': _('Community Collections'),
+        'title': _('Communities'),
         'communities': communities.slice(
             per_page * (page - 1), per_page * page).all(),
         'featured_community': featured_community,
-        'some_obj': 1234,
-        # 'format_record': format_record,
     })
 
     return render_template(
@@ -223,6 +220,17 @@ def delete(community_id):
 @blueprint.route('/<string:community_id>/', methods=['GET'])
 def detail(community_id=None):
     """Index page with uploader and list of existing depositions."""
+    return generic_item(community_id, "invenio_communities/detail.html")
+
+
+@blueprint.route('/<string:community_id>/search', methods=['GET'])
+def search(community_id=None):
+    """Index page with uploader and list of existing depositions."""
+    return generic_item(community_id, "invenio_communities/search.html")
+
+
+def generic_item(community_id, template):
+    """Index page with uploader and list of existing depositions."""
     # Check existence of community
     u = Community.query.filter_by(id=community_id).first_or_404()
     uid = current_user.get_id()
@@ -235,7 +243,7 @@ def detail(community_id=None):
     })
 
     return render_template(
-        "invenio_communities/detail.html",
+        template,
         **ctx
     )
 

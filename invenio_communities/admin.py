@@ -19,6 +19,8 @@
 
 """Admin model views for Communities."""
 
+from __future__ import absolute_import, print_function
+
 from flask_admin.contrib.sqla import ModelView
 
 from .models import Community, FeaturedCommunity, InclusionRequest

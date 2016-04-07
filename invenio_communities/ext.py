@@ -69,6 +69,10 @@ class InvenioCommunities(object):
             app.config.get("BASE_TEMPLATE",
                            "invenio_communities/base.html"))
 
+        app.config.setdefault(
+            "COMMUNITIES_COMMUNITY_TEMPLATE",
+            "invenio_communities/community_base.html")
+
         # Set default configuration
         for k in dir(config):
             if k.startswith("COMMUNITIES_"):

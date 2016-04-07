@@ -19,13 +19,13 @@
 
 """Utils for communities."""
 
+from __future__ import absolute_import, print_function
+
 import os
-import types
-from functools import wraps
 from math import ceil
 from uuid import UUID
 
-from flask import _request_ctx_stack, current_app, request
+from flask import _request_ctx_stack, current_app
 from invenio_db import db
 from invenio_files_rest.errors import FilesException
 from invenio_files_rest.models import Bucket, Location, ObjectVersion

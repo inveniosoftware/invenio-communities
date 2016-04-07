@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-#
+{#
 # This file is part of Invenio.
-# Copyright (C) 2014, 2015 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -16,22 +15,28 @@
 # You should have received a copy of the GNU General Public License
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
 
-"""Communities bundles."""
+{% extends config.SEARCH_UI_BASE_TEMPLATE %}
 
-from __future__ import absolute_import, print_function
+{%- from "invenio_communities/macros.html" import community_header %}
 
-from flask_assets import Bundle
-from invenio_assets import RequireJSFilter
+{% set title = community.title + " | " + config.THEME_SITENAME %}
 
-js = Bundle(
-    "js/invenio_communities/main.js",
-    filters=RequireJSFilter(),
-    output='gen/communities.%(version)s.js'
-)
+{%- block css %}
+  {{ super() }}
+  {% assets "invenio_communities_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{%- endblock css %}
 
-css = Bundle(
-    'scss/invenio_communities/communities.scss',
-    filters='scss, cleancss',
-    output='gen/communities.%(version)s.css'
-)
+{%- block javascript -%}
+  {{ super() }}
+  {% assets "invenio_communities_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{%- endblock javascript -%}
+
+{% block page_body %}
+<div class="communities">
+  {{ community_header(community, link=False) }}
+  {%- block community_body %}
+  {%- endblock community_body %}
+</div>
+{% endblock page_body %}
