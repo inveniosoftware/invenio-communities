@@ -2,7 +2,7 @@
  Invenio-Communities v1.0.0a1
 ==============================
 
-Invenio-Communities v1.0.0a1 was released on TBD, 2016.
+Invenio-Communities v1.0.0a1 was released on April 8, 2016.
 
 About
 -----

@@ -64,3 +64,14 @@ script:
 
 after_success:
   - coveralls
+
+deploy:
+  provider: pypi
+  user: lnielsen
+  password:
+    secure: cVsHHJbm75kcIyDXdFYMbBmBSIY53iZCqCLN/rO38/W9+TkEYdencLn0UFAEt/fmtC6GZKDvL8PzJug3QS3bxu1zzW+q4o3Mbk/ldeYBnpyEvFcJN9ZcjaaODcZc0d8I2vkEUrvGmey8Fru5hhGp2MHuPgMz0YAgeTGckGlpyg4=
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true
+    python: "2.7"
+    condition: $REQUIREMENTS = release
