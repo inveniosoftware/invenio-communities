@@ -39,6 +39,7 @@ from invenio_records.api import Record
 from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
     SearchForm
 from .models import Community, FeaturedCommunity, InclusionRequest
+from .proxies import current_permission_factory
 from .utils import Pagination, render_template_to_string, \
     save_and_validate_logo
 
@@ -158,29 +159,31 @@ def new():
 def edit(community_id):
     """Create or edit a community."""
     # Check existence of community
-    u = Community.query.filter_by(id=community_id).first_or_404()
+    c = Community.query.filter_by(id=community_id).first_or_404()
 
-    # Check ownership
-    if u.id_user != current_user.id:
-        abort(404)
+    permission = current_permission_factory(c, action='community-edit')
+    if not permission.can():
+        abort(403)
 
-    form = EditCommunityForm(request.values, u, crsf_enabled=False)
+    form = EditCommunityForm(request.values, c, crsf_enabled=False)
     deleteform = DeleteCommunityForm()
+    delete_holdout = current_app.config['COMMUNITIES_DELETE_HOLDOUT_TIME']
     ctx = mycommunities_ctx()
     ctx.update({
         'form': form,
         'is_new': False,
-        'community': u,
+        'community': c,
+        'delete_holdout': delete_holdout,
         'deleteform': deleteform,
     })
 
     if request.method == 'POST' and form.validate():
         for field, val in form.data.items():
-            setattr(u, field, val)
+            setattr(c, field, val)
         db.session.commit()
-        u.save_collections()
+        c.save_collections()
         flash("Community successfully edited.", category='success')
-        return redirect(url_for('.edit', community_id=u.id))
+        return redirect(url_for('.edit', community_id=c.id))
 
     return render_template(
         "invenio_communities/new.html",
@@ -193,28 +196,47 @@ def edit(community_id):
 def delete(community_id):
     """Delete a community."""
     # Check existence of community
-    u = Community.query.filter_by(id=community_id).first_or_404()
+    c = Community.query.filter_by(id=community_id).first_or_404()
 
-    # Check ownership
-    if u.id_user != current_user.id:
-        abort(404)
+    permission = current_permission_factory(c, action='community-delete')
+    if not permission.can():
+        abort(403)
 
     deleteform = DeleteCommunityForm(request.values)
     ctx = mycommunities_ctx()
     ctx.update({
         'deleteform': deleteform,
         'is_new': False,
-        'community': u,
+        'community': c,
     })
 
     if request.method == 'POST' and deleteform.validate():
-        db.session.delete(u)
+        c.delete()
         db.session.commit()
-        flash("Community was successfully deleted.", category='success')
+        flash("Community will be deleted on {0}.".format(c.delete_time),
+              category='success')
         return redirect(url_for('.index'))
     else:
         flash("Community could not be deleted.", category='warning')
-        return redirect(url_for('.edit', community_id=u.id))
+        return redirect(url_for('.edit', community_id=c.id))
+
+
+@blueprint.route('/<string:community_id>/undelete/', methods=['POST'])
+@login_required
+def undelete(community_id):
+    """Cancel the community deletion process."""
+    # Check existence of community
+    c = Community.query.filter_by(id=community_id).first_or_404()
+
+    permission = current_permission_factory(c, action='community-undelete')
+    if not permission.can():
+        abort(403)
+
+    if request.method == 'POST' and c.is_deleted:
+        c.undelete()
+        db.session.commit()
+        flash("Community was removed from deletion.", category='success')
+        return redirect(url_for('.edit', community_id=community_id))
 
 
 @blueprint.route('/<string:community_id>/', methods=['GET'])
@@ -232,13 +254,13 @@ def search(community_id=None):
 def generic_item(community_id, template):
     """Index page with uploader and list of existing depositions."""
     # Check existence of community
-    u = Community.query.filter_by(id=community_id).first_or_404()
+    c = Community.query.filter_by(id=community_id).first_or_404()
     uid = current_user.get_id()
 
     ctx = mycommunities_ctx()
     ctx.update({
-        'is_owner': u.id_user == uid,
-        'community': u,
+        'is_owner': c.id_user == uid,
+        'community': c,
         'detail': True,
     })
 
@@ -252,13 +274,13 @@ def generic_item(community_id, template):
 def about(community_id=None):
     """Index page with uploader and list of existing depositions."""
     # Check existence of community
-    u = Community.query.filter_by(id=community_id).first_or_404()
+    c = Community.query.filter_by(id=community_id).first_or_404()
     uid = current_user.get_id()
 
     ctx = mycommunities_ctx()
     ctx.update({
-        'is_owner': u.id_user == uid,
-        'community': u,
+        'is_owner': c.id_user == uid,
+        'community': c,
         'detail': True,
     })
 
@@ -276,7 +298,12 @@ def curate(community_id):
     :param community_id: ID of the community to curate.
     """
     # Does community exists
-    u = Community.query.filter_by(id=community_id).first_or_404()
+    c = Community.query.filter_by(id=community_id).first_or_404()
+
+    permission = current_permission_factory(c, action='community-curate')
+    if not permission.can():
+        abort(403)
+
     if request.method == 'POST':
         recid = request.json.get('recid', '')  # PID value of type 'recid'
         # 'recid' is mandatory
@@ -291,26 +318,26 @@ def curate(community_id):
         action = request.json.get('action')
         # Check allowed actions and required permissions
         if action in ['accept', 'reject']:
-            if u.id_user != current_user.id:
+            if c.id_user != current_user.id:
                 abort(403)
         elif action == 'remove':
-            if u.id_user != current_user.id:
+            if c.id_user != current_user.id:
                 abort(403)
         else:  # action not in ['accept', 'reject', 'remove']
             abort(400)
 
         # Perform actions
         if action == "accept":
-            u.accept_record(record)
+            c.accept_record(record)
             return jsonify({'status': 'success'})
         elif action == "reject":
-            u.reject_record(record)
+            c.reject_record(record)
             return jsonify({'status': 'success'})
         else:  # action == "remove"
-            u.remove_record(record)
+            c.remove_record(record)
             return jsonify({'status': 'success'})
 
-    ctx = {'community': u}
+    ctx = {'community': c}
     return render_template('invenio_communities/curate.html', **ctx)
 
 
@@ -323,10 +350,12 @@ def communityrequest(community_id):
     if (not recid) or (not community_id):
         abort(400)
     record = Record.get_record(recid)
-    u = Community.query.filter_by(id=community_id).first_or_404()
-    if u.id_user != current_user.id:
+    c = Community.query.filter_by(id=community_id).first_or_404()
+    if c.id_user != current_user.id:
         abort(403)
-    # TODO: Permissions: Who should be able to request for community request ?
+    # TODO: Permissions:
+    #       At the moment community owner can request
+    #       Who should be able to request for community request ?
     #       Should check for relationship current_user.id -> record.id
-    InclusionRequest.create(community=u, record=record)
+    InclusionRequest.create(community=c, record=record)
     return jsonify({'status': 'success'})

@@ -22,12 +22,12 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Version information for Invenio-Communities.
-
-This file is imported by ``invenio_communities.__init__``,
-and parsed by ``setup.py``.
-"""
+"""Proxy definitions."""
 
 from __future__ import absolute_import, print_function
 
-__version__ = "1.0.0a2.dev20160000"
+from flask import current_app
+from werkzeug.local import LocalProxy
+
+current_permission_factory = LocalProxy(
+    lambda: current_app.extensions['invenio-communities'].permission_factory)

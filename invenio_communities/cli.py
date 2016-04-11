@@ -30,6 +30,7 @@ import click
 from flask_cli import with_appcontext
 from invenio_db import db
 from invenio_files_rest.errors import FilesException
+from invenio_indexer.api import RecordIndexer
 from invenio_records.api import Record
 
 from .models import Community, InclusionRequest
@@ -85,7 +86,9 @@ def request(community_id, record_id, accept):
         c.add_record(record)
         db.session.commit()
     else:
-        InclusionRequest.create(community=c, record=record)
+        InclusionRequest.create(community=c, record=record,
+                                send_email_notification=False)
+        RecordIndexer().index_by_id(record.id)
         db.session.commit()
 
 

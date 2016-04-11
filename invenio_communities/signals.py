@@ -22,12 +22,22 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Version information for Invenio-Communities.
+"""Communities module signals."""
 
-This file is imported by ``invenio_communities.__init__``,
-and parsed by ``setup.py``.
+from blinker import Namespace
+
+_signals = Namespace()
+
+after_increq_insert = _signals.signal('after-increq-insert')
+"""Signal is sent after an inclusion request is created.
+
+Example subscriber:
+
+.. code-block:: python
+
+    def listener(inclusionrequest, *args, **kwargs):
+        send_email(inclusionrequest)
+
+    from invenio_communities.signals import after_increq_insert
+    after_increq_insert.connect(listener)
 """
-
-from __future__ import absolute_import, print_function
-
-__version__ = "1.0.0a2.dev20160000"

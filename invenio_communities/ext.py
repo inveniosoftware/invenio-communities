@@ -28,10 +28,12 @@ from __future__ import absolute_import, print_function
 
 from invenio_indexer.signals import before_record_index
 from sqlalchemy.event import listen
+from werkzeug.utils import cached_property
 
 from . import config
 from .cli import communities as cmd
 from .models import Community
+from .permissions import permission_factory
 from .receivers import create_oaipmh_set, destroy_oaipmh_set, \
     inject_provisional_community
 from .views import blueprint
@@ -77,3 +79,8 @@ class InvenioCommunities(object):
         for k in dir(config):
             if k.startswith("COMMUNITIES_"):
                 app.config.setdefault(k, getattr(config, k))
+
+    @cached_property
+    def permission_factory(self):
+        """Load default permission factory."""
+        return permission_factory

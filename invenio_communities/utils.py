@@ -16,6 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 """Utils for communities."""
 
@@ -25,10 +29,11 @@ import os
 from math import ceil
 from uuid import UUID
 
-from flask import _request_ctx_stack, current_app
+from flask import current_app
 from invenio_db import db
 from invenio_files_rest.errors import FilesException
 from invenio_files_rest.models import Bucket, Location, ObjectVersion
+from invenio_records.api import Record
 
 
 class Pagination(object):
@@ -82,12 +87,10 @@ def render_template_to_string(input, _from_string=False, **context):
                     context of the template.
     :return: a string
     """
-    ctx = _request_ctx_stack.top
-    ctx.app.update_template_context(context)
     if _from_string:
-        template = ctx.app.jinja_env.from_string(input)
+        template = current_app.jinja_env.from_string(input)
     else:
-        template = ctx.app.jinja_env.get_or_select_template(input)
+        template = current_app.jinja_env.get_or_select_template(input)
     return template.render(context)
 
 
@@ -138,3 +141,74 @@ def initialize_communities_bucket():
                         default_storage_class=storage_class)
         db.session.add(bucket)
         db.session.commit()
+
+
+def format_request_email_templ(increq, template, **ctx):
+    """Format the email message element for inclusion request notification.
+
+    Formats the message according to the provided template file, using
+    some default fields from 'increq' object as default context.
+    Arbitrary context can be provided as keywords ('ctx'), and those will
+    not be overwritten by the fields from 'increq' object.
+
+    :param increq: Inclusion request object for which the request is made.
+    :type increq: `invenio_communities.models.InclusionRequest`
+    :param template: relative path to jinja template.
+    :type template: str
+    :param ctx: Optional extra context parameters passed to formatter.
+    :type ctx: dict.
+    :returns: Formatted message.
+    :rtype: str
+    """
+    # Add minimal information to the contex (without overwriting).
+    min_ctx = dict(
+        record=Record.get_record(increq.record.id),
+        requester=increq.user,
+        community=increq.community)
+    for k, v in min_ctx.items():
+        if k not in ctx:
+            ctx[k] = v
+
+    msg_element = render_template_to_string(template, **ctx)
+    return msg_element
+
+
+def format_request_email_title(increq, **ctx):
+    """Format the email message title for inclusion request notification.
+
+    :param increq: Inclusion request object for which the request is made.
+    :type increq: `invenio_communities.models.InclusionRequest`
+    :param ctx: Optional extra context parameters passed to formatter.
+    :type ctx: dict.
+    :returns: Email message title.
+    :rtype: str
+    """
+    template = current_app.config["COMMUNITIES_REQUEST_EMAIL_TITLE_TEMPLATE"],
+    return format_request_email_templ(increq, template, **ctx)
+
+
+def format_request_email_body(increq, **ctx):
+    """Format the email message body for inclusion request notification.
+
+    :param increq: Inclusion request object for which the request is made.
+    :type increq: `invenio_communities.models.InclusionRequest`
+    :param ctx: Optional extra context parameters passed to formatter.
+    :type ctx: dict.
+    :returns: Email message body.
+    :rtype: str
+    """
+    template = current_app.config["COMMUNITIES_REQUEST_EMAIL_BODY_TEMPLATE"],
+    return format_request_email_templ(increq, template, **ctx)
+
+
+def send_community_request_email(increq):
+    """Signal for sending emails after community inclusion request."""
+    from flask_mail import Message
+    msg_body = format_request_email_body(increq)
+    msg_title = format_request_email_title(increq)
+    sender = current_app.config['COMMUNITIES_REQUEST_EMAIL_SENDER']
+    msg = Message(msg_title,
+                  sender=sender,
+                  recipients=[increq.community.owner.email, ],
+                  body=msg_body)
+    current_app.extensions['mail'].send(msg)

@@ -40,6 +40,7 @@ from invenio_accounts import InvenioAccounts
 from invenio_assets import InvenioAssets
 from invenio_db import InvenioDB, db
 from invenio_indexer import InvenioIndexer
+from invenio_mail import InvenioMail
 from invenio_oaiserver import InvenioOAIServer
 from invenio_records import InvenioRecords
 from invenio_search import InvenioSearch
@@ -56,14 +57,22 @@ def app(request):
     app = Flask('testapp', instance_path=instance_path)
     app.config.update(
         TESTING=True,
+        CELERY_ALWAYS_EAGER=True,
+        CELERY_CACHE_BACKEND="memory",
+        CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
+        CELERY_RESULT_BACKEND="cache",
         SECRET_KEY='CHANGE_ME',
         SECURITY_PASSWORD_SALT='CHANGE_ME_ALSO',
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             'SQLALCHEMY_DATABASE_URI', 'sqlite:///test.db'),
+        SEARCH_ELASTIC_HOSTS=os.environ.get(
+            'SEARCH_ELASTIC_HOSTS', None),
         SQLALCHEMY_TRACK_MODIFICATIONS=True,
         OAISERVER_REGISTER_RECORD_SIGNALS=True,
         OAISERVER_REGISTER_SET_SIGNALS=False,
-        OAISERVER_ID_PREFIX='oai:localhost:recid/'
+        OAISERVER_ID_PREFIX='oai:localhost:recid/',
+        SERVER_NAME='inveniosoftware.org',
+        MAIL_SUPPRESS_SEND=True
     )
     FlaskCLI(app)
     Menu(app)
@@ -76,6 +85,7 @@ def app(request):
     InvenioIndexer(app)
     InvenioOAIServer(app)
     InvenioCommunities(app)
+    InvenioMail(app)
 
     with app.app_context():
         if not database_exists(str(db.engine.url)):

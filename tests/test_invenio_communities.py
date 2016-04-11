@@ -38,8 +38,9 @@ from invenio_oaiserver.models import OAISet
 from invenio_records.api import Record
 
 from invenio_communities import InvenioCommunities
-from invenio_communities.errors import InclusionRequestExistsError, \
-    InclusionRequestMissingError, InclusionRequestObsoleteError
+from invenio_communities.errors import CommunitiesError, \
+    InclusionRequestExistsError, InclusionRequestMissingError, \
+    InclusionRequestObsoleteError
 from invenio_communities.models import Community, FeaturedCommunity, \
     InclusionRequest
 
@@ -121,6 +122,40 @@ def test_model_init(app):
                       community=comm1, record=rec1)
 
 
+class MailMock(object):
+    """Mock the Flask-Mail client."""
+    def send(self, msg):
+        """Capture the sended message."""
+        self.msg = msg
+
+
+def test_email_notification(app):
+    """Test mail notification sending for community request."""
+    with app.app_context():
+        # Mock the send method of the Flask-Mail extension
+        mm = MailMock()
+        app.extensions['mail'] = mm
+        user1 = create_test_user()
+        comm1 = Community(id='comm1', id_user=user1.id, title="FooCommunity")
+        db.session.add(comm1)
+        db.session.commit()
+        # Create a record and accept it into the community by creating an
+        # InclusionRequest and then calling the accept action
+        rec1 = Record.create({'title': 'Foobar', 'description': 'Baz bar.'})
+        InclusionRequest.create(community=comm1, record=rec1, user=user1)
+        assert mm.msg.subject == "A record was requested to be added to your" \
+                                 " community (FooCommunity)."
+        assert len(mm.msg.recipients) == 1
+        assert mm.msg.recipients[0] == "test@test.org"
+        assert "Record Title: Foobar" in mm.msg.body
+        assert "Record Description: Baz bar." in mm.msg.body
+        assert "http://inveniosoftware.org/communities/comm1/curate/" \
+            in mm.msg.body
+
+        assert "Requested by:  (test@test.org)" in mm.msg.body
+        assert mm.msg.sender == "info@inveniosoftware.org"
+
+
 def test_model_featured_community(app):
     """Test the featured community model and actions."""
     with app.app_context():
@@ -164,10 +199,35 @@ def test_oaipmh_sets(app):
         assert oai_set1.spec == 'user-comm1'
         assert oai_set1.name == 'Title1'
         assert oai_set1.description == 'Description1'
-        assert oai_set1.search_pattern == 'community:"comm1"'
 
         # Delete the community and make sure the set is also deleted
         db.session.delete(comm1)
         db.session.commit()
         assert Community.query.count() == 0
         assert OAISet.query.count() == 0
+
+
+def test_community_delete(app):
+    """Test deletion of communities."""
+    with app.app_context():
+        # Init the User and the Community
+        user1 = create_test_user()
+        comm1 = Community(id='comm1', id_user=user1.id)
+        comm2 = Community(id='comm2', id_user=user1.id)
+        db.session.add(comm1)
+        db.session.add(comm2)
+        db.session.commit()
+        delete_time = datetime.now() + timedelta(days=1)
+        comm1.delete(delete_time=delete_time)
+        assert comm1.is_deleted is True
+        assert comm1.delete_time == delete_time
+        comm1.undelete()
+        assert comm1.is_deleted is False
+        assert comm1.delete_time is None
+
+        # Try to undelete a community that was not marked for deletion
+        pytest.raises(CommunitiesError, comm1.undelete)
+
+        # Try to delete community twice
+        comm2.delete()
+        pytest.raises(CommunitiesError, comm2.delete)

@@ -1,5 +1,5 @@
 // This file is part of Zenodo.
-// Copyright (C) 2015, 2016 CERN.
+// Copyright (C) 2016 CERN.
 //
 // Zenodo is free software; you can redistribute it
 // and/or modify it under the terms of the GNU General Public License as
@@ -20,11 +20,12 @@
 // waive the privileges and immunities granted to it by virtue of its status
 // as an Intergovernmental Organization or submit itself to any jurisdiction.
 require([
-    "jquery",
-    "node_modules/angular/angular",
-    "node_modules/invenio-search-js/dist/invenio-search-js",
-    "js/invenio_communities/module",
-    ], function() {
+  "jquery",
+  "node_modules/angular/angular",
+  "node_modules/invenio-search-js/dist/invenio-search-js",
+  // "js/invenio_communities/init_ckeditor",
+  "js/invenio_communities/module",
+  ], function() {
     // loading all the jQuery modules for the not require.js ready scripts
     // everywhere.
 
@@ -35,4 +36,4 @@ require([
                                 ['invenioSearch', 'invenioCommunities']
       );
     });
-});
+  });

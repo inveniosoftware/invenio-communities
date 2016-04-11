@@ -1,6 +1,6 @@
 {#
 # This file is part of Invenio.
-# Copyright (C) 2013, 2014, 2015 CERN.
+# Copyright (C) 2013, 2014, 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -15,9 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
 {%- extends config.COMMUNITIES_BASE_TEMPLATE -%}
+
+{%- block javascript -%}
+  {{ super() }}
+  <script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+{%- endblock javascript -%}
 
 {% block page_body %}
 <div class="container body-container">
@@ -30,7 +39,14 @@
         <h3 id="deletemodal_label">Delete community?</h3>
       </div>
       <div class="modal-body">
-        <div class="alert alert-danger"><h5>Warning</h5><ul><li>You will loose all connections to records currently attached to this community and you will not be able to recover them.</li><li>Any external repository harvesting your community collection will stop working.</li></ul></div>
+        <div class="alert alert-danger">
+          <h5>Warning</h5>
+          <ul>
+            <li>If you proceed, this community will be deleted in {{ delete_holdout.days }} days.</li>
+            <li>After that time you will loose all connections to records currently attached to this community and you will not be able to recover them.</li>
+            <li>Any external repository harvesting your community collection will stop working.</li>
+          </ul>
+        </div>
       </div>
       <div class="modal-footer">
         <form action="{{url_for('.delete', community_id=community.id)}}" method="POST">
@@ -42,6 +58,9 @@
       </div>
     </div>
   </div>
+  {% if community.is_deleted %}
+    <div class="alert alert-danger">This community will be deleted on {{ community.delete_time.strftime('%d-%m-%Y') }}.</div>
+  {% endif %}
   {% endif %}
   <div class="row">
     <div class="col-md-12">
@@ -184,7 +203,9 @@
       {%- endfor %}
       </div>
       <div class="well clearfix" style="margin-top: 10px;">
+        {% if not community.is_deleted %}
         <button type="button" role="button" data-toggle="modal" class="btn btn-danger pull-left{% if is_new %} hide{% endif %}" data-target="#deletemodal"><i class="icon-trash  icon-white"></i> Delete</button>
+        {% endif %}
         <span class="pull-right">
           <button type="submit" class="btn btn-primary edit-form-submit"><i class="icon-ok  icon-white"></i> {% if is_new %}Create{% else %}Save{% endif %}</a>
         </span>

@@ -27,7 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from flask import current_app, url_for
 from invenio_accounts.models import User
@@ -40,21 +40,33 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.models import Timestamp
 from sqlalchemy_utils.types import UUIDType
 
-from .errors import InclusionRequestExistsError, \
+from .errors import CommunitiesError, InclusionRequestExistsError, \
     InclusionRequestExpiryTimeError, InclusionRequestMissingError, \
     InclusionRequestObsoleteError
+from .signals import after_increq_insert
+from .utils import get_oaiset_spec, send_community_request_email
 
 logger = logging.getLogger('invenio-communities')
 
 
-def default_inclusion_request_time():
-    """Return the default expiry date (datetime.datetime).
+def default_inclusion_request_delete_time():
+    """Expiry time after which the inclusion request is cancelled.
+
+    :returns: Datetime off-setted by some default timedelta.
+    :rtype: datetime.datetime
+    """
+    expiry_timedelta = current_app.config['COMMUNITIES_REQUEST_EXPIRY_TIME']
+    return datetime.now() + expiry_timedelta
+
+
+def default_community_delete_time():
+    """Holdout time after which community should be hard-deleted.
 
     :returns: Datetime off-setted by some default time delta.
     :rtype: datetime.datetime
     """
-    days_expiry = current_app.config['COMMUNITIES_REQUEST_EXPIRY_TIME']
-    return datetime.now() + timedelta(days=days_expiry)
+    holdout_timedelta = current_app.config['COMMUNITIES_DELETE_HOLDOUT_TIME']
+    return datetime.now() + holdout_timedelta
 
 
 class InclusionRequest(db.Model, Timestamp):
@@ -80,8 +92,16 @@ class InclusionRequest(db.Model, Timestamp):
     )
     """Id of the record applying to given community."""
 
+    id_user = db.Column(
+        db.Integer,
+        db.ForeignKey(User.id),
+        nullable=True,
+        default=None
+    )
+    """User making the request (optional)."""
+
     expiry_date = db.Column(db.DateTime, nullable=False,
-                            default=default_inclusion_request_time)
+                            default=default_inclusion_request_delete_time)
     """Expiry date of the record request."""
 
     #
@@ -95,12 +115,17 @@ class InclusionRequest(db.Model, Timestamp):
                              foreign_keys=[id_record])
     """Relation to the record which is requesting for community inclusion."""
 
+    user = db.relationship(User, backref='inclusionrequests',
+                           foreign_keys=[id_user])
+    """Relation to the User making the inclusion request."""
+
     def get_record(self):
         """Return the API object for the Record."""
         return Record(self.record.json, model=self.record)
 
     @classmethod
-    def create(cls, community, record, expiry_date=None):
+    def create(cls, community, record, user=None, expiry_date=None,
+               send_email_notification=True):
         """Create a record inclusion request to a community.
 
         :param community: Community object.
@@ -111,7 +136,7 @@ class InclusionRequest(db.Model, Timestamp):
                             be resolved anymore.
         :type expiry_date: datetime.datetime
         """
-        expiry_date = expiry_date or default_inclusion_request_time()
+        expiry_date = expiry_date or default_inclusion_request_delete_time()
         if expiry_date < datetime.now():
             logger.exception("Expiry date cannot be in the past ({}).".format(
                 expiry_date))
@@ -128,8 +153,13 @@ class InclusionRequest(db.Model, Timestamp):
             with db.session.begin_nested():
                 obj = cls(id_community=community.id,
                           id_record=record.id,
+                          id_user=user.id if user else None,
                           expiry_date=expiry_date)
                 db.session.add(obj)
+            if current_app.config['COMMUNITIES_MAIL_ENABLED'] and \
+                    send_email_notification:
+                send_community_request_email(obj)
+            after_increq_insert.send(obj)
             logger.info("Created inclusion request for record {0} and "
                         "community '{1}'.".format(record.id, community.id))
         except IntegrityError:
@@ -180,6 +210,9 @@ class Community(db.Model, Timestamp):
     fixed_points = db.Column(db.Integer, nullable=False, default=0)
     """Points which will be always added to overall score of community."""
 
+    delete_time = db.Column(db.DateTime, nullable=True, default=None)
+    """Time after which the community should be deleted."""
+
     #
     # Relationships
     #
@@ -228,6 +261,12 @@ class Community(db.Model, Timestamp):
             record[communities_key] = record[communities_key] + [self.id, ]
         else:
             record[communities_key] = [self.id, ]
+        if current_app.config["COMMUNITIES_OAI_ENABLED"] and "_oai" in record:
+            oai_spec = get_oaiset_spec(self.id)
+            if "sets" in record["_oai"]:
+                record["_oai"]["sets"] = record["_oai"]["sets"] + [oai_spec, ]
+            else:
+                record["_oai"]["sets"] = [oai_spec, ]
         record.commit()
 
     def remove_record(self, record):
@@ -319,6 +358,34 @@ class Community(db.Model, Timestamp):
         else:
             query = query.order_by(db.desc(cls.ranking))
         return query
+
+    def delete(self, delete_time=None):
+        """Mark the community for deletion.
+
+        :param delete_time: DateTime after which to delete the community.
+        :type delete_time: datetime.datetime
+        :raises: CommunitiesError
+        """
+        if self.delete_time is not None:
+            logger.exception("Community {0} is already marked for deletion "
+                             "on {1}.".format(self.id, self.delete_time))
+            raise CommunitiesError(community=self)
+        else:
+            self.delete_time = delete_time or default_community_delete_time()
+
+    def undelete(self):
+        """Remove the community marking for deletion."""
+        if self.delete_time is None:
+            logger.exception(
+                "Community {0} was not marked for deletion.".format(self.id))
+            raise CommunitiesError(community=self)
+        else:
+            self.delete_time = None
+
+    @property
+    def is_deleted(self):
+        """Return whether given community is marked for deletion."""
+        return self.delete_time is not None
 
     @property
     def oaiset_spec(self):

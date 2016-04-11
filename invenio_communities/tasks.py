@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -22,12 +22,29 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Version information for Invenio-Communities.
-
-This file is imported by ``invenio_communities.__init__``,
-and parsed by ``setup.py``.
-"""
+"""OpenAIRE service integration for Invenio repositories."""
 
 from __future__ import absolute_import, print_function
 
-__version__ = "1.0.0a2.dev20160000"
+from datetime import datetime
+
+from celery import shared_task
+from invenio_db import db
+
+from .models import Community, InclusionRequest
+
+
+@shared_task(ignore_result=True)
+def delete_marked_communities():
+    """Delete communities after holdout time."""
+    # TODO: Delete the community ID from all records metadata first
+    Community.query.filter_by(Community.delete_time > datetime.now()).delete()
+    db.session.commit()
+
+
+@shared_task(ignore_result=True)
+def delete_expired_requests():
+    """Delete expired inclusion requests."""
+    InclusionRequest.query.filter_by(
+        InclusionRequest.expiry_date > datetime.now()).delete()
+    db.session.commit()

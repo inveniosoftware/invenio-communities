@@ -1,6 +1,6 @@
 {#
 # This file is part of Invenio.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2013, 2014, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -19,27 +19,14 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-#}
+#}A new upload requests to be added to your community ({{ community.title }}):
 
-{% extends config.SEARCH_UI_BASE_TEMPLATE %}
+{% if requester %}
+Requested by: {{ requester.username }} ({{ requester.email }})
+{% endif %}
+Record Title: {{ record['title'] }}
+Record Description: {{ record['description'] | striptags }}
 
-{%- from "invenio_communities/macros.html" import community_header %}
-
-{% set title = community.title + " | " + config.THEME_SITENAME %}
-
-{%- block css %}
-  {{ super() }}
-  {% assets "invenio_communities_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-{%- endblock css %}
-
-{%- block javascript -%}
-  {% assets "invenio_communities_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-{%- endblock javascript -%}
-
-{% block page_body %}
-<div class="communities">
-  {{ community_header(community, link=False) }}
-  {%- block community_body %}
-  {%- endblock community_body %}
-</div>
-{% endblock page_body %}
+Please go to above URL and either accept or reject the upload for inclusion in your community collection.
+You can accept or reject this record in your community curation page:
+{{ url_for('invenio_communities.curate', community_id=community.id) }}
