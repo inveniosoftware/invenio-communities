@@ -25,3 +25,5 @@
 -e git+git://github.com/inveniosoftware/invenio-db#egg=invenio-db
 -e git+git://github.com/inveniosoftware/invenio-accounts#egg=invenio-accounts
 -e git+git://github.com/inveniosoftware/invenio-records#egg=invenio-records
+-e git+git://github.com/inveniosoftware/invenio-files-rest#egg=invenio-files-rest
+-e git+git://github.com/inveniosoftware/invenio-oaiserver#egg=invenio-oaiserver

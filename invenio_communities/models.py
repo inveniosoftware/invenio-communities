@@ -255,18 +255,18 @@ class Community(db.Model, Timestamp):
         """
         communities_key = current_app.config["COMMUNITIES_RECORD_KEY"]
 
-        if communities_key in record:
-            assert isinstance(record[communities_key], list)
-            assert self.id not in record[communities_key]
-            record[communities_key] = record[communities_key] + [self.id, ]
-        else:
-            record[communities_key] = [self.id, ]
-        if current_app.config["COMMUNITIES_OAI_ENABLED"] and "_oai" in record:
-            oai_spec = get_oaiset_spec(self.id)
-            if "sets" in record["_oai"]:
-                record["_oai"]["sets"] = record["_oai"]["sets"] + [oai_spec, ]
+        communities = record.setdefault(communities_key, [])
+        assert self.id not in communities
+        communities.append(self.id)
+        if current_app.config["COMMUNITIES_OAI_ENABLED"]:
+            from invenio_oaiserver.models import OAISet
+            oaispec = get_oaiset_spec(self.id)
+            oaiset = OAISet.query.filter_by(spec=oaispec).one()
+            if oaiset is None:
+                logger.exception("Missing OAISet ({}) for community {}."
+                                 .format(get_oaiset_spec(self.id), self.id))
             else:
-                record["_oai"]["sets"] = [oai_spec, ]
+                oaiset.add_record(record, commit_record=False)
         record.commit()
 
     def remove_record(self, record):
