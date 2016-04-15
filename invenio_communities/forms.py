@@ -148,10 +148,10 @@ class CommunityForm(Form):
         """Validate field identifier."""
         if field.data:
             field.data = field.data.lower()
-            if Community.query.filter_by(id=field.data).first():
+            if Community.get(field.data, with_deleted=True):
                 raise validators.ValidationError(
-                    _("The identifier already exists."
-                      " Please choose a different one."))
+                    _("The identifier already exists. "
+                      "Please choose a different one."))
 
 
 class EditCommunityForm(CommunityForm):

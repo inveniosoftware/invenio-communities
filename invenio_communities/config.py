@@ -29,12 +29,11 @@ from datetime import timedelta
 
 import pkg_resources
 
-COMMUNITIES_REQUEST_EXPIRY_TIME = timedelta(days=7)
+COMMUNITIES_REQUEST_EXPIRY_TIME = timedelta(days=365)
 """Time after which the inclusion requests automatically expire."""
 
-COMMUNITIES_DELETE_HOLDOUT_TIME = timedelta(days=7)
-"""Time after which the communities marked for deletion are
-hard-deleted from the system."""
+COMMUNITIES_DELETE_HOLDOUT_TIME = timedelta(days=365)
+"""Time after which the communities marked for deletion are hard-deleted."""
 
 COMMUNITIES_LOGO_EXTENSIONS = ['png', 'jpg', 'jpeg']
 """Allowed file extensions for the communities logo."""
@@ -90,3 +89,9 @@ COMMUNITIES_REQUEST_EMAIL_SENDER = 'info@inveniosoftware.org'
 COMMUNITIES_JSTEMPLATE_RESULTS_CURATE = \
     'templates/invenio_communities/ng_record_curate.html'
 """Angular template for records in curation view."""
+
+COMMUNITIES_COMMUNITY_TEMPLATE = "invenio_communities/community_base.html"
+
+COMMUNITIES_CURATE_TEMPLATE = "invenio_communities/curate.html"
+
+COMMUNITIES_SEARCH_TEMPLATE = "invenio_communities/search.html"

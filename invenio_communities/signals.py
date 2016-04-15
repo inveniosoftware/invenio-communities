@@ -28,16 +28,18 @@ from blinker import Namespace
 
 _signals = Namespace()
 
-after_increq_insert = _signals.signal('after-increq-insert')
+inclusion_request_created = _signals.signal('inclusion_request_created')
 """Signal is sent after an inclusion request is created.
 
 Example subscriber:
 
 .. code-block:: python
 
-    def listener(inclusionrequest, *args, **kwargs):
-        send_email(inclusionrequest)
+    def receiver(sender, request=None, **kwargs):
+        # ...
 
-    from invenio_communities.signals import after_increq_insert
-    after_increq_insert.connect(listener)
+    The sender is the current Flask application.
+
+    from invenio_communities.signals import inclusion_request_created
+    inclusion_request_created.connect(receiver)
 """

@@ -26,13 +26,11 @@
 
 from __future__ import absolute_import, print_function
 
-import logging
 from datetime import datetime
 
 from flask import current_app, url_for
 from invenio_accounts.models import User
 from invenio_db import db
-from invenio_indexer.api import RecordIndexer
 from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
 from sqlalchemy.exc import IntegrityError
@@ -43,30 +41,8 @@ from sqlalchemy_utils.types import UUIDType
 from .errors import CommunitiesError, InclusionRequestExistsError, \
     InclusionRequestExpiryTimeError, InclusionRequestMissingError, \
     InclusionRequestObsoleteError
-from .signals import after_increq_insert
-from .utils import get_oaiset_spec, send_community_request_email
-
-logger = logging.getLogger('invenio-communities')
-
-
-def default_inclusion_request_delete_time():
-    """Expiry time after which the inclusion request is cancelled.
-
-    :returns: Datetime off-setted by some default timedelta.
-    :rtype: datetime.datetime
-    """
-    expiry_timedelta = current_app.config['COMMUNITIES_REQUEST_EXPIRY_TIME']
-    return datetime.now() + expiry_timedelta
-
-
-def default_community_delete_time():
-    """Holdout time after which community should be hard-deleted.
-
-    :returns: Datetime off-setted by some default time delta.
-    :rtype: datetime.datetime
-    """
-    holdout_timedelta = current_app.config['COMMUNITIES_DELETE_HOLDOUT_TIME']
-    return datetime.now() + holdout_timedelta
+from .signals import inclusion_request_created
+from .utils import save_and_validate_logo
 
 
 class InclusionRequest(db.Model, Timestamp):
@@ -100,74 +76,88 @@ class InclusionRequest(db.Model, Timestamp):
     )
     """User making the request (optional)."""
 
-    expiry_date = db.Column(db.DateTime, nullable=False,
-                            default=default_inclusion_request_delete_time)
+    expires_at = db.Column(
+        db.DateTime,
+        nullable=True,
+        default=None,
+    )
     """Expiry date of the record request."""
 
     #
     # Relationships
     #
-    community = db.relationship('Community', backref='inclusion_requests',
-                                foreign_keys=[id_community])
+    community = db.relationship(
+        'Community', backref='inclusion_requests', foreign_keys=[id_community])
     """Relation to the community to which the inclusion request is made."""
 
-    record = db.relationship(RecordMetadata, backref='inclusion_requests',
-                             foreign_keys=[id_record])
+    record = db.relationship(
+        RecordMetadata, backref='inclusion_requests', foreign_keys=[id_record])
     """Relation to the record which is requesting for community inclusion."""
 
-    user = db.relationship(User, backref='inclusionrequests',
-                           foreign_keys=[id_user])
+    user = db.relationship(
+        User, backref='inclusion_requests', foreign_keys=[id_user])
     """Relation to the User making the inclusion request."""
 
     def get_record(self):
         """Return the API object for the Record."""
-        return Record(self.record.json, model=self.record)
+        return Record.get_record(self.id_record)
+
+    def delete(self):
+        """Delete this request."""
+        db.session.delete(self)
 
     @classmethod
-    def create(cls, community, record, user=None, expiry_date=None,
-               send_email_notification=True):
+    def create(cls, community, record, user=None, expires_at=None,
+               notify=True):
         """Create a record inclusion request to a community.
 
         :param community: Community object.
-        :type community: `invenio_communities.models.Community`
         :param record: Record API object.
-        :type record: `invenio_records.api.Record`
-        :param expiry_date: Time after which the request expires and shouldn't
-                            be resolved anymore.
-        :type expiry_date: datetime.datetime
+        :param expires_at: Time after which the request expires and shouldn't
+            be resolved anymore.
         """
-        expiry_date = expiry_date or default_inclusion_request_delete_time()
-        if expiry_date < datetime.now():
-            logger.exception("Expiry date cannot be in the past ({}).".format(
-                expiry_date))
-            raise InclusionRequestExpiryTimeError(community=community,
-                                                  record=record)
-        communities_key = current_app.config["COMMUNITIES_RECORD_KEY"]
-        if communities_key in record and \
-                community.id in record[communities_key]:
-            logger.exception("Record {0} already in community '{1}'."
-                             .format(record.id, community.id))
-            raise InclusionRequestObsoleteError(community=community,
-                                                record=record)
+        if expires_at and expires_at < datetime.utcnow():
+            raise InclusionRequestExpiryTimeError(
+                community=community, record=record)
+
+        if community.has_record(record):
+            raise InclusionRequestObsoleteError(
+                community=community, record=record)
+
         try:
+            # Create inclusion request
             with db.session.begin_nested():
-                obj = cls(id_community=community.id,
-                          id_record=record.id,
-                          id_user=user.id if user else None,
-                          expiry_date=expiry_date)
+                obj = cls(
+                    id_community=community.id,
+                    id_record=record.id,
+                    user=user,
+                    expires_at=expires_at
+                )
                 db.session.add(obj)
-            if current_app.config['COMMUNITIES_MAIL_ENABLED'] and \
-                    send_email_notification:
-                send_community_request_email(obj)
-            after_increq_insert.send(obj)
-            logger.info("Created inclusion request for record {0} and "
-                        "community '{1}'.".format(record.id, community.id))
         except IntegrityError:
-            logger.exception("Record {0} already pending for community '{1}'."
-                             .format(record.id, community.id))
-            raise InclusionRequestExistsError(community=community,
-                                              record=record)
+            raise InclusionRequestExistsError(
+                community=community, record=record)
+
+        # Send signal
+        inclusion_request_created.send(
+            current_app._get_current_object(),
+            request=obj,
+            notify=notify
+        )
+
         return obj
+
+    @classmethod
+    def get(cls, community_id, record_uuid):
+        """Get an inclusion request."""
+        return cls.query.filter_by(
+            id_record=record_uuid, id_community=community_id
+        ).one()
+
+    @classmethod
+    def get_by_record(cls, record_uuid):
+        """Get inclusion requests for a given record."""
+        return cls.query.filter_by(id_record=record_uuid)
 
 
 class Community(db.Model, Timestamp):
@@ -197,8 +187,8 @@ class Community(db.Model, Timestamp):
     curation_policy = db.Column(db.Text(), nullable=False, default='')
     """Community curation policy."""
 
-    last_record_accepted = db.Column(db.DateTime(), nullable=False,
-                                     default=datetime(2000, 1, 1, 0, 0, 0))
+    last_record_accepted = db.Column(
+        db.DateTime(), nullable=False, default=datetime(2000, 1, 1, 0, 0, 0))
     """Last record acceptance datetime."""
 
     logo_ext = db.Column(db.String(length=4), nullable=True, default=None)
@@ -210,8 +200,8 @@ class Community(db.Model, Timestamp):
     fixed_points = db.Column(db.Integer, nullable=False, default=0)
     """Points which will be always added to overall score of community."""
 
-    delete_time = db.Column(db.DateTime, nullable=True, default=None)
-    """Time after which the community should be deleted."""
+    deleted_at = db.Column(db.DateTime, nullable=True, default=None)
+    """Time at which the community was soft-deleted."""
 
     #
     # Relationships
@@ -220,17 +210,164 @@ class Community(db.Model, Timestamp):
                             foreign_keys=[id_user])
     """Relation to the owner (User) of the community."""
 
-    pending_requests = db.relationship(InclusionRequest)
-    """Requests pending for the acceptance to the community."""
-
     def __repr__(self):
         """String representation of the community object."""
         return "<Community, ID: {}>".format(self.id)
 
     @classmethod
-    def get(cls, community_id):
+    def create(cls, community_id, user_id, **data):
         """Get a community."""
-        return cls.query.filter_by(id=community_id).one_or_none()
+        with db.session.begin_nested():
+            obj = cls(id=community_id, id_user=user_id, **data)
+            db.session.add(obj)
+        return obj
+
+    def save_logo(self, stream, filename):
+        """Get a community."""
+        logo_ext = save_and_validate_logo(stream, filename, self.id)
+        if logo_ext:
+            self.logo_ext = logo_ext
+            return True
+        return False
+
+    @classmethod
+    def get(cls, community_id, with_deleted=False):
+        """Get a community."""
+        q = cls.query.filter_by(id=community_id)
+        if not with_deleted:
+            q = q.filter(cls.deleted_at.is_(None))
+        return q.one_or_none()
+
+    @classmethod
+    def get_by_user(cls, user_id, with_deleted=False):
+        """Get a community."""
+        query = cls.query.filter_by(
+            id_user=user_id
+        )
+        if not with_deleted:
+            query = query.filter(cls.deleted_at.is_(None))
+
+        return query.order_by(db.asc(Community.title))
+
+    @classmethod
+    def filter_communities(cls, p, so, with_deleted=False):
+        """Search for communities.
+
+        Helper function which takes from database only those communities which
+        match search criteria. Uses parameter 'so' to set communities in the
+        correct order.
+
+        Parameter 'page' is introduced to restrict results and return only
+        slice of them for the current page. If page == 0 function will return
+        all communities that match the pattern.
+        """
+        query = cls.query if with_deleted else \
+            cls.query.filter(cls.deleted_at.is_(None))
+
+        if p:
+            query = query.filter(db.or_(
+                cls.id.like("%" + p + "%"),
+                cls.title.like("%" + p + "%"),
+                cls.description.like("%" + p + "%"),
+            ))
+
+        if so in current_app.config['COMMUNITIES_SORTING_OPTIONS']:
+            order = so == 'title' and db.asc or db.desc
+            query = query.order_by(order(getattr(cls, so)))
+        else:
+            query = query.order_by(db.desc(cls.ranking))
+        return query
+
+    def add_record(self, record):
+        """Add a record to the community.
+
+        :param record: Record object.
+        :type record: `invenio_records.api.Record`
+        """
+        key = current_app.config['COMMUNITIES_RECORD_KEY']
+        record.setdefault(key, [])
+
+        assert self.id not in record[key]
+        record[key].append(self.id)
+
+        if current_app.config["COMMUNITIES_OAI_ENABLED"]:
+            from invenio_oaiserver.models import OAISet
+            oaiset = OAISet.query.filter_by(spec=self.oaiset_spec).one()
+            oaiset.add_record(record)
+
+    def remove_record(self, record):
+        """Remove an already accepted record from the community.
+
+        :param record: Record object.
+        :type record: `invenio_records.api.Record`
+        """
+        key = current_app.config['COMMUNITIES_RECORD_KEY']
+
+        assert self.id in record.get(key, [])
+
+        record[key] = [c for c in record[key] if c != self.id]
+
+        if current_app.config["COMMUNITIES_OAI_ENABLED"]:
+            from invenio_oaiserver.models import OAISet
+            oaiset = OAISet.query.filter_by(spec=self.oaiset_spec).one()
+            oaiset.remove_record(record)
+
+    def has_record(self, record):
+        """Check if record is in community."""
+        return self.id in \
+            record.get(current_app.config["COMMUNITIES_RECORD_KEY"], [])
+
+    def accept_record(self, record):
+        """Accept a record for inclusion in the community.
+
+        :param record: Record object.
+        """
+        try:
+            with db.session.begin_nested():
+                req = InclusionRequest.get(self.id, record.id)
+                req.delete()
+                self.add_record(record)
+                self.last_record_accepted = datetime.utcnow()
+        except NoResultFound:
+            raise InclusionRequestMissingError(
+                community=self, record=record)
+
+    def reject_record(self, record):
+        """Reject a record for inclusion in the community.
+
+        :param record: Record object.
+        """
+        try:
+            with db.session.begin_nested():
+                req = InclusionRequest.get(self.id, record.id)
+                req.delete()
+        except NoResultFound:
+            raise InclusionRequestMissingError(
+                community=self, record=record)
+
+    def delete(self):
+        """Mark the community for deletion.
+
+        :param delete_time: DateTime after which to delete the community.
+        :type delete_time: datetime.datetime
+        :raises: CommunitiesError
+        """
+        if self.deleted_at is not None:
+            raise CommunitiesError(community=self)
+        else:
+            self.deleted_at = datetime.utcnow()
+
+    def undelete(self):
+        """Remove the community marking for deletion."""
+        if self.deleted_at is None:
+            raise CommunitiesError(community=self)
+        else:
+            self.deleted_at = None
+
+    @property
+    def is_deleted(self):
+        """Return whether given community is marked for deletion."""
+        return self.deleted_at is not None
 
     @property
     def logo_url(self):
@@ -242,150 +379,27 @@ class Community(db.Model, Timestamp):
         if self.logo_ext:
             buc = current_app.config['COMMUNITIES_BUCKET_UUID']
             key = "{0}/logo.{1}".format(self.id, self.logo_ext)
-            return url_for('invenio_files_rest.object_api',
-                           bucket_id=buc, key=key)
+            return url_for(
+                'invenio_files_rest.object_api', bucket_id=buc, key=key)
         else:
             return None
 
-    def add_record(self, record):
-        """Add a record to the community.
-
-        :param record: Record object.
-        :type record: `invenio_records.api.Record`
-        """
-        communities_key = current_app.config["COMMUNITIES_RECORD_KEY"]
-
-        communities = record.setdefault(communities_key, [])
-        assert self.id not in communities
-        communities.append(self.id)
-        if current_app.config["COMMUNITIES_OAI_ENABLED"]:
-            from invenio_oaiserver.models import OAISet
-            oaispec = get_oaiset_spec(self.id)
-            oaiset = OAISet.query.filter_by(spec=oaispec).one()
-            if oaiset is None:
-                logger.exception("Missing OAISet ({}) for community {}."
-                                 .format(get_oaiset_spec(self.id), self.id))
-            else:
-                oaiset.add_record(record, commit_record=False)
-        record.commit()
-
-    def remove_record(self, record):
-        """Remove an already accepted record from the community.
-
-        :param record: Record object.
-        :type record: `invenio_records.api.Record`
-        """
-        communities_key = current_app.config["COMMUNITIES_RECORD_KEY"]
-
-        if communities_key in record and self.id in record[communities_key]:
-            record[communities_key] = [c for c in record[communities_key]
-                                       if (c != self.id)]
-            record.commit()
-            db.session.commit()
-            RecordIndexer().index_by_id(record.id)
-
-            logger.info("Removed record {0} from community '{1}'.".format(
-                record.id, self.id))
-        else:
-            logger.info("Record {0} requested for removal was not found in "
-                        "community '{1}'.".format(record.id, self.id))
-
-    def accept_record(self, record):
-        """Accept a record for inclusion in the community.
-
-        :param record: Record object.
-        :type record: `invenio_records.api.Record`
-        """
-        try:
-            cr = InclusionRequest.query.filter_by(
-                id_record=record.id,
-                id_community=self.id).one()
-            self.last_record_accepted = datetime.now()
-            db.session.delete(cr)
-            self.add_record(record)
-            db.session.commit()
-            RecordIndexer().index_by_id(record.id)
-            logger.info("Accepted record {0} to community '{1}'.".format(
-                record.id, self.id))
-        except NoResultFound:
-            logger.exception("Record {0} is not on community '{1}' "
-                             "pending list.".format(record.id, self.id))
-            raise InclusionRequestMissingError(community=self,
-                                               record=record)
-
-    def reject_record(self, record):
-        """Reject a record for inclusion in the community.
-
-        :param record: Record object.
-        :type record: `invenio_records.api.Record`
-        """
-        try:
-            cr = InclusionRequest.query.filter_by(
-                id_record=record.id,
-                id_community=self.id).one()
-            db.session.delete(cr)
-            db.session.commit()
-            logger.info("Rejected record {0} from community '{1}'.".format(
-                record.id, self.id))
-        except NoResultFound:
-            logger.exception("Record {0} is not on community '{1}' "
-                             "pending list.".format(record.id, self.id))
-            raise InclusionRequestMissingError(community=self,
-                                               record=record)
-
-    @classmethod
-    def filter_communities(cls, p, so):
-        """Search for communities.
-
-        Helper function which takes from database only those communities which
-        match search criteria. Uses parameter 'so' to set communities in the
-        correct order.
-
-        Parameter 'page' is introduced to restrict results and return only
-        slice of them for the current page. If page == 0 function will return
-        all communities that match the pattern.
-        """
-        query = cls.query
-        if p:
-            query = query.filter(db.or_(
-                cls.id.like("%" + p + "%"),
-                cls.title.like("%" + p + "%"),
-                cls.description.like("%" + p + "%"),
-            ))
-        if so in current_app.config['COMMUNITIES_SORTING_OPTIONS']:
-            order = so == 'title' and db.asc or db.desc
-            query = query.order_by(order(getattr(cls, so)))
-        else:
-            query = query.order_by(db.desc(cls.ranking))
-        return query
-
-    def delete(self, delete_time=None):
-        """Mark the community for deletion.
-
-        :param delete_time: DateTime after which to delete the community.
-        :type delete_time: datetime.datetime
-        :raises: CommunitiesError
-        """
-        if self.delete_time is not None:
-            logger.exception("Community {0} is already marked for deletion "
-                             "on {1}.".format(self.id, self.delete_time))
-            raise CommunitiesError(community=self)
-        else:
-            self.delete_time = delete_time or default_community_delete_time()
-
-    def undelete(self):
-        """Remove the community marking for deletion."""
-        if self.delete_time is None:
-            logger.exception(
-                "Community {0} was not marked for deletion.".format(self.id))
-            raise CommunitiesError(community=self)
-        else:
-            self.delete_time = None
+    @property
+    def community_url(self):
+        """Get provisional URL."""
+        return url_for(
+            'invenio_communities.detail', community_id=self.id, _external=True)
 
     @property
-    def is_deleted(self):
-        """Return whether given community is marked for deletion."""
-        return self.delete_time is not None
+    def community_provisional_url(self):
+        """Get provisional URL."""
+        return url_for(
+            'invenio_communities.curate', community_id=self.id, _external=True)
+
+    @property
+    def upload_url(self):
+        """Get provisional URL."""
+        return 'TODO'
 
     @property
     def oaiset_spec(self):
@@ -398,25 +412,6 @@ class Community(db.Model, Timestamp):
                 community_id=self.id)
 
     @property
-    def community_url(self):
-        """Get provisional URL."""
-        return url_for(
-            'invenio_communities.detail', community_id=self.id,
-            _scheme='https', _external=True)
-
-    @property
-    def upload_url(self):
-        """Get provisional URL."""
-        return 'TODO'
-
-    @property
-    def community_provisional_url(self):
-        """Get provisional URL."""
-        return url_for(
-            'invenio_communities.curate', community_id=self.id,
-            _scheme='https', _external=True)
-
-    @property
     def oaiset_url(self):
         """Return the OAISet 'spec' name for given community.
 
@@ -426,8 +421,7 @@ class Community(db.Model, Timestamp):
         return url_for(
             'invenio_oaiserver.response',
             verb='ListRecords',
-            metadataPrefix='oai_dc', set=self.oaiset_spec, _scheme='https',
-            _external=True)
+            metadataPrefix='oai_dc', set=self.oaiset_spec, _external=True)
 
 
 class FeaturedCommunity(db.Model, Timestamp):
@@ -439,20 +433,17 @@ class FeaturedCommunity(db.Model, Timestamp):
     """Id of the featured entry."""
 
     id_community = db.Column(
-        db.String(100),
-        db.ForeignKey(Community.id),
-        nullable=False,
-    )
+        db.String(100), db.ForeignKey(Community.id), nullable=False)
     """Id of the featured community."""
 
-    start_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    start_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow)
     """Start date of the community featuring."""
 
     #
     # Relationships
     #
-    community = db.relationship(Community,
-                                backref="featuredcommunity")
+    community = db.relationship(Community, backref="featuredcommunity")
     """Relation to the community."""
 
     @classmethod
@@ -463,16 +454,11 @@ class FeaturedCommunity(db.Model, Timestamp):
         :returns: Community object or None
         :rtype: `invenio_communities.models.Community` or None
         """
-        start_date = start_date or datetime.now()
+        start_date = start_date or datetime.utcnow()
 
         comm = cls.query.filter(
-            FeaturedCommunity.start_date <= start_date).order_by(
-            cls.start_date.desc()).first()
+            FeaturedCommunity.start_date <= start_date
+        ).order_by(
+            cls.start_date.desc()
+        ).first()
         return comm if comm is None else comm.community
-
-
-__all__ = (
-    'Community',
-    'InclusionRequest',
-    'FeaturedCommunity',
-)

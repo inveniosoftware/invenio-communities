@@ -22,12 +22,9 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
 """Module tests."""
 
 from __future__ import absolute_import, print_function
-
-from datetime import datetime
 
 from invenio_accounts.testutils import create_test_user
 from invenio_db import db
@@ -43,19 +40,15 @@ def test_community_delete_task(app):
         user1 = create_test_user()
         comm1 = Community(id='comm1', id_user=user1.id)
         db.session.add(comm1)
-        db.session.commit()
         communities_key = app.config["COMMUNITIES_RECORD_KEY"]
-
         rec1 = Record.create({'title': 'Foobar'})
-        InclusionRequest.create(community=comm1, record=rec1)
-        assert InclusionRequest.query.count() == 1
+        InclusionRequest.create(community=comm1, record=rec1, notify=False)
+        db.session.commit()
+        assert InclusionRequest.get(comm1.id, rec1.id)
+
         comm1.accept_record(rec1)
         assert 'comm1' in rec1[communities_key]
         db.session.commit()
 
-        # Delte the community
-        delete_time = datetime.now()
-        comm1.delete(delete_time=delete_time)
-        # from invenio_communities.tasks import delete_marked_communities
-        # delete_marked_communities.delay()  TODO: Implement the task
-        # TODO: assert 'comm1' not in rec1[communities_key]
+        comm1.delete()
+        assert comm1.is_deleted

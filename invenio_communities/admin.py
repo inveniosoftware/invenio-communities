@@ -40,17 +40,16 @@ class CommunityModelView(ModelView):
 
     can_create = True
     can_edit = True
-    can_delete = True
+    can_delete = False
     can_view_details = True
     column_display_all_relations = True
-    form_columns = ('id', 'owner', 'title', 'description', 'page', 'ranking',
-                    'fixed_points')
+    form_columns = ('id', 'owner', 'title', 'description', 'page',
+                    'ranking', 'fixed_points')
     column_list = (
         'id',
         'title',
-        'description',
-        'owner',
-        'page',
+        'owner.id',
+        'deleted_at',
         'last_record_accepted',
         'ranking',
         'fixed_points',
@@ -75,14 +74,15 @@ class FeaturedCommunityModelView(ModelView):
 class InclusionRequestModelView(ModelView):
     """ModelView of the InclusionRequest."""
 
-    can_create = True
-    can_edit = True
+    can_create = False
+    can_edit = False
     can_delete = True
     can_view_details = True
     column_list = (
-        'community',
-        'record',
-        'expiry_date'
+        'id_community',
+        'id_record',
+        'expires_at',
+        'id_user'
     )
 
 

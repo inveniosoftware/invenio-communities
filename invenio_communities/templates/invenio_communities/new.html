@@ -42,14 +42,14 @@
         <div class="alert alert-danger">
           <h5>Warning</h5>
           <ul>
-            <li>If you proceed, this community will be deleted in {{ delete_holdout.days }} days.</li>
-            <li>After that time you will loose all connections to records currently attached to this community and you will not be able to recover them.</li>
+            <li>If you proceed, this community will be deleted and you will loose all connections to records currently attached to this community and you will not be able to recover them.</li>
             <li>Any external repository harvesting your community collection will stop working.</li>
           </ul>
         </div>
       </div>
       <div class="modal-footer">
         <form action="{{url_for('.delete', community_id=community.id)}}" method="POST">
+          {{form.csrf_token}}
           {%- for field in deleteform %}{{ field }}{% endfor %}
           <button class="btn btn-large" data-dismiss="modal" aria-hidden="true">No, thanks</button>
           <button type="submit" href="{{ url_for('.delete', community_id=community.id) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
@@ -74,6 +74,7 @@
   <div class="row">
     <div id="file_container" class="col-md-8">
       <form action="." method="POST" id="edit_form" class="form-horizontal" enctype="multipart/form-data" role="form">
+      {{form.csrf_token}}
       <div class="panel-group">
       {% if not is_new %}
         <div class="panel panel-default">
@@ -146,7 +147,7 @@
                 {%- else %}
                   {%- set field = form.get_field_by_name(f) %}
                   {% if field %}
-                    <div class="form-group field-{{ field.name }}{% if field.errors %} error{% endif %}">
+                    <div class="form-group field-{{ field.name }}{% if field.errors %} has-error{% endif %}">
                       <label class="control-label{{' required' if field.required else ''}} col-md-3" for="{{field.label.field_id}}">
                         {%- if field._icon_html or form.get_field_icon(f) %}
                           {% if form.get_field_icon(f) %}
@@ -180,7 +181,7 @@
                           </p>
                         {% endif %}
                         {% if field.errors %}
-                          <span class="alert alert-danger help-inline" id="error-{{ field.name }}">
+                          <span class="text-danger help-inline" id="error-{{ field.name }}">
                             {% for error in field.errors %}
                               {{ error }}
                               {% if not loop.last %}
@@ -188,8 +189,6 @@
                               {% endif %}
                             {% endfor %}
                           </span>
-                        {% else %}
-                          <span class="alert alert-danger help-inline" id="error-{{ field.name }}" style="display:none;"></span>
                         {% endif %}
                       </div> <!-- /.controls col-md-9 -->
                     </div> <!-- /.form-group -->

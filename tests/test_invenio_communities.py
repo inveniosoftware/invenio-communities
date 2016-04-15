@@ -113,6 +113,7 @@ def test_model_init(app):
         db.session.add(comm3)
         db.session.commit()
         InclusionRequest.create(community=comm3, record=rec1)
+        db.session.commit()
         pytest.raises(InclusionRequestExistsError, InclusionRequest.create,
                       community=comm3, record=rec1)
 
@@ -122,38 +123,22 @@ def test_model_init(app):
                       community=comm1, record=rec1)
 
 
-class MailMock(object):
-    """Mock the Flask-Mail client."""
-    def send(self, msg):
-        """Capture the sended message."""
-        self.msg = msg
-
-
 def test_email_notification(app):
     """Test mail notification sending for community request."""
     with app.app_context():
         # Mock the send method of the Flask-Mail extension
-        mm = MailMock()
-        app.extensions['mail'] = mm
-        user1 = create_test_user()
-        comm1 = Community(id='comm1', id_user=user1.id, title="FooCommunity")
-        db.session.add(comm1)
-        db.session.commit()
-        # Create a record and accept it into the community by creating an
-        # InclusionRequest and then calling the accept action
-        rec1 = Record.create({'title': 'Foobar', 'description': 'Baz bar.'})
-        InclusionRequest.create(community=comm1, record=rec1, user=user1)
-        assert mm.msg.subject == "A record was requested to be added to your" \
-                                 " community (FooCommunity)."
-        assert len(mm.msg.recipients) == 1
-        assert mm.msg.recipients[0] == "test@test.org"
-        assert "Record Title: Foobar" in mm.msg.body
-        assert "Record Description: Baz bar." in mm.msg.body
-        assert "http://inveniosoftware.org/communities/comm1/curate/" \
-            in mm.msg.body
-
-        assert "Requested by:  (test@test.org)" in mm.msg.body
-        assert mm.msg.sender == "info@inveniosoftware.org"
+        with app.extensions['mail'].record_messages() as outbox:
+            user1 = create_test_user()
+            comm1 = Community(
+                id='comm1', id_user=user1.id, title="FooCommunity")
+            db.session.add(comm1)
+            db.session.commit()
+            # Create a record and accept it into the community by creating an
+            # InclusionRequest and then calling the accept action
+            rec1 = Record.create({
+                'title': 'Foobar', 'description': 'Baz bar.'})
+            InclusionRequest.create(community=comm1, record=rec1, user=user1)
+            assert len(outbox) == 1
 
 
 def test_model_featured_community(app):
@@ -217,13 +202,10 @@ def test_community_delete(app):
         db.session.add(comm1)
         db.session.add(comm2)
         db.session.commit()
-        delete_time = datetime.now() + timedelta(days=1)
-        comm1.delete(delete_time=delete_time)
+        comm1.delete()
         assert comm1.is_deleted is True
-        assert comm1.delete_time == delete_time
         comm1.undelete()
         assert comm1.is_deleted is False
-        assert comm1.delete_time is None
 
         # Try to undelete a community that was not marked for deletion
         pytest.raises(CommunitiesError, comm1.undelete)

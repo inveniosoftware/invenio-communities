@@ -27,6 +27,5 @@ Requested by: {{ requester.username }} ({{ requester.email }})
 Record Title: {{ record['title'] }}
 Record Description: {{ record['description'] | striptags }}
 
-Please go to above URL and either accept or reject the upload for inclusion in your community collection.
 You can accept or reject this record in your community curation page:
-{{ url_for('invenio_communities.curate', community_id=community.id) }}
+{{ config.THEME_SITEURL }}{{ url_for('invenio_communities.curate', community_id=community.id) }}

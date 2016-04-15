@@ -23,15 +23,17 @@
 
 """Community module receivers."""
 
-import logging
-
 from flask import current_app
 from invenio_db import db
 
 from .models import InclusionRequest
-from .utils import get_oaiset_spec
+from .utils import send_community_request_email
 
-logger = logging.getLogger('invenio-communities')
+
+def new_request(sender, request=None, notify=True, **kwargs):
+    """New request for inclusion."""
+    if current_app.config['COMMUNITIES_MAIL_ENABLED'] and notify:
+        send_community_request_email(request)
 
 
 def inject_provisional_community(sender, json=None, record=None, index=None,
@@ -41,16 +43,16 @@ def inject_provisional_community(sender, json=None, record=None, index=None,
             current_app.config['COMMUNITIES_INDEX_PREFIX']):
         return
 
-    q = InclusionRequest.query.filter_by(id_record=record.id)
-    provisional_communities_ids = [r.id_community for r in q]
-    json['provisional_communities'] = provisional_communities_ids
+    json['provisional_communities'] = list(sorted([
+        r.id_community for r in InclusionRequest.get_by_record(record.id)
+    ]))
 
 
 def create_oaipmh_set(mapper, connection, community):
     """Signal for creating OAI-PMH sets during community creation."""
     from invenio_oaiserver.models import OAISet
     with db.session.begin_nested():
-        obj = OAISet(spec=get_oaiset_spec(community.id),
+        obj = OAISet(spec=community.oaiset_spec,
                      name=community.title,
                      description=community.description)
         db.session.add(obj)
@@ -61,9 +63,8 @@ def destroy_oaipmh_set(mapper, connection, community):
     from invenio_oaiserver.models import OAISet
     with db.session.begin_nested():
         oaiset = OAISet.query.filter_by(
-            spec=get_oaiset_spec(community.id)).one_or_none()
+            spec=community.oaiset_spec).one_or_none()
         if oaiset is None:
-            err = "OAISet for community {0} is missing".format(community.id)
-            logger.exception(err)
-            raise Exception(err)
+            raise Exception(
+                "OAISet for community {0} is missing".format(community.id))
         db.session.delete(oaiset)

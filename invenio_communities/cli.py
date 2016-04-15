@@ -84,12 +84,11 @@ def request(community_id, record_id, accept):
     record = Record.get_record(record_id)
     if accept:
         c.add_record(record)
-        db.session.commit()
     else:
         InclusionRequest.create(community=c, record=record,
-                                send_email_notification=False)
-        RecordIndexer().index_by_id(record.id)
-        db.session.commit()
+                                notify=False)
+    db.session.commit()
+    RecordIndexer().index_by_id(record.id)
 
 
 @communities.command()
@@ -102,3 +101,4 @@ def remove(community_id, record_id):
     assert c is not None
     c.remove_record(record_id)
     db.session.commit()
+    RecordIndexer().index_by_id(record_id)

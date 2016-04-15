@@ -26,22 +26,23 @@
 
 from __future__ import absolute_import, print_function
 
-import uuid
+import copy
+from functools import wraps
 
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
 from flask_babelex import gettext as _
 from flask_login import current_user, login_required
 from invenio_db import db
+from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
 
 from .forms import CommunityForm, DeleteCommunityForm, EditCommunityForm, \
     SearchForm
-from .models import Community, FeaturedCommunity, InclusionRequest
+from .models import Community, FeaturedCommunity
 from .proxies import current_permission_factory
-from .utils import Pagination, render_template_to_string, \
-    save_and_validate_logo
+from .utils import Pagination, render_template_to_string
 
 blueprint = Blueprint(
     'invenio_communities',
@@ -50,6 +51,45 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+
+
+def pass_community(f):
+    """Decorator to pass community."""
+    @wraps(f)
+    def inner(community_id, *args, **kwargs):
+        c = Community.get(community_id)
+        if c is None:
+            abort(404)
+        return f(c, *args, **kwargs)
+    return inner
+
+
+def permission_required(action):
+    """Decorator to require permission."""
+    def decorator(f):
+        @wraps(f)
+        def inner(community, *args, **kwargs):
+            permission = current_permission_factory(community, action=action)
+            if not permission.can():
+                abort(403)
+            return f(community, *args, **kwargs)
+        return inner
+    return decorator
+
+
+@blueprint.app_template_filter('format_item')
+def format_item(item, template, name='item'):
+    """Render a template to a string with the provided item in context."""
+    ctx = {name: item}
+    return render_template_to_string(template, **ctx)
+
+
+@blueprint.app_template_filter('mycommunities_ctx')
+def mycommunities_ctx():
+    """Helper method for return ctx used by many views."""
+    return {
+        'mycommunities': Community.get_by_user(current_user.get_id()).all()
+    }
 
 
 @blueprint.route('/', methods=['GET', ])
@@ -88,29 +128,49 @@ def index():
     )
 
 
-@blueprint.app_template_filter('format_item')
-def format_item(item, template, name='item'):
-    """Render a template to a string with the provided item in context."""
-    ctx = {name: item}
-    return render_template_to_string(template, **ctx)
+@blueprint.route('/<string:community_id>/', methods=['GET'])
+@pass_community
+def detail(community):
+    """Index page with uploader and list of existing depositions."""
+    return generic_item(community, "invenio_communities/detail.html")
 
 
-@blueprint.app_template_filter('mycommunities_ctx')
-def mycommunities_ctx():
-    """Helper method for return ctx used by many views."""
-    return {
-        'mycommunities': Community.query.filter_by(
-            id_user=current_user.get_id()
-        ).order_by(db.asc(Community.title)).all()
-    }
+@blueprint.route('/<string:community_id>/search', methods=['GET'])
+@pass_community
+def search(community):
+    """Index page with uploader and list of existing depositions."""
+    return generic_item(
+        community,
+        current_app.config['COMMUNITIES_SEARCH_TEMPLATE'],
+        detail=False)
+
+
+@blueprint.route('/<string:community_id>/about/', methods=['GET'])
+@pass_community
+def about(community):
+    """Index page with uploader and list of existing depositions."""
+    return generic_item(community, "invenio_communities/about.html")
+
+
+def generic_item(community, template, **extra_ctx):
+    """Index page with uploader and list of existing depositions."""
+    # Check existence of community
+    ctx = mycommunities_ctx()
+    ctx.update({
+        'is_owner': community.id_user == current_user.get_id(),
+        'community': community,
+        'detail': True,
+    })
+    ctx.update(extra_ctx)
+
+    return render_template(template, **ctx)
 
 
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @login_required
 def new():
-    """Create or edit a community."""
-    uid = current_user.get_id()
-    form = CommunityForm(request.values, csrf_enabled=False)
+    """Create a new community."""
+    form = CommunityForm(request.values)
 
     ctx = mycommunities_ctx()
     ctx.update({
@@ -119,33 +179,28 @@ def new():
         'community': None,
     })
 
-    if request.method == 'POST' and form.validate():
-        # Map form
-        data = form.data
-        data['id'] = data['identifier']
+    if form.validate_on_submit():
+        data = copy.deepcopy(form.data)
+
+        community_id = data.pop('identifier')
         del data['logo']
-        del data['identifier']
-        logo_ext = None
+
+        community = Community.create(
+            community_id, current_user.get_id(), **data)
+
         file = request.files.get('logo', None)
         if file:
-            logo_ext = save_and_validate_logo(file.stream, file.filename,
-                                              data['id'])
-            if not logo_ext:
-                form.logo.errors.append(
-                    _(
-                        'Cannot add this file as a logo.'
-                        ' Supported formats: png and jpg.'
-                        ' Max file size: 1.5MB'
-                    )
-                )
-            else:
-                data['logo_ext'] = logo_ext
-        if not file or (file and logo_ext):
-            c = Community(id_user=uid, **data)
-            db.session.add(c)
+            if not community.save_logo(file.stream, file.filename):
+                form.logo.errors.append(_(
+                    'Cannot add this file as a logo. Supported formats: '
+                    '  png and jpg. Max file size: 1.5MB.'))
+                db.session.rollback()
+                community = None
+
+        if community:
             db.session.commit()
             flash("Community was successfully created.", category='success')
-            return redirect(url_for('.index'))
+            return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
         "/invenio_communities/new.html",
@@ -156,34 +211,35 @@ def new():
 
 @blueprint.route('/<string:community_id>/edit/', methods=['GET', 'POST'])
 @login_required
-def edit(community_id):
+@pass_community
+@permission_required('community-edit')
+def edit(community):
     """Create or edit a community."""
-    # Check existence of community
-    c = Community.query.filter_by(id=community_id).first_or_404()
-
-    permission = current_permission_factory(c, action='community-edit')
-    if not permission.can():
-        abort(403)
-
-    form = EditCommunityForm(request.values, c, crsf_enabled=False)
+    form = EditCommunityForm(request.values, community)
     deleteform = DeleteCommunityForm()
-    delete_holdout = current_app.config['COMMUNITIES_DELETE_HOLDOUT_TIME']
     ctx = mycommunities_ctx()
     ctx.update({
         'form': form,
         'is_new': False,
-        'community': c,
-        'delete_holdout': delete_holdout,
+        'community': community,
         'deleteform': deleteform,
     })
 
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
         for field, val in form.data.items():
-            setattr(c, field, val)
-        db.session.commit()
-        c.save_collections()
-        flash("Community successfully edited.", category='success')
-        return redirect(url_for('.edit', community_id=c.id))
+            setattr(community, field, val)
+
+        file = request.files.get('logo', None)
+        if file:
+            if not community.save_logo(file.stream, file.filename):
+                form.logo.errors.append(_(
+                    'Cannot add this file as a logo. Supported formats: '
+                    '  png and jpg. Max file size: 1.5MB.'))
+
+        if not form.logo.errors:
+            db.session.commit()
+            flash("Community successfully edited.", category='success')
+            return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
         "invenio_communities/new.html",
@@ -193,169 +249,67 @@ def edit(community_id):
 
 @blueprint.route('/<string:community_id>/delete/', methods=['POST'])
 @login_required
-def delete(community_id):
+@pass_community
+@permission_required('community-delete')
+def delete(community):
     """Delete a community."""
-    # Check existence of community
-    c = Community.query.filter_by(id=community_id).first_or_404()
-
-    permission = current_permission_factory(c, action='community-delete')
-    if not permission.can():
-        abort(403)
-
     deleteform = DeleteCommunityForm(request.values)
     ctx = mycommunities_ctx()
     ctx.update({
         'deleteform': deleteform,
         'is_new': False,
-        'community': c,
+        'community': community,
     })
 
-    if request.method == 'POST' and deleteform.validate():
-        c.delete()
+    if deleteform.validate_on_submit():
+        community.delete()
         db.session.commit()
-        flash("Community will be deleted on {0}.".format(c.delete_time),
-              category='success')
+        flash("Community was deleted.", category='success')
         return redirect(url_for('.index'))
     else:
         flash("Community could not be deleted.", category='warning')
-        return redirect(url_for('.edit', community_id=c.id))
-
-
-@blueprint.route('/<string:community_id>/undelete/', methods=['POST'])
-@login_required
-def undelete(community_id):
-    """Cancel the community deletion process."""
-    # Check existence of community
-    c = Community.query.filter_by(id=community_id).first_or_404()
-
-    permission = current_permission_factory(c, action='community-undelete')
-    if not permission.can():
-        abort(403)
-
-    if request.method == 'POST' and c.is_deleted:
-        c.undelete()
-        db.session.commit()
-        flash("Community was removed from deletion.", category='success')
-        return redirect(url_for('.edit', community_id=community_id))
-
-
-@blueprint.route('/<string:community_id>/', methods=['GET'])
-def detail(community_id=None):
-    """Index page with uploader and list of existing depositions."""
-    return generic_item(community_id, "invenio_communities/detail.html")
-
-
-@blueprint.route('/<string:community_id>/search', methods=['GET'])
-def search(community_id=None):
-    """Index page with uploader and list of existing depositions."""
-    return generic_item(community_id, "invenio_communities/search.html")
-
-
-def generic_item(community_id, template):
-    """Index page with uploader and list of existing depositions."""
-    # Check existence of community
-    c = Community.query.filter_by(id=community_id).first_or_404()
-    uid = current_user.get_id()
-
-    ctx = mycommunities_ctx()
-    ctx.update({
-        'is_owner': c.id_user == uid,
-        'community': c,
-        'detail': True,
-    })
-
-    return render_template(
-        template,
-        **ctx
-    )
-
-
-@blueprint.route('/<string:community_id>/about/', methods=['GET'])
-def about(community_id=None):
-    """Index page with uploader and list of existing depositions."""
-    # Check existence of community
-    c = Community.query.filter_by(id=community_id).first_or_404()
-    uid = current_user.get_id()
-
-    ctx = mycommunities_ctx()
-    ctx.update({
-        'is_owner': c.id_user == uid,
-        'community': c,
-        'detail': True,
-    })
-
-    return render_template(
-        "invenio_communities/about.html",
-        **ctx
-    )
+        return redirect(url_for('.edit', community_id=community.id))
 
 
 @blueprint.route('/<string:community_id>/curate/', methods=['GET', 'POST'])
 @login_required
-def curate(community_id):
+@pass_community
+@permission_required('community-curate')
+def curate(community):
     """Index page with uploader and list of existing depositions.
 
     :param community_id: ID of the community to curate.
     """
-    # Does community exists
-    c = Community.query.filter_by(id=community_id).first_or_404()
-
-    permission = current_permission_factory(c, action='community-curate')
-    if not permission.can():
-        abort(403)
-
     if request.method == 'POST':
-        recid = request.json.get('recid', '')  # PID value of type 'recid'
+        action = request.json.get('action')
+        recid = request.json.get('recid')
+
         # 'recid' is mandatory
         if not recid:
             abort(400)
-
-        resolver = Resolver(pid_type='recid',
-                            object_type='rec',
-                            getter=Record.get_record)
-        pid, record = resolver.resolve(recid)  # Resolve recid to a Record
-
-        action = request.json.get('action')
-        # Check allowed actions and required permissions
-        if action in ['accept', 'reject']:
-            if c.id_user != current_user.id:
-                abort(403)
-        elif action == 'remove':
-            if c.id_user != current_user.id:
-                abort(403)
-        else:  # action not in ['accept', 'reject', 'remove']
+        if action not in ['accept', 'reject', 'remove']:
             abort(400)
+
+        # Resolve recid to a Record
+        resolver = Resolver(
+            pid_type='recid', object_type='rec', getter=Record.get_record)
+        pid, record = resolver.resolve(recid)
 
         # Perform actions
         if action == "accept":
-            c.accept_record(record)
-            return jsonify({'status': 'success'})
+            community.accept_record(record)
         elif action == "reject":
-            c.reject_record(record)
-            return jsonify({'status': 'success'})
-        else:  # action == "remove"
-            c.remove_record(record)
-            return jsonify({'status': 'success'})
+            community.reject_record(record)
+        elif action == "remove":
+            community.remove_record(record)
 
-    ctx = {'community': c}
-    return render_template('invenio_communities/curate.html', **ctx)
+        record.commit()
+        db.session.commit()
+        RecordIndexer().index_by_id(record.id)
+        return jsonify({'status': 'success'})
 
-
-@blueprint.route('/request/', methods=['POST', ])
-@login_required
-def communityrequest(community_id):
-    """Request the inclusion of given record to a community."""
-    recid = request.values.get('recid', '', type=uuid.UUID)
-    community_id = request.values.get('community_id', '')
-    if (not recid) or (not community_id):
-        abort(400)
-    record = Record.get_record(recid)
-    c = Community.query.filter_by(id=community_id).first_or_404()
-    if c.id_user != current_user.id:
-        abort(403)
-    # TODO: Permissions:
-    #       At the moment community owner can request
-    #       Who should be able to request for community request ?
-    #       Should check for relationship current_user.id -> record.id
-    InclusionRequest.create(community=c, record=record)
-    return jsonify({'status': 'success'})
+    ctx = {'community': community}
+    return render_template(
+        current_app.config['COMMUNITIES_CURATE_TEMPLATE'],
+        **ctx
+    )

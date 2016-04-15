@@ -111,18 +111,6 @@ def save_and_validate_logo(logo_stream, logo_filename, community_id):
         return None
 
 
-def get_oaiset_spec(community_id):
-    """Return the OAISet 'spec' name for given community.
-
-    :param community_id: ID of the community.
-    :type community_id: str
-    :returns: Formatted OAISet ID ('spec').
-    :rtype: str
-    """
-    return current_app.config['COMMUNITIES_OAI_FORMAT'].format(
-        community_id=community_id)
-
-
 def initialize_communities_bucket():
     """Initialize the communities file bucket.
 
@@ -204,11 +192,18 @@ def format_request_email_body(increq, **ctx):
 def send_community_request_email(increq):
     """Signal for sending emails after community inclusion request."""
     from flask_mail import Message
+    from invenio_mail.tasks import send_email
+
     msg_body = format_request_email_body(increq)
     msg_title = format_request_email_title(increq)
+
     sender = current_app.config['COMMUNITIES_REQUEST_EMAIL_SENDER']
-    msg = Message(msg_title,
-                  sender=sender,
-                  recipients=[increq.community.owner.email, ],
-                  body=msg_body)
-    current_app.extensions['mail'].send(msg)
+
+    msg = Message(
+        msg_title,
+        sender=sender,
+        recipients=[increq.community.owner.email, ],
+        body=msg_body
+    )
+
+    send_email.delay(msg.__dict__)

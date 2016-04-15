@@ -35,7 +35,8 @@ from .cli import communities as cmd
 from .models import Community
 from .permissions import permission_factory
 from .receivers import create_oaipmh_set, destroy_oaipmh_set, \
-    inject_provisional_community
+    inject_provisional_community, new_request
+from .signals import inclusion_request_created
 from .views import blueprint
 
 
@@ -63,6 +64,7 @@ class InvenioCommunities(object):
         if app.config['COMMUNITIES_OAI_ENABLED']:
             listen(Community, 'after_insert', create_oaipmh_set)
             listen(Community, 'after_delete', destroy_oaipmh_set)
+        inclusion_request_created.connect(new_request)
 
     def init_config(self, app):
         """Initialize configuration."""
@@ -70,10 +72,6 @@ class InvenioCommunities(object):
             "COMMUNITIES_BASE_TEMPLATE",
             app.config.get("BASE_TEMPLATE",
                            "invenio_communities/base.html"))
-
-        app.config.setdefault(
-            "COMMUNITIES_COMMUNITY_TEMPLATE",
-            "invenio_communities/community_base.html")
 
         # Set default configuration
         for k in dir(config):

@@ -38,7 +38,9 @@ from .models import Community, InclusionRequest
 def delete_marked_communities():
     """Delete communities after holdout time."""
     # TODO: Delete the community ID from all records metadata first
-    Community.query.filter_by(Community.delete_time > datetime.now()).delete()
+    raise NotImplementedError()
+    Community.query.filter_by(
+        Community.delete_time > datetime.utcnow()).delete()
     db.session.commit()
 
 
@@ -46,5 +48,5 @@ def delete_marked_communities():
 def delete_expired_requests():
     """Delete expired inclusion requests."""
     InclusionRequest.query.filter_by(
-        InclusionRequest.expiry_date > datetime.now()).delete()
+        InclusionRequest.expiry_date > datetime.utcnow()).delete()
     db.session.commit()

@@ -29,7 +29,7 @@ from flask_principal import ActionNeed
 from invenio_access.permissions import DynamicPermission
 
 
-class _Permission:
+class _Permission(object):
     """Temporary solution to permissions.
 
     Grant access to owners of community or admin.
@@ -43,7 +43,7 @@ class _Permission:
 
     def can(self):
         """Grant permission if owner or admin."""
-        return current_user.id == self.community.id_user or \
+        return current_user.get_id() == self.community.id_user or \
             DynamicPermission(ActionNeed('admin-access')).can()
 
 
