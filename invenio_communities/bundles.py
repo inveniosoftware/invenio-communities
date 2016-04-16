@@ -26,7 +26,7 @@
 from __future__ import absolute_import, print_function
 
 from flask_assets import Bundle
-from invenio_assets import RequireJSFilter
+from invenio_assets import NpmBundle, RequireJSFilter
 
 js = Bundle(
     "js/invenio_communities/main.js",
@@ -34,8 +34,17 @@ js = Bundle(
     output='gen/communities.%(version)s.js'
 )
 
-css = Bundle(
+ckeditor = Bundle(
+    "js/invenio_communities/ckeditor.js",
+    filters=RequireJSFilter(),
+    output='gen/communities.%(version)s.js'
+)
+
+css = NpmBundle(
     'scss/invenio_communities/communities.scss',
     filters='scss, cleancss',
-    output='gen/communities.%(version)s.css'
+    output='gen/communities.%(version)s.css',
+    npm={
+        'ckeditor': '~4.5.8',
+    }
 )

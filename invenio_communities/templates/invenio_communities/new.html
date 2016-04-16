@@ -25,7 +25,48 @@
 
 {%- block javascript -%}
   {{ super() }}
-  <script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+  <script src="{{url_for('static', filename='node_modules/ckeditor/ckeditor.js')}}"></script>
+  <script type="text/javascript">
+  var CKEDITOR_BASEPATH = '{{url_for('static', filename='node_modules/ckeditor/')}}';
+  function init_ckeditor(selector, type) {
+      if(type=="simple"){
+          CKEDITOR.replace( selector, {
+              toolbar: [
+                  ['PasteText','PasteFromWord'],
+                  ['Bold','Italic','Strike','-','Subscript','Superscript',],
+                  ['NumberedList','BulletedList', 'Blockquote'],
+                  ['Undo','Redo','-','Find','Replace','-', 'RemoveFormat'],
+                  ['Mathjax', 'SpecialChar', 'ScientificChar'],
+                  ['Source'], ['Maximize'],
+              ],
+              extraPlugins: 'blockquote,mathjax', //scientificchar,
+              disableNativeSpellChecker: false,
+              removePlugins: 'elementspath',
+              removeButtons: '',
+              mathJaxLib: '{{config.THEME_MATHJAX_CDN}}'
+          });
+      } else {
+          CKEDITOR.replace( selector, {
+              toolbar: [
+                  ['PasteText','PasteFromWord'],
+                  ['Bold','Italic','Strike','-','Subscript','Superscript',],
+                  ['NumberedList','BulletedList', 'Blockquote', 'Table', '-', 'Link', 'Anchor'],
+                  ['Undo','Redo','-','Find','Replace','-', 'RemoveFormat'],
+                  ['Mathjax', 'SpecialChar', 'ScientificChar'],
+                  ['Styles', 'Format'], ['Source'], ['Maximize'],
+              ],
+              extraPlugins: 'blockquote,mathjax', //scientificchar,
+              disableNativeSpellChecker: false,
+              removePlugins: 'elementspath',
+              removeButtons: '',
+              mathJaxLib: '{{config.THEME_MATHJAX_CDN}}'
+          });
+      }
+  }
+  init_ckeditor("page", 'advanced');
+  init_ckeditor("description", 'simple');
+  init_ckeditor("curation_policy", 'advanced');
+  </script>
 {%- endblock javascript -%}
 
 {% block page_body %}
