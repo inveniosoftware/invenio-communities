@@ -114,6 +114,7 @@ def test_model_init(app):
         db.session.commit()
         InclusionRequest.create(community=comm3, record=rec1)
         db.session.commit()
+        db.session.flush()
         pytest.raises(InclusionRequestExistsError, InclusionRequest.create,
                       community=comm3, record=rec1)
 

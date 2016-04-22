@@ -34,7 +34,7 @@ from invenio_db import db
 from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import FlushError, NoResultFound
 from sqlalchemy_utils.models import Timestamp
 from sqlalchemy_utils.types import UUIDType
 
@@ -134,7 +134,7 @@ class InclusionRequest(db.Model, Timestamp):
                     expires_at=expires_at
                 )
                 db.session.add(obj)
-        except IntegrityError:
+        except (IntegrityError, FlushError):
             raise InclusionRequestExistsError(
                 community=community, record=record)
 
