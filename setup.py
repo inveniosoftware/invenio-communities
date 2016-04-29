@@ -118,6 +118,9 @@ setup(
             'invenio_communities_rest = '
             'invenio_communities.views:api_blueprint',
         ],
+        'invenio_base.api_apps': [
+            'invenio_communities = invenio_communities:InvenioCommunities',
+        ],
         'invenio_i18n.translations': [
             'messages = invenio_communities',
         ],
