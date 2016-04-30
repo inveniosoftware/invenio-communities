@@ -114,12 +114,14 @@ setup(
         'invenio_base.apps': [
             'invenio_communities = invenio_communities:InvenioCommunities',
         ],
-        'invenio_base.api_blueprints': [
-            'invenio_communities_rest = '
-            'invenio_communities.views:api_blueprint',
+        'invenio_base.blueprints': [
+            'invenio_communities = invenio_communities.views.ui:blueprint',
         ],
         'invenio_base.api_apps': [
             'invenio_communities = invenio_communities:InvenioCommunities',
+        ],
+        'invenio_base.api_blueprints': [
+            'invenio_communities = invenio_communities.views.api:blueprint',
         ],
         'invenio_i18n.translations': [
             'messages = invenio_communities',

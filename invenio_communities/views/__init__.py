@@ -25,11 +25,3 @@
 """Invenio module contains the view methods."""
 
 from __future__ import absolute_import, print_function
-
-from .api import blueprint as api_blueprint
-from .ui import blueprint as ui_blueprint
-
-__all__ = (
-    'api_blueprint',
-    'ui_blueprint',
-)

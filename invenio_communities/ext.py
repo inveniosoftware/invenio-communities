@@ -37,7 +37,6 @@ from .permissions import permission_factory
 from .receivers import create_oaipmh_set, destroy_oaipmh_set, \
     inject_provisional_community, new_request
 from .signals import inclusion_request_created
-from .views import ui_blueprint
 
 
 class InvenioCommunities(object):
@@ -52,7 +51,6 @@ class InvenioCommunities(object):
         """Flask application initialization."""
         self.init_config(app)
         app.cli.add_command(cmd)
-        app.register_blueprint(ui_blueprint)
         app.extensions['invenio-communities'] = self
         # Register the jinja do extension
         app.jinja_env.add_extension('jinja2.ext.do')
