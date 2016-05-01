@@ -24,6 +24,8 @@
 
 """Invenio module that adds support for communities."""
 
+from __future__ import absolute_import, print_function
+
 import os
 
 from setuptools import find_packages, setup
@@ -35,6 +37,8 @@ tests_require = [
     'check-manifest>=0.25',
     'coverage>=4.0',
     'Flask-CLI>=0.2.1',
+    'invenio-mail>=1.0.0a3',
+    'invenio-oaiserver>=1.0.0a2',
     'isort>=4.2.2',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
@@ -42,8 +46,6 @@ tests_require = [
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
-    'invenio-oaiserver>=1.0.0a2',
-    'invenio-mail>=1.0.0a3',
 ]
 
 extras_require = {
@@ -73,18 +75,17 @@ setup_requires = [
 
 install_requires = [
     'Flask-BabelEx>=0.9.2',
-    'marshmallow>=2.5.0',
+    'invenio-accounts>=1.0.0a10',
     'invenio-access>=1.0.0a5',
-    'invenio-accounts>=1.0.0a6',
-    'invenio-db>=1.0.0a9',
-    'invenio-records>=1.0.0a8',
-    'invenio-records-rest>=1.0.0a10',
-    'invenio-pidstore>=1.0.0a7',
     'invenio-assets>=1.0.0a4',
-    'invenio-search>=1.0.0a3',
-    'invenio-indexer>=1.0.0a2',
+    'invenio-db>=1.0.0a9',
     'invenio-files-rest>=1.0.0.a1',
-    'invenio-rest>=1.0.0a6',
+    'invenio-indexer>=1.0.0a3',
+    'invenio-pidstore>=1.0.0a7',
+    'invenio-records>=1.0.0a15',
+    'invenio-rest[cors]>=1.0.0a7',
+    'invenio-search>=1.0.0a7',
+    'marshmallow>=2.5.0',
 ]
 
 packages = find_packages()
@@ -157,6 +158,6 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
     ],
 )

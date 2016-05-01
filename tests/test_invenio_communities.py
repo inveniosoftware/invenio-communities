@@ -208,24 +208,31 @@ def test_communities_rest_all_communities(app):
         with app.test_client() as client:
             response = client.get('/api/communities/')
             response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == [
-                {
-                    'last_record_accepted': '2000-01-01 00:00:00',
-                    'description': '',
-                    'title': '',
-                    'page': '',
-                    'id': 'comm1',
-                    'curation_policy': '',
-                },
-                {
-                    'last_record_accepted': '2000-01-01 00:00:00',
-                    'description': '',
-                    'title': '',
-                    'page': '',
-                    'id': 'comm2',
-                    'curation_policy': '',
-                },
-            ]
+            assert response_data == {
+                'hits': {
+                    'hits': [
+                        {
+                            'last_record_accepted': (
+                                '2000-01-01T00:00:00+00:00'),
+                            'description': '',
+                            'title': '',
+                            'page': '',
+                            'id': 'comm1',
+                            'curation_policy': '',
+                        },
+                        {
+                            'last_record_accepted': (
+                                '2000-01-01T00:00:00+00:00'),
+                            'description': '',
+                            'title': '',
+                            'page': '',
+                            'id': 'comm2',
+                            'curation_policy': '',
+                        },
+                    ],
+                    'total': 2,
+                }
+            }
 
 
 def test_community_delete(app):
@@ -267,24 +274,31 @@ def test_communities_rest_all_communities_query_and_sort(app):
         with app.test_client() as client:
             response = client.get('/api/communities/?q=comm&sort=title')
             response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == [
-                {
-                    'last_record_accepted': '2000-01-01 00:00:00',
-                    'description': '',
-                    'title': 'A',
-                    'page': '',
-                    'id': 'comm2',
-                    'curation_policy': '',
-                },
-                {
-                    'last_record_accepted': '2000-01-01 00:00:00',
-                    'description': '',
-                    'title': 'B',
-                    'page': '',
-                    'id': 'comm1',
-                    'curation_policy': '',
-                },
-            ]
+            assert response_data == {
+                'hits': {
+                    'hits': [
+                        {
+                            'last_record_accepted': (
+                                '2000-01-01T00:00:00+00:00'),
+                            'description': '',
+                            'title': 'A',
+                            'page': '',
+                            'id': 'comm2',
+                            'curation_policy': '',
+                        },
+                        {
+                            'last_record_accepted': (
+                                '2000-01-01T00:00:00+00:00'),
+                            'description': '',
+                            'title': 'B',
+                            'page': '',
+                            'id': 'comm1',
+                            'curation_policy': '',
+                        },
+                    ],
+                    'total': 2,
+                }
+            }
 
 
 def test_communities_rest_pagination(app):
@@ -301,29 +315,41 @@ def test_communities_rest_pagination(app):
         with app.test_client() as client:
             response = client.get('/api/communities/?page=1&size=1')
             response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == [
-                {
-                    'last_record_accepted': '2000-01-01 00:00:00',
-                    'description': '',
-                    'title': '',
-                    'page': '',
-                    'id': 'comm1',
-                    'curation_policy': '',
-                },
-            ]
+            assert response_data == {
+                'hits': {
+                    'hits': [
+                        {
+                            'last_record_accepted': (
+                                '2000-01-01T00:00:00+00:00'),
+                            'description': '',
+                            'title': '',
+                            'page': '',
+                            'id': 'comm1',
+                            'curation_policy': '',
+                        },
+                    ],
+                    'total': 2,
+                }
+            }
 
             response = client.get('/api/communities/?page=2&size=1')
             response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == [
-                {
-                    'last_record_accepted': '2000-01-01 00:00:00',
-                    'description': '',
-                    'title': '',
-                    'page': '',
-                    'id': 'comm2',
-                    'curation_policy': '',
-                },
-            ]
+            assert response_data == {
+                'hits': {
+                    'hits': [
+                        {
+                            'last_record_accepted': (
+                                '2000-01-01T00:00:00+00:00'),
+                            'description': '',
+                            'title': '',
+                            'page': '',
+                            'id': 'comm2',
+                            'curation_policy': '',
+                        },
+                    ],
+                    'total': 2,
+                }
+            }
 
 
 def test_communities_rest_get_details(app):
@@ -344,4 +370,4 @@ def test_communities_rest_get_details(app):
             assert response_data['page'] == ''
             assert response_data['curation_policy'] == ''
             assert response_data[
-                       'last_record_accepted'] == '2000-01-01 00:00:00'
+                'last_record_accepted'] == '2000-01-01T00:00:00+00:00'

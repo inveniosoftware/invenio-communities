@@ -26,15 +26,28 @@
 
 from __future__ import absolute_import, print_function
 
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_dump
 
 
 class CommunitySchemaV1(Schema):
     """Schema for a community."""
 
     id = fields.String()
-    description = fields.String()
     title = fields.String()
+    description = fields.String()
     page = fields.String()
     curation_policy = fields.String()
-    last_record_accepted = fields.String()
+    last_record_accepted = fields.DateTime()
+
+    @post_dump(pass_many=True)
+    def envelope(self, data, many):
+        """Wrap result in envelope."""
+        if not many:
+            return data
+
+        return dict(
+            hits=dict(
+                hits=data,
+                total=self.context.get('total', len(data))
+            )
+        )

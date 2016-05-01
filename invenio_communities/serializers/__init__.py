@@ -26,10 +26,8 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_records_rest.serializers.json import JSONSerializer
 from .response import community_responsify
 from .schemas.community import CommunitySchemaV1
 
-
 community_response = community_responsify(
-        CommunitySchemaV1(), 'application/json')
+    CommunitySchemaV1, 'application/json')

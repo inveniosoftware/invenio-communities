@@ -28,16 +28,14 @@ from __future__ import absolute_import, print_function
 
 from flask import Blueprint, abort
 from invenio_rest import ContentNegotiatedMethodView
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 from invenio_communities.models import Community
-from invenio_communities.serializers.schemas.community import CommunitySchemaV1
-from webargs import fields
-from webargs.flaskparser import parser, use_kwargs
-
 from invenio_communities.serializers import community_response
 
 blueprint = Blueprint(
-    'invenio_communities_api',
+    'invenio_communities_rest',
     __name__,
     url_prefix='/communities',
 )
@@ -62,7 +60,7 @@ class CommunitiesResource(ContentNegotiatedMethodView):
         ),
         size=fields.Int(
             location='query',
-            missing=10,
+            missing=20,
         )
     )
 
@@ -103,9 +101,8 @@ class CommunitiesResource(ContentNegotiatedMethodView):
             :resheader Content-Type: application/json
             :statuscode 200: no error
         """
-        communities = Community.filter_communities(query, sort)
-        result = communities.paginate(page, size).items
-        return self.make_response(result)
+        return self.make_response(
+            Community.filter_communities(query, sort).paginate(page, size))
 
 
 class CommunityDetailsResource(ContentNegotiatedMethodView):
@@ -158,28 +155,27 @@ class CommunityDetailsResource(ContentNegotiatedMethodView):
             abort(404)
         return self.make_response(community)
 
+
 serializers = {'application/json': community_response}
 
-communities_view = CommunitiesResource.as_view(
-    'communities_api',
-    serializers=serializers,
-    default_media_type='application/json',
-)
-
-community_details_view = CommunityDetailsResource.as_view(
-    'commuity_details_api',
-    serializers=serializers,
-    default_media_type='application/json',
-)
 
 blueprint.add_url_rule(
     '/',
-    view_func=communities_view,
+    view_func=CommunitiesResource.as_view(
+        'communities_list',
+        serializers=serializers,
+        default_media_type='application/json',
+    ),
     methods=['GET']
 )
 
+
 blueprint.add_url_rule(
     '/<string:community_id>',
-    view_func=community_details_view,
+    view_func=CommunityDetailsResource.as_view(
+        'communities_item',
+        serializers=serializers,
+        default_media_type='application/json',
+    ),
     methods=['GET']
 )
