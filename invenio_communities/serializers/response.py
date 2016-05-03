@@ -61,14 +61,23 @@ def community_responsify(schema_class, mimetype):
     :param serializer: Serializer instance.
     :param mimetype: MIME type of response.
     """
-    def view(data, code=200, headers=None):
+    def view(data, code=200, headers=None, links_item_factory=None,
+             page=None, urlkwargs=None, links_pagination_factory=None):
+        """Generate the response object."""
         if isinstance(data, Community):
             last_modified = data.updated
-            response_data = schema_class().dump(data).data
+            response_data = schema_class(
+                    context=dict(item_links_factory=links_item_factory)
+            ).dump(data).data
         else:
             last_modified = None
             response_data = schema_class(
-                context=dict(total=data.query.count())
+                    context=dict(
+                            total=data.query.count(),
+                            item_links_factory=links_item_factory,
+                            page=page,
+                            urlkwargs=urlkwargs,
+                            pagination_links_factory=links_pagination_factory)
             ).dump(data.items, many=True).data
 
         response = current_app.response_class(

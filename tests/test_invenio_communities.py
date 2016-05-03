@@ -31,7 +31,7 @@ import json
 from datetime import datetime, timedelta
 
 import pytest
-from flask import Flask
+from flask import Flask, url_for
 from flask_cli import FlaskCLI
 from invenio_accounts.testutils import create_test_user
 from invenio_db import db
@@ -44,6 +44,11 @@ from invenio_communities.errors import CommunitiesError, \
     InclusionRequestObsoleteError
 from invenio_communities.models import Community, FeaturedCommunity, \
     InclusionRequest
+
+try:
+    from werkzeug.urls import url_parse
+except ImportError:
+    from urlparse import urlsplit as url_parse
 
 
 def test_version():
@@ -208,31 +213,42 @@ def test_communities_rest_all_communities(app):
         with app.test_client() as client:
             response = client.get('/api/communities/')
             response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == {
-                'hits': {
-                    'hits': [
-                        {
-                            'last_record_accepted': (
-                                '2000-01-01T00:00:00+00:00'),
-                            'description': '',
-                            'title': '',
-                            'page': '',
-                            'id': 'comm1',
-                            'curation_policy': '',
+            assert response_data['hits'] == {
+                'hits': [
+                    {
+                        'last_record_accepted': (
+                            '2000-01-01T00:00:00+00:00'),
+                        'description': '',
+                        'title': '',
+                        'page': '',
+                        'id': 'comm1',
+                        'curation_policy': '',
+                        'links': {
+                            'self': ('http://inveniosoftware.org/'
+                                     'api/communities/comm1'),
+                            'html': ('http://inveniosoftware.org/'
+                                     'communities/comm1/'),
                         },
-                        {
-                            'last_record_accepted': (
-                                '2000-01-01T00:00:00+00:00'),
-                            'description': '',
-                            'title': '',
-                            'page': '',
-                            'id': 'comm2',
-                            'curation_policy': '',
+                    },
+                    {
+                        'last_record_accepted': (
+                            '2000-01-01T00:00:00+00:00'),
+                        'description': '',
+                        'title': '',
+                        'page': '',
+                        'id': 'comm2',
+                        'curation_policy': '',
+                        'links': {
+                            'self': ('http://inveniosoftware.org/'
+                                     'api/communities/comm2'),
+                            'html': ('http://inveniosoftware.org/'
+                                     'communities/comm2/'),
                         },
-                    ],
-                    'total': 2,
-                }
+                    },
+                ],
+                'total': 2,
             }
+            assert len(['links']) == 1
 
 
 def test_community_delete(app):
@@ -274,35 +290,82 @@ def test_communities_rest_all_communities_query_and_sort(app):
         with app.test_client() as client:
             response = client.get('/api/communities/?q=comm&sort=title')
             response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == {
-                'hits': {
-                    'hits': [
-                        {
-                            'last_record_accepted': (
-                                '2000-01-01T00:00:00+00:00'),
-                            'description': '',
-                            'title': 'A',
-                            'page': '',
-                            'id': 'comm2',
-                            'curation_policy': '',
+            assert response_data['hits'] == {
+                'hits': [
+                    {
+                        'last_record_accepted': (
+                            '2000-01-01T00:00:00+00:00'),
+                        'description': '',
+                        'title': 'A',
+                        'page': '',
+                        'id': 'comm2',
+                        'curation_policy': '',
+                        'links': {
+                            'self': ('http://inveniosoftware.org/'
+                                     'api/communities/comm2'),
+                            'html': ('http://inveniosoftware.org/'
+                                     'communities/comm2/'),
                         },
-                        {
-                            'last_record_accepted': (
-                                '2000-01-01T00:00:00+00:00'),
-                            'description': '',
-                            'title': 'B',
-                            'page': '',
-                            'id': 'comm1',
-                            'curation_policy': '',
+                    },
+                    {
+                        'last_record_accepted': (
+                            '2000-01-01T00:00:00+00:00'),
+                        'description': '',
+                        'title': 'B',
+                        'page': '',
+                        'id': 'comm1',
+                        'curation_policy': '',
+                        'links': {
+                            'self': ('http://inveniosoftware.org/'
+                                     'api/communities/comm1'),
+                            'html': ('http://inveniosoftware.org/'
+                                     'communities/comm1/'),
                         },
-                    ],
-                    'total': 2,
-                }
+                    },
+                ],
+                'total': 2,
             }
+            assert len(response_data['links']) == 1
+            assert 'sort=title' in response_data['links']['self']
+            assert 'q=comm' in response_data['links']['self']
+            assert 'size=20' in response_data['links']['self']
+            assert 'page=1' in response_data['links']['self']
 
 
 def test_communities_rest_pagination(app):
     """Test the OAI-PMH Sets creation."""
+    def check_array_in_string(items, value):
+        """Check if all the strings in items are in the value string."""
+        for item in items:
+            if item not in value:
+                return False
+        return True
+
+    def any_of(items, expression):
+        """Check if one of the items is true using the boolean expression."""
+        for item in items:
+            if expression(item):
+                return True
+        return False
+
+    def parse_path(app, path):
+        """Split the path in base and real relative url.
+
+        Needed because in Flask 0.10.1 the client doesn't take into account the
+        query string in an external URL.
+        """
+        http_host = app.config.get('SERVER_NAME')
+        app_root = app.config.get('APPLICATION_ROOT')
+        url = url_parse(path)
+        base_url = 'http://{0}/'.format(url.netloc or http_host or 'localhost')
+        if app_root:
+            base_url += app_root.lstrip('/')
+        if url.netloc:
+            path = url.path
+            if url.query:
+                path += '?' + url.query
+        return dict(path=path, base_url=base_url)
+
     with app.app_context():
         # Create a user and some communities
         user1 = create_test_user()
@@ -313,43 +376,29 @@ def test_communities_rest_pagination(app):
         db.session.commit()
 
         with app.test_client() as client:
-            response = client.get('/api/communities/?page=1&size=1')
-            response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == {
-                'hits': {
-                    'hits': [
-                        {
-                            'last_record_accepted': (
-                                '2000-01-01T00:00:00+00:00'),
-                            'description': '',
-                            'title': '',
-                            'page': '',
-                            'id': 'comm1',
-                            'curation_policy': '',
-                        },
-                    ],
-                    'total': 2,
-                }
-            }
+            response = client.get('/api/communities/?size=1')
+            assert any_of(response.headers, lambda h: check_array_in_string(
+                    ['ref="self"', 'page=1', 'size=1'], h[1]))
+            assert any_of(response.headers, lambda h: check_array_in_string(
+                    ['ref="next"', 'page=2', 'size=1'], h[1]))
+            data = json.loads(response.get_data(as_text=True))
+            assert 'self' in data['links']
+            assert len(data['hits']['hits']) == 1
 
-            response = client.get('/api/communities/?page=2&size=1')
-            response_data = json.loads(response.get_data(as_text=True))
-            assert response_data == {
-                'hits': {
-                    'hits': [
-                        {
-                            'last_record_accepted': (
-                                '2000-01-01T00:00:00+00:00'),
-                            'description': '',
-                            'title': '',
-                            'page': '',
-                            'id': 'comm2',
-                            'curation_policy': '',
-                        },
-                    ],
-                    'total': 2,
-                }
-            }
+            # Assert that self gives back the same result
+            response = client.get(**parse_path(app, data['links']['self']))
+            assert data == json.loads(response.get_data(as_text=True))
+            assert 'prev' not in data['links']
+            assert 'next' in data['links']
+            response = client.get(**parse_path(app, data['links']['next']))
+            assert any_of(response.headers, lambda h: check_array_in_string(
+                    ['ref="self"', 'page=2', 'size=1'], h[1]))
+            assert any_of(response.headers, lambda h: check_array_in_string(
+                    ['ref="prev"', 'page=1', 'size=1'], h[1]))
+            data = json.loads(response.get_data(as_text=True))
+            assert len(data['hits']['hits']) == 1
+            assert 'prev' in data['links']
+            assert 'next' not in data['links']
 
 
 def test_communities_rest_get_details(app):

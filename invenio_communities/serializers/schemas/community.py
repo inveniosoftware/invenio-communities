@@ -28,6 +28,9 @@ from __future__ import absolute_import, print_function
 
 from marshmallow import Schema, fields, post_dump
 
+from invenio_communities.links import default_links_item_factory, \
+    default_links_pagination_factory
+
 
 class CommunitySchemaV1(Schema):
     """Schema for a community."""
@@ -39,15 +42,35 @@ class CommunitySchemaV1(Schema):
     curation_policy = fields.String()
     last_record_accepted = fields.DateTime()
 
+    @post_dump(pass_many=False)
+    def item_links_addition(self, data):
+        """Add the links for each community."""
+        links_item_factory = self.context.get('links_item_factory',
+                                              default_links_item_factory)
+        data['links'] = links_item_factory(data)
+        return data
+
     @post_dump(pass_many=True)
     def envelope(self, data, many):
         """Wrap result in envelope."""
         if not many:
             return data
 
-        return dict(
+        result = dict(
             hits=dict(
                 hits=data,
                 total=self.context.get('total', len(data))
             )
         )
+
+        page = self.context.get('page')
+        if page:
+            links_pagination_factory = self.context.get(
+                    'links_pagination_factory',
+                    default_links_pagination_factory)
+
+            urlkwargs = self.context.get('urlkwargs', {})
+
+            result['links'] = links_pagination_factory(page, urlkwargs)
+
+        return result
