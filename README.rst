@@ -1,3 +1,26 @@
+Fork from invenio-communities to add permissions to communities. This is a
+temporary fork, and it should be removed when team management has been added
+to the original module from invenio (around end of November 2016)
+
+To update to this fork from the invenio repository, simply follow these
+steps (instructions taken from https://gist.github.com/jagregory/710671):
+
+In your local, rename your origin remote to upstream
+
+    git remote rename origin upstream
+
+Add a new origin and use it by default
+
+    git remote add origin git@github.com:tind/invenio-communities.git
+
+    git branch --set-upstream-to origin/master
+
+Fetch & push
+
+    git fetch origin
+    git push origin
+
+
 ..
     This file is part of Invenio.
     Copyright (C) 2015, 2016 CERN.
