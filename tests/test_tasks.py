@@ -26,29 +26,22 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_accounts.testutils import create_test_user
-from invenio_db import db
 from invenio_records.api import Record
 
-from invenio_communities.models import Community, InclusionRequest
+from invenio_communities.models import InclusionRequest
 
 
-def test_community_delete_task(app):
+def test_community_delete_task(app, db, communities):
     """Test the community deletion task."""
-    with app.app_context():
-        # Init the User and the Community
-        user1 = create_test_user()
-        comm1 = Community(id='comm1', id_user=user1.id)
-        db.session.add(comm1)
-        communities_key = app.config["COMMUNITIES_RECORD_KEY"]
-        rec1 = Record.create({'title': 'Foobar'})
-        InclusionRequest.create(community=comm1, record=rec1, notify=False)
-        db.session.commit()
-        assert InclusionRequest.get(comm1.id, rec1.id)
+    (comm1, comm2, comm3) = communities
+    communities_key = app.config["COMMUNITIES_RECORD_KEY"]
+    rec1 = Record.create({'title': 'Foobar'})
+    InclusionRequest.create(community=comm1, record=rec1, notify=False)
 
-        comm1.accept_record(rec1)
-        assert 'comm1' in rec1[communities_key]
-        db.session.commit()
+    assert InclusionRequest.get(comm1.id, rec1.id)
 
-        comm1.delete()
-        assert comm1.is_deleted
+    comm1.accept_record(rec1)
+    assert 'comm1' in rec1[communities_key]
+
+    comm1.delete()
+    assert comm1.is_deleted

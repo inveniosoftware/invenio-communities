@@ -27,11 +27,9 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_accounts.testutils import create_test_user
-from invenio_db import db
 from invenio_records.api import Record
 
-from invenio_communities.models import Community, InclusionRequest
+from invenio_communities.models import InclusionRequest
 from invenio_communities.utils import render_template_to_string
 
 
@@ -43,30 +41,20 @@ def test_template_formatting_from_string(app):
         assert out == 'foobar: spam'
 
 
-def test_email_formatting(app):
+def test_email_formatting(app, db, communities, user):
     """Test formatting of the email message with the default template."""
-    with app.app_context():
-        with app.extensions['mail'].record_messages() as outbox:
-            # User
-            user1 = create_test_user()
-            user1.username = 'testuser'
-            db.session.add(user1)
+    with app.extensions['mail'].record_messages() as outbox:
+        (comm1, comm2, comm3) = communities
+        rec1 = Record.create({
+            'title': 'Foobar and Bazbar',
+            'description': 'On Foobar, Bazbar and <b>more</b>.'
+        })
 
-            # Community
-            comm1 = Community(
-                id='comm1', id_user=user1.id, title='FooCommunity')
-            rec1 = Record.create({
-                'title': 'Foobar and Bazbar',
-                'description': 'On Foobar, Bazbar and <b>more</b>.'
-            })
-            db.session.add(comm1)
-            db.session.commit()
+        # Request
+        InclusionRequest.create(community=comm1, record=rec1, user=user)
 
-            # Request
-            InclusionRequest.create(community=comm1, record=rec1, user=user1)
-
-            # Check emails being sent
-            assert len(outbox) == 1
-            sent_msg = outbox[0]
-            assert sent_msg.recipients == [user1.email]
-            assert comm1.title in sent_msg.body
+        # Check emails being sent
+        assert len(outbox) == 1
+        sent_msg = outbox[0]
+        assert sent_msg.recipients == [user.email]
+        assert comm1.title in sent_msg.body

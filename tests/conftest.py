@@ -38,22 +38,24 @@ from flask_celeryext import FlaskCeleryExt
 from flask_cli import FlaskCLI
 from flask_menu import Menu
 from invenio_accounts import InvenioAccounts
+from invenio_accounts.testutils import create_test_user
 from invenio_assets import InvenioAssets
-from invenio_db import InvenioDB, db
+from invenio_db import db as db_
+from invenio_db import InvenioDB
 from invenio_indexer import InvenioIndexer
 from invenio_mail import InvenioMail
 from invenio_oaiserver import InvenioOAIServer
 from invenio_records import InvenioRecords
 from invenio_search import InvenioSearch
-from sqlalchemy_utils.functions import create_database, database_exists, \
-    drop_database
+from sqlalchemy_utils.functions import create_database, database_exists
 
 from invenio_communities import InvenioCommunities
+from invenio_communities.models import Community
 from invenio_communities.views.api import blueprint as api_blueprint
 from invenio_communities.views.ui import blueprint as ui_blueprint
 
 
-@pytest.fixture()
+@pytest.yield_fixture()
 def app(request):
     """Flask application fixture."""
     instance_path = tempfile.mkdtemp()
@@ -95,14 +97,38 @@ def app(request):
     app.register_blueprint(api_blueprint, url_prefix='/api/communities')
 
     with app.app_context():
-        if not database_exists(str(db.engine.url)):
-            create_database(str(db.engine.url))
-        db.create_all()
+        yield app
 
-    def teardown():
-        with app.app_context():
-            drop_database(str(db.engine.url))
-        shutil.rmtree(instance_path)
+    shutil.rmtree(instance_path)
 
-    request.addfinalizer(teardown)
-    return app
+
+@pytest.yield_fixture()
+def db(app):
+    """Database fixture."""
+    if not database_exists(str(db_.engine.url)) and \
+            app.config['SQLALCHEMY_DATABASE_URI'] != 'sqlite://':
+        create_database(db_.engine.url)
+    db_.create_all()
+
+    yield db_
+
+    db_.session.remove()
+    db_.drop_all()
+
+
+@pytest.fixture()
+def user():
+    """Create a example user."""
+    return create_test_user()
+
+
+@pytest.fixture()
+def communities(app, db, user):
+    """Create some example communities."""
+    user1 = db_.session.merge(user)
+
+    comm0 = Community.create(community_id='comm1', user_id=user1.id,
+                             title='Title1', description='Description1')
+    comm1 = Community.create(community_id='comm2', user_id=user1.id, title='A')
+    comm2 = Community.create(community_id='oth3', user_id=user1.id)
+    return comm0, comm1, comm2
