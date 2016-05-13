@@ -299,3 +299,18 @@ def test_communities_rest_get_details(app, db, communities):
                     'html': 'http://inveniosoftware.org/communities/comm1/',
                 },
         )
+
+
+def test_communities_rest_etag(app, communities):
+    """Test the OAI-PMH Sets creation."""
+    with app.test_client() as client:
+        # The first response should return the data with result code 200
+        response = client.get('/api/communities/comm1')
+        assert response.status_code == 200
+        assert response.get_data(as_text=True) != ''
+
+        # The second response is empty and the result code is 304
+        response = client.get('/api/communities/comm1', headers=(
+            ('If-None-Match', response.headers.get('ETag')),))
+        assert response.status_code == 304
+        assert response.get_data(as_text=True) == ''

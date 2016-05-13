@@ -177,9 +177,12 @@ class CommunityDetailsResource(ContentNegotiatedMethodView):
         community = Community.get(community_id)
         if not community:
             abort(404)
-        return self.make_response(
-                community, links_item_factory=default_links_item_factory)
-
+        etag = community.version_id
+        self.check_etag(etag)
+        response = self.make_response(
+            community, links_item_factory=default_links_item_factory)
+        response.set_etag(etag)
+        return response
 
 serializers = {'application/json': community_response}
 

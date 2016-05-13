@@ -26,6 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
+import hashlib
 from datetime import datetime
 
 from flask import current_app, url_for
@@ -422,6 +423,16 @@ class Community(db.Model, Timestamp):
             'invenio_oaiserver.response',
             verb='ListRecords',
             metadataPrefix='oai_dc', set=self.oaiset_spec, _external=True)
+
+    @property
+    def version_id(self):
+        """Return the version of the community.
+
+        :returns: hash which encodes the community id and its las update.
+        :rtype: str
+        """
+        return hashlib.sha1('{0}__{1}'.format(
+            self.id, self.updated).encode('utf-8')).hexdigest()
 
 
 class FeaturedCommunity(db.Model, Timestamp):
