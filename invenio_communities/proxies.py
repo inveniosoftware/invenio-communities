@@ -29,5 +29,33 @@ from __future__ import absolute_import, print_function
 from flask import current_app
 from werkzeug.local import LocalProxy
 
-current_permission_factory = LocalProxy(
-    lambda: current_app.extensions['invenio-communities'].permission_factory)
+from .permissions import (CommunityCreateActionNeed,
+                          CommunityReadActionNeed,
+                          CommunityEditActionNeed,
+                          CommunityDeleteActionNeed,
+                          CommunityCurateActionNeed,
+                          CommunityTeamActionNeed)
+
+current_permission_factory = {
+    "communities-create": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].create_permission_factory),
+    "communities-read": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].read_permission_factory),
+    "communities-edit": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].edit_permission_factory),
+    "communities-delete": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].delete_permission_factory),
+    "communities-curate": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].curate_permission_factory),
+    "communities-team-management": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].team_permission_factory)
+}
+
+needs = {
+    "communities-create": CommunityCreateActionNeed,
+    "communities-read": CommunityReadActionNeed,
+    "communities-edit": CommunityEditActionNeed,
+    "communities-delete": CommunityDeleteActionNeed,
+    "communities-curate": CommunityCurateActionNeed,
+    "communities-team-management": CommunityTeamActionNeed
+}

@@ -33,7 +33,12 @@ from werkzeug.utils import cached_property
 from . import config
 from .cli import communities as cmd
 from .models import Community
-from .permissions import permission_factory
+from .permissions import (create_permission_factory,
+                          read_permission_factory,
+                          edit_permission_factory,
+                          delete_permission_factory,
+                          curate_permission_factory,
+                          team_permission_factory)
 from .receivers import create_oaipmh_set, destroy_oaipmh_set, \
     inject_provisional_community, new_request
 from .signals import inclusion_request_created
@@ -77,6 +82,31 @@ class InvenioCommunities(object):
                 app.config.setdefault(k, getattr(config, k))
 
     @cached_property
-    def permission_factory(self):
+    def create_permission_factory(self):
         """Load default permission factory."""
-        return permission_factory
+        return create_permission_factory
+
+    @cached_property
+    def read_permission_factory(self):
+        """Load default permission factory."""
+        return read_permission_factory
+
+    @cached_property
+    def edit_permission_factory(self):
+        """Load default permission factory."""
+        return edit_permission_factory
+
+    @cached_property
+    def delete_permission_factory(self):
+        """Load default permission factory."""
+        return delete_permission_factory
+
+    @cached_property
+    def curate_permission_factory(self):
+        """Load default permission factory."""
+        return curate_permission_factory
+
+    @cached_property
+    def team_permission_factory(self):
+        """Load default permission factory."""
+        return team_permission_factory

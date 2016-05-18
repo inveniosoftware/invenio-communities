@@ -49,6 +49,9 @@ tests_require = [
 ]
 
 extras_require = {
+    'access': [
+        'invenio-access>=1.0.0a1',
+    ],
     'admin': [
         'Flask-Admin>=1.3.0',
     ],
@@ -126,6 +129,20 @@ setup(
         ],
         'invenio_i18n.translations': [
             'messages = invenio_communities',
+        ],
+        'invenio_access.actions': [
+            'communities_create'
+            ' = invenio_communities.permissions:communities_create',
+            'communities_read'
+            ' = invenio_communities.permissions:communities_read',
+            'communities_edit'
+            ' = invenio_communities.permissions:communities_edit',
+            'communities_delete'
+            ' = invenio_communities.permissions:communities_delete',
+            'communities_curate'
+            ' = invenio_communities.permissions:communities_curate',
+            'communities_team'
+            ' = invenio_communities.permissions:communities_team'
         ],
         'invenio_admin.views': [
             'invenio_communities_communities = '
