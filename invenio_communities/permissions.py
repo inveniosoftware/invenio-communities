@@ -23,38 +23,69 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 """Permissions for communities."""
-
-from __future__ import absolute_import, print_function
-
+from functools import partial
 from flask_login import current_user
 from flask_principal import ActionNeed
-from invenio_access.permissions import DynamicPermission
+from invenio_access.permissions import (DynamicPermission,
+                                        ParameterizedActionNeed)
 
 
-class _Permission(object):
-    """Temporary solution to permissions.
+CommunityCreateActionNeed = partial(ActionNeed, 'communities-create')
+"""Action need for reading a community."""
 
-    Grant access to owners of community or admin.
-    TODO: Use fine-grained permissions.
-    """
+communities_create = CommunityCreateActionNeed()
+"""Read communities action need."""
 
-    def __init__(self, community, action):
-        """Initialize."""
-        self.community = community
-        self.action = action
+def create_permission_factory():
+    """Factory for creating create permissions for communities."""
+    return DynamicPermission(CommunityCreateActionNeed())
 
-    def can(self):
-        """Grant permission if owner or admin."""
-        return str(current_user.get_id()) == str(self.community.id_user) or \
-            DynamicPermission(ActionNeed('admin-access')).can()
+CommunityReadActionNeed = partial(ParameterizedActionNeed, 'communities-read')
+"""Action need for reading a community."""
 
+communities_read = CommunityReadActionNeed(None)
+"""Read communities action need."""
 
-def permission_factory(community, action):
-    """Permission factory for the actions on Bucket and ObjectVersion items.
+def read_permission_factory(community):
+    """Factory for creating read permissions for communities."""
+    return DynamicPermission(CommunityReadActionNeed(str(community.id)))
 
-    :param community: Community object to be accessed.
-    :type community: `invenio_communities.models.Community`
-    :param action: Action name for access.
-    :type action: str
-    """
-    return _Permission(community, action)
+CommunityEditActionNeed = partial(ParameterizedActionNeed, 'communities-edit')
+"""Action need for editing a community."""
+
+communities_edit = CommunityEditActionNeed(None)
+"""Edit communities action need."""
+
+def edit_permission_factory(community):
+    """Factory for creating edit permissions for communities."""
+    return DynamicPermission(CommunityEditActionNeed(str(community.id)))
+
+CommunityDeleteActionNeed = partial(ParameterizedActionNeed, 'communities-delete')
+"""Action need for deleting a community."""
+
+communities_delete = CommunityDeleteActionNeed(None)
+"""Delete communities action need."""
+
+def delete_permission_factory(community):
+    """Factory for creating delete permissions for communities."""
+    return DynamicPermission(CommunityDeleteActionNeed(str(community.id)))
+
+CommunityCurateActionNeed = partial(ParameterizedActionNeed, 'communities-curate')
+"""Action need for editing a community."""
+
+communities_curate = CommunityCurateActionNeed(None)
+"""Curate communities action need."""
+
+def curate_permission_factory(community):
+    """Factory for creating curate permissions for communities."""
+    return DynamicPermission(CommunityCurateActionNeed(str(community.id)))
+
+CommunityTeamActionNeed = partial(ParameterizedActionNeed, 'communities-team-management')
+"""Action need for team management in a community."""
+
+communities_team = CommunityTeamActionNeed(None)
+"""Team management communities action need."""
+
+def team_permission_factory(community):
+    """Factory for creating curate permissions for communities."""
+    return DynamicPermission(CommunityTeamActionNeed(str(community.id)))
