@@ -94,4 +94,8 @@ COMMUNITIES_COMMUNITY_TEMPLATE = "invenio_communities/community_base.html"
 
 COMMUNITIES_CURATE_TEMPLATE = "invenio_communities/curate.html"
 
+COMMUNITIES_TEAM_TEMPLATE = "invenio_communities/team-index.html"
+
 COMMUNITIES_SEARCH_TEMPLATE = "invenio_communities/search.html"
+
+COMMUNITIES_TEAM_ADD_TEMPLATE = "invenio_communities/team-add.html"

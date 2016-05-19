@@ -30,15 +30,15 @@ from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
 
 
-CommunityCreateActionNeed = partial(ActionNeed, 'communities-create')
+CommunityCreateActionNeed = partial(ParameterizedActionNeed, 'communities-create')
 """Action need for reading a community."""
 
-communities_create = CommunityCreateActionNeed()
+communities_create = CommunityCreateActionNeed(None)
 """Read communities action need."""
 
-def create_permission_factory():
+def create_permission_factory(community=""):
     """Factory for creating create permissions for communities."""
-    return DynamicPermission(CommunityCreateActionNeed())
+    return DynamicPermission(CommunityCreateActionNeed(None))
 
 CommunityReadActionNeed = partial(ParameterizedActionNeed, 'communities-read')
 """Action need for reading a community."""
