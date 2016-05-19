@@ -39,6 +39,7 @@ from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
 
 from invenio_access.models import ActionUsers
+from invenio_accounts.models import User
 from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
     EditCommunityForm, SearchForm
 from invenio_communities.models import Community, FeaturedCommunity
@@ -364,3 +365,114 @@ def curate(community):
         **ctx
     )
 
+
+@blueprint.route('/<string:community_id>/team/')
+@login_required
+@pass_community
+@permission_required('communities-team-management')
+def team_management(community):
+    """Team management for communities.
+
+    :param community_id: ID of the community to manage.
+    """
+    class __action(object):
+        def __init__(self):
+            self.title = ""
+            self.name = ""
+            self.existin = []
+    
+    actions = []
+    permissions = current_permission_factory.keys()
+    permissions.sort()
+    for action in permissions:
+        a = __action()
+        # 12 = len("communities-')
+        a.title = action[12:].replace("-", " ").capitalize()
+        a.name = action
+        a.existing = ActionUsers.query_by_action(
+            _get_needs(action, community.id)).all()
+        actions.append(a)
+    
+    ctx = {
+        "community": community,
+        "actions": actions
+    }
+    return render_template(
+        current_app.config['COMMUNITIES_TEAM_TEMPLATE'],
+        **ctx
+    )
+
+
+@blueprint.route('/<string:community_id>/team/delete-user/', methods=['POST'])
+@login_required
+@pass_community
+@permission_required('communities-team-management')
+def team_delete_user(community):
+    """page to delete a user. redirect to team_management
+
+    :param community_id: ID of the community.
+    """
+    if not request.method == 'POST':
+        abort(404)
+    if not "action_id" in request.form:
+        flash(u"Error: action not valid.", "danger")
+    else:
+        action = ActionUsers.query.get(request.form["action_id"])
+        if action.argument != community.id:
+            flash(u"You don't have the permission for this action.", "danger")
+        else:
+            db.session.delete(action)
+            db.session.commit()
+            flash(u"The permission has been succesfully deleted.")
+    return redirect(url_for(".team_management", community_id=community.id))
+
+
+@blueprint.route('/<string:community_id>/team/add/', methods=['GET', 'POST'])
+@login_required
+@pass_community
+@permission_required('communities-team-management')
+def team_add(community):
+    """Add a member to a team community
+
+    :param community_id: ID of the community to manage.
+    """
+    actions = current_permission_factory.keys()
+    actions.sort()
+    default_action = ""
+    if request.method == "GET" and "default_action" in request.args:
+        default_action = request.args["default_action"]
+    elif request.method == "POST" and "default_action" in request.form:
+        default_action = request.form["default_action"]
+    ctx = {
+        "community": community,
+        "users": User.query.all(),
+        "actions": actions,
+        "default_action": default_action
+    }
+    return render_template(
+        current_app.config['COMMUNITIES_TEAM_ADD_TEMPLATE'],
+        **ctx
+    )
+
+
+@blueprint.route('/<string:community_id>/team/add-user/', methods=['POST'])
+@login_required
+@pass_community
+@permission_required('communities-team-management')
+def team_add_user(community):
+    """page to add a user. redirect to team_management
+
+    :param community_id: ID of the community.
+    """
+    if not request.method == 'POST':
+        abort(404)
+    if not "action" in request.form or not "user" in request.form:
+        flash(u"Error: action not valid.", "danger")
+    else:
+        user = User.query.get(request.form["user"])
+        db.session.add(ActionUsers(action=request.form["action"],
+                                   user=user,
+                                   argument=community.id))
+        db.session.commit()
+        flash(u"The permission has been succesfully added.")
+    return redirect(url_for(".team_management", community_id=community.id))
