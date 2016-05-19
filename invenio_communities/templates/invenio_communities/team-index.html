@@ -1,0 +1,81 @@
+{#
+# This file is part of Invenio.
+# Copyright (C) 2013, 2014, 2016 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+#}
+
+{% extends config.COMMUNITIES_COMMUNITY_TEMPLATE %}
+
+{% macro print_action_table(action_name, action_id, action_list) %}
+    <div class="container">
+        <h2>{{ action_name }} action</h2>
+        <ul class="nav nav-tabs actions-nav">
+            <li class="active"><a href="javascript:void(0)">List ({{ action_list|length }})</a></li>
+            <li><a href="{{ community_add_url(action_id) }}" title="Create New Permission">Create</a></li>
+        </ul>
+        <table class="table table-striped table-bordered table-hover model-list">
+            <thead>
+                {{ print_header_tr() }}
+            </thead>
+            <tbody>
+                {% for action in action_list %}
+                    {{ print_action_tr(community_url, action) }}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
+
+{% macro print_header_tr() %}
+    <tr>
+        <th class="column-header"></th>
+        <th class="column-header">User ID</th>
+        <th class="column-header">Email</th>
+        <th class="column-header">Exclude</th>
+    </tr>
+{% endmacro %}
+
+{% macro print_action_tr(url_for_community, action) %}
+    <tr>
+        <td>
+            <form class="icon" method="POST" action="{{ community_del_url }}">
+                <input name="action_id" value="{{ action.id }}" type="hidden" />
+                <button onclick="return confirm('Are you sure you want to delete this user?');" title="Delete user">
+                    <span class="fa fa-trash glyphicon glyphicon-trash"></span>
+                </button>
+            </form></td>
+        <td>{{ action.user.id }}</td>
+        <td>{{ action.user.email }}</td>
+        <td>{{ action.exclude }}</td>
+    </tr>
+{% endmacro %}
+
+{% macro community_add_url(action) %}
+    {{ url_for(".team_add", community_id=community.id) }}?default_action={{ action }}
+{% endmacro %}
+
+{% set community_url = url_for(".team_management", community_id=community.id) %}
+{% set community_del_url = url_for(".team_delete_user", community_id=community.id) %}
+
+{% block community_body %}
+    {% for action in actions %}
+        {{ print_action_table(action.title, action.name, action.existing) }}
+    {% endfor %}
+{% endblock community_body %}
