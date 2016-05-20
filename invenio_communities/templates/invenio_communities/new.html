@@ -99,6 +99,31 @@
       </div>
     </div>
   </div>
+  <div id="publicmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="publicmodal_label" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="deletemodal_label">Make the community public?</h3>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">
+          <h5>Warning</h5>
+          <ul>
+            <li>If you proceed, this community will be accessible by everybody.</li>
+            <li>Only the read action will be authorized for everybody, they will not be able to perform any other actions.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form action="{{url_for('.make_public', community_id=community.id)}}" method="POST">
+          <button class="btn btn-large" data-dismiss="modal" aria-hidden="true">No, thanks</button>
+          <button type="submit" href="{{ url_for('.make_public', community_id=community.id) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, make it public</button>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
   {% if community.is_deleted %}
     <div class="alert alert-danger">This community will be deleted on {{ community.delete_time.strftime('%d-%m-%Y') }}.</div>
   {% endif %}
@@ -142,6 +167,12 @@
                   <label class="control-label col-md-3"><i class="icon-share"></i>Curation URL:</label>
                   <div class="controls col-md-9"><a href="{{ community.community_provisional_url }}">{{ community.community_provisional_url }}</a>
                     <p class="text-muted field-desc"><small>Above address links to your private curation URL. You will find all uploads pending your curation.</small></p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3"><i class="icon-share"></i>Team management URL:</label>
+                  <div class="controls col-md-9"><a href="{{ community.community_team_url }}">{{ community.community_team_url }}</a>
+                    <p class="text-muted field-desc"><small>Above address links to your private team management URL. You will find all users that have permissions to this community, and you will be able to remove some or add new ones.</small></p>
                   </div>
                 </div>
                 <div class="form-group">
@@ -243,7 +274,10 @@
       {%- endfor %}
       </div>
       <div class="well clearfix" style="margin-top: 10px;">
-        {% if not community.is_deleted %}
+        {% if not community.is_deleted and not is_new and permission_team(community).can() and permission_edit(community).can() %}
+        <button type="button" role="button" data-toggle="modal" class="btn btn-warning pull-left{% if is_new %} hide{% endif %}" data-target="#publicmodal" style="margin-right: 5px;"><i class="icon-pencil  icon-white"></i> Make public</button>
+        {% endif %}
+        {% if not community.is_deleted and not is_new and permission_delete(community).can() %}
         <button type="button" role="button" data-toggle="modal" class="btn btn-danger pull-left{% if is_new %} hide{% endif %}" data-target="#deletemodal"><i class="icon-trash  icon-white"></i> Delete</button>
         {% endif %}
         <span class="pull-right">

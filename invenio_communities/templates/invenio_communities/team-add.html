@@ -32,7 +32,7 @@
 {%- endblock css %}
 
 {%- block javascript %}
-    {{ super() }}
+    {% assets "invenio_communities_team_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {% assets "invenio_communities_select_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     <script>
         $(document).ready(function() {

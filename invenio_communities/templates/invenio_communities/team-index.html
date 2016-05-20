@@ -74,6 +74,10 @@
 {% set community_url = url_for(".team_management", community_id=community.id) %}
 {% set community_del_url = url_for(".team_delete_user", community_id=community.id) %}
 
+{%- block javascript -%}
+  {% assets "invenio_communities_team_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{%- endblock javascript -%}
+
 {% block community_body %}
     {% for action in actions %}
         {{ print_action_table(action.title, action.name, action.existing) }}
