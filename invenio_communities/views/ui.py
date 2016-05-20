@@ -257,7 +257,7 @@ def new():
                 community = None
 
         if community:
-            permissions = current_permission_factory.keys()
+            permissions = list(current_permission_factory.keys())
             permissions.remove("communities-create")
             for permission in permissions:
                 db.session.add(ActionUsers(action=permission,
@@ -408,9 +408,9 @@ def team_management(community):
             self.title = ""
             self.name = ""
             self.existin = []
-    
+
     actions = []
-    permissions = current_permission_factory.keys()
+    permissions = list(current_permission_factory.keys())
     permissions.remove("communities-create")
     permissions.sort()
     for action in permissions:
@@ -465,7 +465,7 @@ def team_add(community):
 
     :param community_id: ID of the community to manage.
     """
-    actions = current_permission_factory.keys()
+    actions = list(current_permission_factory.keys())
     actions.sort()
     default_action = ""
     if "default_action" in request.values:
