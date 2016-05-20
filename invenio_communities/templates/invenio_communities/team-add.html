@@ -21,7 +21,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
-{% extends config.COMMUNITIES_COMMUNITY_TEMPLATE %}
+{% extends config.COMMUNITIES_BASE_TEMPLATE %}
 
 {% set community_url = url_for(".team_management", community_id=community.id) %}
 {% set community_add_url = url_for(".team_add_user", community_id=community.id) %}
@@ -29,10 +29,11 @@
 {%- block css %}
   {{ super() }}
   {% assets "invenio_communities_select_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+  {% assets "invenio_communities_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
 {%- endblock css %}
 
 {%- block javascript %}
-    {% assets "invenio_communities_team_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{# here we don't super() because it doesn't work because of almond (??????) #}
     {% assets "invenio_communities_select_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     <script>
         $(document).ready(function() {
@@ -44,36 +45,47 @@
     </script>
 {%- endblock javascript %}
 
-{% block community_body %}
-    <div class="container">
-        <h2>Create permission</h2>
-        <ul class="nav nav-tabs">
-            <li><a href="{{ community_url }}">List</a></li>
-            <li class="active"><a href="javascript:void(0)">Create</a></li>
-        </ul>
-        <form class="admin-form form-horizontal" action="{{ community_add_url }}" method="POST" role="form" enctype="multipart/form-data">
-            <hr></hr>
-            <input name="url" value="{{ community_url }}" type="hidden" />
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="user">User</label>
-                <select title="User" class="form-control" id="user" name="user" required>
-                    {% for user in users %}
-                        <option value="{{ user.id }}">User &lt;id={{ user.id }}, email={{ user.email }}&gt;</option>
-                    {% endfor %}
-                </select>
+{% block page_body %}
+   <div class="container body-container">
+        <div class="row">
+            <div id="file_container" class="col-md-12">
+                <h1>Create permission for community {{ community.title }}</h1>
             </div>
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="action">Action</label>
-                <select title="Action" class="form-control" id="action" name="action" required>
-                    {% for action in actions %}
-                        <option value="{{ action }}">{{ action }}</option>
-                    {% endfor %}
-                </select>
+        </div>
+        <div class="row">
+            <div id="file_container" class="col-md-8">
+                <ul class="nav nav-tabs">
+                    <li><a href="{{ community_url }}">List</a></li>
+                    <li class="active"><a href="javascript:void(0)">Create</a></li>
+                </ul>
+                <form class="admin-form form-horizontal" action="{{ community_add_url }}" method="POST" role="form" enctype="multipart/form-data">
+                    <hr></hr>
+                    <input name="url" value="{{ community_url }}" type="hidden" />
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="user">User</label>
+                        <select title="User" class="form-control" id="user" name="user" required>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">User &lt;id={{ user.id }}, email={{ user.email }}&gt;</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="action">Action</label>
+                        <select title="Action" class="form-control" id="action" name="action" required>
+                            {% for action in actions %}
+                                <option value="{{ action }}">{{ action }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary" value="Save" type="submit" />
+                        <a href="{{ community_url }}" class="btn btn-danger" role="button">Cancel</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input class="btn btn-primary" value="Save" type="submit" />
-                <a href="{{ community_url }}" class="btn btn-danger" role="button">Cancel</a>
+            <div class="col-md-4">
+                {% include "invenio_communities/mycommunities.html" %}
             </div>
-        </form>
+        </div>
     </div>
-{% endblock community_body %}
+{% endblock page_body %}

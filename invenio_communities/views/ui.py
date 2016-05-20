@@ -173,8 +173,7 @@ def index():
         'form': form,
         'title': _('Communities'),
         'communities': communities[per_page * (page - 1):per_page * page],
-        'featured_community': featured_community,
-        'permission_curate': partial(_get_permission, "communities-curate")
+        'featured_community': featured_community
     })
 
     return render_template(
@@ -421,11 +420,11 @@ def team_management(community):
         a.existing = ActionUsers.query_by_action(
             _get_needs(action, community.id)).all()
         actions.append(a)
-    
-    ctx = {
+    ctx = mycommunities_ctx()
+    ctx.update({
         "community": community,
         "actions": actions
-    }
+    })
     return render_template(
         current_app.config['COMMUNITIES_TEAM_TEMPLATE'],
         **ctx
@@ -470,12 +469,13 @@ def team_add(community):
     default_action = ""
     if "default_action" in request.values:
         default_action = request.values["default_action"]
-    ctx = {
+    ctx = mycommunities_ctx()
+    ctx.update({
         "community": community,
         "users": User.query.all(),
         "actions": actions,
         "default_action": default_action
-    }
+    })
     return render_template(
         current_app.config['COMMUNITIES_TEAM_ADD_TEMPLATE'],
         **ctx
