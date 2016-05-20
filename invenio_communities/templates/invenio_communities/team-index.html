@@ -21,10 +21,10 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
-{% extends config.COMMUNITIES_COMMUNITY_TEMPLATE %}
+{% extends config.COMMUNITIES_BASE_TEMPLATE %}
 
 {% macro print_action_table(action_name, action_id, action_list) %}
-    <div class="container">
+    <div class="community-action">
         <h2>{{ action_name }} action</h2>
         <ul class="nav nav-tabs actions-nav">
             <li class="active"><a href="javascript:void(0)">List ({{ action_list|length }})</a></li>
@@ -74,12 +74,27 @@
 {% set community_url = url_for(".team_management", community_id=community.id) %}
 {% set community_del_url = url_for(".team_delete_user", community_id=community.id) %}
 
-{%- block javascript -%}
-  {% assets "invenio_communities_team_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-{%- endblock javascript -%}
+{%- block css %}
+  {{ super() }}
+  {% assets "invenio_communities_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{%- endblock css %}
 
-{% block community_body %}
-    {% for action in actions %}
-        {{ print_action_table(action.title, action.name, action.existing) }}
-    {% endfor %}
-{% endblock community_body %}
+{% block page_body %}
+    <div class="container body-container">
+        <div class="row">
+            <div id="file_container" class="col-md-12">
+                <h1>Manage team for community {{ community.title }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div id="file_container" class="col-md-8">
+                {% for action in actions %}
+                    {{ print_action_table(action.title, action.name, action.existing) }}
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                {% include "invenio_communities/mycommunities.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock page_body %}
