@@ -24,6 +24,8 @@
 
 """Permissions for communities."""
 
+from __future__ import absolute_import, print_function
+
 from flask_login import current_user
 from flask_principal import ActionNeed
 from invenio_access.permissions import DynamicPermission

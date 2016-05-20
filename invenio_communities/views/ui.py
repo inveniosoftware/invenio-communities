@@ -44,7 +44,6 @@ from invenio_communities.models import Community, FeaturedCommunity
 from invenio_communities.proxies import current_permission_factory
 from invenio_communities.utils import Pagination, render_template_to_string
 
-
 blueprint = Blueprint(
     'invenio_communities',
     __name__,

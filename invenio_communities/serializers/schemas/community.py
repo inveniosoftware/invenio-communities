@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2013, 2014, 2015, 2016 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -66,8 +66,9 @@ class CommunitySchemaV1(Schema):
         page = self.context.get('page')
         if page:
             links_pagination_factory = self.context.get(
-                    'links_pagination_factory',
-                    default_links_pagination_factory)
+                'links_pagination_factory',
+                default_links_pagination_factory
+            )
 
             urlkwargs = self.context.get('urlkwargs', {})
 

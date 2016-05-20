@@ -29,14 +29,12 @@ from __future__ import absolute_import, print_function
 from flask import Blueprint, abort
 from invenio_rest import ContentNegotiatedMethodView
 from webargs import fields
-from webargs.flaskparser import use_kwargs, parser
-
-from invenio_communities.models import Community
-from invenio_communities.serializers import community_response
+from webargs.flaskparser import use_kwargs
 
 from invenio_communities.links import default_links_item_factory, \
     default_links_pagination_factory
-
+from invenio_communities.models import Community
+from invenio_communities.serializers import community_response
 
 blueprint = Blueprint(
     'invenio_communities_rest',
@@ -117,7 +115,7 @@ class CommunitiesResource(ContentNegotiatedMethodView):
         links = default_links_pagination_factory(page, urlkwargs)
 
         links_headers = map(lambda key: ('link', 'ref="{0}" href="{1}"'.format(
-                key, links[key])), links)
+            key, links[key])), links)
 
         return self.make_response(
             page,

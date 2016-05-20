@@ -31,14 +31,18 @@ from flask import current_app, request, url_for
 
 def default_links_item_factory(community):
     """Factory for record links generation."""
-    return dict(self=url_for('.communities_item',
-                             community_id=community['id'], _external=True),
-                html=current_app.config.get(
-                        'COMMUNITIES_URL_COMMUNITY_VIEW',
-                        '{protocol}://{host}/communities/{community_id}/'
-                ).format(protocol=request.environ['wsgi.url_scheme'],
-                         host=request.environ['HTTP_HOST'],
-                         community_id=community['id']))
+    return dict(
+        self=url_for(
+            '.communities_item', community_id=community['id'], _external=True),
+        html=current_app.config.get(
+            'COMMUNITIES_URL_COMMUNITY_VIEW',
+            '{protocol}://{host}/communities/{community_id}/'
+        ).format(
+            protocol=request.environ['wsgi.url_scheme'],
+            host=request.environ['HTTP_HOST'],
+            community_id=community['id']
+        )
+    )
 
 
 def default_links_pagination_factory(page, urlkwargs):

@@ -67,23 +67,24 @@ def community_responsify(schema_class, mimetype):
         if isinstance(data, Community):
             last_modified = data.updated
             response_data = schema_class(
-                    context=dict(item_links_factory=links_item_factory)
+                context=dict(item_links_factory=links_item_factory)
             ).dump(data).data
         else:
             last_modified = None
             response_data = schema_class(
-                    context=dict(
-                            total=data.query.count(),
-                            item_links_factory=links_item_factory,
-                            page=page,
-                            urlkwargs=urlkwargs,
-                            pagination_links_factory=links_pagination_factory)
+                context=dict(
+                    total=data.query.count(),
+                    item_links_factory=links_item_factory,
+                    page=page,
+                    urlkwargs=urlkwargs,
+                    pagination_links_factory=links_pagination_factory)
             ).dump(data.items, many=True).data
 
         response = current_app.response_class(
             json.dumps(response_data, **_format_args()),
             mimetype=mimetype)
         response.status_code = code
+
         if last_modified:
             response.last_modified = last_modified
 
