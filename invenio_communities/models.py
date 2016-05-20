@@ -396,6 +396,14 @@ class Community(db.Model, Timestamp):
             'invenio_communities.curate', community_id=self.id, _external=True)
 
     @property
+    def community_team_url(self):
+        """Get provisional URL."""
+        return url_for(
+            'invenio_communities.team_management',
+            community_id=self.id,
+            _external=True)
+
+    @property
     def upload_url(self):
         """Get provisional URL."""
         return url_for('invenio_deposit_ui.new', c=self.id, _external=True)
