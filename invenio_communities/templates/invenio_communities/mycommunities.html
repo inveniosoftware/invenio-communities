@@ -25,10 +25,16 @@
 {% if current_user.is_authenticated %}
   {% if mycommunities %}
   <h2>
-    {{ _('My communities') }}
-    <div class="pull-right">
-      &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>
-    </div>
+    {% if mycommunities|length > 1 %}
+      {{ _('My communities') }}
+    {% else %}
+      {{ _('My community') }}
+    {% endif %}
+    {% if permission_create().can() %}
+      <div class="pull-right">
+        &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>
+      </div>
+    {% endif %}
   </h2>
   <table class="table table-striped">
   {% for obj in mycommunities %}
@@ -45,9 +51,18 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="{{url_for('.detail', community_id=obj.id)}}"><i class="icon-eye-open"></i> {{ _('View') }}</a></li>
-            <li><a href="{{url_for('.curate', community_id=obj.id)}}"><i class="icon-check"></i> {{ _('Curate') }}</a></li>
-            <li><a href="{{url_for('.edit', community_id=obj.id)}}"><i class="icon-pencil"></i> {{ _('Edit') }}</a></li>
+            {% if permission_read(obj).can() %}
+              <li><a href="{{url_for('.detail', community_id=obj.id)}}"><i class="icon-eye-open"></i> {{ _('View') }}</a></li>
+            {% endif %}
+            {% if permission_curate(obj).can() %}
+              <li><a href="{{url_for('.curate', community_id=obj.id)}}"><i class="icon-check"></i> {{ _('Curate') }}</a></li>
+            {% endif %}
+            {% if permission_edit(obj).can() %}
+              <li><a href="{{url_for('.edit', community_id=obj.id)}}"><i class="icon-pencil"></i> {{ _('Edit') }}</a></li>
+            {% endif %}
+            {% if permission_team(obj).can() %}
+              <li><a href="{{url_for('.team_management', community_id=obj.id)}}"><i class="icon-pencil"></i> {{ _('Manage team') }}</a></li>
+            {% endif %}
           </ul>
         </div> <!-- /.btn-group -->
       </td>

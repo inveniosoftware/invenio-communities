@@ -155,6 +155,7 @@ setup(
         'invenio_assets.bundles': [
             'invenio_communities_js = invenio_communities.bundles:js',
             'invenio_communities_css = invenio_communities.bundles:css',
+            'invenio_communities_team_js = invenio_communities.bundles:jsteam',
             'invenio_communities_select_js = invenio_communities.bundles:jsselect',
             'invenio_communities_select_css = invenio_communities.bundles:csselect'
         ]

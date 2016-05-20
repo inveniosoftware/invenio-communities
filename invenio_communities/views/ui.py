@@ -130,8 +130,16 @@ def format_item(item, template, name='item'):
 @blueprint.app_template_filter('mycommunities_ctx')
 def mycommunities_ctx():
     """Helper method for return ctx used by many views."""
+    communities = Community.filter_communities("", "title").all()
+    mycommunities = [c for c in communities if _get_permission("communities-read", c).can()]
     return {
-        'mycommunities': Community.get_by_user(current_user.get_id()).all()
+        "mycommunities": mycommunities,
+        "permission_create": partial(_get_permission, "communities-create"),
+        "permission_curate": partial(_get_permission, "communities-curate"),
+        "permission_delete": partial(_get_permission, "communities-delete"),
+        "permission_edit": partial(_get_permission, "communities-edit"),
+        "permission_read": partial(_get_permission, "communities-read"),
+        "permission_team": partial(_get_permission, "communities-team-management")
     }
 
 
@@ -249,6 +257,12 @@ def new():
                 community = None
 
         if community:
+            permissions = current_permission_factory.keys()
+            permissions.remove("communities-create")
+            for permission in permissions:
+                db.session.add(ActionUsers(action=permission,
+                               user=current_user,
+                               argument=community_id))
             db.session.commit()
             flash("Community was successfully created.", category='success')
             return redirect(url_for('.edit', community_id=community.id))
@@ -322,6 +336,20 @@ def delete(community):
         return redirect(url_for('.edit', community_id=community.id))
 
 
+@blueprint.route('/<string:community_id>/make-public/', methods=['POST'])
+@login_required
+@pass_community
+@permission_required('communities-edit')
+@permission_required('communities-team-management')
+def make_public(community):
+    """Makes a community public."""
+    ActionUsers.query_by_action(
+            _get_needs("communities-read", community.id)).delete()
+    db.session.commit()
+    flash("Community is now public.", category='success')
+    return redirect(url_for('.edit', community_id=community.id))
+
+
 @blueprint.route('/<string:community_id>/curate/', methods=['GET', 'POST'])
 @login_required
 @pass_community
@@ -383,6 +411,7 @@ def team_management(community):
     
     actions = []
     permissions = current_permission_factory.keys()
+    permissions.remove("communities-create")
     permissions.sort()
     for action in permissions:
         a = __action()
@@ -439,10 +468,8 @@ def team_add(community):
     actions = current_permission_factory.keys()
     actions.sort()
     default_action = ""
-    if request.method == "GET" and "default_action" in request.args:
-        default_action = request.args["default_action"]
-    elif request.method == "POST" and "default_action" in request.form:
-        default_action = request.form["default_action"]
+    if "default_action" in request.values:
+        default_action = request.values["default_action"]
     ctx = {
         "community": community,
         "users": User.query.all(),
