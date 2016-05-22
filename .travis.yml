@@ -37,8 +37,8 @@ services:
   - elasticsearch
 
 env:
-#  - REQUIREMENTS=lowest  # TODO: Enable later
-#  - REQUIREMENTS=release  # TODO: Enable later
+  - REQUIREMENTS=lowest
+  - REQUIREMENTS=release
   - REQUIREMENTS=devel
 
 python:
