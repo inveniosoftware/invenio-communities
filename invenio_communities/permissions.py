@@ -45,7 +45,7 @@ class _Permission(object):
 
     def can(self):
         """Grant permission if owner or admin."""
-        return current_user.get_id() == self.community.id_user or \
+        return str(current_user.get_id()) == str(self.community.id_user) or \
             DynamicPermission(ActionNeed('admin-access')).can()
 
 
