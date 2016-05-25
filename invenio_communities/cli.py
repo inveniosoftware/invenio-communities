@@ -65,7 +65,8 @@ def addlogo(community_id, logo):
     # Create the bucket
     c = Community.get(community_id)
     if not c:
-        click.secho('Community {0} does not exist.', fg='red')
+        click.secho('Community {} does not exist.'.format(community_id),
+                    fg='red')
         return
     ext = save_and_validate_logo(logo, logo.name, c.id)
     c.logo_ext = ext
@@ -84,6 +85,7 @@ def request(community_id, record_id, accept):
     record = Record.get_record(record_id)
     if accept:
         c.add_record(record)
+        record.commit()
     else:
         InclusionRequest.create(community=c, record=record,
                                 notify=False)
