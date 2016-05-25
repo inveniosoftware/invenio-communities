@@ -23,6 +23,7 @@
 
 define([], function(){
   function invenioSearchResultsProvisional($http, $q) {
+    "use strict";
 
     // Functions
 
@@ -38,22 +39,55 @@ define([], function(){
     function link(scope, element, attrs, vm) {
       scope.communityCurationEndpoint = attrs.communityCurationEndpoint;
       scope.recordTemplate = attrs.recordTemplate;
-      scope.handleCommunityClick = function(action, recid) {
-          // scope.isPressed=true;
+      scope.CommunitieshandleClick = function(action, record) {
+          // scope.isPressed=true
+          function ajax_callback(record, result)
+          {
+              var element = document.querySelector("#communities-rec-" + record.id);
+              var msg_elt = document.querySelector("#js-flash-message");
+              msg_elt.classList.remove("hidden");
+              msg_elt.classList.remove("alert-danger");
+              msg_elt.classList.remove("alert-success");
+              msg_elt.classList.remove("alert-info");
+              var success = true;
+              if (result.status !== 200 || !result.data.status)
+              {
+                  success = false;
+                  msg_elt.classList.add("alert-danger");
+              }
+              else
+                  msg_elt.classList.add("alert-" + result.data.status);
+              if (result.data.msg)
+                  msg_elt.querySelector("#js-flash-message-text").textContent = result.data.msg;
+              else
+                  msg_elt.querySelector("#js-flash-message-text").textContent = "Server Error";
+              if (success)
+                  element.parentElement.removeChild(element);
+              else
+              {
+                  var btns = element.querySelectorAll("#curate_" + record.id + " a.btn");
+                  for (var i = 0; i < btns.length; i++)
+                  {
+                      btns[i].classList.remove("btn-danger");
+                      btns[i].classList.remove("btn-success");
+                      btns[i].removeAttribute("disabled");
+                  }
+              }
+          }
           $http({
             method: 'POST',
             url: scope.communityCurationEndpoint,
             data: {
-              'recid': recid,
+              'recid': record.id,
               'action': action,
             },
             headers: {'Content-Type': 'application/json'},
           }).then(function successCallback(result) {
-              // flash success
+                ajax_callback(record, result);
             }, function errorCallback(result) {
-              // flash error
+                ajax_callback(record, result);
             });
-      };
+        };
     }
 
     /**

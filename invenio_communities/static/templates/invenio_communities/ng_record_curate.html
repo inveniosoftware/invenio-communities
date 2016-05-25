@@ -1,10 +1,10 @@
-<div class="row record-elem" ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index">
+<div id="communities-rec-{{ record.id }}" class="row record-elem" ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index">
   <div class="col-xs-12">
     <div class="pull-right view-record hidden-xs">
       <span class="pull-right" id="curate_{{ record.id }}">
         <span class="ajaxmsg text-muted" style="display: none;"></span>
-        <a class="btn 10 btn-default" ng-class="pressedClassSucc" ng-click="handleClick('accept', record.id);isPressed=true;pressedClassSucc='btn-success'" ng-disabled="isPressed"><i class="fa fa-check"></i>Accept</a>
-        <a class="btn 10 btn-default" ng-class="pressedClassWarn" ng-click="handleClick('reject', record.id);isPressed=true;pressedClassWarn='btn-danger'" ng-disabled="isPressed"><i class="fa fa-check"></i>Reject</a>
+        <a class="btn 10 btn-default" ng-class="pressedClassSucc" ng-click="CommunitieshandleClick('accept', record);isPressed=true;pressedClassSucc='btn-success'" ng-disabled="isPressed"><i class="fa fa-check"></i>Accept</a>
+        <a class="btn 10 btn-default" ng-class="pressedClassWarn" ng-click="CommunitieshandleClick('reject', record);isPressed=true;pressedClassWarn='btn-danger'" ng-disabled="isPressed"><i class="fa fa-check"></i>Reject</a>
       </span>
     </div>
     <span class="label label-info" data-toggle="tooltip" title="Publication date">{{ record.metadata.publication_date|date:'longDate' }}</span>
@@ -12,16 +12,33 @@
     <span class="label label-success">{{ record.metadata.access_right }}</span>
     {{ objecttype_label(object_type, lang=current_i18n.language) }}
     {{ accessright_label(record.access_right, embargo_date=embargo_date) }}
-    <h4><a target="_self" ng-href="/record/{{record.id}}">{{ record.metadata.title }}</a></h4>
-    <p>
-      <span ng-repeat='creator in record.metadata.creators'>
-      <a target="_self" ng-href="/record/{{record.id}}" class="text-muted">{{ creator.name }}</a>;
-      </span>
+    <h4><a target="_self" ng-href="/records/{{record.id}}">{{ record.metadata['239__'].a || record.metadata['249__'].a || record.metadata.title_statement.title || "No title" }}</a></h4>
+    <div ng-show="record.metadata['191__'].a.length > 0" class="brief-metadata-group hidden-xs hidden-sm">
+        <a class="author" href='/search?q="{{ record.metadata["191__"].a }}"'>{{ record.metadata["191__"].a }}</a>
+    </div>
+    <p class="summary hidden-xs hidden-sm" ng-show="record.metadata.abstract.summary.length > 0">
+      {{ record.metadata.abstract.summary | limitTo : 230 }}
+      <span ng-if="record.metadata.abstract.summary.length > 230">[&hellip;]</span>
     </p>
-    <p class="hidden-xs"><a target="_self" ng-href="/record/{{record.id}}"><span ng-bind-html="record.metadata.description|striptags|limitTo:300"></span></a></p>
-      <small class="text-muted hidden-xs">
-        Uploaded on {{ record.created|date:'longDate' }}
-      </small>
+    <div class="brief-metadata">
+         <div class="hidden-xs hidden-sm brief-metadata-group">
+            <a class="toggle-options-desktop collapsed" data-toggle="collapse" data-target="#desktop-options-{{ record.metadata.control_number }}"></a>
+         </div>
+         <div ng-show="record.metadata['191__'].a.length > 0" class="brief-metadata-group visible-xs visible-sm">
+            <i class="icon icon-tag-1"></i>
+              <a class="author" href='/search?q="{{ record.metadata["191__"].a }}"'>{{ record.metadata["191"].a }}</a>
+         </div>
+         <div class="brief-metadata-group">
+           <!--<element ng-show="record.metadata.collection.singular.length > 0">
+               <i class="icon icon-document-1"></i> {{ record.metadata.collection.singular }}
+           </element> -->
+           <element ng-show="record.metadata.publication_distribution_imprint.length > 0">
+             <span ng-repeat="date in record.metadata.publication_distribution_imprint">
+               <i class="icon icon-calendar-2"></i> {{ record.metadata['992__'].a || record.metadata['269__'].a || date.date_of_publication_distribution[0] }}
+             </span>
+           </element>
+         </div>
+       </div>
     <hr />
   </div>
 </div>

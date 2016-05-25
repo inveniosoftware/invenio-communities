@@ -28,10 +28,21 @@ from __future__ import absolute_import, print_function
 from flask_assets import Bundle
 from invenio_assets import NpmBundle, RequireJSFilter
 
-js = Bundle(
-    "js/invenio_communities/main.js",
+js = NpmBundle(
+    Bundle(
+        "node_modules/almond/almond.js",
+        "js/invenio_communities/main.js",
+        filters=RequireJSFilter(),
+    ),
+    output='gen/communities.%(version)s.js',
     filters=RequireJSFilter(),
-    output='gen/communities.%(version)s.js'
+    depends=('node_modules/invenio-search-js/dist/*.js', ),
+    npm={
+        "almond": "~0.3.1",
+        'angular': '~1.4.10',
+        'angular-loading-bar': '~0.9.0',
+        'invenio-search-js': '~0.1.6'
+    },
 )
 
 jsselect = NpmBundle(

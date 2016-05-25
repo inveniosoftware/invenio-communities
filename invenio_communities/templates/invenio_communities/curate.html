@@ -39,11 +39,16 @@
 {%- endblock css %}
 
 {%- block javascript -%}
-  {{ super() }}
   {% assets "invenio_communities_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 {%- endblock javascript -%}
 
 {% block page_body %}
+<div id="js-flash-message" class="hidden alert">
+    <div class="container">
+        <a class="close" data-dismiss="alert" href="#" onclick="document.querySelector('#js-flash-message').classList.add('hidden');">&times;</a>
+        <div id="js-flash-message-text"></div>
+    </div>
+</div>
 <div class="communities">
   {{ community_header(community, subtitle='Pending Requests') }}
   {{super()}}

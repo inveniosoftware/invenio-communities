@@ -27,6 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import copy
+from collections import namedtuple
 from functools import partial, wraps
 
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
@@ -366,27 +367,46 @@ def curate(community):
 
         # 'recid' is mandatory
         if not recid:
-            abort(400)
+            return jsonify({'status': 'danger', 'msg': _('Unknown record')})
         if action not in ['accept', 'reject', 'remove']:
-            abort(400)
+            return jsonify({'status': 'danger', 'msg': _('Unknown action')})
 
         # Resolve recid to a Record
         resolver = Resolver(
             pid_type='recid', object_type='rec', getter=Record.get_record)
         pid, record = resolver.resolve(recid)
 
+        action_name = ""
+        status = "success"
         # Perform actions
-        if action == "accept":
-            community.accept_record(record)
-        elif action == "reject":
-            community.reject_record(record)
-        elif action == "remove":
-            community.remove_record(record)
+        try:
+            if action == "accept":
+                community.accept_record(record)
+                action_name = "added to"
+            elif action == "reject":
+                community.reject_record(record)
+                action_name = "rejected from"
+                status = "info"
+            elif action == "remove":
+                community.remove_record(record)
+                action_name = "removed from"
+                status = "info"
+        except CommunitiesError:
+            return jsonify({
+                'status': 'danger',
+                'msg': _('record not in the curation list,'
+                         ' please refresh the page.')})
 
         record.commit()
         db.session.commit()
         RecordIndexer().index_by_id(record.id)
-        return jsonify({'status': 'success'})
+        title = ""
+        if "title_statement" in record \
+            and "title" in record["title_statement"]:
+            title = record["title_statement"]["title"]
+        message = _('The record '
+            '"{}" has been {} the community.').format(title, action_name)
+        return jsonify({'status': status, 'msg': message})
 
     ctx = {'community': community}
     return render_template(
@@ -464,23 +484,18 @@ def team_management(community):
 
     :param community_id: ID of the community to manage.
     """
-    class __action(object):
-        def __init__(self):
-            self.title = ""
-            self.name = ""
-            self.existin = []
+    Action = namedtuple("Action", ["title", "name", "existing"])
 
     actions = []
     permissions = list(current_permission_factory)
     permissions.remove("communities-create")
     permissions.sort()
     for action in permissions:
-        a = __action()
-        # 12 = len("communities-')
-        a.title = action[12:].replace("-", " ").capitalize()
-        a.name = action
-        a.existing = ActionUsers.query_by_action(
-            _get_needs(action, community.id)).all()
+        # 12 = len("communities-")
+        a = Action(action[12:].replace("-", " ").capitalize(),
+                     action,
+                     ActionUsers.query_by_action(
+                        _get_needs(action, community.id)).all())
         actions.append(a)
     ctx = mycommunities_ctx()
     ctx.update({

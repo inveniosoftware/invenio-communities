@@ -22,6 +22,7 @@
 require([
   "jquery",
   "node_modules/angular/angular",
+  "node_modules/angular-loading-bar/build/loading-bar",
   "node_modules/invenio-search-js/dist/invenio-search-js",
   "js/invenio_communities/module",
   ], function() {
@@ -31,8 +32,12 @@ require([
     // On document ready bootstrap angular
     angular.element(document).ready(function() {
       angular.bootstrap(
-        document.getElementById("invenio-communities-search"),
-                                ['invenioSearch', 'invenioCommunities']
+        document.getElementById("invenio-communities-search"), [
+            'invenioSearch',
+            'invenioCommunities',
+            'angular-loading-bar'
+        ]
       );
     });
   });
+
