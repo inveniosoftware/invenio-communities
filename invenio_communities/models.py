@@ -285,6 +285,13 @@ class Community(db.Model, Timestamp):
         :param record: Record object.
         :type record: `invenio_records.api.Record`
         """
+        # first we try to remove the record from the pending area if exists
+        # useful if record added directly, but already submitted
+        try:
+            req = InclusionRequest.get(self.id, record.id)
+            req.delete()
+        except:  # the record was not in the pending area
+            pass
         key = current_app.config['COMMUNITIES_RECORD_KEY']
         record.setdefault(key, [])
 

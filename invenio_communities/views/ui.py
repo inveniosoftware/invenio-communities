@@ -42,7 +42,9 @@ from invenio_access.models import ActionUsers
 from invenio_accounts.models import User
 from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
     EditCommunityForm, SearchForm
-from invenio_communities.models import Community, FeaturedCommunity
+from invenio_communities.models import (Community,
+                                        FeaturedCommunity,
+                                        InclusionRequest)
 from invenio_communities.permissions import CommunityCurateActionNeed
 from invenio_communities.proxies import current_permission_factory, needs
 from invenio_communities.utils import Pagination, render_template_to_string
@@ -391,6 +393,66 @@ def curate(community):
         current_app.config['COMMUNITIES_CURATE_TEMPLATE'],
         **ctx
     )
+
+
+@blueprint.route('/suggest/', methods=['GET', 'POST'])
+@login_required
+# @permission_required('communities-read')  # tested later from the POST
+def suggest():
+    """Index page with uploader and list of existing depositions.
+
+    :param community_id: ID of the community to curate.
+    """
+    community = None
+    record = None
+    url = request.referrer
+
+    if "url" in request.values and request.values["url"]:
+        url = request.values["url"]
+    if not "community" in request.values:
+        flash(u"Error, no community given", "danger")
+        return redirect(url)
+    community_id = request.values["community"]
+    community = Community.get(community_id)
+    if not community:
+        flash(u"Error, unknown community {}".format(community_id), "danger")
+        return redirect(url)
+    if not _get_permission("communities-read", community):
+        flash(u"Error, you don't have permissions on the community {}".format(
+            community_id), "danger")
+        return redirect(url)
+    if not "recpid" in request.values:
+        flash(u"Error, no record given", "danger")
+        return redirect(url)
+    recid = request.values["recpid"]
+    resolver = Resolver(
+            pid_type='recid', object_type='rec', getter=Record.get_record)
+    try:
+        pid, record = resolver.resolve(recid)
+    except Exception:
+        flash(u"Error, unkown record {}".format(recid), "danger")
+        return redirect(url)
+    # if the user has the curate permission on this community,
+    # we automatically add the record
+    if _get_permission("communities-curate", community).can():
+        try:
+            community.add_record(record)
+        except:  # the record is already in the community
+            pass
+        record.commit()
+        flash(u"The record has been added to the community {}.".format(
+            community.title))
+    # otherwise we only suggest it and it will appear in the curate list
+    else:
+        try:
+            InclusionRequest.create(community=community, record=record)
+        except:  # the record is already in the community
+            pass
+        flash(u"The record has been suggested to the community {}.".format(
+            community.title))
+    db.session.commit()
+    RecordIndexer().index_by_id(record.id)
+    return redirect(url)
 
 
 @blueprint.route('/<string:community_id>/team/')
