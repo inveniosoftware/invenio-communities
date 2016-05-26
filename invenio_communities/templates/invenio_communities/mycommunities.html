@@ -40,7 +40,7 @@
   {% for obj in mycommunities %}
     <tr>
       <td>
-        <a href="{{url_for('.edit', community_id=obj.id)}}">{{obj.title if obj.title else 'Untitled'}}</a>
+        <a href="{{url_for('.detail', community_id=obj.id)}}">{{obj.title if obj.title else 'Untitled'}}</a>
         <br />
         <small class="muted">{{ _('Identifier') }}: {{obj.id}}</small>
       </td>

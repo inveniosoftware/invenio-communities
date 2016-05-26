@@ -34,6 +34,7 @@ from webargs.flaskparser import use_kwargs
 from invenio_communities.links import default_links_item_factory, \
     default_links_pagination_factory
 from invenio_communities.models import Community
+from invenio_communities.proxies import current_permission_factory
 from invenio_communities.serializers import community_response
 
 blueprint = Blueprint(
@@ -41,6 +42,23 @@ blueprint = Blueprint(
     __name__,
     url_prefix='/communities',
 )
+
+
+def get_communities(with_deleted=False):
+    """
+    gives all the existing communities the current user can read.
+    :param with_deleted: tells if we should return the deleted communities
+    :type with_deleted: boolean
+    :returns list: the list of communities
+    """
+    communities = Community.filter_communities("",
+                                               "title",
+                                               with_deleted).all()
+    for i, c in enumerate(communities):
+        permission = current_permission_factory["communities-read"](c)
+        if not permission.can():
+            del communities[i]
+    return communities
 
 
 class CommunitiesResource(ContentNegotiatedMethodView):
