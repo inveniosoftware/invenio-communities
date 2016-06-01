@@ -35,7 +35,7 @@ from invenio_db import db
 from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import FlushError, NoResultFound
+from sqlalchemy.orm.exc import FlushError
 from sqlalchemy_utils.models import Timestamp
 from sqlalchemy_utils.types import UUIDType
 
@@ -153,7 +153,7 @@ class InclusionRequest(db.Model, Timestamp):
         """Get an inclusion request."""
         return cls.query.filter_by(
             id_record=record_uuid, id_community=community_id
-        ).one()
+        ).one_or_none()
 
     @classmethod
     def get_by_record(cls, record_uuid):
@@ -323,28 +323,26 @@ class Community(db.Model, Timestamp):
 
         :param record: Record object.
         """
-        try:
-            with db.session.begin_nested():
-                req = InclusionRequest.get(self.id, record.id)
-                req.delete()
-                self.add_record(record)
-                self.last_record_accepted = datetime.utcnow()
-        except NoResultFound:
-            raise InclusionRequestMissingError(
-                community=self, record=record)
+        with db.session.begin_nested():
+            req = InclusionRequest.get(self.id, record.id)
+            if req is None:
+                raise InclusionRequestMissingError(community=self,
+                                                   record=record)
+            req.delete()
+            self.add_record(record)
+            self.last_record_accepted = datetime.utcnow()
 
     def reject_record(self, record):
         """Reject a record for inclusion in the community.
 
         :param record: Record object.
         """
-        try:
-            with db.session.begin_nested():
-                req = InclusionRequest.get(self.id, record.id)
-                req.delete()
-        except NoResultFound:
-            raise InclusionRequestMissingError(
-                community=self, record=record)
+        with db.session.begin_nested():
+            req = InclusionRequest.get(self.id, record.id)
+            if req is None:
+                raise InclusionRequestMissingError(community=self,
+                                                   record=record)
+            req.delete()
 
     def delete(self):
         """Mark the community for deletion.
