@@ -99,12 +99,19 @@
                 <div class="col-sm-12 col-md-6">
                   <div class="well">
                     <h4>
-                      <div class="pull-right">
-                        &nbsp;
-                        <a href="{{url_for('.detail', community_id=obj.id)}}" class="btn btn-info">{{ _('View') }}</a>
-                        {% if permission_curate(obj).can() %}
-                          <a href="{{url_for('.curate', community_id=obj.id)}}" class="btn btn-info">{{ _('Curate') }}</a>
-                        {% endif %}
+                      <div class="communities-action-box pull-right">
+                          {% if permission_read(obj).can() %}
+                            <a href="{{url_for('.detail', community_id=obj.id)}}" class="btn btn-info"><i class="icon fa fa-book"></i> {{ _('View') }}</a>
+                          {% endif %}
+                          {% if permission_curate(obj).can() %}
+                            <a href="{{url_for('.curate', community_id=obj.id)}}" class="btn btn-info"><i class="icon fa fa-check"></i> {{ _('Curate') }}</a>
+                          {% endif %}
+                          {% if permission_team(obj).can() %}
+                            <a href="{{url_for('.team_management', community_id=obj.id)}}" class="btn btn-info"><i class="icon fa fa-users"></i> {{ _('Team') }}</a>
+                          {% endif %}
+                          {% if permission_edit(obj).can() %}
+                            <a href="{{url_for('.edit', community_id=obj.id)}}" class="btn btn-info"><i class="icon fa fa-pencil"></i> {{ _('Edit') }}</a>
+                          {% endif %}
                       </div>
                       {{ obj.title }}
                     </h4><br />

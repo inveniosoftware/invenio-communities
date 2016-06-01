@@ -32,6 +32,7 @@ from functools import partial, wraps
 
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
+from flask.ext.breadcrumbs import register_breadcrumb
 from flask_babelex import gettext as _
 from flask_login import current_user, login_required
 from invenio_db import db
@@ -41,8 +42,12 @@ from invenio_records.api import Record
 
 from invenio_access.models import ActionUsers
 from invenio_accounts.models import User
-from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
-    EditCommunityForm, SearchForm
+from invenio_communities.errors import (InclusionRequestExistsError,
+                                        InclusionRequestObsoleteError)
+from invenio_communities.forms import (CommunityForm,
+                                       DeleteCommunityForm,
+                                       EditCommunityForm,
+                                       SearchForm)
 from invenio_communities.models import (Community,
                                         FeaturedCommunity,
                                         InclusionRequest)
@@ -84,6 +89,23 @@ def _get_permission(action, community=""):
     if community:
         return current_permission_factory[action](community)
     return current_permission_factory[action]()
+
+
+def _get_permissions(remove_forbidden=True, sorted=True):
+    """
+    returns the list of all the permissions associated with the communities
+    :param remove_forbidden: tells if we should remove special actions
+        that should be accessible by the administrators only, like create and
+        delete communities.
+    :param sorted: tells if the list should be alphabetically sorted
+    """
+    actions = list(current_permission_factory)
+    if remove_forbidden:
+        actions.remove("communities-create")
+        actions.remove("communities-delete")
+    if sorted:
+        actions.sort()
+    return actions
 
 
 def pass_community(f):
@@ -146,6 +168,7 @@ def mycommunities_ctx():
     }
 
 
+@register_breadcrumb(blueprint, 'main.base', _('Communities'))
 @blueprint.route('/', methods=['GET', ])
 def index():
     """Index page with uploader and list of existing depositions."""
@@ -158,6 +181,8 @@ def index():
     so = so or current_app.config.get('COMMUNITIES_DEFAULT_SORTING_OPTION')
 
     communities = Community.filter_communities(p, so).all()
+    communities = [c for c in communities \
+                   if _get_permission("communities-read", c).can()]
     for i, c in enumerate(communities):
         permission = _get_permission("communities-read", c)
         if not permission.can():
@@ -259,8 +284,7 @@ def new():
                 community = None
 
         if community:
-            permissions = list(current_permission_factory)
-            permissions.remove("communities-create")
+            permissions = _get_permissions()
             for permission in permissions:
                 db.session.add(ActionUsers(action=permission,
                                user=current_user,
@@ -458,18 +482,27 @@ def suggest():
         try:
             community.add_record(record)
         except:  # the record is already in the community
-            pass
-        record.commit()
-        flash(u"The record has been added to the community {}.".format(
-            community.title))
+            flash(u"The record already exists in the community {}.".format(
+                community.title), "warning")
+        else:
+            record.commit()
+            flash(u"The record has been added to the community {}.".format(
+                community.title))
     # otherwise we only suggest it and it will appear in the curate list
     else:
         try:
-            InclusionRequest.create(community=community, record=record)
-        except:  # the record is already in the community
-            pass
-        flash(u"The record has been suggested to the community {}.".format(
-            community.title))
+            InclusionRequest.create(community=community,
+                                    record=record,
+                                    user=current_user)
+        except InclusionRequestObsoleteError:  # the record is already in the community
+            flash(u"The record already exists in the community {}.".format(
+            community.title), "warning")
+        except InclusionRequestExistsError:
+            flash(u"The record has already been suggested "
+                  u"to the community {}.".format(community.title), "warning")
+        else:
+            flash(u"The record has been suggested "
+                  u"to the community {}.".format(community.title))
     db.session.commit()
     RecordIndexer().index_by_id(record.id)
     return redirect(url)
@@ -487,9 +520,7 @@ def team_management(community):
     Action = namedtuple("Action", ["title", "name", "existing"])
 
     actions = []
-    permissions = list(current_permission_factory)
-    permissions.remove("communities-create")
-    permissions.sort()
+    permissions = _get_permissions()
     for action in permissions:
         # 12 = len("communities-")
         a = Action(action[12:].replace("-", " ").capitalize(),
@@ -541,8 +572,7 @@ def team_add(community):
 
     :param community_id: ID of the community to manage.
     """
-    actions = list(current_permission_factory)
-    actions.sort()
+    actions = _get_permissions()
     default_action = ""
     if "default_action" in request.values:
         default_action = request.values["default_action"]

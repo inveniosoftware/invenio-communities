@@ -111,6 +111,16 @@ $ribbon-gradient-end-color: #70e1fa;
   .loader .loading img, .loading img {
     display: inline;
   }
+
+  .communities-action-box {
+    max-width: 55%
+  }
+
+  .communities-action-box .btn {
+    float: right !important;
+    margin-left: 3px;
+    margin-bottom: 3px;
+  }
 }
 
 .community-action form button {
