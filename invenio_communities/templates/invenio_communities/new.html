@@ -77,14 +77,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="deletemodal_label">Delete community?</h3>
+        <h3 id="deletemodal_label">Delete {{ config.COMMUNITIES_NAME }}?</h3>
       </div>
       <div class="modal-body">
         <div class="alert alert-danger">
           <h5>Warning</h5>
           <ul>
-            <li>If you proceed, this community will be deleted and you will loose all connections to records currently attached to this community and you will not be able to recover them.</li>
-            <li>Any external repository harvesting your community collection will stop working.</li>
+            <li>If you proceed, this {{ config.COMMUNITIES_NAME }} will be deleted, you will loose all connections to records currently attached to this {{ config.COMMUNITIES_NAME }} and you will not be able to recover them.</li>
+            <li>Any external repository harvesting your {{ config.COMMUNITIES_NAME }} will stop working.</li>
           </ul>
         </div>
       </div>
@@ -104,13 +104,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="deletemodal_label">Make the community public?</h3>
+        <h3 id="deletemodal_label">Make the {{ config.COMMUNITIES_NAME }} public?</h3>
       </div>
       <div class="modal-body">
         <div class="alert alert-danger">
           <h5>Warning</h5>
           <ul>
-            <li>If you proceed, this community will be accessible by everybody.</li>
+            <li>If you proceed, this {{ config.COMMUNITIES_NAME }} will be accessible by everybody.</li>
             <li>Only the read action will be authorized for everybody, they will not be able to perform any other actions.</li>
           </ul>
         </div>
@@ -125,15 +125,15 @@
     </div>
   </div>
   {% if community.is_deleted %}
-    <div class="alert alert-danger">This community will be deleted on {{ community.delete_time.strftime('%d-%m-%Y') }}.</div>
+    <div class="alert alert-danger">This {{ config.COMMUNITIES_NAME }} will be deleted on {{ community.delete_time.strftime('%d-%m-%Y') }}.</div>
   {% endif %}
   {% endif %}
   <div class="row">
     <div class="col-md-12">
       <h1>{% if is_new -%}
-      <i class="icon-plus"></i> {{ _("New community") }}
+      <i class="icon-plus"></i> {{ _("New ") + config.COMMUNITIES_NAME }}
       {%- else -%}
-      <i class="icon-edit"></i> {{ _("Edit community") }}
+      <i class="icon-edit"></i> {{ _("Edit ") + config.COMMUNITIES_NAME }}
       {%- endif %}</h1>
     </div>
   </div> <!-- /.row -->
@@ -146,21 +146,21 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <span class="panel-toggle text-muted pull-right"></span>
-            <a class="panel-toggle" data-toggle="collapse" data-idx="0" href="#collapse0">Community URLs<b class="caret"></b></a>
+            <a class="panel-toggle" data-toggle="collapse" data-idx="0" href="#collapse0">{{ config.COMMUNITIES_NAME|capitalize }} URLs<b class="caret"></b></a>
           </div>
           <div id="collapse0" class="panel-body collapse in">
             <div class="panel-inner">
               <fieldset>
                 <div class="form-group">
-                  <label class="control-label col-md-3"><i class="icon-share"></i>Community URL:</label>
+                  <label class="control-label col-md-3"><i class="icon-share"></i>{{ config.COMMUNITIES_NAME|capitalize }} URL:</label>
                   <div class="controls col-md-9"><a href="{{ community.community_url }}">{{ community.community_url }}</a>
-                    <p class="text-muted field-desc"><small>Above address links directly to your community collection.</small></p>
+                    <p class="text-muted field-desc"><small>Above address links directly to your {{ config.COMMUNITIES_NAME }} collection.</small></p>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-md-3"><i class="icon-share"></i>Upload URL:</label>
                   <div class="controls col-md-9"><a href="{{ community.upload_url }}">{{ community.upload_url }}</a>
-                    <p class="text-muted field-desc"><small>Above address will automatically ensure people who use it will have their record added to your community collection.</small></p>
+                    <p class="text-muted field-desc"><small>Above address will automatically ensure people who use it will have their record added to your {{ config.COMMUNITIES_NAME }}.</small></p>
                   </div>
                 </div>
                 <div class="form-group">
@@ -172,13 +172,13 @@
                 <div class="form-group">
                   <label class="control-label col-md-3"><i class="icon-share"></i>Team management URL:</label>
                   <div class="controls col-md-9"><a href="{{ community.community_team_url }}">{{ community.community_team_url }}</a>
-                    <p class="text-muted field-desc"><small>Above address links to your private team management URL. You will find all users that have permissions to this community, and you will be able to remove some or add new ones.</small></p>
+                    <p class="text-muted field-desc"><small>Above address links to your private team management URL. You will find all users that have permissions to this {{ config.COMMUNITIES_NAME }}, and you will be able to remove some or add new ones.</small></p>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-md-3"><i class="icon-share"></i>Harvesting URL:</label>
                   <div class="controls col-md-9"><a href="{{ community.oaiset_url }}">{{config.CFG_SITE_URL}}{{ community.oaiset_url }}</a>
-                    <p class="text-muted field-desc"><small>Above address links to a OAI-PMH feed, which can be used by other digital repositories to harvest this community.</small></p>
+                    <p class="text-muted field-desc"><small>Above address links to a OAI-PMH feed, which can be used by other digital repositories to harvest this {{ config.COMMUNITIES_NAME }}.</small></p>
                   </div>
                 </div> <!-- /.form-group -->
               </fieldset>
@@ -207,7 +207,7 @@
                   </label>
                   <div class="controls col-md-9">
                     <input class="form-control" type="text" disabled value="{{community.id}}">
-                    <p class="text-muted help-block field-desc"><small>The identifier cannot be changed after creation of the community.</small></p>
+                    <p class="text-muted help-block field-desc"><small>The identifier cannot be changed after creation of the {{ config.COMMUNITIES_NAME }}.</small></p>
                   </div>
                 </div>
               </fieldset>

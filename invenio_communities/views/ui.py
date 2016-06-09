@@ -32,7 +32,6 @@ from functools import partial, wraps
 
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
-from flask.ext.breadcrumbs import register_breadcrumb
 from flask_babelex import gettext as _
 from flask_login import current_user, login_required
 from invenio_db import db
@@ -168,7 +167,6 @@ def mycommunities_ctx():
     }
 
 
-@register_breadcrumb(blueprint, 'main.base', _('Communities'))
 @blueprint.route('/', methods=['GET', ])
 def index():
     """Index page with uploader and list of existing depositions."""
@@ -290,7 +288,9 @@ def new():
                                user=current_user,
                                argument=community_id))
             db.session.commit()
-            flash("Community was successfully created.", category='success')
+            flash("{} was successfully created.".format(
+                    current_app.config["COMMUNITIES_NAME"].capitalize()),
+                  category='success')
             return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
@@ -329,7 +329,9 @@ def edit(community):
 
         if not form.logo.errors:
             db.session.commit()
-            flash("Community successfully edited.", category='success')
+            flash("{} successfully edited.".format(
+                        current_app.config["COMMUNITIES_NAME"].capitalize()),
+                  category='success')
             return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
@@ -355,10 +357,14 @@ def delete(community):
     if deleteform.validate_on_submit():
         community.delete()
         db.session.commit()
-        flash("Community was deleted.", category='success')
+        flash("{} was deleted.".format(
+                        current_app.config["COMMUNITIES_NAME"].capitalize()),
+              category='success')
         return redirect(url_for('.index'))
     else:
-        flash("Community could not be deleted.", category='warning')
+        flash("{} could not be deleted.".format(
+                        current_app.config["COMMUNITIES_NAME"].capitalize()),
+              category='warning')
         return redirect(url_for('.edit', community_id=community.id))
 
 
@@ -372,7 +378,9 @@ def make_public(community):
     ActionUsers.query_by_action(
             _get_needs("communities-read", community.id)).delete()
     db.session.commit()
-    flash("Community is now public.", category='success')
+    flash("{} is now public.".format(
+                        current_app.config["COMMUNITIES_NAME"].capitalize()),
+          category='success')
     return redirect(url_for('.edit', community_id=community.id))
 
 
@@ -454,15 +462,20 @@ def suggest():
     if "url" in request.values and request.values["url"]:
         url = request.values["url"]
     if not "community" in request.values:
-        flash(u"Error, no community given", "danger")
+        flash(u"Error, no {} given".format(
+                        current_app.config["COMMUNITIES_NAME"]),
+              "danger")
         return redirect(url)
     community_id = request.values["community"]
     community = Community.get(community_id)
     if not community:
-        flash(u"Error, unknown community {}".format(community_id), "danger")
+        flash(u"Error, unknown {} {}".format(
+                    current_app.config["COMMUNITIES_NAME"], community_id),
+              "danger")
         return redirect(url)
     if not _get_permission("communities-read", community):
-        flash(u"Error, you don't have permissions on the community {}".format(
+        flash(u"Error, you don't have permissions on the {} {}".format(
+            current_app.config["COMMUNITIES_NAME"],
             community_id), "danger")
         return redirect(url)
     if not "recpid" in request.values:
@@ -482,11 +495,13 @@ def suggest():
         try:
             community.add_record(record)
         except:  # the record is already in the community
-            flash(u"The record already exists in the community {}.".format(
+            flash(u"The record already exists in the {} {}.".format(
+                current_app.config["COMMUNITIES_NAME"],
                 community.title), "warning")
         else:
             record.commit()
-            flash(u"The record has been added to the community {}.".format(
+            flash(u"The record has been added to the {} {}.".format(
+                current_app.config["COMMUNITIES_NAME"],
                 community.title))
     # otherwise we only suggest it and it will appear in the curate list
     else:
@@ -495,14 +510,19 @@ def suggest():
                                     record=record,
                                     user=current_user)
         except InclusionRequestObsoleteError:  # the record is already in the community
-            flash(u"The record already exists in the community {}.".format(
+            flash(u"The record already exists in the {} {}.".format(
+            current_app.config["COMMUNITIES_NAME"],
             community.title), "warning")
         except InclusionRequestExistsError:
             flash(u"The record has already been suggested "
-                  u"to the community {}.".format(community.title), "warning")
+                  u"to the {} {}.".format(
+                        current_app.config["COMMUNITIES_NAME"],
+                        community.title), "warning")
         else:
             flash(u"The record has been suggested "
-                  u"to the community {}.".format(community.title))
+                  u"to the {} {}.".format(
+                                current_app.config["COMMUNITIES_NAME"],
+                                community.title))
     db.session.commit()
     RecordIndexer().index_by_id(record.id)
     return redirect(url)

@@ -22,7 +22,7 @@
 #}
 
 {%- if community.logo_ext %}
-<small class="text-muted">{{_("Community")}}</small>
+<small class="text-muted">{{ config.COMMUNITIES_NAME|capitalize }}</small>
 <div>
   <br>
   <img src="{{ community.logo_url }}" style="display: block; margin: auto; max-width: 100%; max-height: 200px;">
@@ -43,7 +43,7 @@
 <hr />
 <dl>
   {%- if community.owner.profile and community.owner.profile.username %}
-    <dt>{{ _('Curated by:') }}</dt><dd>{{ community.owner.profile.username }}</dd>
+    <dt>{{ _('Curated by:') }}</dt><dd>{{ community.owner.email }}</dd>
   {%- endif %}
   <dt>{{ _('Curation policy:') }}</dt><dd>{{ community.curation_policy|safe|default(_('Not specified'), true) }}</dd>
   <dt>{{ _('Created:') }}</dt><dd>{{ community.created|dateformat(format='long') }}</dd>

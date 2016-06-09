@@ -27,5 +27,5 @@ Requested by: {{ requester.username }} ({{ requester.email }})
 Record Title: {{ record['title'] }}
 Record Description: {{ record['description'] | striptags }}
 
-You can accept or reject this record in your community curation page:
+You can accept or reject this record in your {{ config.COMMUNITIES_NAME }} curation page:
 {{ curate_link }}

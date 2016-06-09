@@ -20,10 +20,10 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
-<small class="text-muted">Provisional community collection</small>
+<small class="text-muted">Provisional {{ config.COMMUNITIES_NAME }} collection</small>
 <h4>{{community.title}}</h4>
 <hr>
 {% if community.has_logo %}<img src="{{community.logo_url}}" class="pull-right" style="padding: 2px;">{% endif %}
 
-<p>This is a restricted provisional community collection used by the curator to accept/reject new uploads for this community.</p>
-<p>To browse the community collection, go to the <a href="{{community.community_url}}">public community collection</a>.</p>
+<p>This is a restricted provisional {{ config.COMMUNITIES_NAME }} used by the curator to accept/reject new uploads for this {{ config.COMMUNITIES_NAME }}.</p>
+<p>To browse the {{ config.COMMUNITIES_NAME }}, go to the <a href="{{community.community_url}}">public {{ config.COMMUNITIES_NAME }}</a>.</p>

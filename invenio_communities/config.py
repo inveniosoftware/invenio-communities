@@ -29,6 +29,12 @@ from datetime import timedelta
 
 import pkg_resources
 
+COMMUNITIES_NAME = "community"
+"""Used to tell how we name the communities in invenio"""
+
+COMMUNITIES_NAME_PLURAL = "communities"
+"""Used to tell how we name the communities in invenio"""
+
 COMMUNITIES_REQUEST_EXPIRY_TIME = timedelta(days=365)
 """Time after which the inclusion requests automatically expire."""
 

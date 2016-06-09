@@ -21,9 +21,9 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 <a href="{{ community.upload_url }}" class="btn btn-primary btn-lg signup pull-right">Upload</a>
-<h4>Want your upload to appear in this community?</h4>
+<h4>Want your upload to appear in this {{ config.COMMUNITIES_NAME }}?</h4>
 <ul>
-    <li>Click the button to upload straight to this community.</li>
-    <li>The community curator is notified, and will either accept or reject your upload (see community curation policy above).</li>
-    <li>{{ _("If your upload is rejected by the curator, it will still be available on %(name)s, just not in this community.", name=config.CFG_SITE_NAME) }}</li>
+    <li>Click the button to upload straight to this {{ config.COMMUNITIES_NAME }}.</li>
+    <li>The {{ config.COMMUNITIES_NAME }} curator is notified, and will either accept or reject your upload (see {{ config.COMMUNITIES_NAME }} curation policy above).</li>
+    <li>{{ _("If your upload is rejected by the curator, it will still be available on %(name)s, just not in this ", name=config.CFG_SITE_NAME) + config.COMMUNITIES_NAME }}</li>
 </ul>

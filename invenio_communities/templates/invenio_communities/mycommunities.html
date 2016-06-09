@@ -26,9 +26,9 @@
   {% if mycommunities %}
   <h2>
     {% if mycommunities|length > 1 %}
-      {{ _('My communities') }}
+      {{ _('My ') + config.COMMUNITIES_NAME_PLURAL }}
     {% else %}
-      {{ _('My community') }}
+      {{ _('My ') + config.COMMUNITIES_NAME }}
     {% endif %}
     {% if permission_create().can() %}
       <div class="pull-right">
@@ -70,18 +70,18 @@
   {% endfor %}
   </table>
   {% else %}
-  <p class="muted">{{ _('You currently have no community.') }}</p>
+  <p class="muted">{{ _('You currently have no ' + config.COMMUNITIES_NAME + '.') }}</p>
     {% if permission_create().can() %}
       <h4>
         <div class="pull-right">
           &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>
         </div>
-        <strong>{{ _('Want your own community?') }}</strong>
+        <strong>{{ _('Want your own ' + config.COMMUNITIES_NAME + '?') }}</strong>
       </h4>
       <p>{{ _('It\'s easy. Just click the button to get started.') }}</p>
       <ul>
-        <li><strong>{{ _('Curate') }}</strong> &mdash; {{ _('accept/reject what goes in your community collection.') }}</li>
-        <li><strong>{{ _('Export') }}</strong> &mdash; {{ _('your community collection is automatically exported via OAI-PMH') }}</li>
+        <li><strong>{{ _('Curate') }}</strong> &mdash; {{ _('accept/reject what goes in your ' + config.COMMUNITIES_NAME) }}</li>
+        <li><strong>{{ _('Export') }}</strong> &mdash; {{ _('your ' + config.COMMUNITIES_NAME_PLURAL + ' is automatically exported via OAI-PMH') }}</li>
         <li><strong>{{ _('Upload') }}</strong> &mdash; {{ _('get custom upload link to send to people') }}</li>
       </ul>
     {% endif %}
@@ -91,12 +91,12 @@
     <div class="pull-right">
       &nbsp;<a href="{{url_for('security.register')}}" class="btn btn-warning btn-large signup">{{ _('Sign Up') }}</a>
     </div>
-    <strong>{{ _('Want to be part of a community?') }}</strong>
+    <strong>{{ _('Want to be part of a ' + config.COMMUNITIES_NAME + '?') }}</strong>
   </h4>
   <p>{{ _('It\'s easy. Just click the button to get started.') }}</p>
   <ul>
     <li><strong>{{ _('Search') }}</strong> {{ _('and get better results from a filtered set.') }}</li>
-    <li><strong>{{ _('Suggest') }}</strong> {{ _('books and participate in your community.') }}</li>
+    <li><strong>{{ _('Suggest') }}</strong> {{ _('books and participate in your ' + config.COMMUNITIES_NAME) }}</li>
   </ul>
 {% endif %}
 </div>
