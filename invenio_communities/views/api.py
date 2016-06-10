@@ -40,6 +40,8 @@ blueprint = Blueprint(
     'invenio_communities_rest',
     __name__,
     url_prefix='/communities',
+    template_folder='../templates',
+    static_folder='../static',
 )
 
 
