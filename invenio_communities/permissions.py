@@ -30,15 +30,15 @@ from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
 
 
-CommunityCreateActionNeed = partial(ParameterizedActionNeed, 'communities-create')
-"""Action need for reading a community."""
+CommunityAdminActionNeed = partial(ParameterizedActionNeed, 'communities-admin')
+"""Action need for create or delete a community."""
 
-communities_create = CommunityCreateActionNeed(None)
-"""Read communities action need."""
+communities_admin = CommunityAdminActionNeed(None)
+"""Admin communities action need."""
 
-def create_permission_factory(community=""):
-    """Factory for creating create permissions for communities."""
-    return DynamicPermission(CommunityCreateActionNeed(None))
+def admin_permission_factory(community=""):
+    """Factory for creating admin permissions for communities."""
+    return DynamicPermission(CommunityAdminActionNeed(None))
 
 CommunityReadActionNeed = partial(ParameterizedActionNeed, 'communities-read')
 """Action need for reading a community."""
@@ -50,25 +50,15 @@ def read_permission_factory(community):
     """Factory for creating read permissions for communities."""
     return DynamicPermission(CommunityReadActionNeed(str(community.id)))
 
-CommunityEditActionNeed = partial(ParameterizedActionNeed, 'communities-edit')
-"""Action need for editing a community."""
+CommunityManageActionNeed = partial(ParameterizedActionNeed, 'communities-manage')
+"""Action need for editing or manage team of a community."""
 
-communities_edit = CommunityEditActionNeed(None)
-"""Edit communities action need."""
+communities_manage = CommunityManageActionNeed(None)
+"""Manage communities action need."""
 
-def edit_permission_factory(community):
-    """Factory for creating edit permissions for communities."""
-    return DynamicPermission(CommunityEditActionNeed(str(community.id)))
-
-CommunityDeleteActionNeed = partial(ParameterizedActionNeed, 'communities-delete')
-"""Action need for deleting a community."""
-
-communities_delete = CommunityDeleteActionNeed(None)
-"""Delete communities action need."""
-
-def delete_permission_factory(community):
-    """Factory for creating delete permissions for communities."""
-    return DynamicPermission(CommunityDeleteActionNeed(str(community.id)))
+def manage_permission_factory(community):
+    """Factory for creating manage permissions for communities."""
+    return DynamicPermission(CommunityManageActionNeed(str(community.id)))
 
 CommunityCurateActionNeed = partial(ParameterizedActionNeed, 'communities-curate')
 """Action need for editing a community."""
@@ -79,13 +69,3 @@ communities_curate = CommunityCurateActionNeed(None)
 def curate_permission_factory(community):
     """Factory for creating curate permissions for communities."""
     return DynamicPermission(CommunityCurateActionNeed(str(community.id)))
-
-CommunityTeamActionNeed = partial(ParameterizedActionNeed, 'communities-team-management')
-"""Action need for team management in a community."""
-
-communities_team = CommunityTeamActionNeed(None)
-"""Team management communities action need."""
-
-def team_permission_factory(community):
-    """Factory for creating curate permissions for communities."""
-    return DynamicPermission(CommunityTeamActionNeed(str(community.id)))

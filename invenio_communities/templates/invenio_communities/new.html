@@ -274,10 +274,10 @@
       {%- endfor %}
       </div>
       <div class="well clearfix" style="margin-top: 10px;">
-        {% if not community.is_deleted and not is_new and permission_team(community).can() and permission_edit(community).can() %}
+        {% if not community.is_deleted and not is_new and (permission_manage(community).can() or permission_admin.can()) %}
         <button type="button" role="button" data-toggle="modal" class="btn btn-warning pull-left{% if is_new %} hide{% endif %}" data-target="#publicmodal" style="margin-right: 5px;"><i class="icon-pencil  icon-white"></i> Make public</button>
         {% endif %}
-        {% if not community.is_deleted and not is_new and permission_delete(community).can() %}
+        {% if not community.is_deleted and not is_new and (permission_cadmin(community).can() or permission_admin.can()) %}
         <button type="button" role="button" data-toggle="modal" class="btn btn-danger pull-left{% if is_new %} hide{% endif %}" data-target="#deletemodal"><i class="icon-trash  icon-white"></i> Delete</button>
         {% endif %}
         <span class="pull-right">

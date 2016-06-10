@@ -29,33 +29,25 @@ from __future__ import absolute_import, print_function
 from flask import current_app
 from werkzeug.local import LocalProxy
 
-from .permissions import (CommunityCreateActionNeed,
+from .permissions import (CommunityAdminActionNeed,
                           CommunityReadActionNeed,
-                          CommunityEditActionNeed,
-                          CommunityDeleteActionNeed,
-                          CommunityCurateActionNeed,
-                          CommunityTeamActionNeed)
+                          CommunityManageActionNeed,
+                          CommunityCurateActionNeed)
 
 current_permission_factory = {
-    "communities-create": LocalProxy(lambda:
-        current_app.extensions["invenio-communities"].create_permission_factory),
+    "communities-admin": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].admin_permission_factory),
     "communities-read": LocalProxy(lambda:
         current_app.extensions["invenio-communities"].read_permission_factory),
-    "communities-edit": LocalProxy(lambda:
-        current_app.extensions["invenio-communities"].edit_permission_factory),
-    "communities-delete": LocalProxy(lambda:
-        current_app.extensions["invenio-communities"].delete_permission_factory),
+    "communities-manage": LocalProxy(lambda:
+        current_app.extensions["invenio-communities"].manage_permission_factory),
     "communities-curate": LocalProxy(lambda:
-        current_app.extensions["invenio-communities"].curate_permission_factory),
-    "communities-team-management": LocalProxy(lambda:
-        current_app.extensions["invenio-communities"].team_permission_factory)
+        current_app.extensions["invenio-communities"].curate_permission_factory)
 }
 
 needs = {
-    "communities-create": CommunityCreateActionNeed,
+    "communities-admin": CommunityAdminActionNeed,
     "communities-read": CommunityReadActionNeed,
-    "communities-edit": CommunityEditActionNeed,
-    "communities-delete": CommunityDeleteActionNeed,
-    "communities-curate": CommunityCurateActionNeed,
-    "communities-team-management": CommunityTeamActionNeed
+    "communities-manage": CommunityManageActionNeed,
+    "communities-curate": CommunityCurateActionNeed
 }

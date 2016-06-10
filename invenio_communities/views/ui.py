@@ -24,21 +24,21 @@
 
 """Invenio module that adds support for communities."""
 
-from __future__ import absolute_import, print_function
-
 import copy
 from collections import namedtuple
 from functools import partial, wraps
 
-from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
-    render_template, request, url_for
+from flask import (Blueprint, abort, current_app, flash, jsonify, redirect,
+                   render_template, request, url_for)
 from flask_babelex import gettext as _
 from flask_login import current_user, login_required
+from flask_principal import ActionNeed
 from invenio_db import db
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
 
+from invenio_access import DynamicPermission
 from invenio_access.models import ActionUsers
 from invenio_accounts.models import User
 from invenio_communities.errors import (InclusionRequestExistsError,
@@ -50,7 +50,6 @@ from invenio_communities.forms import (CommunityForm,
 from invenio_communities.models import (Community,
                                         FeaturedCommunity,
                                         InclusionRequest)
-from invenio_communities.permissions import CommunityCurateActionNeed
 from invenio_communities.proxies import current_permission_factory, needs
 from invenio_communities.utils import Pagination, render_template_to_string
 
@@ -100,8 +99,7 @@ def _get_permissions(remove_forbidden=True, sorted=True):
     """
     actions = list(current_permission_factory)
     if remove_forbidden:
-        actions.remove("communities-create")
-        actions.remove("communities-delete")
+        actions.remove("communities-admin")
     if sorted:
         actions.sort()
     return actions
@@ -124,9 +122,10 @@ def permission_required(action):
         @wraps(f)
         def inner(community, *args, **kwargs):
             permission = _get_permission(action, community)
-            if not permission.can():
-                abort(403)
-            return f(community, *args, **kwargs)
+            if permission.can() \
+                    or DynamicPermission(ActionNeed('admin-access')).can():
+                return f(community, *args, **kwargs)
+            abort(403)
         return inner
     return decorator
 
@@ -137,9 +136,10 @@ def permission_required_no_id(action):
         @wraps(f)
         def inner(*args, **kwargs):
             permission = _get_permission(action)
-            if not permission.can():
-                abort(403)
-            return f(*args, **kwargs)
+            if permission.can() \
+                    or DynamicPermission(ActionNeed('admin-access')).can():
+                return f(*args, **kwargs)
+            abort(403)
         return inner
     return decorator
 
@@ -155,15 +155,16 @@ def format_item(item, template, name='item'):
 def mycommunities_ctx():
     """Helper method for return ctx used by many views."""
     communities = Community.filter_communities("", "title").all()
-    mycommunities = [c for c in communities if _get_permission("communities-read", c).can()]
+    mycommunities = [c for c in communities
+                     if _get_permission("communities-read", c).can()
+                     or DynamicPermission(ActionNeed('admin-access')).can()]
     return {
         "mycommunities": mycommunities,
-        "permission_create": partial(_get_permission, "communities-create"),
+        "permission_admin": DynamicPermission(ActionNeed('admin-access')),
+        "permission_cadmin": partial(_get_permission, "communities-admin"),
         "permission_curate": partial(_get_permission, "communities-curate"),
-        "permission_delete": partial(_get_permission, "communities-delete"),
-        "permission_edit": partial(_get_permission, "communities-edit"),
+        "permission_manage": partial(_get_permission, "communities-manage"),
         "permission_read": partial(_get_permission, "communities-read"),
-        "permission_team": partial(_get_permission, "communities-team-management")
     }
 
 
@@ -179,12 +180,9 @@ def index():
     so = so or current_app.config.get('COMMUNITIES_DEFAULT_SORTING_OPTION')
 
     communities = Community.filter_communities(p, so).all()
-    communities = [c for c in communities \
-                   if _get_permission("communities-read", c).can()]
-    for i, c in enumerate(communities):
-        permission = _get_permission("communities-read", c)
-        if not permission.can():
-            del communities[i]
+    communities = [c for c in communities
+                   if _get_permission("communities-read", c).can()
+                   or DynamicPermission(ActionNeed('admin-access')).can()]
     featured_community = FeaturedCommunity.get_featured_or_none()
     form = SearchForm(p=p)
     per_page = 10
@@ -251,7 +249,7 @@ def generic_item(community, template, **extra_ctx):
 
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @login_required
-@permission_required_no_id('communities-create')
+@permission_required_no_id('communities-admin')
 def new():
     """Create a new community."""
     form = CommunityForm(request.values)
@@ -303,7 +301,7 @@ def new():
 @blueprint.route('/<string:community_id>/edit/', methods=['GET', 'POST'])
 @login_required
 @pass_community
-@permission_required('communities-edit')
+@permission_required('communities-manage')
 def edit(community):
     """Create or edit a community."""
     form = EditCommunityForm(request.values, community)
@@ -343,7 +341,7 @@ def edit(community):
 @blueprint.route('/<string:community_id>/delete/', methods=['POST'])
 @login_required
 @pass_community
-@permission_required('communities-delete')
+@permission_required('communities-admin')
 def delete(community):
     """Delete a community."""
     deleteform = DeleteCommunityForm(request.values)
@@ -356,6 +354,11 @@ def delete(community):
 
     if deleteform.validate_on_submit():
         community.delete()
+        # we delete all the permissions associated
+        permissions = _get_permissions(False, False)
+        for p in permissions:
+            ActionUsers.query.filter_by(action=p,
+                                        argument=community.id).delete()
         db.session.commit()
         flash("{} was deleted.".format(
                         current_app.config["COMMUNITIES_NAME"].capitalize()),
@@ -371,12 +374,11 @@ def delete(community):
 @blueprint.route('/<string:community_id>/make-public/', methods=['POST'])
 @login_required
 @pass_community
-@permission_required('communities-edit')
-@permission_required('communities-team-management')
+@permission_required('communities-manage')
 def make_public(community):
     """Makes a community public."""
-    ActionUsers.query_by_action(
-            _get_needs("communities-read", community.id)).delete()
+    ActionUsers.query.filter_by(action="communities-read",
+                                argument=community.id).delete()
     db.session.commit()
     flash("{} is now public.".format(
                         current_app.config["COMMUNITIES_NAME"].capitalize()),
@@ -473,7 +475,8 @@ def suggest():
                     current_app.config["COMMUNITIES_NAME"], community_id),
               "danger")
         return redirect(url)
-    if not _get_permission("communities-read", community):
+    if not _get_permission("communities-read", community).can() \
+            and not DynamicPermission(ActionNeed('admin-access')).can():
         flash(u"Error, you don't have permissions on the {} {}".format(
             current_app.config["COMMUNITIES_NAME"],
             community_id), "danger")
@@ -531,7 +534,7 @@ def suggest():
 @blueprint.route('/<string:community_id>/team/')
 @login_required
 @pass_community
-@permission_required('communities-team-management')
+@permission_required('communities-manage')
 def team_management(community):
     """Team management for communities.
 
@@ -562,7 +565,7 @@ def team_management(community):
 @blueprint.route('/<string:community_id>/team/delete-user/', methods=['POST'])
 @login_required
 @pass_community
-@permission_required('communities-team-management')
+@permission_required('communities-manage')
 def team_delete_user(community):
     """page to delete a user. redirect to team_management
 
@@ -586,7 +589,7 @@ def team_delete_user(community):
 @blueprint.route('/<string:community_id>/team/add/', methods=['GET', 'POST'])
 @login_required
 @pass_community
-@permission_required('communities-team-management')
+@permission_required('communities-manage')
 def team_add(community):
     """Add a member to a team community
 
@@ -612,7 +615,7 @@ def team_add(community):
 @blueprint.route('/<string:community_id>/team/add-user/', methods=['POST'])
 @login_required
 @pass_community
-@permission_required('communities-team-management')
+@permission_required('communities-manage')
 def team_add_user(community):
     """page to add a user. redirect to team_management
 

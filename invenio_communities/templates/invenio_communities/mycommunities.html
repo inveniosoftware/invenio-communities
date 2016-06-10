@@ -30,7 +30,7 @@
     {% else %}
       {{ _('My ') + config.COMMUNITIES_NAME }}
     {% endif %}
-    {% if permission_create().can() %}
+    {% if permission_cadmin().can() or permission_admin.can() %}
       <div class="pull-right">
         &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>
       </div>
@@ -51,16 +51,14 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            {% if permission_read(obj).can() %}
+            {% if permission_read(obj).can() or permission_admin.can() %}
               <li><a href="{{url_for('.detail', community_id=obj.id)}}"><i class="icon fa fa-book"></i> {{ _('View') }}</a></li>
             {% endif %}
-            {% if permission_curate(obj).can() %}
+            {% if permission_curate(obj).can() or permission_admin.can() %}
               <li><a href="{{url_for('.curate', community_id=obj.id)}}"><i class="icon fa fa-check"></i> {{ _('Curate') }}</a></li>
             {% endif %}
-            {% if permission_edit(obj).can() %}
+            {% if permission_manage(obj).can() or permission_admin.can() %}
               <li><a href="{{url_for('.edit', community_id=obj.id)}}"><i class="icon fa fa-pencil"></i> {{ _('Edit') }}</a></li>
-            {% endif %}
-            {% if permission_team(obj).can() %}
               <li><a href="{{url_for('.team_management', community_id=obj.id)}}"><i class="icon fa fa-users"></i> {{ _('Manage team') }}</a></li>
             {% endif %}
           </ul>
@@ -71,7 +69,7 @@
   </table>
   {% else %}
   <p class="muted">{{ _('You currently have no ' + config.COMMUNITIES_NAME + '.') }}</p>
-    {% if permission_create().can() %}
+    {% if permission_cadmin().can() or permission_admin.can() %}
       <h4>
         <div class="pull-right">
           &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>

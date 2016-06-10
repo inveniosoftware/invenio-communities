@@ -131,18 +131,14 @@ setup(
             'messages = invenio_communities',
         ],
         'invenio_access.actions': [
-            'communities_create'
-            ' = invenio_communities.permissions:communities_create',
+            'communities_admin'
+            ' = invenio_communities.permissions:communities_admin',
             'communities_read'
             ' = invenio_communities.permissions:communities_read',
-            'communities_edit'
-            ' = invenio_communities.permissions:communities_edit',
-            'communities_delete'
-            ' = invenio_communities.permissions:communities_delete',
+            'communities_manage'
+            ' = invenio_communities.permissions:communities_manage',
             'communities_curate'
             ' = invenio_communities.permissions:communities_curate',
-            'communities_team'
-            ' = invenio_communities.permissions:communities_team'
         ],
         'invenio_admin.views': [
             'invenio_communities_communities = '
