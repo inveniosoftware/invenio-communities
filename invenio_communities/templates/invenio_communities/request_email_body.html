@@ -28,4 +28,4 @@ Record Title: {{ record['title'] }}
 Record Description: {{ record['description'] | striptags }}
 
 You can accept or reject this record in your community curation page:
-{{ config.THEME_SITEURL }}{{ url_for('invenio_communities.curate', community_id=community.id) }}
+{{ curate_link }}

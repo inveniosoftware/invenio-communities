@@ -149,10 +149,16 @@ def format_request_email_templ(increq, template, **ctx):
     :rtype: str
     """
     # Add minimal information to the contex (without overwriting).
+    curate_link = '{site_url}/communities/{id}/curate/'.format(
+        site_url=current_app.config['THEME_SITEURL'],
+        id=increq.community.id),
+
     min_ctx = dict(
         record=Record.get_record(increq.record.id),
         requester=increq.user,
-        community=increq.community)
+        community=increq.community,
+        curate_link=curate_link,
+    )
     for k, v in min_ctx.items():
         if k not in ctx:
             ctx[k] = v

@@ -290,6 +290,7 @@ class Community(db.Model, Timestamp):
 
         assert self.id not in record[key]
         record[key].append(self.id)
+        record[key] = sorted(record[key])
 
         if current_app.config["COMMUNITIES_OAI_ENABLED"]:
             from invenio_oaiserver.models import OAISet
@@ -408,7 +409,7 @@ class Community(db.Model, Timestamp):
         :rtype: str
         """
         return current_app.config['COMMUNITIES_OAI_FORMAT'].format(
-                community_id=self.id)
+            community_id=self.id)
 
     @property
     def oaiset_url(self):
