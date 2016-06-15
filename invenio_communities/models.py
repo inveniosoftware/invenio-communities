@@ -377,12 +377,11 @@ class Community(db.Model, Timestamp):
         :rtype: str
         """
         if self.logo_ext:
-            buc = current_app.config['COMMUNITIES_BUCKET_UUID']
-            key = "{0}/logo.{1}".format(self.id, self.logo_ext)
-            return url_for(
-                'invenio_files_rest.object_api', bucket_id=buc, key=key)
-        else:
-            return None
+            return '/api/files/{bucket}/{key}'.format(
+                bucket=current_app.config['COMMUNITIES_BUCKET_UUID'],
+                key="{0}/logo.{1}".format(self.id, self.logo_ext),
+            )
+        return None
 
     @property
     def community_url(self):
