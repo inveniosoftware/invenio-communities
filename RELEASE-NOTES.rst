@@ -1,8 +1,8 @@
 ==============================
- Invenio-Communities v1.0.0a7
+ Invenio-Communities v1.0.0a8
 ==============================
 
-Invenio-Communities v1.0.0a7 was released on June 13, 2016.
+Invenio-Communities v1.0.0a8 was released on June 15, 2016.
 
 About
 -----
@@ -19,7 +19,7 @@ What's new
 Installation
 ------------
 
-   $ pip install invenio-communities==1.0.0a7
+   $ pip install invenio-communities==1.0.0a8
 
 Documentation
 -------------
