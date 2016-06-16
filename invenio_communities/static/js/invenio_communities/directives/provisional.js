@@ -38,7 +38,7 @@ define([], function(){
     function link(scope, element, attrs, vm) {
       scope.communityCurationEndpoint = attrs.communityCurationEndpoint;
       scope.recordTemplate = attrs.recordTemplate;
-      scope.handleClick = function(action, recid) {
+      scope.handleCommunityClick = function(action, recid) {
           // scope.isPressed=true;
           $http({
             method: 'POST',
@@ -53,7 +53,7 @@ define([], function(){
             }, function errorCallback(result) {
               // flash error
             });
-      }
+      };
     }
 
     /**
