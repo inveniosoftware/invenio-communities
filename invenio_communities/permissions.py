@@ -24,8 +24,6 @@
 
 """Permissions for communities."""
 from functools import partial
-from flask_login import current_user
-from flask_principal import ActionNeed
 from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
 

@@ -27,9 +27,12 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, abort
+from flask_principal import ActionNeed
 from invenio_rest import ContentNegotiatedMethodView
 from webargs import fields
 from webargs.flaskparser import use_kwargs
+
+from invenio_access import DynamicPermission
 
 from invenio_communities.links import default_links_item_factory, \
     default_links_pagination_factory
@@ -56,10 +59,11 @@ def get_communities(with_deleted=False):
     communities = Community.filter_communities("",
                                                "title",
                                                with_deleted).all()
-    for i, c in enumerate(communities):
-        permission = current_permission_factory["communities-read"](c)
-        if not permission.can():
-            del communities[i]
+    if not DynamicPermission(ActionNeed('admin-access')).can():
+        for i, c in enumerate(communities):
+            permission = current_permission_factory["communities-read"](c)
+            if not permission.can():
+                del communities[i]
     return communities
 
 

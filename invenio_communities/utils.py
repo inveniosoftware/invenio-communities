@@ -30,7 +30,7 @@ from io import SEEK_END, SEEK_SET
 from math import ceil
 from uuid import UUID
 
-from flask import current_app
+from flask import current_app, url_for
 from invenio_db import db
 from invenio_files_rest.errors import FilesException
 from invenio_files_rest.models import Bucket, Location, ObjectVersion
@@ -158,9 +158,8 @@ def format_request_email_templ(increq, template, **ctx):
     :rtype: str
     """
     # Add minimal information to the contex (without overwriting).
-    curate_link = '{site_url}/communities/{id}/curate/'.format(
-        site_url=current_app.config['THEME_SITEURL'],
-        id=increq.community.id),
+    curate_link = url_for('invenio_communities.curate',
+                          community_id=increq.community.id)
 
     min_ctx = dict(
         record=Record.get_record(increq.record.id),
