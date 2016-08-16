@@ -75,7 +75,7 @@ setup_requires = [
 
 install_requires = [
     'Flask-BabelEx>=0.9.2',
-    'invenio-accounts>=1.0.0a10',
+    'invenio-accounts>=1.0.0a13',
     'invenio-access>=1.0.0a5',
     'invenio-assets>=1.0.0a4',
     'invenio-db>=1.0.0a9',

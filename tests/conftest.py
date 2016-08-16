@@ -120,7 +120,7 @@ def db(app):
 @pytest.fixture()
 def user():
     """Create a example user."""
-    return create_test_user()
+    return create_test_user('test@test.org')
 
 
 @pytest.fixture()
