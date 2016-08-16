@@ -166,9 +166,9 @@ def test_model_featured_community(app, db, communities):
     t1 = datetime.now()
 
     # Create two community featurings starting at different times
-    fc1 = FeaturedCommunity(id_community=comm1.id,
+    fc1 = FeaturedCommunity(community_id=comm1.id,
                             start_date=t1 + timedelta(days=1))
-    fc2 = FeaturedCommunity(id_community=comm2.id,
+    fc2 = FeaturedCommunity(community_id=comm2.id,
                             start_date=t1 + timedelta(days=3))
     db.session.add(fc1)
     db.session.add(fc2)

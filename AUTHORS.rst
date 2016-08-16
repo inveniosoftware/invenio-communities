@@ -39,3 +39,4 @@ Invenio module that adds support for communities.
 - Sami Hiltunen <sami.mikael.hiltunen@cern.ch>
 - Tibor Simko <tibor.simko@cern.ch>
 - Yoan Blanc <yoan.blanc@cern.ch>
+- Alizee Pace <alizee.pace@gmail.com>

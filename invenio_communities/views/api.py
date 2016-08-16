@@ -161,7 +161,7 @@ class CommunityDetailsResource(ContentNegotiatedMethodView):
                 Content-Length: 334
                 Content-Type: application/json
                 {
-                    "id_user": 1,
+                    "user_id": 1,
                     "description": "",
                     "title": "",
                     "created": "2016-04-05T14:56:37.051462",

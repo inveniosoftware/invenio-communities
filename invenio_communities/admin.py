@@ -79,10 +79,10 @@ class InclusionRequestModelView(ModelView):
     can_delete = True
     can_view_details = True
     column_list = (
-        'id_community',
-        'id_record',
+        'community_id',
+        'record_id',
         'expires_at',
-        'id_user'
+        'user_id'
     )
 
 

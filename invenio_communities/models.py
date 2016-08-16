@@ -55,21 +55,21 @@ class InclusionRequest(db.Model, Timestamp):
 
     __tablename__ = 'communities_community_record'
 
-    id_community = db.Column(
+    community_id = db.Column(
         db.String(100),
         db.ForeignKey('communities_community.id'),
         primary_key=True
     )
     """Id of the community to which the record is applying."""
 
-    id_record = db.Column(
+    record_id = db.Column(
         UUIDType,
         db.ForeignKey(RecordMetadata.id),
         primary_key=True
     )
     """Id of the record applying to given community."""
 
-    id_user = db.Column(
+    user_id = db.Column(
         db.Integer,
         db.ForeignKey(User.id),
         nullable=True,
@@ -88,20 +88,20 @@ class InclusionRequest(db.Model, Timestamp):
     # Relationships
     #
     community = db.relationship(
-        'Community', backref='inclusion_requests', foreign_keys=[id_community])
+        'Community', backref='inclusion_requests', foreign_keys=[community_id])
     """Relation to the community to which the inclusion request is made."""
 
     record = db.relationship(
-        RecordMetadata, backref='inclusion_requests', foreign_keys=[id_record])
+        RecordMetadata, backref='inclusion_requests', foreign_keys=[record_id])
     """Relation to the record which is requesting for community inclusion."""
 
     user = db.relationship(
-        User, backref='inclusion_requests', foreign_keys=[id_user])
+        User, backref='inclusion_requests', foreign_keys=[user_id])
     """Relation to the User making the inclusion request."""
 
     def get_record(self):
         """Return the API object for the Record."""
-        return Record.get_record(self.id_record)
+        return Record.get_record(self.record_id)
 
     def delete(self):
         """Delete this request."""
@@ -129,8 +129,8 @@ class InclusionRequest(db.Model, Timestamp):
             # Create inclusion request
             with db.session.begin_nested():
                 obj = cls(
-                    id_community=community.id,
-                    id_record=record.id,
+                    community_id=community.id,
+                    record_id=record.id,
                     user=user,
                     expires_at=expires_at
                 )
@@ -152,13 +152,13 @@ class InclusionRequest(db.Model, Timestamp):
     def get(cls, community_id, record_uuid):
         """Get an inclusion request."""
         return cls.query.filter_by(
-            id_record=record_uuid, id_community=community_id
+            record_id=record_uuid, community_id=community_id
         ).one_or_none()
 
     @classmethod
     def get_by_record(cls, record_uuid):
         """Get inclusion requests for a given record."""
-        return cls.query.filter_by(id_record=record_uuid)
+        return cls.query.filter_by(record_id=record_uuid)
 
 
 class Community(db.Model, Timestamp):
@@ -169,7 +169,7 @@ class Community(db.Model, Timestamp):
     id = db.Column(db.String(100), primary_key=True)
     """Id of the community."""
 
-    id_user = db.Column(
+    user_id = db.Column(
         db.Integer,
         db.ForeignKey(User.id),
         nullable=False
@@ -208,7 +208,7 @@ class Community(db.Model, Timestamp):
     # Relationships
     #
     owner = db.relationship(User, backref='communities',
-                            foreign_keys=[id_user])
+                            foreign_keys=[user_id])
     """Relation to the owner (User) of the community."""
 
     def __repr__(self):
@@ -219,7 +219,7 @@ class Community(db.Model, Timestamp):
     def create(cls, community_id, user_id, **data):
         """Get a community."""
         with db.session.begin_nested():
-            obj = cls(id=community_id, id_user=user_id, **data)
+            obj = cls(id=community_id, user_id=user_id, **data)
             db.session.add(obj)
         return obj
 
@@ -243,7 +243,7 @@ class Community(db.Model, Timestamp):
     def get_by_user(cls, user_id, with_deleted=False):
         """Get a community."""
         query = cls.query.filter_by(
-            id_user=user_id
+            user_id=user_id
         )
         if not with_deleted:
             query = query.filter(cls.deleted_at.is_(None))
@@ -459,7 +459,7 @@ class FeaturedCommunity(db.Model, Timestamp):
     id = db.Column(db.Integer, primary_key=True)
     """Id of the featured entry."""
 
-    id_community = db.Column(
+    community_id = db.Column(
         db.String(100), db.ForeignKey(Community.id), nullable=False)
     """Id of the featured community."""
 

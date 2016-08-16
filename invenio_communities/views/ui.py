@@ -157,7 +157,7 @@ def generic_item(community, template, **extra_ctx):
     # Check existence of community
     ctx = mycommunities_ctx()
     ctx.update({
-        'is_owner': community.id_user == current_user.get_id(),
+        'is_owner': community.user_id == current_user.get_id(),
         'community': community,
         'detail': True,
     })

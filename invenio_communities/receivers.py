@@ -47,7 +47,7 @@ def inject_provisional_community(sender, json=None, record=None, index=None,
         return
 
     json['provisional_communities'] = list(sorted([
-        r.id_community for r in InclusionRequest.get_by_record(record.id)
+        r.community_id for r in InclusionRequest.get_by_record(record.id)
     ]))
 
 
