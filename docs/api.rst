@@ -27,15 +27,12 @@ API Docs
 
 .. automodule:: invenio_communities.ext
    :members:
-   :undoc-members:
 
 .. automodule:: invenio_communities.models
    :members:
-   :undoc-members:
 
 Exceptions
 ----------
 
 .. automodule:: invenio_communities.errors
    :members:
-   :undoc-members:
