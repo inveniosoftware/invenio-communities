@@ -66,7 +66,7 @@ class CommunityForm(Form):
 
     def get_field_placeholder(self, name):
         """Return field placeholder."""
-        return self.field_placeholders.get(name, "")
+        return self.field_placeholders.get(name, '')
 
     def get_field_state_mapping(self, field):
         """Return field state mapping."""
@@ -94,8 +94,8 @@ class CommunityForm(Form):
         validators=[validators.DataRequired(),
                     validators.length(
                         max=100,
-                        message=_("The identifier must be less"
-                                  " than 100 characters long.")),
+                        message=_('The identifier must be less'
+                                  ' than 100 characters long.')),
                     validators.regexp(
                         u'^[-\w]+$',
                         message=_(
@@ -115,8 +115,8 @@ class CommunityForm(Form):
 
     curation_policy = TextAreaField(
         description=_(
-            'Optional. Please describe briefly and precisely the policy by which'
-            ' you accepted/reject new uploads in this community.'),
+            'Optional. Please describe briefly and precisely the policy by '
+            'which you accepted/reject new uploads in this community.'),
     )
 
     page = TextAreaField(
@@ -136,9 +136,9 @@ class CommunityForm(Form):
     logo = FileField(
         label=_('Logo'),
         description=_(
-            "Optional. Image file used to aid and promote instant public"
-            " recognition. Supported formats: png and jpg."
-            " Max file size: 1.5MB")
+            'Optional. Image file used to aid and promote instant public'
+            ' recognition. Supported formats: png and jpg.'
+            ' Max file size: 1.5MB')
     )
 
     #
@@ -150,8 +150,8 @@ class CommunityForm(Form):
             field.data = field.data.lower()
             if Community.get(field.data, with_deleted=True):
                 raise validators.ValidationError(
-                    _("The identifier already exists. "
-                      "Please choose a different one."))
+                    _('The identifier already exists. '
+                      'Please choose a different one.'))
 
 
 class EditCommunityForm(CommunityForm):
