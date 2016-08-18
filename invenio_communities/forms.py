@@ -115,7 +115,7 @@ class CommunityForm(Form):
 
     curation_policy = TextAreaField(
         description=_(
-            'Optional. Please describe short and precise the policy by which'
+            'Optional. Please describe briefly and precisely the policy by which'
             ' you accepted/reject new uploads in this community.'),
     )
 
