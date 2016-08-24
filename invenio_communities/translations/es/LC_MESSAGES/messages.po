@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: invenio-communities 1.0.0a9\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2016-08-18 16:45+0200\n"
+"POT-Creation-Date: 2016-08-24 17:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Alizee Pace <alizee.pace@gmail.com>, 2016\n"
 "Language: es\n"
 "Language-Team: Spanish "
 "(https://www.transifex.com/inveniosoftware/teams/23537/es/)\n"
@@ -101,7 +101,7 @@ msgstr ""
 #: invenio_communities/templates/invenio_communities/mycommunities.html:30
 #: invenio_communities/templates/invenio_communities/mycommunities.html:62
 msgid "New"
-msgstr ""
+msgstr "Nuevo"
 
 #: invenio_communities/templates/invenio_communities/mycommunities.html:44
 msgid "Actions"

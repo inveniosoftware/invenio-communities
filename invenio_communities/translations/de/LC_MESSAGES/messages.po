@@ -1,4 +1,4 @@
-# Translations template for invenio-communities.
+# German translations for invenio-communities.
 # Copyright (C) 2016 CERN
 # This file is distributed under the same license as the invenio-communities
 # project.
@@ -12,7 +12,10 @@ msgstr ""
 "POT-Creation-Date: 2016-08-24 17:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"Language-Team: German "
+"(https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
