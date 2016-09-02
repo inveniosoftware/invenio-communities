@@ -398,7 +398,7 @@ class Community(db.Model, Timestamp):
     @property
     def upload_url(self):
         """Get provisional URL."""
-        return 'TODO'
+        return url_for('invenio_deposit_ui.new', c=self.id, _external=True)
 
     @property
     def oaiset_spec(self):
