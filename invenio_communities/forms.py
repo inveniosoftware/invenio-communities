@@ -121,9 +121,9 @@ class CommunityForm(Form):
 
     page = TextAreaField(
         description=_(
-            'Optional. A long description of the community collection,'
-            ' which will be displayed on a separate page linked from'
-            ' the index page.'),
+            'Optional. A long description of the community collection, '
+            'which will be displayed on a separate page linked from '
+            'the index page.'),
     )
 
     field_icons = {
@@ -136,9 +136,9 @@ class CommunityForm(Form):
     logo = FileField(
         label=_('Logo'),
         description=_(
-            'Optional. Image file used to aid and promote instant public'
-            ' recognition. Supported formats: png and jpg.'
-            ' Max file size: 1.5MB')
+            'Optional. Image file used to aid and promote instant public '
+            'recognition. Supported formats: PNG, JPG and SVG. '
+            'Max file size: 1.5 MB')
     )
 
     #

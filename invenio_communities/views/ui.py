@@ -193,7 +193,7 @@ def new():
             if not community.save_logo(file.stream, file.filename):
                 form.logo.errors.append(_(
                     'Cannot add this file as a logo. Supported formats: '
-                    '  png and jpg. Max file size: 1.5MB.'))
+                    'PNG, JPG and SVG. Max file size: 1.5 MB.'))
                 db.session.rollback()
                 community = None
 
@@ -234,7 +234,7 @@ def edit(community):
             if not community.save_logo(file.stream, file.filename):
                 form.logo.errors.append(_(
                     'Cannot add this file as a logo. Supported formats: '
-                    '  png and jpg. Max file size: 1.5MB.'))
+                    'PNG, JPG and SVG. Max file size: 1.5 MB.'))
 
         if not form.logo.errors:
             db.session.commit()

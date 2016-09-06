@@ -35,8 +35,11 @@ COMMUNITIES_REQUEST_EXPIRY_TIME = timedelta(days=365)
 COMMUNITIES_DELETE_HOLDOUT_TIME = timedelta(days=365)
 """Time after which the communities marked for deletion are hard-deleted."""
 
-COMMUNITIES_LOGO_EXTENSIONS = ['png', 'jpg', 'jpeg']
+COMMUNITIES_LOGO_EXTENSIONS = ['png', 'jpg', 'jpeg', 'svg']
 """Allowed file extensions for the communities logo."""
+
+COMMUNITIES_LOGO_MAX_SIZE = 1000 * 1000 * 1.5  # 1.5 MB
+"""Allowed file size for the communities logo."""
 
 COMMUNITIES_RECORD_KEY = 'communities'
 """Key inside the JSON record for communities."""

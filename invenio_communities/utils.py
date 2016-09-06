@@ -26,6 +26,7 @@
 from __future__ import absolute_import, print_function
 
 import os
+from io import SEEK_END, SEEK_SET
 from math import ceil
 from uuid import UUID
 
@@ -99,13 +100,21 @@ def save_and_validate_logo(logo_stream, logo_filename, community_id):
     cfg = current_app.config
 
     logos_bucket_id = cfg['COMMUNITIES_BUCKET_UUID']
+    logo_max_size = cfg['COMMUNITIES_LOGO_MAX_SIZE']
     logos_bucket = Bucket.query.get(logos_bucket_id)
     ext = os.path.splitext(logo_filename)[1]
     ext = ext[1:] if ext.startswith('.') else ext
 
+    logo_stream.seek(SEEK_SET, SEEK_END)  # Seek from beginning to end
+    logo_size = logo_stream.tell()
+    if logo_size > logo_max_size:
+        return None
+
     if ext in cfg['COMMUNITIES_LOGO_EXTENSIONS']:
         key = "{0}/logo.{1}".format(community_id, ext)
-        ObjectVersion.create(logos_bucket, key, stream=logo_stream)
+        logo_stream.seek(0)  # Rewind the stream to the beginning
+        ObjectVersion.create(logos_bucket, key, stream=logo_stream,
+                             size=logo_size)
         return ext
     else:
         return None
