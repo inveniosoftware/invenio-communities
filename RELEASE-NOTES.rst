@@ -1,8 +1,8 @@
 ===============================
- Invenio-Communities v1.0.0a11
+ Invenio-Communities v1.0.0a12
 ===============================
 
-Invenio-Communities v1.0.0a11 was released on September 12, 2016.
+Invenio-Communities v1.0.0a12 was released on September 23, 2016.
 
 About
 -----
@@ -19,7 +19,7 @@ What's new
 Installation
 ------------
 
-   $ pip install invenio-communities==1.0.0a11
+   $ pip install invenio-communities==1.0.0a12
 
 Documentation
 -------------
