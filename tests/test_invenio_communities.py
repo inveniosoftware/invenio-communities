@@ -314,3 +314,28 @@ def test_communities_rest_etag(app, communities):
             ('If-None-Match', response.headers.get('ETag')),))
         assert response.status_code == 304
         assert response.get_data(as_text=True) == ''
+
+
+def test_add_remove_corner_cases(app, db, communities, disable_request_email):
+    """Test corner cases for community adding and removal."""
+    (comm1, comm2, comm3) = communities
+    communities_key = app.config["COMMUNITIES_RECORD_KEY"]
+    # Create a record and create an inclusion request,
+    # meanwhile adding a record manually outside the workflow
+    rec1 = Record.create({'title': 'Foobar'})
+    InclusionRequest.create(community=comm1, record=rec1)
+    rec1[communities_key] = ['comm1', ]  # Add community manually
+    assert InclusionRequest.query.count() == 1
+
+    # Accepting record which was added manually outside the normal workflow
+    comm1.accept_record(rec1)  # Should still work
+    assert rec1[communities_key] == ['comm1', ]
+    assert InclusionRequest.query.count() == 0
+    assert comm1.oaiset.has_record(rec1)
+
+    # Removing record which was removed manually outside the normal workflow
+    rec1[communities_key] = []  # Remove community manually
+    comm1.remove_record(rec1)  # Should still work
+    assert communities_key in rec1
+    assert len(rec1[communities_key]) == 0
+    assert not comm1.oaiset.has_record(rec1)

@@ -57,7 +57,7 @@ class InclusionRequest(db.Model, Timestamp):
 
     id_community = db.Column(
         db.String(100),
-        db.ForeignKey("communities_community.id"),
+        db.ForeignKey('communities_community.id'),
         primary_key=True
     )
     """Id of the community to which the record is applying."""
@@ -213,7 +213,7 @@ class Community(db.Model, Timestamp):
 
     def __repr__(self):
         """String representation of the community object."""
-        return "<Community, ID: {}>".format(self.id)
+        return '<Community, ID: {}>'.format(self.id)
 
     @classmethod
     def create(cls, community_id, user_id, **data):
@@ -267,9 +267,9 @@ class Community(db.Model, Timestamp):
 
         if p:
             query = query.filter(db.or_(
-                cls.id.like("%" + p + "%"),
-                cls.title.like("%" + p + "%"),
-                cls.description.like("%" + p + "%"),
+                cls.id.like('%' + p + '%'),
+                cls.title.like('%' + p + '%'),
+                cls.description.like('%' + p + '%'),
             ))
 
         if so in current_app.config['COMMUNITIES_SORTING_OPTIONS']:
@@ -288,14 +288,17 @@ class Community(db.Model, Timestamp):
         key = current_app.config['COMMUNITIES_RECORD_KEY']
         record.setdefault(key, [])
 
-        assert self.id not in record[key]
-        record[key].append(self.id)
-        record[key] = sorted(record[key])
-
-        if current_app.config["COMMUNITIES_OAI_ENABLED"]:
-            from invenio_oaiserver.models import OAISet
-            oaiset = OAISet.query.filter_by(spec=self.oaiset_spec).one()
-            oaiset.add_record(record)
+        if self.has_record(record):
+            current_app.logger.warning(
+                'Community addition: record {uuid} is already in community '
+                '"{comm}"'.format(uuid=record.id, comm=self.id))
+        else:
+            record[key].append(self.id)
+            record[key] = sorted(record[key])
+            record.commit()
+        if current_app.config['COMMUNITIES_OAI_ENABLED']:
+            if not self.oaiset.has_record(record):
+                self.oaiset.add_record(record)
 
     def remove_record(self, record):
         """Remove an already accepted record from the community.
@@ -303,21 +306,22 @@ class Community(db.Model, Timestamp):
         :param record: Record object.
         :type record: `invenio_records.api.Record`
         """
-        key = current_app.config['COMMUNITIES_RECORD_KEY']
+        if not self.has_record(record):
+            current_app.logger.warning(
+                'Community removal: record {uuid} was not in community '
+                '"{comm}"'.format(uuid=record.id, comm=self.id))
+        else:
+            key = current_app.config['COMMUNITIES_RECORD_KEY']
+            record[key] = [c for c in record[key] if c != self.id]
 
-        assert self.id in record.get(key, [])
-
-        record[key] = [c for c in record[key] if c != self.id]
-
-        if current_app.config["COMMUNITIES_OAI_ENABLED"]:
-            from invenio_oaiserver.models import OAISet
-            oaiset = OAISet.query.filter_by(spec=self.oaiset_spec).one()
-            oaiset.remove_record(record)
+        if current_app.config['COMMUNITIES_OAI_ENABLED']:
+            if self.oaiset.has_record(record):
+                self.oaiset.remove_record(record)
 
     def has_record(self, record):
         """Check if record is in community."""
         return self.id in \
-            record.get(current_app.config["COMMUNITIES_RECORD_KEY"], [])
+            record.get(current_app.config['COMMUNITIES_RECORD_KEY'], [])
 
     def accept_record(self, record):
         """Accept a record for inclusion in the community.
@@ -379,7 +383,7 @@ class Community(db.Model, Timestamp):
         if self.logo_ext:
             return '/api/files/{bucket}/{key}'.format(
                 bucket=current_app.config['COMMUNITIES_BUCKET_UUID'],
-                key="{0}/logo.{1}".format(self.id, self.logo_ext),
+                key='{0}/logo.{1}'.format(self.id, self.logo_ext),
             )
         return None
 
@@ -411,10 +415,25 @@ class Community(db.Model, Timestamp):
             community_id=self.id)
 
     @property
-    def oaiset_url(self):
-        """Return the OAISet 'spec' name for given community.
+    def oaiset(self):
+        """Return the corresponding OAISet for given community.
 
-        :returns: name of corresponding OAISet ('spec').
+        If OAIServer is not installed this property will return None.
+
+        :returns: returns OAISet object corresponding to this community.
+        :rtype: `invenio_oaiserver.models.OAISet` or None
+        """
+        if current_app.config['COMMUNITIES_OAI_ENABLED']:
+            from invenio_oaiserver.models import OAISet
+            return OAISet.query.filter_by(spec=self.oaiset_spec).one()
+        else:
+            return None
+
+    @property
+    def oaiset_url(self):
+        """Return the OAISet URL for given community.
+
+        :returns: URL of corresponding OAISet.
         :rtype: str
         """
         return url_for(
@@ -452,7 +471,7 @@ class FeaturedCommunity(db.Model, Timestamp):
     #
     # Relationships
     #
-    community = db.relationship(Community, backref="featuredcommunity")
+    community = db.relationship(Community, backref='featuredcommunity')
     """Relation to the community."""
 
     @classmethod

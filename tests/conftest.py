@@ -133,3 +133,12 @@ def communities(app, db, user):
     comm1 = Community.create(community_id='comm2', user_id=user1.id, title='A')
     comm2 = Community.create(community_id='oth3', user_id=user1.id)
     return comm0, comm1, comm2
+
+
+@pytest.yield_fixture()
+def disable_request_email(app):
+    """Fixture for disabling request emails."""
+    orig = app.config['COMMUNITIES_MAIL_ENABLED']
+    app.config['COMMUNITIES_MAIL_ENABLED'] = False
+    yield
+    app.config['COMMUNITIES_MAIL_ENABLED'] = orig

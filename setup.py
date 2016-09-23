@@ -38,7 +38,7 @@ tests_require = [
     'coverage>=4.0',
     'Flask-CLI>=0.2.1',
     'invenio-mail>=1.0.0a3',
-    'invenio-oaiserver>=1.0.0a2',
+    'invenio-oaiserver>=1.0.0a8',
     'isort>=4.2.2',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
@@ -59,7 +59,7 @@ extras_require = {
         'Flask-Mail>=0.9.1',
     ],
     'oai': [
-        'invenio-oaiserver>=1.0.0a2',
+        'invenio-oaiserver>=1.0.0a8',
     ],
     'tests': tests_require,
 }
