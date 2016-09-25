@@ -29,6 +29,7 @@ include .dockerignore
 include .editorconfig
 include .tx/config
 include babel.ini
+include docs/requirements.txt
 include LICENSE
 include pytest.ini
 recursive-include docs *.bat

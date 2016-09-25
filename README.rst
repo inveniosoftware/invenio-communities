@@ -46,4 +46,4 @@ Invenio module that adds support for communities.
 *This is an experimental developer preview release.*
 
 * Free software: GPLv2 license
-* Documentation: https://pythonhosted.org/invenio-communities/
+* Documentation: https://invenio-communities.readthedocs.io/
