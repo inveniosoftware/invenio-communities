@@ -295,7 +295,6 @@ class Community(db.Model, Timestamp):
         else:
             record[key].append(self.id)
             record[key] = sorted(record[key])
-            record.commit()
         if current_app.config['COMMUNITIES_OAI_ENABLED']:
             if not self.oaiset.has_record(record):
                 self.oaiset.add_record(record)
