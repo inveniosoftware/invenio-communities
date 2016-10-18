@@ -100,5 +100,5 @@ COMMUNITIES_CURATE_TEMPLATE = "invenio_communities/curate.html"
 COMMUNITIES_SEARCH_TEMPLATE = "invenio_communities/search.html"
 
 COMMUNITIES_URL_COMMUNITY_VIEW = \
-    '{protocol}://{host}/communities/{community_id}/'
+    '{protocol}://{host}/communities/{community_name}/'
 """String pattern to generate the URL for the view of a community."""

@@ -94,7 +94,7 @@ def test_model_init(app, db, communities):
     InclusionRequest.create(community=comm1, record=rec1)
     assert InclusionRequest.query.count() == 1
     comm1.accept_record(rec1)
-    assert 'comm1' in rec1[communities_key]
+    assert str(comm1.id) in rec1[communities_key]
     assert InclusionRequest.query.count() == 0
 
     # Likewise, reject a record from the community
@@ -110,8 +110,8 @@ def test_model_init(app, db, communities):
     comm2.accept_record(rec1)
     assert communities_key in rec1
     assert len(rec1[communities_key]) == 2
-    assert comm1.id in rec1[communities_key]
-    assert comm2.id in rec1[communities_key]
+    assert str(comm1.id) in rec1[communities_key]
+    assert str(comm2.id) in rec1[communities_key]
 
     # Accept/reject a record to/from a community without inclusion request
     rec3 = Record.create({'title': 'Spam'})
@@ -189,7 +189,7 @@ def test_communities_rest_all_communities(app, db, communities):
         assert response_data['hits']['total'] == 3
         assert len(response_data['hits']['hits']) == 3
 
-        assert response_data['hits']['hits'][0]['id'] == 'comm1'
+        assert response_data['hits']['hits'][0]['name'] == 'comm1'
 
 
 def test_community_delete(app, db, communities):
@@ -215,8 +215,8 @@ def test_communities_rest_all_communities_query_and_sort(app, db, communities):
         response_data = get_json(response)
 
         assert response_data['hits']['total'] == 2
-        assert response_data['hits']['hits'][0]['id'] == 'comm2'
-        assert response_data['hits']['hits'][1]['id'] == 'comm1'
+        assert response_data['hits']['hits'][0]['name'] == 'comm2'
+        assert response_data['hits']['hits'][1]['name'] == 'comm1'
 
 
 def test_communities_rest_pagination(app, db, communities):
@@ -284,18 +284,20 @@ def test_communities_rest_pagination(app, db, communities):
 
 def test_communities_rest_get_details(app, db, communities):
     """Test the OAI-PMH Sets creation."""
+    (comm1, comm2, comm3) = communities
     with app.test_client() as client:
-        response = client.get('/api/communities/comm1')
+        response = client.get('/api/communities/{}'.format(str(comm1.id)))
         assert_community_serialization(
                 get_json(response),
                 description='Description1',
                 title='Title1',
-                id='comm1',
+                name='comm1',
                 page='',
                 curation_policy='',
                 last_record_accepted='2000-01-01T00:00:00+00:00',
                 links={
-                    'self': 'http://inveniosoftware.org/api/communities/comm1',
+                    'self': 'http://inveniosoftware.org/api/'
+                    'communities/{}'.format(str(comm1.id)),
                     'html': 'http://inveniosoftware.org/communities/comm1/',
                 },
         )
@@ -303,15 +305,18 @@ def test_communities_rest_get_details(app, db, communities):
 
 def test_communities_rest_etag(app, communities):
     """Test the OAI-PMH Sets creation."""
+    (comm1, comm2, comm3) = communities
     with app.test_client() as client:
         # The first response should return the data with result code 200
-        response = client.get('/api/communities/comm1')
+        response = client.get('/api/communities/{}'.format(str(comm1.id)))
         assert response.status_code == 200
         assert response.get_data(as_text=True) != ''
 
         # The second response is empty and the result code is 304
-        response = client.get('/api/communities/comm1', headers=(
-            ('If-None-Match', response.headers.get('ETag')),))
+        response = client.get(
+            '/api/communities/{}'.format(str(comm1.id)),
+            headers=(
+                ('If-None-Match', response.headers.get('ETag')),))
         assert response.status_code == 304
         assert response.get_data(as_text=True) == ''
 
@@ -324,12 +329,12 @@ def test_add_remove_corner_cases(app, db, communities, disable_request_email):
     # meanwhile adding a record manually outside the workflow
     rec1 = Record.create({'title': 'Foobar'})
     InclusionRequest.create(community=comm1, record=rec1)
-    rec1[communities_key] = ['comm1', ]  # Add community manually
+    rec1[communities_key] = [str(comm1.id), ]  # Add community manually
     assert InclusionRequest.query.count() == 1
 
     # Accepting record which was added manually outside the normal workflow
     comm1.accept_record(rec1)  # Should still work
-    assert rec1[communities_key] == ['comm1', ]
+    assert rec1[communities_key] == [str(comm1.id), ]
     assert InclusionRequest.query.count() == 0
     assert comm1.oaiset.has_record(rec1)
 

@@ -41,7 +41,7 @@ def test_community_delete_task(app, db, communities):
     assert InclusionRequest.get(comm1.id, rec1.id)
 
     comm1.accept_record(rec1)
-    assert 'comm1' in rec1[communities_key]
+    assert str(comm1.id) in rec1[communities_key]
 
     comm1.delete()
     assert comm1.is_deleted

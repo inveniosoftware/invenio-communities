@@ -36,11 +36,11 @@ def default_links_item_factory(community):
             '.communities_item', community_id=community['id'], _external=True),
         html=current_app.config.get(
             'COMMUNITIES_URL_COMMUNITY_VIEW',
-            '{protocol}://{host}/communities/{community_id}/'
+            '{protocol}://{host}/communities/{community_name}/'
         ).format(
             protocol=request.environ['wsgi.url_scheme'],
             host=request.environ['HTTP_HOST'],
-            community_id=community['id']
+            community_name=community['name']
         )
     )
 

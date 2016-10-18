@@ -35,7 +35,8 @@ from invenio_communities.links import default_links_item_factory, \
 class CommunitySchemaV1(Schema):
     """Schema for a community."""
 
-    id = fields.String()
+    id = fields.UUID()
+    name = fields.String()
     title = fields.String()
     description = fields.String()
     page = fields.String()

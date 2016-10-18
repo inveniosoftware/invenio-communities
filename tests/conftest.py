@@ -128,10 +128,11 @@ def communities(app, db, user):
     """Create some example communities."""
     user1 = db_.session.merge(user)
 
-    comm0 = Community.create(community_id='comm1', user_id=user1.id,
+    comm0 = Community.create(community_name='comm1', user_id=user1.id,
                              title='Title1', description='Description1')
-    comm1 = Community.create(community_id='comm2', user_id=user1.id, title='A')
-    comm2 = Community.create(community_id='oth3', user_id=user1.id)
+    comm1 = Community.create(community_name='comm2', user_id=user1.id,
+                             title='A')
+    comm2 = Community.create(community_name='oth3', user_id=user1.id)
     return comm0, comm1, comm2
 
 

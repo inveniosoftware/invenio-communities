@@ -34,7 +34,7 @@
   {% for obj in mycommunities %}
     <tr>
       <td>
-        <a href="{{url_for('.edit', community_id=obj.id)}}">{{obj.title if obj.title else 'Untitled'}}</a>
+        <a href="{{url_for('.edit', community_name=obj.name)}}">{{obj.title if obj.title else 'Untitled'}}</a>
         <br />
         <small class="muted">{{ _('Identifier') }}: {{obj.id}}</small>
       </td>
@@ -45,9 +45,9 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="{{url_for('.detail', community_id=obj.id)}}"><i class="icon-eye-open"></i> {{ _('View') }}</a></li>
-            <li><a href="{{url_for('.curate', community_id=obj.id)}}"><i class="icon-check"></i> {{ _('Curate') }}</a></li>
-            <li><a href="{{url_for('.edit', community_id=obj.id)}}"><i class="icon-pencil"></i> {{ _('Edit') }}</a></li>
+            <li><a href="{{url_for('.detail', community_name=obj.name)}}"><i class="icon-eye-open"></i> {{ _('View') }}</a></li>
+            <li><a href="{{url_for('.curate', community_name=obj.name)}}"><i class="icon-check"></i> {{ _('Curate') }}</a></li>
+            <li><a href="{{url_for('.edit', community_name=obj.name)}}"><i class="icon-pencil"></i> {{ _('Edit') }}</a></li>
           </ul>
         </div> <!-- /.btn-group -->
       </td>

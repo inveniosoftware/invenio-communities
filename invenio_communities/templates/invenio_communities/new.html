@@ -89,11 +89,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <form action="{{url_for('.delete', community_id=community.id)}}" method="POST">
+        <form action="{{url_for('.delete', community_name=community.name)}}" method="POST">
           {{form.csrf_token}}
           {%- for field in deleteform %}{{ field }}{% endfor %}
           <button class="btn btn-large" data-dismiss="modal" aria-hidden="true">No, thanks</button>
-          <button type="submit" href="{{ url_for('.delete', community_id=community.id) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
+          <button type="submit" href="{{ url_for('.delete', community_name=community.name) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
         </form>
       </div>
       </div>

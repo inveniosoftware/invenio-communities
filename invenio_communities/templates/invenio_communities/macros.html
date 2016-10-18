@@ -27,7 +27,7 @@
       <div class="col-md-12">
         <h1>
           {%- if link %}
-          <a href="{{ url_for('.detail', community_id=community.id) }}">{{community.title}}</a>
+          <a href="{{ url_for('.detail', community_name=community.name) }}">{{community.title}}</a>
           {% else %}
           {{community.title}}
           {%- endif %}

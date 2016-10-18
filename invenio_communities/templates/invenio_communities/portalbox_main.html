@@ -35,7 +35,7 @@
 {{ community.description|safe }}
 {%- endif %}
 {%- if community.page %}
-<a href="{{ url_for('invenio_communities.about', community_id=community.id) }}" class="pull-right">
+<a href="{{ url_for('invenio_communities.about', community_name=community.name) }}" class="pull-right">
   {{ _('Read more') }}
 </a>
 <br />

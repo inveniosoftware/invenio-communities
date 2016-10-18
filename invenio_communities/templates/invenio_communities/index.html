@@ -83,7 +83,7 @@
           <div class="ribbon-wrapper-green">
             <div class="ribbon-green">{{ _("Featured") }}</div>
           </div>
-          <a href="{{url_for('.detail', community_id=featured_community.id)}}">
+          <a href="{{url_for('.detail', community_name=featured_community.name)}}">
           <h2>{{ featured_community.title }}</h2>
           </a>
           <div>
@@ -101,9 +101,9 @@
                     <h4>
                       <div class="pull-right">
                         &nbsp;
-                        <a href="{{url_for('.detail', community_id=obj.id)}}" class="btn btn-info">{{ _('View') }}</a>
+                        <a href="{{url_for('.detail', community_name=obj.name)}}" class="btn btn-info">{{ _('View') }}</a>
                         {% if obj.id_user == current_user.id %}
-                          <a href="{{url_for('.curate', community_id=obj.id)}}" class="btn btn-info">{{ _('Curate') }}</a>
+                          <a href="{{url_for('.curate', community_name=obj.name)}}" class="btn btn-info">{{ _('Curate') }}</a>
                         {% endif %}
                       </div>
                       {{ obj.title }}

@@ -57,15 +57,15 @@ def init():
 
 
 @communities.command()
-@click.argument('community_id')
+@click.argument('community_name')
 @click.argument('logo', type=click.File('rb'))
 @with_appcontext
-def addlogo(community_id, logo):
+def addlogo(community_name, logo):
     """Add logo to the community."""
     # Create the bucket
-    c = Community.get(community_id)
+    c = Community.get(community_name=community_name)
     if not c:
-        click.secho('Community {0} does not exist.'.format(community_id),
+        click.secho('Community {0} does not exist.'.format(community_name),
                     fg='red')
         return
     ext = save_and_validate_logo(logo, logo.name, c.id)
@@ -74,13 +74,13 @@ def addlogo(community_id, logo):
 
 
 @communities.command()
-@click.argument('community_id')
+@click.argument('community_name')
 @click.argument('record_id')
 @click.option('-a', '--accept', 'accept', is_flag=True, default=False)
 @with_appcontext
-def request(community_id, record_id, accept):
+def request(community_name, record_id, accept):
     """Request a record acceptance to a community."""
-    c = Community.get(community_id)
+    c = Community.get(community_name=community_name)
     assert c is not None
     record = Record.get_record(record_id)
     if accept:
@@ -94,12 +94,12 @@ def request(community_id, record_id, accept):
 
 
 @communities.command()
-@click.argument('community_id')
+@click.argument('community_name')
 @click.argument('record_id')
 @with_appcontext
-def remove(community_id, record_id):
+def remove(community_name, record_id):
     """Remove a record from community."""
-    c = Community.get(community_id)
+    c = Community.get(community_name=community_name)
     assert c is not None
     c.remove_record(record_id)
     db.session.commit()

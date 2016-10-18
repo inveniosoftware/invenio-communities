@@ -27,6 +27,8 @@
 from __future__ import absolute_import, print_function
 
 import hashlib
+import uuid
+from copy import deepcopy
 from datetime import datetime
 
 from flask import current_app, url_for
@@ -56,7 +58,7 @@ class InclusionRequest(db.Model, Timestamp):
     __tablename__ = 'communities_community_record'
 
     id_community = db.Column(
-        db.String(100),
+        UUIDType,
         db.ForeignKey('communities_community.id'),
         primary_key=True
     )
@@ -166,8 +168,18 @@ class Community(db.Model, Timestamp):
 
     __tablename__ = 'communities_community'
 
-    id = db.Column(db.String(100), primary_key=True)
+    id = db.Column(
+        UUIDType,
+        primary_key=True,
+        default=uuid.uuid4,
+    )
     """Id of the community."""
+
+    name = db.Column(
+        db.String(100),
+        unique=True
+    )
+    """Human readable identifier of the community."""
 
     id_user = db.Column(
         db.Integer,
@@ -216,10 +228,14 @@ class Community(db.Model, Timestamp):
         return '<Community, ID: {}>'.format(self.id)
 
     @classmethod
-    def create(cls, community_id, user_id, **data):
+    def create(cls, community_name, user_id, community_id=None, **data):
         """Get a community."""
+        if community_id:
+            data = deepcopy(data)
+            data['id'] = community_id
         with db.session.begin_nested():
-            obj = cls(id=community_id, id_user=user_id, **data)
+            obj = cls(name=community_name,
+                      id_user=user_id, **data)
             db.session.add(obj)
         return obj
 
@@ -232,9 +248,15 @@ class Community(db.Model, Timestamp):
         return False
 
     @classmethod
-    def get(cls, community_id, with_deleted=False):
+    def get(cls, community_id=None, community_name=None, with_deleted=False):
         """Get a community."""
-        q = cls.query.filter_by(id=community_id)
+        assert((community_id is not None) ^ (community_name is not None),
+               'One and only one of community_id or community_name '
+               'should be != None.')
+        if community_id:
+            q = cls.query.filter_by(id=community_id)
+        else:
+            q = cls.query.filter_by(name=community_name)
         if not with_deleted:
             q = q.filter(cls.deleted_at.is_(None))
         return q.one_or_none()
@@ -267,7 +289,7 @@ class Community(db.Model, Timestamp):
 
         if p:
             query = query.filter(db.or_(
-                cls.id.like('%' + p + '%'),
+                cls.name.like('%' + p + '%'),
                 cls.title.like('%' + p + '%'),
                 cls.description.like('%' + p + '%'),
             ))
@@ -293,7 +315,7 @@ class Community(db.Model, Timestamp):
                 'Community addition: record {uuid} is already in community '
                 '"{comm}"'.format(uuid=record.id, comm=self.id))
         else:
-            record[key].append(self.id)
+            record[key].append(str(self.id))
             record[key] = sorted(record[key])
         if current_app.config['COMMUNITIES_OAI_ENABLED']:
             if not self.oaiset.has_record(record):
@@ -319,7 +341,7 @@ class Community(db.Model, Timestamp):
 
     def has_record(self, record):
         """Check if record is in community."""
-        return self.id in \
+        return str(self.id) in \
             record.get(current_app.config['COMMUNITIES_RECORD_KEY'], [])
 
     def accept_record(self, record):
@@ -411,7 +433,7 @@ class Community(db.Model, Timestamp):
         :rtype: str
         """
         return current_app.config['COMMUNITIES_OAI_FORMAT'].format(
-            community_id=self.id)
+            community_id=self.name)
 
     @property
     def oaiset(self):
@@ -460,7 +482,7 @@ class FeaturedCommunity(db.Model, Timestamp):
     """Id of the featured entry."""
 
     id_community = db.Column(
-        db.String(100), db.ForeignKey(Community.id), nullable=False)
+        UUIDType, db.ForeignKey(Community.id), nullable=False)
     """Id of the featured community."""
 
     start_date = db.Column(

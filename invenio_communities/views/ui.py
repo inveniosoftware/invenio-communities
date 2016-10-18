@@ -56,8 +56,8 @@ blueprint = Blueprint(
 def pass_community(f):
     """Decorator to pass community."""
     @wraps(f)
-    def inner(community_id, *args, **kwargs):
-        c = Community.get(community_id)
+    def inner(community_name, *args, **kwargs):
+        c = Community.get(community_name=community_name)
         if c is None:
             abort(404)
         return f(c, *args, **kwargs)
@@ -128,14 +128,14 @@ def index():
     )
 
 
-@blueprint.route('/<string:community_id>/', methods=['GET'])
+@blueprint.route('/<string:community_name>/', methods=['GET'])
 @pass_community
 def detail(community):
     """Index page with uploader and list of existing depositions."""
     return generic_item(community, "invenio_communities/detail.html")
 
 
-@blueprint.route('/<string:community_id>/search', methods=['GET'])
+@blueprint.route('/<string:community_name>/search', methods=['GET'])
 @pass_community
 def search(community):
     """Index page with uploader and list of existing depositions."""
@@ -145,7 +145,7 @@ def search(community):
         detail=False)
 
 
-@blueprint.route('/<string:community_id>/about/', methods=['GET'])
+@blueprint.route('/<string:community_name>/about/', methods=['GET'])
 @pass_community
 def about(community):
     """Index page with uploader and list of existing depositions."""
@@ -182,11 +182,11 @@ def new():
     if form.validate_on_submit():
         data = copy.deepcopy(form.data)
 
-        community_id = data.pop('identifier')
+        community_name = data.pop('name')
         del data['logo']
 
         community = Community.create(
-            community_id, current_user.get_id(), **data)
+            community_name, current_user.get_id(), **data)
 
         file = request.files.get('logo', None)
         if file:
@@ -200,7 +200,7 @@ def new():
         if community:
             db.session.commit()
             flash("Community was successfully created.", category='success')
-            return redirect(url_for('.edit', community_id=community.id))
+            return redirect(url_for('.edit', community_name=community.name))
 
     return render_template(
         "/invenio_communities/new.html",
@@ -209,7 +209,7 @@ def new():
     )
 
 
-@blueprint.route('/<string:community_id>/edit/', methods=['GET', 'POST'])
+@blueprint.route('/<string:community_name>/edit/', methods=['GET', 'POST'])
 @login_required
 @pass_community
 @permission_required('community-edit')
@@ -239,7 +239,7 @@ def edit(community):
         if not form.logo.errors:
             db.session.commit()
             flash("Community successfully edited.", category='success')
-            return redirect(url_for('.edit', community_id=community.id))
+            return redirect(url_for('.edit', community_name=community.name))
 
     return render_template(
         "invenio_communities/new.html",
@@ -247,7 +247,7 @@ def edit(community):
     )
 
 
-@blueprint.route('/<string:community_id>/delete/', methods=['POST'])
+@blueprint.route('/<string:community_name>/delete/', methods=['POST'])
 @login_required
 @pass_community
 @permission_required('community-delete')
@@ -268,17 +268,17 @@ def delete(community):
         return redirect(url_for('.index'))
     else:
         flash("Community could not be deleted.", category='warning')
-        return redirect(url_for('.edit', community_id=community.id))
+        return redirect(url_for('.edit', community_name=community.name))
 
 
-@blueprint.route('/<string:community_id>/curate/', methods=['GET', 'POST'])
+@blueprint.route('/<string:community_name>/curate/', methods=['GET', 'POST'])
 @login_required
 @pass_community
 @permission_required('community-curate')
 def curate(community):
     """Index page with uploader and list of existing depositions.
 
-    :param community_id: ID of the community to curate.
+    :param community_name: name of the community to curate.
     """
     if request.method == 'POST':
         action = request.json.get('action')
