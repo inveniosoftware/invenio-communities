@@ -35,7 +35,6 @@ import pytest
 from flask import Flask
 from flask_babelex import Babel
 from flask_celeryext import FlaskCeleryExt
-from flask_cli import FlaskCLI
 from flask_menu import Menu
 from invenio_accounts import InvenioAccounts
 from invenio_accounts.testutils import create_test_user
@@ -80,7 +79,6 @@ def app(request):
         THEME_SITEURL='https://localhost:5000',
         MAIL_SUPPRESS_SEND=True,
     )
-    FlaskCLI(app)
     FlaskCeleryExt(app)
     Menu(app)
     Babel(app)

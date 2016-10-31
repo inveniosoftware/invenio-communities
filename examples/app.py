@@ -37,7 +37,6 @@ from __future__ import absolute_import, print_function
 
 from flask import Flask
 from flask_babelex import Babel
-from flask_cli import FlaskCLI
 from flask_menu import Menu
 from invenio_accounts import InvenioAccounts
 from invenio_accounts.views import blueprint
@@ -59,7 +58,6 @@ app.config.update(
 
 app.register_blueprint(blueprint)
 Babel(app)
-FlaskCLI(app)
 InvenioDB(app)
 InvenioAssets(app)
 Menu(app)

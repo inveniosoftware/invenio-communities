@@ -32,7 +32,6 @@ from datetime import datetime, timedelta
 
 import pytest
 from flask import Flask
-from flask_cli import FlaskCLI
 from invenio_db import db as db_
 from invenio_oaiserver.models import OAISet
 from invenio_records.api import Record
@@ -72,12 +71,10 @@ def test_version():
 def test_init():
     """Test extension initialization."""
     app = Flask('testapp')
-    FlaskCLI(app)
     ext = InvenioCommunities(app)
     assert 'invenio-communities' in app.extensions
 
     app = Flask('testapp')
-    FlaskCLI(app)
     ext = InvenioCommunities()
     assert 'invenio-communities' not in app.extensions
     ext.init_app(app)
