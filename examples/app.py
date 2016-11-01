@@ -35,6 +35,8 @@ Run example development server:
 
 from __future__ import absolute_import, print_function
 
+import os
+
 from flask import Flask
 from flask_babelex import Babel
 from flask_menu import Menu
@@ -51,9 +53,10 @@ from invenio_communities import InvenioCommunities
 app = Flask(__name__)
 
 app.config.update(
-    TESTING=True,
     SECRET_KEY="CHANGE_ME",
     SECURITY_PASSWORD_SALT="CHANGE_ME_ALSO",
+    SQLALCHEMY_DATABASE_URI=os.environ.get(
+        'SQLALCHEMY_DATABASE_URI', 'sqlite:///test.db'),
 )
 
 app.register_blueprint(blueprint)

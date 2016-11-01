@@ -43,6 +43,7 @@ def test_template_formatting_from_string(app):
 
 def test_email_formatting(app, db, communities, user):
     """Test formatting of the email message with the default template."""
+    app.config['COMMUNITIES_MAIL_ENABLED'] = True
     with app.extensions['mail'].record_messages() as outbox:
         (comm1, comm2, comm3) = communities
         rec1 = Record.create({

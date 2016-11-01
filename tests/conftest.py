@@ -46,7 +46,8 @@ from invenio_mail import InvenioMail
 from invenio_oaiserver import InvenioOAIServer
 from invenio_records import InvenioRecords
 from invenio_search import InvenioSearch
-from sqlalchemy_utils.functions import create_database, database_exists
+from sqlalchemy_utils.functions import create_database, database_exists, \
+    drop_database
 
 from invenio_communities import InvenioCommunities
 from invenio_communities.models import Community
@@ -65,6 +66,7 @@ def app(request):
         CELERY_CACHE_BACKEND="memory",
         CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
         CELERY_RESULT_BACKEND="cache",
+        COMMUNITIES_MAIL_ENABLED=False,
         SECRET_KEY='CHANGE_ME',
         SECURITY_PASSWORD_SALT='CHANGE_ME_ALSO',
         SQLALCHEMY_DATABASE_URI=os.environ.get(
@@ -112,7 +114,9 @@ def db(app):
     yield db_
 
     db_.session.remove()
-    db_.drop_all()
+    db_.session.close()
+    if str(db_.engine.url) != 'sqlite://':
+        drop_database(str(db_.engine.url))
 
 
 @pytest.fixture()

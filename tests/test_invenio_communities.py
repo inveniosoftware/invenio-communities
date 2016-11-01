@@ -32,7 +32,6 @@ from datetime import datetime, timedelta
 
 import pytest
 from flask import Flask
-from invenio_db import db as db_
 from invenio_oaiserver.models import OAISet
 from invenio_records.api import Record
 
@@ -81,6 +80,25 @@ def test_init():
     assert 'invenio-communities' in app.extensions
 
 
+def test_alembic(app, db):
+    """Test alembic recipes."""
+    ext = app.extensions['invenio-db']
+
+    if db.engine.name == 'sqlite':
+        raise pytest.skip('Upgrades are not supported on SQLite.')
+
+    assert not ext.alembic.compare_metadata()
+    db.drop_all()
+    ext.alembic.upgrade()
+
+    assert not ext.alembic.compare_metadata()
+    ext.alembic.stamp()
+    ext.alembic.downgrade(target='96e796392533')
+    ext.alembic.upgrade()
+
+    assert not ext.alembic.compare_metadata()
+
+
 def test_model_init(app, db, communities):
     """Test basic model initialization and actions."""
     (comm1, comm2, comm3) = communities
@@ -117,8 +135,8 @@ def test_model_init(app, db, communities):
 
     # Create two inclusion requests
     InclusionRequest.create(community=comm3, record=rec1)
-    db_.session.commit()
-    db_.session.flush()
+    db.session.commit()
+    db.session.flush()
     pytest.raises(InclusionRequestExistsError, InclusionRequest.create,
                   community=comm3, record=rec1)
 
@@ -130,6 +148,7 @@ def test_model_init(app, db, communities):
 
 def test_email_notification(app, db, communities, user):
     """Test mail notification sending for community request."""
+    app.config['COMMUNITIES_MAIL_ENABLED'] = True
     # Mock the send method of the Flask-Mail extension
     with app.extensions['mail'].record_messages() as outbox:
         (comm1, comm2, comm3) = communities
@@ -151,8 +170,8 @@ def test_model_featured_community(app, db, communities):
                             start_date=t1 + timedelta(days=1))
     fc2 = FeaturedCommunity(id_community=comm2.id,
                             start_date=t1 + timedelta(days=3))
-    db_.session.add(fc1)
-    db_.session.add(fc2)
+    db.session.add(fc1)
+    db.session.add(fc2)
     # Check the featured community at three different points in time
     assert FeaturedCommunity.get_featured_or_none(start_date=t1) is None
     assert FeaturedCommunity.get_featured_or_none(
@@ -172,8 +191,8 @@ def test_oaipmh_sets(app, db, communities):
     assert oai_set1.description == 'Description1'
 
     # Delete the community and make sure the set is also deleted
-    db_.session.delete(comm1)
-    db_.session.commit()
+    db.session.delete(comm1)
+    db.session.commit()
     assert Community.query.count() == 2
     assert OAISet.query.count() == 2
 
@@ -186,7 +205,9 @@ def test_communities_rest_all_communities(app, db, communities):
         assert response_data['hits']['total'] == 3
         assert len(response_data['hits']['hits']) == 3
 
-        assert response_data['hits']['hits'][0]['id'] == 'comm1'
+        assert set(comm.id for comm in communities) == set(
+            comm['id'] for comm in response_data['hits']['hits']
+        )
 
 
 def test_community_delete(app, db, communities):

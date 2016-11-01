@@ -22,12 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Version information for Invenio-Communities.
+"""Create communities branch."""
 
-This file is imported by ``invenio_communities.__init__``,
-and parsed by ``setup.py``.
-"""
+import sqlalchemy as sa
+from alembic import op
 
-from __future__ import absolute_import, print_function
+# revision identifiers, used by Alembic.
+revision = '21e13cb1eff2'
+down_revision = None
+branch_labels = (u'invenio_communities', )
+depends_on = 'dbdbc1b19cf2'
 
-__version__ = "1.0.0a14.dev20161031"
+
+def upgrade():
+    """Update database."""
+
+
+def downgrade():
+    """Downgrade database."""

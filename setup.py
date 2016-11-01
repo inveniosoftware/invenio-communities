@@ -34,10 +34,13 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
+    'Flask-CeleryExt>=0.2.2',
+    'SQLAlchemy-Continuum>=1.2.1',
+    'celery>=3.1,<4.0',
     'check-manifest>=0.25',
     'coverage>=4.0',
     'invenio-mail>=1.0.0a3',
-    'invenio-oaiserver>=1.0.0a8',
+    'invenio-oaiserver>=1.0.0a9',
     'isort>=4.2.2',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
@@ -60,11 +63,22 @@ extras_require = {
     'oai': [
         'invenio-oaiserver>=1.0.0a8',
     ],
+    'mysql': [
+        'invenio-db[mysql]>=1.0.0b3',
+    ],
+    'postgresql': [
+        'invenio-db[postgresql]>=1.0.0b3',
+    ],
+    'sqlite': [
+        'invenio-db>=1.0.0b3',
+    ],
     'tests': tests_require,
 }
 
 extras_require['all'] = []
-for reqs in extras_require.values():
+for name, reqs in extras_require.items():
+    if name in ('mysql', 'postgresql', 'sqlite'):
+        continue
     extras_require['all'].extend(reqs)
 
 setup_requires = [
@@ -75,16 +89,17 @@ setup_requires = [
 install_requires = [
     'Flask-BabelEx>=0.9.3',
     'Flask>=0.11.1',
-    'invenio-accounts>=1.0.0a16',
-    'invenio-access>=1.0.0a5',
+    'elasticsearch-dsl>=2.0.0,<3.0.0',
+    'elasticsearch>=2.0.0,<3.0.0',
+    'invenio-access>=1.0.0a11',
+    'invenio-accounts>=1.0.0b1',
     'invenio-assets>=1.0.0b2',
-    'invenio-db>=1.0.0b1',
-    'invenio-files-rest>=1.0.0.a1',
-    'invenio-indexer>=1.0.0a6',
-    'invenio-pidstore>=1.0.0a9',
-    'invenio-records>=1.0.0a17',
+    'invenio-files-rest>=1.0.0.a14',
+    'invenio-indexer>=1.0.0a8',
+    'invenio-pidstore>=1.0.0b1',
+    'invenio-records>=1.0.0b1',
     'invenio-rest[cors]>=1.0.0a9',
-    'invenio-search>=1.0.0a7',
+    'invenio-search>=1.0.0a8',
     'marshmallow>=2.5.0',
 ]
 
@@ -123,6 +138,9 @@ setup(
         ],
         'invenio_base.api_blueprints': [
             'invenio_communities = invenio_communities.views.api:blueprint',
+        ],
+        'invenio_db.alembic': [
+            'invenio_communities = invenio_communities:alembic',
         ],
         'invenio_i18n.translations': [
             'messages = invenio_communities',

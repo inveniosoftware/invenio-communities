@@ -27,12 +27,12 @@ include *.sh
 include *.txt
 include .dockerignore
 include .editorconfig
-include .tx/config
-include babel.ini
-include docs/requirements.txt
 include .lgtm
+include .tx/config
 include LICENSE
 include MAINTAINERS
+include babel.ini
+include docs/requirements.txt
 include pytest.ini
 recursive-include docs *.bat
 recursive-include docs *.py
@@ -41,8 +41,9 @@ recursive-include docs Makefile
 recursive-include examples *.py
 recursive-include invenio_communities *.gif
 recursive-include invenio_communities *.html
+recursive-include invenio_communities *.html
 recursive-include invenio_communities *.js
 recursive-include invenio_communities *.po *.pot *.mo
+recursive-include invenio_communities *.py
 recursive-include invenio_communities *.scss
 recursive-include tests *.py
-recursive-include invenio_communities *.html
