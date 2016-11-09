@@ -7,9 +7,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: invenio-communities 1.0.0a9\n"
+"Project-Id-Version: invenio-communities 1.0.0a14.dev20161031\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2016-08-24 17:04+0200\n"
+"POT-Creation-Date: 2016-11-29 13:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,7 +72,7 @@ msgstr ""
 #: invenio_communities/forms.py:138
 msgid ""
 "Optional. Image file used to aid and promote instant public recognition. "
-"Supported formats: png and jpg. Max file size: 1.5MB"
+"Supported formats: PNG, JPG and SVG. Max file size: 1.5 MB"
 msgstr ""
 
 #: invenio_communities/forms.py:153
@@ -149,6 +149,7 @@ msgstr ""
 
 #: invenio_communities/templates/invenio_communities/mycommunities.html:70
 #: invenio_communities/templates/invenio_communities/mycommunities.html:84
+#: invenio_communities/templates/invenio_communities/portalbox_upload.html:23
 msgid "Upload"
 msgstr ""
 
@@ -201,16 +202,29 @@ msgstr ""
 msgid "OAI-PMH Interface"
 msgstr ""
 
-#: invenio_communities/templates/invenio_communities/portalbox_upload.html:28
-#, python-format
+#: invenio_communities/templates/invenio_communities/portalbox_upload.html:24
+msgid "Want your upload to appear in this community?"
+msgstr ""
+
+#: invenio_communities/templates/invenio_communities/portalbox_upload.html:26
+msgid "Click the button to upload straight to this community."
+msgstr ""
+
+#: invenio_communities/templates/invenio_communities/portalbox_upload.html:27
 msgid ""
-"If your upload is rejected by the curator, it will still be available on "
-"%(name)s, just not in this community."
+"The community curator is notified, and will either accept or reject your "
+"upload (see community curation policy above)."
+msgstr ""
+
+#: invenio_communities/templates/invenio_communities/portalbox_upload.html:28
+msgid ""
+"If your upload is rejected by the curator, it will still be publicly "
+"available, just not in this community."
 msgstr ""
 
 #: invenio_communities/views/ui.py:194 invenio_communities/views/ui.py:235
 msgid ""
-"Cannot add this file as a logo. Supported formats:   png and jpg. Max "
-"file size: 1.5MB."
+"Cannot add this file as a logo. Supported formats: PNG, JPG and SVG. Max "
+"file size: 1.5 MB."
 msgstr ""
 
