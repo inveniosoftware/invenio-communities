@@ -99,6 +99,27 @@ def test_alembic(app, db):
     assert not ext.alembic.compare_metadata()
 
 
+def test_alembic_column_renaming(app, db, communities):
+    """Test alembic recipes."""
+    ext = app.extensions['invenio-db']
+
+    if db.engine.name == 'sqlite':
+        raise pytest.skip('Upgrades are not supported on SQLite.')
+
+    results = [(comm.id, comm.user_id) for comm in communities]
+    db.session.commit()
+
+    assert not ext.alembic.compare_metadata()
+    ext.alembic.stamp()
+    ext.alembic.downgrade(target='2d9884d0e3fa')
+    ext.alembic.upgrade()
+
+    assert not ext.alembic.compare_metadata()
+
+    for id_, user_id in results:
+        assert Community.query.get(id_).user_id == user_id, id_
+
+
 def test_model_init(app, db, communities):
     """Test basic model initialization and actions."""
     (comm1, comm2, comm3) = communities
