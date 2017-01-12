@@ -160,7 +160,7 @@ def format_request_email_templ(increq, template, **ctx):
     # Add minimal information to the contex (without overwriting).
     curate_link = '{site_url}/communities/{id}/curate/'.format(
         site_url=current_app.config['THEME_SITEURL'],
-        id=increq.community.id),
+        id=increq.community.id)
 
     min_ctx = dict(
         record=Record.get_record(increq.record.id),
