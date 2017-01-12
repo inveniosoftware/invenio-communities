@@ -66,6 +66,7 @@ def upgrade():
         sa.Column('expires_at', sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(
             ['id_community'], ['communities_community.id'],
+            name='fk_communities_community_record_id_community',
         ),
         sa.ForeignKeyConstraint(['id_record'], [u'records_metadata.id'], ),
         sa.ForeignKeyConstraint(['id_user'], [u'accounts_user.id'], ),
@@ -80,6 +81,7 @@ def upgrade():
         sa.Column('start_date', sa.DateTime(), nullable=False),
         sa.ForeignKeyConstraint(
             ['id_community'], [u'communities_community.id'],
+            name='fk_communities_featured_community_id_community',
         ),
         sa.PrimaryKeyConstraint('id')
     )

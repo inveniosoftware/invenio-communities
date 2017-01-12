@@ -57,7 +57,10 @@ class InclusionRequest(db.Model, Timestamp):
 
     id_community = db.Column(
         db.String(100),
-        db.ForeignKey('communities_community.id'),
+        db.ForeignKey(
+            'communities_community.id',
+            # Explicitly naming the FK because of name length limit in MySQL
+            name='fk_communities_community_record_id_community'),
         primary_key=True
     )
     """Id of the community to which the record is applying."""
@@ -460,7 +463,12 @@ class FeaturedCommunity(db.Model, Timestamp):
     """Id of the featured entry."""
 
     id_community = db.Column(
-        db.String(100), db.ForeignKey(Community.id), nullable=False)
+        db.String(100),
+        db.ForeignKey(
+            Community.id,
+            # Explicitly naming the FK because of name length limit in MySQL
+            name='fk_communities_featured_community_id_community'),
+        nullable=False)
     """Id of the featured community."""
 
     start_date = db.Column(
