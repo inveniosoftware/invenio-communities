@@ -60,21 +60,22 @@ class InclusionRequest(db.Model, Timestamp):
         db.ForeignKey(
             'communities_community.id',
             # Explicitly naming the FK because of name length limit in MySQL
-            name='fk_communities_community_record_id_community'),
+            name='fk_communities_community_record_id_community',
+            ondelete='CASCADE'),
         primary_key=True
     )
     """Id of the community to which the record is applying."""
 
     id_record = db.Column(
         UUIDType,
-        db.ForeignKey(RecordMetadata.id),
+        db.ForeignKey(RecordMetadata.id, ondelete='CASCADE'),
         primary_key=True
     )
     """Id of the record applying to given community."""
 
     id_user = db.Column(
         db.Integer,
-        db.ForeignKey(User.id),
+        db.ForeignKey(User.id, ondelete='CASCADE'),
         nullable=True,
         default=None
     )
@@ -174,7 +175,7 @@ class Community(db.Model, Timestamp):
 
     id_user = db.Column(
         db.Integer,
-        db.ForeignKey(User.id),
+        db.ForeignKey(User.id, ondelete='CASCADE'),
         nullable=False
     )
     """Owner of the community."""
@@ -467,7 +468,8 @@ class FeaturedCommunity(db.Model, Timestamp):
         db.ForeignKey(
             Community.id,
             # Explicitly naming the FK because of name length limit in MySQL
-            name='fk_communities_featured_community_id_community'),
+            name='fk_communities_featured_community_id_community',
+            ondelete='CASCADE'),
         nullable=False)
     """Id of the featured community."""
 
