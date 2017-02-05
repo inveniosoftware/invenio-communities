@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015, 2016 CERN.
+# Copyright (C) 2015, 2016, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -93,7 +93,7 @@ install_requires = [
     'elasticsearch>=2.0.0,<3.0.0',
     'invenio-access>=1.0.0a11',
     'invenio-accounts>=1.0.0b1',
-    'invenio-assets>=1.0.0b2',
+    'invenio-assets>=1.0.0b6',
     'invenio-files-rest>=1.0.0.a14',
     'invenio-indexer>=1.0.0a8',
     'invenio-pidstore>=1.0.0b1',
