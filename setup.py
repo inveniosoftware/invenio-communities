@@ -36,7 +36,6 @@ history = open('CHANGES.rst').read()
 tests_require = [
     'Flask-CeleryExt>=0.2.2',
     'SQLAlchemy-Continuum>=1.2.1',
-    'celery>=3.1,<4.0',
     'check-manifest>=0.25',
     'coverage>=4.0',
     'invenio-mail>=1.0.0a3',
@@ -55,7 +54,7 @@ extras_require = {
         'Flask-Admin>=1.3.0',
     ],
     'docs': [
-        'Sphinx>=1.4.2',
+        'Sphinx>=1.5.1',
     ],
     'mail': [
         'Flask-Mail>=0.9.1',
@@ -99,7 +98,7 @@ install_requires = [
     'invenio-pidstore>=1.0.0b1',
     'invenio-records>=1.0.0b1',
     'invenio-rest[cors]>=1.0.0a9',
-    'invenio-search>=1.0.0a8',
+    'invenio-search>=1.0.0a9',
     'marshmallow>=2.5.0',
 ]
 
