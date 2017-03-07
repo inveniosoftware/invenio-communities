@@ -269,10 +269,11 @@ class Community(db.Model, Timestamp):
             cls.query.filter(cls.deleted_at.is_(None))
 
         if p:
+            p = p.replace(' ', '%')
             query = query.filter(db.or_(
-                cls.id.like('%' + p + '%'),
-                cls.title.like('%' + p + '%'),
-                cls.description.like('%' + p + '%'),
+                cls.id.ilike('%' + p + '%'),
+                cls.title.ilike('%' + p + '%'),
+                cls.description.ilike('%' + p + '%'),
             ))
 
         if so in current_app.config['COMMUNITIES_SORTING_OPTIONS']:
