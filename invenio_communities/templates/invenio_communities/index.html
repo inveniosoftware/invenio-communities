@@ -109,7 +109,7 @@
                       {{ obj.title }}
                     </h4><br />
                     <p>{{ obj.description|striptags|truncate }}</p>
-                    <small class="text-muted">Curated by: {{ obj.owner.nickname }}</small>
+                    <small class="text-muted">Curated by: {{ obj.owner.profile.username }}</small>
                   </div>
                 </div>
               {% endif %}
