@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2013, 2015, 2016 CERN.
+# Copyright (C) 2013, 2015, 2016, 2017 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -160,7 +160,7 @@ def format_request_email_templ(increq, template, **ctx):
     # Add minimal information to the contex (without overwriting).
     curate_link = '{site_url}/communities/{id}/curate/'.format(
         site_url=current_app.config['THEME_SITEURL'],
-        id=increq.community.id),
+        id=increq.community.id)
 
     min_ctx = dict(
         record=Record.get_record(increq.record.id),

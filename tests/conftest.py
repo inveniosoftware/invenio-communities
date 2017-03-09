@@ -144,3 +144,23 @@ def disable_request_email(app):
     app.config['COMMUNITIES_MAIL_ENABLED'] = False
     yield
     app.config['COMMUNITIES_MAIL_ENABLED'] = orig
+
+
+@pytest.fixture()
+def communities_for_filtering(app, db, user):
+    """Create some example communities."""
+    user1 = db_.session.merge(user)
+
+    comm0 = Community.create(community_id='comm1', user_id=user1.id,
+                             title='Test1',
+                             description=('Beautiful is better than ugly. '
+                                          'Explicit is better than implicit.'))
+    comm1 = Community.create(community_id='comm2', user_id=user1.id,
+                             title='Testing case 2',
+                             description=('Flat is better than nested. '
+                                          'Sparse is better than dense.'))
+    comm2 = Community.create(community_id='oth3', user_id=user1.id,
+                             title='A word about testing',
+                             description=('Errors should never pass silently. '
+                                          'Unless explicitly silenced.'))
+    return comm0, comm1, comm2

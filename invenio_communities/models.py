@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2013, 2014, 2015, 2016 CERN.
+# Copyright (C) 2013, 2014, 2015, 2016, 2017 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -57,7 +57,10 @@ class InclusionRequest(db.Model, Timestamp):
 
     id_community = db.Column(
         db.String(100),
-        db.ForeignKey('communities_community.id'),
+        db.ForeignKey(
+            'communities_community.id',
+            # Explicitly naming the FK because of name length limit in MySQL
+            name='fk_communities_community_record_id_community'),
         primary_key=True
     )
     """Id of the community to which the record is applying."""
@@ -266,10 +269,11 @@ class Community(db.Model, Timestamp):
             cls.query.filter(cls.deleted_at.is_(None))
 
         if p:
+            p = p.replace(' ', '%')
             query = query.filter(db.or_(
-                cls.id.like('%' + p + '%'),
-                cls.title.like('%' + p + '%'),
-                cls.description.like('%' + p + '%'),
+                cls.id.ilike('%' + p + '%'),
+                cls.title.ilike('%' + p + '%'),
+                cls.description.ilike('%' + p + '%'),
             ))
 
         if so in current_app.config['COMMUNITIES_SORTING_OPTIONS']:
@@ -460,7 +464,12 @@ class FeaturedCommunity(db.Model, Timestamp):
     """Id of the featured entry."""
 
     id_community = db.Column(
-        db.String(100), db.ForeignKey(Community.id), nullable=False)
+        db.String(100),
+        db.ForeignKey(
+            Community.id,
+            # Explicitly naming the FK because of name length limit in MySQL
+            name='fk_communities_featured_community_id_community'),
+        nullable=False)
     """Id of the featured community."""
 
     start_date = db.Column(
