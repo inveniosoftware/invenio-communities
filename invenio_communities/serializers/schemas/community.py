@@ -41,6 +41,8 @@ class CommunitySchemaV1(Schema):
     page = fields.String()
     curation_policy = fields.String()
     last_record_accepted = fields.DateTime()
+    created = fields.DateTime()
+    updated = fields.DateTime()
 
     @post_dump(pass_many=False)
     def item_links_addition(self, data):
