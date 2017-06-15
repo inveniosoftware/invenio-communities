@@ -46,7 +46,7 @@ blueprint = Blueprint(
 
 
 class CommunitiesResource(ContentNegotiatedMethodView):
-    """"Communities resource."""
+    """Communities resource."""
 
     get_args = dict(
         query=fields.String(
@@ -130,7 +130,7 @@ class CommunitiesResource(ContentNegotiatedMethodView):
 
 
 class CommunityDetailsResource(ContentNegotiatedMethodView):
-    """"Community details resource."""
+    """Community details resource."""
 
     def __init__(self, serializers=None, *args, **kwargs):
         """Constructor."""
