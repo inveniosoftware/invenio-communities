@@ -43,6 +43,7 @@ class CommunitySchemaV1(Schema):
     last_record_accepted = fields.DateTime()
     created = fields.DateTime()
     updated = fields.DateTime()
+    id_user = fields.Integer()
 
     @post_dump(pass_many=False)
     def item_links_addition(self, data):
