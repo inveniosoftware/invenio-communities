@@ -114,7 +114,7 @@
   </div> <!-- /.row -->
   <div class="row">
     <div id="file_container" class="col-md-8">
-      <form action="." method="POST" id="edit_form" class="form-horizontal" enctype="multipart/form-data" role="form">
+      <form method="POST" id="edit_form" class="form-horizontal" enctype="multipart/form-data" role="form">
       {{form.csrf_token}}
       <div class="panel-group">
       {% if not is_new %}
