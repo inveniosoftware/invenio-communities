@@ -45,7 +45,7 @@
     </div>
     <div class="col-sm-8 col-md-8">
       {%- set args = request.args.copy().to_dict() -%}
-      <form action="." method="GET" id="search_form" role="form">
+      <form method="GET" id="search_form" role="form">
         {{ form.p(class_="form-control " + form.p.short_name, placeholder='Search communities', type='text') }}
       </form>
         <br />
