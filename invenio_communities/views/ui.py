@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -170,7 +170,7 @@ def generic_item(community, template, **extra_ctx):
 @login_required
 def new():
     """Create a new community."""
-    form = CommunityForm(request.values)
+    form = CommunityForm(formdata=request.values)
 
     ctx = mycommunities_ctx()
     ctx.update({
@@ -215,7 +215,7 @@ def new():
 @permission_required('community-edit')
 def edit(community):
     """Create or edit a community."""
-    form = EditCommunityForm(request.values, community)
+    form = EditCommunityForm(formdata=request.values, obj=community)
     deleteform = DeleteCommunityForm()
     ctx = mycommunities_ctx()
     ctx.update({
@@ -253,7 +253,7 @@ def edit(community):
 @permission_required('community-delete')
 def delete(community):
     """Delete a community."""
-    deleteform = DeleteCommunityForm(request.values)
+    deleteform = DeleteCommunityForm(formdata=request.values)
     ctx = mycommunities_ctx()
     ctx.update({
         'deleteform': deleteform,
