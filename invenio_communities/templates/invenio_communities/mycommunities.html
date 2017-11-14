@@ -59,7 +59,11 @@
 {% else %}
   <h4>
     <div class="pull-right">
+      {%- if security.registerable %}
       &nbsp;<a href="{{url_for('security.register')}}" class="btn btn-warning btn-large signup">{{ _('Sign Up') }}</a>
+      {% else %}
+      &nbsp;<a href="{{url_for('security.login')}}" class="btn btn-warning btn-large">{{ _('Log in') }}</a>
+      {% endif %}
     </div>
     <strong>{{ _('Want your own community?') }}</strong>
   </h4>
