@@ -311,6 +311,7 @@ def test_communities_rest_get_details(app, db, communities):
                 id='comm1',
                 page='',
                 curation_policy='',
+                logo_url=None,
                 last_record_accepted='2000-01-01T00:00:00+00:00',
                 links={
                     'self': 'http://inveniosoftware.org/api/communities/comm1',

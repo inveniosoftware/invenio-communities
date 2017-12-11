@@ -26,6 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import current_app, url_for
 from marshmallow import Schema, fields, post_dump
 
 from invenio_communities.links import default_links_item_factory, \
@@ -44,6 +45,15 @@ class CommunitySchemaV1(Schema):
     created = fields.DateTime()
     updated = fields.DateTime()
     id_user = fields.Integer()
+    logo_url = fields.Method('get_logo_url')
+
+    def get_logo_url(self, obj):
+        """Get the community logo URL."""
+        if current_app and obj.logo_url:
+            return u'{site_url}{path}'.format(
+                site_url=current_app.config.get('THEME_SITEURL'),
+                path=obj.logo_url,
+            )
 
     @post_dump(pass_many=False)
     def item_links_addition(self, data):

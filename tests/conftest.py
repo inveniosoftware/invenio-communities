@@ -78,7 +78,7 @@ def app(request):
         OAISERVER_REGISTER_SET_SIGNALS=False,
         OAISERVER_ID_PREFIX='oai:localhost:recid/',
         SERVER_NAME='inveniosoftware.org',
-        THEME_SITEURL='https://localhost:5000',
+        THEME_SITEURL='https://inveniosoftware.org',
         MAIL_SUPPRESS_SEND=True,
     )
     FlaskCeleryExt(app)
