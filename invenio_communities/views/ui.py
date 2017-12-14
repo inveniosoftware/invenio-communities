@@ -123,16 +123,15 @@ def index():
     })
 
     return render_template(
-        "invenio_communities/index.html",
-        **ctx
-    )
+        current_app.config['COMMUNITIES_INDEX_TEMPLATE'], **ctx)
 
 
 @blueprint.route('/<string:community_id>/', methods=['GET'])
 @pass_community
 def detail(community):
     """Index page with uploader and list of existing depositions."""
-    return generic_item(community, "invenio_communities/detail.html")
+    return generic_item(
+        community, current_app.config['COMMUNITIES_DETAIL_TEMPLATE'])
 
 
 @blueprint.route('/<string:community_id>/search', methods=['GET'])
@@ -149,7 +148,8 @@ def search(community):
 @pass_community
 def about(community):
     """Index page with uploader and list of existing depositions."""
-    return generic_item(community, "invenio_communities/about.html")
+    return generic_item(
+        community, current_app.config['COMMUNITIES_ABOUT_TEMPLATE'])
 
 
 def generic_item(community, template, **extra_ctx):
@@ -203,7 +203,7 @@ def new():
             return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
-        "/invenio_communities/new.html",
+        current_app.config['COMMUNITIES_NEW_TEMPLATE'],
         community_form=form,
         **ctx
     )
@@ -242,7 +242,7 @@ def edit(community):
             return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
-        "invenio_communities/new.html",
+        current_app.config['COMMUNITIES_EDIT_TEMPLATE'],
         **ctx
     )
 

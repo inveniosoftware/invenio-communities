@@ -94,10 +94,28 @@ COMMUNITIES_JSTEMPLATE_RESULTS_CURATE = \
 """Angular template for records in curation view."""
 
 COMMUNITIES_COMMUNITY_TEMPLATE = "invenio_communities/community_base.html"
+"""Base template for community pages."""
 
 COMMUNITIES_CURATE_TEMPLATE = "invenio_communities/curate.html"
+"""Template for inclusion requests curation page."""
 
 COMMUNITIES_SEARCH_TEMPLATE = "invenio_communities/search.html"
+"""Template for the search page."""
+
+COMMUNITIES_INDEX_TEMPLATE = 'invenio_communities/index.html'
+"""Template for the index page."""
+
+COMMUNITIES_DETAIL_TEMPLATE = 'invenio_communities/detail.html'
+"""Template for the community details page."""
+
+COMMUNITIES_ABOUT_TEMPLATE = 'invenio_communities/about.html'
+"""Template for the community about page."""
+
+COMMUNITIES_NEW_TEMPLATE = 'invenio_communities/new.html'
+"""Template for the new community page."""
+
+COMMUNITIES_EDIT_TEMPLATE = 'invenio_communities/new.html'
+"""Template for the edit communtiy page."""
 
 COMMUNITIES_URL_COMMUNITY_VIEW = \
     '{protocol}://{host}/communities/{community_id}/'
