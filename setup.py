@@ -40,13 +40,13 @@ tests_require = [
     'coverage>=4.0',
     'invenio-mail>=1.0.0a3',
     'invenio-oaiserver>=1.0.0a9',
-    'isort>=4.2.2',
+    'isort>=4.3.3',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
+    'pytest>=2.8.0,!=3.3.0',
 ]
 
 extras_require = {
@@ -99,7 +99,7 @@ install_requires = [
     'invenio-records>=1.0.0b1',
     'invenio-rest[cors]>=1.0.0a9',
     'invenio-search>=1.0.0a9',
-    'marshmallow>=2.5.0',
+    'marshmallow>=2.15.0',
 ]
 
 packages = find_packages()

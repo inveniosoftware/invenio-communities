@@ -40,19 +40,31 @@ define([], function(){
       scope.recordTemplate = attrs.recordTemplate;
       scope.handleCommunityClick = function(action, recid) {
           // scope.isPressed=true;
-          $http({
-            method: 'POST',
-            url: scope.communityCurationEndpoint,
-            data: {
-              'recid': recid,
-              'action': action,
-            },
-            headers: {'Content-Type': 'application/json'},
-          }).then(function successCallback(result) {
-              // flash success
-            }, function errorCallback(result) {
-              // flash error
-            });
+          if(!scope.communitiesCurationResults) {
+          scope.communitiesCurationResults = {};
+        }
+
+        $http({
+          method: 'POST',
+          url: scope.communityCurationEndpoint,
+          data: {
+            'recid': recid,
+            'action': action,
+          },
+          headers: {'Content-Type': 'application/json'},
+        }).then(function successCallback(result) {
+          var successMsg;
+          if(action == 'accept') {
+            successMsg = "The record was successfully accepted.";
+          }
+          else if(action == 'reject') {
+            successMsg = "The record was successfully rejected.";
+          }
+          scope.communitiesCurationResults[recid] = {success: successMsg};
+
+          }, function errorCallback(result) {
+            scope.communitiesCurationResults[recid] = {error: "An error occurred while processing your request."};
+          });
       };
     }
 

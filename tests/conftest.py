@@ -39,8 +39,8 @@ from flask_menu import Menu
 from invenio_accounts import InvenioAccounts
 from invenio_accounts.testutils import create_test_user
 from invenio_assets import InvenioAssets
-from invenio_db import db as db_
 from invenio_db import InvenioDB
+from invenio_db import db as db_
 from invenio_indexer import InvenioIndexer
 from invenio_mail import InvenioMail
 from invenio_oaiserver import InvenioOAIServer
