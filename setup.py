@@ -49,6 +49,8 @@ tests_require = [
     'pytest>=4.6.4,<5.0.0',
 ]
 
+invenio_search_version = '1.2.0'
+
 extras_require = {
     'admin': [
         'Flask-Admin>=1.3.0',
@@ -71,12 +73,26 @@ extras_require = {
     'sqlite': [
         'invenio-db>=1.0.0b3',
     ],
+    'elasticsearch2': [
+        'invenio-search[elasticsearch2]>={}'.format(invenio_search_version),
+    ],
+    'elasticsearch5': [
+        'invenio-search[elasticsearch5]>={}'.format(invenio_search_version),
+    ],
+    'elasticsearch6': [
+        'invenio-search[elasticsearch6]>={}'.format(invenio_search_version),
+    ],
+    'elasticsearch7': [
+        'invenio-search[elasticsearch7]>={}'.format(invenio_search_version),
+    ],
     'tests': tests_require,
 }
 
 extras_require['all'] = []
 for name, reqs in extras_require.items():
-    if name in ('mysql', 'postgresql', 'sqlite'):
+    if name in (
+            'mysql', 'postgresql', 'sqlite', 'elasticsearch2',
+            'elasticsearch5', 'elasticsearch6', 'elasticsearch7'):
         continue
     extras_require['all'].extend(reqs)
 
@@ -87,8 +103,6 @@ setup_requires = [
 
 install_requires = [
     'bleach>=2.1.3',
-    'elasticsearch-dsl>=2.0.0,<3.0.0',
-    'elasticsearch>=2.0.0,<3.0.0',
     'Flask-BabelEx>=0.9.3',
     'Flask>=0.11.1',
     'invenio-access>=1.1.0',
