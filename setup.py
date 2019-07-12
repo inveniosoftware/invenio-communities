@@ -34,19 +34,19 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'Flask-CeleryExt>=0.2.2',
+    'Flask-CeleryExt>=0.3.2',
     'SQLAlchemy-Continuum>=1.2.1',
     'check-manifest>=0.25',
-    'coverage>=4.0',
-    'invenio-mail>=1.0.0a3',
-    'invenio-oaiserver>=1.0.0a9',
+    'coverage>=4.5.3',
+    'invenio-mail>=1.0.2',
+    'invenio-oaiserver>=1.0.3',
     'isort>=4.3.3',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
     'pytest-cache>=1.0',
-    'pytest-cov>=1.8.0',
+    'pytest-cov>=2.7.1',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0,!=3.3.0',
+    'pytest>=4.6.4,<5.0.0',
 ]
 
 extras_require = {
@@ -60,13 +60,13 @@ extras_require = {
         'Flask-Mail>=0.9.1',
     ],
     'oai': [
-        'invenio-oaiserver>=1.0.0a8',
+        'invenio-oaiserver>=1.0.3',
     ],
     'mysql': [
-        'invenio-db[mysql]>=1.0.0b3',
+        'invenio-db[mysql]>=1.0.3',
     ],
     'postgresql': [
-        'invenio-db[postgresql]>=1.0.0b3',
+        'invenio-db[postgresql]>=1.0.3',
     ],
     'sqlite': [
         'invenio-db>=1.0.0b3',
@@ -86,20 +86,21 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask-BabelEx>=0.9.3',
-    'Flask>=0.11.1',
+    'bleach>=2.1.3',
     'elasticsearch-dsl>=2.0.0,<3.0.0',
     'elasticsearch>=2.0.0,<3.0.0',
-    'invenio-access>=1.0.0a11',
-    'invenio-accounts>=1.0.0b1',
-    'invenio-assets>=1.0.0b2',
-    'invenio-files-rest>=1.0.0.a14',
-    'invenio-indexer>=1.0.0a8',
-    'invenio-pidstore>=1.0.0b1',
-    'invenio-records>=1.0.0b1',
-    'invenio-rest[cors]>=1.0.0a9',
-    'invenio-search>=1.0.0a9',
-    'marshmallow>=2.15.0',
+    'Flask-BabelEx>=0.9.3',
+    'Flask>=0.11.1',
+    'invenio-access>=1.1.0',
+    'invenio-accounts>=1.1.0',
+    'invenio-assets>=1.1.2',
+    'invenio-files-rest>=1.0.0b1',
+    'invenio-indexer>=1.0.2',
+    'invenio-pidstore>=1.0.0',
+    'invenio-records>=1.2.0',
+    'invenio-rest[cors]>=1.0.0',
+    'invenio-search>=1.1.0',
+    'marshmallow>=2.15.0,<3',
 ]
 
 packages = find_packages()

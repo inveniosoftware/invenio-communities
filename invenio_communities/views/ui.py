@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 import copy
 from functools import wraps
 
+import bleach
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
 from flask_babelex import gettext as _
@@ -51,6 +52,17 @@ blueprint = Blueprint(
     template_folder='../templates',
     static_folder='../static',
 )
+
+
+@blueprint.app_template_filter('sanitize_html')
+def sanitize_html(value):
+    """Sanitizes HTML using the bleach library."""
+    return bleach.clean(
+        value,
+        tags=current_app.config['COMMUNITIES_ALLOWED_TAGS'],
+        attributes=current_app.config['COMMUNITIES_ALLOWED_ATTRS'],
+        strip=True,
+    ).strip()
 
 
 def pass_community(f):

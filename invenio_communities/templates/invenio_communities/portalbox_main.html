@@ -32,7 +32,7 @@
 {%- endif %}
 <h4>{{community.title}}</h4>
 {%- if community.description %}
-{{ community.description|safe }}
+{{ community.description | sanitize_html | safe }}
 {%- endif %}
 {%- if community.page %}
 <a href="{{ url_for('invenio_communities.about', community_id=community.id) }}" class="pull-right">
@@ -45,7 +45,7 @@
   {%- if community.owner.profile and community.owner.profile.username %}
     <dt>{{ _('Curated by:') }}</dt><dd>{{ community.owner.profile.username }}</dd>
   {%- endif %}
-  <dt>{{ _('Curation policy:') }}</dt><dd>{{ community.curation_policy|safe|default(_('Not specified'), true) }}</dd>
+  <dt>{{ _('Curation policy:') }}</dt><dd>{{ community.curation_policy | sanitize_html | safe | default(_('Not specified'), true) }}</dd>
   <dt>{{ _('Created:') }}</dt><dd>{{ community.created|dateformat(format='long') }}</dd>
   <dt>{{ _('Harvesting API:') }}</dt><dd><a href="{{ community.oaiset_url }}">{{ _('OAI-PMH Interface') }}</a></dd>
 </dl>
