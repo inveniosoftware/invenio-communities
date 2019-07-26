@@ -28,6 +28,8 @@ import copy
 from collections import namedtuple
 from functools import partial, wraps
 
+import bleach
+
 from flask import (Blueprint, abort, current_app, flash, jsonify, redirect,
                    render_template, request, url_for)
 from flask_babelex import gettext as _
@@ -631,5 +633,16 @@ def team_add_user(community):
                                    user=user,
                                    argument=community.id))
         db.session.commit()
-        flash(u"The permission has been succesfully added.")
+        flash(u"The permission has been successfully added.")
     return redirect(url_for(".team_management", community_id=community.id))
+
+
+@blueprint.app_template_filter('sanitize_html')
+def sanitize_html(value):
+    """Sanitizes HTML using the bleach library."""
+    return bleach.clean(
+        value,
+        tags=current_app.config['COMMUNITIES_ALLOWED_TAGS'],
+        attributes=current_app.config['COMMUNITIES_ALLOWED_ATTRS'],
+        strip=True,
+    ).strip()

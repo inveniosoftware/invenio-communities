@@ -112,3 +112,41 @@ COMMUNITIES_TEAM_ADD_TEMPLATE = "invenio_communities/team-add.html"
 COMMUNITIES_URL_COMMUNITY_VIEW = \
     '{protocol}://{host}/communities/{community_id}/'
 """String pattern to generate the URL for the view of a community."""
+
+COMMUNITIES_ALLOWED_TAGS = [
+    'a',
+    'abbr',
+    'acronym',
+    'b',
+    'blockquote',
+    'br',
+    'code',
+    'div',
+    'em',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'i',
+    'li',
+    'ol',
+    'p',
+    'pre',
+    'span',
+    'strike',
+    'strong',
+    'sub',
+    'sup',
+    'u',
+    'ul',
+]
+"""List of allowed tags used to sanitize HTML output for communities."""
+
+COMMUNITIES_ALLOWED_ATTRS = {
+    '*': ['class'],
+    'a': ['href', 'title', 'name', 'class', 'rel'],
+    'abbr': ['title'],
+    'acronym': ['title'],
+}
+"""List of allowed attributes used to sanitize HTML output for communities."""
