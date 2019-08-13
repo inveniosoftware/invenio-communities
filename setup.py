@@ -35,9 +35,9 @@ history = open('CHANGES.rst').read()
 
 tests_require = [
     'Flask-CeleryExt>=0.3.2',
-    'SQLAlchemy-Continuum>=1.2.1',
     'check-manifest>=0.25',
     'coverage>=4.5.3',
+    'invenio-db>=1.0.3',
     'invenio-mail>=1.0.2',
     'invenio-oaiserver>=1.0.3',
     'isort>=4.3.3',
@@ -49,7 +49,7 @@ tests_require = [
     'pytest>=4.6.4,<5.0.0',
 ]
 
-invenio_search_version = '1.2.0'
+invenio_search_version = '1.2.2'
 
 extras_require = {
     'admin': [
@@ -63,15 +63,6 @@ extras_require = {
     ],
     'oai': [
         'invenio-oaiserver>=1.0.3',
-    ],
-    'mysql': [
-        'invenio-db[mysql]>=1.0.3',
-    ],
-    'postgresql': [
-        'invenio-db[postgresql]>=1.0.3',
-    ],
-    'sqlite': [
-        'invenio-db>=1.0.0b3',
     ],
     'elasticsearch2': [
         'invenio-search[elasticsearch2]>={}'.format(invenio_search_version),
@@ -91,8 +82,9 @@ extras_require = {
 extras_require['all'] = []
 for name, reqs in extras_require.items():
     if name in (
-            'mysql', 'postgresql', 'sqlite', 'elasticsearch2',
-            'elasticsearch5', 'elasticsearch6', 'elasticsearch7'):
+        'elasticsearch2', 'elasticsearch5', 'elasticsearch6',
+        'elasticsearch7'
+    ):
         continue
     extras_require['all'].extend(reqs)
 
@@ -107,13 +99,12 @@ install_requires = [
     'Flask>=0.11.1',
     'invenio-access>=1.1.0',
     'invenio-accounts>=1.1.0',
-    'invenio-assets>=1.1.2',
+    'invenio-assets>=1.0.0',
     'invenio-files-rest>=1.0.0b1',
     'invenio-indexer>=1.0.2',
     'invenio-pidstore>=1.0.0',
     'invenio-records>=1.2.0',
     'invenio-rest[cors]>=1.0.0',
-    'invenio-search>=1.1.0',
     'marshmallow>=2.15.0,<3',
 ]
 
