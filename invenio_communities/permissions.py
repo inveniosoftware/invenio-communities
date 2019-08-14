@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 
 from flask_login import current_user
 from flask_principal import ActionNeed
-from invenio_access.permissions import DynamicPermission
+from invenio_access.permissions import Permission
 
 
 class _Permission(object):
@@ -46,7 +46,7 @@ class _Permission(object):
     def can(self):
         """Grant permission if owner or admin."""
         return str(current_user.get_id()) == str(self.community.id_user) or \
-            DynamicPermission(ActionNeed('admin-access')).can()
+            Permission(ActionNeed('admin-access')).can()
 
 
 def permission_factory(community, action):
