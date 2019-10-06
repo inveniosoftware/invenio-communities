@@ -9,7 +9,7 @@
 Changes
 =======
 
-Version 1.0.0a21 (released 2019-08-21)
+Version 1.0.0a22 (released 2019-10-06)
 --------------------------------------
 
 - Initial public release.
