@@ -115,36 +115,25 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
-        'invenio_base.apps': [
-            'invenio_communities = invenio_communities:InvenioCommunities',
-        ],
-        'invenio_base.blueprints': [
-            'invenio_communities = invenio_communities.views.ui:blueprint',
-        ],
         'invenio_base.api_apps': [
-            'invenio_communities = invenio_communities:InvenioCommunities',
+            'invenio_communities = invenio_communities:Communities',
         ],
         'invenio_base.api_blueprints': [
-            'invenio_communities = invenio_communities.views.api:blueprint',
+            'invenio_communities = invenio_communities.'
+            'views:create_blueprint_from_app'
         ],
-        'invenio_db.alembic': [
-            'invenio_communities = invenio_communities:alembic',
+        'invenio_search.mappings': [
+            'communities = invenio_communities.mappings',
         ],
-        'invenio_i18n.translations': [
-            'messages = invenio_communities',
+        'invenio_pidstore.minters': [
+            'comid = invenio_communities.minters:comid_minter',
         ],
-        'invenio_admin.views': [
-            'invenio_communities_communities = '
-            'invenio_communities.admin:community_adminview',
-            'invenio_communities_requests = '
-            'invenio_communities.admin:request_adminview',
-            'invenio_communities_featured = '
-            'invenio_communities.admin:featured_adminview',
+        'invenio_pidstore.fetchers': [
+            'comid = invenio_communities.fetchers:comid_fetcher',
         ],
-        'invenio_assets.bundles': [
-            'invenio_communities_js = invenio_communities.bundles:js',
-            'invenio_communities_css = invenio_communities.bundles:css',
-        ]
+        'invenio_jsonschemas.schemas': [
+            'communities = invenio_communities.jsonschemas',
+        ],
     },
     extras_require=extras_require,
     install_requires=install_requires,

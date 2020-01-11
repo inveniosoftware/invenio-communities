@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2018 CERN.
+# Copyright (C) 2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Proxy definitions."""
+"""Schemas for marshmallow."""
 
 from __future__ import absolute_import, print_function
 
-from flask import current_app
-from werkzeug.local import LocalProxy
+from .json import CommunitySchemaV1, CommunitySchemaMetadataV1
 
-current_communities = LocalProxy(
-    lambda: current_app.extensions['communities'])
-"""Proxy to an instance of ``_Communities``."""
+__all__ = ('CommunitySchemaV1', 'CommunitySchemaMetadataV1')

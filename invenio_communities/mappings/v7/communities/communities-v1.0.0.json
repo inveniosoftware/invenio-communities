@@ -1,0 +1,70 @@
+{
+  "mappings": {
+    "numeric_detection": false,
+    "properties": {
+      "$schema": {
+        "type": "keyword",
+        "index": false
+      },
+      "_created": {
+        "type": "date"
+      },
+      "_updated": {
+        "type": "date"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text"
+      },
+      "description": {
+        "type": "text"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "curation_policy": {
+        "type": "text"
+      },
+      "page": {
+        "type": "text"
+      },
+      "alternate_identifiers": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "keyword"
+          },
+          "scheme": {
+            "type": "keyword"
+          }
+        }
+      },
+      "website": {
+        "type": "keyword"
+      },
+      "domain": {
+        "type": "keyword"
+      },
+      "verified": {
+        "type": "boolean"
+      },
+      "visibility": {
+        "type": "keyword"
+      },
+      "member_policy": {
+        "type": "keyword"
+      },
+      "record_policy": {
+        "type": "keyword"
+      },
+      "archived": {
+        "type": "boolean"
+      },
+      "created_by": {
+        "type": "integer"
+      }
+    }
+  }
+}

@@ -1,145 +1,50 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015-2019 CERN.
+# Copyright (C) 2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Invenio Communities configuration."""
+"""Default configuration."""
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function
 
-from datetime import timedelta
+from invenio_records_rest.utils import allow_all
 
-import pkg_resources
+#: Records REST API endpoints.
+COMMUNITIES_REST_ENDPOINTS = dict(
+    comid=dict(
+        pid_type='comid',
+        pid_minter='comid',
+        pid_fetcher='comid',
+        list_route='/communities/',
+        item_route='/communities/<{0}:pid_value>'.format(
+            'pid(comid,record_class="invenio_communities.api:Community",'
+            'object_type="com")'
+        ),
+        search_index='communities',
+        record_class='invenio_communities.api:Community',
+        record_serializers={
+            'application/json': (
+                'invenio_communities.serializers.json_v1_response'),
+        },
+        search_serializers={
+            'application/json': (
+                'invenio_communities.serializers:json_v1_search'),
+        },
+        record_loaders={
+            'application/json': ('invenio_communities.loaders:json_v1'),
+        },
+        indexer_class='invenio_communities.indexer:CommunityIndexer',
+        default_media_type='application/json',
+        read_permission_factory_imp=allow_all,
+        create_permission_factory_imp=allow_all,
+        list_permission_factory_imp=allow_all,
+        update_permission_factory_imp=allow_all,
+        delete_permission_factory_imp=allow_all
+    ),
+)
 
-COMMUNITIES_REQUEST_EXPIRY_TIME = timedelta(days=365)
-"""Time after which the inclusion requests automatically expire."""
 
-COMMUNITIES_DELETE_HOLDOUT_TIME = timedelta(days=365)
-"""Time after which the communities marked for deletion are hard-deleted."""
-
-COMMUNITIES_LOGO_EXTENSIONS = ['png', 'jpg', 'jpeg', 'svg']
-"""Allowed file extensions for the communities logo."""
-
-COMMUNITIES_LOGO_MAX_SIZE = 1000 * 1000 * 1.5  # 1.5 MB
-"""Allowed file size for the communities logo."""
-
-COMMUNITIES_RECORD_KEY = 'communities'
-"""Key inside the JSON record for communities."""
-
-COMMUNITIES_SORTING_OPTIONS = [
-    'title',
-    'ranking',
-]
-"""Possible communities sorting options."""
-
-COMMUNITIES_DEFAULT_SORTING_OPTION = 'ranking'
-"""Default sorting option."""
-
-COMMUNITIES_OAI_FORMAT = 'user-{community_id}'
-"""String template for the community OAISet 'spec'."""
-
-COMMUNITIES_BUCKET_UUID = '00000000-0000-0000-0000-000000000000'
-"""UUID for the bucket corresponding to communities."""
-
-COMMUNITIES_INDEX_PREFIX = 'records-'
-"""Key inside the JSON record for communities."""
-
-COMMUNITIES_OAI_ENABLED = False
-"""Using OAIServer if available."""
-try:
-    pkg_resources.get_distribution('invenio_oaiserver')
-    COMMUNITIES_OAI_ENABLED = True
-except pkg_resources.DistributionNotFound:  # pragma: no cover
-    pass
-
-COMMUNITIES_MAIL_ENABLED = False
-"""Using Flask-Mail if available."""
-try:
-    pkg_resources.get_distribution('flask_mail')
-    COMMUNITIES_MAIL_ENABLED = True
-except pkg_resources.DistributionNotFound:  # pragma: no cover
-    pass
-
-COMMUNITIES_REQUEST_EMAIL_BODY_TEMPLATE = \
-    'invenio_communities/request_email_body.html'
-"""Template for InclusionRequest email body."""
-
-COMMUNITIES_REQUEST_EMAIL_TITLE_TEMPLATE = \
-    'invenio_communities/request_email_title.html'
-"""Template for InclusionRequest email title."""
-
-COMMUNITIES_REQUEST_EMAIL_SENDER = 'info@inveniosoftware.org'
-"""Sender email for all inclusion request notification emails."""
-
-COMMUNITIES_JSTEMPLATE_RESULTS_CURATE = \
-    'templates/invenio_communities/ng_record_curate.html'
-"""Angular template for records in curation view."""
-
-COMMUNITIES_COMMUNITY_TEMPLATE = "invenio_communities/community_base.html"
-"""Base template for community pages."""
-
-COMMUNITIES_CURATE_TEMPLATE = "invenio_communities/curate.html"
-"""Template for inclusion requests curation page."""
-
-COMMUNITIES_SEARCH_TEMPLATE = "invenio_communities/search.html"
-"""Template for the search page."""
-
-COMMUNITIES_INDEX_TEMPLATE = 'invenio_communities/index.html'
-"""Template for the index page."""
-
-COMMUNITIES_DETAIL_TEMPLATE = 'invenio_communities/detail.html'
-"""Template for the community details page."""
-
-COMMUNITIES_ABOUT_TEMPLATE = 'invenio_communities/about.html'
-"""Template for the community about page."""
-
-COMMUNITIES_NEW_TEMPLATE = 'invenio_communities/new.html'
-"""Template for the new community page."""
-
-COMMUNITIES_EDIT_TEMPLATE = 'invenio_communities/new.html'
-"""Template for the edit communtiy page."""
-
-COMMUNITIES_URL_COMMUNITY_VIEW = \
-    '{protocol}://{host}/communities/{community_id}/'
-"""String pattern to generate the URL for the view of a community."""
-
-COMMUNITIES_ALLOWED_TAGS = [
-    'a',
-    'abbr',
-    'acronym',
-    'b',
-    'blockquote',
-    'br',
-    'code',
-    'div',
-    'em',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'i',
-    'li',
-    'ol',
-    'p',
-    'pre',
-    'span',
-    'strike',
-    'strong',
-    'sub',
-    'sup',
-    'u',
-    'ul',
-]
-"""List of allowed tags used to sanitize HTML output for communities."""
-
-COMMUNITIES_ALLOWED_ATTRS = {
-    '*': ['class'],
-    'a': ['href', 'title', 'name', 'class', 'rel'],
-    'abbr': ['title'],
-    'acronym': ['title'],
-}
-"""List of allowed attributes used to sanitize HTML output for communities."""
+MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 10

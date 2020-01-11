@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2019 CERN.
+# Copyright (C) 2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
-
-
-"""Invenio digital library framework."""
-
 from __future__ import absolute_import, print_function
 
-from .ext import Communities
-from .proxies import current_communities
+from invenio_pidstore.fetchers import FetchedPID
 
-__all__ = ('Communities', 'current_communities')
+
+def comid_fetcher(record_uuid, data):
+    """Fetch a community's identifier."""
+    return FetchedPID(provider=None, pid_type='comid', pid_value=data['id'])
