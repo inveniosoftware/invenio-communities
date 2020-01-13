@@ -116,6 +116,9 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
+        'flask.commands': [
+            'rdm-communities = invenio_communities.cli:rdm_communities'
+        ],
         'invenio_base.api_apps': [
             'invenio_communities = invenio_communities:Communities',
         ],
