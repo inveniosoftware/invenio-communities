@@ -39,3 +39,5 @@ class Communities(object):
                     app.config['RECORDS_REST_ENDPOINTS'].update(getattr(
                         config, k))
                 app.config.setdefault(k, getattr(config, k))
+        app.config.setdefault(
+            'SUPPORT_EMAIL', getattr(config, 'SUPPORT_EMAIL'))
