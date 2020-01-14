@@ -23,7 +23,7 @@ def marshmallow_loader(schema_class):
             context['pid'] = pid
             context['record'] = record
         if current_user.is_authenticated:
-            context['user_id'] = current_user.get_id()
+            context['user_id'] = int(current_user.get_id())
         if marshmallow_version[0] < 3:
             result = schema_class(context=context).load(request_json)
             if result.errors:

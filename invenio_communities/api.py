@@ -23,12 +23,16 @@ class Community(Record):
     # "invenio_records.api.RecordBase" have to be overridden/removed
     model_cls = CommunityMetadata
 
-    @property
-    def schema(self):
-        """JSON Schema for the community metadata."""
-        return current_app.config.get(
-            'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json')
+    schema = LocalProxy(lambda: current_app.config.get(
+            'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json'))
 
-    def delete(self, force=True):  # NOTE: By default hard-deleted
+    def delete(self, force=False):
         """Delete a community."""
-        return super(Community, self).delete(force=force)
+        with db.session.begin_nested():
+            if force:
+                db.session.delete(self.model)
+            else:
+                self.model.delete()
+
+        return self
+
