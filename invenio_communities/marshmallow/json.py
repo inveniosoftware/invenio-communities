@@ -51,6 +51,12 @@ def load_creator(_, context):
     return context.get('user_id', missing)
 
 
+def serialize_creator(_, context):
+    """Load the record creator."""
+    old_data = context.get('record')
+    return old_data.get('created_by', missing)
+
+
 class CommunitySchemaMetadataV1(StrictKeysMixin):
     id = GenFunction(
         deserialize=pid_from_context_or_rec,
@@ -95,7 +101,7 @@ class CommunitySchemaMetadataV1(StrictKeysMixin):
     )
     created_by = GenFunction(
         deserialize=load_creator,
-        load_only=True  # to be added only when loading
+        serialize=serialize_creator
     )
 
 

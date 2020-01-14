@@ -18,4 +18,13 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
     """Represent a community."""
 
     __tablename__ = 'community_metadata'
+    __table_args__ = {'extend_existing': True}
     __versioned__ = {'versioning': False}
+
+    is_deleted = db.Column(db.Boolean, nullable=True, default=False)
+    """Time at which the community was soft-deleted."""
+
+    def delete(self):
+        """Mark the community for deletion."""
+        self.is_deleted = True
+
