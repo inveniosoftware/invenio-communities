@@ -13,6 +13,7 @@ from __future__ import absolute_import, print_function
 from flask_security import current_user
 from flask import current_app, abort
 from sqlalchemy.exc import IntegrityError
+from werkzeug.local import LocalProxy
 
 from invenio_db import db
 from invenio_records.api import Record
@@ -29,29 +30,59 @@ class Community(Record):
     # "invenio_records.api.RecordBase" have to be overridden/removed
     model_cls = CommunityMetadata
 
-    @property
-    def schema(self):
-        """JSON Schema for the community metadata."""
-        return current_app.config.get(
-            'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json')
+    schema = LocalProxy(lambda: current_app.config.get(
+            'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json'))
 
-    def delete(self, force=True):  # NOTE: By default hard-deleted
-        """Delete a community."""
-        return super(Community, self).delete(force=force)
+    def delete(self, force=False):
+            """Delete a community.
+
+            If `force` is ``False``, the community is soft-deleted: community data will
+            be deleted but the community identifier and the history of the community will
+            be kept. This ensures that the same community identifier cannot be used
+            twice, and that you can still retrieve its history. If `force` is
+            ``True``, then the community is completely deleted from the database.
+
+            #. Delete or soft-delete the current community.
+
+            :param force: if ``True``, completely deletes the current community from
+                the database, otherwise soft-deletes it.
+            :returns: The deleted :class:`community` instance.
+            """
+            # if self.model is None:
+            #     raise MissingModelError()
+
+            with db.session.begin_nested():
+                if force:
+                    db.session.delete(self.model)
+                else:
+                    self.model.delete()
+
+            return self
+
 
 
 class CommunityMembersCls(object):
 
     @classmethod
-    def invite_member(cls, community, pid_id, email, role):
-        MembershipRequests.create(pid_id, role, True)
-        send_email_invitation(pid_id, email, community, role)
+    def invite_member(cls, community, email, role):
+        admin_ids = \
+            [admin.id for admin in CommunityMembers.get_admins(community.id)]
+        if int(current_user.get_id()) not in admin_ids:
+            abort(404)
+        membership_request = MembershipRequests.create(
+            community.id, True, role=role)
+        send_email_invitation(membership_request.id, email, community, role)
         return 'Ok'
 
     @classmethod
-    def join_community(cls, community, pid_id, email, role):
-        MembershipRequests.create(pid_id, role, False)
-        send_email_invitation(pid_id, email, community, role)
+    def join_community(cls, community):
+        user_id = int(current_user.get_id())
+        membership_request = MembershipRequests.create(
+            community.id, False, user_id=user_id)
+        community_admins = CommunityMembers.get_admins(community.id)
+        import wdb; wdb.set_trace()
+        admin_emails = [admin.email for admin in community_admins]
+        send_email_invitation(membership_request.id, admin_emails, community)
         return 'Ok'
 
     @classmethod
@@ -69,14 +100,18 @@ class CommunityMembersCls(object):
 class MembershipRequestCls():
 
     @classmethod
-    def accept_invitation(cls, token):
-        request_id = EmailConfirmationSerializer.load_token(token).get('id')
+    def accept_invitation(cls, token, role=None):
+        import wdb; wdb.set_trace()
+        request_id = EmailConfirmationSerializer().load_token(token).get('id')
         if not request_id:
             raise(Exception)
         request = MembershipRequests.query.get(request_id)
         if request.is_invite and not request.user_id:
-            request.user_id = int(current_user.get_id())
-        elif request.user_id != int(current_user.get_id()):
+            if current_user.get_id():
+                request.user_id = int(current_user.get_id())
+        elif int(current_user.get_id()): #add check for permissions on who is handling requesests
+            request.role = role
+        else:
             # TBD if needed.
             abort(404)
         community_member = CommunityMembers.create_or_modify(request)

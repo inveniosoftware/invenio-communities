@@ -25,13 +25,6 @@ from sqlalchemy_utils.types import ChoiceType, UUIDType
 _ = make_lazy_gettext(lambda: gettext)
 
 
-class CommunityMetadata(db.Model, RecordMetadataBase):
-    """Represent a community."""
-
-    __tablename__ = 'community_metadata'
-    __versioned__ = {'versioning': False}
-
-
 class CommunityMemberAlreadyExists(Exception):
     """Community membership already exists error."""
 
@@ -53,6 +46,21 @@ COMMUNITY_MEMBER_TITLES = {
     'ADMIN': _('Admin'),
     'CURATOR': _('Curator')
 }
+
+
+class CommunityMetadata(db.Model, RecordMetadataBase):
+    """Represent a community."""
+
+    __tablename__ = 'community_metadata'
+    __table_args__ = {'extend_existing': True}
+    __versioned__ = {'versioning': False}
+
+    is_deleted = db.Column(db.Boolean, nullable=True, default=False)
+    """Time at which the community was soft-deleted."""
+
+    def delete(self):
+        """Mark the community for deletion."""
+        self.is_deleted = True
 
 
 class CommunityRoles(Enum):
@@ -80,7 +88,7 @@ class CommunityMembers(db.Model):
 
     "Community PID ID"
     comm_id = db.Column(
-        db.String,
+        UUIDType,
         db.ForeignKey(CommunityMetadata.id),
         primary_key=True,
         nullable=False,
@@ -96,6 +104,11 @@ class CommunityMembers(db.Model):
 
     role = db.Column(
         ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=False)
+
+    @property
+    def email(self):
+        """Get user email."""
+        return User.query.get(self.user_id).email
 
     @classmethod
     def create_or_modify(cls, membership_request):
@@ -139,6 +152,11 @@ class CommunityMembers(db.Model):
         except IntegrityError:
             raise CommunityMemberDoesNotExist(comm_id=comm_id, user_id=user_id)
 
+    @classmethod
+    def get_admins(cls, comm_id):
+        with db.session.begin_nested():
+            return cls.query.filter_by(comm_id=comm_id, role='A').all()
+
 
 class MembershipRequests(db.Model):
     """Represent a community member role."""
@@ -158,24 +176,25 @@ class MembershipRequests(db.Model):
     )
 
     comm_id = db.Column(
-        db.Integer,
+        UUIDType,
         db.ForeignKey(CommunityMetadata.id),
         nullable=False,
     )
 
     role = db.Column(
-        ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=False)
+        ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=True)
 
     is_invite = db.Column(db.Boolean(name='is_invite'), nullable=False,
                           default=True)
 
     @classmethod
-    def create(cls, comm_id, user_id, role):
+    def create(cls, comm_id, is_invite, role=None, user_id=None):
         """Create Community Membership request."""
         try:
             with db.session.begin_nested():
                 obj = cls(
-                    comm_id=comm_id, user_id=user_id, role=role)
+                    comm_id=comm_id, user_id=user_id,
+                    role=role, is_invite=is_invite)
                 db.session.add(obj)
         except IntegrityError:
             raise CommunityMemberAlreadyExists(

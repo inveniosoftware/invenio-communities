@@ -10,23 +10,25 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_rest import ContentNegotiatedMethodView
+from flask.views import MethodView
 from webargs.flaskparser import use_kwargs
 from webargs import fields, validate
 from invenio_db import db
 
 from flask import Blueprint
-from invenio_communities.api import CommunityMembersCls
-
+from invenio_communities.api import CommunityMembersCls, MembershipRequestCls
+from flask_security import current_user
 
 def create_blueprint_from_app(app):
     community_members_rest_blueprint = Blueprint(
         'invenio_communities',
         __name__,
-        url_prefix=""
+        url_prefix="",
+        template_folder="./templates"
     )
     comm_view = CommunityMembersResource.as_view(
-        'community_members_api',
+        'community_members_api'
+
     )
     community_members_rest_blueprint.add_url_rule(
         '/communities/<{0}:pid_value>/members'.format(
@@ -36,7 +38,7 @@ def create_blueprint_from_app(app):
     )
 
     request_view = MembershipRequest.as_view(
-        'community_requests_api',
+        'community_requests_api'
     )
     community_members_rest_blueprint.add_url_rule(
         '/communities/requests/<token>',
@@ -45,17 +47,18 @@ def create_blueprint_from_app(app):
     return community_members_rest_blueprint
 
 
-class CommunityMembersResource(ContentNegotiatedMethodView):
+class CommunityMembersResource(MethodView):
     post_args = {
         'role': fields.Raw(
             location='json',
-            required=True
-        ),
-        'email': fields.Integer(
+            required=False,
+            validate=[validate.OneOf(['M', 'A', 'C'])]
+        ),# add valid options
+        'email': fields.Email(
             location='json',
-            required=True
+            required=False
         ),
-        'invite_type': fields.Integer(
+        'invite_type': fields.Raw(
             location='json',
             required=True,
             validate=[validate.OneOf(['invitation', 'request'])]
@@ -67,9 +70,9 @@ class CommunityMembersResource(ContentNegotiatedMethodView):
     def post(self, email=None, pid_value=None, role=None, invite_type=None):
         pid, community = pid_value.data
         if invite_type == 'invitation':
-            CommunityMembersCls.invite_member(community, pid.id, email, role)
+            CommunityMembersCls.invite_member(community, email, role)
         elif invite_type == 'request':
-            CommunityMembersCls.join_community(community, pid.id, email, role)
+            CommunityMembersCls.join_community(community)
         db.session.commit()
         return 'Cool', 200
 
@@ -85,18 +88,18 @@ class CommunityMembersResource(ContentNegotiatedMethodView):
         return 'Oki', 204
 
 
-class MembershipRequest(ContentNegotiatedMethodView):
+class MembershipRequest(MethodView):
     post_args = {
-        'token': fields.Raw(
-            location='query',
-            required=True
-        ),
-        'response': fields.Integer(
+        'response': fields.Raw(
             location='json',
             required=True,
             validate=[validate.OneOf(['accept', 'decline'])]
+        ),
+        'role': fields.Raw(
+            location='json',
+            required=False,
+            validate=[validate.OneOf(['M', 'A', 'C'])]
         )
-
     }
 
     #Implement rendering of UI page with the available options for handling the invitation.
@@ -104,13 +107,11 @@ class MembershipRequest(ContentNegotiatedMethodView):
         pass
 
     @use_kwargs(post_args)
-    def post(self, token=None, response=None):
+    def post(self, token=None, response=None, role=None):
         if response == 'accept':
-            CommunityMembersCls.accept_invitation(token)
+            MembershipRequestCls.accept_invitation(token, role)
         else:
-            CommunityMembersCls.decline_invitation(token)
-        pid, community = pid_value.data
+            MembershipRequestCls.decline_invitation(token)
 
-        CommunityMembersCls.add_member(pid.id, user_id, role)
         db.session.commit()
         return 'Cool', 200

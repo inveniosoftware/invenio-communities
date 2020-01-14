@@ -46,7 +46,7 @@ from invenio_mail.tasks import send_email
 class TokenMixin(object):
     """Mix-in class for token serializers."""
 
-    def create_token(self, obj_id, extra_data):
+    def create_token(self, obj_id):
         """Create a token referencing the object id with extra data.
 
         Note random data is added to ensure that no two tokens are identical.
@@ -109,7 +109,7 @@ class EmailConfirmationSerializer(TimedJSONWebSignatureSerializer, TokenMixin):
     def __init__(self, expires_in=None):
         """Initialize underlying TimedJSONWebSignatureSerializer."""
         dt = expires_in or \
-            current_app.config['ACCESSREQUESTS_CONFIRMLINK_EXPIRES_IN']
+            current_app.config['COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN']
 
         super(EmailConfirmationSerializer, self).__init__(
             current_app.config['SECRET_KEY'],
@@ -118,27 +118,26 @@ class EmailConfirmationSerializer(TimedJSONWebSignatureSerializer, TokenMixin):
         )
 
 
-def send_email_invitation(request_id, email, community):
+def send_email_invitation(request_id, emails, community, role=None):
     """Receiver for request-created signal to send email notification."""
-
-    token = EmailConfirmationSerializer().create_token(request_id)
-
-    _send_notification(
-        email,
-        _("Access request verification"),
-        "zenodo_accessrequests/emails/validate_email.tpl",
-        community=community,
-        days=timedelta(
-            seconds=current_app.config[
-                "MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN"]
-        ).days,
-        confirm_link=url_for(
-            #FIXME provide correct link
-            "invenio_records_ui.recid_access_request_email_confirm",
-            token=token,
-            _external=True,
+    token = EmailConfirmationSerializer().create_token(str(request_id))
+    import wdb; wdb.set_trace()
+    for email in emails:
+        _send_notification(
+            email,
+            _("Access request verification"),
+            "invenio_communities/emails/request_email.tpl",
+            community=community,
+            days=timedelta(
+                seconds=current_app.config[
+                    "COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN"]
+            ).days,
+            confirm_link=url_for(
+                "invenio_communities.community_requests_api",
+                token=token,
+                _external=True,
+            )
         )
-    )
     return token
 
 
