@@ -28,10 +28,10 @@ _ = make_lazy_gettext(lambda: gettext)
 class CommunityMemberAlreadyExists(Exception):
     """Community membership already exists error."""
 
-    def __init__(self, user_id, pid_id, role):
+    def __init__(self, user_id, comm_id, role):
         """Initialize Exception."""
         self.user_id = user_id
-        self.pid_id = pid_id
+        self.comm_id = comm_id
         self.role = role
 
 
@@ -128,6 +128,7 @@ class CommunityMembers(db.Model):
         """Create Community Membership Role."""
         try:
             with db.session.begin_nested():
+
                 obj = cls(
                     comm_id=membership_request.comm_id,
                     user_id=membership_request.user_id,

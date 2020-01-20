@@ -78,8 +78,9 @@ class CommunityMembersResource(MethodView):
 
     def get(self, pid_value=None):
         pid, community = pid_value.data
+        return 'Cool', 200
 
-        CommunityMembersCls.get_members(pid.id)
+        CommunityMembersCls.get_members(community.id)
 
     def delete(self, user_id=None, pid_value=None):
         pid, community = pid_value.data

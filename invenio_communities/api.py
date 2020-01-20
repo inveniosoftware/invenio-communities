@@ -68,14 +68,14 @@ class CommunityMembersCls(object):
         return 'Ok'
 
     @classmethod
-    def get_members(cls, pid_id):
-        community_members = CommunityMembers.query.filter_by(pid_id).all()
+    def get_members(cls, comm_id):
+        community_members = CommunityMembers.query.filter_by(comm_id=comm_id).all()
         return community_members
 
 
     @classmethod
-    def delete_member(cls, pid_id):
-        community_members = CommunityMembers.query.filter_by(pid_id).all()
+    def delete_member(cls, comm_id):
+        community_members = CommunityMembers.query.filter_by(comm_id=comm_id).all()
         return community_members
 
 
