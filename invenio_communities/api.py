@@ -19,8 +19,8 @@ from invenio_db import db
 from invenio_records.api import Record
 from invenio_accounts.models import User
 
-from .models import CommunityMetadata, CommunityMembers, MembershipRequests
-from .email import send_email_invitation, EmailConfirmationSerializer
+from .models import CommunityMetadata, CommunityMember, MembershipRequest
+from .email import send_email_invitation
 
 
 class Community(Record):
@@ -33,6 +33,51 @@ class Community(Record):
     schema = LocalProxy(lambda: current_app.config.get(
             'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json'))
 
+
+    @classmethod
+    def create(cls, data, id_=None, **kwargs):
+        r"""Create a new record instance and store it in the database.
+
+        #. Send a signal :data:`invenio_records.signals.before_record_insert`
+           with the new record as parameter.
+
+        #. Validate the new record data.
+
+        #. Add the new record in the database.
+
+        #. Send a signal :data:`invenio_records.signals.after_record_insert`
+           with the new created record as parameter.
+
+        :Keyword Arguments:
+          * **format_checker** --
+            An instance of the class :class:`jsonschema.FormatChecker`, which
+            contains validation rules for formats. See
+            :func:`~invenio_records.api.RecordBase.validate` for more details.
+
+          * **validator** --
+            A :class:`jsonschema.IValidator` class that will be used to
+            validate the record. See
+            :func:`~invenio_records.api.RecordBase.validate` for more details.
+
+        :param data: Dict with the record metadata.
+        :param id_: Specify a UUID to use for the new record, instead of
+                    automatically generated.
+        :returns: A new :class:`Record` instance.
+        """
+        with db.session.begin_nested():
+            community = cls(data)
+
+            community.validate(**kwargs)
+
+            community.model = cls.model_cls(id=id_, json=community)
+
+            db.session.add(community.model)
+
+            CommunityMembersAPI.set_default_admin(community.model)
+
+        return community
+
+
     def delete(self, force=False):
         """Delete a community."""
         with db.session.begin_nested():
@@ -44,49 +89,59 @@ class Community(Record):
         return self
 
 
-class CommunityMembersCls(object):
+
+
+
+class CommunityMembersAPI(object):
 
     @classmethod
-    def invite_member(cls, community, email, role):
-        admin_ids = \
-            [admin.id for admin in CommunityMembers.get_admins(community.id)]
-        if int(current_user.get_id()) not in admin_ids:
-            abort(404)
-        membership_request = MembershipRequests.create(
-            community.id, True, role=role)
-        send_email_invitation(membership_request.id, email, community, role)
-        return 'Ok'
+    def invite_member(cls, community, email, role, send_email=True):
+        existing_membership_req = MembershipRequest.query.filter_by(
+                    comm_id=community.comm_id,
+                    email=email
+                    ).one_or_none()
+        if existing_membership_req:
+            abort(400, 'This is an already existing relationship.')
+        membership_request = MembershipRequest.create(
+            community.id, True, role=role, email=email)
+        if send_email:
+            send_email_invitation(
+                membership_request.id, email, community, role)
+        return membership_request
 
     @classmethod
-    def join_community(cls, community):
-        user_id = int(current_user.get_id())
-        membership_request = MembershipRequests.create(
+    def join_community(cls, user_id, community, send_email=True):
+        membership_request = MembershipRequest.create(
             community.id, False, user_id=user_id)
-        community_admins = CommunityMembers.get_admins(community.id)
-        admin_emails = [admin.email for admin in community_admins]
-        send_email_invitation(membership_request.id, admin_emails, community)
-        return 'Ok'
+        if send_email:
+            community_admins = CommunityMember.get_admins(community.id)
+            admin_emails = [admin.email for admin in community_admins]
+            send_email_invitation(membership_request.id, admin_emails, community)
+        return membership_request
 
     @classmethod
     def get_members(cls, pid_id):
-        community_members = CommunityMembers.query.filter_by(pid_id).all()
-        return community_members
-
+        return CommunityMember.get_members()
 
     @classmethod
-    def delete_member(cls, pid_id):
-        community_members = CommunityMembers.query.filter_by(pid_id).all()
-        return community_members
+    def delete_member(cls, comm_id, user_id):
+        CommunityMember.delete(comm_id, user_id)
+
+    @classmethod
+    def set_default_admin(cls, community):
+        CommunityMember.create(
+            comm_id=community.id,
+            user_id=community.json['created_by'],
+            role='A')
 
 
 class MembershipRequestCls():
 
     @classmethod
-    def accept_invitation(cls, token, role=None):
-        request_id = EmailConfirmationSerializer().load_token(token).get('id')
-        if not request_id:
+    def accept_invitation(cls, membership_request_id, role=None):
+        if not membership_request_id:
             raise(Exception)
-        request = MembershipRequests.query.get(request_id)
+        request = MembershipRequest.query.get(membership_request_id)
         if request.is_invite and not request.user_id:
             if current_user.get_id():
                 request.user_id = int(current_user.get_id())
@@ -95,11 +150,10 @@ class MembershipRequestCls():
         else:
             # TBD if needed.
             abort(404)
-        community_member = CommunityMembers.create_or_modify(request)
+        community_member = CommunityMember.create_from_object(request)
         return community_member
 
     @classmethod
-    def decline_invitation(cls, token):
-        request_id = EmailConfirmationSerializer.load_token(token).get('id')
-        MembershipRequests.delete(request_id)
+    def decline_invitation(cls, membership_request_id):
+        MembershipRequest.delete(membership_request_id)
         pass

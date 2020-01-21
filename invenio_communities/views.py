@@ -15,16 +15,21 @@ from webargs.flaskparser import use_kwargs
 from webargs import fields, validate
 from invenio_db import db
 
-from flask import Blueprint
-from invenio_communities.api import CommunityMembersCls, MembershipRequestCls
+from functools import wraps
+from flask import Blueprint, abort, request
+from invenio_communities.api import CommunityMembersAPI, MembershipRequestCls
 from flask_security import current_user
+from sqlalchemy.exc import SQLAlchemyError
+from invenio_records_rest.errors import PIDResolveRESTError
+
+from .models import CommunityMember
+
 
 def create_blueprint_from_app(app):
     community_members_rest_blueprint = Blueprint(
         'invenio_communities',
         __name__,
-        url_prefix="",
-        template_folder="./templates"
+        template_folder="templates"
     )
     comm_view = CommunityMembersResource.as_view(
         'community_members_api'
@@ -41,10 +46,27 @@ def create_blueprint_from_app(app):
         'community_requests_api'
     )
     community_members_rest_blueprint.add_url_rule(
-        '/communities/requests/<token>',
+        '/communities/requests/<membership_request_id>',
         view_func=request_view,
     )
     return community_members_rest_blueprint
+
+
+def pass_community(f):
+    """Decorator to retrieve persistent identifier and community.
+    This decorator will resolve the ``pid_value`` parameter from the route
+    pattern and resolve it to a PID and a community, which are then available in
+    the decorated function as ``pid`` and ``community`` kwargs respectively.
+    """
+    @wraps(f)
+    def inner(self, pid_value, *args, **kwargs):
+        try:
+            pid, community = request.view_args['pid_value'].data
+            return f(self, pid=pid, community=community, *args, **kwargs)
+        except SQLAlchemyError:
+            raise PIDResolveRESTError(pid)
+
+    return inner
 
 
 class CommunityMembersResource(MethodView):
@@ -53,7 +75,7 @@ class CommunityMembersResource(MethodView):
             location='json',
             required=False,
             validate=[validate.OneOf(['M', 'A', 'C'])]
-        ),# add valid options
+        ),# TODO add valid options
         'email': fields.Email(
             location='json',
             required=False
@@ -67,23 +89,52 @@ class CommunityMembersResource(MethodView):
     }
     # TODO: change invite_type name
     @use_kwargs(post_args)
-    def post(self, email=None, pid_value=None, role=None, invite_type=None):
-        pid, community = pid_value.data
+    @pass_community
+    def post(
+            self, email=None, pid=None, community=None, role=None,
+            invite_type=None, **kwargs):
         if invite_type == 'invitation':
-            CommunityMembersCls.invite_member(community, email, role)
+            admin_ids = \
+                [admin.id for admin in CommunityMember.get_admins(
+                    community.id)]
+            if not admin_ids:
+                CommunityMembersAPI.set_default_admin(community)
+            if int(current_user.get_id()) not in admin_ids:
+                abort(404)
+            CommunityMembersAPI.invite_member(community, email, role)
         elif invite_type == 'request':
-            CommunityMembersCls.join_community(community)
+            user_id = int(current_user.get_id())
+            CommunityMembersAPI.join_community(user_id, community)
         db.session.commit()
         return 'Cool', 200
 
-    def get(self, pid_value=None):
-        pid, community = pid_value.data
+    @use_kwargs(post_args)
+    @pass_community
+    def put(
+            self, membership_request_id, pid=None, community=None,
+            role=None, **kwargs):
+        existing_membership_req = MembershipRequest
+        if existing_membership_req.is_invite:
+            admin_ids = \
+                [admin.id for admin in CommunityMember.get_admins(
+                    community.id)]
+            if int(current_user.get_id()) not in admin_ids:
+                abort(404)
+            existing_membership_req.role = role
+        elif not existing_membership_req.is_invite:
+            if existing_membership_req.user_id != int(current_user.get_id()):
+                abort(404)
+            existing_membership_req.role = role
+        db.session.commit()
+        return 'Cool', 200
 
-        CommunityMembersCls.get_members(pid.id)
+    @pass_community
+    def get(self, pid=None, community=None):
+        CommunityMembersAPI.get_members(community.id).all()
 
-    def delete(self, user_id=None, pid_value=None):
-        pid, community = pid_value.data
-        CommunityMembersCls.delete_member(pid.id, user_id)
+    @pass_community
+    def delete(self, user_id=None,  pid=None, community=None):
+        CommunityMembersAPI.delete_member(community.id, user_id)
         db.session.commit()
         return 'Oki', 204
 
@@ -107,11 +158,11 @@ class MembershipRequest(MethodView):
         pass
 
     @use_kwargs(post_args)
-    def post(self, token=None, response=None, role=None):
+    def post(self, membership_request_id, response=None, role=None):
         if response == 'accept':
-            MembershipRequestCls.accept_invitation(token, role)
+            MembershipRequestCls.accept_invitation(membership_request_id, role)
         else:
-            MembershipRequestCls.decline_invitation(token)
+            MembershipRequestCls.decline_invitation(membership_request_id)
 
         db.session.commit()
         return 'Cool', 200

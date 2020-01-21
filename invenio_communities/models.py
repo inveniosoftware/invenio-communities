@@ -65,7 +65,7 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
 
 class CommunityRoles(Enum):
     """Constants for possible roles of any given Community member."""
-
+    # TODO Make roles configurable.
     MEMBER = 'M'
     """Member of the community."""
 
@@ -81,7 +81,7 @@ class CommunityRoles(Enum):
         return COMMUNITY_MEMBER_TITLES[self.name]
 
 
-class CommunityMembers(db.Model):
+class CommunityMember(db.Model):
     """Represent a community member role."""
 
     __tablename__ = 'community_members'
@@ -105,40 +105,41 @@ class CommunityMembers(db.Model):
     role = db.Column(
         ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=False)
 
+    user = db.relationship(User, backref='communities')
+
+    community = db.relationship(CommunityMetadata, backref='members')
+
     @property
     def email(self):
         """Get user email."""
         return User.query.get(self.user_id).email
 
     @classmethod
-    def create_or_modify(cls, membership_request):
-        """Create or modify existing membership."""
-        existing_membership = cls.query.filter_by(
-                    comm_id=membership_request.comm_id,
-                    user_id=membership_request.user_id
-                    ).one_or_none()
-        if existing_membership:
-            with db.session.begin_nested():
-                existing_membership.role = membership_request.role
-        else:
-            cls.create(membership_request)
+    def create_from_object(cls, membership_request):
+        """Create Community Membership Role."""
+        with db.session.begin_nested():
+            obj = cls.create(
+                comm_id=membership_request.comm_id,
+                user_id=membership_request.user_id,
+                role=membership_request.role)
+            db.session.delete(membership_request)
+        return obj
 
     @classmethod
-    def create(cls, membership_request):
+    def create(cls, comm_id, user_id, role):
         """Create Community Membership Role."""
         try:
             with db.session.begin_nested():
                 obj = cls(
-                    comm_id=membership_request.comm_id,
-                    user_id=membership_request.user_id,
-                    role=membership_request.role)
+                    comm_id=comm_id,
+                    user_id=user_id,
+                    role=role)
                 db.session.add(obj)
-                db.session.delete(membership_request)
         except IntegrityError:
             raise CommunityMemberAlreadyExists(
-                comm_id=membership_request.comm_id,
-                user_id=membership_request.user_id,
-                role=membership_request.role)
+                comm_id=comm_id,
+                user_id=user_id,
+                role=role)
         return obj
 
     @classmethod
@@ -157,8 +158,13 @@ class CommunityMembers(db.Model):
         with db.session.begin_nested():
             return cls.query.filter_by(comm_id=comm_id, role='A').all()
 
+    @classmethod
+    def get_members(cls, comm_id):
+        with db.session.begin_nested():
+            return cls.query.filter_by(comm_id=comm_id)
 
-class MembershipRequests(db.Model):
+
+class MembershipRequest(db.Model):
     """Represent a community member role."""
 
     __tablename__ = 'membership_requests'
@@ -181,6 +187,11 @@ class MembershipRequests(db.Model):
         nullable=False,
     )
 
+    email = db.Column(
+        db.String(255),
+        nullable=True,
+    )
+
     role = db.Column(
         ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=True)
 
@@ -188,13 +199,13 @@ class MembershipRequests(db.Model):
                           default=True)
 
     @classmethod
-    def create(cls, comm_id, is_invite, role=None, user_id=None):
+    def create(cls, comm_id, is_invite, role=None, user_id=None, email=None):
         """Create Community Membership request."""
         try:
             with db.session.begin_nested():
                 obj = cls(
                     comm_id=comm_id, user_id=user_id,
-                    role=role, is_invite=is_invite)
+                    role=role, is_invite=is_invite, email=email)
                 db.session.add(obj)
         except IntegrityError:
             raise CommunityMemberAlreadyExists(
