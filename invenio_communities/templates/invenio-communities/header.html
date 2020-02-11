@@ -1,0 +1,27 @@
+{# -*- coding: utf-8 -*-
+
+  This file is part of Invenio.
+  Copyright (C) 2016-2020 CERN.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+{%- set search = "/communities/" + pid.pid_value|string -%}
+{%- set members = "/communities/" + pid.pid_value|string +"/members" -%}
+{%- set settings = "/communities/" + pid.pid_value|string + "/settings" -%}
+{%- set statistics = "/communities/" + pid.pid_value|string + "/statistics" -%}
+{%- set curate = "/communities/" + pid.pid_value|string + "/curate" -%}
+
+{% block sidebar %}
+<div class="container">
+<h1>{{ community.title }}</h1>
+<p>{{ community.description|safe }}</p>
+<div class="tab">
+  <a class="tablinks" href="{{ search }}">Search</a>
+  <a class="tablinks" href="{{ members }}">Members</a>
+  <a class="tablinks" href="{{ settings }}">Settings</a>
+  <a class="tablinks" href="{{ statistics }}">Statistics</a>
+  <a class="tablinks" href="{{ curate }}">Curate</a>
+</div>
+</div>
+{% endblock %}
