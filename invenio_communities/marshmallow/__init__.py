@@ -10,6 +10,6 @@
 
 from __future__ import absolute_import, print_function
 
-from .json import CommunitySchemaV1, CommunitySchemaMetadataV1
+from .json import CommunitySchemaMetadataV1, CommunitySchemaV1
 
 __all__ = ('CommunitySchemaV1', 'CommunitySchemaMetadataV1')

@@ -14,11 +14,11 @@
           "type": "string",
           "description": "Identifier scheme."
         },
-        "value": {
+        "identifier": {
           "type": "string"
         }
       },
-      "required": ["type", "value"]
+      "required": ["scheme", "identifier"]
     }
   },
 
@@ -63,6 +63,14 @@
     },
     "domain": {
       "description": "Community domain.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "funding": {
+      "description": "Community funding.",
       "type": "array",
       "uniqueItems": true,
       "items": {

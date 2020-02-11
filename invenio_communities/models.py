@@ -27,4 +27,3 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
     def delete(self):
         """Mark the community for deletion."""
         self.is_deleted = True
-
