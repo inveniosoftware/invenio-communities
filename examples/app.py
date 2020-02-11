@@ -32,8 +32,6 @@ from invenio_db import InvenioDB
 from invenio_records import InvenioRecords
 
 from invenio_communities import InvenioCommunities
-from invenio_communities.members.views.api import blueprint as api_blueprint
-from invenio_communities.members.views.ui import blueprint as ui_blueprint
 
 # Create Flask application
 app = Flask(__name__)
@@ -55,5 +53,3 @@ InvenioAccounts(app)
 InvenioAdmin(app, permission_factory=lambda x: x,
              view_class_factory=lambda x: x)
 InvenioCommunities(app)
-app.register_blueprint(ui_blueprint)
-app.register_blueprint(api_blueprint)
