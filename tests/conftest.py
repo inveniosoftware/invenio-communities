@@ -35,8 +35,6 @@ from sqlalchemy_utils.functions import create_database, database_exists, \
 
 from invenio_communities import InvenioCommunities
 from invenio_communities.models import Community
-from invenio_communities.views.api import blueprint as api_blueprint
-from invenio_communities.views.ui import blueprint as ui_blueprint
 
 
 @pytest.yield_fixture()
@@ -77,9 +75,6 @@ def app(request):
     InvenioOAIServer(app)
     InvenioCommunities(app)
     InvenioMail(app)
-
-    app.register_blueprint(ui_blueprint)
-    app.register_blueprint(api_blueprint, url_prefix='/api/communities')
 
     with app.app_context():
         yield app
