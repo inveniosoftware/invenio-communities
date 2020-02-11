@@ -43,3 +43,5 @@ class Communities(object):
                     # TODO Might be overriden depending on which package is initialised first
                     app.config['RECORDS_REST_FACETS'].update(
                         getattr(config, k))
+        app.config.setdefault(
+            'SUPPORT_EMAIL', getattr(config, 'SUPPORT_EMAIL'))
