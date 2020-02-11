@@ -341,3 +341,71 @@ class MembershipRequestResource(MethodView):
         return 'Succesfully cancelled invitation.', 204
 
 
+ui_blueprint = Blueprint(
+    'invenio_communities',
+    __name__,
+    template_folder='../templates',
+    static_folder='static',
+)
+
+
+@ui_blueprint.before_app_first_request
+def init_menu():
+    """Initialize menu before first request."""
+    item = current_menu.submenu('main.communities')
+    item.register(
+        'invenio_communities.index',
+        'Communities',
+        order=3,
+    )
+
+
+@ui_blueprint.route('/communities/new')
+def new():
+    """Create a new community."""
+    return render_template('invenio-communities/new.html')
+
+
+@ui_blueprint.route('/communities/')
+def index():
+    """Search for a new community."""
+    return render_template('invenio-communities/index.html')
+
+
+@ui_blueprint.route('/communities/<{0}:pid_value>/settings'.format(
+            'pid(comid,record_class="invenio_communities.api:Community",'
+            'object_type="com")'))
+@pass_community_function
+def settings(community, pid):
+    """Modify a community."""
+    return render_template(
+        'invenio-communities/settings.html', community=community, pid=pid)
+
+
+@ui_blueprint.route('/communities/<{0}:pid_value>/members'.format(
+            'pid(comid,record_class="invenio_communities.api:Community",'
+            'object_type="com")'))
+@pass_community_function
+def members(community, pid):
+    """Members of a community."""
+    return render_template(
+        'invenio-communities/members.html', community=community, pid=pid)
+
+
+@ui_blueprint.route('/communities/<{0}:pid_value>'.format(
+            'pid(comid,record_class="invenio_communities.api:Community",'
+            'object_type="com")'))
+@pass_community_function
+def community_page(community, pid):
+    """Members of a community."""
+    return render_template(
+        'invenio-communities/community_page.html',
+        community=community,
+        pid=pid
+    )
+
+
+@ui_blueprint.route('/communities/members/requests/<membership_request_id>')
+def requests(membership_request_id):
+    """Requests of communities."""
+    return render_template('invenio-communities/request.html')
