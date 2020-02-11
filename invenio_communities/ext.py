@@ -39,3 +39,7 @@ class Communities(object):
                     app.config['RECORDS_REST_ENDPOINTS'].update(getattr(
                         config, k))
                 app.config.setdefault(k, getattr(config, k))
+                if k == 'COMMUNITIES_REST_FACETS':
+                    # TODO Might be overriden depending on which package is initialised first
+                    app.config['RECORDS_REST_FACETS'].update(
+                        getattr(config, k))

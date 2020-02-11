@@ -11,6 +11,7 @@
 from __future__ import absolute_import, print_function
 
 from invenio_records_rest.utils import allow_all
+from invenio_records_rest.facets import terms_filter
 
 #: Records REST API endpoints.
 COMMUNITIES_REST_ENDPOINTS = dict(
@@ -46,5 +47,24 @@ COMMUNITIES_REST_ENDPOINTS = dict(
     ),
 )
 
+COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
-MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 10
+SUPPORT_EMAIL = 'test@email.org'
+
+
+COMMUNITIES_REST_FACETS = dict(
+    communities=dict(
+        aggs=dict(
+            type=dict(
+                terms=dict(field="type"),
+            ),
+            domain=dict(
+                terms=dict(field="domain"),
+            )
+        ),
+        post_filters=dict(
+            access_right=terms_filter('access_right'),
+            file_type=terms_filter('filetype'),
+        )
+    )
+)
