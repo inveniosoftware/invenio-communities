@@ -10,6 +10,9 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_indexer.signals import before_record_index
+
+from .receivers import add_comm_info
 
 from . import config
 
@@ -21,6 +24,7 @@ class Communities(object):
         """Extension initialization."""
         if app:
             self.init_app(app)
+        self.register_signals(app)
 
     def init_app(self, app):
         """Flask application initialization."""
@@ -45,3 +49,8 @@ class Communities(object):
                         getattr(config, k))
         app.config.setdefault(
             'SUPPORT_EMAIL', getattr(config, 'SUPPORT_EMAIL'))
+
+    @staticmethod
+    def register_signals(app):
+        """Register Invenio Communities signals."""
+        before_record_index.connect(add_comm_info, sender=app, weak=False)
