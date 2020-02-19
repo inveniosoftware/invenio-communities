@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false,
+  "title": "Invenio Community Record v1.0.0",
+  "type": "object",
+
+  "properties": {
+    "requestor_id": {
+      "description": "User ID of the person creating the request.",
+      "type": "string"
+    },
+    "handler_id": {
+      "description": "User ID of the person handling the request.",
+      "type": "string"
+    },
+    "comments":{
+      "description": "User messages.",
+      "type": "array",
+      "uniqueItems": false,
+      "items": {
+        "type": "object",
+        "properties" : {
+          "user_id" : {
+            "description": "ID of the user who made the comment.",
+            "type": "integer"
+          },
+          "body" : {
+            "description": "Content of the comment.",
+            "type": "string"
+          },
+          "created_date": {
+            "description": "Date of the comment.",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
