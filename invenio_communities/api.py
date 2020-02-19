@@ -30,7 +30,7 @@ class Community(Record):
 
     schema = LocalProxy(lambda: current_jsonschemas.path_to_url(
         current_app.config.get(
-            'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json')))
+            'COMMUNITY_SCHEMA', 'communities/community-v1.0.0.json')))
 
     @classmethod
     def create_community_record(cls, data, *args, **kwargs):
