@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2019 CERN.
+# Copyright (C) 2016-2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
--e git+git://github.com/inveniosoftware/invenio-access#egg=invenio-access
--e git+git://github.com/inveniosoftware/invenio-accounts#egg=invenio-accounts
--e git+git://github.com/inveniosoftware/invenio-db#egg=invenio-db
--e git+git://github.com/inveniosoftware/invenio-files-rest#egg=invenio-files-rest
--e git+git://github.com/inveniosoftware/invenio-oaiserver#egg=invenio-oaiserver
--e git+git://github.com/inveniosoftware/invenio-records#egg=invenio-records
+-e git+git://github.com/inveniosoftware/invenio-base#egg=invenio-base
+-e git+git://github.com/inveniosoftware/invenio-indexer#egg=invenio-indexer

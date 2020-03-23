@@ -18,12 +18,9 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'Flask-CeleryExt>=0.3.2',
     'check-manifest>=0.25',
     'coverage>=4.5.3',
     'invenio-db>=1.0.3',
-    'invenio-mail>=1.0.2',
-    'invenio-oaiserver>=1.0.3',
     'isort>=4.3.3',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
@@ -35,23 +32,8 @@ tests_require = [
 invenio_search_version = '1.2.2'
 
 extras_require = {
-    'admin': [
-        'Flask-Admin>=1.3.0',
-    ],
     'docs': [
         'Sphinx>=1.5.1',
-    ],
-    'mail': [
-        'Flask-Mail>=0.9.1',
-    ],
-    'oai': [
-        'invenio-oaiserver>=1.0.3',
-    ],
-    'elasticsearch2': [
-        'invenio-search[elasticsearch2]>={}'.format(invenio_search_version),
-    ],
-    'elasticsearch5': [
-        'invenio-search[elasticsearch5]>={}'.format(invenio_search_version),
     ],
     'elasticsearch6': [
         'invenio-search[elasticsearch6]>={}'.format(invenio_search_version),
@@ -64,10 +46,7 @@ extras_require = {
 
 extras_require['all'] = []
 for name, reqs in extras_require.items():
-    if name in (
-        'elasticsearch2', 'elasticsearch5', 'elasticsearch6',
-        'elasticsearch7'
-    ):
+    if name in ('elasticsearch6', 'elasticsearch7'):
         continue
     extras_require['all'].extend(reqs)
 
@@ -77,18 +56,15 @@ setup_requires = [
 ]
 
 install_requires = [
-    'bleach>=2.1.3',
-    'Flask-BabelEx>=0.9.3',
-    'Flask>=0.11.1',
-    'invenio-access>=1.1.0',
+    'invenio-i18n>=1.1.0',
+    'invenio-base>=1.2.2',
     'invenio-accounts>=1.1.0',
-    'invenio-assets>=1.0.0',
-    'invenio-files-rest>=1.0.0a23',
-    'invenio-indexer>=1.0.2',
-    'invenio-pidstore>=1.0.0',
+    'invenio-assets>=1.1.3',
+    'invenio-indexer>=1.1.1',
+    'invenio-pidstore>=1.1.0',
+    'invenio-records-rest>=1.6.0',
     'invenio-records>=1.2.0',
-    'invenio-rest[cors]>=1.0.0',
-    'marshmallow>=2.15.0,<3',
+    'invenio-rest>=1.1.0',
     'invenio-mail>=1.0.2'
 ]
 
