@@ -11,28 +11,22 @@ notifications:
 
 language: python
 
-sudo: false
-
-
 cache:
   - pip
 
 env:
   global:
-    - ES5_DOWNLOAD_URL="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.4.tar.gz"
     - ES6_DOWNLOAD_URL="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.2.tar.gz"
     - ES7_DOWNLOAD_URL="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz"
   matrix:
-    - REQUIREMENTS=lowest EXTRAS=all,elasticsearch5 ES_URL=$ES5_DOWNLOAD_URL
-    - REQUIREMENTS=lowest EXTRAS=all,elasticsearch6 ES_URL=$ES6_DOWNLOAD_URL
     - REQUIREMENTS=release EXTRAS=all,elasticsearch6 ES_URL=$ES6_DOWNLOAD_URL
     - REQUIREMENTS=release EXTRAS=all,elasticsearch7 ES_URL=$ES7_DOWNLOAD_URL DEPLOY=true
     - REQUIREMENTS=devel EXTRAS=all,elasticsearch6 ES_URL=$ES6_DOWNLOAD_URL
     - REQUIREMENTS=devel EXTRAS=all,elasticsearch7 ES_URL=$ES7_DOWNLOAD_URL
 
 python:
-  - "2.7"
-  - "3.5"
+  - "3.6"
+  - "3.7"
 
 matrix:
   fast_finish: true
@@ -44,7 +38,6 @@ before_install:
   - "mkdir /tmp/elasticsearch"
   - "wget -O - $ES_URL | tar xz --directory=/tmp/elasticsearch --strip-components=1"
   - "/tmp/elasticsearch/bin/elasticsearch &"
-  - "sleep 20"
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
   - "requirements-builder -e $EXTRAS --level=min setup.py > .travis-lowest-requirements.txt"
@@ -58,7 +51,7 @@ install:
 
 before_script:
   # Allow ES to start
-  - sleep 5
+  - sleep 10
   - curl http://127.0.0.1:9200 && echo "Elasticsearch is up!" || (cat /tmp/local-es.log && exit 1)
 
 script:
@@ -73,7 +66,7 @@ deploy:
   password:
     secure: cVsHHJbm75kcIyDXdFYMbBmBSIY53iZCqCLN/rO38/W9+TkEYdencLn0UFAEt/fmtC6GZKDvL8PzJug3QS3bxu1zzW+q4o3Mbk/ldeYBnpyEvFcJN9ZcjaaODcZc0d8I2vkEUrvGmey8Fru5hhGp2MHuPgMz0YAgeTGckGlpyg4=
   distributions: "compile_catalog sdist bdist_wheel"
+  skip_existing: true
   on:
     tags: true
-    python: "2.7"
     condition: $REQUIREMENTS = release
