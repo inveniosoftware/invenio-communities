@@ -124,7 +124,7 @@ const CommunityMembers = () => {
   }
 
   var joinCommunity = () => {
-    var payload = {'invite_type': 'request'}
+    var payload = {'request_type': 'request'}
     axios.
     post(`/api/communities/${community_id}/members`, payload)
     .then(response => {
@@ -276,7 +276,7 @@ const CommunityMembers = () => {
               initialValues={{
                 email: "",
                 role: "C",
-                invite_type: "invitation"
+                request_type: "invitation"
               }}
               validationSchema={Yup.object({
                 email: Yup.string()
