@@ -9,9 +9,17 @@
 
 {% extends config.BASE_TEMPLATE %}
 
-{%- block page_body %}
-{% include "invenio-communities/header.html" %}
 
+{%- block javascript %}
+  {{ super() }}
+  {{ webpack['communities-members.js'] }}
+{%- endblock javascript %}
+
+
+{%- block page_body %}
+{% include "invenio_communities/header.html" %}
+
+<div id="app"></div>
 
 {%- endblock page_body %}
 

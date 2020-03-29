@@ -98,7 +98,7 @@ class CommunityMember(db.Model):
     @property
     def email(self):
         """Get user email."""
-        return User.query.get(self.user_id).email
+        return self.user.email
 
     @classmethod
     def create_from_object(cls, membership_request):
