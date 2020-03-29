@@ -12,7 +12,7 @@ from __future__ import absolute_import, print_function
 
 from invenio_communities.members.models import CommunityMetadata, \
     CommunityMember, MembershipRequest
-from ..email import send_invitation_email
+from ..utils import send_invitation_email
 
 
 class CommunityMembersAPI(object):
@@ -22,7 +22,7 @@ class CommunityMembersAPI(object):
         membership_request = MembershipRequest.create(
             community.id, True, role=role, email=email)
         if send_email:
-            send_invitation_email(membership_request.id, [email], community)
+            send_invitation_email(membership_request, [email], community)
         return membership_request
 
     @classmethod
@@ -33,7 +33,7 @@ class CommunityMembersAPI(object):
             community_admins = CommunityMember.get_admins(community.id)
             admin_emails = [admin.email for admin in community_admins]
             send_invitation_email(
-                membership_request.id, admin_emails, community)
+                membership_request, admin_emails, community)
         return membership_request
 
     @classmethod

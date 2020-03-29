@@ -12,8 +12,8 @@ from __future__ import absolute_import, print_function
 
 from flask_menu import current_menu
 from flask.views import MethodView
-from webargs.flaskparser import use_kwargs
-from webargs import fields, validate
+from webargs import ValidationError, fields, validate
+from webargs.flaskparser import FlaskParser as FlaskParserBase
 from invenio_db import db
 
 from functools import wraps
@@ -21,6 +21,8 @@ from flask import Blueprint, abort, request, render_template, jsonify
 from flask_security import current_user
 from sqlalchemy.exc import SQLAlchemyError
 from invenio_records_rest.errors import PIDResolveRESTError
+from invenio_rest.errors import FieldError, RESTValidationError
+
 
 from .api import CommunityMembersAPI, MembershipRequestAPI
 from .models import CommunityMember, MembershipRequest
@@ -99,6 +101,24 @@ def pass_community_function(f):
             raise PIDResolveRESTError(pid)
 
     return inner
+
+
+class FlaskParser(FlaskParserBase):
+    """Parser to add FieldError to validation errors."""
+
+    def handle_error(self, error, *args, **kwargs):
+        """Handle errors during parsing."""
+        if isinstance(error, ValidationError):
+            _errors = []
+            for field, messages in error.messages.items():
+                _errors.extend([FieldError(field, msg) for msg in messages])
+            raise RESTValidationError(errors=_errors)
+        super(FlaskParser, self).handle_error(error, *args, **kwargs)
+
+
+webargs_parser = FlaskParser()
+use_args = webargs_parser.use_args
+use_kwargs = webargs_parser.use_kwargs
 
 
 class CommunityMembersResource(MethodView):
@@ -363,13 +383,13 @@ def init_menu():
 @ui_blueprint.route('/communities/new')
 def new():
     """Create a new community."""
-    return render_template('invenio-communities/new.html')
+    return render_template('invenio_communities/new.html')
 
 
 @ui_blueprint.route('/communities/')
 def index():
     """Search for a new community."""
-    return render_template('invenio-communities/index.html')
+    return render_template('invenio_communities/index.html')
 
 
 @ui_blueprint.route('/communities/<{0}:pid_value>/settings'.format(
@@ -379,7 +399,7 @@ def index():
 def settings(community, pid):
     """Modify a community."""
     return render_template(
-        'invenio-communities/settings.html', community=community, pid=pid)
+        'invenio_communities/settings.html', community=community, pid=pid)
 
 
 @ui_blueprint.route('/communities/<{0}:pid_value>/members'.format(
@@ -389,7 +409,7 @@ def settings(community, pid):
 def members(community, pid):
     """Members of a community."""
     return render_template(
-        'invenio-communities/members.html', community=community, pid=pid)
+        'invenio_communities/members.html', community=community, pid=pid)
 
 
 @ui_blueprint.route('/communities/<{0}:pid_value>'.format(
@@ -399,7 +419,7 @@ def members(community, pid):
 def community_page(community, pid):
     """Members of a community."""
     return render_template(
-        'invenio-communities/community_page.html',
+        'invenio_communities/community_page.html',
         community=community,
         pid=pid
     )
@@ -408,4 +428,4 @@ def community_page(community, pid):
 @ui_blueprint.route('/communities/members/requests/<membership_request_id>')
 def requests(membership_request_id):
     """Requests of communities."""
-    return render_template('invenio-communities/request.html')
+    return render_template('invenio_communities/request.html')
