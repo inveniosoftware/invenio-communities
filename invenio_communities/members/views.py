@@ -26,18 +26,18 @@ from invenio_rest.errors import FieldError, RESTValidationError
 
 from .api import CommunityMembersAPI, MembershipRequestAPI
 from .models import CommunityMember, MembershipRequest
+from ..views import pass_community, pass_community_function, use_args, use_kwargs
 
 
 def create_blueprint_from_app(app):
     """Blueprint creating function."""
     community_members_rest_blueprint = Blueprint(
-        'invenio_communities',
+        'invenio_communities_members',
         __name__,
         template_folder="../templates",
     )
     comm_view = CommunityMembersResource.as_view(
         'community_members_api'
-
     )
     community_members_rest_blueprint.add_url_rule(
         '/communities/<{0}:pid_value>/members'.format(
@@ -65,60 +65,6 @@ def create_blueprint_from_app(app):
         view_func=request_view,
     )
     return community_members_rest_blueprint
-
-
-def pass_community(f):
-    """Decorator to retrieve persistent identifier and community.
-
-    This decorator will resolve the ``pid_value`` parameter from the route
-    pattern and resolve it to a PID and a community, which are then available
-    in the decorated function as ``pid`` and ``community`` kwargs respectively.
-    """
-    @wraps(f)
-    def inner(self, pid_value, *args, **kwargs):
-        try:
-            pid, community = request.view_args['pid_value'].data
-            return f(self, pid=pid, community=community, *args, **kwargs)
-        except SQLAlchemyError:
-            raise PIDResolveRESTError(pid)
-
-    return inner
-
-
-def pass_community_function(f):
-    """Decorator to retrieve persistent identifier and community.
-
-    This decorator will resolve the ``pid_value`` parameter from the route
-    pattern and resolve it to a PID and a community, which are then available
-    in the decorated function as ``pid`` and ``community`` kwargs respectively.
-    """
-    @wraps(f)
-    def inner(pid_value, *args, **kwargs):
-        try:
-            pid, community = request.view_args['pid_value'].data
-            return f(pid=pid, community=community, *args, **kwargs)
-        except SQLAlchemyError:
-            raise PIDResolveRESTError(pid)
-
-    return inner
-
-
-class FlaskParser(FlaskParserBase):
-    """Parser to add FieldError to validation errors."""
-
-    def handle_error(self, error, *args, **kwargs):
-        """Handle errors during parsing."""
-        if isinstance(error, ValidationError):
-            _errors = []
-            for field, messages in error.messages.items():
-                _errors.extend([FieldError(field, msg) for msg in messages])
-            raise RESTValidationError(errors=_errors)
-        super(FlaskParser, self).handle_error(error, *args, **kwargs)
-
-
-webargs_parser = FlaskParser()
-use_args = webargs_parser.use_args
-use_kwargs = webargs_parser.use_kwargs
 
 
 class CommunityMembersResource(MethodView):
@@ -362,44 +308,10 @@ class MembershipRequestResource(MethodView):
 
 
 ui_blueprint = Blueprint(
-    'invenio_communities',
+    'invenio_communities_members',
     __name__,
     template_folder='../templates',
-    static_folder='static',
 )
-
-
-@ui_blueprint.before_app_first_request
-def init_menu():
-    """Initialize menu before first request."""
-    item = current_menu.submenu('main.communities')
-    item.register(
-        'invenio_communities.index',
-        'Communities',
-        order=3,
-    )
-
-
-@ui_blueprint.route('/communities/new')
-def new():
-    """Create a new community."""
-    return render_template('invenio_communities/new.html')
-
-
-@ui_blueprint.route('/communities/')
-def index():
-    """Search for a new community."""
-    return render_template('invenio_communities/index.html')
-
-
-@ui_blueprint.route('/communities/<{0}:pid_value>/settings'.format(
-            'pid(comid,record_class="invenio_communities.api:Community",'
-            'object_type="com")'))
-@pass_community_function
-def settings(community, pid):
-    """Modify a community."""
-    return render_template(
-        'invenio_communities/settings.html', community=community, pid=pid)
 
 
 @ui_blueprint.route('/communities/<{0}:pid_value>/members'.format(
@@ -411,18 +323,6 @@ def members(community, pid):
     return render_template(
         'invenio_communities/members.html', community=community, pid=pid)
 
-
-@ui_blueprint.route('/communities/<{0}:pid_value>'.format(
-            'pid(comid,record_class="invenio_communities.api:Community",'
-            'object_type="com")'))
-@pass_community_function
-def community_page(community, pid):
-    """Members of a community."""
-    return render_template(
-        'invenio_communities/community_page.html',
-        community=community,
-        pid=pid
-    )
 
 
 @ui_blueprint.route('/communities/members/requests/<membership_request_id>')
