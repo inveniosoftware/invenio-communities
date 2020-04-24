@@ -10,6 +10,9 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_indexer.signals import before_record_index
+
+from invenio_communities.records.indexer import indexer_receiver
 
 from . import config
 
@@ -26,6 +29,8 @@ class Communities(object):
         """Flask application initialization."""
         self.init_config(app)
         app.extensions['communities'] = self
+        # TODO: Make configurable or move into separate extension in ".records"
+        before_record_index.connect(indexer_receiver, sender=app)
 
     def init_config(self, app):
         """Initialize configuration.
