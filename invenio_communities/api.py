@@ -17,12 +17,52 @@ from werkzeug.local import LocalProxy
 from invenio_db import db
 
 from invenio_communities.members.models import CommunityMetadata
+from invenio_pidstore.models import PersistentIdentifier
+from invenio_pidstore.resolver import Resolver
 
 from .members.api import CommunityMembersAPI
 
 
-class Community(Record):
+# TODO: Move somewhere appropriate (`invenio-records-pidstore`)
+class PIDRecordMixin:
+    """Persistent identifier mixin for records."""
+
+    object_type = None
+    pid_type = None
+
+    @property
+    def pid(self):
+        """Return primary persistent identifier of the record."""
+        return PersistentIdentifier.query.filter_by(
+            object_uuid=self.id,
+            object_type=self.object_type,
+            pid_type=self.pid_type
+        ).one()
+
+    @classmethod
+    def resolve(cls, pid_value):
+        """Resolve a PID value and return the PID and record."""
+        return Resolver(
+            pid_type=cls.pid_type,
+            object_type=cls.object_type,
+            getter=cls.get_record
+        ).resolve(pid_value)
+
+    # TODO: See if needed or if it should be customizable
+    # @property
+    # def pids(self):
+    #     """Return all persistent identifiers of the record."""
+    #     return PersistentIdentifier.query.filter_by(
+    #         object_uuid=self.id,
+    #         object_type=self.object_type,
+    #     ).all()
+
+
+class Community(Record, PIDRecordMixin):
     """Define API for community creation and manipulation."""
+
+    object_type = 'com'
+    pid_type = 'comid'
 
     # TODO: Communities model doesn't have versioninig, some methods from
     # "invenio_records.api.RecordBase" have to be overridden/removed
@@ -44,13 +84,9 @@ class Community(Record):
         """
         with db.session.begin_nested():
             community = cls.create_community_record(data)
-
             community.validate(**kwargs)
-
             community.model = cls.model_cls(id=id_, json=community)
-
             db.session.add(community.model)
-
             CommunityMembersAPI.set_default_admin(community.model)
 
         return community
@@ -62,5 +98,4 @@ class Community(Record):
                 db.session.delete(self.model)
             else:
                 self.model.delete()
-
         return self
