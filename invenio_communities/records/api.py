@@ -85,10 +85,10 @@ class CommunityInclusionRequest(RequestBase):
             'created_by': owner.id,
             **kwargs,
         }
-        model = cls.model_cls.create(
+        model = cls.model_cls(
             owner_id=owner.id,
             json=data,
-            id=id_
+            id=id_,
         )
         db.session.add(model)
         return cls(data, model=model)
