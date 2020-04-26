@@ -26,7 +26,7 @@ from invenio_rest.errors import FieldError, RESTValidationError
 
 from .api import CommunityMembersAPI, MembershipRequestAPI
 from .models import CommunityMember, MembershipRequest
-from ..views import pass_community, pass_community_function, use_args, use_kwargs
+from ..views import pass_community, use_kwargs
 
 
 def create_blueprint_from_app(app):
@@ -113,7 +113,7 @@ class CommunityMembersResource(MethodView):
 
     @use_kwargs(post_args)
     @pass_community
-    def post(self, email=None, pid=None, community=None, role=None,
+    def post(self, comid=None, community=None, email=None, role=None,
              request_type=None, **kwargs):
         """Join a community or invite a user to it."""
         if request_type == 'invitation':
@@ -137,7 +137,7 @@ class CommunityMembersResource(MethodView):
         return 'Succesfully Invited', 200
 
     @pass_community
-    def get(self, pid=None, community=None):
+    def get(self, comid=None, community=None):
         """List the community members."""
         admin_ids = \
             [admin.user.id for admin in CommunityMember.get_admins(
@@ -155,7 +155,7 @@ class CommunityMembersResource(MethodView):
 
     @use_kwargs(delete_args)
     @pass_community
-    def delete(self, user_id=None, community=None, pid=None):
+    def delete(self, comid=None, community=None, user_id=None):
         """Remove a member from a community."""
         admin_ids = \
             [admin.user.id for admin in CommunityMember.get_admins(
@@ -184,7 +184,7 @@ class CommunityRequestsResource(MethodView):
     }
 
     @pass_community
-    def get(self, community=None, pid=None, outgoing_only=False,
+    def get(self, comid=None, community=None, outgoing_only=False,
             incoming_only=False, page_size=20, page=0):
         """List all the community membership requests."""
         admin_ids = \
@@ -317,12 +317,11 @@ ui_blueprint = Blueprint(
 @ui_blueprint.route('/communities/<{0}:pid_value>/members'.format(
             'pid(comid,record_class="invenio_communities.api:Community",'
             'object_type="com")'))
-@pass_community_function
-def members(community, pid):
+@pass_community
+def members(comid=None, community=None):
     """Members of a community."""
     return render_template(
-        'invenio_communities/members.html', community=community, pid=pid)
-
+        'invenio_communities/members.html', community=community, comid=comid)
 
 
 @ui_blueprint.route('/communities/members/requests/<membership_request_id>')
