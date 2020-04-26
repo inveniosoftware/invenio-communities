@@ -58,7 +58,7 @@ class PIDRecordMixin:
     #     ).all()
 
 
-class Community(Record, PIDRecordMixin):
+class CommunityBase(Record, PIDRecordMixin):
     """Define API for community creation and manipulation."""
 
     object_type = 'com'
@@ -74,8 +74,7 @@ class Community(Record, PIDRecordMixin):
 
     @classmethod
     def create(cls, data, id_=None, **kwargs):
-        """Create a new community instance and store it in the database..
-        """
+        """Create a new community instance and store it in the database."""
         with db.session.begin_nested():
             data['$schema'] = str(cls.schema)
             community = cls(data)
@@ -94,3 +93,8 @@ class Community(Record, PIDRecordMixin):
             else:
                 self.model.delete()
         return self
+
+
+# TODO: Investigate if there's a cleaner/better way
+Community = LocalProxy(
+    lambda: current_app.extensions['invenio-communities'].community_cls)
