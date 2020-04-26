@@ -73,22 +73,17 @@ class Community(Record, PIDRecordMixin):
             'COMMUNITY_SCHEMA', 'communities/communities-v1.0.0.json')))
 
     @classmethod
-    def create_community_record(cls, data, *args, **kwargs):
-        """Create community record with default '$schema'."""
-        data['$schema'] = str(cls.schema)
-        return cls(data)
-
-    @classmethod
     def create(cls, data, id_=None, **kwargs):
-        r"""Create a new community instance and store it in the database..
+        """Create a new community instance and store it in the database..
         """
         with db.session.begin_nested():
-            community = cls.create_community_record(data)
+            data['$schema'] = str(cls.schema)
+            community = cls(data)
             community.validate(**kwargs)
             community.model = cls.model_cls(id=id_, json=community)
             db.session.add(community.model)
+            # TODO: Move this logic to the controller
             CommunityMembersAPI.set_default_admin(community.model)
-
         return community
 
     def delete(self, force=False):
