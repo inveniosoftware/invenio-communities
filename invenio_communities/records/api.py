@@ -133,14 +133,15 @@ class CommunityInclusionRequest(RequestBase):
 
 class RecordCommunitiesMixin(PIDRecordMixin):
 
-    # record_communities_iter_cls = RecordCommunitiesCollection
+    record_communities_iter_cls = LocalProxy(
+        lambda: RecordCommunitiesCollection)
 
     object_type = 'rec'
     pid_type = 'recid'
 
     @property
     def communities(self):
-        return self.record_communities_iter_cls(self.pid.id)
+        return self.record_communities_iter_cls(self)
 
     # TODO: Take into account in the controllers
     # def block_community(cls, community):
@@ -344,11 +345,16 @@ class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
         return community_record.delete()
 
     def as_dict(self):
-        community_records = defaultdict(list)
+        res = defaultdict(list)
         for community_record in self:
             status = community_record.status.name.lower()
-            community_records[status].append(community_record.community_pid)
-        return community_records
+            res[status].append({
+                'id': community_record.community.pid.pid_value,
+                'title': community_record.community['title'],
+                'logo': '/static/images/cern.png',
+                'request_id': str(community_record.request.id),
+            })
+        return res
 
 
 class CommunityRecordsMixin:
