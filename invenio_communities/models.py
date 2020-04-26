@@ -17,7 +17,7 @@ from invenio_records.models import RecordMetadataBase
 class CommunityMetadata(db.Model, RecordMetadataBase):
     """Represent a community."""
 
-    __tablename__ = 'community_metadata'
+    __tablename__ = 'communities_metadata'
     __table_args__ = {'extend_existing': True}
     __versioned__ = {'versioning': False}
 

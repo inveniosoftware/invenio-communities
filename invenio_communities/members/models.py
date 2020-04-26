@@ -70,7 +70,7 @@ class CommunityRoles(Enum):
 class CommunityMember(db.Model):
     """Represent a community member role."""
 
-    __tablename__ = 'community_members'
+    __tablename__ = 'communities_members'
 
     "Community PID ID"
     comm_id = db.Column(
@@ -153,7 +153,7 @@ class CommunityMember(db.Model):
 class MembershipRequest(db.Model):
     """Represent a community member role."""
 
-    __tablename__ = 'membership_requests'
+    __tablename__ = 'communities_membership_request'
 
     id = db.Column(
         UUIDType,

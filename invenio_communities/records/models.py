@@ -51,7 +51,7 @@ class CommunityRecordStatus(Enum):
 class CommunityRecord(db.Model, RecordMetadataBase):
     """Comunity-record relationship model."""
 
-    __tablename__ = 'community_record_inclusion'
+    __tablename__ = 'communities_community_record'
     __table_args__ = (
         db.Index(
             'uidx_community_pid_record_pid',
