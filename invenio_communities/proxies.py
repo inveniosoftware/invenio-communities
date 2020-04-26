@@ -14,5 +14,5 @@ from flask import current_app
 from werkzeug.local import LocalProxy
 
 current_communities = LocalProxy(
-    lambda: current_app.extensions['communities'])
-"""Proxy to an instance of ``_Communities``."""
+    lambda: current_app.extensions['invenio-communities'])
+"""Proxy to the extension."""
