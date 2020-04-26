@@ -10,124 +10,22 @@
 
 from __future__ import absolute_import, print_function
 
-import uuid
 from enum import Enum
 
 from flask_babelex import gettext
-from invenio_accounts.models import User
 from invenio_db import db
 from invenio_pidstore.models import PersistentIdentifier
-from invenio_records.models import RecordMetadataBase, Timestamp
+from invenio_records.models import RecordMetadataBase
 from speaklater import make_lazy_gettext
-from sqlalchemy.dialects import mysql
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy_utils.types import ChoiceType, UUIDType
 
 from invenio_communities.models import CommunityMetadata
+from invenio_communities.requests.models import Request
 from .errors import CommunityRecordAlreadyExists
 
 # TODO make sure well what this does and that we need this dependency
 _ = make_lazy_gettext(lambda: gettext)
-
-
-#
-# Request model (to be moved to invenio-requests)
-#
-class Request(db.Model, RecordMetadataBase):
-
-    __tablename__ = 'requests_request'
-    __table_args__ = {'extend_existing': True}
-    __versioned__ = {'versioning': False}
-
-    owner_id = db.Column(
-        db.Integer,
-        db.ForeignKey(User.id),
-    )
-
-    expires_at = db.Column(
-        db.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
-    )
-
-    cancelled_at = db.Column(
-        db.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
-    )
-
-    sla = db.Column(
-        db.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
-    )
-
-    routing_key = db.Column(
-        db.String(255),
-    )
-
-    # request_comments = relationship("RequestComment", cascade="delete-orphan")
-    # owner = db.relationship(
-    #     User,
-    #     # TODO: keep the backref?
-    #     backref='requests',
-    # )
-
-    @classmethod
-    def delete(cls, request):
-        """Delete community request."""
-        with db.session.begin_nested():
-            db.session.delete(request)
-
-    @classmethod
-    def create(cls, owner_id, json, id):
-        """Create a request."""
-        with db.session.begin_nested():
-            obj = cls(
-                owner_id=owner_id,
-                json=json,
-                id=id,
-            )
-            db.session.add(obj)
-        return obj
-
-
-class RequestComment(db.Model, Timestamp):
-    """Comment in a request."""
-
-    __tablename__ = 'request_comment'
-
-    id = db.Column(
-        UUIDType,
-        default=uuid.uuid4,
-        primary_key=True,
-    )
-
-    request_id = db.Column(
-        UUIDType,
-        db.ForeignKey(Request.id, ondelete="CASCADE"),
-        nullable=False,
-    )
-
-    created_by = db.Column(
-        db.Integer,
-        db.ForeignKey(User.id),
-        nullable=False
-    )
-
-    message = db.Column(db.Text)
-
-    request = db.relationship(Request, backref='comments')
-
-    @classmethod
-    def create(cls, request_id, created_by, message):
-        with db.session.begin_nested():
-            obj = cls(
-                request_id=request_id,
-                created_by=created_by,
-                message=message,
-            )
-            db.session.add(obj)
-        return obj
-
-#
-# Community models
-#
-# TODO: Move to errors.py
 
 
 COMMUNITY_RECORD_STATUS = {
