@@ -59,18 +59,6 @@ class Request(db.Model, RecordMetadataBase):
         with db.session.begin_nested():
             db.session.delete(request)
 
-    @classmethod
-    def create(cls, owner_id, json, id):
-        """Create a request."""
-        with db.session.begin_nested():
-            obj = cls(
-                owner_id=owner_id,
-                json=json,
-                id=id,
-            )
-            db.session.add(obj)
-        return obj
-
 
 class Comment(db.Model, Timestamp):
     """Comment in a request."""
@@ -97,7 +85,14 @@ class Comment(db.Model, Timestamp):
 
     message = db.Column(db.Text)
 
-    request = db.relationship(Request, backref='comments')
+    request = db.relationship(
+        Request,
+        backref=db.backref(
+            'comments',
+            cascade='all, delete-orphan',
+            passive_deletes=True,
+        ),
+    )
 
     @classmethod
     def create(cls, request_id, created_by, message):
