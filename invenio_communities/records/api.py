@@ -13,6 +13,7 @@ from __future__ import absolute_import, print_function
 from collections import defaultdict
 from enum import Enum
 from flask import url_for
+from werkzeug.local import LocalProxy
 
 from invenio_db import db
 from invenio_records.api import Record as RecordBaseAPI
@@ -37,7 +38,7 @@ class CommunityInclusionRequest(RequestBase):
     TYPE = 'community-inclusion-request'
 
     # TODO: see how to implement or if needed at all...
-    # community_record_cls = CommunityRecord
+    community_record_cls = LocalProxy(lambda: CommunityRecord)
 
     # TODO: Override
     schema = {
@@ -62,8 +63,8 @@ class CommunityInclusionRequest(RequestBase):
     def community_record(self):
         """Get request's community record relatinship."""
         if not getattr(self, '_community_record', None):
-            self._community_record = CommunityRecord.get_by_request_id(
-                request_id=self.id)
+            self._community_record = \
+                self.community_record_cls.get_by_request_id(request_id=self.id)
         return self._community_record
 
     @property
@@ -112,38 +113,20 @@ class CommunityInclusionRequest(RequestBase):
     # TODO: Probably part of view/controller
     @classmethod
     def dump_links(cls, request, pid_value):
-        # TODO: urlfor these links
         actions = ['comment', 'accept', 'reject']
         links = {
             "self": url_for(
                 'invenio_communities_records.requests_item',
                 pid_value=pid_value,
                 request_id=request.id
-                )
+            )
         }
         for action in actions:
             links[action] = url_for(
-                'invenio_communities_records.requests_item',
+                'invenio_communities_records.requests_item_actions',
                 pid_value=pid_value,
                 request_id=request.id,
                 action=action
-                )
-        if request['state'] == cls.State.OPEN:
-            links.update(
-                {
-                    "accept": url_for(
-                        'invenio_communities_records.requests_item',
-                        pid_value=pid_value,
-                        request_id=request.id,
-                        action='accept'
-                        ),
-                    "reject": url_for(
-                        'invenio_communities_records.requests_item',
-                        pid_value=pid_value,
-                        request_id=request.id,
-                        action='reject'
-                        ),
-                }
             )
         return links
 
@@ -231,6 +214,12 @@ class CommunityRecord(RecordBaseAPI):
         obj._record = record
         return obj
 
+    def delete(self):
+        """Delete community record relationship."""
+        with db.session.begin_nested():
+            db.session.delete(self.model)
+        return self
+
     @classmethod
     def get_by_pids(cls, community_pid, record_pid):
         """Get by community and record PIDs."""
@@ -253,14 +242,14 @@ class CommunityRecord(RecordBaseAPI):
         return cls(model.json, model=model)
 
     def as_dict(self, include_request=True):
-        # TODO: This should return the record PID instead.
-        # Needs PIDMIXIN fix, investigate any resolving issues.
         res = {
             'status': str(self.status.title),
-            'record_pid': self.record.id
+            'record_pid': self.record.pid.pid_value,
         }
         if include_request:
             res['request'] = self.request.as_dict()
+        else:
+            res['request_id'] = self.request.id
         return res
 
     # TODO: sanity check this
@@ -280,11 +269,15 @@ class CommunityRecordsCollectionBase:
 
     def __len__(self):
         """Get number of community records."""
-        return self.query.count()
+        return self._query.count()
 
     def __iter__(self):
-        self._it = iter(self.query)
+        self._it = iter(self._query)
         return self
+
+    def filter(self, conditions):
+        new_query = self._query.filter_by(**conditions)
+        return self.__class__(self.community, _query=new_query)
 
     def __next__(self):
         """Get next community record item."""
@@ -299,12 +292,9 @@ class CommunityRecordsCollection(CommunityRecordsCollectionBase):
 
     def __init__(self, community, query=None):
         self.community = community
-        self._query = query or CommunityRecord.query.filter_by(
+        # TODO: Make lazier (e.g. via property)
+        self._query = query or CommunityRecordModel.query.filter_by(
             community_pid_id=self.community.pid.id)
-
-    def filter(self, conditions):
-        new_query = self._query.filter_by(**conditions)
-        return self.__class__(self.community, _query=new_query)
 
     # TODO: implement if needed
     # def __contains__(self, item):
@@ -323,24 +313,22 @@ class CommunityRecordsCollection(CommunityRecordsCollectionBase):
         community_record = self[record]
         return community_record.delete()
 
-    def as_dict(self, include_requests=False):
+    def as_dict(self, include_request=False):
         community_records = defaultdict(list)
         for community_record in self:
-            status = community_record.status.title
+            status = community_record.status.name.lower()
             community_records[status].append(community_record.as_dict(
-                include_requests))
+                include_request=include_request))
         return community_records
 
 
 class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
 
-    def __init__(self, record):
+    def __init__(self, record, query=None):
         self.record = record
-
-    @property
-    def query(self):
-        return CommunityRecord.query.filter_by(
-            record=self.record.pid.id)
+        # TODO: Make lazier (e.g. via property)
+        self._query = query or CommunityRecordModel.query.filter_by(
+            record_pid_id=self.record.pid.id)
 
     def __getitem__(self, community):
         """Get a specific community record."""
@@ -358,7 +346,7 @@ class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
     def as_dict(self):
         community_records = defaultdict(list)
         for community_record in self:
-            status = community_record.status.title
+            status = community_record.status.name.lower()
             community_records[status].append(community_record.community_pid)
         return community_records
 

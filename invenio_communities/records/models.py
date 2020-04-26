@@ -128,7 +128,7 @@ class CommunityRecord(db.Model, RecordMetadataBase):
         return obj
 
     @classmethod
-    def delete(community_record):
+    def delete(cls, community_record):
         """Delete community record relationship."""
         with db.session.begin_nested():
             db.session.delete(community_record)

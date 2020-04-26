@@ -51,10 +51,5 @@ class RequestBase(RecordBaseAPI):
         # TODO: do we need a comment API Class?
         return CommentModel.create(self.id, user.id, message)
 
-    @classmethod
-    def get_by_id(cls, request_id):
-        request_model = cls.model_cls.get_record(request_id)
-        return cls(request_model.json, model=request_model)
-
     def delete(self):
         self.model.delete(self.model)
