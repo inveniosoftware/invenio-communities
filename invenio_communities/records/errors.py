@@ -12,6 +12,7 @@
 
 class CommunityRecordError(Exception):
     """Community record base error class."""
+
     def __init__(self, community_pid_id, record_pid_id):
         """Initialize Exception."""
         self.community_pid_id = community_pid_id
@@ -20,9 +21,7 @@ class CommunityRecordError(Exception):
 
 class CommunityRecordAlreadyExists(CommunityRecordError):
     """Record inclusion already exists error."""
-    pass
 
 
 class CommunityRecordDoesNotExist(CommunityRecordError):
     """Record inclusion does not exist error."""
-    pass
