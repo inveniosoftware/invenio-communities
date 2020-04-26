@@ -92,8 +92,11 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
+        'invenio_base.apps': [
+            'invenio_communities = invenio_communities:InvenioCommunities',
+        ],
         'invenio_base.api_apps': [
-            'invenio_communities = invenio_communities:Communities',
+            'invenio_communities = invenio_communities:InvenioCommunities',
         ],
         'invenio_base.blueprints': [
             'invenio_communities = invenio_communities.views:ui_blueprint',

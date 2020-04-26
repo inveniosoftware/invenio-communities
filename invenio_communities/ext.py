@@ -17,7 +17,7 @@ from invenio_communities.records.indexer import indexer_receiver
 from . import config
 
 
-class Communities(object):
+class InvenioCommunities(object):
     """Invenio extension."""
 
     def __init__(self, app=None):
