@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2019 CERN.
+# Copyright (C) 2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -19,12 +19,12 @@ from invenio_records.api import Record as RecordBaseAPI
 
 from invenio_communities.records.models import \
     CommunityRecord as CommunityRecordModel
-from invenio_communities.records.models import CommunityRecordStatus, \
-    RequestComment, Request as RequestModel
+from invenio_communities.records.models import CommunityRecordStatus
 from invenio_communities.api import Community, PIDRecordMixin
+from invenio_communities.requests.api import RequestBase
 
 
-# TODO: See if this can be moved to config or
+# TODO: See if this can be moved to config
 class Record(RecordBaseAPI, PIDRecordMixin):
     """PID-aware record."""
 
@@ -32,54 +32,7 @@ class Record(RecordBaseAPI, PIDRecordMixin):
     pid_type = 'recid'
 
 
-class Request(RecordBaseAPI):
-    """Request API class."""
-
-    model_cls = RequestModel
-
-    schema = {
-        "type": {
-            "type": "string",
-            # "enum": ["community-inclusion"],
-        },
-        "state": {
-            "type": "string",
-            # "enum": ["pending", "closed"],
-        },
-        "assignees": {"type": "int[]"},
-        "created_by": {"type": "int"},
-    }
-
-    @property
-    def routing_key(self):
-        """Get request routing key."""
-        return self.model.routing_key if self.model else None
-
-    @routing_key.setter
-    def routing_key(self, new_routing_key):
-        """Set request routing key."""
-        self.model.routing_key = new_routing_key
-
-    @property
-    def comments(self):
-        """Request comments."""
-        return self.model.comments if self.model else None
-
-    def add_comment(self, user, message):
-        """Request comments."""
-        # TODO: do we need a comment API Class?
-        return RequestComment.create(self.id, user.id, message)
-
-    @classmethod
-    def get_by_id(cls, request_id):
-        request_model = cls.model_cls.get_record(request_id)
-        return cls(request_model.json, model=request_model)
-
-    def delete(self):
-        self.model.delete(self.model)
-
-
-class CommunityInclusionRequest(Request):
+class CommunityInclusionRequest(RequestBase):
 
     TYPE = 'community-inclusion-request'
 
