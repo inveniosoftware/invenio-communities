@@ -104,6 +104,12 @@ setup(
             'invenio_communities_members = invenio_communities.members.views:create_blueprint_from_app',
             'invenio_communities_records = invenio_communities.records.views:api_blueprint',
         ],
+        'invenio_db.models': [
+            'invenio_communities = invenio_communities.models',
+            'invenio_communities_members = invenio_communities.members.models',
+            'invenio_communities_records = invenio_communities.records.models',
+            'invenio_requests = invenio_communities.requests.models',
+        ],
         'invenio_search.mappings': [
             'communities = invenio_communities.mappings',
         ],
@@ -118,6 +124,10 @@ setup(
         ],
         'invenio_assets.webpack': [
             'invenio_communities = invenio_communities.webpack:communities'
+        ],
+        'invenio_celery.tasks': [
+            # TODO: Add when necessary
+            # 'invenio_communities = invenio_communities.tasks',
         ],
     },
     extras_require=extras_require,
