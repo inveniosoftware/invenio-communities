@@ -20,7 +20,6 @@ recursive-include docs *.bat
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
-recursive-include examples *.py
 recursive-include invenio_communities *.gif
 recursive-include invenio_communities *.html
 recursive-include invenio_communities *.html
