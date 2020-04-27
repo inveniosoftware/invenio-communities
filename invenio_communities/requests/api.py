@@ -10,7 +10,8 @@
 
 from invenio_records.api import Record as RecordBaseAPI
 
-from .models import Request as RequestModel, Comment as CommentModel
+from .models import Comment as CommentModel
+from .models import Request as RequestModel
 
 
 class RequestBase(RecordBaseAPI):

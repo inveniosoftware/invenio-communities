@@ -12,16 +12,16 @@ from __future__ import absolute_import, print_function
 
 from collections import defaultdict
 from enum import Enum
-from flask import url_for
-from werkzeug.local import LocalProxy
 
+from flask import url_for
 from invenio_db import db
 from invenio_records.api import Record as RecordBaseAPI
+from werkzeug.local import LocalProxy
 
+from invenio_communities.api import Community, PIDRecordMixin
 from invenio_communities.records.models import \
     CommunityRecord as CommunityRecordModel
 from invenio_communities.records.models import CommunityRecordStatus
-from invenio_communities.api import Community, PIDRecordMixin
 from invenio_communities.requests.api import RequestBase
 
 

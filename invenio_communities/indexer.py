@@ -9,6 +9,7 @@
 """Indexer for communities."""
 
 from invenio_indexer.api import RecordIndexer
+
 from .api import Community
 
 

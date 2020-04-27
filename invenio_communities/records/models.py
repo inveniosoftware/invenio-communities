@@ -22,6 +22,7 @@ from sqlalchemy_utils.types import ChoiceType, UUIDType
 
 from invenio_communities.models import CommunityMetadata
 from invenio_communities.requests.models import Request
+
 from .errors import CommunityRecordAlreadyExists
 
 # TODO make sure well what this does and that we need this dependency
