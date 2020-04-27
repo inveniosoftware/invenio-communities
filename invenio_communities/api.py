@@ -11,14 +11,14 @@
 from __future__ import absolute_import, print_function
 
 from flask import current_app
-from invenio_jsonschemas import current_jsonschemas
-from invenio_records.api import Record
-from werkzeug.local import LocalProxy
 from invenio_db import db
-
-from invenio_communities.members.models import CommunityMetadata
+from invenio_jsonschemas import current_jsonschemas
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_pidstore.resolver import Resolver
+from invenio_records.api import Record
+from werkzeug.local import LocalProxy
+
+from invenio_communities.members.models import CommunityMetadata
 
 from .members.api import CommunityMembersAPI
 

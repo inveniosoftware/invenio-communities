@@ -10,8 +10,9 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_communities.members.models import CommunityMetadata, \
-    CommunityMember, MembershipRequest
+from invenio_communities.members.models import CommunityMember, \
+    CommunityMetadata, MembershipRequest
+
 from ..utils import send_invitation_email
 
 
@@ -113,4 +114,3 @@ class MembershipRequestAPI(object):
         outgoing_requests = MembershipRequest.query.filter_by(
             is_invite=False, comm_id=comm_id)[page_number*page_size:page_size]
         return (outgoing_count, outgoing_requests)
-
