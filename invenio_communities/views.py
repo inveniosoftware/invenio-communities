@@ -9,23 +9,18 @@
 
 from __future__ import absolute_import, print_function
 
-from functools import wraps, partial
+from functools import partial, wraps
 
 from flask import Blueprint, render_template, request
-from flask_menu import current_menu
 from flask_login import login_required
+from flask_menu import current_menu
 from invenio_records_rest.errors import PIDResolveRESTError
 from invenio_rest.errors import FieldError, RESTValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from webargs import ValidationError
 from webargs.flaskparser import FlaskParser as FlaskParserBase
 
-
-_PID_CONVERTER = (
-    'pid(comid,'
-    'record_class="invenio_communities.api:Community",'
-    'object_type="com")'
-)
+from .utils import comid_url_converter
 
 
 class FlaskParser(FlaskParserBase):
@@ -96,7 +91,7 @@ def new():
 
 
 @ui_blueprint.route(
-    '/communities/<{pid}:pid_value>'.format(pid=_PID_CONVERTER))
+    '/communities/<{pid}:pid_value>'.format(pid=comid_url_converter))
 @pass_community
 def community_page(comid=None, community=None):
     """Members of a community."""
@@ -108,7 +103,7 @@ def community_page(comid=None, community=None):
 
 
 @ui_blueprint.route(
-    '/communities/<{pid}:pid_value>/settings'.format(pid=_PID_CONVERTER))
+    '/communities/<{pid}:pid_value>/settings'.format(pid=comid_url_converter))
 @pass_community
 @login_required
 def settings(comid=None, community=None):
