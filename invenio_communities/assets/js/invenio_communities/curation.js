@@ -21,7 +21,6 @@ var listInclusionRequests = (commID, successHandler, errorHandler) => {
   .get(`/api/communities/${commID}/requests/inclusion`)
   .then(function (response) {
     successHandler(response.data);
-    debugger;
   })
   .catch(error => {
     errorHandler(error.response.data)
