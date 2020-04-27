@@ -10,23 +10,23 @@
 
 from __future__ import absolute_import, print_function
 
-from flask_menu import current_menu
-from flask.views import MethodView
-from webargs import ValidationError, fields, validate
-from webargs.flaskparser import FlaskParser as FlaskParserBase
-from invenio_db import db
-
 from functools import wraps
-from flask import Blueprint, abort, request, render_template, jsonify
+
+from flask import Blueprint, abort, jsonify, render_template, request
+from flask.views import MethodView
+from flask_menu import current_menu
 from flask_security import current_user
-from sqlalchemy.exc import SQLAlchemyError
+from invenio_db import db
 from invenio_records_rest.errors import PIDResolveRESTError
 from invenio_rest.errors import FieldError, RESTValidationError
+from sqlalchemy.exc import SQLAlchemyError
+from webargs import ValidationError, fields, validate
+from webargs.flaskparser import FlaskParser as FlaskParserBase
 
-
+from ..utils import comid_url_converter
+from ..views import pass_community, use_kwargs
 from .api import CommunityMembersAPI, MembershipRequestAPI
 from .models import CommunityMember, MembershipRequest
-from ..views import pass_community, use_kwargs
 
 
 def create_blueprint_from_app(app):
@@ -40,9 +40,7 @@ def create_blueprint_from_app(app):
         'community_members_api'
     )
     community_members_rest_blueprint.add_url_rule(
-        '/communities/<{0}:pid_value>/members'.format(
-            'pid(comid,record_class="invenio_communities.api:Community",'
-            'object_type="com")'),
+        '/communities/<{}:pid_value>/members'.format(comid_url_converter),
         view_func=comm_view,
     )
 
@@ -51,9 +49,8 @@ def create_blueprint_from_app(app):
 
     )
     community_members_rest_blueprint.add_url_rule(
-        '/communities/<{0}:pid_value>/members/requests'.format(
-            'pid(comid,record_class="invenio_communities.api:Community",'
-            'object_type="com")'),
+        '/communities/<{}:pid_value>'
+        '/members/requests'.format(comid_url_converter),
         view_func=request_management_view,
     )
 
@@ -314,9 +311,8 @@ ui_blueprint = Blueprint(
 )
 
 
-@ui_blueprint.route('/communities/<{0}:pid_value>/members'.format(
-            'pid(comid,record_class="invenio_communities.api:Community",'
-            'object_type="com")'))
+@ui_blueprint.route(
+    '/communities/<{}:pid_value>/members'.format(comid_url_converter))
 @pass_community
 def members(comid=None, community=None):
     """Members of a community."""

@@ -10,11 +10,11 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_indexer.signals import before_record_index
 from werkzeug.utils import cached_property
 
-from invenio_indexer.signals import before_record_index
-
 from . import config
+from .utils import LazyPIDConverter
 
 
 class InvenioCommunities(object):
@@ -41,6 +41,9 @@ class InvenioCommunities(object):
         """Flask application initialization."""
         self.init_config(app)
         app.extensions['invenio-communities'] = self
+
+        # TODO: Remove when merged in invenio-records-rest
+        app.url_map.converters['lazy_pid'] = LazyPIDConverter
 
         # TODO: Make configurable or move into separate extension in ".records"
         from invenio_communities.records.indexer import indexer_receiver

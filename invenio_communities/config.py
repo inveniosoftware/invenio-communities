@@ -10,8 +10,10 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_records_rest.utils import allow_all
 from invenio_records_rest.facets import terms_filter
+from invenio_records_rest.utils import allow_all
+
+from .utils import comid_url_converter
 
 #: Records REST API endpoints.
 COMMUNITIES_REST_ENDPOINTS = dict(
@@ -20,10 +22,7 @@ COMMUNITIES_REST_ENDPOINTS = dict(
         pid_minter='comid',
         pid_fetcher='comid',
         list_route='/communities/',
-        item_route='/communities/<{0}:pid_value>'.format(
-            'pid(comid,record_class="invenio_communities.api:Community",'
-            'object_type="com")'
-        ),
+        item_route='/communities/<{}:pid_value>'.format(comid_url_converter),
         search_index='communities',
         record_class='invenio_communities.api:Community',
         record_serializers={

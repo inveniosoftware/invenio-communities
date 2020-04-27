@@ -15,22 +15,17 @@ from flask.views import MethodView
 from flask_login import current_user, login_required
 from invenio_db import db
 from invenio_indexer.api import RecordIndexer
-from webargs import fields
 from sqlalchemy.exc import SQLAlchemyError
-
+from webargs import fields
 
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord
 
+from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
 from .errors import CommunityRecordAlreadyExists
 
 _ACTIONS = ['accept', 'reject', 'comment']
-_PID_CONVERTER = (
-    'pid(comid,'
-    'record_class="invenio_communities.api:Community",'
-    'object_type="com")'
-)
 
 #
 # UI views
@@ -43,7 +38,7 @@ ui_blueprint = Blueprint(
 
 
 @ui_blueprint.route(
-    '/communities/<{}:pid_value>/curate'.format(_PID_CONVERTER))
+    '/communities/<{}:pid_value>/curate'.format(comid_url_converter))
 @login_required
 @pass_community
 def curation(comid=None, community=None):
@@ -263,13 +258,13 @@ class ItemActionsResource(MethodView):
 
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
-    '/requests/inclusion'.format(pid=_PID_CONVERTER),
+    '/requests/inclusion'.format(pid=comid_url_converter),
     view_func=ListResource.as_view('requests_list'),
 )
 
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
-    '/requests/inclusion/<uuid:request_id>'.format(pid=_PID_CONVERTER),
+    '/requests/inclusion/<uuid:request_id>'.format(pid=comid_url_converter),
     view_func=ItemResource.as_view('requests_item'),
 )
 
@@ -277,6 +272,6 @@ api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
     '/requests/inclusion/<uuid:request_id>'
     '/<any({actions}):action>'.format(
-        pid=_PID_CONVERTER, actions=','.join(_ACTIONS)),
+        pid=comid_url_converter, actions=','.join(_ACTIONS)),
     view_func=ItemActionsResource.as_view('requests_item_actions'),
 )
