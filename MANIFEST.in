@@ -20,9 +20,9 @@ recursive-include docs *.bat
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
-recursive-include invenio_communities *.gif
 recursive-include invenio_communities *.html
-recursive-include invenio_communities *.html
+recursive-include invenio_communities *.json
+recursive-include invenio_communities *.tpl
 recursive-include invenio_communities *.js
 recursive-include invenio_communities *.po *.pot *.mo
 recursive-include invenio_communities *.py
