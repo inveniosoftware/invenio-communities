@@ -7,18 +7,20 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
-{% extends config.BASE_TEMPLATE %}
+{% extends "invenio_communities/base.html" %}
 
 {%- block javascript %}
-  {{ super() }}
-  {{ webpack['communities-new.js'] }}
+{{ super() }}
+{{ webpack['communities-new.js'] }}
 {%- endblock javascript %}
 
 
+{%- block css %}
+{{ super() }}
+{{ webpack['vendor.css'] }}
+{%- endblock css %}
+
 {%- block page_body %}
-
-<div id="app"></div>
-
+  <div id="app" class="ui bottom attached active tab segment"></div>
+  <div id="is_new_community" data-config='{{ True | tojson }}'></div>
 {%- endblock page_body %}
-
-

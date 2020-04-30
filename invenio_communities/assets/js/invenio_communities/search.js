@@ -59,6 +59,6 @@ class CommunitySearch extends Component {
 }
 
 
-ReactDOM.render(<CommunitySearch />, document.getElementById("app"));
+// ReactDOM.render(<CommunitySearch />, document.getElementById("app"));
 
 export default CommunitySearch;
