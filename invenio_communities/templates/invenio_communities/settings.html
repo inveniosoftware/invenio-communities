@@ -7,19 +7,53 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
-{% extends config.BASE_TEMPLATE %}
+{% extends "invenio_communities/base.html" %}
 
 {%- block javascript %}
-  {{ super() }}
-  {{ webpack['communities-settings.js'] }}
+{{ super() }}
+{{ webpack['communities-new.js'] }}
 {%- endblock javascript %}
 
+{%- block css %}
+{{ super() }}
+{{ webpack['vendor.css'] }}
+{%- endblock css %}
 
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
-
-<div id="app"></div>
-
+<div class="container">
+  <div class="col-md-2">
+    <table class="ui table">
+      <thead>
+        <tr>
+          <th>Community settings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Profile</td>
+        </tr>
+        <tr>
+          <td>Collections</td>
+        </tr>
+        <tr>
+          <td>Privileges</td>
+        </tr>
+        <tr>
+          <td>Harvesting</td>
+        </tr>
+        <tr>
+          <td>Webhooks</td>
+        </tr>
+        <tr>
+          <td>Verification</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4">
+    <div id="app"></div>
+  </div>
+  <div id="is_new_community" data-config='{{ False | tojson }}'></div>
+</div>
 {%- endblock page_body %}
-
-

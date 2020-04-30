@@ -25,13 +25,15 @@ communities = WebpackBundle(
     __name__,
     'assets',
     entry={
+        'communities-theme': './scss/invenio_communities/theme.scss',
         'communities-new': './js/invenio_communities/new.js',
-        'communities-search': './js/invenio_communities/search.js',
-        'communities-settings': './js/invenio_communities/settings.js',
         'communities-members': './js/invenio_communities/members.js',
         'communities-request': './js/invenio_communities/request.js',
         'communities-curation': './js/invenio_communities/curation.js',
         'communities-records': './js/invenio_communities/records.js',
+        'communities-search': './js/invenio_communities/communities_search.js',
+        'communities-records-search': './js/invenio_communities/communities_records_search.js',
+
     },
     dependencies={
         'semantic-ui-css': '^2.4.1',
