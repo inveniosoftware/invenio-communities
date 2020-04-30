@@ -1,64 +1,102 @@
-/*
- * This file is part of Invenio.
- * Copyright (C) 2017-2020 CERN.
- *
- * Invenio is free software; you can redistribute it and/or modify it
- * under the terms of the MIT License; see LICENSE file for more details.
- */
-import React, { Component } from "react";
+import { SearchWrapper } from "./search/SearchMain";
 import ReactDOM from "react-dom";
-import {
-  ReactSearchKit,
-  InvenioSearchApi,
-  SearchBar,
-  ResultsList,
-  EmptyResults
-} from "react-searchkit";
+import React from "react";
+import { Item, Card } from 'semantic-ui-react';
+import _truncate from 'lodash/truncate';
 
-const searchApi = new InvenioSearchApi({
-  baseURL: "/api/communities",
-  url: "",
+const aggregations = [
+  {
+    title: "Types",
+    agg: {
+      field: "type",
+      aggName: "type"
+    }
+  },
+  {
+    title: "Domains",
+    agg: {
+      field: "domain",
+      aggName: "domain"
+    }
+  }
+];
+
+const sortValues = [
+  {
+    text: "Best match",
+    sortBy: "bestmatch",
+    sortOrder: "desc",
+    defaultOnEmptyString: true
+  },
+  {
+    text: "Newest",
+    sortBy: "mostrecent",
+    sortOrder: "asc",
+    default: true
+  },
+  {
+    text: "Oldest",
+    sortBy: "mostrecent",
+    sortOrder: "desc"
+  }
+];
+
+const resultsPerPageValues = [
+  {
+    text: "10",
+    value: 10
+  },
+  {
+    text: "20",
+    value: 20
+  },
+  {
+    text: "50",
+    value: 50
+  }
+];
+
+
+const searchApi = {
+  baseURL: "",
+  url: "/api/communities",
   timeout: 5000
-});
-
-
-const CommunityRequestList = hits => {
-
-  if (!hits.length) return <div>No results</div>;
-  return (
-    <div>
-      {hits.map(hit => {
-        return (
-          <div key={hit.metadata.id}>
-            <h3><a href={`/communities/${hit.metadata.id}`}>{hit.metadata.title}</a></h3>
-            <div dangerouslySetInnerHTML={{ __html: hit.metadata.description }} />
-            <span className="label label-primary">{hit.metadata.type}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
 };
 
-class CommunitySearch extends Component {
-  render() {
-    return (
-      <div className="container">
-        <a href="/communities/new" className="pull-right btn btn-success">
-          <i className="glyphicon-plus"></i> New community
-        </a>
-        <ReactSearchKit searchApi={searchApi}>
-          <div>
-            <SearchBar />
-            <ResultsList renderElement={CommunityRequestList} />
-          </div>
-        </ReactSearchKit>
-      </div>
-    );
-  }
+export const config = {
+  searchApi,
+  aggregations,
+  sortValues,
+  resultsPerPageValues
+};
+
+
+
+export function ResultsGridItemTemplate(record, index) {
+  return (
+    <Card fluid key={index} href={`/communities/${record.metadata.id}`}>
+      <Card.Content>
+        <Card.Header>{record.metadata.title}</Card.Header>
+        <Card.Description>
+          <div dangerouslySetInnerHTML={{ __html: record.metadata.description }} />
+        </Card.Description>
+      </Card.Content>
+    </Card>
+  );
 }
 
 
-// ReactDOM.render(<CommunitySearch />, document.getElementById("app"));
+export function ResultsItemTemplate(record, index) {
+  return (
+    <Item key={index} href={`/communities/${record.metadata.id}`}>
+      <Item.Content>
+        <Item.Header>{record.metadata.title}</Item.Header>
+        <Item.Description>
+          <div dangerouslySetInnerHTML={{ __html: record.metadata.description }} />
+        </Item.Description>
+      </Item.Content>
+    </Item>
+  )
+};
 
-export default CommunitySearch;
+ReactDOM.render(<SearchWrapper ResultsListItem={ResultsItemTemplate} ResultsGridItem={ResultsGridItemTemplate} searchConfig={config} />, document.getElementById("communities-search"));
