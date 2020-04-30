@@ -10,23 +10,17 @@
 
 from __future__ import absolute_import, print_function
 
-from functools import wraps
-
-from flask import Blueprint, abort, jsonify, render_template, request
+from flask_login import current_user, login_required
 from flask.views import MethodView
-from flask_menu import current_menu
-from flask_security import current_user
+from webargs import fields, validate
 from invenio_db import db
-from invenio_records_rest.errors import PIDResolveRESTError
-from invenio_rest.errors import FieldError, RESTValidationError
-from sqlalchemy.exc import SQLAlchemyError
-from webargs import ValidationError, fields, validate
-from webargs.flaskparser import FlaskParser as FlaskParserBase
+from flask import Blueprint, abort, jsonify, render_template, request
 
 from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
 from .api import CommunityMembersAPI, MembershipRequestAPI
 from .models import CommunityMember, MembershipRequest
+from invenio_communities.records.api import CommunityRecordsCollection
 
 
 def create_blueprint_from_app(app):
@@ -242,12 +236,12 @@ class MembershipRequestResource(MethodView):
 
     def get(self, membership_request_id):
         """Get the information for a membership request."""
-        request, community = MembershipRequestAPI.get_invitation(
+        member_request, community = MembershipRequestAPI.get_invitation(
             membership_request_id)
         response_object = {}
         response_object['community_name'] = community.json['title']
         response_object['community_id'] = community.json['id']
-        response_object['role'] = str(request.role.title)
+        response_object['role'] = str(member_request.role.title)
         return jsonify(response_object), 200
 
     @use_kwargs(post_args)
@@ -256,11 +250,14 @@ class MembershipRequestResource(MethodView):
         if not current_user.is_authenticated:
             abort(404)
         user_id = int(current_user.get_id())
-        request = MembershipRequest.query.get(membership_request_id)
-        if not request.is_invite:  # and current_user.email == request.email):
+        member_request = MembershipRequest.query.get(membership_request_id)
+        if not member_request.is_invite:
+            # and current_user.email == request.email):
             community_admins = [admin.user.id for admin in
-                                CommunityMember.get_admins(request.comm_id)]
-            if not (user_id in community_admins and not request.is_invite):
+                                CommunityMember.get_admins(
+                                    member_request.comm_id)]
+            if not (user_id in community_admins and not
+                    member_request.is_invite):
                 abort(404)
         if response == 'accept':
             MembershipRequestAPI.accept_invitation(
@@ -268,7 +265,8 @@ class MembershipRequestResource(MethodView):
             db.session.commit()
             return 'Succesfully accepted.', 200
         else:
-            MembershipRequestAPI.decline_or_cancel_invitation(request.id)
+            MembershipRequestAPI.decline_or_cancel_invitation(
+                member_request.id)
             db.session.commit()
             return 'Succesfully rejected.', 200
 
@@ -277,13 +275,13 @@ class MembershipRequestResource(MethodView):
         """Modify a membership request."""
         if not current_user.is_authenticated:
             abort(404)
-        request = MembershipRequest.query.get(membership_request_id)
+        member_request = MembershipRequest.query.get(membership_request_id)
         community_admins = [admin.user.id for admin in
-                            CommunityMember.get_admins(request.comm_id)]
+                            CommunityMember.get_admins(member_request.comm_id)]
         if not (int(current_user.get_id()) in community_admins and
-                request.is_invite):
+                member_request.is_invite):
             abort(404)
-        request.role = role
+        member_request.role = role
         db.session.commit()
         return 'Succesfully modified invitaion.', 200
 
@@ -292,13 +290,15 @@ class MembershipRequestResource(MethodView):
         if not current_user.is_authenticated:
             abort(404)
         user_id = int(current_user.get_id())
-        request = MembershipRequest.query.get(membership_request_id)
-        if not (current_user.email == request.email and not request.is_invite):
+        member_request = MembershipRequest.query.get(membership_request_id)
+        if not (current_user.email == member_request.email and not
+                member_request.is_invite):
             community_admins = [admin.user.id for admin in
-                                CommunityMember.get_admins(request.comm_id)]
-            if not (user_id in community_admins and request.is_invite):
+                                CommunityMember.get_admins(
+                                    member_request.comm_id)]
+            if not (user_id in community_admins and member_request.is_invite):
                 abort(404)
-        MembershipRequestAPI.decline_or_cancel_invitation(request.id)
+        MembershipRequestAPI.decline_or_cancel_invitation(member_request.id)
 
         db.session.commit()
         return 'Succesfully cancelled invitation.', 204
@@ -311,15 +311,24 @@ ui_blueprint = Blueprint(
 )
 
 
+@login_required
 @ui_blueprint.route(
     '/communities/<{}:pid_value>/members'.format(comid_url_converter))
 @pass_community
 def members(comid=None, community=None):
     """Members of a community."""
+    pending_records = \
+        len(CommunityRecordsCollection(community).filter({'status': 'P'}))
+
     return render_template(
-        'invenio_communities/members.html', community=community, comid=comid)
+        'invenio_communities/members.html',
+        community=community,
+        comid=comid,
+        pending_records=pending_records
+        )
 
 
+@login_required
 @ui_blueprint.route('/communities/members/requests/<membership_request_id>')
 def requests(membership_request_id):
     """Requests of communities."""
