@@ -20,6 +20,7 @@ from webargs import fields
 
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord
+from invenio_communities.records.api import CommunityRecordsCollection
 
 from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
@@ -43,8 +44,15 @@ ui_blueprint = Blueprint(
 @pass_community
 def curation(comid=None, community=None):
     """Create a new community."""
+    pending_records = \
+        len(CommunityRecordsCollection(community).filter({'status': 'P'}))
+
     return render_template(
-        'invenio_communities/curation.html', community=community, comid=comid)
+        'invenio_communities/curation.html',
+        community=community,
+        comid=comid,
+        pending_records=pending_records
+        )
 
 
 #

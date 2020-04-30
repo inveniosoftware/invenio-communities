@@ -13,7 +13,7 @@ from __future__ import absolute_import, print_function
 from invenio_communities.members.models import CommunityMember, \
     CommunityMetadata, MembershipRequest
 
-from ..utils import send_invitation_email
+from invenio_communities.utils import send_invitation_email
 
 
 class CommunityMembersAPI(object):
@@ -61,6 +61,20 @@ class CommunityMembersAPI(object):
             return member
         else:
             return None
+
+    # TODO: implement as contains in the future refactor
+    @classmethod
+    def has_member(cls, community, user):
+        # TODO: maybe int(user_id)
+        import ipdb; ipdb.set_trace()
+        return CommunityMember.query.filter_by(
+            comm_id=community.id, user_id=user.id).one_or_none()
+
+    @classmethod
+    def has_admin(cls, community, user):
+        # TODO: maybe int(user_id)
+        return CommunityMember.query.filter_by(
+            comm_id=community.id, user_id=user.id, role='A').one_or_none()
 
 
 class MembershipRequestAPI(object):

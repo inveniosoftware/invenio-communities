@@ -11,6 +11,8 @@ from __future__ import absolute_import, print_function
 
 from datetime import timedelta
 
+from functools import partial
+
 from flask import current_app, render_template, request
 from flask_babelex import gettext as _
 from flask_mail import Message
@@ -20,6 +22,8 @@ from invenio_records_rest.utils import LazyPIDValue, obj_or_import_string
 from six.moves.urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import cached_property
+
+from invenio_records.api import Record
 
 
 def format_url_template(url_template, absolute=True, **kwargs):
@@ -81,7 +85,8 @@ class LazyPIDConverter(BaseConverter):
     @cached_property
     def resolver(self):
         """PID resolver."""
-        record_cls = obj_or_import_string(self.record_class, default=Record)
+        record_cls = obj_or_import_string(
+            self.record_class, default=Record)
         getter = obj_or_import_string(
             self.getter,
             default=partial(record_cls.get_record, with_deleted=True))
