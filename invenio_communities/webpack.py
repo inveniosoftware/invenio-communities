@@ -29,7 +29,6 @@ communities = WebpackBundle(
         'invenio-communities-new': './js/invenio_communities/new.js',
         'invenio-communities-members': './js/invenio_communities/members.js',
         'invenio-communities-request': './js/invenio_communities/request.js',
-        'invenio-communities-curation': './js/invenio_communities/curation.js',
         'invenio-communities-records': './js/invenio_communities/records.js',
         'invenio-communities-search': './js/invenio_communities/search.js',
         'invenio-communities-records-search':
