@@ -19,7 +19,7 @@ export const SearchMain = () => {
   var api = new InvenioSearchApi(searchConfig.searchApi)
   return (
     <>
-      <ReactSearchKit searchApi={api}>
+      <ReactSearchKit searchApi={api} eventListenerEnabled={true}>
         <SearchBar />
         <Container>
           <Grid relaxed style={{ padding: "2em 0" }}>

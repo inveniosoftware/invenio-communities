@@ -14,13 +14,13 @@ import { SearchResults } from "./SearchResults";
 import { SearchFacets } from "./SearchFacets";
 import { SearchBar } from "./SearchBar";
 
-export const SearchMain = ( noBar=false ) => {
+export const SearchMain = () => {
   const { searchConfig } = useContext(SearchComponentsContext);
   var api = new InvenioSearchApi(searchConfig.searchApi)
   return (
     <>
-      <ReactSearchKit searchApi={api}>
-        {noBar ? null : <SearchBar />}
+      <ReactSearchKit searchApi={api} eventListenerEnabled={true}>
+        <SearchBar />
         <Container>
           <Grid relaxed style={{ padding: "2em 0" }}>
             <Grid.Row columns={2}>
@@ -43,7 +43,7 @@ export const SearchComponentsContext = React.createContext();
 
 export class SearchWrapper extends Component {
   render() {
-    const {ResultsListItem, ResultsGridItem, searchConfig, noBar} = this.props;
+    const { ResultsListItem, ResultsGridItem, searchConfig } = this.props;
     const contextValue = {
       ResultsListItem,
       ResultsGridItem,
@@ -51,7 +51,7 @@ export class SearchWrapper extends Component {
     }
     return (
       <SearchComponentsContext.Provider value={contextValue}>
-        <SearchMain noBar= { noBar }/>
+        <SearchMain />
       </SearchComponentsContext.Provider>
     );
   }
