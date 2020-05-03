@@ -6,31 +6,24 @@
 #}
 {% extends "invenio_communities/base.html" %}
 
-{%- block head_links %}
-    {{ super() }}
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600|Oswald|Source+Code+Pro:400&amp;display=swap" rel="stylesheet">
-{%- endblock head_links %}
-
-{%- block css %}
-{{ super() }}
-{{ webpack['vendor.css']}}
-{%-endblock %}
-
-{% block sidebar %}
-
-
-{%- endblock sidebar %}
-
 {%- block javascript %}
     {{ super() }}
-    {{ webpack['communities-search.js'] }}
+    {{ webpack['invenio-communities-search.js'] }}
 {%- endblock %}
-
 
 {%- block page_body %}
   <div class="container top-padding">
-    <h1 class="title">Communities</h1>
+    <div class="ui grid">
+    <div class="three wide column right floated">
+      <a href="/communities/new">
+      <button class="ui positive button">
+        <i class="fa fa-plus"></i>
+        New community
+      </button>
+    </a>
+
+    </div>
     <div id="communities-search"></div>
   </div>
+</div>
 {%- endblock page_body %}
-
