@@ -10,17 +10,18 @@
 
 from __future__ import absolute_import, print_function
 
-from flask_login import current_user, login_required
-from flask.views import MethodView
-from webargs import fields, validate
-from invenio_db import db
 from flask import Blueprint, abort, jsonify, render_template, request
+from flask.views import MethodView
+from flask_login import current_user, login_required
+from invenio_db import db
+from webargs import fields, validate
+
+from invenio_communities.records.api import CommunityRecordsCollection
 
 from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
 from .api import CommunityMembersAPI, MembershipRequestAPI
 from .models import CommunityMember, MembershipRequest
-from invenio_communities.records.api import CommunityRecordsCollection
 
 
 def create_blueprint_from_app(app):

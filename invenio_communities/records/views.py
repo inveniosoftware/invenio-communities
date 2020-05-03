@@ -19,14 +19,12 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs import fields
 
 from invenio_communities.records.api import CommunityInclusionRequest, \
-    CommunityRecord
-from invenio_communities.records.api import CommunityRecordsCollection
+    CommunityRecord, CommunityRecordsCollection, Record, \
+    RecordCommunitiesCollection
 
 from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
 from .errors import CommunityRecordAlreadyExists
-
-_ACTIONS = ['accept', 'reject', 'comment']
 
 #
 # UI views
@@ -52,7 +50,7 @@ def curation(comid=None, community=None):
         community=community,
         comid=comid,
         pending_records=pending_records
-        )
+    )
 
 
 #
@@ -280,6 +278,7 @@ api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
     '/requests/inclusion/<uuid:request_id>'
     '/<any({actions}):action>'.format(
-        pid=comid_url_converter, actions=','.join(_ACTIONS)),
+        pid=comid_url_converter,
+        actions=','.join(['accept', 'reject', 'comment'])),
     view_func=ItemActionsResource.as_view('requests_item_actions'),
 )

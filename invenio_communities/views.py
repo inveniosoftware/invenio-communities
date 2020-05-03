@@ -20,8 +20,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs import ValidationError
 from webargs.flaskparser import FlaskParser as FlaskParserBase
 
-from .utils import comid_url_converter
 from invenio_communities.records.api import CommunityRecordsCollection
+
+from .utils import comid_url_converter
 
 
 class FlaskParser(FlaskParserBase):
