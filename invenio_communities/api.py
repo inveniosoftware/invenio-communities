@@ -85,6 +85,12 @@ class CommunityBase(Record, PIDRecordMixin):
             CommunityMembersAPI.set_default_admin(community.model)
         return community
 
+    def clear(self):
+        """Clear but preserve the schema field."""
+        schema = self['$schema']
+        super(CommunityBase, self).clear()
+        self['$schema'] = schema
+
     def delete(self, force=False):
         """Delete a community."""
         with db.session.begin_nested():
