@@ -53,6 +53,14 @@ class InvenioCommunities(object):
                 'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
         )
 
+        @app.context_processor
+        def record_context_processors():
+            """Jinja context processors for communities record integration."""
+            def record_communities(record):
+                from invenio_communities.records.api import RecordCommunitiesCollection, Record
+                return RecordCommunitiesCollection(Record(record, model=record.model))
+            return dict(record_communities=record_communities)
+
 
     def init_config(self, app):
         """Initialize configuration.
