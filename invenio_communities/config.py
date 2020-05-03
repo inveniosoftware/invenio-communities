@@ -14,6 +14,7 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all
 
 from .utils import comid_url_converter
+from .permissions import allow_community_owner, allow_logged_in
 
 #: Records REST API endpoints.
 COMMUNITIES_REST_ENDPOINTS = dict(
@@ -39,10 +40,10 @@ COMMUNITIES_REST_ENDPOINTS = dict(
         indexer_class='invenio_communities.indexer:CommunityIndexer',
         default_media_type='application/json',
         read_permission_factory_imp=allow_all,
-        create_permission_factory_imp=allow_all,
+        create_permission_factory_imp=allow_logged_in,
         list_permission_factory_imp=allow_all,
-        update_permission_factory_imp=allow_all,
-        delete_permission_factory_imp=allow_all
+        update_permission_factory_imp=allow_community_owner,
+        delete_permission_factory_imp=allow_community_owner,
     ),
 )
 
