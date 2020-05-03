@@ -11,14 +11,8 @@
 
 {%- block javascript %}
 {{ super() }}
-{{ webpack['communities-new.js'] }}
+{{ webpack['invenio-communities-new.js'] }}
 {%- endblock javascript %}
-
-
-{%- block css %}
-{{ super() }}
-{{ webpack['vendor.css'] }}
-{%- endblock css %}
 
 {%- block page_body %}
   <div id="app" class="ui bottom attached active tab segment"></div>

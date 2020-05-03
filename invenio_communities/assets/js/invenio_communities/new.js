@@ -11,9 +11,9 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
-import { TextInput, SelectInput, RichInput, StringArrayInput, ObjectArrayInput } from "./forms";
+import { RichInput } from "./forms";
 import { DeleteActionButton, ArrayField, SelectField, StringField } from './fields'
-import { Icon } from "semantic-ui-react";
+import { Icon, Grid, Container } from "semantic-ui-react";
 
 const domContainer = document.querySelector("#is_new_community");
 const __IS_NEW = JSON.parse(domContainer.dataset.config);
@@ -77,12 +77,6 @@ const renderDomain = ({ arrayPath, indexPath, ...arrayHelpers }) => {
 };
 
 
-
-
-
-
-
-
 const COMMUNITY_TYPES = [
   { value: "organization", text: "Institution/Organization" },
   { value: "event", text: "Event" },
@@ -112,7 +106,6 @@ const CommunityCreateForm = () => {
   const [community, setCommunity] = useState({});
 
   useEffect(() =>{
-    console.log('12312')
     if (!__IS_NEW){
     var community_id = window.location.pathname.split('/')[2];
     fetch("/api/communities/" + community_id)
@@ -132,7 +125,7 @@ const CommunityCreateForm = () => {
       }, [])
   if (Object.keys(community).length === 0 && !__IS_NEW){
     return (
-      <div class="ui bottom attached loading tab">
+      <div className="ui bottom attached loading tab">
         <p></p>
         <p></p>
       </div>
@@ -142,7 +135,7 @@ const CommunityCreateForm = () => {
     return (
       <div className="container">
         {__IS_NEW ? (
-        <h2>Create a community</h2>) : <h2 class="underline">Community Profile</h2>}
+        <h2>Create a community</h2>) : <h2 className="underline">Community Profile</h2>}
         <Formik
           initialValues={{
             id: community.id || "",
@@ -150,7 +143,7 @@ const CommunityCreateForm = () => {
             title: community.title || "",
             curation_policy: community.curation_policy || "",
             page: community.page || "",
-            type: community.event || "event",
+            type: community.event || "organization",
             website: community.website || "",
             visibility: community.visibility || "public",
             member_policy: community.member_policy || "open",
@@ -240,7 +233,9 @@ const CommunityCreateForm = () => {
         >
           {({ values, isSubmitting, isValid }) => (
             <Form>
-              <div class="col-md-5">
+            <Container>
+              <Grid>
+                <Grid.Column width={10}>
               {__IS_NEW ? (
               <StringField required label="ID" fieldPath="id" />
               ): null}
@@ -259,45 +254,45 @@ const CommunityCreateForm = () => {
                 label="Website"
                 fieldPath="website"
               />
-              <SelectField
+              {/* <SelectField
                 required
                 search
                 label="Visibility"
                 fieldPath="visibility"
                 options={VISIBILITY_TYPES}
-              />
-              <SelectField
+              /> */}
+              {/* <SelectField
                 required
                 search
                 label="Record policy"
                 fieldPath="record_policy"
                 options={RECORD_POLICY_TYPES}
-              />
-              <SelectField
+              /> */}
+              {/* <SelectField
                 required
                 search
                 label="Member policy"
                 fieldPath="member_policy"
                 options={MEMBER_POLICY_TYPES}
-              />
+              /> */}
               <ArrayField
                 fieldPath="domain"
                 defaultNewValue=""
                 renderArrayItem={renderDomain}
                 addButtonLabel="Add domain"
               />
-              <ArrayField
+              {/* <ArrayField
                 fieldPath="alternate_identifiers"
                 defaultNewValue={{ scheme: '', identifier: '' }}
                 renderArrayItem={renderIdentifiers}
                 addButtonLabel="Add alternate identifer"
-              />
-              <ArrayField
+              /> */}
+              {/* <ArrayField
                 fieldPath="funding"
                 defaultNewValue=""
                 renderArrayItem={renderFunding}
                 addButtonLabel="Add funding"
-              />
+              /> */}
               <button
                 disabled={!isValid || isSubmitting}
                 className="btn btn-success"
@@ -308,13 +303,16 @@ const CommunityCreateForm = () => {
               {globalError ? (
                 <div className="help-block">{globalError}</div>
               ) : null}
-              </div>
-              <div class="col-md-2 community-logo-form">
-                <p>Profile picture:</p>
-                <Icon name="users massive"></Icon>
+                </Grid.Column>
+                <Grid.Column width={6}>
+              <div className="community-logo-form">
+                <Icon name="users" size="massive"></Icon>
                 <br></br>
-                <button class="ui positive button small">Upload new image</button>
+                <button className="ui positive button small">Upload new image</button>
               </div>
+                </Grid.Column>
+              </Grid>
+            </Container>
             </Form>
           )}
         </Formik>
