@@ -10,9 +10,7 @@
 {%- set search = "/communities/" + comid.pid_value|string -%}
 {%- set members = "/communities/" + comid.pid_value|string +"/members" -%}
 {%- set settings = "/communities/" + comid.pid_value|string + "/settings" -%}
-{%- set statistics = "/communities/" + comid.pid_value|string + "/statistics" -%}
 {%- set curate = "/communities/" + comid.pid_value|string + "/curate" -%}
-
 
 {% block sidebar %}
 <div class="community-container">
@@ -22,28 +20,39 @@
     </div>
     <div class="col-md-5">
       <h1>{{ community.title }}</h1>
-      <p>{{ community.website|safe }}</p>
+      {% if community.website %}
+      <p></p><a href="{{community.website}}">{{ community.website }}</a></p>
+      {% endif %}
+      <p>{{ community.description | safe }}</p>
       {% for domain in community.domain %}
       <a href="" class="links-underline">{{ domain }}</a>
       {% endfor %}
     </div>
-    <div class="col-md-1 ">
-      <h3 class="bold">1k</h3>
-      <p>Views</p>
+    <div class="ui tiny statistic">
+      <div class="value">
+        5,550
+      </div>
+      <div class="label">
+        Views
+      </div>
     </div>
-    <div class="col-md-2 ">
-      <h3 class="bold">1k</h3>
-      <p>Downloads</p>
+    <div class="ui tiny statistic">
+      <div class="value">
+        4,200
+      </div>
+      <div class="label">
+        Downloads
+      </div>
     </div>
-    <div class="col-md-2 ">
-      <button class="ui positive button">New upload</button>
-    </div>
-    <div class="ui top attached tabular menu">
-      <a class="item" href="{{ search }}">Search</a>
-      <a class="item" href="{{ curate }}">Curate ({{ pending_records }})</a>
-      <a class="center item" href="{{ members }}">Members</a>
-      <a class="item" href="{{ settings }}">Settings</a>
-      <a class="item" href="{{ statistics }}">Statistics</a>
+    <a href="/coming-soon" class="ui positive button">
+      <i class="plus icon"></i>
+      New upload</a>
+    <div class="ui top secondary pointing menu">
+      <a class="item {{ 'active' if 'community_page' in request.endpoint else '' }}" href="{{ search }}">Search</a>
+      <a class="item {{ 'active' if 'curation' in request.endpoint else '' }}" href="{{ curate }}">Curate ({{ pending_records }})</a>
+      <a class="item disabled" href="{{ members }}">Members</a>
+      <a class="item {{ 'active' if 'settings' in request.endpoint else '' }}" href="{{ settings }}">Settings</a>
+      <a class="item disabled" href="/coming-soon">Statistics</a>
     </div>
   </div>
 </div>
