@@ -325,7 +325,7 @@ class CommunityRecordsCollection(CommunityRecordsCollectionBase):
 
 class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
 
-    def __init__(self, record, query=None):
+    def __init__(self, record, _query=None):
         self.record = record
         # TODO: Make lazier (e.g. via property)
         self._query = _query or CommunityRecordModel.query.filter_by(
@@ -353,10 +353,13 @@ class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
         for community_record in self:
             status = community_record.status.name.lower()
             res[status].append({
-                'id': community_record.community.pid.pid_value,
+                'id': community_record.community.pid.object_uuid,
+                'comid': community_record.community.pid.pid_value,
                 'title': community_record.community['title'],
-                'logo': '/static/images/cern.png',
+                # TODO: Add when implemented
+                # 'logo': None,
                 'request_id': str(community_record.request.id),
+                'created_by': community_record.request['created_by'],
             })
         return res
 

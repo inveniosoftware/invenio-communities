@@ -13,8 +13,8 @@ from __future__ import absolute_import, print_function
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all
 
-from .utils import comid_url_converter
 from .permissions import allow_community_owner, allow_logged_in
+from .utils import comid_url_converter
 
 #: Records REST API endpoints.
 COMMUNITIES_REST_ENDPOINTS = dict(
@@ -58,8 +58,8 @@ COMMUNITIES_REST_FACETS = dict(
             )
         ),
         post_filters=dict(
-            access_right=terms_filter('access_right'),
-            file_type=terms_filter('filetype'),
+            type=terms_filter('type'),
+            domain=terms_filter('domain'),
         )
     )
 )
@@ -67,3 +67,5 @@ COMMUNITIES_REST_FACETS = dict(
 COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
 SUPPORT_EMAIL = 'test@email.org'
+
+COMMUNITIES_RECORD_INDEX = 'records-record-v1.0.0'

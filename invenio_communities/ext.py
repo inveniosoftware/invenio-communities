@@ -46,8 +46,13 @@ class InvenioCommunities(object):
         app.url_map.converters['lazy_pid'] = LazyPIDConverter
 
         # TODO: Make configurable or move into separate extension in ".records"
-        from invenio_communities.records.indexer import indexer_receiver
-        before_record_index.connect(indexer_receiver, sender=app)
+        from invenio_communities.records.indexer import record_indexer_receiver
+        before_record_index.dynamic_connect(
+            record_indexer_receiver, sender=app, weak=False,
+            index=app.config.get(
+                'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
+        )
+
 
     def init_config(self, app):
         """Initialize configuration.

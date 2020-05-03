@@ -9,12 +9,51 @@
 
 """Community records indexing receivers."""
 
-from invenio_communities.records.api import RecordCommunitiesCollection
+from invenio_communities.records.api import Record, RecordCommunitiesCollection
 
 
-def indexer_receiver(sender, json=None, record=None, index=None, **kwargs):
-    """Add community information."""
-    if not index.startswith('records-') or record.get('$schema') is None:
-        return
+def record_indexer_receiver(sender, json=None, record=None, **kwargs):
+    """Add communities information to record.
 
-    json['communities'] = RecordCommunitiesCollection(record).as_dict()
+    To integrate this indexer you need to add to your record's ES mapping the
+    following ``_communities`` property:
+
+    ..code-block:: json
+
+    {
+        "_communities": {
+            "type": "object",
+            "properties": {
+                "accepted": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "keyword",
+                        },
+                        "comid": {
+                            "type": "keyword",
+                        }
+                        "title": {
+                            "type": "text",
+                        },
+                        "request_id": {
+                            "type": "keyword",
+                        }
+                        "created_by": {
+                            "type": "integer",
+                        }
+                    }
+                },
+                "pending": {
+                    <same structure as accepted>
+                },
+                "rejected": {
+                    <same structure as accepted>
+                }
+            }
+        }
+    }
+    """
+    # TODO: Remove when the PID mixin is in the base record class
+    _record = Record(record, model=record.model)
+    json['_communities'] = RecordCommunitiesCollection(_record).as_dict()
