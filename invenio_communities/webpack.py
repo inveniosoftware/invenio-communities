@@ -33,6 +33,8 @@ communities = WebpackBundle(
         'invenio-communities-search': './js/invenio_communities/search.js',
         'invenio-communities-records-search':
             './js/invenio_communities/records_search.js',
+        'invenio-communities-records-curate':
+            './js/invenio_communities/curate.js',
     },
     dependencies={
         'semantic-ui-css': '^2.4.1',

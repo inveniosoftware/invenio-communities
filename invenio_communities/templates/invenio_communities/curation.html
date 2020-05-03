@@ -9,22 +9,16 @@
 
 {% extends "invenio_communities/base.html" %}
 
-{%- block css %}
-{{ super() }}
-{{ webpack['vendor.css'] }}
-{%- endblock css %}
-
-
 {%- block javascript %}
   {{ super() }}
-  {{ webpack['communities-curation.js'] }}
+  {{ webpack['invenio-communities-records-curate.js'] }}
 {%- endblock javascript %}
 
 
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
 <div class="container top-padding">
-  <div id="community-id" data-comid="{{ community.id }}""></div>
+  <div id="community-id" data-community-id="{{ community.id }}"></div>
   <div id="communities-records-curate"></div>
 </div>
 

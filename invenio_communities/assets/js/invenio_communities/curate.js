@@ -1,57 +1,100 @@
-import { SearchWrapper } from "./search_curate/SearchMain"
+import { SearchWrapper } from "./search_curate/SearchMain";
 import ReactDOM from "react-dom";
-import React from "react";
-import { Card, Item } from 'semantic-ui-react';
-import _truncate from 'lodash/truncate';
+import React, { useState } from "react";
+import { Card, Item, Button, Icon } from "semantic-ui-react";
+import _truncate from "lodash/truncate";
+import axios from "axios";
 
-//TODO map the request_id
+// TODO (react-searchkit): ResultsItemTemplate should be used as a component
+// and not just called as a function. Because of that we cannot use hooks. See
+// more in https://github.com/inveniosoftware/react-searchkit/issues/113.
 
-export function ResultsItemTemplate(record, index) {
+const ResultItem = ({ record }) => {
+  const request = record.metadata._communities.pending.find(({ id }) => id === COMMUNITY_ID);
+  const [status, setStatus] = useState('pending');
+
+  function handleRequest(action) {
+    axios
+      .post(
+        `/api/communities/${request.comid}/requests/inclusion/${request.request_id}/${action}`
+      )
+      .then((response) => {
+        setStatus(action)
+        console.log(response);
+      });
+  }
+
   return (
-    <Item key={index} href={`/records/${record.id}`}>
+    <Item>
       <Item.Content>
-        <Item.Header>{record.metadata.titles[0].title}</Item.Header>
+        <Item.Header href={`/records/${record.id}`}>{record.metadata.titles[0].title}</Item.Header>
         <Item.Description>
-          <Button class="ui positive button" onClick={() => HandleRequest(request_id, 'accept')}> Accept</Button>
-          <Button class="ui button disabled" data-content="Coming soon." onClick={() => HandleRequest(request_id, 'comment')}> Accept</Button>
-          <Button class="ui button" onClick={() => HandleRequest(request_id, 'reject')}> Accept</Button>
+          <Button
+            size="tiny"
+            positive
+            disabled={status !== 'pending'}
+            onClick={() => handleRequest("accept")}
+          >
+            <Icon name="check"/> Accept
+          </Button>
+          <Button
+            size="tiny"
+            negative
+            disabled={status !== 'pending'}
+            onClick={() => handleRequest("reject")}
+          >
+            <Icon name="delete" inverted/> Reject
+          </Button>
+          <Button
+            size="tiny"
+            disabled
+            // onClick={() => handleRequest("comment")}
+          >
+            <Icon name="comment"/> Comment
+          </Button>
         </Item.Description>
+        <Item.Extra>
+          { status === 'pending' ? null : <span>Record was successfully {status}ed</span>}
+        </Item.Extra>
       </Item.Content>
     </Item>
-  )
-};
+  );
+}
 
+const ResultsItemTemplate = (record, index) => (
+  <ResultItem key={index} record={record} index={index} />
+);
 
-
-export function ResultsGridItemTemplate(record, index) {
+function ResultsGridItemTemplate(record, index) {
   return (
     <Card fluid key={index} href={`/records/${record.id}`}>
       <Card.Content>
         <Card.Header>{record.metadata.titles[0].title}</Card.Header>
         <Card.Description>
-          {_truncate(record.metadata.descriptions[0].description, { length: 200 })}
+          {_truncate(record.metadata.descriptions[0].description, {
+            length: 200,
+          })}
         </Card.Description>
       </Card.Content>
     </Card>
   );
 }
 
-
 const aggregations = [
   {
-    title: "Types",
+    title: "Access Right",
     agg: {
-      field: "type",
-      aggName: "type"
-    }
+      field: "access_right",
+      aggName: "access_right",
+    },
   },
   {
-    title: "Domains",
+    title: "Resource types",
     agg: {
-      field: "domain",
-      aggName: "domain"
-    }
-  }
+      field: "resource_type",
+      aggName: "resource_type",
+    },
+  },
 ];
 
 const sortValues = [
@@ -59,60 +102,60 @@ const sortValues = [
     text: "Best match",
     sortBy: "bestmatch",
     sortOrder: "desc",
-    defaultOnEmptyString: true
+    defaultOnEmptyString: true,
   },
   {
     text: "Newest",
     sortBy: "mostrecent",
     sortOrder: "asc",
-    default: true
+    default: true,
   },
   {
     text: "Oldest",
     sortBy: "mostrecent",
-    sortOrder: "desc"
-  }
+    sortOrder: "desc",
+  },
 ];
 
 const resultsPerPageValues = [
   {
     text: "10",
-    value: 10
+    value: 10,
   },
   {
     text: "20",
-    value: 20
+    value: 20,
   },
   {
     text: "50",
-    value: 50
-  }
+    value: 50,
+  },
 ];
-
-//TODO change the Query
-const searchApi = {
-  baseURL: "",
-  url: `/api/records?q=_communities.pending.community_pid:${COMMUNITY_ID}`,
-  timeout: 5000
-};
-
-
-
-export const config = {
-  searchApi,
-  aggregations,
-  sortValues,
-  resultsPerPageValues
-};
 
 
 const domContainer = document.getElementById("community-id");
-const COMMUNITY_ID = domContainer.dataset.comid
-console.log(COMMUNITY_ID)
+const COMMUNITY_ID = domContainer.dataset.communityId;
+
+const searchApi = {
+  axios: {
+    baseURL: "",
+    url: `/api/records?q=_communities.pending.id:"${COMMUNITY_ID}"`,
+    timeout: 5000,
+  },
+};
+
+const searchConfig = {
+  searchApi,
+  aggregations,
+  sortValues,
+  resultsPerPageValues,
+};
 
 ReactDOM.render(
-<SearchWrapper
-ResultsListItem={ResultsItemTemplate}
-ResultsGridItem={ResultsGridItemTemplate}
-searchConfig={config}
-/>, document.getElementById("communities-records-curate"));
+  <SearchWrapper
+    ResultsListItem={ResultsItemTemplate}
+    ResultsGridItem={ResultsGridItemTemplate}
+    searchConfig={searchConfig}
+  />,
+  document.getElementById("communities-records-curate")
+);
