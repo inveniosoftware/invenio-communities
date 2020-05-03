@@ -11,16 +11,13 @@
 
 {%- block javascript %}
     {{ super() }}
-    {{ webpack['communities-records-search.js'] }}
+    {{ webpack['invenio-communities-records-search.js'] }}
 {%- endblock %}
 
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
 <div class="container top-padding">
-  <div id="community-id" data-comid="{{ community.id }}""></div>
-  <div id="communities-records-search"></div>
+  <div id="communities-records-search" data-community-id="{{ community.id }}"></div>
 </div>
 
 {%- endblock page_body %}
-
-
