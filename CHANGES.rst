@@ -9,7 +9,7 @@
 Changes
 =======
 
-Version 2.0.0 (released TBD)
-----------------------------
+Version 2.0.0 (released 2020-04-05)
+-----------------------------------
 
 - Initial public release.
