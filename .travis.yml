@@ -65,7 +65,7 @@ deploy:
   user: lnielsen
   password:
     secure: cVsHHJbm75kcIyDXdFYMbBmBSIY53iZCqCLN/rO38/W9+TkEYdencLn0UFAEt/fmtC6GZKDvL8PzJug3QS3bxu1zzW+q4o3Mbk/ldeYBnpyEvFcJN9ZcjaaODcZc0d8I2vkEUrvGmey8Fru5hhGp2MHuPgMz0YAgeTGckGlpyg4=
-  distributions: "compile_catalog sdist bdist_wheel"
+  distributions: "sdist bdist_wheel"
   skip_existing: true
   on:
     tags: true
