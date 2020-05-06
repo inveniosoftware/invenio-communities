@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 2.0.1 (released 2020-04-06)
+-----------------------------------
+
+- Added ElasticSearch v6 mappings.
+
 Version 2.0.0 (released 2020-04-05)
 -----------------------------------
 
