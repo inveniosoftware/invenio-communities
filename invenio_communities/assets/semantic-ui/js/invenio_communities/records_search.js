@@ -35,71 +35,60 @@ export function ResultsGridItemTemplate({result, index}) {
   );
 }
 
-const aggs = [
-  {
-    title: "Access Right",
-    field: "access_right",
-    aggName: "access_right",
-  },
-  {
-    title: "Resource types",
-    field: "resource_type",
-    aggName: "resource_type",
-  },
-];
-
-const sort_options = [
-  {
-    text: "Best match",
-    sortBy: "bestmatch",
-    sortOrder: "desc",
-    defaultOnEmptyString: true,
-  },
-  {
-    text: "Newest",
-    sortBy: "mostrecent",
-    sortOrder: "asc",
-    default: true,
-  },
-  {
-    text: "Oldest",
-    sortBy: "mostrecent",
-    sortOrder: "desc",
-  },
-];
-
-const resultsPerPageValues = [
-  {
-    text: "10",
-    value: 10,
-  },
-  {
-    text: "20",
-    value: 20,
-  },
-  {
-    text: "50",
-    value: 50,
-  },
-];
-
+overrideStore.add("ResultsList.item", ResultsItemTemplate);
+overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
 
 const domContainer = document.getElementById("communities-records-search");
 const COMMUNITY_ID = domContainer.dataset.communityId;
-
-const api = `/api/records?q=_communities.accepted.id:"${COMMUNITY_ID}"`;
-const mimetype= 'application/json';
-
 const searchConfig = {
-  api,
-  aggs,
-  sort_options,
-  resultsPerPageValues,
-  mimetype
+  api: `/api/records?q=_communities.accepted.id:"${COMMUNITY_ID}"`,
+  mimetype: 'application/json',
+  aggs: [
+    {
+      title: "Access Right",
+      field: "access_right",
+      aggName: "access_right",
+    },
+    {
+      title: "Resource types",
+      field: "resource_type",
+      aggName: "resource_type",
+    },
+  ],
+  sort_options:[
+    {
+      text: "Best match",
+      sortBy: "bestmatch",
+      sortOrder: "desc",
+      defaultOnEmptyString: true,
+    },
+    {
+      text: "Newest",
+      sortBy: "mostrecent",
+      sortOrder: "asc",
+      default: true,
+    },
+    {
+      text: "Oldest",
+      sortBy: "mostrecent",
+      sortOrder: "desc",
+    },
+  ],
+  resultsPerPageValues: [
+    {
+      text: "10",
+      value: 10,
+    },
+    {
+      text: "20",
+      value: 20,
+    },
+    {
+      text: "50",
+      value: 50,
+    },
+  ],
 };
-
-overrideStore.add("ResultsList.item", ResultsItemTemplate);
-overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
 
 ReactDOM.render(
   <SearchApp config={searchConfig} appName={"communities-records-search"}/>,
