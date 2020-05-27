@@ -1,9 +1,10 @@
-import { SearchWrapper } from "./search_curate/SearchMain";
 import ReactDOM from "react-dom";
 import React, { useState } from "react";
 import { Card, Item, Button, Icon } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import axios from "axios";
+import { SearchApp } from "../invenio_search_ui/SearchApp";
+import { overrideStore } from "react-overridable";
 
 // TODO (react-searchkit): ResultsItemTemplate should be used as a component
 // and not just called as a function. Because of that we cannot use hooks. See
@@ -61,17 +62,18 @@ const ResultItem = ({ record }) => {
   );
 }
 
-const ResultsItemTemplate = (record, index) => (
-  <ResultItem key={index} record={record} index={index} />
-);
+function ResultsItemTemplate ({result, index}) {
+  return(<ResultItem key={index} record={result} index={index} />);
+}
 
-function ResultsGridItemTemplate(record, index) {
+
+function ResultsGridItemTemplate({result, index}) {
   return (
-    <Card fluid key={index} href={`/records/${record.id}`}>
+    <Card fluid key={index} href={`/records/${result.id}`}>
       <Card.Content>
-        <Card.Header>{record.metadata.titles[0].title}</Card.Header>
+        <Card.Header>{result.metadata.titles[0].title}</Card.Header>
         <Card.Description>
-          {_truncate(record.metadata.descriptions[0].description, {
+          {_truncate(result.metadata.descriptions[0].description, {
             length: 200,
           })}
         </Card.Description>
@@ -80,24 +82,20 @@ function ResultsGridItemTemplate(record, index) {
   );
 }
 
-const aggregations = [
+const aggs = [
   {
     title: "Access Right",
-    agg: {
-      field: "access_right",
-      aggName: "access_right",
-    },
+    field: "access_right",
+    aggName: "access_right"
   },
   {
     title: "Resource types",
-    agg: {
-      field: "resource_type",
-      aggName: "resource_type",
-    },
+    field: "resource_type",
+    aggName: "resource_type",
   },
 ];
 
-const sortValues = [
+const sort_options = [
   {
     text: "Best match",
     sortBy: "bestmatch",
@@ -136,26 +134,21 @@ const resultsPerPageValues = [
 const domContainer = document.getElementById("community-id");
 const COMMUNITY_ID = domContainer.dataset.communityId;
 
-const searchApi = {
-  axios: {
-    baseURL: "",
-    url: `/api/records?q=_communities.pending.id:"${COMMUNITY_ID}"`,
-    timeout: 5000,
-  },
-};
+const api = `/api/records?q=_communities.pending.id:"${COMMUNITY_ID}"`
+const mimetype= 'application/json'
 
 const searchConfig = {
-  searchApi,
-  aggregations,
-  sortValues,
+  api,
+  aggs,
+  sort_options,
   resultsPerPageValues,
+  mimetype
 };
 
+overrideStore.add("ResultsList.item", ResultsItemTemplate);
+overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
+
 ReactDOM.render(
-  <SearchWrapper
-    ResultsListItem={ResultsItemTemplate}
-    ResultsGridItem={ResultsGridItemTemplate}
-    searchConfig={searchConfig}
-  />,
+  <SearchApp config={searchConfig} appName={"communities-records-curate"}/>,
   document.getElementById("communities-records-curate")
 );

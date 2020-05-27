@@ -1,27 +1,24 @@
-import { SearchWrapper } from "./search/SearchMain";
 import ReactDOM from "react-dom";
 import React from "react";
 import { Item, Card } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
+import { SearchApp } from "../invenio_search_ui/SearchApp";
+import { overrideStore } from "react-overridable";
 
-const aggregations = [
+const aggs = [
   {
     title: "Types",
-    agg: {
-      field: "type",
-      aggName: "type",
-    },
+    field: "type",
+    aggName: "type"
   },
   {
     title: "Domains",
-    agg: {
-      field: "domain",
-      aggName: "domain",
-    },
+    field: "domain",
+    aggName: "domain"
   },
 ];
 
-const sortValues = [
+const sort_options = [
   {
     text: "Best match",
     sortBy: "bestmatch",
@@ -56,14 +53,14 @@ const resultsPerPageValues = [
   },
 ];
 
-function ResultsGridItemTemplate(record, index) {
+function ResultsGridItemTemplate({result, index}) {
   return (
-    <Card fluid key={index} href={`/communities/${record.metadata.id}`}>
+    <Card fluid key={index} href={`/communities/${result.metadata.id}`}>
       <Card.Content>
-        <Card.Header>{record.metadata.title}</Card.Header>
+        <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
           <div
-            dangerouslySetInnerHTML={{ __html: record.metadata.description }}
+            dangerouslySetInnerHTML={{ __html: result.metadata.description }}
           />
         </Card.Description>
       </Card.Content>
@@ -71,14 +68,14 @@ function ResultsGridItemTemplate(record, index) {
   );
 }
 
-function ResultsItemTemplate(record, index) {
+function ResultsItemTemplate({result, index}) {
   return (
-    <Item key={index} href={`/communities/${record.metadata.id}`}>
+    <Item key={index} href={`/communities/${result.metadata.id}`}>
       <Item.Content>
-        <Item.Header>{record.metadata.title}</Item.Header>
+        <Item.Header>{result.metadata.title}</Item.Header>
         <Item.Description>
           <div
-            dangerouslySetInnerHTML={{ __html: record.metadata.description }}
+            dangerouslySetInnerHTML={{ __html: result.metadata.description }}
           />
         </Item.Description>
       </Item.Content>
@@ -86,26 +83,24 @@ function ResultsItemTemplate(record, index) {
   );
 }
 
-const searchApi = {
-  axios: {
-    baseURL: "",
-    url: "/api/communities",
-    timeout: 5000,
-  },
-};
+const api = '/api/communities';
+const mimetype= 'application/json';
+
 
 const searchConfig = {
-  searchApi,
-  aggregations,
-  sortValues,
+  api,
+  aggs,
+  sort_options,
   resultsPerPageValues,
+  mimetype
 };
 
+
+overrideStore.add("ResultsList.item", ResultsItemTemplate);
+overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
+
+
 ReactDOM.render(
-  <SearchWrapper
-    ResultsListItem={ResultsItemTemplate}
-    ResultsGridItem={ResultsGridItemTemplate}
-    searchConfig={searchConfig}
-  />,
+  <SearchApp config={searchConfig} appName={"communities-search"}/>,
   document.getElementById("communities-search")
 );

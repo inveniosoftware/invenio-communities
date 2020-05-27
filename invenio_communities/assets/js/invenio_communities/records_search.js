@@ -1,17 +1,17 @@
-import { SearchWrapper } from "./search_records/SearchMain";
 import ReactDOM from "react-dom";
 import React from "react";
 import { Card, Item, Button } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
-import axios from "axios";
+import { SearchApp } from "../invenio_search_ui/SearchApp";
+import { overrideStore } from "react-overridable";
 
-export function ResultsItemTemplate(record, index) {
+export function ResultsItemTemplate({result, index}) {
   return (
-    <Item key={index} href={`/records/${record.id}`}>
+    <Item key={index} href={`/records/${result.id}`}>
       <Item.Content>
-        <Item.Header>{record.metadata.titles[0].title}</Item.Header>
+        <Item.Header>{result.metadata.titles[0].title}</Item.Header>
         <Item.Description>
-          {_truncate(record.metadata.descriptions[0].description, {
+          {_truncate(result.metadata.descriptions[0].description, {
             length: 200,
           })}
         </Item.Description>
@@ -20,13 +20,13 @@ export function ResultsItemTemplate(record, index) {
   );
 }
 
-export function ResultsGridItemTemplate(record, index) {
+export function ResultsGridItemTemplate({result, index}) {
   return (
-    <Card fluid key={index} href={`/records/${record.id}`}>
+    <Card fluid key={index} href={`/records/${result.id}`}>
       <Card.Content>
-        <Card.Header>{record.metadata.titles[0].title}</Card.Header>
+        <Card.Header>{result.metadata.titles[0].title}</Card.Header>
         <Card.Description>
-          {_truncate(record.metadata.descriptions[0].description, {
+          {_truncate(result.metadata.descriptions[0].description, {
             length: 200,
           })}
         </Card.Description>
@@ -35,24 +35,20 @@ export function ResultsGridItemTemplate(record, index) {
   );
 }
 
-const aggregations = [
+const aggs = [
   {
     title: "Access Right",
-    agg: {
-      field: "access_right",
-      aggName: "access_right",
-    },
+    field: "access_right",
+    aggName: "access_right",
   },
   {
     title: "Resource types",
-    agg: {
-      field: "resource_type",
-      aggName: "resource_type",
-    },
+    field: "resource_type",
+    aggName: "resource_type",
   },
 ];
 
-const sortValues = [
+const sort_options = [
   {
     text: "Best match",
     sortBy: "bestmatch",
@@ -91,27 +87,21 @@ const resultsPerPageValues = [
 const domContainer = document.getElementById("communities-records-search");
 const COMMUNITY_ID = domContainer.dataset.communityId;
 
-const searchApi = {
-  axios: {
-    baseURL: "",
-    url: `/api/records?q=_communities.accepted.id:"${COMMUNITY_ID}"`,
-    timeout: 5000,
-  },
-};
+const api = `/api/records?q=_communities.accepted.id:"${COMMUNITY_ID}"`;
+const mimetype= 'application/json';
 
 const searchConfig = {
-  searchApi,
-  aggregations,
-  sortValues,
+  api,
+  aggs,
+  sort_options,
   resultsPerPageValues,
+  mimetype
 };
 
+overrideStore.add("ResultsList.item", ResultsItemTemplate);
+overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
 
 ReactDOM.render(
-  <SearchWrapper
-    ResultsListItem={ResultsItemTemplate}
-    ResultsGridItem={ResultsGridItemTemplate}
-    searchConfig={searchConfig}
-  />,
-  domContainer,
+  <SearchApp config={searchConfig} appName={"communities-records-search"}/>,
+  document.getElementById("communities-records-search")
 );
