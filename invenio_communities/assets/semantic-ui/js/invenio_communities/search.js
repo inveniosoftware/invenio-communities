@@ -5,55 +5,7 @@ import _truncate from "lodash/truncate";
 import { SearchApp } from "../invenio_search_ui/SearchApp";
 import { overrideStore } from "react-overridable";
 
-const aggs = [
-  {
-    title: "Types",
-    field: "type",
-    aggName: "type"
-  },
-  {
-    title: "Domains",
-    field: "domain",
-    aggName: "domain"
-  },
-];
-
-const sort_options = [
-  {
-    text: "Best match",
-    sortBy: "bestmatch",
-    sortOrder: "desc",
-    defaultOnEmptyString: true,
-  },
-  {
-    text: "Newest",
-    sortBy: "mostrecent",
-    sortOrder: "asc",
-    default: true,
-  },
-  {
-    text: "Oldest",
-    sortBy: "mostrecent",
-    sortOrder: "desc",
-  },
-];
-
-const resultsPerPageValues = [
-  {
-    text: "10",
-    value: 10,
-  },
-  {
-    text: "20",
-    value: 20,
-  },
-  {
-    text: "50",
-    value: 50,
-  },
-];
-
-function ResultsGridItemTemplate({result, index}) {
+function ResultsGridItemTemplate({ result, index }) {
   return (
     <Card fluid key={index} href={`/communities/${result.metadata.id}`}>
       <Card.Content>
@@ -68,7 +20,7 @@ function ResultsGridItemTemplate({result, index}) {
   );
 }
 
-function ResultsItemTemplate({result, index}) {
+function ResultsItemTemplate({ result, index }) {
   return (
     <Item key={index} href={`/communities/${result.metadata.id}`}>
       <Item.Content>
@@ -83,24 +35,60 @@ function ResultsItemTemplate({result, index}) {
   );
 }
 
-const api = '/api/communities';
-const mimetype= 'application/json';
-
-
-const searchConfig = {
-  api,
-  aggs,
-  sort_options,
-  resultsPerPageValues,
-  mimetype
-};
-
-
 overrideStore.add("ResultsList.item", ResultsItemTemplate);
 overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
 
+const searchConfig = {
+  api: "/api/communities",
+  mimetype: "application/json",
+  aggs: [
+    {
+      title: "Types",
+      field: "type",
+      aggName: "type",
+    },
+    {
+      title: "Domains",
+      field: "domain",
+      aggName: "domain",
+    },
+  ],
+  sort_options: [
+    {
+      text: "Best match",
+      sortBy: "bestmatch",
+      sortOrder: "desc",
+      defaultOnEmptyString: true,
+    },
+    {
+      text: "Newest",
+      sortBy: "mostrecent",
+      sortOrder: "asc",
+      default: true,
+    },
+    {
+      text: "Oldest",
+      sortBy: "mostrecent",
+      sortOrder: "desc",
+    },
+  ],
+  resultsPerPageValues: [
+    {
+      text: "10",
+      value: 10,
+    },
+    {
+      text: "20",
+      value: 20,
+    },
+    {
+      text: "50",
+      value: 50,
+    },
+  ],
+};
 
 ReactDOM.render(
-  <SearchApp config={searchConfig} appName={"communities-search"}/>,
+  <SearchApp config={searchConfig} appName={"communities-search"} />,
   document.getElementById("communities-search")
 );
