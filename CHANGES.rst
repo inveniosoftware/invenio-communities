@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 2.0.2 (released 2020-05-29)
+-----------------------------------
+
+- Migration to Semantic-UI styling.
+- Use of ``invenio-search-ui`` reusable search application.
+
 Version 2.0.1 (released 2020-04-06)
 -----------------------------------
 
