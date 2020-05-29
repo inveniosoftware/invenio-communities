@@ -133,9 +133,7 @@ const CommunityCreateForm = () => {
   }
   else{
     return (
-      <div className="container">
-        {__IS_NEW ? (
-        <h2>Create a community</h2>) : <h2 className="underline">Community Profile</h2>}
+      <div className="ui container">
         <Formik
           initialValues={{
             id: community.id || "",
@@ -233,9 +231,10 @@ const CommunityCreateForm = () => {
         >
           {({ values, isSubmitting, isValid }) => (
             <Form>
-            <Container>
               <Grid>
                 <Grid.Column width={10}>
+                {__IS_NEW ? (
+              <h2>Create a community</h2>) : <h2 className="underline">Community Profile</h2>}
               {__IS_NEW ? (
               <StringField required label="ID" fieldPath="id" />
               ): null}
@@ -295,7 +294,7 @@ const CommunityCreateForm = () => {
               /> */}
               <button
                 disabled={!isValid || isSubmitting}
-                className="btn btn-success"
+                className="ui positive button small"
                 type="submit"
               >
                 Submit
@@ -312,7 +311,6 @@ const CommunityCreateForm = () => {
               </div>
                 </Grid.Column>
               </Grid>
-            </Container>
             </Form>
           )}
         </Formik>

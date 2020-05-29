@@ -14,12 +14,12 @@
 
 {% block sidebar %}
 <div class="community-container">
-  <div class="ui container top-padding  grid">
-    <div class="three wide column community-logo">
+  <div class="ui container top-padding grid ">
+    <div class="two wide column community-logo">
       <i aria-hidden="true" class="users massive icon"></i>
     </div>
-    <div class="seven wide column">
-      <h1>{{ community.title }}</h1>
+    <div class="six wide column">
+      <h1 class="ui header">{{ community.title }}</h1>
       {% if community.website %}
       <p></p><a href="{{community.website}}">{{ community.website }}</a></p>
       {% endif %}
@@ -28,28 +28,35 @@
       <a href="" class="links-underline">{{ domain }}</a>
       {% endfor %}
     </div>
-    <div class="one wide column ui tiny statistic">
-      <div class="value">
-        5,550
-      </div>
-      <div class="label">
-        Views
-      </div>
-    </div>
-    <div class="two wide column ui tiny statistic">
-      <div class="value">
-        4,200
-      </div>
-      <div class="label">
-        Downloads
+    <div class="column">
+      <div class="ui mini statistic">
+        <div class=" value">
+          5,550
+        </div>
+        <div class=" label">
+          Views
+        </div>
       </div>
     </div>
-    <a href="/coming-soon" class="two wide column ui positive button">
-      <i class="plus icon"></i>
-      New upload</a>
+    <div class="two wide column">
+      <div class="ui mini statistic">
+        <div class=" value">
+          4,200
+        </div>
+        <div class="label">
+          Downloads
+        </div>
+      </div>
+    </div>
+    <div class="three wide column">
+      <a href="/coming-soon" class="ui positive button">
+        <i class="plus icon"></i>
+        New upload</a>
+    </div>
     <div class="ui top secondary pointing menu">
       <a class="item {{ 'active' if 'community_page' in request.endpoint else '' }}" href="{{ search }}">Search</a>
-      <a class="item {{ 'active' if 'curation' in request.endpoint else '' }}" href="{{ curate }}">Curate ({{ pending_records }})</a>
+      <a class="item {{ 'active' if 'curation' in request.endpoint else '' }}" href="{{ curate }}">Curate
+        ({{ pending_records }})</a>
       <a class="item disabled" href="{{ members }}">Members</a>
       <a class="item {{ 'active' if 'settings' in request.endpoint else '' }}" href="{{ settings }}">Settings</a>
       <a class="item disabled" href="/coming-soon">Statistics</a>

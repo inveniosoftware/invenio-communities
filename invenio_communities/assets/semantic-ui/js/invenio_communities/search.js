@@ -28,13 +28,12 @@ function ResultsItemTemplate({ result, index }) {
         <Item.Description>
           <div
             dangerouslySetInnerHTML={{ __html: result.metadata.description }}
-          />
+        />
         </Item.Description>
       </Item.Content>
     </Item>
   );
 }
-
 overrideStore.add("ResultsList.item", ResultsItemTemplate);
 overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
 
