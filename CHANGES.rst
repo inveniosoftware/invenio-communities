@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 2.0.3 (released 2020-06-01)
+-----------------------------------
+
+- Fixes to the Semantic-UI styling.
+
 Version 2.0.2 (released 2020-05-29)
 -----------------------------------
 
