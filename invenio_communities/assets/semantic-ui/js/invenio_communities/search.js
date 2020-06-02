@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import React from "react";
-import { Item, Card } from "semantic-ui-react";
+import { Input, Item, Card } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import { SearchApp } from "../invenio_search_ui/SearchApp";
 import { overrideStore } from "react-overridable";
@@ -28,7 +28,7 @@ function ResultsItemTemplate({ result, index }) {
         <Item.Description>
           <div
             dangerouslySetInnerHTML={{ __html: result.metadata.description }}
-        />
+          />
         </Item.Description>
       </Item.Content>
     </Item>
@@ -86,6 +86,43 @@ const searchConfig = {
     },
   ],
 };
+
+// TODO: Remove after https://github.com/inveniosoftware/react-searchkit/issues/117
+// is addressed
+const CommunitiesSearchBarElement = ({
+  placeholder: passedPlaceholder,
+  queryString,
+  onInputChange,
+  executeSearch,
+}) => {
+  const placeholder = passedPlaceholder || "Search";
+  const onBtnSearchClick = () => {
+    executeSearch();
+  };
+  const onKeyPress = (event) => {
+    if (event.key === "Enter") {
+      executeSearch();
+    }
+  };
+  return (
+    <Input
+      action={{
+        icon: "search",
+        onClick: onBtnSearchClick,
+        color: "orange",
+        className: "invenio-theme-search-button",
+      }}
+      placeholder={placeholder}
+      onChange={(event, { value }) => {
+        onInputChange(value);
+      }}
+      value={queryString}
+      onKeyPress={onKeyPress}
+    />
+  );
+};
+
+overrideStore.add("SearchBar.element", CommunitiesSearchBarElement);
 
 ReactDOM.render(
   <SearchApp config={searchConfig} appName={"communities-search"} />,

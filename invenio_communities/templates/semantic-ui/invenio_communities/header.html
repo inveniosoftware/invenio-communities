@@ -14,7 +14,7 @@
 
 {% block sidebar %}
 <div class="community-container">
-  <div class="ui container top-padding grid ">
+  <div class="ui container top-padding grid">
     <div class="two wide column community-logo">
       <i aria-hidden="true" class="users massive icon"></i>
     </div>
@@ -53,7 +53,7 @@
         <i class="plus icon"></i>
         New upload</a>
     </div>
-    <div class="ui top secondary pointing menu">
+    <div class="ui container top secondary pointing menu">
       <a class="item {{ 'active' if 'community_page' in request.endpoint else '' }}" href="{{ search }}">Search</a>
       <a class="item {{ 'active' if 'curation' in request.endpoint else '' }}" href="{{ curate }}">Curate
         ({{ pending_records }})</a>

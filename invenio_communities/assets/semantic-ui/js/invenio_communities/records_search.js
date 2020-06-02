@@ -1,11 +1,11 @@
 import ReactDOM from "react-dom";
 import React from "react";
-import { Card, Item, Button } from "semantic-ui-react";
+import { Card, Input, Item } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import { SearchApp } from "../invenio_search_ui/SearchApp";
 import { overrideStore } from "react-overridable";
 
-export function ResultsItemTemplate({result, index}) {
+export function ResultsItemTemplate({ result, index }) {
   return (
     <Item key={index} href={`/records/${result.id}`}>
       <Item.Content>
@@ -20,7 +20,7 @@ export function ResultsItemTemplate({result, index}) {
   );
 }
 
-export function ResultsGridItemTemplate({result, index}) {
+export function ResultsGridItemTemplate({ result, index }) {
   return (
     <Card fluid key={index} href={`/records/${result.id}`}>
       <Card.Content>
@@ -42,7 +42,7 @@ const domContainer = document.getElementById("communities-records-search");
 const COMMUNITY_ID = domContainer.dataset.communityId;
 const searchConfig = {
   api: `/api/records?q=_communities.accepted.id:"${COMMUNITY_ID}"`,
-  mimetype: 'application/json',
+  mimetype: "application/json",
   aggs: [
     {
       title: "Access Right",
@@ -55,7 +55,7 @@ const searchConfig = {
       aggName: "resource_type",
     },
   ],
-  sort_options:[
+  sort_options: [
     {
       text: "Best match",
       sortBy: "bestmatch",
@@ -90,7 +90,44 @@ const searchConfig = {
   ],
 };
 
+// TODO: Remove after https://github.com/inveniosoftware/react-searchkit/issues/117
+// is addressed
+const CommunitiesRecordsSearchBarElement = ({
+  placeholder: passedPlaceholder,
+  queryString,
+  onInputChange,
+  executeSearch,
+}) => {
+  const placeholder = passedPlaceholder || "Search";
+  const onBtnSearchClick = () => {
+    executeSearch();
+  };
+  const onKeyPress = (event) => {
+    if (event.key === "Enter") {
+      executeSearch();
+    }
+  };
+  return (
+    <Input
+      action={{
+        icon: "search",
+        onClick: onBtnSearchClick,
+        color: "orange",
+        className: "invenio-theme-search-button",
+      }}
+      placeholder={placeholder}
+      onChange={(event, { value }) => {
+        onInputChange(value);
+      }}
+      value={queryString}
+      onKeyPress={onKeyPress}
+    />
+  );
+};
+
+overrideStore.add("SearchBar.element", CommunitiesRecordsSearchBarElement);
+
 ReactDOM.render(
-  <SearchApp config={searchConfig} appName={"communities-records-search"}/>,
+  <SearchApp config={searchConfig} appName={"communities-records-search"} />,
   document.getElementById("communities-records-search")
 );
