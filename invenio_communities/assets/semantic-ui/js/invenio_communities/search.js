@@ -109,8 +109,7 @@ const CommunitiesSearchBarElement = ({
       action={{
         icon: "search",
         onClick: onBtnSearchClick,
-        color: "orange",
-        className: "invenio-theme-search-button",
+        className: "search",
       }}
       placeholder={placeholder}
       onChange={(event, { value }) => {
