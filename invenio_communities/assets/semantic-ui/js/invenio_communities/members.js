@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
 
-import { TextInput, SelectInput } from "./forms";
+import { TextField, SelectField } from 'react-invenio-forms';
 
 
 const COMMUNITY_ROLES = [
@@ -313,8 +313,8 @@ const CommunityMembers = () => {
               }} >
               {({ values, isSubmitting, isValid }) => (
                 <Form>
-                  <TextInput label="email" placeholder="example@email.com" name="email" />
-                  <SelectInput choices={COMMUNITY_ROLES} label="Role" name="role" />
+                  <TextField label="email" placeholder="example@email.com" name="email" />
+                  <SelectField choices={COMMUNITY_ROLES} label="Role" name="role" />
                   <button
                     disabled={!isValid || isSubmitting}
                     className="btn"

@@ -1,1 +1,0 @@
-export { InvenioForm } from "./InvenioForm";

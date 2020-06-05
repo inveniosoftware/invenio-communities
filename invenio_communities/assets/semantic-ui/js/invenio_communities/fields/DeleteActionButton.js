@@ -1,24 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'semantic-ui-react';
+import { ActionButton } from "react-invenio-forms";
 
 export class DeleteActionButton extends React.Component {
   render() {
+    const { deleteClick, ...uiProps} = this.props;
     return (
-      <Button icon basic onClick={this.props.onClick} type="button">
-        <Icon name={this.props.icon} size={this.props.size} />
-      </Button>
+      <ActionButton
+      // TODO: use `isDisabled`
+      isDisabled={() => false}
+      name=""
+      onClick={this.deleteClick}
+      negative
+      {...uiProps}
+    >
+    </ActionButton>
     );
   }
 }
 
-DeleteActionButton.propTypes = {
-  icon: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
-  size: PropTypes.string,
-};
-
-DeleteActionButton.defaultProps = {
-  icon: 'delete',
-  size: 'large',
-};
