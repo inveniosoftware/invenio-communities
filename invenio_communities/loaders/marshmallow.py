@@ -18,6 +18,7 @@ def marshmallow_loader(schema_class):
         request_json = request.get_json()
         context = {}
         pid_data = request.view_args.get('pid_value')
+
         if pid_data:
             pid, record = pid_data.data
             context['pid'] = pid

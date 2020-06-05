@@ -16,5 +16,8 @@
 
 {%- block page_body %}
   <div id="app" class="ui bottom attached active tab"></div>
-  <div id="is_new_community" data-config='{{ True | tojson }}'></div>
+  <div
+    id="form_config"
+    data-is_new='{{ True | tojson }}'
+    data-config='{{ config.COMMUNITIES_FORM_CONFIG | tojson }}'></div>
 {%- endblock page_body %}

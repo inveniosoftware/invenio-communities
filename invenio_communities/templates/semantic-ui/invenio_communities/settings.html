@@ -49,6 +49,9 @@
   <div class="thirteen wide column">
     <div id="app"></div>
   </div>
-  <div id="is_new_community" data-config='{{ False | tojson }}'></div>
+  <div
+    id="form_config"
+    data-is_new='{{ False | tojson }}'
+    data-config='{{ config.COMMUNITIES_FORM_CONFIG | tojson }}'></div>
 </div>
 {%- endblock page_body %}

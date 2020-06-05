@@ -19,6 +19,9 @@ from invenio_records_rest.schemas.fields import DateString, GenFunction, \
 from marshmallow import ValidationError, fields, missing, validate
 
 from invenio_communities.api import Community
+from invenio_communities.proxies import current_communities
+from werkzeug.local import LocalProxy
+from flask import current_app
 
 
 def pid_from_context_or_rec(data_value, context, **kwargs):
@@ -32,7 +35,8 @@ def pid_from_context_or_rec(data_value, context, **kwargs):
             if PersistentIdentifier.query.filter_by(
                     pid_type='comid', pid_value=pid_value).one_or_none():
                 raise ValidationError(
-                    'ID "{}" is already assigned to a community.'.format(pid_value))
+                    'ID "{}" is already assigned to a community.'.format(
+                        pid_value))
         return pid_value
 
 
@@ -48,6 +52,32 @@ def load_creator(_, context):
 def serialize_creator(record, context):
     """Load the record creator."""
     return record.get('created_by', missing)
+
+
+def validate_domain(domain, context):
+    """Load the record creator."""
+    if domain is missing:
+        return missing
+    else:
+        valid_domains = [
+            dom['value'] for dom
+            in LocalProxy(
+                lambda: current_app.config[
+                    'COMMUNITIES_FORM_CONFIG']['domains'])]
+        for d in domain:
+            if not d:
+                domain.remove(d)
+                continue
+            if d not in valid_domains:
+                raise ValidationError(
+                    '"{}" is not a valid domain.'.format(d))
+        return domain
+
+
+def serialize_domain(record, context):
+    """Load the record domain."""
+    return record.get('domain', missing)
+
 
 
 class CommunitySchemaMetadataV1(StrictKeysMixin):
@@ -72,7 +102,10 @@ class CommunitySchemaMetadataV1(StrictKeysMixin):
     alternate_identifiers = fields.List(fields.Raw())
     website = fields.Url()
     funding = fields.List(fields.String())
-    domain = fields.List(fields.String())
+    domain = GenFunction(
+        deserialize=validate_domain,
+        serialize=serialize_domain
+    )
     verified = fields.Boolean()
     visibility = fields.Str(validate=validate.OneOf([
         'public',

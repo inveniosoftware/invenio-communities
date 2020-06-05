@@ -11,30 +11,32 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
-import { RichInput } from "./forms";
-import { DeleteActionButton, ArrayField, SelectField, StringField } from './fields'
-import { Icon, Grid, Container } from "semantic-ui-react";
+import { RichInputField } from "./forms";
+import { DeleteActionButton } from './fields'
+import { Icon, Grid } from "semantic-ui-react";
+import { SelectField, TextField } from 'react-invenio-forms';
 
-const domContainer = document.querySelector("#is_new_community");
-const __IS_NEW = JSON.parse(domContainer.dataset.config);
+const domContainer = document.querySelector("#form_config");
+const __IS_NEW = JSON.parse(domContainer.dataset.is_new);
+const config = JSON.parse(domContainer.dataset.config);
 
 const renderIdentifiers = ({ arrayPath, indexPath, ...arrayHelpers }) => {
   const path = `${arrayPath}.${indexPath}`; // alternate_identifiers.0
   return (
     <>
-      <StringField
+      <TextField
         required
         fluid
         label="Scheme"
         fieldPath={`${path}.scheme`}
       />
-      <StringField
+      <TextField
         basic
         fluid
         fieldPath={`${path}.identifier`}
         label="Identifier"
       />
-      <DeleteActionButton onClick={() => arrayHelpers.remove(indexPath)} />
+      <DeleteActionButton deleteClick={() => arrayHelpers.remove(indexPath)} />
     </>
   );
 };
@@ -43,27 +45,8 @@ const renderIdentifiers = ({ arrayPath, indexPath, ...arrayHelpers }) => {
 const renderFunding = ({ arrayPath, indexPath, ...arrayHelpers }) => {
   return (
     <>
-      <StringField
+      <TextField
         label="Funding"
-        fieldPath={`${arrayPath}.${indexPath}`}
-        action={
-          <DeleteActionButton
-            icon="trash"
-            onClick={() => arrayHelpers.remove(indexPath)}
-          />
-        }
-      />
-    </>
-  );
-};
-
-
-const renderDomain = ({ arrayPath, indexPath, ...arrayHelpers }) => {
-  return (
-    <>
-      <StringField
-        label="Domain"
-        placeholder="biology"
         fieldPath={`${arrayPath}.${indexPath}`}
         action={
           <DeleteActionButton
@@ -119,8 +102,6 @@ const CommunityCreateForm = () => {
       )}
       else{
         setCommunity({})
-        console.log(community)
-        console.log('community')
       }
       }, [])
   if (Object.keys(community).length === 0 && !__IS_NEW){
@@ -181,8 +162,10 @@ const CommunityCreateForm = () => {
             website: Yup.string().url("Must be a valid URL"),
             funding: Yup.array().of(Yup.string()
             .max(20, "Must be 20 characters or less")),
-            domain: Yup.array().of(Yup.string()
-            .max(20, "Must be 20 characters or less")),
+            domain: Yup.array().of(Yup.string().oneOf(
+              config.domains.map( c => {
+                return c.value;
+              }))),
             alternate_identifiers: Yup.array().of(Yup.object().shape({
               scheme: Yup.string().max(20, "Must be 20 characters or less"),
               identifier: Yup.string().max(20, "Must be 20 characters or less")
@@ -212,7 +195,6 @@ const CommunityCreateForm = () => {
             }
             request_promise
               .then(response => {
-                console.log(response);
                 window.location.href = `/communities/${payload.id}`;
               })
               .catch(error => {
@@ -224,7 +206,6 @@ const CommunityCreateForm = () => {
                 } else if (error.response.data.message) {
                   setGlobalError(error.response.data.message);
                 }
-                console.log(error.response.data);
               })
               .finally(() => setSubmitting(false));
           }}
@@ -236,9 +217,9 @@ const CommunityCreateForm = () => {
                 {__IS_NEW ? (
               <h2>Create a community</h2>) : <h2 className="underline">Community Profile</h2>}
               {__IS_NEW ? (
-              <StringField required label="ID" fieldPath="id" />
+              <TextField required label='ID' fieldPath="id" fluid />
               ): null}
-              <StringField required label="Title" fieldPath="title" />
+              <TextField required label="Title" fieldPath="title" fluid />
               <SelectField
                 required
                 search
@@ -246,13 +227,10 @@ const CommunityCreateForm = () => {
                 fieldPath="type"
                 options={COMMUNITY_TYPES}
               />
-              <RichInput label="Description" name="description" />
-              <RichInput label="Page" name="page" />
-              <RichInput label="Curation policy" name="curation_policy" />
-              <StringField
-                label="Website"
-                fieldPath="website"
-              />
+              <RichInputField label="Description" fieldPath="description" fluid/>
+              <RichInputField label="Page" fieldPath="page" fluid/>
+              <RichInputField label="Curation policy" fieldPath="curation_policy" fluid/>
+              <TextField label="Website" fieldPath="website" fluid/>
               {/* <SelectField
                 required
                 search
@@ -274,12 +252,14 @@ const CommunityCreateForm = () => {
                 fieldPath="member_policy"
                 options={MEMBER_POLICY_TYPES}
               /> */}
-              <ArrayField
+              {<SelectField
+                required
+                search
+                label="Domains"
                 fieldPath="domain"
-                defaultNewValue=""
-                renderArrayItem={renderDomain}
-                addButtonLabel="Add domain"
-              />
+                options={config.domains}
+                multiple
+              />}
               {/* <ArrayField
                 fieldPath="alternate_identifiers"
                 defaultNewValue={{ scheme: '', identifier: '' }}
