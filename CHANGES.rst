@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 2.0.5 (released 2020-06-09)
+-----------------------------------
+
+- Sets search button class.
+
 Version 2.0.4 (released 2020-06-02)
 -----------------------------------
 
