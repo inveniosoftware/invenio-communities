@@ -130,7 +130,7 @@ class ListResource(MethodView):
                 # TODO: define what the routing_key value should be
                 # request.routing_key = ''
                 # TODO: implement state as a "Request.state" property?
-                request['state'] = request.State.CLOSED
+                request['state'] = request.State['CLOSED']
                 com_rec.status = com_rec.Status.ACCEPTED
             else:
                 # TODO: define what the routing_key value should be
@@ -205,6 +205,7 @@ class ItemActionsResource(MethodView):
     @use_kwargs(post_args)
     @pass_community
     @login_required
+    # TODO: Swap `request_id` with `CommunityRecord.id` (instead of `Request.id`)
     def post(self, comid=None, community=None, request_id=None, action=None,
              message=None, **kwargs):
         """Handle a community record request."""
@@ -233,12 +234,12 @@ class ItemActionsResource(MethodView):
             # TODO: figure out "routing_key"
             # request.routing_key = ''
             # TODO: use ".state" property setter/getter
-            request['state'] = request.State.CLOSED
+            request['state'] = request.State['CLOSED']
         elif action == 'reject':
             community_record.status = community_record.Status.REJECTED
             # TODO: figure out "routing_key"
             # request.routing_key = ''
-            request['state'] = request.State.CLOSED
+            request['state'] = request.State['CLOSED']
         else:
             # TODO: no appropriate action error
             abort(404)

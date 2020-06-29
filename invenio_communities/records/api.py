@@ -33,6 +33,7 @@ class Record(RecordBaseAPI, PIDRecordMixin):
     pid_type = 'recid'
 
 
+# TODO: Possibly rename to CommunityRecordRequest?
 class CommunityInclusionRequest(RequestBase):
 
     TYPE = 'community-inclusion-request'
@@ -50,14 +51,10 @@ class CommunityInclusionRequest(RequestBase):
             "type": "string",
             # "enum": ["pending", "closed"],
         },
-        "assignees": {"type": "int[]"},
         "created_by": {"type": "int"},
     }
 
     # TODO: implement "state" property with getter/setter?
-    class State(Enum):
-        OPEN = 'open'
-        CLOSED = 'closed'
 
     @property
     def community_record(self):
@@ -82,7 +79,7 @@ class CommunityInclusionRequest(RequestBase):
         """Create a community inclusion request."""
         data = {
             'type': cls.TYPE,
-            'state': cls.State.OPEN.value,
+            'state': cls.STATES['OPEN'],
             'created_by': owner.id,
             **kwargs,
         }
@@ -130,7 +127,7 @@ class CommunityInclusionRequest(RequestBase):
             )
         return links
 
-
+# TODO: cleanup
 class RecordCommunitiesMixin(PIDRecordMixin):
 
     record_communities_iter_cls = LocalProxy(
@@ -166,7 +163,6 @@ class CommunityRecord(RecordBaseAPI):
     @property
     def request(self):
         """Community record request."""
-        # TODO: Return a RequestRecord object, not the SQLAlchemy model
         if self.model:
             return CommunityInclusionRequest(
                 self.model.request.json, self.model.request)
@@ -185,7 +181,7 @@ class CommunityRecord(RecordBaseAPI):
 
     @property
     def community(self):
-        """Get request's community record relatinship."""
+        """Get community."""
         if not getattr(self, '_community', None):
             self._community = self.community_cls.get_record(
                 self.model.community_pid.object_uuid)
@@ -193,7 +189,7 @@ class CommunityRecord(RecordBaseAPI):
 
     @property
     def record(self):
-        """Get request's community record relatinship."""
+        """Get record."""
         if not getattr(self, '_record', None):
             self._record = self.record_cls.get_record(
                 self.model.record_pid.object_uuid)
@@ -217,9 +213,7 @@ class CommunityRecord(RecordBaseAPI):
 
     def delete(self):
         """Delete community record relationship."""
-        with db.session.begin_nested():
-            db.session.delete(self.model)
-        return self
+        return self.model.delete(self.model)
 
     @classmethod
     def get_by_pids(cls, community_pid, record_pid):
@@ -241,27 +235,17 @@ class CommunityRecord(RecordBaseAPI):
         if not model:
             return None
         return cls(model.json, model=model)
-
-    def as_dict(self, include_request=True):
+    # TODO propagate this
+    def as_dict(self, include_requests=True):
         res = {
             'status': str(self.status.title),
             'record_pid': self.record.pid.pid_value,
         }
-        if include_request:
+        if include_requests:
             res['request'] = self.request.as_dict()
         else:
             res['request_id'] = self.request.id
         return res
-
-    # TODO: sanity check this
-    @property
-    def record_pid_value(self):
-        return self.model.record_pid.pid_value
-
-    # TODO: sanity check this
-    @property
-    def community_pid_value(self):
-        return self.model.community_pid.pid_value
 
 
 class CommunityRecordsCollectionBase:
@@ -313,14 +297,6 @@ class CommunityRecordsCollection(CommunityRecordsCollectionBase):
     def remove(self, record):
         community_record = self[record]
         return community_record.delete()
-
-    def as_dict(self, include_request=False):
-        community_records = defaultdict(list)
-        for community_record in self:
-            status = community_record.status.name.lower()
-            community_records[status].append(community_record.as_dict(
-                include_request=include_request))
-        return community_records
 
 
 class RecordCommunitiesCollection(CommunityRecordsCollectionBase):

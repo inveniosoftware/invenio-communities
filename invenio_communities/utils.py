@@ -40,7 +40,7 @@ def format_url_template(url_template, absolute=True, **kwargs):
     return urlunsplit((scheme, netloc, path, query, fragment))
 
 
-def send_invitation_email(membership_request, recipients, community):
+def send_invitation_email(membership_request, recipients, community, token):
     """Send email notification for a member invitation."""
     msg = Message(
         _("Community membership invitation"),
