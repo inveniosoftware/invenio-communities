@@ -18,7 +18,10 @@ class RequestBase(RecordBaseAPI):
     """Request API class."""
 
     model_cls = RequestModel
-
+    STATES = {
+        'OPEN': 'Open',
+        'CLOSED': 'Closed',
+    }
     schema = {
         "type": {
             "type": "string",
@@ -47,10 +50,10 @@ class RequestBase(RecordBaseAPI):
         """Request comments."""
         return self.model.comments if self.model else None
 
-    def add_comment(self, user, message):
+    def add_comment(self, user_id, message):
         """Request comments."""
         # TODO: do we need a comment API Class?
-        return CommentModel.create(self.id, user.id, message)
+        return CommentModel.create(self.id, user_id, message)
 
     def delete(self):
         self.model.delete(self.model)

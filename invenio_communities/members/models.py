@@ -10,7 +10,6 @@
 
 from __future__ import absolute_import, print_function
 
-import uuid
 from enum import Enum
 
 from flask_babelex import gettext
@@ -20,27 +19,12 @@ from speaklater import make_lazy_gettext
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy_utils.types import ChoiceType, UUIDType
 
-from invenio_communities.models import CommunityMetadata
+from .errors import CommunityMemberAlreadyExists
+from invenio_pidstore.models import PersistentIdentifier
+from invenio_records.models import RecordMetadataBase
+from invenio_communities.requests.models import Request
 
-# TODO make sure well what this does and that we need this dependency
 _ = make_lazy_gettext(lambda: gettext)
-
-
-class CommunityMemberAlreadyExists(Exception):
-    """Community membership already exists error."""
-
-    def __init__(self, user_id, pid_id, role):
-        """Initialize Exception."""
-        self.user_id = user_id
-        self.pid_id = pid_id
-        self.role = role
-
-
-class CommunityMemberDoesNotExist(CommunityMemberAlreadyExists):
-    """Community membership does not exist error."""
-
-    pass
-
 
 COMMUNITY_MEMBER_TITLES = {
     'MEMBER': _('Member'),
@@ -48,8 +32,13 @@ COMMUNITY_MEMBER_TITLES = {
     'CURATOR': _('Curator')
 }
 
+COMMUNITY_MEMBER_MATCHES = {
+    'member': 'M',
+    'admin': 'A',
+    'curator': 'C'
+}
 
-class CommunityRoles(Enum):
+class CommunityMemberRole(Enum):
     """Constants for possible roles of any given Community member."""
     # TODO Make roles configurable.
     MEMBER = 'M'
@@ -67,143 +56,119 @@ class CommunityRoles(Enum):
         return COMMUNITY_MEMBER_TITLES[self.name]
 
 
-class CommunityMember(db.Model):
+COMMUNITY_MEMBER_STATUS = {
+    'PENDING': _('Pending'),
+    'ACCEPTED': _('Accepted'),
+    'REJECTED': _('Rejected'),
+    'BLOCKED': _('Blocked')
+}
+
+
+class CommunityMemberStatus(Enum):
+    """Community-member relationship status."""
+
+    PENDING = 'P'
+    ACCEPTED = 'A'
+    REJECTED = 'R'
+    BLOCKED = 'B'
+
+    @property
+    def title(self):
+        """Return human readable title."""
+        return COMMUNITY_MEMBER_STATUS[self.name]
+
+
+class CommunityMember(db.Model, RecordMetadataBase):
     """Represent a community member role."""
 
     __tablename__ = 'communities_members'
-
-    "Community PID ID"
-    comm_id = db.Column(
-        UUIDType,
-        db.ForeignKey(CommunityMetadata.id),
-        primary_key=True,
-        nullable=False,
+    __versioned__ = {'versioning': False}
+    __table_args__ = (
+        db.Index(
+            'uidx_community_pid_id_user_id_invitation_id',
+            # TODO: Check if this combination would be enough (since user_id can be NULL)
+            'community_pid_id', 'user_id',
+            # 'community_pid_id', 'user_id', 'invitation_id',
+            unique=True,
+        ),
+        db.Index(
+            'uidx_community_pid_id_invitation_id',
+            'community_pid_id', 'invitation_id',
+            unique=True,
+        ),
+        {'extend_existing': True},
     )
 
-    "USER ID"
-    user_id = db.Column(
+    community_pid_id = db.Column(
         db.Integer,
-        db.ForeignKey(User.id),
-        primary_key=True,
+        db.ForeignKey(PersistentIdentifier.id),
         nullable=False,
     )
-
-    role = db.Column(
-        ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=False)
-
-    user = db.relationship(User, backref='communities')
-
-    community = db.relationship(CommunityMetadata, backref='members')
-
-    @property
-    def email(self):
-        """Get user email."""
-        return self.user.email
-
-    @classmethod
-    def create_from_object(cls, membership_request):
-        """Create Community Membership Role."""
-        with db.session.begin_nested():
-            obj = cls.create(
-                comm_id=membership_request.comm_id,
-                user_id=membership_request.user_id,
-                role=membership_request.role)
-            db.session.delete(membership_request)
-        return obj
-
-    @classmethod
-    def create(cls, comm_id, user_id, role):
-        """Create Community Membership Role."""
-        try:
-            with db.session.begin_nested():
-                obj = cls(
-                    comm_id=comm_id,
-                    user_id=user_id,
-                    role=role)
-                db.session.add(obj)
-        except IntegrityError:
-            raise CommunityMemberAlreadyExists(
-                comm_id=comm_id,
-                user_id=user_id,
-                role=role)
-        return obj
-
-    @classmethod
-    def delete(cls, comm_id, user_id):
-        """Delete a community membership."""
-        try:
-            with db.session.begin_nested():
-                membership = cls.query.filter_by(
-                    comm_id=comm_id, user_id=user_id).one()
-                db.session.delete(membership)
-        except IntegrityError:
-            raise CommunityMemberDoesNotExist(comm_id=comm_id, user_id=user_id)
-
-    @classmethod
-    def get_admins(cls, comm_id):
-        with db.session.begin_nested():
-            return cls.query.filter_by(comm_id=comm_id, role='A').all()
-
-    @classmethod
-    def get_members(cls, comm_id):
-        with db.session.begin_nested():
-            return cls.query.filter_by(comm_id=comm_id)
-
-
-class MembershipRequest(db.Model):
-    """Represent a community member role."""
-
-    __tablename__ = 'communities_membership_request'
-
-    id = db.Column(
-        UUIDType,
-        primary_key=True,
-        default=uuid.uuid4,
-    )
+    """Community PID ID."""
 
     user_id = db.Column(
         db.Integer,
         db.ForeignKey(User.id),
+    )
+    """User ID."""
+
+    request_id = db.Column(
+        UUIDType,
+        db.ForeignKey(Request.id),
+        # TODO: should we also allow CommunityMembers without a request?
         nullable=True,
     )
 
-    comm_id = db.Column(
-        UUIDType,
-        db.ForeignKey(CommunityMetadata.id),
-        nullable=False,
-    )
+    """Invitation ID."""
 
-    email = db.Column(
+    invitation_id = db.Column(
         db.String(255),
         nullable=True,
     )
 
-    role = db.Column(
-        ChoiceType(CommunityRoles, impl=db.CHAR(1)), nullable=True)
+    status = db.Column(
+        ChoiceType(CommunityMemberStatus, impl=db.CHAR(1)),
+        nullable=False,
+        default=CommunityMemberStatus.PENDING,
+    )
 
-    is_invite = db.Column(db.Boolean(name='is_invite'), nullable=False,
-                          default=True)
+    role = db.Column(
+        ChoiceType(CommunityMemberRole, impl=db.CHAR(1)), nullable=False)
+
+    user = db.relationship(User, backref='communities')
+
+    community_pid = db.relationship(PersistentIdentifier)
+
+    request = db.relationship(Request)
 
     @classmethod
-    def create(cls, comm_id, is_invite, role=None, user_id=None, email=None):
-        """Create Community Membership request."""
+    def create(cls, community_pid_id, request_id=None, role='M', status='P', user_id=None,
+               invitation_id=None, json=None):
+        """Create Community Membership Role."""
         try:
             with db.session.begin_nested():
                 obj = cls(
-                    comm_id=comm_id, user_id=user_id,
-                    role=role, is_invite=is_invite, email=email)
+                    community_pid_id=community_pid_id,
+                    user_id=user_id,
+                    request_id=request_id,
+                    invitation_id=invitation_id,
+                    role=role,
+                    status=status,
+                    json=json,
+                )
                 db.session.add(obj)
-        except IntegrityError:
+        except IntegrityError as ex:
+            # TODO: Differentiate between the two possible unique constraint errors
+            # that the DB might raise
             raise CommunityMemberAlreadyExists(
-                comm_id=comm_id, user_id=user_id, role=role)
+                pid_id=community_pid_id,
+                user_id=user_id,
+                invitation_id=invitation_id,
+            )
         return obj
 
     @classmethod
-    def delete(cls, id):
-        """Delete a community membership request."""
-        try:
-            with db.session.begin_nested():
-                membership = cls.query.get(id)
-                db.session.delete(membership)
-        except IntegrityError:
-            raise CommunityMemberDoesNotExist(id)
+    def delete(cls, community_member):
+        """Delete community member relationship."""
+        with db.session.begin_nested():
+            db.session.delete(community_member)

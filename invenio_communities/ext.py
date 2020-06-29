@@ -31,9 +31,10 @@ class InvenioCommunities(object):
         # TODO: Refactor
         from .api import CommunityBase
         from .records.api import CommunityRecordsMixin
+        from .members.api import CommunityMembersMixin
         return type(
             'Community',
-            (CommunityBase, CommunityRecordsMixin),
+            (CommunityBase, CommunityRecordsMixin, CommunityMembersMixin),
             {},
         )
 

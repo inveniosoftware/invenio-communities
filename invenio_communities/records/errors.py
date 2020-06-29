@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
@@ -9,8 +8,10 @@
 
 """Community records errors."""
 
+from ..errors import CommunitiesError
 
-class CommunityRecordError(Exception):
+
+class CommunityRecordError(CommunitiesError):
     """Community record base error class."""
 
     def __init__(self, community_pid_id, record_pid_id):
@@ -21,7 +22,3 @@ class CommunityRecordError(Exception):
 
 class CommunityRecordAlreadyExists(CommunityRecordError):
     """Record inclusion already exists error."""
-
-
-class CommunityRecordDoesNotExist(CommunityRecordError):
-    """Record inclusion does not exist error."""
