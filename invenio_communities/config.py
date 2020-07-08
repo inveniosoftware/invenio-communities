@@ -54,12 +54,12 @@ COMMUNITIES_REST_FACETS = dict(
                 terms=dict(field="type"),
             ),
             domain=dict(
-                terms=dict(field="domain"),
+                terms=dict(field="domains"),
             )
         ),
         post_filters=dict(
             type=terms_filter('type'),
-            domain=terms_filter('domain'),
+            domain=terms_filter('domains'),
         )
     )
 )
@@ -70,107 +70,28 @@ SUPPORT_EMAIL = 'test@email.org'
 
 COMMUNITIES_RECORD_INDEX = 'records-record-v1.0.0'
 
-
-COMMUNITIES_FORM_CONFIG = {
-    'domains': [
-        {
-            'text': 'Agricultural and Veterinary Sciences',
-            'value': 'agricultural_and_veterinary_sciences'
-        },
-        {
-            'text': 'Biological Sciences',
-            'value': 'biological_sciences'
-        },
-        {
-            'text': 'Built Environment and Design',
-            'value': 'built_environment_and_design'
-        },
-        {
-            'text': 'Chemical Sciences',
-            'value': 'chemical_sciences'
-        },
-        {
-            'text': 'Commerce, Management, Tourism and Services',
-            'value': 'commerce_management_tourism_and_services'
-
-        },
-        {
-            'text': 'Earth Sciences',
-            'value': 'earth_sciences'
-
-        },
-        {
-            'text': 'Environmental Sciences',
-            'value': 'environmental_sciences'
-
-        },
-        {
-            'text': 'Economics',
-            'value': 'economics'
-
-        },
-        {
-            'text': 'Education',
-            'value': 'education'
-
-        },
-        {
-            'text': 'Engineering',
-            'value': 'engineering'
-
-        },
-        {
-            'text': 'Technology',
-            'value': 'technology'
-
-        },
-        {
-            'text': 'History and Archaeology',
-            'value': 'history_and_archaeology'
-
-        },
-        {
-            'text': 'Information and Computing Sciences',
-            'value': 'information_and_computing_sciences'
-        },
-        {
-            'text': 'Language, Communication and Culture',
-            'value': 'language_communication_and_culture'
-
-        },
-        {
-            'text': 'Law and Legal Studies',
-            'value': 'law_and_legal_studies'
-        },
-        {
-            'text': 'Mathematical Sciences',
-            'value': 'mathematical_sciences'
-
-        },
-        {
-            'text': 'Medical and Health Sciences',
-            'value': 'medical_and_health_sciences'
-        },
-        {
-            'text': 'Philosophy and Religious Studies',
-            'value': 'philosophy_and_religious_studies'
-
-        },
-        {
-            'text': 'Physical Sciences',
-            'value': 'physical_sciences'
-        },
-        {
-            'text': 'Psychology and Cognitive Sciences',
-            'value': 'psychology_and_cognitive_sciences'
-        },
-        {
-            'text': 'Studies in Creative Arts and Writing',
-            'value': 'studies_in_creative_arts_and_writing'
-        },
-        {
-            'text': 'Studies in Human Society',
-            'value': 'studies_in_human_society'
-        },
-        ]
-        }
+# TODO: Use vocabulary-based model
+COMMUNITIES_DOMAINS = [
+    {'text': 'Agricultural and Veterinary Sciences', 'value': 'agricultural_and_veterinary_sciences'},
+    {'text': 'Biological Sciences', 'value': 'biological_sciences'},
+    {'text': 'Built Environment and Design', 'value': 'built_environment_and_design'},
+    {'text': 'Chemical Sciences', 'value': 'chemical_sciences'},
+    {'text': 'Commerce, Management, Tourism and Services', 'value': 'commerce_management_tourism_and_services'},
+    {'text': 'Earth Sciences', 'value': 'earth_sciences'},
+    {'text': 'Environmental Sciences', 'value': 'environmental_sciences'},
+    {'text': 'Economics', 'value': 'economics'},
+    {'text': 'Education', 'value': 'education'},
+    {'text': 'Engineering', 'value': 'engineering'},
+    {'text': 'Technology', 'value': 'technology'},
+    {'text': 'History and Archaeology', 'value': 'history_and_archaeology'},
+    {'text': 'Information and Computing Sciences', 'value': 'information_and_computing_sciences'},
+    {'text': 'Language, Communication and Culture', 'value': 'language_communication_and_culture'},
+    {'text': 'Law and Legal Studies', 'value': 'law_and_legal_studies'},
+    {'text': 'Mathematical Sciences', 'value': 'mathematical_sciences'},
+    {'text': 'Medical and Health Sciences', 'value': 'medical_and_health_sciences'},
+    {'text': 'Philosophy and Religious Studies', 'value': 'philosophy_and_religious_studies'},
+    {'text': 'Physical Sciences', 'value': 'physical_sciences'},
+    {'text': 'Psychology and Cognitive Sciences', 'value': 'psychology_and_cognitive_sciences'},
+    {'text': 'Studies in Creative Arts and Writing', 'value': 'studies_in_creative_arts_and_writing'},
+    {'text': 'Studies in Human Society', 'value': 'studies_in_human_society'},
+]

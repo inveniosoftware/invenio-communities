@@ -16,9 +16,6 @@ import { DeleteActionButton } from './fields'
 import { Icon, Grid } from "semantic-ui-react";
 import { SelectField, TextField } from 'react-invenio-forms';
 
-const domContainer = document.querySelector("#form_config");
-const __IS_NEW = JSON.parse(domContainer.dataset.is_new);
-const config = JSON.parse(domContainer.dataset.config);
 
 const renderIdentifiers = ({ arrayPath, indexPath, ...arrayHelpers }) => {
   const path = `${arrayPath}.${indexPath}`; // alternate_identifiers.0
@@ -89,22 +86,19 @@ const CommunityCreateForm = () => {
   const [community, setCommunity] = useState({});
 
   useEffect(() =>{
-    if (!__IS_NEW){
+    if (!formConfig.is_new){
     var community_id = window.location.pathname.split('/')[2];
     fetch("/api/communities/" + community_id)
       .then(res => res.json())
       .then(
-        (result) => {
-          setCommunity(result.metadata);
-        },
-        (error) => {
-        }
+        (result) => { setCommunity(result.metadata); },
+        (error) => { },
       )}
       else{
         setCommunity({})
       }
       }, [])
-  if (Object.keys(community).length === 0 && !__IS_NEW){
+  if (Object.keys(community).length === 0 && !formConfig.is_new){
     return (
       <div className="ui bottom attached loading tab">
         <p></p>
@@ -127,9 +121,9 @@ const CommunityCreateForm = () => {
             visibility: community.visibility || "public",
             member_policy: community.member_policy || "open",
             record_policy: community.record_policy || "open",
-            funding: community.funding || [''],
-            domain: community.domain || [''],
-            alternate_identifiers: community.alternate_identifiers || [{'scheme': '', 'identifier': ''}]          }}
+            funding: community.funding || [],
+            domains: community.domains || [],
+            alternate_identifiers: community.alternate_identifiers || []}}
           validationSchema={Yup.object({
             id: Yup.string()
               .required("Required")
@@ -162,8 +156,8 @@ const CommunityCreateForm = () => {
             website: Yup.string().url("Must be a valid URL"),
             funding: Yup.array().of(Yup.string()
             .max(20, "Must be 20 characters or less")),
-            domain: Yup.array().of(Yup.string().oneOf(
-              config.domains.map( c => {
+            domains: Yup.array().of(Yup.string().oneOf(
+              formConfig.domains.map( c => {
                 return c.value;
               }))),
             alternate_identifiers: Yup.array().of(Yup.object().shape({
@@ -188,7 +182,7 @@ const CommunityCreateForm = () => {
           onSubmit={(values, { setSubmitting, setErrors, setFieldError }) => {
             setSubmitting(true);
             const payload = _.pickBy(values, val => val !== "" && !_.isNil(val));
-            if (__IS_NEW) {
+            if (formConfig.is_new) {
               var request_promise = axios.post("/api/communities/", payload)
             } else {
               var request_promise = axios.put(`/api/communities/${community.id}`, payload)
@@ -214,9 +208,9 @@ const CommunityCreateForm = () => {
             <Form>
               <Grid>
                 <Grid.Column width={10}>
-                {__IS_NEW ? (
+                {formConfig.is_new ? (
               <h2>Create a community</h2>) : <h2 className="underline">Community Profile</h2>}
-              {__IS_NEW ? (
+              {formConfig.is_new ? (
               <TextField required label='ID' fieldPath="id" fluid />
               ): null}
               <TextField required label="Title" fieldPath="title" fluid />
@@ -256,8 +250,8 @@ const CommunityCreateForm = () => {
                 required
                 search
                 label="Domains"
-                fieldPath="domain"
-                options={config.domains}
+                fieldPath="domains"
+                options={formConfig.domains}
                 multiple
               />}
               {/* <ArrayField
@@ -299,6 +293,8 @@ const CommunityCreateForm = () => {
   };
 }
 
-ReactDOM.render(<CommunityCreateForm />, document.getElementById("app"));
+const domContainer = document.getElementById("app");
+const formConfig = JSON.parse(domContainer.dataset.formConfig);
 
+ReactDOM.render(<CommunityCreateForm />, domContainer);
 export default CommunityCreateForm;

@@ -44,7 +44,7 @@
       "website": {
         "type": "keyword"
       },
-      "domain": {
+      "domains": {
         "type": "keyword"
       },
       "verified": {

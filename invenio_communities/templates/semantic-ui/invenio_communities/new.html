@@ -14,10 +14,13 @@
 {{ webpack['invenio-communities-new.js'] }}
 {%- endblock javascript %}
 
+
 {%- block page_body %}
-  <div id="app" class="ui bottom attached active tab"></div>
+  {%- set form_config = {"is_new": True, "domains": config.COMMUNITIES_DOMAINS} %}
   <div
-    id="form_config"
-    data-is_new='{{ True | tojson }}'
-    data-config='{{ config.COMMUNITIES_FORM_CONFIG | tojson }}'></div>
+    id="app"
+    class="ui bottom attached active tab"
+    data-form-config='{{ form_config | tojson }}'
+  >
+  </div>
 {%- endblock page_body %}

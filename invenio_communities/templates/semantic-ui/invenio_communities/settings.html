@@ -47,11 +47,11 @@
     </table>
   </div>
   <div class="thirteen wide column">
-    <div id="app"></div>
+    {%- set form_config = {"is_new": False, "domains": config.COMMUNITIES_DOMAINS} %}
+    <div
+      id="app"
+      data-form-config='{{ form_config | tojson }}'>
+    </div>
   </div>
-  <div
-    id="form_config"
-    data-is_new='{{ False | tojson }}'
-    data-config='{{ config.COMMUNITIES_FORM_CONFIG | tojson }}'></div>
 </div>
 {%- endblock page_body %}

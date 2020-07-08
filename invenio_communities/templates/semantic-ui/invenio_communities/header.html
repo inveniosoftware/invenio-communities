@@ -24,8 +24,8 @@
       <p></p><a href="{{community.website}}">{{ community.website }}</a></p>
       {% endif %}
       <p>{{ community.description | safe }}</p>
-      {% for domain in community.domain %}
-      <a href="" class="links-underline">{{ domain }}</a>
+      {% for domain in community.domains %}
+      <a href="/communities?domain={{ domain }}" class="links-underline">{{ domain }}</a>
       {% endfor %}
     </div>
     <div class="column">

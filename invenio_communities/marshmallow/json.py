@@ -17,10 +17,10 @@ from invenio_records_rest.schemas import Nested, StrictKeysMixin
 from invenio_records_rest.schemas.fields import DateString, GenFunction, \
     SanitizedHTML, SanitizedUnicode
 from marshmallow import ValidationError, fields, missing, validate
+from werkzeug.local import LocalProxy
 
 from invenio_communities.api import Community
 from invenio_communities.proxies import current_communities
-from werkzeug.local import LocalProxy
 from flask import current_app
 
 
@@ -54,30 +54,9 @@ def serialize_creator(record, context):
     return record.get('created_by', missing)
 
 
-def validate_domain(domain, context):
-    """Load the record creator."""
-    if domain is missing:
-        return missing
-    else:
-        valid_domains = [
-            dom['value'] for dom
-            in LocalProxy(
-                lambda: current_app.config[
-                    'COMMUNITIES_FORM_CONFIG']['domains'])]
-        for d in domain:
-            if not d:
-                domain.remove(d)
-                continue
-            if d not in valid_domains:
-                raise ValidationError(
-                    '"{}" is not a valid domain.'.format(d))
-        return domain
-
-
-def serialize_domain(record, context):
-    """Load the record domain."""
-    return record.get('domain', missing)
-
+def valid_domains():
+    """Return valid community domains."""
+    return {d['value'] for d in current_app.config['COMMUNITIES_DOMAINS']}
 
 
 class CommunitySchemaMetadataV1(StrictKeysMixin):
@@ -102,9 +81,11 @@ class CommunitySchemaMetadataV1(StrictKeysMixin):
     alternate_identifiers = fields.List(fields.Raw())
     website = fields.Url()
     funding = fields.List(fields.String())
-    domain = GenFunction(
-        deserialize=validate_domain,
-        serialize=serialize_domain
+    domains = fields.List(fields.Str(
+        # NOTE: We need a double LocalProxy, because `validate.OneOf` is not
+        # lazy, and tries to evaluate the choices immediately, thus causing an
+        # "outside app context" Flask error.
+        validate=LocalProxy(lambda: validate.OneOf(LocalProxy(valid_domains))))
     )
     verified = fields.Boolean()
     visibility = fields.Str(validate=validate.OneOf([

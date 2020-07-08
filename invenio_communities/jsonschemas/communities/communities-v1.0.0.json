@@ -61,7 +61,7 @@
       "description": "Community website.",
       "type": "string"
     },
-    "domain": {
+    "domains": {
       "description": "Community domain.",
       "type": "array",
       "uniqueItems": true,
