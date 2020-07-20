@@ -57,7 +57,7 @@
       <a class="item {{ 'active' if 'community_page' in request.endpoint else '' }}" href="{{ search }}">Search</a>
       <a class="item {{ 'active' if 'curation' in request.endpoint else '' }}" href="{{ curate }}">Curate
         ({{ pending_records }})</a>
-      <a class="item disabled" href="{{ members }}">Members</a>
+      <a class="item" href="{{ members }}">Members</a>
       <a class="item {{ 'active' if 'settings' in request.endpoint else '' }}" href="{{ settings }}">Settings</a>
       <a class="item disabled" href="/coming-soon">Statistics</a>
     </div>
