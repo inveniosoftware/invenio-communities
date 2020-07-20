@@ -32,11 +32,6 @@ COMMUNITY_MEMBER_TITLES = {
     'CURATOR': _('Curator')
 }
 
-COMMUNITY_MEMBER_MATCHES = {
-    'member': 'M',
-    'admin': 'A',
-    'curator': 'C'
-}
 
 class CommunityMemberRole(Enum):
     """Constants for possible roles of any given Community member."""
@@ -54,6 +49,10 @@ class CommunityMemberRole(Enum):
     def title(self):
         """Return human readable title."""
         return COMMUNITY_MEMBER_TITLES[self.name]
+
+    @classmethod
+    def from_str(cls, val):
+        return getattr(cls, val.upper())
 
 
 COMMUNITY_MEMBER_STATUS = {
@@ -118,13 +117,13 @@ class CommunityMember(db.Model, RecordMetadataBase):
         # TODO: should we also allow CommunityMembers without a request?
         nullable=True,
     )
-
-    """Invitation ID."""
+    """Request ID."""
 
     invitation_id = db.Column(
         db.String(255),
         nullable=True,
     )
+    """Invitation ID."""
 
     status = db.Column(
         ChoiceType(CommunityMemberStatus, impl=db.CHAR(1)),

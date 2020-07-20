@@ -82,7 +82,7 @@ class CommunityBase(Record, PIDRecordMixin):
             community.validate(**kwargs)
             community.model = cls.model_cls(id=id_, json=community)
             db.session.add(community.model)
-            # TODO: Move this logic to the controller
+            # TODO: Move this logic to the controller or in a signal?
             # Add default community Admin
             user = User.query.get(community['created_by'])
             CommunityMember.create(
