@@ -157,7 +157,6 @@ class CommunityMemberRequest(RequestBase):
     @property
     def is_closed(self):
         """Returns true or false depending on the state of the request."""
-        import ipdb; ipdb.set_trace()
         return self['state'] == 'CLOSED'
 
     def close_request(self):
@@ -310,14 +309,16 @@ class CommunityMember(RecordBaseAPI):
             )
         return links
 
-
     def as_dict(self, include_requests=False):
         res = {
             'id': str(self.id),
-            'status': str(self.status.title),
-            'role': str(self.role.title),
-            'user_id': getattr(self.user, 'id', 'Not a registered user'),
-            'links': self.dump_links()
+            'status': str(self.status.name.lower()),
+            'role': str(self.role.name.lower()),
+            'user_id': self.user.id if self.user else None,
+            # TODO: Shouldn't be visible publicly
+            'invitation_id': self.invitation_id,
+            # TODO: Generate these in the serializer
+            'links': self.dump_links(),
         }
         if self.request:
             if include_requests:
@@ -335,8 +336,10 @@ class CommunityMembersCollection:
         self.community = community
         # TODO: Make lazier (e.g. via property)
         self._query = _query or CommunityMemberModel.query.filter_by(
-            community_pid_id=self.community.pid.id).order_by(
-                CommunityMemberModel.created.desc())
+            community_pid_id=self.community.pid.id
+        ).order_by(
+            CommunityMemberModel.created.desc()
+        )
 
     def __len__(self):
         """Get number of community members."""
@@ -355,9 +358,8 @@ class CommunityMembersCollection:
         obj = next(self._it)
         return self.community_member_cls(obj.json, model=obj)
 
-    # TODO: implement if needed
-    # def __contains__(self, item):
-    #     pass
+    def __contains__(self, user):
+        return bool(self._query.filter_by(user=user).count())
 
     def __getitem__(self, user_id):
         """Get a specific community member by user ID."""
@@ -373,10 +375,11 @@ class CommunityMembersCollection:
         community_member = self[user.id]
         return community_member.delete()
 
-    def paginate(self, page=0, size=20):
+    def paginate(self, page=1, size=20):
         # TODO sorting default by created date
-        new_query = self._query[int(page)*int(size):int(size)]
-        return self.__class__(self.community, _query=new_query)
+        pagination = self._query.paginate(page=page, per_page=size)
+        return [self.community_member_cls(i.json, model=i)
+                for i in pagination.items]
 
     def as_dict(self, include_requests=False):
         res = defaultdict(list)
@@ -399,10 +402,6 @@ class CommunityMembersCollection:
 
     def aggregate(self, key):
         return self._query.group_by(key).count()
-
-    def is_admin(self, user):
-        community_administrators = self.filter(role='A', status='A')
-        return user.id in [admin.model.user_id for admin in community_administrators]
 
     def is_member(self, user):
         community_members = self.filter(status='A')
