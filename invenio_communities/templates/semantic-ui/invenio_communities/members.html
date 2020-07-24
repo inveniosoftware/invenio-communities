@@ -17,6 +17,11 @@
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
 
-<div id="app"></div>
+{%- set form_config = {"communityMember": community_member, "community": community} %}
+
+<div
+  id="app"
+  data-form-config='{{ form_config | tojson }}'>
+  ></div>
 
 {%- endblock page_body %}

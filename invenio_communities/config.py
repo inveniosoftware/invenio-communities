@@ -95,3 +95,15 @@ COMMUNITIES_DOMAINS = [
     {'text': 'Studies in Creative Arts and Writing', 'value': 'studies_in_creative_arts_and_writing'},
     {'text': 'Studies in Human Society', 'value': 'studies_in_human_society'},
 ]
+
+# Overwite to change the default indexer for community records
+# COMMUNITIES_INDEXER_RECEIVER = None
+
+# Overwrite to change generated URL for request management
+# COMMUNITIES_INVITATION_LINK_URL = None
+
+# Overwrite to change available community member roles
+# COMMUNITY_MEMBER_ROLES = None
+
+# Overwrite to change available community member status options
+# COMMUNITY_MEMBER_STATUS = None

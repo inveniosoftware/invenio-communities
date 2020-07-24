@@ -47,7 +47,7 @@
     </table>
   </div>
   <div class="thirteen wide column">
-    {%- set form_config = {"is_new": False, "domains": config.COMMUNITIES_DOMAINS} %}
+    {%- set form_config = {"is_new": False, "domains": config.COMMUNITIES_DOMAINS, "community": community} %}
     <div
       id="app"
       data-form-config='{{ form_config | tojson }}'>

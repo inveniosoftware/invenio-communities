@@ -17,11 +17,17 @@ from flask_babelex import gettext as _
 from flask_mail import Message
 from invenio_mail.tasks import send_email
 from invenio_pidstore.resolver import Resolver
+from invenio_accounts.models import User
 from invenio_records.api import Record
-from invenio_records_rest.utils import LazyPIDValue, obj_or_import_string
+from invenio_records_rest.utils import LazyPIDValue
+from invenio_base.utils import obj_or_import_string
 from six.moves.urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import cached_property
+
+from .members.api import CommunityMember
+from .members.models import CommunityMemberRole
+from .members.models import CommunityMemberStatus
 
 
 def format_url_template(url_template, absolute=True, **kwargs):
@@ -33,21 +39,22 @@ def format_url_template(url_template, absolute=True, **kwargs):
     # TODO: Find a more specific exception to raise here (or custom)
     if absolute:
         assert netloc
-
     path = path.format(**kwargs)
-    query = urlencode(
-        {k: v.format(**kwargs) for k, v in parse_qs(query).items()})
+    query = urlencode({
+        k: [v.format(**kwargs) for v in vals]
+        for k, vals in parse_qs(query).items()
+    }, doseq=True)
     return urlunsplit((scheme, netloc, path, query, fragment))
 
 
-def send_invitation_email(membership_request, recipients, community, token):
+def send_invitation_email(membership, recipients, community, token=b''):
     """Send email notification for a member invitation."""
     msg = Message(
         _("Community membership invitation"),
         sender=current_app.config.get('SUPPORT_EMAIL'),
         recipients=recipients,
     )
-    template = ("invitation_email.tpl" if membership_request.is_invite
+    template = ("invitation_email.tpl" if membership.request.is_invite
                 else "member_request_email.tpl")
     msg.body = render_template(
         "invenio_communities/{}".format(template),
@@ -56,11 +63,19 @@ def send_invitation_email(membership_request, recipients, community, token):
             seconds=current_app.config[
                 "COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN"]
         ).days,
-        membership_request=membership_request,
+        membership=membership,
         invitation_link=format_url_template(
-            # TODO: change to use value from config
-            '/communities/members/requests/{req_id}',
-            req_id=str(membership_request.id),
+            current_app.config.get(
+                'COMMUNITIES_INVITATION_LINK_URL',
+                '/communities/{com_id}/members/requests/{mem_id}?token={token}'
+            ),
+            mem_id=str(membership.id),
+            com_id=community["id"],
+            token=token.decode("utf-8")
+        ),
+        community_members_link=format_url_template(
+            '/communities/{com_id}/members?tab=pending',
+            com_id=community["id"]
         )
     )
     send_email.delay(msg.__dict__)
@@ -104,3 +119,14 @@ comid_url_converter = (
     'record_class="invenio_communities.api:Community",'
     'object_type="com")'
 )
+
+
+def set_default_admin(community):
+    """Set the Admin in a newly created community."""
+    user = User.query.get(community['created_by'])
+    CommunityMember.create(
+        community=community,
+        role=CommunityMemberRole.ADMIN,
+        user=user,
+        status=CommunityMemberStatus.ACCEPTED
+    )

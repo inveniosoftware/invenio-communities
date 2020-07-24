@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Formik, Form, FieldArray, Field } from "formik";
-import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
 
@@ -10,74 +8,54 @@ const RequestPage = () => {
   const [requestSuccess, setRequestSuccess] = useState(false);
   const [invitation, setInvitation] = useState(null);
 
-  var request_id = window.location.pathname.split('/')[4];
+  const domContainer = document.getElementById("app");
+  const formConfig = JSON.parse(domContainer.dataset.formConfig);
 
-  var declineInvitation = () => {
-    var payload = {'response': 'decline'}
+  var community = formConfig.community
+  var communityID = formConfig.community.id;
+  var membership = formConfig.membership;
+  var token = formConfig.token;
+
+  var handleInvitation = (action) => {
+    var payload = { 'token': token }
     axios
-    .post(`/api/communities/members/requests/${request_id}`, payload)
-    .then(response => {
-      setRequestSuccess(true)
-    })
-    .catch(error => {
-      // TODO: handle nested fields
-      if (error) {
-        setGlobalError(error)
-      }
-      console.log(error.response.data);
-    })
-}
-
-var acceptInvitation = () => {
-  var payload = {'response': 'accept'}
-  axios
-  .post(`/api/communities/members/requests/${request_id}`, payload)
-  .then(response => {
-    setRequestSuccess(true)
-  })
-  .catch(error => {
-    // TODO: handle nested fields
-    if (error) {
-      setGlobalError(error)
-    }
-    console.log(error.response.data);
-  })
-}
-
-  useEffect(() =>{
-    fetch(`/api/communities/members/requests/${request_id}`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          setInvitation(result);
-        },
-        (error) => {
+      .post(`/api/communities/${communityID}/members/requests/${membership.id}/${action}`, payload)
+      .then(response => {
+        setRequestSuccess(true)
+      })
+      .catch(error => {
+        // TODO: handle nested fields
+        if (error) {
+          setGlobalError(error)
         }
-      )
-  console.log(invitation)
-      }, [])
-  if (!invitation){
-    return ('Give us just a second.')
+        console.log(error.response.data);
+      })
   }
-  else{
-    return (
-      <div className="container">
-        <h2>You have been invited to join the Community:<b> {invitation.community_name}</b> as a <b>{invitation.role}</b></h2>
-        {requestSuccess ? (//maybe redirect to community page
-          <div className="help-block">All is good</div>
-        ) :
+
+
+  return (
+    <div className="ui container">
+      <h2>You have been invited to join the Community:<b> "{community.title}"</b> as a(n) <b>{membership.role}</b></h2>
+      {requestSuccess ? (//maybe redirect to community page
+        <div className="help-block">All is good</div>
+      ) :
         <div>
-        <button type="button" onClick={declineInvitation}>Decline</button>
-        <button type="button" onClick={acceptInvitation}>Accept</button>
+          <div class="ui buttons">
+            <button class="ui positive button" onClick={() =>handleInvitation('accept')}>Accept</button>
+            <div class="or"></div>
+            <button class="ui button" onClick={() =>handleInvitation('reject')}>Decline</button>
+          </div>
         </div>
-        }
-        {globalError ? (
-          <div className="help-block">{globalError}</div>
-        ) : null}
-        </div>
-    )}}
+      }
+      {globalError ? (
+        <div className="help-block">{globalError}</div>
+      ) : null}
+    </div>
+  )
+}
 
 
 ReactDOM.render(<RequestPage />, document.getElementById("app"));
+
 
 export default RequestPage;

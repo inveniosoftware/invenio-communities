@@ -147,6 +147,18 @@ class RecordCommunitiesMixin(PIDRecordMixin):
     #     pass
 
 
+class ModelProxyProperty(object):
+
+    def __init__(self, name):
+        self.name = name
+
+    def __get__(self, obj, objtype=None):
+        return getattr(obj.model, self.name)
+
+    def __set__(self, obj, val):
+        setattr(obj.model, self.name, val)
+
+
 class CommunityRecord(RecordBaseAPI):
     """Community-record API class."""
 
@@ -169,15 +181,7 @@ class CommunityRecord(RecordBaseAPI):
         else:
             return None
 
-    @property
-    def status(self):
-        """Get community record relationship status."""
-        return self.model.status if self.model else None
-
-    @status.setter
-    def status(self, new_status):
-        """Set community record relationship status."""
-        self.model.status = new_status
+    user_id = ModelProxyProperty('status')
 
     @property
     def community(self):

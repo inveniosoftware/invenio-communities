@@ -16,8 +16,12 @@
 
 
 {%- block page_body %}
+{%- set form_config = {"community": community, "membership": membership, "token": token} %}
 
-<div id="app"></div>
+<div
+  id="app"
+  data-form-config='{{ form_config | tojson }}'>
+  ></div>
 
 {%- endblock page_body %}
 

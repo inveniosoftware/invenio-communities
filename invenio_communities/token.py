@@ -41,8 +41,8 @@ class TokenMixin(object):
 
             # Compare expected data with data in token.
             if expected_value:
-                    if expected_value != data["id"]:
-                        return None
+                if expected_value != data["id"]:
+                    return None
             return data
         except BadData:
             return None

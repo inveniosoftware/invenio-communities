@@ -76,6 +76,10 @@ class CommunityMemberStatus(Enum):
         """Return human readable title."""
         return COMMUNITY_MEMBER_STATUS[self.name]
 
+    @classmethod
+    def from_str(cls, val):
+        return getattr(cls, val.upper())
+
 
 class CommunityMember(db.Model, RecordMetadataBase):
     """Represent a community member role."""
@@ -141,8 +145,8 @@ class CommunityMember(db.Model, RecordMetadataBase):
     request = db.relationship(Request)
 
     @classmethod
-    def create(cls, community_pid_id, request_id=None, role='M', status='P', user_id=None,
-               invitation_id=None, json=None):
+    def create(cls, community_pid_id, request_id=None, role='M', status='P',
+               user_id=None, invitation_id=None, json=None):
         """Create Community Membership Role."""
         try:
             with db.session.begin_nested():

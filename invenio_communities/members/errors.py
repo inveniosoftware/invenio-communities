@@ -11,7 +11,6 @@
 from ..errors import CommunitiesError
 
 
-# TODO: Need to be tested
 class CommunityMemberAlreadyExists(CommunitiesError):
     """Community membership already exists error."""
 
