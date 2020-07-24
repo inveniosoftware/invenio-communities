@@ -37,6 +37,9 @@ api_blueprint = Blueprint(
 member_role_validator = validate.OneOf(
     [c.name.lower() for c in CommunityMemberRole])
 
+member_status_validator = validate.OneOf(
+    [c.name.lower() for c in CommunityMemberStatus])
+
 
 class ListResource(MethodView):
     """Resource for creating, listing and removing community memberships."""
@@ -63,9 +66,10 @@ class ListResource(MethodView):
     def post(self, comid=None, community=None, email=None, role=None,
              comment=None, **kwargs):
         """Join a community or invite a user to it."""
-        request_user = current_user
+        request_user = User.query.get(int(current_user.get_id()))
         # TODO: see if there's a marshmallow field for this
-        role = CommunityMemberRole.from_str(role)
+        if role:
+            role = CommunityMemberRole.from_str(role)
         # TODO add a comment in the codeflow for the request
         mem_req = CommunityMemberRequest.create(owner=request_user)
         # TODO: check if the user comparison here works
@@ -90,9 +94,15 @@ class ListResource(MethodView):
             if email:
                 abort(403, 'You need to be a community administrator to '
                            'invite members to this community')
+            if role:
+                abort(403, 'Selecting a role is not possible when requesting'
+                           ' to join a community')
             try:
                 comm_mem = community.members.add(
-                    mem_req, status='P', user=request_user)
+                    mem_req,
+                    status=CommunityMemberStatus.PENDING,
+                    user=request_user
+                )
             # TODO: avoid exceptions
             except CommunityMemberAlreadyExists:
                 abort(400, 'This is an already existing relationship.')
@@ -100,20 +110,29 @@ class ListResource(MethodView):
         if comment:
             mem_req.add_comment(request_user.id, comment)
 
-        mts = MembershipTokenSerializer()
-        inv_id = comm_mem.invitation_id
-        token = mts.create_token(inv_id)
-
-        #send_invitation_email(mem_req, email, community, token)
+        if email:
+            mts = MembershipTokenSerializer()
+            inv_id = comm_mem.invitation_id
+            token = mts.create_token(inv_id)
+            send_invitation_email(comm_mem, [email], community, token)
+        else:
+            emails = []
+            admins = community.members.filter(
+                role=CommunityMemberRole.ADMIN,
+                status=CommunityMemberStatus.ACCEPTED)
+            for admin in admins:
+                emails.append(admin.user.email)
+                send_invitation_email(comm_mem, emails, community)
 
         db.session.commit()
         return comm_mem.as_dict(), 201
 
     get_args = {
-        'status': fields.List(fields.Raw(
+        #TODO make list when we manage to integrate the in operator
+        'status': fields.Str(
             location='querystring',
-            required=False
-        )
+            required=False,
+            validate=member_status_validator
         ),
         'role': fields.List(fields.Raw(
             location='querystring',
@@ -128,46 +147,37 @@ class ListResource(MethodView):
             location='querystring',
             required=False
         ),
+        'include_requests': fields.Bool(
+            location='querystring',
+            required=False
+        ),
     }
 
     @use_kwargs(get_args)
     @pass_community
     @login_required
-    def get(self, comid=None, community=None, status=None, role=None, page=1, size=20):
+    def get(self, comid=None, community=None,
+            status='accepted', role=None, page=1, size=20,
+            include_requests=False):
         """List the community members."""
-        if current_user not in community.members:
+        user_id = int(current_user.get_id())
+        if user_id not in community.members.filter(
+                status=CommunityMemberStatus.ACCEPTED):
             abort(404)
+        status = CommunityMemberStatus.from_str(status)
+        if status != CommunityMemberStatus.ACCEPTED and user_id not in \
+                community.members.filter(
+                    role=CommunityMemberRole.ADMIN):
+            abort(403, 'Only Admin members can see this information')
+
         members = community.members
         if status:
             members = members.filter(status=status)
         if role:
             members = members.filter(role=role)
         member_page = members.paginate(page=page, size=size)
-        return jsonify({
-            'hits': {
-                'total': len(members),
-                'hits': [cm.as_dict() for cm in member_page]
-            },
-            # TODO: Calculate these
-            'aggregations': {
-                'role': [],
-                'status': [],
-            },
-        }), 200
-
-    @pass_community
-    @login_required
-    def delete(self, comid=None, community=None, membership_id=None):
-        """Remove a member from a community."""
-        # TODO: maybe make this into a decorator?
-        request_user = int(current_user.get_id())
-        if request_user not in community.members.filter(role='A'):
-            abort(404)
-        community_member = CommunityMember.get_by_id(
-            membership_id).delete()
-        db.session.commit()
-        return 'Succesfully removed', 204
-
+        return members.as_dict(
+            include_requests=include_requests, result_iterator=member_page), 200
 
 
 class CommunityRequestList(MethodView):
@@ -176,33 +186,16 @@ class CommunityRequestList(MethodView):
     @login_required
     def get(self, comid=None, community=None):
         """List the community members requests."""
-        request_user = User.query.get(int(current_user.get_id()))
+        user_id = int(current_user.get_id())
         # TODO: check when making the UI
-        if request_user in community.members.filter(role='A'):
+        if user_id in community.members.filter(
+                role=CommunityMemberRole.ADMIN,
+                status=CommunityMemberStatus.ACCEPTED):
             community_members_json = community.members.as_dict(
                 include_requests=True)
         else:
             abort(404)
-        return jsonify(ui_members), 200
-
-
-class CommunityRequestsResource(MethodView):
-    """Resource to list community membership requests."""
-
-    # TODO: this could be included in the other get with more parameters
-    @pass_community
-    @login_required
-    def get(self, comid=None, community=None, outgoing_only=False,
-            incoming_only=False, page_size=20, page=1):
-        # TODO: pagination
-        """List all the community members."""
-        request_user = User.query.get(int(current_user.get_id()))
-        if request_user not in community.members.filter(role='A'):
-            abort(404)
-        community_requests_json = community.members.filter(
-            status='P').as_dict(include_requests=True)
-        return jsonify(community_requests_json), 200
-
+        return jsonify(community_members_json), 200
 
 class MembershipRequestResource(MethodView):
     """Resource to view and handle membership requests."""
@@ -211,12 +204,12 @@ class MembershipRequestResource(MethodView):
     @login_required
     def get(self, comid=None, community=None, membership_id=None):
         """Get the information for a membership request."""
-        request_user = User.query.get(int(current_user.get_id()))
+        user_id = int(current_user.get_id())
         community_member = CommunityMember.get_by_id(
             membership_id)
-        if request_user not in community.members.filter(
+        if user_id not in community.members.filter(
                 role=CommunityMemberRole.ADMIN) \
-                and request_user.id != community_member.user.id:
+                and user_id.id != community_member.user.id:
             abort(404)
         response_object = community_member.as_dict(include_requests=True)
         # response_object = {}
@@ -238,15 +231,17 @@ class MembershipRequestResource(MethodView):
     @login_required
     def put(self, comid=None, community=None, membership_id=None,
             role=None):
-        """Modify a membership request."""
-        request_user = User.query.get(int(current_user.get_id()))
+        """Modify a membership role."""
+        user_id = int(current_user.get_id())
         community_member = CommunityMember.get_by_id(
             membership_id)
-        if request_user not in community.members.filter(
+        if community_member is None:
+            abort(404)
+        if user_id not in community.members.filter(
                 role=CommunityMemberRole.ADMIN):
             abort(404)
 
-        community_member.role = role
+        community_member.role = CommunityMemberRole.from_str(role)
         db.session.commit()
         # return jsonify(community_member.as_dict()), 200
         return 'Succesfully modified invitation.', 200
@@ -261,22 +256,27 @@ class MembershipRequestResource(MethodView):
     @use_kwargs(del_args)
     @pass_community
     @login_required
-    def delete(self, comid=None, community=None, membership_id=None, token=None):
+    def delete(self, comid=None, community=None, membership_id=None):
         """Cancel (remove) a membership request."""
         # TODO transfer into delete Member endpoint
-        request_user = User.query.get(int(current_user.get_id()))
+        # TODO dont allow last admin to leave
+        user_id = int(current_user.get_id())
         community_member = CommunityMember.get_by_id(
             membership_id)
-        if not community_member:
+        if community_member is None:
             abort(404)
-        if community_member.request.is_closed:
-            abort(404)
-        if community_member.request.is_invite:
-            if request_user.id != community_member.request.user_id:
-               abort(404)
-        elif request_user not in community.members.filter(
-                role=CommunityMemberRole.ADMIN):
-            abort(404)
+        if not community_member.request.is_closed:
+            if community_member.request.is_invite:
+                if user_id.id != community_member.request.user_id:
+                    abort(404)
+            elif user_id not in community.members.filter(
+                    role=CommunityMemberRole.ADMIN):
+                abort(404)
+        else:
+            if user_id not in community.members.filter(
+                    role=CommunityMemberRole.ADMIN) or \
+                    user_id != community_member.user_id:
+                abort(404)
 
         community_member.delete()
         db.session.commit()
@@ -295,7 +295,7 @@ class MembershipRequestHandlingResource(MethodView):
             location='json',
             required=False,
         ),
-        'message': fields.Raw(
+        'comment': fields.Raw(
             location='json',
             required=False,
         )
@@ -305,10 +305,9 @@ class MembershipRequestHandlingResource(MethodView):
     @pass_community
     @login_required
     def post(self, comid=None, community=None, membership_id=None, action=None,
-             role=None, message=None, token=None):
+             role=None, comment=None, token=None):
         """Add a comment."""
         request_user = User.query.get(int(current_user.get_id()))
-
         #
         # Controller
         #
@@ -323,33 +322,67 @@ class MembershipRequestHandlingResource(MethodView):
         inv_id = community_member.invitation_id
 
         if community_member.request.is_invite:
-           if not token or not mts.validate_token(
-                token, expected_value=inv_id):
-               abort(404)
+            if not token or not mts.validate_token(
+                    token, expected_value=inv_id):
+                abort(404)
         elif request_user not in community.members.filter(
                 role=CommunityMemberRole.ADMIN):
             abort(404)
 
         if action == 'accept':
-            community_member.status = 'A'
+            community_member.status = CommunityMemberStatus.ACCEPTED
+            if community_member.invitation_id:
+                community_member.invitation_id = 'Cleaned'
             if community_member.request.is_invite:
                 community_member.user_id = request_user.id
             if role and request_user in community.members.filter(
-                    CommunityMemberRole.ADMIN):
+                    role=CommunityMemberRole.ADMIN):
                 community_member.role = CommunityMemberRole.from_str(role)
             else:
                 abort(400)
             community_member.request.close_request()
             # TODO: this state feels awkward
         elif action == 'reject':
-            community_member.status = 'R'
+            #TODO check if the invitation_id is properly cleaned up
+            #TODO we need a value in the invitation_id for the history of the reqeusts direction
+            if community_member.invitation_id:
+                community_member.invitation_id = 'Cleaned'
+            community_member.status = CommunityMemberStatus.REJECTED
             community_member.request.close_request()
-        if message:
-            community_member.request.add_comment(request_user.id, message)
+        if comment:
+            community_member.request.add_comment(request_user.id, comment)
         community_member.request.commit()
         db.session.commit()
         # TODO response?
         return jsonify(community_member.as_dict()), 200
+
+    get_args = {
+        'token': fields.Raw(
+            location='query',
+            required=False,
+        )}
+
+    @use_kwargs(get_args)
+    @pass_community
+    @login_required
+    def get(self, comid=None, community=None, membership_id=None, token=None):
+        request_user = User.query.get(int(current_user.get_id()))
+        #
+        # Controller
+        #
+        community_member = CommunityMember.get_by_id(
+            membership_id)
+
+        mts = MembershipTokenSerializer()
+        inv_id = community_member.invitation_id
+
+        if request_user not in community.members.filter(
+                role=CommunityMemberRole.ADMIN) and \
+            (not token or not mts.validate_token(
+                    token, expected_value=inv_id)):
+            abort(404)
+
+        return jsonify(community_member.as_dict(include_requests=True)), 200
 
 
 api_blueprint.add_url_rule(
@@ -358,7 +391,7 @@ api_blueprint.add_url_rule(
 )
 
 api_blueprint.add_url_rule(
-    '/communities/<{pid}:pid_value>/requests/members'.format(pid=comid_url_converter),
+    '/communities/<{pid}:pid_value>/members/requests'.format(pid=comid_url_converter),
     view_func=CommunityRequestList.as_view('community_members_requests_api'),
 )
 
@@ -371,14 +404,6 @@ api_blueprint.add_url_rule(
         'community_requests_handling_api'),
 )
 
-api_blueprint.add_url_rule(
-    '/communities/<{pid}:pid_value>'
-    '/members/requests/<membership_id>'.format(pid=comid_url_converter),
-    view_func=CommunityRequestsResource.as_view(
-        'community_requests_management_api'),
-)
-
-# TODO: the community pid is not needed in these endpoints
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>/members/requests/<membership_id>'.format(
         pid=comid_url_converter),
@@ -394,25 +419,54 @@ ui_blueprint = Blueprint(
 )
 
 
-@login_required
 @ui_blueprint.route(
     '/communities/<{}:pid_value>/members'.format(comid_url_converter))
 @pass_community
+@login_required
 def members(comid=None, community=None):
     """Members of a community."""
     pending_records = \
-        len(community.members.filter(status='P'))
-
+        len(community.members.filter(status=CommunityMemberStatus.PENDING))
+    community_member_obj = community.members.get_user_membership(
+        int(current_user.get_id()),
+        status=CommunityMemberStatus.ACCEPTED
+    )
+    if community_member_obj is not None:
+        community_member = community_member_obj.as_dict()
+    else:
+        community_member = {}
     return render_template(
         'invenio_communities/members.html',
         community=community,
         comid=comid,
-        pending_records=pending_records
+        pending_records=pending_records,
+        community_member=community_member
     )
 
 
+@ui_blueprint.route(
+    '/communities/<{}:pid_value>/members/requests/<membership_id>'.format(
+        comid_url_converter))
+@pass_community
 @login_required
-@ui_blueprint.route('/communities/members/requests/<membership_id>')
-def requests(membership_id):
+def requests(comid=None, community=None, membership_id=None):
     """Requests of communities."""
-    return render_template('invenio_communities/request.html')
+    token = request.args.get('token', '')
+    community_member = CommunityMember.get_by_id(membership_id)
+    if community_member is None:
+        abort(404)
+    mts = MembershipTokenSerializer()
+    inv_id = community_member.invitation_id
+
+    if not community_member.request.is_invite:
+        abort(404)
+    if not token or not mts.validate_token(
+            token, expected_value=inv_id):
+        abort(404)
+    return render_template(
+        'invenio_communities/request.html',
+        comid=comid,
+        community=community,
+        membership=community_member.as_dict(include_requests=True),
+        token=token
+    )

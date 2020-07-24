@@ -16,7 +16,7 @@ def comid_minter(record_uuid, data):
     """Mint a community PID."""
     assert data.get('id')
     return PersistentIdentifier.create(
-        pid_type='comid', pid_value=data['id'],
+        pid_type='comid', pid_value=data['id'].lower(),
         object_type='com', object_uuid=record_uuid,
         status=PIDStatus.REGISTERED
     )

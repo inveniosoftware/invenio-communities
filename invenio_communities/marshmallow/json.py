@@ -45,7 +45,6 @@ def load_creator(_, context):
     old_data = context.get('record')
     if old_data:
         return old_data.get('created_by', missing)
-    # TODO a validation error must be raised in each case
     return context.get('user_id', missing)
 
 

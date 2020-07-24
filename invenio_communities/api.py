@@ -11,7 +11,6 @@
 from __future__ import absolute_import, print_function
 
 from flask import current_app
-from invenio_accounts.models import User
 from invenio_db import db
 from invenio_jsonschemas import current_jsonschemas
 from invenio_pidstore.models import PersistentIdentifier
@@ -21,7 +20,7 @@ from werkzeug.local import LocalProxy
 
 from invenio_communities.models import CommunityMetadata
 
-from .members.api import CommunityMember
+from .signals import community_created
 
 
 # TODO: Move somewhere appropriate (`invenio-records-pidstore`)
@@ -82,16 +81,7 @@ class CommunityBase(Record, PIDRecordMixin):
             community.validate(**kwargs)
             community.model = cls.model_cls(id=id_, json=community)
             db.session.add(community.model)
-            # TODO: Move this logic to the controller or in a signal?
-            # Add default community Admin
-            user = User.query.get(community['created_by'])
-            CommunityMember.create(
-                community=community,
-                role='A',
-                user=user,
-                status='A'
-            )
-
+            community_created.send(community)
         return community
 
     def clear(self):
@@ -110,6 +100,6 @@ class CommunityBase(Record, PIDRecordMixin):
         return self
 
 
-# TODO: Investigate if there's a cleaner/better way
+# TODO: Move to `proxies` and expose as `invenio_communities.Community`
 Community = LocalProxy(
     lambda: current_app.extensions['invenio-communities'].community_cls)

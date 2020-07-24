@@ -8,7 +8,7 @@
 #}
 You have been invited to the following community:
 
-{{ community["title"] }}
+{{ community["title"] }} as a {{ membership.role }}
 
 Click on the following link to respond to the invitation:
 
