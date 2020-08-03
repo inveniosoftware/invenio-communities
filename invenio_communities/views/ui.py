@@ -24,7 +24,7 @@ from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
 
 from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
-    EditCommunityForm, SearchForm
+    EditCommunityForm, RecaptchaCommunityForm, SearchForm
 from invenio_communities.models import Community, FeaturedCommunity
 from invenio_communities.proxies import current_permission_factory
 from invenio_communities.utils import Pagination, render_template_to_string
@@ -166,7 +166,12 @@ def generic_item(community, template, **extra_ctx):
 @login_required
 def new():
     """Create a new community."""
-    form = CommunityForm(formdata=request.values)
+    if current_app.config.get('RECAPTCHA_PUBLIC_KEY') and \
+            current_app.config.get('RECAPTCHA_PRIVATE_KEY'):
+        form_cls = RecaptchaCommunityForm
+    else:
+        form_cls = CommunityForm
+    form = form_cls(formdata=request.values)
 
     ctx = mycommunities_ctx()
     ctx.update({
@@ -179,6 +184,7 @@ def new():
         data = copy.deepcopy(form.data)
 
         community_id = data.pop('identifier')
+        data.pop('recaptcha', None)
         del data['logo']
 
         community = Community.create(

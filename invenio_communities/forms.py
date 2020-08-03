@@ -11,7 +11,7 @@
 from __future__ import absolute_import, print_function
 
 from flask_babelex import gettext as _
-from flask_wtf import Form
+from flask_wtf import FlaskForm, Form, Recaptcha, RecaptchaField
 from wtforms import FileField, HiddenField, StringField, TextAreaField, \
     validators
 
@@ -143,6 +143,13 @@ class CommunityForm(Form):
                 raise validators.ValidationError(
                     _('The identifier already exists. '
                       'Please choose a different one.'))
+
+
+class RecaptchaCommunityForm(CommunityForm):
+    """Community creation form with reCAPTCHA field."""
+
+    recaptcha = RecaptchaField(validators=[
+        Recaptcha(message=_("Please complete the reCAPTCHA."))])
 
 
 class EditCommunityForm(CommunityForm):
