@@ -25,11 +25,15 @@ tests_require = [
     'invenio-mail>=1.0.2',
     'invenio-oaiserver>=1.0.3',
     'isort>=4.3.3',
+    'jsonresolver>=0.2.1,<0.3.0',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
     'pytest-cov>=2.7.1',
     'pytest-pep8>=1.0.6',
     'pytest>=4.6.4,<5.0.0',
+    'SQLAlchemy-Utils>=0.33.1,<0.36',  # to keep Python 2 support
+    'werkzeug>=0.15.4,<1.0.0',
+    'email-validator>=1.0.5',
 ]
 
 invenio_search_version = '1.2.2'
@@ -79,16 +83,17 @@ setup_requires = [
 install_requires = [
     'bleach>=2.1.3',
     'Flask-BabelEx>=0.9.3',
-    'Flask>=0.11.1',
+    'Flask>=1.0.2',
+    'Flask-Breadcrumbs>=0.4.0,<0.5.0',
     'invenio-access>=1.1.0',
-    'invenio-accounts>=1.1.0',
+    'invenio-accounts>=1.1.1,<1.2.0',
     'invenio-assets>=1.0.0',
     'invenio-files-rest>=1.0.0a23',
     'invenio-indexer>=1.0.2',
     'invenio-pidstore>=1.0.0',
     'invenio-records>=1.2.0',
-    'invenio-rest[cors]>=1.0.0',
-    'marshmallow>=2.15.0,<3',
+    'invenio-rest[cors]>=1.0.0,<1.2.0',
+    'marshmallow>=2.15.2,<3',
 ]
 
 packages = find_packages()
