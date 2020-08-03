@@ -12,6 +12,7 @@ from __future__ import absolute_import, print_function
 
 import uuid
 
+from flask import current_app
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.schemas import Nested, StrictKeysMixin
 from invenio_records_rest.schemas.fields import DateString, GenFunction, \
@@ -21,7 +22,6 @@ from werkzeug.local import LocalProxy
 
 from invenio_communities.api import Community
 from invenio_communities.proxies import current_communities
-from flask import current_app
 
 
 def pid_from_context_or_rec(data_value, context, **kwargs):
