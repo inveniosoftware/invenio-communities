@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 2.0.6 (released 2020-08-03)
+-----------------------------------
+
+- Uses ``react-invenio-forms``.
+- Adds config-based domains.
+
 Version 2.0.5 (released 2020-06-09)
 -----------------------------------
 
