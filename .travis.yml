@@ -32,7 +32,6 @@ env:
 
 python:
   - "2.7"
-  - "3.5"
 
 matrix:
   fast_finish: true
