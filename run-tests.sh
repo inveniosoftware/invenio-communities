@@ -7,7 +7,7 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-isort -rc -c -df &&
+isort invenio_communities tests --check-only --diff &&
 check-manifest --ignore ".travis-*"
 
 # TODO: Enable when tests are in place
