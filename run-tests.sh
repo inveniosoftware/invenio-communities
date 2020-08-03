@@ -9,4 +9,4 @@
 pydocstyle invenio_communities tests && \
 isort -rc -c -df && \
 check-manifest --ignore ".travis-*" && \
-python setup.py test
+pytest
