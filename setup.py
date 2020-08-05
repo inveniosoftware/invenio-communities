@@ -18,35 +18,41 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'check-manifest>=0.25',
-    'coverage>=4.5.3',
-    'invenio-db>=1.0.3',
-    'isort>=4.3.3',
-    'mock>=1.3.0',
-    'pydocstyle>=1.0.0',
-    'pytest-cov>=2.7.1',
-    'pytest-pep8>=1.0.6',
-    'pytest>=4.6.4,<5.0.0',
+    'pytest-invenio>=1.3.2,<2.0.0',
+    'invenio-app>=1.3.0,<2.0.0'
 ]
 
+invenio_db_version = '>=1.0.4,<2.0.0'
 invenio_search_version = '1.2.2'
 
 extras_require = {
     'docs': [
         'Sphinx>=1.5.1',
     ],
+    # Elasticsearch versions
     'elasticsearch6': [
         'invenio-search[elasticsearch6]>={}'.format(invenio_search_version),
     ],
     'elasticsearch7': [
         'invenio-search[elasticsearch7]>={}'.format(invenio_search_version),
     ],
+    # Databases
+    'mysql': [
+        'invenio-db[mysql,versioning]{}'.format(invenio_db_version),
+    ],
+    'postgresql': [
+        'invenio-db[postgresql,versioning]{}'.format(invenio_db_version),
+    ],
+    'sqlite': [
+        'invenio-db[versioning]{}'.format(invenio_db_version),
+    ],
     'tests': tests_require,
 }
 
 extras_require['all'] = []
 for name, reqs in extras_require.items():
-    if name in ('elasticsearch6', 'elasticsearch7'):
+    if name in ('elasticsearch6', 'elasticsearch7',
+                'mysql',' postgresql', 'sqlite'):
         continue
     extras_require['all'].extend(reqs)
 
@@ -61,6 +67,7 @@ install_requires = [
     'invenio-accounts>=1.1.0',
     'invenio-assets>=1.2.2',
     'invenio-indexer>=1.1.1',
+    'invenio-jsonschemas>=1.1.0,<2.0.0',
     'invenio-pidstore>=1.1.0',
     'invenio-records-rest>=1.6.0',
     'invenio-records>=1.2.0',

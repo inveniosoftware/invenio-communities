@@ -6,8 +6,8 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Pytest configuration.
+"""Community module tests."""
 
-See https://pytest-invenio.readthedocs.io/ for documentation on which test
-fixtures are available.
-"""
+# test create member
+
+# test delete member
