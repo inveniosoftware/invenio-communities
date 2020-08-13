@@ -30,9 +30,9 @@ const COMMUNITY_ROLES = [
 
 
 const CommunityMembers = () => {
+  const [requestSuccess, setRequestSuccess] = useState(false);
   const [globalError, setGlobalError] = useState(null);
   const [communityMembers, setCommunityMembers] = useState(null);
-  const [communityRequests, setCommunityRequests] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
   const [pageAccess, setPageAccess] = useState(false);
 
@@ -55,7 +55,6 @@ const CommunityMembers = () => {
 
 
   var manageRequest = (membershipID, role, action, message = null) => {
-    console.log(communityRequests)
     var payload = { 'role': role }
     if (message) {
       payload['message'] = message;
@@ -77,7 +76,6 @@ const CommunityMembers = () => {
 
 
   var modifyMembership = (membershipID, role) => {
-    console.log(communityRequests)
     var payload = { 'role': role }
     axios
       .put(`/api/communities/${communityID}/members/requests/${membershipID}`,
@@ -123,10 +121,13 @@ const CommunityMembers = () => {
     else {
       includeRequests = false;
     }
-    fetch(`/api/communities/${communityID}/members?status=${status}&include_requests=${includeRequests}`)
+    fetch(`/api/communities/${communityID}/members/${status}?include_requests=${includeRequests}`)
       .then(res => {
         if (res.status === 200) {
           setPageAccess(true)
+        }
+        else if (res.status === 403){
+          setCommunityMembers(true);
         }
         return res.json();
       })
@@ -163,7 +164,11 @@ const CommunityMembers = () => {
   else if (!pageAccess) {
     return (
       <div class="container ui">
-        <button class="ui positive button" onClick={joinCommunity}>Join this community</button>
+        {requestSuccess ?(
+          <p>You have succesfully requested to join the community</p>
+        ): (
+          <button class="ui positive button" onClick={joinCommunity}>Join this community</button>
+        )}
       </div>
     );
   }
@@ -173,9 +178,9 @@ const CommunityMembers = () => {
         {userRole === 'admin' ? (
           <div class="ui top secondary pointing menu">
             <a class={activeTab === 'accepted' ? 'active item' : 'item'} onClick={() => changeTab('accepted')}>Members</a>
-            <a class={activeTab === 'pending' ? 'active item' : 'item'} onClick={() => changeTab('pending')}>Pending Requests</a>
-            <a class={activeTab === 'rejected' ? 'active item' : 'item'} onClick={() => changeTab('rejected')}>Rejected Requests</a>
-            <a class={activeTab === 'addition' ? 'active item' : 'item'} onClick={() => changeTab('addition')}>Add a member</a>
+            <a class={activeTab === 'pending' ? 'active item' : 'item'} onClick={() => changeTab('pending')}>Pending Memberships</a>
+            <a class={activeTab === 'rejected' ? 'active item' : 'item'} onClick={() => changeTab('rejected')}>Rejected Memberships</a>
+            <a class={activeTab === 'addition' ? 'active item' : 'item'} onClick={() => changeTab('addition')}>Invite Member</a>
           </div>) :
           null}
         {(() => {
@@ -248,8 +253,8 @@ const CommunityMembers = () => {
                         <td>{member.request.request_type}</td>
                         <td>{member.request.comments.map((comment, index) => (
                           <p key={index}>{comment.message}</p>))}</td>
-                        <td><button onClick={() => manageRequest(member.id, member.role, 'accept')}><i class="ui check icon"></i></button></td>
-                        <td><button onClick={() => manageRequest(member.id, member.role, 'reject')}><i class="ui ban icon"></i></button></td>
+                        <td><button disabled={member.request.request_type==='invitation'} onClick={() => manageRequest(member.id, member.role, 'accept')}><i class="ui check icon"></i></button></td>
+                        <td><button disabled={member.request.request_type==='invitation'} onClick={() => manageRequest(member.id, member.role, 'reject')}><i class="ui ban icon"></i></button></td>
                       </tr>
                     ))}
                   </tbody>
@@ -263,6 +268,7 @@ const CommunityMembers = () => {
                     <tr>
                       <th>Username or Email</th>
                       <th>Comments</th>
+                      {userRole === 'admin' ? ( <th>Remove request</th>): null}
                     </tr>
                   </thead>
                   <tbody>
@@ -271,6 +277,9 @@ const CommunityMembers = () => {
                         <td>{member.username || member.email || member.user_id}</td>
                         <td>{member.request.comments.map((comment, index) => (
                           <p>{comment.message}</p>))}</td>
+                        {userRole === 'admin' ? (
+                        <td><button onClick={() => removeMembership(member.id)}><i class="ui ban icon"></i></button></td>
+                        ):null}
                       </tr>
                     ))}
                   </tbody>

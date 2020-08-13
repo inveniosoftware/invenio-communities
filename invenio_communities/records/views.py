@@ -10,13 +10,15 @@
 
 import uuid
 
-from flask import Blueprint, abort, jsonify, render_template
+from functools import wraps
+from flask import Blueprint, abort, jsonify, render_template, request
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from invenio_db import db
 from invenio_indexer.api import RecordIndexer
 from sqlalchemy.exc import SQLAlchemyError
 from webargs import fields
+from invenio_pidstore.errors import PIDDoesNotExistError
 
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord, CommunityRecordsCollection, Record, \
@@ -34,6 +36,33 @@ ui_blueprint = Blueprint(
     __name__,
     template_folder='../templates',
 )
+def pass_record(func=None):
+    """Decorator to retrieve community membership."""
+    def inner(*args, record_pid=None, **kwargs):
+@login_required
+@community_permission('can_list_community_inclusions')
+    """Curate page for community record inclusions."""
+            record_pid, record = CommunityRecord.record_cls.resolve(record_pid)
+        except PIDDoesNotExistError:
+            abort(404)
+        return func(*args, record_pid=record_pid, record=record, **kwargs)
+    return inner
+
+
+def pass_request(func=None):
+    """Decorator to retrieve community membership."""
+    @wraps(func)
+    def inner(*args, **kwargs):
+        del kwargs['request_id']
+        request_id = request.view_args['request_id']
+        inclusion_request = CommunityInclusionRequest.get_record(request_id)
+        if inclusion_request is None:
+            abort(404)
+        return func(*args, inclusion_request=inclusion_request, **kwargs)
+    return inner
+
+
+def community_permission(
 
 
 @ui_blueprint.route(
@@ -62,9 +91,10 @@ api_blueprint = Blueprint(
     template_folder='../templates',
 )
 
-
+    @pass_record
+    def post(self, comid=None, community=None, record=None, record_pid=None,
 class ListResource(MethodView):
-    """Resource for listing and creating inclusion requests."""
+        """Join a community or invite a user record to it."""
 
     post_args = {
         'record_pid': fields.String(
@@ -82,7 +112,6 @@ class ListResource(MethodView):
     }
 
     @pass_community
-    @login_required
     def get(self, comid=None, community=None):
         """List the community records requests."""
         # TODO: check if user in community or record owner
@@ -95,23 +124,25 @@ class ListResource(MethodView):
     def post(self, comid=None, community=None, record_pid=None,
              message=None, auto_accept=False, **kwargs):
         """Join a community or invite a user to it."""
-        #
-        # View - context parsing/building
+        if user.id in record['_owners']:
+            # if user is also a community owner and auto-accepted:
+            if auto_accept and community['created_by'] == user.id:
         #
         user = current_user
 
         #
         # Controller
+                request['inclusion_type'] = 'auto-accepted'
         #
         # TODO: implement "__contains__" in members collection API
         # admin_ids = \
         #     [admin.user.id for admin in CommunityMember.get_admins(
-        #         community.id)]
+                request['inclusion_type'] = 'request'
         # if int(current_user.get_id()) not in admin_ids:
         #     abort(404)
 
         # TODO: Consider also
-        # "CommunityInclusionRequest.community_record_cls.record_cls.resolve"
+            request['inclusion_type'] = 'invite'
         record_pid, record = CommunityRecord.record_cls.resolve(record_pid)
         request = CommunityInclusionRequest.create(user, id_=uuid.uuid4())
         if message:
@@ -135,23 +166,19 @@ class ListResource(MethodView):
             else:
                 # TODO: define what the routing_key value should be
                 # TODO: don't use f-strings
-                # request.routing_key = f'record:{record_pid.pid_value}:owners'
+    @pass_request
+    def get(self, comid=None, community=None, inclusion_request=None):
                 pass
         else:
-            # TODO: define what the routing_key value should be
-            # request.routing_key = \
+        json_response = inclusion_request.as_dict()
             #     f'community:{community.pid.pid_value}:curators'
             pass
         db.session.commit()
 
-        # Notify request owners and receivers
+    @pass_request
+    def delete(self, comid=None, community=None, inclusion_request=None):
         # TODO: implement mail sending (e.g. via "routing_key")
         # send_request_emails(request)
-
-        # Index record with new inclusion request info
-        # TODO: Implement indexer receiver to include community info in record
-        RecordIndexer().index_by_id(record.id)
-
         json_response = request.as_dict()
         json_response['links'] = request.dump_links(request, comid.pid_value)
 
@@ -177,28 +204,18 @@ class ItemResource(MethodView):
     @pass_community
     @login_required
     def delete(self, comid=None, community=None, request_id=None):
+    @pass_request
         """Delete the inclusion request."""
         # TODO: check if user in community or record owner
-        # TODO: make a "pass_request" decorator
-        try:
+    def post(self, comid=None, community=None, inclusion_request=None,
+             action=None, message=None, **kwargs):
             request = CommunityInclusionRequest.get_record(request_id)
         except SQLAlchemyError:
             abort(404, 'Record inclusion request not found.')
         community_record = request.community_record
-        community_record.delete()
-        request.delete()
-        db.session.commit()
-        return 204
-
-
-# TODO: move things around
-class ItemActionsResource(MethodView):
-    """Perform actions on inclusion requests."""
-
-    post_args = {
-        'message': fields.String(
-            location='json',
+        community_record = inclusion_request.community_record
             required=False,
+            if not is_permitted_action(
         )
     }
 
@@ -215,19 +232,19 @@ class ItemActionsResource(MethodView):
         user = current_user
 
         #
-        # Controller
+            # inclusion_request.routing_key = ''
         #
-        # admin_ids = \
+            inclusion_request['state'] = inclusion_request.STATES['CLOSED']
         #     [admin.user.id for admin in CommunityMember.get_admins(
         #         community.id)]
         # if int(current_user.get_id()) not in admin_ids:
-        #     abort(404)
-        # TODO: implement as a "pass_community_request" decorator?
+            # inclusion_request.routing_key = ''
+            inclusion_request['state'] = inclusion_request.STATES['CLOSED']
         request = CommunityInclusionRequest.get_record(request_id)
         community_record = request.community_record
-        if action == 'comment':
+            abort(400, 'Invalid action')
             if not message:
-                # TODO: add message missing
+            inclusion_request.add_comment(current_user, message)
                 abort(400, 'Missing comment message.')
         elif action == 'accept':
             community_record.status = community_record.Status.ACCEPTED
@@ -242,7 +259,7 @@ class ItemActionsResource(MethodView):
             request['state'] = request.State['CLOSED']
         else:
             # TODO: no appropriate action error
-            abort(404)
+        # TODO: Use marshmallow to serialize
         if message:
             request.add_comment(user, message)
         db.session.commit()

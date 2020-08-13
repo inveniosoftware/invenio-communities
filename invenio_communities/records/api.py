@@ -25,6 +25,22 @@ from invenio_communities.records.models import CommunityRecordStatus
 from invenio_communities.requests.api import RequestBase
 
 
+class ModelProxyProperty(object):
+    """Class for initializing property like objects."""
+
+    def __init__(self, name):
+        """."""
+        self.name = name
+
+    def __get__(self, obj, objtype=None):
+        """."""
+        return getattr(obj.model, self.name)
+
+    def __set__(self, obj, val):
+        """."""
+        setattr(obj.model, self.name, val)
+
+
 # TODO: See if this can be moved to config
 class Record(RecordBaseAPI, PIDRecordMixin):
     """PID-aware record."""
@@ -51,6 +67,7 @@ class CommunityInclusionRequest(RequestBase):
             "type": "string",
             # "enum": ["pending", "closed"],
         },
+        "inclusion_type": "string",
         "created_by": {"type": "int"},
     }
 
@@ -126,6 +143,12 @@ class CommunityInclusionRequest(RequestBase):
                 action=action
             )
         return links
+
+    @property
+    def is_request(self):
+        """."""
+        return self['created_by'] in self.community_record.record['_owners']
+
 
 # TODO: cleanup
 class RecordCommunitiesMixin(PIDRecordMixin):
@@ -239,17 +262,21 @@ class CommunityRecord(RecordBaseAPI):
         if not model:
             return None
         return cls(model.json, model=model)
+
     # TODO propagate this
     def as_dict(self, include_requests=True):
         res = {
             'status': str(self.status.title),
             'record_pid': self.record.pid.pid_value,
+            'community_pid': self.community.pid.pid_value
         }
         if include_requests:
             res['request'] = self.request.as_dict()
         else:
             res['request_id'] = self.request.id
         return res
+
+    status = ModelProxyProperty('status')
 
 
 class CommunityRecordsCollectionBase:
@@ -302,6 +329,19 @@ class CommunityRecordsCollection(CommunityRecordsCollectionBase):
         community_record = self[record]
         return community_record.delete()
 
+    def as_dict(self):
+        res = defaultdict(list)
+        for community_record in self:
+            status = community_record.status.name.lower()
+            res[status].append({
+                'id': community_record.record.pid.object_uuid,
+                'title': community_record.record['title'],
+                # TODO: Add when implemented
+                # 'logo': None,
+                'request_id': str(community_record.request.id),
+                'created_by': community_record.request['created_by'],
+            })
+        return res
 
 class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
 

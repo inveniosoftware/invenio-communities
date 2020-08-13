@@ -50,10 +50,11 @@ class RequestBase(RecordBaseAPI):
         """Request comments."""
         return self.model.comments if self.model else None
 
-    def add_comment(self, user_id, message):
+    def add_comment(self, user, message):
         """Request comments."""
         # TODO: do we need a comment API Class?
-        return CommentModel.create(self.id, user_id, message)
+        return CommentModel.create(self.id, user.id, message)
 
     def delete(self):
+        """Delete the request."""
         self.model.delete(self.model)

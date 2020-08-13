@@ -5,8 +5,7 @@ import _ from "lodash";
 
 const RequestPage = () => {
   const [globalError, setGlobalError] = useState(null);
-  const [requestSuccess, setRequestSuccess] = useState(false);
-  const [invitation, setInvitation] = useState(null);
+  const [requestDecline, setRequestDecline] = useState(false);
 
   const domContainer = document.getElementById("app");
   const formConfig = JSON.parse(domContainer.dataset.formConfig);
@@ -21,7 +20,12 @@ const RequestPage = () => {
     axios
       .post(`/api/communities/${communityID}/members/requests/${membership.id}/${action}`, payload)
       .then(response => {
-        setRequestSuccess(true)
+        if (action === 'accept'){
+          window.location = `/communities/${communityID}/members/?tab=accepted`
+        }
+        else{
+          setRequestDecline(true);
+        }
       })
       .catch(error => {
         // TODO: handle nested fields
@@ -36,14 +40,14 @@ const RequestPage = () => {
   return (
     <div className="ui container">
       <h2>You have been invited to join the Community:<b> "{community.title}"</b> as a(n) <b>{membership.role}</b></h2>
-      {requestSuccess ? (//maybe redirect to community page
-        <div className="help-block">All is good</div>
+      {requestDecline ? (//maybe redirect to community page
+        <div className="help-block">You have succesfully declined the invitation.</div>
       ) :
         <div>
           <div class="ui buttons">
-            <button class="ui positive button" onClick={() =>handleInvitation('accept')}>Accept</button>
+            <button class="ui positive button" onClick={() => handleInvitation('accept')}>Accept</button>
             <div class="or"></div>
-            <button class="ui button" onClick={() =>handleInvitation('reject')}>Decline</button>
+            <button class="ui button" onClick={() => handleInvitation('reject')}>Decline</button>
           </div>
         </div>
       }
