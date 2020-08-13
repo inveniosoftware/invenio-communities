@@ -1,14 +1,12 @@
 from __future__ import absolute_import, print_function
 
-from flask import current_app
 import binascii
 import os
 from base64 import urlsafe_b64encode
 from datetime import datetime
 
-
-from itsdangerous import BadData, JSONWebSignatureSerializer, \
-    SignatureExpired
+from flask import current_app
+from itsdangerous import BadData, JSONWebSignatureSerializer, SignatureExpired
 
 SUPPORTED_DIGEST_ALGORITHMS = ('HS256', 'HS512')
 

@@ -15,14 +15,15 @@ from enum import Enum
 from flask_babelex import gettext
 from invenio_accounts.models import User
 from invenio_db import db
+from invenio_pidstore.models import PersistentIdentifier
+from invenio_records.models import RecordMetadataBase
 from speaklater import make_lazy_gettext
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy_utils.types import ChoiceType, UUIDType
 
-from .errors import CommunityMemberAlreadyExists
-from invenio_pidstore.models import PersistentIdentifier
-from invenio_records.models import RecordMetadataBase
 from invenio_communities.requests.models import Request
+
+from .errors import CommunityMemberAlreadyExists
 
 _ = make_lazy_gettext(lambda: gettext)
 

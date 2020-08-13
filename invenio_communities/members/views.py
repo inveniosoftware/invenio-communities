@@ -10,23 +10,22 @@
 
 from __future__ import absolute_import, print_function
 
-from functools import wraps, partial
+from functools import partial, wraps
 
 from flask import Blueprint, abort, jsonify, render_template, request
 from flask.views import MethodView
 from flask_login import current_user, login_required
-from invenio_db import db
 from invenio_accounts.models import User
+from invenio_db import db
 from webargs import fields, validate
 
+from ..token import MembershipTokenSerializer
 from ..utils import comid_url_converter, send_invitation_email
 from ..views import pass_community, use_kwargs
 from .api import CommunityMember, CommunityMemberRequest
-from .models import CommunityMemberRole, CommunityMemberStatus
 from .errors import CommunityMemberAlreadyExists
-from ..token import MembershipTokenSerializer
+from .models import CommunityMemberRole, CommunityMemberStatus
 from .permissions import CommunityMemberPermissionPolicy, is_permitted_action
-
 
 api_blueprint = Blueprint(
         'invenio_communities_members',

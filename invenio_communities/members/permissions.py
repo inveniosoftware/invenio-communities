@@ -10,11 +10,10 @@
 from collections import namedtuple
 from functools import partial
 
-from invenio_records_permissions.generators import Generator
-from invenio_records_permissions.policies import BasePermissionPolicy
 from flask_principal import UserNeed
 from invenio_access.permissions import any_user
-
+from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.policies import BasePermissionPolicy
 
 _CommunityMemberNeed = namedtuple(
     'CommunityMemberNeed', ['method', 'community', 'role'])

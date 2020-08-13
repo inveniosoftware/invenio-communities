@@ -9,16 +9,16 @@
 """Blueprint definitions for records integration."""
 
 import uuid
-
 from functools import wraps
+
 from flask import Blueprint, abort, jsonify, render_template, request
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from invenio_db import db
 from invenio_indexer.api import RecordIndexer
+from invenio_pidstore.errors import PIDDoesNotExistError
 from sqlalchemy.exc import SQLAlchemyError
 from webargs import fields
-from invenio_pidstore.errors import PIDDoesNotExistError
 
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord, CommunityRecordsCollection, Record, \
@@ -28,6 +28,7 @@ from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
 from .errors import CommunityRecordAlreadyExists
 from .permissions import CommunityRecordPermissionPolicy, is_permitted_action
+
 #
 # UI views
 #

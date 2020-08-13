@@ -9,9 +9,10 @@
 
 from flask_security import current_user
 
+from invenio_communities.members.models import CommunityMember, \
+    CommunityMemberStatus
+
 from .members.permissions import CommunityMemberNeed
-from invenio_communities.members.models import CommunityMemberStatus
-from invenio_communities.members.models import CommunityMember
 
 
 def load_permissions_on_identity_loaded(sender, identity):

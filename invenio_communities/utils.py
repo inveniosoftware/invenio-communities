@@ -15,19 +15,18 @@ from functools import partial
 from flask import current_app, render_template, request
 from flask_babelex import gettext as _
 from flask_mail import Message
+from invenio_accounts.models import User
+from invenio_base.utils import obj_or_import_string
 from invenio_mail.tasks import send_email
 from invenio_pidstore.resolver import Resolver
-from invenio_accounts.models import User
 from invenio_records.api import Record
 from invenio_records_rest.utils import LazyPIDValue
-from invenio_base.utils import obj_or_import_string
 from six.moves.urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import cached_property
 
 from .members.api import CommunityMember
-from .members.models import CommunityMemberRole
-from .members.models import CommunityMemberStatus
+from .members.models import CommunityMemberRole, CommunityMemberStatus
 
 
 def format_url_template(url_template, absolute=True, **kwargs):

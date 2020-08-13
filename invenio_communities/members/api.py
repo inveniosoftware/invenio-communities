@@ -11,20 +11,22 @@
 from __future__ import absolute_import, print_function
 
 from collections import defaultdict
-from flask import url_for, current_app
 
-from invenio_communities.members.models import CommunityMemberStatus, \
-    CommunityMemberRole
-# from invenio_communities.api import Community
+from flask import current_app, url_for
+from invenio_accounts.models import User
+from invenio_db import db
+# from invenio_communities.utils import send_invitation_email
+from invenio_records.api import Record as RecordBaseAPI
+from werkzeug.local import LocalProxy
 
 from invenio_communities.members.models import \
     CommunityMember as CommunityMemberModel
-# from invenio_communities.utils import send_invitation_email
-from invenio_records.api import Record as RecordBaseAPI
+from invenio_communities.members.models import CommunityMemberRole, \
+    CommunityMemberStatus
 from invenio_communities.requests.api import RequestBase
-from werkzeug.local import LocalProxy
-from invenio_accounts.models import User
-from invenio_db import db
+
+# from invenio_communities.api import Community
+
 
 Community = LocalProxy(
     lambda: current_app.extensions['invenio-communities'].community_cls)

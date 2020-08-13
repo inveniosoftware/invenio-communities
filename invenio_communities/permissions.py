@@ -8,13 +8,13 @@
 
 """Community permissions."""
 
+from flask_principal import UserNeed
 from flask_security import current_user
-
+from invenio_access.permissions import any_user
 from invenio_records_permissions.generators import Generator
 from invenio_records_permissions.policies import BasePermissionPolicy
+
 from invenio_communities.members.permissions import CommunityMember
-from invenio_access.permissions import any_user
-from flask_principal import UserNeed
 
 
 class CommunityVisibilityPolicy(Generator):

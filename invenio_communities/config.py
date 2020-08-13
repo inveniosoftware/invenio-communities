@@ -13,8 +13,8 @@ from __future__ import absolute_import, print_function
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all
 
-from .permissions import can_update_community, can_delete_community, \
-    allow_logged_in, can_read_community
+from .permissions import allow_logged_in, can_delete_community, \
+    can_read_community, can_update_community
 from .utils import comid_url_converter
 
 #: Records REST API endpoints.
