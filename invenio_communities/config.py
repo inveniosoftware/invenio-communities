@@ -13,7 +13,8 @@ from __future__ import absolute_import, print_function
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all
 
-from .permissions import allow_community_owner, allow_logged_in
+from .permissions import can_update_community, can_delete_community, \
+    allow_logged_in, can_read_community
 from .utils import comid_url_converter
 
 #: Records REST API endpoints.
@@ -39,11 +40,11 @@ COMMUNITIES_REST_ENDPOINTS = dict(
         },
         indexer_class='invenio_communities.indexer:CommunityIndexer',
         default_media_type='application/json',
-        read_permission_factory_imp=allow_all,
+        read_permission_factory_imp=can_read_community,
         create_permission_factory_imp=allow_logged_in,
         list_permission_factory_imp=allow_all,
-        update_permission_factory_imp=allow_community_owner,
-        delete_permission_factory_imp=allow_community_owner,
+        update_permission_factory_imp=can_update_community,
+        delete_permission_factory_imp=can_delete_community,
     ),
 )
 

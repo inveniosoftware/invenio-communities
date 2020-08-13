@@ -27,7 +27,7 @@ from invenio_communities.records.api import CommunityInclusionRequest, \
 from ..utils import comid_url_converter
 from ..views import pass_community, use_kwargs
 from .errors import CommunityRecordAlreadyExists
-
+from .permissions import CommunityRecordPermissionPolicy, is_permitted_action
 #
 # UI views
 #
@@ -36,12 +36,13 @@ ui_blueprint = Blueprint(
     __name__,
     template_folder='../templates',
 )
+
+
 def pass_record(func=None):
     """Decorator to retrieve community membership."""
+    @wraps(func)
     def inner(*args, record_pid=None, **kwargs):
-@login_required
-@community_permission('can_list_community_inclusions')
-    """Curate page for community record inclusions."""
+        try:
             record_pid, record = CommunityRecord.record_cls.resolve(record_pid)
         except PIDDoesNotExistError:
             abort(404)
@@ -63,14 +64,28 @@ def pass_request(func=None):
 
 
 def community_permission(
+        action=None,
+        error_message='You are missing the permissions to '
+                      'access this information.',
+        error_code=403):
+    """Wrapper to apply a permission check on a view."""
+    def wrapper_function(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if not CommunityRecordPermissionPolicy(action=action, **kwargs):
+                abort(error_code, error_message)
+            return func(*args, **kwargs)
+        return wrapper
+    return wrapper_function
 
 
 @ui_blueprint.route(
     '/communities/<{}:pid_value>/curate'.format(comid_url_converter))
-@login_required
 @pass_community
+@login_required
+@community_permission('can_list_community_inclusions')
 def curation(comid=None, community=None):
-    """Create a new community."""
+    """Curate page for community record inclusions."""
     pending_records = \
         len(CommunityRecordsCollection(community).filter({'status': 'P'}))
 
@@ -91,10 +106,9 @@ api_blueprint = Blueprint(
     template_folder='../templates',
 )
 
-    @pass_record
-    def post(self, comid=None, community=None, record=None, record_pid=None,
+
 class ListResource(MethodView):
-        """Join a community or invite a user record to it."""
+    """Resource for listing and creating inclusion requests."""
 
     post_args = {
         'record_pid': fields.String(
@@ -112,38 +126,38 @@ class ListResource(MethodView):
     }
 
     @pass_community
+    @login_required
+    @community_permission('list_community_inclusions')
     def get(self, comid=None, community=None):
         """List the community records requests."""
-        # TODO: check if user in community or record owner
         json_response = community.records.as_dict()
         return jsonify(json_response), 200
 
     @use_kwargs(post_args)
     @pass_community
+    @pass_record
     @login_required
-    def post(self, comid=None, community=None, record_pid=None,
+    @community_permission('create_community_inclusion')
+    def post(self, comid=None, community=None, record=None, record_pid=None,
              message=None, auto_accept=False, **kwargs):
-        """Join a community or invite a user to it."""
-        if user.id in record['_owners']:
-            # if user is also a community owner and auto-accepted:
-            if auto_accept and community['created_by'] == user.id:
+        """Join a community or invite a user record to it."""
+        #
+        # View - context parsing/building
         #
         user = current_user
 
         #
         # Controller
-                request['inclusion_type'] = 'auto-accepted'
         #
         # TODO: implement "__contains__" in members collection API
         # admin_ids = \
         #     [admin.user.id for admin in CommunityMember.get_admins(
-                request['inclusion_type'] = 'request'
+        #         community.id)]
         # if int(current_user.get_id()) not in admin_ids:
         #     abort(404)
 
         # TODO: Consider also
-            request['inclusion_type'] = 'invite'
-        record_pid, record = CommunityRecord.record_cls.resolve(record_pid)
+        # "CommunityInclusionRequest.community_record_cls.record_cls.resolve"
         request = CommunityInclusionRequest.create(user, id_=uuid.uuid4())
         if message:
             request.add_comment(user, message)
@@ -156,29 +170,35 @@ class ListResource(MethodView):
 
         # TODO: Check in community members instead of just creator
         # if CommunityMembersAPI.has_member(community, user):
-        if community['created_by'] == user.id:
-            if auto_accept:
+        if user.id in record['_owners']:
+            # if user is also a community owner and auto-accepted:
+            if auto_accept and community['created_by'] == user.id:
                 # TODO: define what the routing_key value should be
                 # request.routing_key = ''
                 # TODO: implement state as a "Request.state" property?
                 request['state'] = request.State['CLOSED']
                 com_rec.status = com_rec.Status.ACCEPTED
+                request['inclusion_type'] = 'auto-accepted'
             else:
                 # TODO: define what the routing_key value should be
                 # TODO: don't use f-strings
-    @pass_request
-    def get(self, comid=None, community=None, inclusion_request=None):
-                pass
+                # request.routing_key = f'record:{record_pid.pid_value}:owners'
+                request['inclusion_type'] = 'request'
         else:
-        json_response = inclusion_request.as_dict()
+            # TODO: define what the routing_key value should be
+            # request.routing_key = \
             #     f'community:{community.pid.pid_value}:curators'
-            pass
+            request['inclusion_type'] = 'invite'
         db.session.commit()
 
-    @pass_request
-    def delete(self, comid=None, community=None, inclusion_request=None):
+        # Notify request owners and receivers
         # TODO: implement mail sending (e.g. via "routing_key")
         # send_request_emails(request)
+
+        # Index record with new inclusion request info
+        # TODO: Implement indexer receiver to include community info in record
+        RecordIndexer().index_by_id(record.id)
+
         json_response = request.as_dict()
         json_response['links'] = request.dump_links(request, comid.pid_value)
 
@@ -193,75 +213,80 @@ class ItemResource(MethodView):
     """Community inclusion request item endpoint."""
 
     @pass_community
+    @pass_request
     @login_required
-    def get(self, comid=None, community=None, request_id=None):
+    @community_permission('get_community_inclusion')
+    def get(self, comid=None, community=None, inclusion_request=None):
         """Get the inclusion request."""
         # TODO: check if user in community or record owner
-        request = CommunityInclusionRequest.get_record(request_id)
-        json_response = request.as_dict()
+        json_response = inclusion_request.as_dict()
         return jsonify(json_response), 200
 
     @pass_community
-    @login_required
-    def delete(self, comid=None, community=None, request_id=None):
     @pass_request
+    @login_required
+    @community_permission('delete_community_inclusion')
+    def delete(self, comid=None, community=None, inclusion_request=None):
         """Delete the inclusion request."""
         # TODO: check if user in community or record owner
-    def post(self, comid=None, community=None, inclusion_request=None,
-             action=None, message=None, **kwargs):
-            request = CommunityInclusionRequest.get_record(request_id)
-        except SQLAlchemyError:
-            abort(404, 'Record inclusion request not found.')
         community_record = request.community_record
-        community_record = inclusion_request.community_record
+        community_record.delete()
+        request.delete()
+        db.session.commit()
+        return 204
+
+
+# TODO: move things around
+class ItemActionsResource(MethodView):
+    """Perform actions on inclusion requests."""
+
+    post_args = {
+        'message': fields.String(
+            location='json',
             required=False,
-            if not is_permitted_action(
         )
     }
 
     @use_kwargs(post_args)
     @pass_community
+    @pass_request
     @login_required
     # TODO: Swap `request_id` with `CommunityRecord.id` (instead of `Request.id`)
-    def post(self, comid=None, community=None, request_id=None, action=None,
-             message=None, **kwargs):
+    def post(self, comid=None, community=None, inclusion_request=None,
+             action=None, message=None, **kwargs):
         """Handle a community record request."""
         #
         # View - context parsing/building
         #
-        user = current_user
-
-        #
-            # inclusion_request.routing_key = ''
-        #
-            inclusion_request['state'] = inclusion_request.STATES['CLOSED']
-        #     [admin.user.id for admin in CommunityMember.get_admins(
-        #         community.id)]
-        # if int(current_user.get_id()) not in admin_ids:
-            # inclusion_request.routing_key = ''
-            inclusion_request['state'] = inclusion_request.STATES['CLOSED']
-        request = CommunityInclusionRequest.get_record(request_id)
-        community_record = request.community_record
-            abort(400, 'Invalid action')
+        community_record = inclusion_request.community_record
+        if action == 'comment':
+            if not is_permitted_action(
+                    'comment_community_inclusion',
+                    inclusion_request=inclusion_request, community=community):
+                abort(404)
             if not message:
-            inclusion_request.add_comment(current_user, message)
+                # TODO: add message missing
                 abort(400, 'Missing comment message.')
+        elif not is_permitted_action(
+                'handle_community_inclusion',
+                inclusion_request=inclusion_request, community=community):
+            abort(404)
         elif action == 'accept':
             community_record.status = community_record.Status.ACCEPTED
             # TODO: figure out "routing_key"
-            # request.routing_key = ''
+            # inclusion_request.routing_key = ''
             # TODO: use ".state" property setter/getter
-            request['state'] = request.State['CLOSED']
+            inclusion_request['state'] = inclusion_request.STATES['CLOSED']
         elif action == 'reject':
             community_record.status = community_record.Status.REJECTED
             # TODO: figure out "routing_key"
-            # request.routing_key = ''
-            request['state'] = request.State['CLOSED']
+            # inclusion_request.routing_key = ''
+            inclusion_request['state'] = inclusion_request.STATES['CLOSED']
         else:
             # TODO: no appropriate action error
-        # TODO: Use marshmallow to serialize
+            abort(400, 'Invalid action')
         if message:
-            request.add_comment(user, message)
+            inclusion_request.add_comment(current_user, message)
         db.session.commit()
 
         # Notify request owners and receivers
@@ -276,7 +301,7 @@ class ItemResource(MethodView):
         #
         # View - serialize response
         #
-        # TODO: User marshmallow to serialize
+        # TODO: Use marshmallow to serialize
         return jsonify(community_record.as_dict()), 201
 
 

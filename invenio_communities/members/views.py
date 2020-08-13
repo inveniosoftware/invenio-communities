@@ -25,6 +25,7 @@ from .api import CommunityMember, CommunityMemberRequest
 from .models import CommunityMemberRole, CommunityMemberStatus
 from .errors import CommunityMemberAlreadyExists
 from ..token import MembershipTokenSerializer
+from .permissions import CommunityMemberPermissionPolicy, is_permitted_action
 
 
 api_blueprint = Blueprint(
@@ -48,6 +49,22 @@ def pass_membership(func=None, view_arg_name='membership_id'):
             abort(404)
         return func(*args, community_member=community_member, **kwargs)
     return inner
+
+
+def community_permission(
+        action=None,
+        error_message='You are missing the permissions to'
+                      'access this information.',
+        error_code=403):
+    """Wrapper to apply a permission check on a view."""
+    def wrapper_function(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if not CommunityMemberPermissionPolicy(action=action, **kwargs):
+                abort(error_code, error_message)
+            return func(*args, **kwargs)
+        return wrapper
+    return wrapper_function
 
 
 member_role_validator = validate.OneOf(
@@ -79,6 +96,7 @@ class ListResource(MethodView):
     @use_kwargs(post_args)
     @pass_community
     @login_required
+    @community_permission('create_membership')
     def post(self, comid=None, community=None, email=None, role=None,
              comment=None, **kwargs):
         """Join a community or invite a user to it."""
@@ -171,7 +189,11 @@ class ListMembersResource(MethodView):
     def get(self, comid=None, community=None,
             status=None, role=None, page=1, size=20):
         """List the community members."""
-
+        if not is_permitted_action(
+            'list_{}_members'.format(status),
+                comid=comid):
+            abort(403, 'You are missing the permissions to'
+                       'access this information.')
         status = CommunityMemberStatus.from_str(status)
 
         members = community.members
@@ -202,6 +224,7 @@ class MembershipRequestResource(MethodView):
     @pass_community
     @pass_membership
     @login_required
+    @community_permission('get_membership')
     def get(
             self, comid=None, community=None, token=None,
             community_member=None):
@@ -228,6 +251,7 @@ class MembershipRequestResource(MethodView):
     @pass_community
     @pass_membership
     @login_required
+    @community_permission('modify_membership')
     def put(self, comid=None, community=None,
             role=None, community_member=None):
         """Modify a membership role."""
@@ -255,6 +279,7 @@ class MembershipRequestResource(MethodView):
     @pass_community
     @pass_membership
     @login_required
+    @community_permission('delete_membership')
     def delete(self, comid=None, community=None, community_member=None):
         """Cancel (remove) a membership request."""
         # TODO dont allow last admin to leave
@@ -293,6 +318,7 @@ class MembershipRequestHandlingResource(MethodView):
     @pass_community
     @pass_membership
     @login_required
+    @community_permission('handle_request')
     def post(self, comid=None, community=None, community_member=None,
              action=None, role=None, comment=None, token=None):
         """Add a comment."""

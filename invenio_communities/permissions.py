@@ -10,6 +10,43 @@
 
 from flask_security import current_user
 
+from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.policies import BasePermissionPolicy
+from invenio_communities.members.permissions import CommunityMember
+from invenio_access.permissions import any_user
+from flask_principal import UserNeed
+
+
+class CommunityVisibilityPolicy(Generator):
+
+    def needs(self, community=None, **kwargs):
+        if community['visibility'] == 'public':
+            return [any_user]
+        else:
+            return [CommunityMember(['admin', 'curator', 'member'])]
+
+
+class CommunityOwner(Generator):
+    """Returns community owner need."""
+    def needs(self, community=None, **kwargs):
+        """."""
+        return [UserNeed(community['created_by'])]
+
+
+class CommunityPermissionPolicy(BasePermissionPolicy):
+
+    can_read_community = [
+        CommunityVisibilityPolicy(),
+    ]
+
+    can_update_community = [
+        CommunityMember(['admin', 'curator']),
+    ]
+    can_delete_community = [
+        CommunityMember(['admin']),
+    ]
+
+
 
 def allow_logged_in(*args, **kwargs):
     """Permission that checks if the community owner is making the request."""
@@ -19,12 +56,34 @@ def allow_logged_in(*args, **kwargs):
     return type('AllowCommunityOwner', (), {'can': can})()
 
 
-
-def allow_community_owner(record, *args, **kwargs):
+def can_read_community(record, *args, **kwargs):
     """Permission that checks if the community owner is making the request."""
     def can(self):
         """Check that the current user is the community's owner."""
-        if current_user.is_authenticated:
-            return current_user.id == record['created_by']
-        return False
+        return CommunityPermissionPolicy(
+            action='read_community',
+            comid=record.pid
+        ).can()
+    return type('AllowCommunityOwner', (), {'can': can})()
+
+
+def can_update_community(record, *args, **kwargs):
+    """Permission that checks if the community owner is making the request."""
+    def can(self):
+        """Check that the current user is the community's owner."""
+        return CommunityPermissionPolicy(
+            action='update_community',
+            comid=record.pid
+        ).can()
+    return type('AllowCommunityOwner', (), {'can': can})()
+
+
+def can_delete_community(record, *args, **kwargs):
+    """Permission that checks if the community owner is making the request."""
+    def can(self):
+        """Check that the current user is the community's owner."""
+        return CommunityPermissionPolicy(
+            action='delete_community',
+            comid=record.pid
+        ).can()
     return type('AllowCommunityOwner', (), {'can': can})()
