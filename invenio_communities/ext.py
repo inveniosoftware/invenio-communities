@@ -110,4 +110,5 @@ class InvenioCommunities(object):
             index=app.config.get(
                 'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
         )
+        # TODO: Make it possible to enable/disable the members feature via config
         community_created.connect(set_default_admin, weak=False)

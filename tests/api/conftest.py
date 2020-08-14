@@ -31,7 +31,3 @@ def basic_user(app):
 @pytest.fixture(scope='module')
 def users(app):
     yield [create_test_user('user{}@inveniosoftware.org'.format(i)) for i in range(3)]
-
-@pytest.fixture(scope='module')
-def example_community(app):
-    yield
