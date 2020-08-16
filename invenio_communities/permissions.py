@@ -18,8 +18,10 @@ from invenio_communities.members.permissions import CommunityMember
 
 
 class CommunityVisibilityPolicy(Generator):
+    """Allows only community members to read the community if its hidden."""
 
     def needs(self, community=None, **kwargs):
+        """."""
         if community['visibility'] == 'public':
             return [any_user]
         else:
@@ -28,12 +30,14 @@ class CommunityVisibilityPolicy(Generator):
 
 class CommunityOwner(Generator):
     """Returns community owner need."""
+
     def needs(self, community=None, **kwargs):
         """."""
         return [UserNeed(community['created_by'])]
 
 
 class CommunityPermissionPolicy(BasePermissionPolicy):
+    """Permissions for Community CRUD operations."""
 
     can_read_community = [
         CommunityVisibilityPolicy(),
@@ -47,19 +51,18 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
 
-
 def allow_logged_in(*args, **kwargs):
-    """Permission that checks if the community owner is making the request."""
+    """Permission that allows only logged in users to perform the operation."""
     def can(self):
-        """Check that the current user is the community's owner."""
+        """."""
         return current_user.is_authenticated
     return type('AllowCommunityOwner', (), {'can': can})()
 
 
 def can_read_community(record, *args, **kwargs):
-    """Permission that checks if the community owner is making the request."""
+    """Permission wrapper."""
     def can(self):
-        """Check that the current user is the community's owner."""
+        """."""
         return CommunityPermissionPolicy(
             action='read_community',
             comid=record.pid,
@@ -69,9 +72,9 @@ def can_read_community(record, *args, **kwargs):
 
 
 def can_update_community(record, *args, **kwargs):
-    """Permission that checks if the community owner is making the request."""
+    """Permission wrapper."""
     def can(self):
-        """Check that the current user is the community's owner."""
+        """."""
         return CommunityPermissionPolicy(
             action='update_community',
             comid=record.pid,
@@ -81,9 +84,9 @@ def can_update_community(record, *args, **kwargs):
 
 
 def can_delete_community(record, *args, **kwargs):
-    """Permission that checks if the community owner is making the request."""
+    """Permission wrapper."""
     def can(self):
-        """Check that the current user is the community's owner."""
+        """."""
         return CommunityPermissionPolicy(
             action='delete_community',
             comid=record.pid,

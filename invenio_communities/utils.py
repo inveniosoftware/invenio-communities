@@ -47,13 +47,13 @@ def format_url_template(url_template, absolute=True, **kwargs):
 
 
 def send_invitation_email(membership, recipients, community, token=b''):
-    """Send email notification for a member invitation."""
+    """Send email notification for a member invitation or request."""
     msg = Message(
         _("Community membership invitation"),
         sender=current_app.config.get('SUPPORT_EMAIL'),
         recipients=recipients,
     )
-    template = ("invitation_email.tpl" if membership.request.is_invite
+    template = ("member_invitation_email.tpl" if membership.request.is_invite
                 else "member_request_email.tpl")
     msg.body = render_template(
         "invenio_communities/{}".format(template),
@@ -75,6 +75,35 @@ def send_invitation_email(membership, recipients, community, token=b''):
         community_members_link=format_url_template(
             '/communities/{com_id}/members?tab=pending',
             com_id=community["id"]
+        )
+    )
+    send_email.delay(msg.__dict__)
+
+
+def send_inclusion_email(community_record, recipients):
+    """Send email notification for a record invitation or request."""
+    msg = Message(
+        _("Community record inclusion"),
+        sender=current_app.config.get('SUPPORT_EMAIL'),
+        recipients=recipients,
+    )
+    template = ("record_invitation_email.tpl" if
+                community_record.request.is_invite
+                else "record_request_email.tpl")
+    msg.body = render_template(
+        "invenio_communities/{}".format(template),
+        community_record=community_record,
+        record_invitation_link=format_url_template(
+            current_app.config.get(
+                'COMMUNITIES_RECORD_INVITATION_LINK_URL',
+                '/records/{recid}'
+            ),
+            recid=community_record.record.pid.pid_value
+        ),
+        # TODO: make overridable
+        community_curation_link=format_url_template(
+            '/communities/{com_id}/curate?q=',
+            com_id=community_record.community["id"]
         )
     )
     send_email.delay(msg.__dict__)
@@ -115,7 +144,7 @@ class LazyPIDConverter(BaseConverter):
 
 comid_url_converter = (
     'lazy_pid(comid,'
-    'record_class="invenio_communities.api:Community",'
+    'record_class="invenio_communities:Community",'
     'object_type="com")'
 )
 

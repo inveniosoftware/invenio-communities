@@ -12,4 +12,5 @@ from invenio_pidstore.fetchers import FetchedPID
 
 def comid_fetcher(record_uuid, data):
     """Fetch a community's identifier."""
-    return FetchedPID(provider=None, pid_type='comid', pid_value=data['id'].lower())
+    return FetchedPID(
+        provider=None, pid_type='comid', pid_value=data['id'].lower())

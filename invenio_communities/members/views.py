@@ -12,7 +12,7 @@ from __future__ import absolute_import, print_function
 
 from functools import partial, wraps
 
-from flask import Blueprint, abort, jsonify, render_template, request
+from flask import Blueprint, abort, jsonify, render_template, request, url_for
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from invenio_accounts.models import User
@@ -139,7 +139,7 @@ class ListResource(MethodView):
                 abort(400, 'This is an already existing relationship.')
 
         if comment:
-            mem_req.add_comment(request_user.id, comment)
+            mem_req.add_comment(request_user, comment)
 
         if email:
             mts = MembershipTokenSerializer()
@@ -157,6 +157,29 @@ class ListResource(MethodView):
 
         db.session.commit()
         return comm_mem.as_dict(), 201
+
+
+def dump_community_membership_links(community_membership):
+    """Generate appropriate links for membership management."""
+    if community_membership.request.is_closed:
+        actions = ['comment']
+    else:
+        actions = ['comment', 'accept', 'reject']
+    links = {
+        "self": url_for(
+            'invenio_communities_members.community_requests_api',
+            pid_value=community_membership.community.pid.pid_value,
+            membership_id=str(community_membership.id)
+        )
+    }
+    for action in actions:
+        links[action] = url_for(
+            'invenio_communities_members.community_requests_handling_api',
+            pid_value=community_membership.community.pid.pid_value,
+            membership_id=str(community_membership.id),
+            action=action
+        )
+    return links
 
 
 class ListMembersResource(MethodView):
@@ -196,20 +219,28 @@ class ListMembersResource(MethodView):
             abort(403, 'You are missing the permissions to'
                        'access this information.')
         status = CommunityMemberStatus.from_str(status)
-
         members = community.members
         members = members.filter(status=status)
-        if status != 'accepted':
+        if status != CommunityMemberStatus.ACCEPTED:
             include_requests = True
         else:
             include_requests = False
         if role:
             members = members.filter(role=role)
         member_page = members.paginate(page=page, size=size)
-        return members.as_dict(
+        members_json = members.as_dict(
             include_requests=include_requests,
             result_iterator=member_page
-            ), 200
+            )
+        if status != CommunityMemberStatus.ACCEPTED:
+            for member_obj, member_json in zip(
+                    member_page, members_json['hits']['hits']):
+                member_json['links'] = dump_community_membership_links(
+                    member_obj)
+        else:
+            for member in members_json['hits']['hits']:
+                del member['email']
+        return members_json, 200
 
 
 class MembershipRequestResource(MethodView):
@@ -237,8 +268,10 @@ class MembershipRequestResource(MethodView):
             and (not token or not mts.validate_token(
                     token, expected_value=inv_id)):
             abort(404)
-        # TODO links are currently missing.
-        return jsonify(community_member.as_dict(include_requests=True)), 200
+        community_member_json = community_member.as_dict(include_requests=True)
+        community_member_json['links'] = dump_community_membership_links(
+            community_member)
+        return jsonify(), 200
 
     put_args = {
         'role': fields.Raw(
@@ -266,7 +299,7 @@ class MembershipRequestResource(MethodView):
 
         community_member.role = CommunityMemberRole.from_str(role)
         db.session.commit()
-        # return jsonify(community_member.as_dict()), 200
+        # TODO: should we return the json instead?
         return 'Succesfully modified invitation.', 200
 
     del_args = {
@@ -283,7 +316,6 @@ class MembershipRequestResource(MethodView):
     @community_permission('delete_membership')
     def delete(self, comid=None, community=None, community_member=None):
         """Cancel (remove) a membership request."""
-        # TODO dont allow last admin to leave
         community_admins = community.members.filter(
             role=CommunityMemberRole.ADMIN,
             status=CommunityMemberStatus.ACCEPTED)
@@ -352,19 +384,17 @@ class MembershipRequestHandlingResource(MethodView):
                     community_member.role = CommunityMemberRole.from_str(role)
                 else:
                     abort(400)
-            community_member.request.close_request()
+            community_member.request.status = 'closed'
         elif action == 'reject':
-            #TODO check if the invitation_id is properly cleaned up
             if community_member.invitation_id:
                 community_member.invitation_id = None
             community_member.status = CommunityMemberStatus.REJECTED
-            community_member.request.close_request()
+            community_member.request.status = 'closed'
         if comment:
-            community_member.request.add_comment(request_user.id, comment)
+            community_member.request.add_comment(request_user, comment)
         community_member.request.commit()
         db.session.commit()
-        # TODO response?
-        return jsonify(community_member.as_dict()), 200
+        return jsonify(community_member.as_dict(include_requests=True)), 200
 
 
 api_blueprint.add_url_rule(
@@ -411,19 +441,18 @@ ui_blueprint = Blueprint(
 def members(comid=None, community=None):
     """Members of a community."""
     community_member_obj = community.members.get_user_membership(
-        int(current_user.get_id()),
-        status=CommunityMemberStatus.ACCEPTED
-    )
-    if community_member_obj is not None:
+        int(current_user.get_id()))
+    if community_member_obj is not None and \
+            community_member_obj.status == CommunityMemberStatus.ACCEPTED:
         community_member = community_member_obj.as_dict()
         pending_records = \
             len(community.members.filter(status=CommunityMemberStatus.PENDING))
-
     else:
         community_member = {}
         pending_records = {}
     #TODO pending records should also check permissions
-    #  before exposing this information
+    #  before exposing this information @blueprint.app_template_filter()?
+
     return render_template(
         'invenio_communities/members.html',
         community=community,

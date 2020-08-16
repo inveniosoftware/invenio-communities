@@ -104,7 +104,16 @@ class CommunityBase(Record, PIDRecordMixin):
                 self.model.delete()
         return self
 
+    @property
+    def revision_id(self):
+        """Overwriting the method since versioning is not supported here."""
+        pass
 
-# TODO: Move to `proxies` and expose as `invenio_communities.Community`
-Community = LocalProxy(
-    lambda: current_app.extensions['invenio-communities'].community_cls)
+    @property
+    def revisions(self):
+        """Overwriting the method since versioning is not supported here."""
+        pass
+
+    def revert(self):
+        """Overwriting the method since versioning is not supported here."""
+        pass

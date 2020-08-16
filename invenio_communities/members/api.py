@@ -24,12 +24,7 @@ from invenio_communities.members.models import \
 from invenio_communities.members.models import CommunityMemberRole, \
     CommunityMemberStatus
 from invenio_communities.requests.api import RequestBase
-
-# from invenio_communities.api import Community
-
-
-Community = LocalProxy(
-    lambda: current_app.extensions['invenio-communities'].community_cls)
+from invenio_communities.proxies import Community
 
 
 class CommunityMemberRequest(RequestBase):
@@ -72,7 +67,7 @@ class CommunityMemberRequest(RequestBase):
 
     @property
     def community_member(self):
-        """Get request's community record relatinship."""
+        """Get request's community member relationship."""
         if not getattr(self, '_community_member', None):
             self._community_member = \
                 self.community_member_cls.get_by_request_id(request_id=self.id)
@@ -85,7 +80,7 @@ class CommunityMemberRequest(RequestBase):
 
     @property
     def user(self):
-        """Get request record."""
+        """Get membership user."""
         return self.community_member.user
 
     def as_dict(self):
@@ -114,16 +109,6 @@ class CommunityMemberRequest(RequestBase):
         """Returns true or false depending on the request direction."""
         return bool(self.community_member.invitation_id)
 
-    @property
-    def is_closed(self):
-        """Returns true or false depending on the state of the request."""
-        return self['state'] == 'CLOSED'
-
-    def close_request(self):
-        """Close the request after it has been succesfully handled."""
-        self['state'] = 'CLOSED'
-
-
 class ModelProxyProperty(object):
     """Class for initializing property like objects."""
 
@@ -138,6 +123,7 @@ class ModelProxyProperty(object):
     def __set__(self, obj, val):
         """."""
         setattr(obj.model, self.name, val)
+
 
 class CommunityMember(RecordBaseAPI):
     """Community Member class."""
@@ -231,37 +217,16 @@ class CommunityMember(RecordBaseAPI):
             return None
         return cls(model.json, model=model)
 
-    # TODO: Remove
-    def dump_links(self):
-        actions = ['comment', 'accept', 'reject']
-        links = {
-            "self": url_for(
-                'invenio_communities_members.community_requests_api',
-                pid_value=self.community.pid.pid_value,
-                membership_id=str(self.id)
-            )
-        }
-        for action in actions:
-            links[action] = url_for(
-                'invenio_communities_members.community_requests_handling_api',
-                pid_value=self.community.pid.pid_value,
-                membership_id=str(self.id),
-                action=action
-            )
-        return links
-
     def as_dict(self, include_requests=False):
+        """Return the object information into a dict."""
         res = {
             'id': str(self.id),
             'status': str(self.status.name.lower()),
             'role': str(self.role.name.lower()),
             'user_id': self.user.id if self.user else None,
-            'username': self.user.profile._displayname if self.user and self.user.profile else None,
-            # TODO: Shouldn't be visible publicly. This data should be
-            # removed/cleaned in the controller
+            'username': self.user.profile._displayname if self.user and
+            self.user.profile else None,
             'email': self.invitation_id,
-            # TODO: Generate these in the view
-            #'links': self.dump_links(),
         }
         if self.request:
             if include_requests:
@@ -341,21 +306,25 @@ class CommunityMembersCollection:
             res.append(community_member.as_dict(
                 include_requests=include_requests)
             )
-        #TODO add aggregations
         res = {"hits": {
             "total": self._query.count(),
-            "hits": res
-        }}
+            # TODO: Make GROUP BY for this.
+            "aggregations": {
+                "role": {"buckets": [{"doc_count": len(
+                    CommunityMembersCollection(self.community).filter(
+                        status=CommunityMemberStatus.ACCEPTED,
+                        role=role)), "key": str(role.title)}
+                    for role in CommunityMemberRole]}},
+            "hits": res}}
         return res
 
     def aggregate(self, key):
         return self._query.group_by(key).count()
 
-    #TODO check this
-    def get_user_membership(self, user_id, **kwargs):
+    #TODO use __getitem__
+    def get_user_membership(self, user_id):
         community_members = self.filter(
-            user_id=user_id,
-            **kwargs)
+            user_id=user_id)
         membership_obj = community_members._query.one_or_none()
         if not membership_obj:
             return None

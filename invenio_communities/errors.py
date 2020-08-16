@@ -8,5 +8,6 @@
 
 """Community records errors."""
 
+
 class CommunitiesError(Exception):
     """Community error base class."""

@@ -19,22 +19,24 @@ from invenio_communities.permissions import CommunityOwner
 class RecordOwners(Generator):
     """Allows record owners."""
 
-    def needs(self, inclusion_request=None, record=None, **kwargs):
+    def needs(self, community_record=None, record=None, **kwargs):
         """Enabling Needs."""
-        record = record or inclusion_request.record
+        record = record or community_record.record
         return [UserNeed(owner) for owner in record.get('_owners', [])]
 
 
 class InclusionRequestHandlers(Generator):
 
-    def needs(self, inclusion_request=None, community=None, **kwargs):
+    def needs(self, community_record=None, community=None, **kwargs):
         """Skip check at this stage if the membership is an invitation."""
+        inclusion_request = community_record.request
         if inclusion_request['state'] == inclusion_request.STATES['CLOSED']:
             return []
-        if inclusion_request.is_request:
-            return CommunityOwner().needs(community=community)
+        if inclusion_request.is_invite:
+            return RecordOwners().needs(record=community_record.record)
         else:
-            return RecordOwners().needs(record=inclusion_request.record)
+            return CommunityOwner().needs(community=community)
+
 
 
 class CommunityRecordPermissionPolicy(BasePermissionPolicy):

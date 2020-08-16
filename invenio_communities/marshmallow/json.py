@@ -16,6 +16,9 @@ from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import GenFunction, SanitizedHTML, \
     SanitizedUnicode
+from invenio_records_rest.schemas import StrictKeysMixin
+from invenio_records_rest.schemas.fields import GenFunction, \
+    SanitizedHTML, SanitizedUnicode
 from marshmallow import ValidationError, fields, missing, validate
 from werkzeug.local import LocalProxy
 

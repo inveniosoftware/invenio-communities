@@ -18,7 +18,8 @@ from invenio_db import db
 from invenio_records.api import Record as RecordBaseAPI
 from werkzeug.local import LocalProxy
 
-from invenio_communities.api import Community, PIDRecordMixin
+from invenio_communities.api import PIDRecordMixin
+from invenio_communities.proxies import Community
 from invenio_communities.records.models import \
     CommunityRecord as CommunityRecordModel
 from invenio_communities.records.models import CommunityRecordStatus
@@ -54,10 +55,8 @@ class CommunityInclusionRequest(RequestBase):
 
     TYPE = 'community-inclusion-request'
 
-    # TODO: see how to implement or if needed at all...
     community_record_cls = LocalProxy(lambda: CommunityRecord)
 
-    # TODO: Override
     schema = {
         "type": {
             "type": "string",
@@ -70,8 +69,6 @@ class CommunityInclusionRequest(RequestBase):
         "inclusion_type": "string",
         "created_by": {"type": "int"},
     }
-
-    # TODO: implement "state" property with getter/setter?
 
     @property
     def community_record(self):
@@ -124,50 +121,31 @@ class CommunityInclusionRequest(RequestBase):
             ],
         }
 
-    # TODO: Probably part of view/controller
-    @classmethod
-    def dump_links(cls, request, pid_value):
-        actions = ['comment', 'accept', 'reject']
-        links = {
-            "self": url_for(
-                'invenio_communities_records.requests_item',
-                pid_value=pid_value,
-                request_id=request.id
-            )
-        }
-        for action in actions:
-            links[action] = url_for(
-                'invenio_communities_records.requests_item_actions',
-                pid_value=pid_value,
-                request_id=request.id,
-                action=action
-            )
-        return links
-
     @property
-    def is_request(self):
+    def is_invite(self):
         """."""
-        return self['created_by'] in self.community_record.record['_owners']
+        return not self['created_by'] in self.community_record.record[
+            '_owners']
 
 
-# TODO: cleanup
-class RecordCommunitiesMixin(PIDRecordMixin):
+# # TODO: cleanup
+# class RecordCommunitiesMixin(PIDRecordMixin):
 
-    record_communities_iter_cls = LocalProxy(
-        lambda: RecordCommunitiesCollection)
+#     record_communities_iter_cls = LocalProxy(
+#         lambda: RecordCommunitiesCollection)
 
-    object_type = 'rec'
-    pid_type = 'recid'
+#     object_type = 'rec'
+#     pid_type = 'recid'
 
-    @property
-    def communities(self):
-        return self.record_communities_iter_cls(self)
+#     @property
+#     def communities(self):
+#         return self.record_communities_iter_cls(self)
 
-    # TODO: Take into account in the controllers
-    # def block_community(cls, community):
-    #     # TODO: should this be implemented on the level of Request API
-    #     # TODO create a CommunityMember relationship restricting this
-    #     pass
+#     # TODO: Take into account in the controllers
+#     # def block_community(cls, community):
+#     #     # TODO: should this be implemented on the level of Request API
+#     #     # TODO create a CommunityMember relationship restricting this
+#     #     pass
 
 
 class ModelProxyProperty(object):
@@ -263,7 +241,6 @@ class CommunityRecord(RecordBaseAPI):
             return None
         return cls(model.json, model=model)
 
-    # TODO propagate this
     def as_dict(self, include_requests=True):
         res = {
             **self,
@@ -379,7 +356,7 @@ class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
                 'title': community_record.community['title'],
                 # TODO: Add when implemented
                 # 'logo': None,
-                'request_id': str(community_record.request.id),
+                'community_record_id': str(community_record.id),
                 'created_by': community_record.request['created_by'],
             })
         return res
