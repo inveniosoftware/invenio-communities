@@ -32,6 +32,7 @@ def create_test_community(client, user, data):
     login_user_via_session(client, user=user)
     list_url = url_for('invenio_records_rest.comid_list')
     resp = client.post(list_url, json=data)
+    assert resp.status_code == 201
     return resp
 
 
@@ -52,6 +53,7 @@ def test_simple_flow(db, es_clear, client, users):
         'id': 'minimal_comm',
         'title': 'Minimal community',
         'type': 'organization',
+        'visibility': 'public',
     })
 
     assert resp.status_code == 201
@@ -75,6 +77,7 @@ def test_simple_flow(db, es_clear, client, users):
         'id': 'biosyslit',
         'title': 'Owner title',
         'type': 'organization',
+        'visibility': 'public',
     })
 
     assert resp.status_code == 200
@@ -98,6 +101,7 @@ def test_community_permissions(db, es_clear, client, users):
         'id': 'test_comm',
         'title': 'Testing community',
         'type': 'organization',
+        'visibility': 'public',
     }
     resp = create_test_community(client, community_owner, data)
     item_url_owner = resp.json['links']['self']
@@ -110,6 +114,7 @@ def test_community_permissions(db, es_clear, client, users):
         'id': 'anonymous_comm',
         'title': 'Anonymous community',
         'type': 'organization',
+        'visibility': 'public',
     })
 
     assert resp.status_code == 401
@@ -132,6 +137,7 @@ def test_community_permissions(db, es_clear, client, users):
         'id': 'biosyslit',
         'title': 'Owner title',
         'type': 'organization',
+        'visibility': 'public',
     })
 
     assert resp.status_code == 401
@@ -148,6 +154,7 @@ def test_community_permissions(db, es_clear, client, users):
         'id': 'regular_comm',
         'title': 'Regular community',
         'type': 'organization',
+        'visibility': 'public',
     })
 
     assert resp.status_code == 201
@@ -176,6 +183,7 @@ def test_community_permissions(db, es_clear, client, users):
         'id': 'biosyslit',
         'title': 'Regular title',
         'type': 'organization',
+        'visibility': 'public',
     })
 
     assert resp.status_code == 403
