@@ -26,7 +26,7 @@ COMMUNITIES_REST_ENDPOINTS = dict(
         list_route='/communities/',
         item_route='/communities/<{}:pid_value>'.format(comid_url_converter),
         search_index='communities',
-        record_class='invenio_communities.api:Community',
+        record_class='invenio_communities:Community',
         record_serializers={
             'application/json': (
                 'invenio_communities.serializers.json_v1_response'),

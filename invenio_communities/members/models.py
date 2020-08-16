@@ -90,9 +90,7 @@ class CommunityMember(db.Model, RecordMetadataBase):
     __table_args__ = (
         db.Index(
             'uidx_community_pid_id_user_id_invitation_id',
-            # TODO: Check if this combination would be enough (since user_id can be NULL)
             'community_pid_id', 'user_id',
-            # 'community_pid_id', 'user_id', 'invitation_id',
             unique=True,
         ),
         db.Index(

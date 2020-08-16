@@ -10,7 +10,7 @@
 
 from invenio_indexer.api import RecordIndexer
 
-from .api import Community
+from invenio_communities.proxies import Community
 
 
 class CommunityIndexer(RecordIndexer):
