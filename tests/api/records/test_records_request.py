@@ -10,16 +10,15 @@
 
 import uuid
 
-from flask import url_for
 import pytest
+from flask import url_for
+from invenio_accounts.testutils import create_test_user, login_user_via_session
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 from invenio_records.api import Record
 
 from invenio_communities.api import Community
 from invenio_communities.indexer import CommunityIndexer
-
-from invenio_accounts.testutils import create_test_user, login_user_via_session
 
 
 @pytest.fixture

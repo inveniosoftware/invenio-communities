@@ -19,7 +19,6 @@ from invenio_accounts.models import User
 from invenio_db import db
 from webargs import fields, validate
 
-from ..token import MembershipTokenSerializer
 from invenio_communities.records.api import CommunityRecordsCollection
 
 from ..token import MembershipTokenSerializer
@@ -29,7 +28,6 @@ from .api import CommunityMember, CommunityMemberRequest
 from .errors import CommunityMemberAlreadyExists
 from .models import CommunityMemberRole, CommunityMemberStatus
 from .permissions import CommunityMemberPermissionPolicy, is_permitted_action
-from .models import CommunityMemberRole, CommunityMemberStatus
 
 api_blueprint = Blueprint(
         'invenio_communities_members',

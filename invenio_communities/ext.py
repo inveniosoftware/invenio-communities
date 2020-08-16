@@ -12,14 +12,12 @@ from __future__ import absolute_import, print_function
 
 from flask_principal import identity_loaded
 from invenio_base.utils import obj_or_import_string
-from invenio_base.utils import obj_or_import_string
 from invenio_indexer.signals import before_record_index
 from werkzeug.utils import cached_property
 
 from . import config
 from .permission_loaders import load_permissions_on_identity_loaded
 from .signals import community_created
-from .utils import LazyPIDConverter, set_default_admin
 from .utils import LazyPIDConverter, obj_or_import_string, set_default_admin
 
 
