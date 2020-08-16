@@ -62,7 +62,8 @@ def can_read_community(record, *args, **kwargs):
         """Check that the current user is the community's owner."""
         return CommunityPermissionPolicy(
             action='read_community',
-            comid=record.pid
+            comid=record.pid,
+            community=record,
         ).can()
     return type('AllowCommunityOwner', (), {'can': can})()
 
@@ -73,7 +74,8 @@ def can_update_community(record, *args, **kwargs):
         """Check that the current user is the community's owner."""
         return CommunityPermissionPolicy(
             action='update_community',
-            comid=record.pid
+            comid=record.pid,
+            community=record,
         ).can()
     return type('AllowCommunityOwner', (), {'can': can})()
 
@@ -84,6 +86,7 @@ def can_delete_community(record, *args, **kwargs):
         """Check that the current user is the community's owner."""
         return CommunityPermissionPolicy(
             action='delete_community',
-            comid=record.pid
+            comid=record.pid,
+            community=record,
         ).can()
     return type('AllowCommunityOwner', (), {'can': can})()
