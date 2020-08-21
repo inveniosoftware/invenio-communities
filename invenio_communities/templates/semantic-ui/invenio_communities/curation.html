@@ -18,8 +18,12 @@
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
 <div class="container top-padding">
-  <div id="community-id" data-community-id="{{ community.id }}"></div>
-  <div id="communities-records-curate"></div>
+  {% set community_id = community.id | string %}
+  <div data-invenio-search-config='{{ config|format_config(
+    "recid",
+    app_id="communities-records-curate",
+    hidden_params=[("community_pending", community_id)]
+  ) | tojson(indent=2) }}'></div>
 </div>
 
 {%- endblock page_body %}

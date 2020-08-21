@@ -92,6 +92,19 @@ class InvenioCommunities(object):
                 if k == 'COMMUNITIES_REST_FACETS':
                     app.config['RECORDS_REST_FACETS'].update(
                         getattr(config, k))
+                if k == 'COMMUNITIES_REST_SORT_OPTIONS':
+                    # TODO Might be overriden depending on which package is
+                    # initialised first
+                    app.config.setdefault('RECORDS_REST_SORT_OPTIONS', {})
+                    app.config['RECORDS_REST_SORT_OPTIONS'].update(
+                        getattr(config, k))
+                if k == 'COMMUNITIES_REST_DEFAULT_SORT':
+                    # TODO Might be overriden depending on which package is
+                    # initialised first
+                    app.config.setdefault('RECORDS_REST_DEFAULT_SORT', {})
+                    app.config['RECORDS_REST_DEFAULT_SORT'].update(
+                        getattr(config, k))
+
         app.config.setdefault(
             'SUPPORT_EMAIL', getattr(config, 'SUPPORT_EMAIL'))
 

@@ -1,9 +1,7 @@
-import ReactDOM from "react-dom";
 import React from "react";
 import { Input, Item, Card } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
-import { SearchApp } from "../invenio_search_ui/SearchApp";
-import { overrideStore } from "react-overridable";
+import { createSearchAppInit } from "@js/invenio_search_ui";
 
 function ResultsGridItemTemplate({ result, index }) {
   return (
@@ -34,61 +32,7 @@ function ResultsItemTemplate({ result, index }) {
     </Item>
   );
 }
-overrideStore.add("ResultsList.item", ResultsItemTemplate);
-overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
 
-const searchConfig = {
-  api: "/api/communities",
-  mimetype: "application/json",
-  aggs: [
-    {
-      title: "Types",
-      field: "type",
-      aggName: "type",
-    },
-    {
-      title: "Domains",
-      field: "domain",
-      aggName: "domain",
-    },
-  ],
-  sort_options: [
-    {
-      text: "Best match",
-      sortBy: "bestmatch",
-      sortOrder: "desc",
-      defaultOnEmptyString: true,
-    },
-    {
-      text: "Newest",
-      sortBy: "mostrecent",
-      sortOrder: "asc",
-      default: true,
-    },
-    {
-      text: "Oldest",
-      sortBy: "mostrecent",
-      sortOrder: "desc",
-    },
-  ],
-  resultsPerPageValues: [
-    {
-      text: "10",
-      value: 10,
-    },
-    {
-      text: "20",
-      value: 20,
-    },
-    {
-      text: "50",
-      value: 50,
-    },
-  ],
-};
-
-// TODO: Remove after https://github.com/inveniosoftware/react-searchkit/issues/117
-// is addressed
 const CommunitiesSearchBarElement = ({
   placeholder: passedPlaceholder,
   queryString,
@@ -121,9 +65,11 @@ const CommunitiesSearchBarElement = ({
   );
 };
 
-overrideStore.add("SearchBar.element", CommunitiesSearchBarElement);
+const defaultComponents = {
+  "ResultsList.item": ResultsItemTemplate,
+  "ResultsGrid.item": ResultsGridItemTemplate,
+  "SearchBar.element": CommunitiesSearchBarElement,
+};
 
-ReactDOM.render(
-  <SearchApp config={searchConfig} appName={"communities-search"} />,
-  document.getElementById("communities-search")
-);
+// Auto-initialize search app
+const initSearchApp = createSearchAppInit(defaultComponents);

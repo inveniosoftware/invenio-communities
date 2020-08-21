@@ -1,14 +1,15 @@
-import ReactDOM from "react-dom";
 import React, { useState } from "react";
 import { Card, Item, Button, Icon } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import axios from "axios";
-import { SearchApp } from "../invenio_search_ui/SearchApp";
-import { overrideStore } from "react-overridable";
+import { createSearchAppInit } from "@js/invenio_search_ui";
+
+// TODO: Use global search config context to get community data
+const COMMUNITY_ID = window.location.pathname.split('/')[2];
 
 const ResultsItemTemplate = ({ result, index }) => {
   const request = result.metadata._communities.pending.find(
-    ({ id }) => id === COMMUNITY_ID
+    ({ comid }) => comid === COMMUNITY_ID
   );
   const [status, setStatus] = useState("pending");
 
@@ -79,62 +80,10 @@ function ResultsGridItemTemplate({ result, index }) {
   );
 }
 
-overrideStore.add("ResultsList.item", ResultsItemTemplate);
-overrideStore.add("ResultsGrid.item", ResultsGridItemTemplate);
-
-const domContainer = document.getElementById("community-id");
-const COMMUNITY_ID = domContainer.dataset.communityId;
-const searchConfig = {
-  api: `/api/records?q=_communities.pending.id:"${COMMUNITY_ID}"`,
-  mimetype: "application/json",
-  aggs: [
-    {
-      title: "Access Right",
-      field: "access_right",
-      aggName: "access_right",
-    },
-    {
-      title: "Resource types",
-      field: "resource_type",
-      aggName: "resource_type",
-    },
-  ],
-  sort_options: [
-    {
-      text: "Best match",
-      sortBy: "bestmatch",
-      sortOrder: "desc",
-      defaultOnEmptyString: true,
-    },
-    {
-      text: "Newest",
-      sortBy: "mostrecent",
-      sortOrder: "asc",
-      default: true,
-    },
-    {
-      text: "Oldest",
-      sortBy: "mostrecent",
-      sortOrder: "desc",
-    },
-  ],
-  resultsPerPageValues: [
-    {
-      text: "10",
-      value: 10,
-    },
-    {
-      text: "20",
-      value: 20,
-    },
-    {
-      text: "50",
-      value: 50,
-    },
-  ],
+const defaultComponents = {
+  "ResultsList.item": ResultsItemTemplate,
+  "ResultsGrid.item": ResultsGridItemTemplate,
 };
 
-ReactDOM.render(
-  <SearchApp config={searchConfig} appName={"communities-records-curate"} />,
-  document.getElementById("communities-records-curate")
-);
+// Auto-initialize search app
+createSearchAppInit(defaultComponents);

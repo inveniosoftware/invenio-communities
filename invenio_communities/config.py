@@ -65,6 +65,30 @@ COMMUNITIES_REST_FACETS = dict(
     )
 )
 
+COMMUNITIES_REST_SORT_OPTIONS = dict(
+    communities=dict(
+        bestmatch=dict(
+            title='Best match',
+            fields=['_score'],
+            default_order='desc',
+            order=1,
+        ),
+        mostrecent=dict(
+            title='Most recent',
+            fields=['-_created'],
+            default_order='asc',
+            order=2,
+        ),
+    )
+)
+
+COMMUNITIES_REST_DEFAULT_SORT = dict(
+    communities=dict(
+        query='bestmatch',
+        noquery='mostrecent',
+    )
+)
+
 COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
 SUPPORT_EMAIL = 'test@email.org'
