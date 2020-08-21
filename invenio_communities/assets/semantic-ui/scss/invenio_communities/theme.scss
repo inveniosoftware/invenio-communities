@@ -1,7 +1,7 @@
 .community-container {
   background-color: rgb(219, 219, 219);
   margin-bottom: 20px;
-  margin-top: -28px;
+  margin-top: -20px;
 }
 
 .underline {
@@ -32,7 +32,8 @@
   text-align: center;
 }
 
-.ui.grid{
+.community-container > .ui.grid,
+.community-settings.ui.grid {
   display: block;
   align-items: unset;
   padding: unset;
