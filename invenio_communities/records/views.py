@@ -84,7 +84,7 @@ def community_permission(
     '/communities/<{}:pid_value>/curate'.format(comid_url_converter))
 @pass_community
 @login_required
-@community_permission('can_list_community_inclusions')
+@community_permission('list_community_inclusions')
 def curation(comid=None, community=None):
     """Curate page for community record inclusions."""
     pending_records = \
