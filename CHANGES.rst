@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 2.1.0 (released 2020-08-26)
+-----------------------------------
+
+- Members refactoring.
+- Adds permissions to all views.
+- Uses Invenio-Search-UI helpers to create search applications.
+- Initial REST API workflow tests for core and records.
+
 Version 2.0.6 (released 2020-08-03)
 -----------------------------------
 
