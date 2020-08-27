@@ -90,6 +90,7 @@ class InvenioCommunities(object):
                         config, k))
                 app.config.setdefault(k, getattr(config, k))
                 if k == 'COMMUNITIES_REST_FACETS':
+                    app.config.setdefault('RECORDS_REST_FACETS', {})
                     app.config['RECORDS_REST_FACETS'].update(
                         getattr(config, k))
                 if k == 'COMMUNITIES_REST_SORT_OPTIONS':
