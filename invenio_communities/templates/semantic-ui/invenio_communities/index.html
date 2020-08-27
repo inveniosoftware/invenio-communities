@@ -21,7 +21,13 @@
       </button>
     </a>
     </div>
-    <div data-invenio-search-config='{{ config|format_config("comid", app_id="community-search") | tojson(indent=2) }}'></div>
+    <div data-invenio-search-config='{{
+      search_app_helpers.invenio_records_rest.generate(
+        dict(
+          endpoint_id="comid",
+          app_id="community-search"
+        )
+      ) | tojson(indent=2) }}'></div>
   </div>
 </div>
 {%- endblock page_body %}
