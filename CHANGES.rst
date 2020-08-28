@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 2.1.1 (released 2020-08-28)
+-----------------------------------
+
+- Uses newest Invenio-Search-UI helpers to create search applications.
+
 Version 2.1.0 (released 2020-08-26)
 -----------------------------------
 
