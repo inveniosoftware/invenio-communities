@@ -11,18 +11,13 @@
 
 from __future__ import absolute_import, print_function
 
-import uuid
-
 from flask import current_app
 from invenio_pidstore.models import PersistentIdentifier
-from invenio_records_rest.schemas import Nested, StrictKeysMixin
-from invenio_records_rest.schemas.fields import DateString, GenFunction, \
-    SanitizedHTML, SanitizedUnicode
+from invenio_records_rest.schemas import StrictKeysMixin
+from invenio_records_rest.schemas.fields import GenFunction, SanitizedHTML, \
+    SanitizedUnicode
 from marshmallow import ValidationError, fields, missing, validate
 from werkzeug.local import LocalProxy
-
-from invenio_communities.api import Community
-from invenio_communities.proxies import current_communities
 
 
 def pid_from_context_or_rec(data_value, context, **kwargs):
@@ -57,6 +52,16 @@ def serialize_creator(record, context):
 def valid_domains():
     """Return valid community domains."""
     return {d['value'] for d in current_app.config['COMMUNITIES_DOMAINS']}
+
+
+def dump_collections(record, context):
+    """Dump community collections."""
+    collections = record.get('_collections', {})
+    collection_schema = CommunityCollectionSchema()
+    return {
+        col_id: collection_schema.dump(col_data)
+        for col_id, col_data in collections.items()
+    }
 
 
 class CommunitySchemaMetadataV1(StrictKeysMixin):
@@ -108,6 +113,12 @@ class CommunitySchemaMetadataV1(StrictKeysMixin):
         serialize=serialize_creator
     )
 
+    # TODO: make this field configurable (e.g. via a schema mixin...)
+    collections = GenFunction(
+        serialize=dump_collections,
+        dump_only=True,
+    )
+
 
 class CommunitySchemaV1(StrictKeysMixin):
     """Schema for the community metadata."""
@@ -117,3 +128,12 @@ class CommunitySchemaV1(StrictKeysMixin):
     updated = fields.Str(dump_only=True)
     links = fields.Raw(dump_only=True)
     metadata = fields.Nested(CommunitySchemaMetadataV1)
+
+
+# TODO: Move this inside the collections module
+class CommunityCollectionSchema(StrictKeysMixin):
+    """Schema for the community collections."""
+
+    title = fields.Str(dump_only=True)
+    description = fields.Str(dump_only=True)
+    order = fields.Int(dump_only=True)

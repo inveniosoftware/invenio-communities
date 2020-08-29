@@ -47,9 +47,10 @@ class InvenioCommunities(object):
         from .api import CommunityBase
         from .members.api import CommunityMembersMixin
         from .records.api import CommunityRecordsMixin
+        from .records.collections.api import CommunityCollectionsMixin
         return type(
             'Community',
-            (CommunityBase, CommunityRecordsMixin, CommunityMembersMixin),
+            (CommunityBase, CommunityRecordsMixin, CommunityMembersMixin, CommunityCollectionsMixin),
             {},
         )
 

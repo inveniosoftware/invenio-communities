@@ -87,8 +87,13 @@ class CommunityBase(Record, PIDRecordMixin):
     def clear(self):
         """Clear but preserve the schema field."""
         schema = self['$schema']
+        # TODO: since this is a "system" field, in the future it should be
+        # auto-preserved
+        collections = self.get('_collections')
         super(CommunityBase, self).clear()
         self['$schema'] = schema
+        if collections:
+            self['_collections'] = collections
 
     def delete(self, force=False):
         """Delete a community."""
