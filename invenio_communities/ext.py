@@ -121,7 +121,7 @@ class InvenioCommunities(object):
             sender=app,
             weak=False,
             index=app.config.get(
-                'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
+                'COMMUNITIES_RECORD_INDEX', 'records'),
         )
 
         # TODO: Make configurable
@@ -132,7 +132,7 @@ class InvenioCommunities(object):
             sender=app,
             weak=False,
             index=app.config.get(
-                'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
+                'COMMUNITIES_RECORD_INDEX', 'records'),
         )
 
         community_created.connect(set_default_admin, weak=False)
