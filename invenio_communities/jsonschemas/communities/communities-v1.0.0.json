@@ -100,6 +100,28 @@
     "created_by": {
       "description": "Community creator.",
       "type": "integer"
+    },
+    "_collections": {
+      "type": "object",
+      "description": "Community collections.",
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "order": {
+              "type": "integer"
+            }
+          }
+        }
+      }
     }
   },
   "required": ["$schema", "id", "title", "type"]

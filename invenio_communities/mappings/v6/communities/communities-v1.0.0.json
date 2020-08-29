@@ -65,6 +65,11 @@
         },
         "created_by": {
           "type": "integer"
+        },
+        "_collections": {
+          "type": "object",
+          "dynamic": false,
+          "enabled": false
         }
       }
     }
