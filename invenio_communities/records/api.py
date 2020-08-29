@@ -266,6 +266,7 @@ class CommunityRecord(RecordBaseAPI):
     # TODO propagate this
     def as_dict(self, include_requests=True):
         res = {
+            **self,
             'status': str(self.status.title),
             'record_pid': self.record.pid.pid_value,
             'community_pid': self.community.pid.pid_value

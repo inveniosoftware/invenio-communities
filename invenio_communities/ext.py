@@ -123,5 +123,16 @@ class InvenioCommunities(object):
             index=app.config.get(
                 'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
         )
-        # TODO: Make it possible to enable/disable the members feature via config
+
+        # TODO: Make configurable
+        from invenio_communities.records.collections.indexer import \
+            record_collections_indexer_receiver
+        before_record_index.dynamic_connect(
+            record_collections_indexer_receiver,
+            sender=app,
+            weak=False,
+            index=app.config.get(
+                'COMMUNITIES_RECORD_INDEX', 'records-record-v1.0.0'),
+        )
+
         community_created.connect(set_default_admin, weak=False)
