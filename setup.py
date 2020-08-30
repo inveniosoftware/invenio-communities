@@ -110,10 +110,12 @@ setup(
             'invenio_communities = invenio_communities.views:ui_blueprint',
             'invenio_communities_members = invenio_communities.members.views:ui_blueprint',
             'invenio_communities_records = invenio_communities.records.views:ui_blueprint',
+            'invenio_communities_collections = invenio_communities.records.collections.views:ui_blueprint',
         ],
         'invenio_base.api_blueprints': [
             'invenio_communities_members = invenio_communities.members.views:api_blueprint',
             'invenio_communities_records = invenio_communities.records.views:api_blueprint',
+            'invenio_communities_collections = invenio_communities.records.collections.views:api_blueprint',
         ],
         'invenio_db.models': [
             'invenio_communities = invenio_communities.models',
