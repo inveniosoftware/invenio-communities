@@ -10,7 +10,7 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_communities.api import Community
+from invenio_communities import Community
 
 
 class CommunityCollection(dict):
