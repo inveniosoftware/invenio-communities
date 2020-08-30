@@ -112,6 +112,12 @@ class InvenioCommunities(object):
 
     def _register_signals(self, app):
         """Register signals."""
+        # TODO: Find easier way to connect to "records*" indexes
+        def _index_starts_with(prefix):
+            return lambda _, __, **kw: kw.get('index', '').startswith(prefix)
+        records_index_prefix = app.config.get(
+            'COMMUNITIES_RECORD_INDEX', 'records').split('-', 1)[0]
+
         # TODO: Make configurable or move into separate extension in ".records"
         from invenio_communities.records.indexer import record_indexer_receiver
         before_record_index.dynamic_connect(
@@ -120,8 +126,7 @@ class InvenioCommunities(object):
                 record_indexer_receiver),
             sender=app,
             weak=False,
-            index=app.config.get(
-                'COMMUNITIES_RECORD_INDEX', 'records'),
+            condition_func=_index_starts_with(records_index_prefix),
         )
 
         # TODO: Make configurable
@@ -131,8 +136,7 @@ class InvenioCommunities(object):
             record_collections_indexer_receiver,
             sender=app,
             weak=False,
-            index=app.config.get(
-                'COMMUNITIES_RECORD_INDEX', 'records'),
+            condition_func=_index_starts_with(records_index_prefix),
         )
 
         community_created.connect(set_default_admin, weak=False)
