@@ -23,8 +23,8 @@ from invenio_communities.members.models import \
     CommunityMember as CommunityMemberModel
 from invenio_communities.members.models import CommunityMemberRole, \
     CommunityMemberStatus
-from invenio_communities.requests.api import RequestBase
 from invenio_communities.proxies import Community
+from invenio_communities.requests.api import RequestBase
 
 
 class CommunityMemberRequest(RequestBase):
