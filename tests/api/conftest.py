@@ -6,14 +6,10 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Pytest configuration.
-
-See https://pytest-invenio.readthedocs.io/ for documentation on which test
-fixtures are available.
-"""
+"""Pytest configuration."""
 
 import pytest
-from invenio_accounts.testutils import create_test_user, login_user_via_session
+from invenio_accounts.testutils import create_test_user
 from invenio_app.factory import create_api
 
 
@@ -24,10 +20,11 @@ def create_app(instance_path):
 
 
 @pytest.fixture(scope='module')
-def basic_user(app):
-    yield create_test_user('test@inveniosoftware.org')
-
-
-@pytest.fixture(scope='module')
 def users(app):
     yield [create_test_user('user{}@inveniosoftware.org'.format(i)) for i in range(3)]
+
+
+@pytest.fixture
+def authenticated_user(db):
+    """Authenticated user."""
+    yield create_test_user('authed@inveniosoftware.org')
