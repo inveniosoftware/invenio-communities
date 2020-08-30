@@ -8,52 +8,8 @@
 
 """Community module tests."""
 
-import uuid
-
-import pytest
 from flask import url_for
-from invenio_accounts.testutils import create_test_user, login_user_via_session
-from invenio_indexer.api import RecordIndexer
-from invenio_pidstore.models import PersistentIdentifier, PIDStatus
-from invenio_records.api import Record
-
-from invenio_communities.api import Community
-from invenio_communities.indexer import CommunityIndexer
-
-
-@pytest.fixture
-def record(db, es, users):
-    _, record_owner, _ = users
-    record = Record.create({
-        'title': 'Title',
-        '_owners': [record_owner.id],
-    })
-    recid = PersistentIdentifier.create(
-        pid_type='recid', pid_value='12345',
-        object_uuid=record.id, object_type='rec',
-        status='R')
-    db.session.commit()
-    RecordIndexer().index_by_id(str(record.id))
-    yield recid, record
-
-
-@pytest.fixture
-def community(db, es, users):
-    community_owner, _, _ = users
-    community_id = str(uuid.uuid4())
-    comid = PersistentIdentifier.create(
-        pid_type='comid', pid_value='biosyslit',
-        object_uuid=community_id, object_type='com',
-        status='R')
-    community = Community.create({
-        'id': 'comm_id',
-        'title': 'Title',
-        'type': 'topic',
-        'created_by': community_owner.id,
-    }, id_=community_id)
-    db.session.commit()
-    CommunityIndexer().index_by_id(str(community.id))
-    yield comid, community
+from invenio_accounts.testutils import login_user_via_session
 
 
 def test_simple_flow(db, es_clear, community, record, client, users):
