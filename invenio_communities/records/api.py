@@ -356,7 +356,7 @@ class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
                 'title': community_record.community['title'],
                 # TODO: Add when implemented
                 # 'logo': None,
-                'community_record_id': str(community_record.id),
+                'request_id': str(community_record.id),
                 'created_by': community_record.request['created_by'],
             })
         return res

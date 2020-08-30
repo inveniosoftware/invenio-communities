@@ -52,7 +52,7 @@ const CommunitiesRequestDropdown = () => {
 
   const handleSubmit = () => {
     axios
-      .post(`/api/communities/${community.metadata.id}/requests/inclusion`, {
+      .post(`/api/communities/${community.metadata.id}/records/requests`, {
         record_pid: __RECORD.recid,
         message: message,
       })
@@ -191,7 +191,7 @@ const CommunityPendingItem = ({ community }) => {
     return () => {
       axios
         .post(
-          `/api/communities/${community.comid}/requests/inclusion/${community.request_id}/${action}`
+          `/api/communities/${community.comid}/records/requests/${community.request_id}/${action}`
         )
         .then((resp) => {
           console.log(resp.data);
