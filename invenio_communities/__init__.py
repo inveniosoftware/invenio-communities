@@ -12,7 +12,7 @@
 from __future__ import absolute_import, print_function
 
 from .ext import InvenioCommunities
-from .proxies import current_communities, Community
+from .proxies import Community, current_communities
 
 __all__ = (
     'InvenioCommunities',

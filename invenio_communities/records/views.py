@@ -14,12 +14,13 @@ from functools import wraps
 from flask import Blueprint, abort, jsonify, render_template, request, url_for
 from flask.views import MethodView
 from flask_login import current_user, login_required
+from invenio_accounts.models import User
 from invenio_db import db
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.errors import PIDDoesNotExistError
 from sqlalchemy.exc import SQLAlchemyError
 from webargs import fields
-from invenio_accounts.models import User
+
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord, CommunityRecordsCollection, Record, \
     RecordCommunitiesCollection

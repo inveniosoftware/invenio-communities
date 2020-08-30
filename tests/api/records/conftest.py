@@ -11,12 +11,15 @@
 import uuid
 
 import pytest
+from invenio_accounts.testutils import create_test_user
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
+
 from invenio_communities.api import Community
 from invenio_communities.indexer import CommunityIndexer
-from invenio_accounts.testutils import create_test_user
-from invenio_communities.records.api import CommunityInclusionRequest, CommunityRecord, Record
+from invenio_communities.records.api import CommunityInclusionRequest, \
+    CommunityRecord, Record
+
 
 @pytest.fixture
 def record_owner(db):
