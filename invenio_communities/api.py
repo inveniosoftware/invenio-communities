@@ -103,17 +103,3 @@ class CommunityBase(Record, PIDRecordMixin):
             else:
                 self.model.delete()
         return self
-
-    @property
-    def revision_id(self):
-        """Overwriting the method since versioning is not supported here."""
-        pass
-
-    @property
-    def revisions(self):
-        """Overwriting the method since versioning is not supported here."""
-        pass
-
-    def revert(self):
-        """Overwriting the method since versioning is not supported here."""
-        pass
