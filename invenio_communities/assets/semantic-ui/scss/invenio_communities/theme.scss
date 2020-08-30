@@ -1,7 +1,8 @@
-.community-container {
+.community-header {
   background-color: rgb(219, 219, 219);
   margin-bottom: 20px;
   margin-top: -20px;
+  padding-top: 20px;
 }
 
 .underline {
@@ -24,18 +25,7 @@
   max-height: 200px;
 }
 
-.top-padding {
-  margin-top: 20px;
-}
-
 .title {
   text-align: center;
 }
 
-.community-container > .ui.grid,
-.community-settings.ui.grid {
-  display: block;
-  align-items: unset;
-  padding: unset;
-  margin: auto;
-}
