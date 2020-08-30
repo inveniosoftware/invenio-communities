@@ -56,7 +56,6 @@ def pass_community_record(func=None):
     """Decorator to retrieve community inclusion."""
     @wraps(func)
     def inner(*args, **kwargs):
-        del kwargs['community_record_id']
         community_record_id = request.view_args['community_record_id']
         community_record = CommunityRecord.get_record(community_record_id)
         if community_record is None:
@@ -219,18 +218,17 @@ class ItemResource(MethodView):
     @pass_community_record
     @login_required
     @community_permission('get_community_inclusion')
-    def get(self, comid=None, community=None, inclusion=None):
+    def get(self, comid=None, community=None, community_record=None):
         """Get the inclusion request."""
-        json_response = inclusion.as_dict(include_requests=True)
+        json_response = community_record.as_dict(include_requests=True)
         return jsonify(json_response), 200
 
     @pass_community
     @pass_community_record
     @login_required
     @community_permission('delete_community_inclusion')
-    def delete(self, comid=None, community=None, inclusion=None):
+    def delete(self, comid=None, community=None, community_record=None):
         """Delete the community record request."""
-        community_record = request.community_record
         community_record.delete()
         request.delete()
         db.session.commit()
@@ -298,20 +296,20 @@ class ItemActionsResource(MethodView):
 
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
-    '/inclusion/requests'.format(pid=comid_url_converter),
+    '/records/requests'.format(pid=comid_url_converter),
     view_func=ListResource.as_view('community_records_list'),
 )
 
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
-    '/inclusion/requests/<uuid:community_record_id>'.format(
+    '/records/requests/<uuid:community_record_id>'.format(
         pid=comid_url_converter),
     view_func=ItemResource.as_view('community_records_item'),
 )
 
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
-    '/inclusion/requests/<uuid:community_record_id>'
+    '/records/requests/<uuid:community_record_id>'
     '/<any({actions}):action>'.format(
         pid=comid_url_converter,
         actions=','.join(['accept', 'reject', 'comment'])),

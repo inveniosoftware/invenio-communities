@@ -16,7 +16,7 @@ const ResultsItemTemplate = ({ result, index }) => {
   function handleRequest(action) {
     axios
       .post(
-        `/api/communities/${request.comid}/requests/inclusion/${request.request_id}/${action}`
+        `/api/communities/${request.comid}/records/requests/${request.request_id}/${action}`
       )
       .then((response) => {
         setStatus(action);
