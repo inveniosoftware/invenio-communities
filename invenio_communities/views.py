@@ -98,13 +98,10 @@ def new():
 @pass_community
 def community_page(comid=None, community=None):
     """Members of a community."""
-    pending_records = \
-        len(CommunityRecordsCollection(community).filter({'status': 'P'}))
     return render_template(
         'invenio_communities/community_page.html',
         community=community,
         comid=comid,
-        pending_records=pending_records
     )
 
 
@@ -114,10 +111,7 @@ def community_page(comid=None, community=None):
 @login_required
 def settings(comid=None, community=None):
     """Modify a community."""
-    pending_records = \
-        len(CommunityRecordsCollection(community).filter({'status': 'P'}))
     return render_template(
-        'invenio_communities/settings.html',
+        'invenio_communities/settings/index.html',
         community=community,
-        comid=comid,
-        pending_records=pending_records)
+        comid=comid)

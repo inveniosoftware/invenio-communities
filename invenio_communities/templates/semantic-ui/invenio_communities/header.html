@@ -7,17 +7,11 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 {# TODO: Use url_for instead #}
-{%- set search = "/communities/" + comid.pid_value|string -%}
-{%- set members = "/communities/" + comid.pid_value|string +"/members" -%}
-{%- set settings = "/communities/" + comid.pid_value|string + "/settings" -%}
-{%- set curate = "/communities/" + comid.pid_value|string + "/curate" -%}
 
-<!-- TODO should pending records be visible? -->
-{% block sidebar %}
-<div class="community-container">
-  <div class="ui container top-padding grid">
-    <div class="two wide column community-logo">
-      <i aria-hidden="true" class="users massive icon"></i>
+<div class="community-header">
+  <div class="ui container relaxed grid">
+    <div class="three wide column community-logo">
+      <i class="users massive icon"></i>
     </div>
     <div class="six wide column">
       <h1 class="ui header">{{ community.title }}</h1>
@@ -29,8 +23,9 @@
       <a href="/communities?domain={{ domain }}" class="links-underline">{{ domain }}</a>
       {% endfor %}
     </div>
-    <div class="column">
-      <div class="ui mini statistic">
+    {# TODO: Add proper statistics #}
+    <div class="two wide column">
+      <div class="ui tiny statistic">
         <div class=" value">
           5,550
         </div>
@@ -40,7 +35,7 @@
       </div>
     </div>
     <div class="two wide column">
-      <div class="ui mini statistic">
+      <div class="ui tiny statistic">
         <div class=" value">
           4,200
         </div>
@@ -50,18 +45,23 @@
       </div>
     </div>
     <div class="three wide column">
-      <a href="/coming-soon" class="ui positive button">
+      {# TODO: use "url_for" with appropriate querystring parameter #}
+      <a href="/deposits/new/?community={{ comid.pid_value }}" class="ui positive button">
         <i class="plus icon"></i>
-        New upload</a>
-    </div>
-    <div class="ui container top secondary pointing menu">
-      <a class="item {{ 'active' if 'community_page' in request.endpoint else '' }}" href="{{ search }}">Search</a>
-      <a class="item {{ 'active' if 'curation' in request.endpoint else '' }}" href="{{ curate }}">Curate
-        ({{ pending_records }})</a>
-      <a class="item" href="{{ members }}">Members</a>
-      <a class="item {{ 'active' if 'settings' in request.endpoint else '' }}" href="{{ settings }}">Settings</a>
-      <a class="item disabled" href="/coming-soon">Statistics</a>
+        New upload
+      </a>
     </div>
   </div>
+  {% set header_menu_items = {
+    'search': ('Search', url_for('invenio_communities.community_page', pid_value=comid.pid_value)),
+    'curate': ('Curate', url_for('invenio_communities_records.curation', pid_value=comid.pid_value)),
+    'members': ('Members', url_for('invenio_communities_members.members', pid_value=comid.pid_value)),
+    'settings': ('Settings', url_for('invenio_communities.settings', pid_value=comid.pid_value)),
+    'statistics': ('Statistics', None),
+  } %}
+  <div class="ui container secondary pointing menu">
+    {% for header_menu_key, (header_menu_item, header_menu_link) in header_menu_items.items() %}
+      <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}">{{ header_menu_item }}</a>
+    {% endfor %}
+  </div>
 </div>
-{% endblock %}

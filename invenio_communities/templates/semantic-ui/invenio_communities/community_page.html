@@ -14,9 +14,11 @@
     {{ webpack['invenio-communities-records-search.js'] }}
 {%- endblock %}
 
+{% set active_header_menu_item = 'search' %}
+
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
-<div class="container top-padding">
+<div class="ui container">
   {% set community_id = community.id | string %}
   <div data-invenio-search-config='{{
     search_app_helpers.invenio_records_rest.generate(
