@@ -130,7 +130,7 @@ const CommunityCreateForm = () => {
               .max(32, "Must be 32 characters or less"),
             description: Yup.string()
               .required("Required")
-              .max(250, "Must be 250 characterdasdass or less"),
+              .max(250, "Must be 250 characters or less"),
             title: Yup.string()
               .max(120, "Must be 120 characters or less")
               .required("Required"),

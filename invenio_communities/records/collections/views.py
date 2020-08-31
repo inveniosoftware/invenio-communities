@@ -52,6 +52,19 @@ ui_blueprint = Blueprint(
     template_folder='../../templates',
 )
 
+@ui_blueprint.route(
+    '/communities/<{pid}:pid_value>/settings/collections'.format(
+        pid=comid_url_converter))
+@pass_community
+@community_permission('update_collection')
+def settings(comid=None, community=None):
+    """Manage community collections."""
+    return render_template(
+        'invenio_communities/settings/collections.html',
+        community=community,
+        comid=comid)
+
+
 
 # Collections management settings page
 
@@ -167,7 +180,6 @@ class ItemResource(MethodView):
         if collection_id not in community.collections:
             abort(
                 404, 'Collection with ID "{}" not found'.format(collection_id))
-
         collection = community.collections[collection_id]
         collection.update({
             'title': title,
