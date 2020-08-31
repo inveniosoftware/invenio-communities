@@ -1,0 +1,31 @@
+{# -*- coding: utf-8 -*-
+
+  This file is part of Invenio.
+  Copyright (C) 2016-2020 CERN.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+
+{% extends "invenio_communities/settings/base.html" %}
+
+{%- block javascript %}
+{{ super() }}
+{# TODO: Add collections JS #}
+{{ webpack['invenio-communities-collections-settings.js'] }}
+{%- endblock javascript %}
+
+{% set active_menu_item = 'collections' %}
+
+{%- block settings_body %}
+<div class="thirteen wide column">
+  {%- set form_config = {
+    "community": community,
+    "collections": community.collections.as_dict(),
+  } %}
+  <div
+    id="app"
+    data-form-config='{{ form_config | tojson(indent=2) }}'>
+  </div>
+</div>
+{%- endblock settings_body %}

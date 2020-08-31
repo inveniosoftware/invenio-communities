@@ -21,6 +21,8 @@ class CommunityCollection(dict):
         super(CommunityCollection, self).__init__(data)
 
     def commit(self):
+        self.community.setdefault('_collections', {})
+        self.community['_collections'][self.id] = dict(self)
         self.community.commit()
         return self
 
