@@ -8,7 +8,7 @@ import { createSearchAppInit } from "@js/invenio_search_ui";
 const COMMUNITY_ID = window.location.pathname.split('/')[2];
 
 const ResultsItemTemplate = ({ result, index }) => {
-  const request = result.metadata._communities.pending.find(
+  const community_record = result.metadata._communities.pending.find(
     ({ comid }) => comid === COMMUNITY_ID
   );
   const [status, setStatus] = useState("pending");
@@ -16,7 +16,7 @@ const ResultsItemTemplate = ({ result, index }) => {
   function handleRequest(action) {
     axios
       .post(
-        `/api/communities/${request.comid}/records/requests/${request.request_id}/${action}`
+        `/api/communities/${community_record.comid}/records/requests/${community_record.id}/${action}`
       )
       .then((response) => {
         setStatus(action);
