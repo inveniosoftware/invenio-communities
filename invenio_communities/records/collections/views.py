@@ -36,7 +36,8 @@ def community_permission(
     def wrapper_function(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not CommunityCollectionsPermissionPolicy(action=action, **kwargs):
+            if not CommunityCollectionsPermissionPolicy(
+                    action=action, **kwargs):
                 abort(error_code, error_message)
             return func(*args, **kwargs)
         return wrapper
@@ -51,6 +52,7 @@ ui_blueprint = Blueprint(
     __name__,
     template_folder='../../templates',
 )
+
 
 @ui_blueprint.route(
     '/communities/<{pid}:pid_value>/settings/collections'.format(

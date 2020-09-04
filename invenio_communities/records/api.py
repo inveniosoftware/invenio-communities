@@ -245,13 +245,16 @@ class CommunityRecord(RecordBaseAPI):
         res = {
             **self,
             'status': str(self.status.title),
-            'record_pid': self.record.pid.pid_value,
-            'community_pid': self.community.pid.pid_value
+            'recid': self.record.pid.pid_value,
+            'comid': self.community.pid.pid_value,
+            'community_title': self.community['title'],
+            'record_title': self.record['titles'][0]['title'],
+            'id': str(self.id)
         }
         if include_requests:
             res['request'] = self.request.as_dict()
         else:
-            res['request_id'] = self.request.id
+            res['request_id'] = str(self.request.id)
         return res
 
     status = ModelProxyProperty('status')
@@ -307,19 +310,14 @@ class CommunityRecordsCollection(CommunityRecordsCollectionBase):
         community_record = self[record]
         return community_record.delete()
 
-    def as_dict(self):
+    def as_dict(self, include_requests=False):
         res = defaultdict(list)
         for community_record in self:
             status = community_record.status.name.lower()
-            res[status].append({
-                'id': community_record.record.pid.object_uuid,
-                'title': community_record.record['title'],
-                # TODO: Add when implemented
-                # 'logo': None,
-                'request_id': str(community_record.request.id),
-                'created_by': community_record.request['created_by'],
-            })
+            res[status].append(community_record.as_dict(
+                include_requests=include_requests))
         return res
+
 
 class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
 
@@ -346,19 +344,12 @@ class RecordCommunitiesCollection(CommunityRecordsCollectionBase):
         community_record = self[community]
         return community_record.delete()
 
-    def as_dict(self):
+    def as_dict(self, include_requests=False):
         res = defaultdict(list)
         for community_record in self:
             status = community_record.status.name.lower()
-            res[status].append({
-                'id': community_record.community.pid.object_uuid,
-                'comid': community_record.community.pid.pid_value,
-                'title': community_record.community['title'],
-                # TODO: Add when implemented
-                # 'logo': None,
-                'request_id': str(community_record.id),
-                'created_by': community_record.request['created_by'],
-            })
+            res[status].append(community_record.as_dict(
+                include_requests=include_requests))
         return res
 
 
