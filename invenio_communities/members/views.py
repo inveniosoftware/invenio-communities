@@ -177,7 +177,7 @@ def dump_community_membership_links(community_membership):
             'invenio_communities_members.community_requests_handling_api',
             pid_value=community_membership.community.pid.pid_value,
             membership_id=str(community_membership.id),
-            action=action
+            request_action=action
         )
     return links
 
@@ -271,7 +271,7 @@ class MembershipRequestResource(MethodView):
         community_member_json = community_member.as_dict(include_requests=True)
         community_member_json['links'] = dump_community_membership_links(
             community_member)
-        return jsonify(), 200
+        return jsonify(community_member_json), 200
 
     put_args = {
         'role': fields.Raw(
@@ -300,7 +300,7 @@ class MembershipRequestResource(MethodView):
         community_member.role = CommunityMemberRole.from_str(role)
         db.session.commit()
         # TODO: should we return the json instead?
-        return 'Succesfully modified invitation.', 200
+        return jsonify(community_member.as_dict()), 200
 
     del_args = {
         'token': fields.Raw(
@@ -325,7 +325,7 @@ class MembershipRequestResource(MethodView):
 
         community_member.delete()
         db.session.commit()
-        return 'Succesfully removed membership.', 204
+        return jsonify(community_member.as_dict()), 204
 
 
 class MembershipRequestHandlingResource(MethodView):
@@ -351,17 +351,27 @@ class MembershipRequestHandlingResource(MethodView):
     @pass_community
     @pass_membership
     @login_required
-    @community_permission('handle_request')
     def post(self, comid=None, community=None, community_member=None,
-             action=None, role=None, comment=None, token=None):
+             request_action=None, role=None, comment=None, token=None):
         """Add a comment."""
         request_user = User.query.get(int(current_user.get_id()))
         #
         # Controller
         #
         if community_member.request.is_closed and \
-                action != 'comment':
+                request_action != 'comment':
             abort(400)
+
+        if request_action == 'comment':
+            is_permitted_action(
+                'comment_membership',
+                comid=comid,
+                community_member=community_member)
+        else:
+            is_permitted_action(
+                'handle_request',
+                comid=comid,
+                community_member=community_member)
 
         mts = MembershipTokenSerializer()
         inv_id = community_member.invitation_id
@@ -371,7 +381,7 @@ class MembershipRequestHandlingResource(MethodView):
                     token, expected_value=inv_id):
                 abort(404)
 
-        if action == 'accept':
+        if request_action == 'accept':
             community_member.status = CommunityMemberStatus.ACCEPTED
             if community_member.request.is_invite:
                 community_member.user_id = request_user.id
@@ -385,7 +395,7 @@ class MembershipRequestHandlingResource(MethodView):
                 else:
                     abort(400)
             community_member.request.status = 'closed'
-        elif action == 'reject':
+        elif request_action == 'reject':
             if community_member.invitation_id:
                 community_member.invitation_id = None
             community_member.status = CommunityMemberStatus.REJECTED
@@ -412,7 +422,7 @@ api_blueprint.add_url_rule(
 
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
-    '/members/requests/<membership_id>/<any({actions}):action>'.format(
+    '/members/requests/<membership_id>/<any({actions}):request_action>'.format(
         pid=comid_url_converter,
         actions=','.join(['accept', 'reject', 'comment'])),
     view_func=MembershipRequestHandlingResource.as_view(
@@ -450,7 +460,7 @@ def members(comid=None, community=None):
     else:
         community_member = {}
         pending_records = {}
-    #TODO pending records should also check permissions
+    # TODO pending records should also check permissions
     #  before exposing this information @blueprint.app_template_filter()?
 
     return render_template(

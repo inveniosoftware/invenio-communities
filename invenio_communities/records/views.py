@@ -55,8 +55,7 @@ def pass_record(func=None):
 def pass_community_record(func=None):
     """Decorator to retrieve community inclusion."""
     @wraps(func)
-    def inner(*args, **kwargs):
-        community_record_id = request.view_args['community_record_id']
+    def inner(*args, community_record_id, **kwargs):
         community_record = CommunityRecord.get_record(community_record_id)
         if community_record is None:
             abort(404)
@@ -125,7 +124,7 @@ def dump_community_record_request_links(community_record):
             'invenio_communities_records.community_records_item_actions',
             pid_value=community_record.community.pid.pid_value,
             community_record_id=community_record.id,
-            action=action
+            request_action=action
         )
     return links
 
@@ -202,7 +201,7 @@ class ListResource(MethodView):
         RecordIndexer().index_by_id(record.id)
         send_inclusion_email(com_rec, recipient_emails)
 
-        json_response = request.as_dict()
+        json_response = com_rec.as_dict(include_requests=True)
         json_response['links'] = dump_community_record_request_links(com_rec)
 
         #
@@ -230,9 +229,8 @@ class ItemResource(MethodView):
     def delete(self, comid=None, community=None, community_record=None):
         """Delete the community record request."""
         community_record.delete()
-        request.delete()
         db.session.commit()
-        return 204
+        return community_record.as_dict(include_requests=True), 204
 
 
 # TODO: move things around
@@ -251,13 +249,13 @@ class ItemActionsResource(MethodView):
     @pass_community_record
     @login_required
     def post(self, comid=None, community=None, community_record=None,
-             action=None, message=None, **kwargs):
+             request_action=None, message=None, **kwargs):
         """Handle a community record request."""
         #
         # View - context parsing/building
         #
         inclusion_request = community_record.request
-        if action == 'comment':
+        if request_action == 'comment':
             if not is_permitted_action(
                     'comment_community_inclusion',
                     community_record=community_record, community=community):
@@ -268,10 +266,10 @@ class ItemActionsResource(MethodView):
                 'handle_community_inclusion',
                 community_record=community_record, community=community):
             abort(404)
-        elif action == 'accept':
+        elif request_action == 'accept':
             community_record.status = community_record.Status.ACCEPTED
             inclusion_request.state = 'closed'
-        elif action == 'reject':
+        elif request_action == 'reject':
             community_record.status = community_record.Status.REJECTED
             inclusion_request.state = 'closed'
         else:
@@ -310,7 +308,7 @@ api_blueprint.add_url_rule(
 api_blueprint.add_url_rule(
     '/communities/<{pid}:pid_value>'
     '/records/requests/<uuid:community_record_id>'
-    '/<any({actions}):action>'.format(
+    '/<any({actions}):request_action>'.format(
         pid=comid_url_converter,
         actions=','.join(['accept', 'reject', 'comment'])),
     view_func=ItemActionsResource.as_view('community_records_item_actions'),
