@@ -15,8 +15,8 @@ from invenio_accounts.testutils import create_test_user
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
-from invenio_communities.api import Community
 from invenio_communities.indexer import CommunityIndexer
+from invenio_communities.proxies import Community
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord, Record
 
@@ -31,7 +31,7 @@ def record_owner(db):
 def record(db, es, record_owner):
     """Record fixture."""
     record = Record.create({
-        'title': 'Title',
+        'titles': [{'title': 'Test title', 'lang': 'eng'}],
         '_owners': [record_owner.id],
     })
     recid = PersistentIdentifier.create(
@@ -41,31 +41,6 @@ def record(db, es, record_owner):
     db.session.commit()
     RecordIndexer().index_by_id(str(record.id))
     yield recid, record
-
-
-@pytest.fixture
-def community_owner(db):
-    """Record owner user."""
-    yield create_test_user('community-owner@inveniosoftware.org')
-
-
-@pytest.fixture
-def community(db, es, community_owner):
-    """Community fixture."""
-    community_id = str(uuid.uuid4())
-    comid = PersistentIdentifier.create(
-        pid_type='comid', pid_value='biosyslit',
-        object_uuid=community_id, object_type='com',
-        status=PIDStatus.REGISTERED)
-    community = Community.create({
-        'id': 'comm_id',
-        'title': 'Title',
-        'type': 'topic',
-        'created_by': community_owner.id,
-    }, id_=community_id)
-    db.session.commit()
-    CommunityIndexer().index_by_id(str(community.id))
-    yield comid, community
 
 
 @pytest.fixture
