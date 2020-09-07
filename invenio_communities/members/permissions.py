@@ -83,7 +83,11 @@ class CommunityMemberPermissionPolicy(BasePermissionPolicy):
     can_list_all_members = [CommunityMember(['admin'])]
 
     can_modify_membership = [CommunityMember(['admin'])]
-
+    can_comment_membership = [
+        CommunityMember(['admin']),
+        CommunityMembershipOwner(),
+        AnyUserIfUnresolvedInvite()
+    ]
     can_delete_membership = [
         CommunityMember(['admin']),
         CommunityMembershipOwner(),
@@ -99,7 +103,6 @@ class CommunityMemberPermissionPolicy(BasePermissionPolicy):
         CommunityMembershipOwner(),
         AnyUserIfUnresolvedInvite()
     ]
-
 
 
 def is_permitted_action(action, **kwargs):

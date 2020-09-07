@@ -97,7 +97,7 @@ class CommunityRecord(db.Model, RecordMetadataBase):
         foreign_keys=[record_pid_id],
     )
 
-    request = db.relationship(Request)
+    request = db.relationship(Request, cascade="all,delete")
 
     @property
     def commmunity(self):
