@@ -13,5 +13,3 @@ You have been invited to the following community:
 Click on the following link to respond to the invitation:
 
 {{ invitation_link | safe }}
-
-Please note that above link is only valid for {{ days }} days.

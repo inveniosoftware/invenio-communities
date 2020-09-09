@@ -56,7 +56,7 @@ def send_invitation_email(membership, recipients, community, token=b''):
     template = ("member_invitation_email.tpl" if membership.request.is_invite
                 else "member_request_email.tpl")
     msg.body = render_template(
-        "invenio_communities/{}".format(template),
+        "invenio_communities/email/{}".format(template),
         community=community,
         days=timedelta(
             seconds=current_app.config[
@@ -91,7 +91,7 @@ def send_inclusion_email(community_record, recipients):
                 community_record.request.is_invite
                 else "record_request_email.tpl")
     msg.body = render_template(
-        "invenio_communities/{}".format(template),
+        "invenio_communities/email/{}".format(template),
         community_record=community_record,
         record_invitation_link=format_url_template(
             current_app.config.get(

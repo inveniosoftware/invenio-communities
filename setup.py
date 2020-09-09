@@ -52,7 +52,7 @@ extras_require = {
 extras_require['all'] = []
 for name, reqs in extras_require.items():
     if name in ('elasticsearch6', 'elasticsearch7',
-                'mysql',' postgresql', 'sqlite'):
+                'mysql', 'postgresql', 'sqlite'):
         continue
     extras_require['all'].extend(reqs)
 
@@ -73,7 +73,8 @@ install_requires = [
     'invenio-records-rest>=1.6.0',
     'invenio-records>=1.2.0',
     'invenio-rest>=1.1.0',
-    'invenio-mail>=1.0.2'
+    'invenio-mail>=1.0.2',
+    'invenio-userprofiles>=1.2.0a4',
 ]
 
 packages = find_packages()
