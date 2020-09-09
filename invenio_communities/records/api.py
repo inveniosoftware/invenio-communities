@@ -11,9 +11,7 @@
 from __future__ import absolute_import, print_function
 
 from collections import defaultdict
-from enum import Enum
 
-from flask import url_for
 from invenio_db import db
 from invenio_records.api import Record as RecordBaseAPI
 from werkzeug.local import LocalProxy
@@ -248,7 +246,6 @@ class CommunityRecord(RecordBaseAPI):
             'recid': self.record.pid.pid_value,
             'comid': self.community.pid.pid_value,
             'community_title': self.community['title'],
-            'record_title': self.record['titles'][0]['title'],
             'id': str(self.id)
         }
         if include_requests:

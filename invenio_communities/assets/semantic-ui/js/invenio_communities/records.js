@@ -316,7 +316,6 @@ const App = () => {
 };
 
 const CommunitiesCollectionDropdown = ({ communityRecord }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [ongoingRequest, setOngoingRequest] = useState(false);
   const [response, setResponse] = useState(null);
   const [toggleEdit, setToggleEdit] = useState(false);

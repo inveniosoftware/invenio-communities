@@ -19,9 +19,7 @@ from invenio_accounts.models import User
 from invenio_db import db
 from webargs import fields, validate
 
-from invenio_communities.records.api import CommunityRecordsCollection
-
-from ..token import MembershipTokenSerializer
+from ..token import create_token, validate_token
 from ..utils import comid_url_converter, send_invitation_email
 from ..views import pass_community, use_kwargs
 from .api import CommunityMember, CommunityMemberRequest
@@ -30,10 +28,10 @@ from .models import CommunityMemberRole, CommunityMemberStatus
 from .permissions import CommunityMemberPermissionPolicy, is_permitted_action
 
 api_blueprint = Blueprint(
-        'invenio_communities_members',
-        __name__,
-        template_folder="../templates",
-    )
+    'invenio_communities_members',
+    __name__,
+    template_folder="../templates",
+)
 
 
 def pass_membership(func=None, view_arg_name='membership_id'):
@@ -142,9 +140,8 @@ class ListResource(MethodView):
             mem_req.add_comment(request_user, comment)
 
         if email:
-            mts = MembershipTokenSerializer()
             inv_id = comm_mem.invitation_id
-            token = mts.create_token(inv_id)
+            token = create_token(inv_id)
             send_invitation_email(comm_mem, [email], community, token)
         else:
             emails = []
@@ -186,7 +183,7 @@ class ListMembersResource(MethodView):
     """Resource for creating, listing and removing community memberships."""
 
     get_args = {
-        #TODO make list when we manage to integrate the in operator
+        # TODO make list when we manage to integrate the in operator
         'status': fields.Str(
             location='querystring',
             required=False,
@@ -231,7 +228,7 @@ class ListMembersResource(MethodView):
         members_json = members.as_dict(
             include_requests=include_requests,
             result_iterator=member_page
-            )
+        )
         if status != CommunityMemberStatus.ACCEPTED:
             for member_obj, member_json in zip(
                     member_page, members_json['hits']['hits']):
@@ -261,12 +258,10 @@ class MembershipRequestResource(MethodView):
             self, comid=None, community=None, token=None,
             community_member=None):
         """Get a membership along with it's request information."""
-        mts = MembershipTokenSerializer()
         inv_id = community_member.invitation_id
-
         if community_member.request.is_invite \
-            and (not token or not mts.validate_token(
-                    token, expected_value=inv_id)):
+            and (not token or
+                 not validate_token(token, expected_value=inv_id)):
             abort(404)
         community_member_json = community_member.as_dict(include_requests=True)
         community_member_json['links'] = dump_community_membership_links(
@@ -338,7 +333,6 @@ class MembershipRequestHandlingResource(MethodView):
             validate=member_role_validator,
         ),
         'token': fields.Raw(
-            location='json',
             required=False,
         ),
         'comment': fields.Raw(
@@ -358,28 +352,27 @@ class MembershipRequestHandlingResource(MethodView):
         #
         # Controller
         #
-        if community_member.request.is_closed and \
-                request_action != 'comment':
-            abort(400)
-
-        if request_action == 'comment':
-            is_permitted_action(
-                'comment_membership',
-                comid=comid,
-                community_member=community_member)
-        else:
-            is_permitted_action(
-                'handle_request',
-                comid=comid,
-                community_member=community_member)
-
-        mts = MembershipTokenSerializer()
         inv_id = community_member.invitation_id
-
-        if community_member.request.is_invite:
-            if not token or not mts.validate_token(
-                    token, expected_value=inv_id):
+        if request_action == 'comment':
+            if not is_permitted_action(
+                        'comment_membership',
+                        comid=comid,
+                        community_member=community_member) and \
+                (not token or not validate_token(
+                        token, expected_value=inv_id)):
                 abort(404)
+        else:
+            if not is_permitted_action(
+                    'handle_request',
+                    comid=comid,
+                    community_member=community_member):
+                abort(404)
+            elif community_member.request.is_closed:
+                abort(400)
+            elif community_member.request.is_invite and \
+                    (not token or not validate_token(
+                        token, expected_value=inv_id)):
+                abort(403)
 
         if request_action == 'accept':
             community_member.status = CommunityMemberStatus.ACCEPTED
@@ -484,11 +477,9 @@ def requests(
     token = request.args.get('token', '')
     if not community_member.request.is_invite:
         abort(404)
-    mts = MembershipTokenSerializer()
     inv_id = community_member.invitation_id
 
-    if not token or not mts.validate_token(
-            token, expected_value=inv_id):
+    if not token or not validate_token(token, expected_value=inv_id):
         abort(404)
     return render_template(
         'invenio_communities/request.html',

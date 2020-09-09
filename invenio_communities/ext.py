@@ -66,20 +66,21 @@ class InvenioCommunities(object):
         @app.context_processor
         def record_context_processors():
             """Jinja context processors for communities record integration."""
-            def communities_ui_data(record):
+            def record_communities_ui_data(record):
                 from invenio_communities.records.api import Record, \
                     RecordCommunitiesCollection
                 record_commmunities = RecordCommunitiesCollection(
                     Record(record, model=record.model))
                 record_communities_dict = record_commmunities.as_dict()
                 communities_dict = {
-                    record_community.community['id']: record_community.community
+                    record_community.community.pid.pid_value:
+                        record_community.community.dumps()
                     for record_community in record_commmunities}
                 return {
                     'record_communities': record_communities_dict,
                     'communities': communities_dict
                 }
-            return dict(communities_ui_data=communities_ui_data)
+            return dict(record_communities_ui_data=record_communities_ui_data)
 
         self._register_signals(app)
 
