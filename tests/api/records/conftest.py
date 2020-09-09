@@ -15,8 +15,6 @@ from invenio_accounts.testutils import create_test_user
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
-from invenio_communities.indexer import CommunityIndexer
-from invenio_communities.proxies import Community
 from invenio_communities.records.api import CommunityInclusionRequest, \
     CommunityRecord, Record
 
@@ -31,7 +29,7 @@ def record_owner(db):
 def record(db, es, record_owner):
     """Record fixture."""
     record = Record.create({
-        'titles': [{'title': 'Test title', 'lang': 'eng'}],
+        'title': 'Title',
         '_owners': [record_owner.id],
     })
     recid = PersistentIdentifier.create(

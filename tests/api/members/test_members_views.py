@@ -11,14 +11,15 @@
 
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
+from six.moves.urllib.parse import urljoin
+
+from invenio_communities.token import create_token
 
 
 def test_simple_flow(
         db, es_clear, community, client,
         community_owner, users):
-    """Test basics operations on records."""
-    # TODO
-    # /api/communities/<comid>/requests/records/
+    """Test basic operations on members."""
     comid, community = community
     new_member = users[0]
     login_user_via_session(client, user=new_member)
@@ -71,3 +72,67 @@ def test_simple_flow(
 
     resp = client.delete(community_member_url)
     assert resp == 204
+
+
+def test_alternate_flow(
+        db, es_clear, community, client,
+        community_owner, users):
+    """Test basic operations with the alternate flow on members."""
+    comid, community = community
+    new_member = users[0]
+    login_user_via_session(client, user=community_owner)
+    community_members_list_url = url_for(
+        'invenio_communities_members.community_members_api',
+        pid_value=comid.pid_value)
+
+    email = 'abc@test.com'
+    resp = client.post(community_members_list_url, json={
+        'role': 'curator', 'email': email
+    })
+    assert resp.status_code == 201
+    community_member_id = resp.json['id']
+
+    token = create_token(email).decode("utf-8")
+    login_user_via_session(client, user=new_member)
+
+    community_member_url = url_for(
+        'invenio_communities_members.community_requests_api',
+        pid_value=comid.pid_value,
+        membership_id=community_member_id)
+
+    resp = client.get(urljoin(community_member_url, '?token={}'.format(token)))
+    assert resp.status_code == 200
+    membership_links = resp.json['links']
+    resp = client.post(
+        urljoin(membership_links['comment'], '?token={}'.format(token)),
+        json={
+            'message': 'Oh hi Mark',
+        })
+    assert resp.status_code == 200
+
+    login_user_via_session(client, user=community_owner)
+    resp = client.post(membership_links['comment'],  json={
+        'message': 'Hello there'
+    })
+    assert resp.status_code == 200
+
+    login_user_via_session(client, user=new_member)
+    resp = client.post(
+        membership_links['accept'],
+        json={
+            'message': 'I shall accept',
+            'token': token
+        })
+    assert resp.status_code == 200
+    resp = client.post(
+        membership_links['reject'],
+        json={
+            'message': 'I changed my mind',
+            'token': token
+        })
+    assert resp.status_code == 404
+
+    resp = client.delete(community_member_url)
+    assert resp.status_code == 204
+
+
