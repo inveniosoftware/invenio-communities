@@ -13,5 +13,3 @@ The user with the email {{ membership.request.user.email }}, has requested to jo
 Click on the following link to respond to the membership request:
 
 {{ community_members_link | safe }}
-
-Please note that above link is only valid for {{ days }} days.
