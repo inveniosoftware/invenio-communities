@@ -10,6 +10,9 @@
 
 from __future__ import absolute_import, print_function
 
+from datetime import datetime, timedelta
+
+from flask import current_app
 from flask_login import current_user
 from flask_principal import ActionNeed
 from invenio_access.permissions import Permission
@@ -42,3 +45,18 @@ def permission_factory(community, action):
     :type action: str
     """
     return _Permission(community, action)
+
+
+def can_user_create_community(user):
+    """Checks it the user can create community."""
+    current_date = datetime.now()
+    confirmed_date = user.confirmed_at
+    community_user_confirmed_since = \
+        current_app.config['COMMUNITY_USER_CONFIRMED_SINCE']
+
+    if confirmed_date is None:
+        return False
+
+    delta = current_date - confirmed_date
+
+    return delta >= community_user_confirmed_since

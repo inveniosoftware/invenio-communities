@@ -89,11 +89,12 @@ install_requires = [
     'invenio-accounts>=1.1.1,<1.2.0',
     'invenio-assets>=1.0.0',
     'invenio-files-rest>=1.0.0a23',
-    'invenio-indexer>=1.0.2',
+    'invenio-indexer>=1.0.2,<1.2.0',
     'invenio-pidstore>=1.0.0',
     'invenio-records>=1.2.0',
     'invenio-rest[cors]>=1.0.0,<1.2.0',
     'marshmallow>=2.15.2,<3',
+    'invenio-records-rest>=1.6.2,<1.7.0',
 ]
 
 packages = find_packages()

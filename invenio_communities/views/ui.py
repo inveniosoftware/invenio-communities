@@ -11,6 +11,7 @@
 from __future__ import absolute_import, print_function
 
 import copy
+from datetime import datetime
 from functools import wraps
 
 import bleach
@@ -26,6 +27,7 @@ from invenio_records.api import Record
 from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
     EditCommunityForm, RecaptchaCommunityForm, SearchForm
 from invenio_communities.models import Community, FeaturedCommunity
+from invenio_communities.permissions import can_user_create_community
 from invenio_communities.proxies import current_permission_factory
 from invenio_communities.utils import Pagination, render_template_to_string
 
@@ -47,6 +49,10 @@ def sanitize_html(value):
         attributes=current_app.config['COMMUNITIES_ALLOWED_ATTRS'],
         strip=True,
     ).strip()
+
+
+blueprint.add_app_template_global(
+    can_user_create_community, "can_user_create_community")
 
 
 def pass_community(f):
@@ -166,6 +172,13 @@ def generic_item(community, template, **extra_ctx):
 @login_required
 def new():
     """Create a new community."""
+    if not can_user_create_community(current_user):
+        error_message = "To create a community your account must be verified \
+            for at least one week. If you want to speed up the process, you \
+            can contact our support team describing your case."
+        error_code = 403
+        abort(error_code, error_message)
+
     if current_app.config.get('RECAPTCHA_PUBLIC_KEY') and \
             current_app.config.get('RECAPTCHA_PRIVATE_KEY'):
         form_cls = RecaptchaCommunityForm
