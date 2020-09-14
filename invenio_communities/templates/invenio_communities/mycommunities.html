@@ -45,7 +45,9 @@
 
   <h4>
     <div class="pull-right">
-      &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>
+      &nbsp;<a title="To create a community your account must be verified for at least one week. If you want to speed up the process, you can contact our support team describing your case." href="{{url_for('.new')}}" class="btn btn-primary" {{ "disabled" if not can_user_create_community(current_user) }}>
+              <i class="icon-plus-sign"></i> {{ _('New') }}
+            </a>
     </div>
     <strong>{{ _('Want your own community?') }}</strong>
   </h4>
