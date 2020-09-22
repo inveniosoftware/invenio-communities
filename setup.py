@@ -21,9 +21,9 @@ tests_require = [
     'Flask-CeleryExt>=0.3.2',
     'check-manifest>=0.25',
     'coverage>=4.5.3',
-    'invenio-db>=1.0.3',
+    'invenio-db>=1.0.3,<1.0.4',
     'invenio-mail>=1.0.2',
-    'invenio-oaiserver>=1.0.3',
+    'invenio-oaiserver>=1.0.3,<1.1.0',
     'isort>=4.3.3',
     'jsonresolver>=0.2.1,<0.3.0',
     'mock>=1.3.0',
@@ -85,16 +85,17 @@ install_requires = [
     'Flask-BabelEx>=0.9.3',
     'Flask>=1.0.2',
     'Flask-Breadcrumbs>=0.4.0,<0.5.0',
-    'invenio-access>=1.1.0',
+    'invenio-access>=1.1.0,<1.2.0',
     'invenio-accounts>=1.1.1,<1.2.0',
     'invenio-assets>=1.0.0',
-    'invenio-files-rest>=1.0.0a23',
+    'invenio-files-rest>=1.0.0a23,<1.0.1',
     'invenio-indexer>=1.0.2,<1.2.0',
     'invenio-pidstore>=1.0.0',
     'invenio-records>=1.2.0',
     'invenio-rest[cors]>=1.0.0,<1.2.0',
     'marshmallow>=2.15.2,<3',
     'invenio-records-rest>=1.6.2,<1.7.0',
+    'invenio-db==1.0.4'
 ]
 
 packages = find_packages()
