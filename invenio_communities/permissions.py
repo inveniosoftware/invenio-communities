@@ -52,7 +52,7 @@ def can_user_create_community(user):
     current_date = datetime.now()
     confirmed_date = user.confirmed_at
     community_user_confirmed_since = \
-        current_app.config['COMMUNITY_USER_CONFIRMED_SINCE']
+        current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE']
 
     if confirmed_date is None:
         return False

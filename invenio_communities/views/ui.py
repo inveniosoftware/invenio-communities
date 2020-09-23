@@ -11,10 +11,10 @@
 from __future__ import absolute_import, print_function
 
 import copy
-from datetime import datetime
 from functools import wraps
 
 import bleach
+import humanize
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
 from flask_babelex import gettext as _
@@ -53,6 +53,9 @@ def sanitize_html(value):
 
 blueprint.add_app_template_global(
     can_user_create_community, "can_user_create_community")
+
+blueprint.add_app_template_global(
+    humanize, "humanize")
 
 
 def pass_community(f):
@@ -173,10 +176,17 @@ def generic_item(community, template, **extra_ctx):
 def new():
     """Create a new community."""
     if not can_user_create_community(current_user):
-        error_message = "To create a community your account must be verified \
-            for at least one week. If you want to speed up the process, you \
-            can contact our support team describing your case."
+        error_message = (
+            "To create a community your account must be verified "
+            "for at least {}. If you want to speed up the process, you "
+            "can contact our support team describing your case.".format(
+                humanize.naturaldelta(
+                    current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE'])))
         error_code = 403
+        flash(
+            error_message,
+            category='warning'
+        )
         abort(error_code, error_message)
 
     if current_app.config.get('RECAPTCHA_PUBLIC_KEY') and \

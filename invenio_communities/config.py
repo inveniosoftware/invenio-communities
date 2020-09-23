@@ -144,5 +144,5 @@ COMMUNITIES_ALLOWED_ATTRS = {
 }
 """List of allowed attributes used to sanitize HTML output for communities."""
 
-COMMUNITY_USER_CONFIRMED_SINCE = timedelta(days=7)
+COMMUNITIES_USER_CONFIRMED_SINCE = timedelta(days=7)
 """Set the minimum account verification time for creating a community."""
