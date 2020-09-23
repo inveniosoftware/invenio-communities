@@ -7,13 +7,19 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
+{%- set new_disabled_message = "To create a community your account must be verified for at least " + humanize.naturaldelta(config.COMMUNITIES_USER_CONFIRMED_SINCE) + ". If you want to speed up the process, you can contact our support team describing your case." -%}
+{% set can_create_community = can_user_create_community(current_user) %}
+
 <div class="well">
 {% if current_user.is_authenticated %}
   {% if mycommunities %}
+  {% if not can_create_community %}
+    <p class="alert alert-warning small">{{new_disabled_message}}</p>
+  {% endif %}
   <h2>
     {{ _('My communities') }}
     <div class="pull-right">
-      &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary"><i class="icon-plus-sign"></i> {{ _('New') }}</a>
+      &nbsp;<a href="{{url_for('.new')}}" class="btn btn-primary {{ "disabled" if not can_create_community }}" {{ "disabled" if not can_create_community }}><i class="icon-plus-sign"></i> {{ _('New') }}</a>
     </div>
   </h2>
   <table class="table table-striped">
@@ -44,8 +50,11 @@
   <p class="muted">{{ _('You currently have no community collections.') }}</p>
 
   <h4>
+    {% if not can_create_community %}
+    <p class="alert alert-warning small">{{new_disabled_message}}</p>
+    {% endif %}
     <div class="pull-right">
-      &nbsp;<a title="To create a community your account must be verified for at least one week. If you want to speed up the process, you can contact our support team describing your case." href="{{url_for('.new')}}" class="btn btn-primary" {{ "disabled" if not can_user_create_community(current_user) }}>
+      &nbsp;<a title="" href="{{url_for('.new')}}" class="btn btn-primary {{ "disabled" if not can_create_community }}" {{ "disabled" if not can_create_community }}>
               <i class="icon-plus-sign"></i> {{ _('New') }}
             </a>
     </div>

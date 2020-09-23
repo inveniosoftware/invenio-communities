@@ -95,7 +95,8 @@ install_requires = [
     'invenio-rest[cors]>=1.0.0,<1.2.0',
     'marshmallow>=2.15.2,<3',
     'invenio-records-rest>=1.6.2,<1.7.0',
-    'invenio-db==1.0.4'
+    'invenio-db==1.0.4',
+    'humanize>=0.5.1',
 ]
 
 packages = find_packages()
