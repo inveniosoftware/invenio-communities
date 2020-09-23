@@ -50,7 +50,7 @@ def permission_factory(community, action):
 def can_user_create_community(user):
     """Checks it the user can create community."""
     current_date = datetime.now()
-    confirmed_date = user.confirmed_at
+    confirmed_date = getattr(user, 'confirmed_at', None)
     community_user_confirmed_since = \
         current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE']
 
