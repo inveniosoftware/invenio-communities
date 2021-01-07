@@ -29,3 +29,5 @@ Example subscriber:
     from invenio_communities.signals import inclusion_request_created
     inclusion_request_created.connect(receiver)
 """
+
+community_created = _signals.signal('community_created')
