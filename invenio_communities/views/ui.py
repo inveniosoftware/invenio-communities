@@ -29,6 +29,7 @@ from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
 from invenio_communities.models import Community, FeaturedCommunity
 from invenio_communities.permissions import can_user_create_community
 from invenio_communities.proxies import current_permission_factory
+from invenio_communities.signals import community_created
 from invenio_communities.utils import Pagination, render_template_to_string
 
 blueprint = Blueprint(
@@ -224,7 +225,10 @@ def new():
 
         if community:
             db.session.commit()
-            flash("Community was successfully created.", category='success')
+            community_created.send(
+                current_app._get_current_object(),
+                community=community
+            )
             return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
