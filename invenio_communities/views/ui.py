@@ -229,6 +229,7 @@ def new():
                 current_app._get_current_object(),
                 community=community
             )
+            flash("Community was successfully created.", category='success')
             return redirect(url_for('.edit', community_id=community.id))
 
     return render_template(
