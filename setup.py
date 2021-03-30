@@ -18,33 +18,33 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'pytest-invenio>=1.3.2,<2.0.0',
+    'pytest-invenio>=1.4.1,<2.0.0',
     'invenio-app>=1.3.0,<2.0.0'
 ]
 
-invenio_db_version = '>=1.0.4,<2.0.0'
-invenio_search_version = '1.2.2'
+invenio_db_version = '>=1.0.9,<2.0.0'
+invenio_search_version = '>=1.4.0,<2.0.0'
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.5.1',
+        'Sphinx>=3,<3.4.2',
     ],
-    # Elasticsearch versions
+    # Elasticsearch version
     'elasticsearch6': [
-        'invenio-search[elasticsearch6]>={}'.format(invenio_search_version),
+        f'invenio-search[elasticsearch6]{invenio_search_version}',
     ],
     'elasticsearch7': [
-        'invenio-search[elasticsearch7]>={}'.format(invenio_search_version),
+        f'invenio-search[elasticsearch7]{invenio_search_version}',
     ],
     # Databases
     'mysql': [
-        'invenio-db[mysql,versioning]{}'.format(invenio_db_version),
+        f'invenio-db[mysql,versioning]{invenio_db_version}',
     ],
     'postgresql': [
-        'invenio-db[postgresql,versioning]{}'.format(invenio_db_version),
+        f'invenio-db[postgresql,versioning]{invenio_db_version}',
     ],
     'sqlite': [
-        'invenio-db[versioning]{}'.format(invenio_db_version),
+        f'invenio-db[versioning]{invenio_db_version}',
     ],
     'tests': tests_require,
 }
@@ -58,23 +58,23 @@ for name, reqs in extras_require.items():
 
 setup_requires = [
     'Babel>=1.3',
-    'pytest-runner>=2.7',
+    'pytest-runner>=3.0.0,<5',
 ]
 
 install_requires = [
-    'invenio-i18n>=1.1.0',
-    'invenio-base>=1.2.2',
-    'invenio-accounts>=1.1.0',
-    'invenio-assets>=1.2.2',
-    'invenio-indexer>=1.1.1',
-    'invenio-jsonschemas>=1.1.0,<2.0.0',
-    'invenio-pidstore>=1.1.0',
-    'invenio-records-permissions>=0.9.0',
-    'invenio-records-rest>=1.6.0',
-    'invenio-records>=1.2.0',
-    'invenio-rest>=1.1.0',
-    'invenio-mail>=1.0.2',
-    'invenio-userprofiles>=1.2.0a4',
+    "flask-resources>=0.7.0,<0.8.0",
+    "invenio-accounts>=1.4.3",
+    "invenio-assets>=1.2.2",
+    "invenio-base>=1.2.3",
+    "invenio-i18n>=1.2.0",
+    "invenio-indexer>=1.2.0",
+    "invenio-jsonschemas>=1.1.0",
+    "invenio-mail>=1.0.2",
+    "invenio-pidstore>=1.2.2",
+    "invenio-records-permissions>=0.11.0,<0.12.0",
+    "invenio-records>=1.5.0a2",
+    "invenio-records-resources>=0.14.0",
+    "uritemplate>=3.0.1",
 ]
 
 packages = find_packages()
@@ -102,42 +102,42 @@ setup(
     platforms='any',
     entry_points={
         'invenio_base.apps': [
-            'invenio_communities = invenio_communities:InvenioCommunities',
+            # 'invenio_communities = invenio_communities:InvenioCommunities',
         ],
         'invenio_base.api_apps': [
-            'invenio_communities = invenio_communities:InvenioCommunities',
+            # 'invenio_communities = invenio_communities:InvenioCommunities',
         ],
         'invenio_base.blueprints': [
-            'invenio_communities = invenio_communities.views:ui_blueprint',
-            'invenio_communities_members = invenio_communities.members.views:ui_blueprint',
-            'invenio_communities_records = invenio_communities.records.views:ui_blueprint',
-            'invenio_communities_collections = invenio_communities.records.collections.views:ui_blueprint',
+            # 'invenio_communities = invenio_communities.views:ui_blueprint',
+            # 'invenio_communities_members = invenio_communities.members.views:ui_blueprint',
+            # 'invenio_communities_records = invenio_communities.records.views:ui_blueprint',
+            # 'invenio_communities_collections = invenio_communities.records.collections.views:ui_blueprint',
         ],
         'invenio_base.api_blueprints': [
-            'invenio_communities_members = invenio_communities.members.views:api_blueprint',
-            'invenio_communities_records = invenio_communities.records.views:api_blueprint',
-            'invenio_communities_collections = invenio_communities.records.collections.views:api_blueprint',
+            # 'invenio_communities_members = invenio_communities.members.views:api_blueprint',
+            # 'invenio_communities_records = invenio_communities.records.views:api_blueprint',
+            # 'invenio_communities_collections = invenio_communities.records.collections.views:api_blueprint',
         ],
         'invenio_db.models': [
-            'invenio_communities = invenio_communities.models',
-            'invenio_communities_members = invenio_communities.members.models',
-            'invenio_communities_records = invenio_communities.records.models',
-            'invenio_requests = invenio_communities.requests.models',
+            # 'invenio_communities = invenio_communities.models',
+            # 'invenio_communities_members = invenio_communities.members.models',
+            # 'invenio_communities_records = invenio_communities.records.models',
+            # 'invenio_requests = invenio_communities.requests.models',
         ],
         'invenio_search.mappings': [
-            'communities = invenio_communities.mappings',
+            # 'communities = invenio_communities.mappings',
         ],
         'invenio_pidstore.minters': [
-            'comid = invenio_communities.minters:comid_minter',
+            # 'comid = invenio_communities.minters:comid_minter',
         ],
         'invenio_pidstore.fetchers': [
-            'comid = invenio_communities.fetchers:comid_fetcher',
+            # 'comid = invenio_communities.fetchers:comid_fetcher',
         ],
         'invenio_jsonschemas.schemas': [
-            'communities = invenio_communities.jsonschemas',
+            # 'communities = invenio_communities.jsonschemas',
         ],
         'invenio_assets.webpack': [
-            'invenio_communities = invenio_communities.webpack:communities'
+            # 'invenio_communities = invenio_communities.webpack:communities'
         ],
         'invenio_celery.tasks': [
             # TODO: Add when necessary
@@ -149,18 +149,17 @@ setup(
     setup_requires=setup_requires,
     tests_require=tests_require,
     classifiers=[
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Development Status :: 3 - Alpha',
-    ],
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Development Status :: 3 - Alpha",
+     ],
 )
