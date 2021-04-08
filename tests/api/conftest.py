@@ -60,4 +60,3 @@ def community(db, es, community_owner):
     db.session.commit()
     CommunityIndexer().index_by_id(str(community.id))
     yield comid, community
-

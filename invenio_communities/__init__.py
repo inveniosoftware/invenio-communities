@@ -12,10 +12,9 @@
 from __future__ import absolute_import, print_function
 
 from .ext import InvenioCommunities
-from .proxies import Community, current_communities
+from .proxies import current_communities
 
 __all__ = (
     'InvenioCommunities',
-    'current_communities',
-    'Community'
+    'current_communities'
 )

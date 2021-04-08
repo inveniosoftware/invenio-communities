@@ -74,6 +74,7 @@ install_requires = [
     "invenio-records-permissions>=0.11.0,<0.12.0",
     "invenio-records>=1.5.0a2",
     "invenio-records-resources>=0.14.0",
+    "invenio-records-rest>=1.7.0",
     "uritemplate>=3.0.1",
 ]
 
@@ -102,39 +103,31 @@ setup(
     platforms='any',
     entry_points={
         'invenio_base.apps': [
-            # 'invenio_communities = invenio_communities:InvenioCommunities',
+            'invenio_communities = invenio_communities:InvenioCommunities',
         ],
         'invenio_base.api_apps': [
-            # 'invenio_communities = invenio_communities:InvenioCommunities',
+            'invenio_communities = invenio_communities:InvenioCommunities',
         ],
         'invenio_base.blueprints': [
             # 'invenio_communities = invenio_communities.views:ui_blueprint',
             # 'invenio_communities_members = invenio_communities.members.views:ui_blueprint',
-            # 'invenio_communities_records = invenio_communities.records.views:ui_blueprint',
-            # 'invenio_communities_collections = invenio_communities.records.collections.views:ui_blueprint',
+            # 'invenio_communities_records = invenio_communities.communities.records.views:ui_blueprint',
+            # 'invenio_communities_collections = invenio_communities.communities.records.collections.views:ui_blueprint',
         ],
         'invenio_base.api_blueprints': [
-            # 'invenio_communities_members = invenio_communities.members.views:api_blueprint',
-            # 'invenio_communities_records = invenio_communities.records.views:api_blueprint',
-            # 'invenio_communities_collections = invenio_communities.records.collections.views:api_blueprint',
+            'invenio_communities = invenio_communities.communities.views:create_communities_bp',
         ],
         'invenio_db.models': [
-            # 'invenio_communities = invenio_communities.models',
+            'invenio_communities = invenio_communities.communities.records.models',
             # 'invenio_communities_members = invenio_communities.members.models',
-            # 'invenio_communities_records = invenio_communities.records.models',
+            # 'invenio_communities_records = invenio_communities.communities.records.models',
             # 'invenio_requests = invenio_communities.requests.models',
         ],
         'invenio_search.mappings': [
-            # 'communities = invenio_communities.mappings',
-        ],
-        'invenio_pidstore.minters': [
-            # 'comid = invenio_communities.minters:comid_minter',
-        ],
-        'invenio_pidstore.fetchers': [
-            # 'comid = invenio_communities.fetchers:comid_fetcher',
+            'communities = invenio_communities.communities.records.mappings',
         ],
         'invenio_jsonschemas.schemas': [
-            # 'communities = invenio_communities.jsonschemas',
+            'communities = invenio_communities.communities.records.jsonschemas',
         ],
         'invenio_assets.webpack': [
             # 'invenio_communities = invenio_communities.webpack:communities'

@@ -11,10 +11,10 @@
 from flask_principal import UserNeed
 from flask_security import current_user
 from invenio_access.permissions import any_user
-from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.generators import AnyUser, Generator
 from invenio_records_permissions.policies import BasePermissionPolicy
 
-from invenio_communities.members.permissions import CommunityMember
+# from invenio_communities.members.permissions import CommunityMember
 
 
 class CommunityVisibilityPolicy(Generator):
@@ -39,16 +39,27 @@ class CommunityOwner(Generator):
 class CommunityPermissionPolicy(BasePermissionPolicy):
     """Permissions for Community CRUD operations."""
 
-    can_read_community = [
-        CommunityVisibilityPolicy(),
-    ]
+    can_create = [AnyUser()]
 
-    can_update_community = [
-        CommunityMember(['admin', 'curator']),
-    ]
-    can_delete_community = [
-        CommunityMember(['admin']),
-    ]
+    can_read = [AnyUser()]
+
+    can_update = [AnyUser()]
+
+    can_delete = [AnyUser()]
+
+    can_search = [AnyUser()]
+
+    # can_read_community = [
+    #     CommunityVisibilityPolicy(),
+    # ]
+
+
+    # can_update_community = [
+    #     CommunityMember(['admin', 'curator']),
+    # ]
+    # can_delete_community = [
+    #     CommunityMember(['admin']),
+    # ]
 
 
 def allow_logged_in(*args, **kwargs):
@@ -59,16 +70,16 @@ def allow_logged_in(*args, **kwargs):
     return type('AllowCommunityOwner', (), {'can': can})()
 
 
-def can_read_community(record, *args, **kwargs):
-    """Permission wrapper."""
-    def can(self):
-        """."""
-        return CommunityPermissionPolicy(
-            action='read_community',
-            comid=record.pid,
-            community=record,
-        ).can()
-    return type('AllowCommunityOwner', (), {'can': can})()
+# def can_read_community(record, *args, **kwargs):
+#     """Permission wrapper."""
+#     def can(self):
+#         """."""
+#         return CommunityPermissionPolicy(
+#             action='read_community',
+#             comid=record.pid,
+#             community=record,
+#         ).can()
+#     return type('AllowCommunityOwner', (), {'can': can})()
 
 
 def can_update_community(record, *args, **kwargs):

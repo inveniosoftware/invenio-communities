@@ -15,8 +15,7 @@ from invenio_accounts.testutils import create_test_user
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
-from invenio_communities.records.api import CommunityInclusionRequest, \
-    CommunityRecord, Record
+from invenio_communities.communities.records.api import Record
 
 
 @pytest.fixture
@@ -41,14 +40,14 @@ def record(db, es, record_owner):
     yield recid, record
 
 
-@pytest.fixture
-def accepted_community_record(db, es, community, record, record_owner):
-    """Community record fixture."""
-    comid, community = community
-    recid, record = record
-    request = CommunityInclusionRequest.create(record_owner, id_=uuid.uuid4())
-    comm_record = CommunityRecord.create(record, recid, community, request)
-    comm_record.status = comm_record.Status.ACCEPTED
-    db.session.commit()
-    RecordIndexer().index_by_id(str(record.id))
-    yield comm_record
+# @pytest.fixture
+# def accepted_community_record(db, es, community, record, record_owner):
+#     """Community record fixture."""
+#     comid, community = community
+#     recid, record = record
+#     # request = CommunityInclusionRequest.create(record_owner, id_=uuid.uuid4())
+#     comm_record = CommunityRecord.create(record, recid, community, request)
+#     comm_record.status = comm_record.Status.ACCEPTED
+#     db.session.commit()
+#     RecordIndexer().index_by_id(str(record.id))
+#     yield comm_record

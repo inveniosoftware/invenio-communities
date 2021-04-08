@@ -16,7 +16,3 @@ from werkzeug.local import LocalProxy
 current_communities = LocalProxy(
     lambda: current_app.extensions['invenio-communities'])
 """Proxy to the extension."""
-
-Community = LocalProxy(
-    lambda: current_app.extensions['invenio-communities'].community_cls)
-"""Proxy for current community class."""
