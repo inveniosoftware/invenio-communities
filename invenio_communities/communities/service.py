@@ -8,7 +8,7 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
-"""community Service API."""
+"""Invenio Communities Service API."""
 
 from invenio_records_resources.services.records import RecordService
 

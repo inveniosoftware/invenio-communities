@@ -7,7 +7,7 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
-"""Communities Resource API config."""
+"""Invenio Communities Resource API config."""
 
 from invenio_records_resources.resources import RecordResourceConfig
 
@@ -22,5 +22,3 @@ class CommunityResourceConfig(RecordResourceConfig):
         "list": "",
         "item": "/<pid_value>"
     }
-
-    links_config= {}

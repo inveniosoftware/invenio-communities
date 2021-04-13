@@ -3,7 +3,6 @@
   "additionalProperties": false,
   "title": "Invenio Community v1.0.0",
   "type": "object",
-
   "definitions": {
     "identifier": {
       "description": "A generic identifier.",
@@ -18,10 +17,12 @@
           "type": "string"
         }
       },
-      "required": ["scheme", "identifier"]
+      "required": [
+        "scheme",
+        "identifier"
+      ]
     }
   },
-
   "properties": {
     "$schema": {
       "description": "JSONSchema for the community.",
@@ -31,98 +32,123 @@
       "description": "Community identifier.",
       "type": "string"
     },
-    "title": {
-      "description": "Community title.",
-      "type": "string"
-    },
-    "description": {
-      "description": "Community description.",
-      "type": "string"
-    },
-    "type": {
-      "description": "Community type.",
-      "enum": ["organization", "event", "topic", "project"]
-    },
-    "alternate_identifiers": {
-      "type": "array",
-      "description": "Alternate identifiers for the community",
-      "uniqueItems": true,
-      "items": { "$ref": "#/definitions/identifier" }
-    },
-    "curation_policy": {
-      "description": "Community curation policy.",
-      "type": "string"
-    },
-    "page": {
-      "description": "Community page.",
-      "type": "string"
-    },
-    "website": {
-      "description": "Community website.",
-      "type": "string"
-    },
-    "domains": {
-      "description": "Community domain.",
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "funding": {
-      "description": "Community funding.",
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "verified": {
-      "description": "Community verified.",
-      "type": "boolean"
-    },
-    "visibility": {
-      "description": "Community visibility.",
-      "enum": ["public", "private", "hidden"]
-    },
-    "member_policy": {
-      "description": "Community member policy.",
-      "enum": ["open", "closed"]
-    },
-    "record_policy": {
-      "description": "Community record policy.",
-      "enum": ["open", "closed", "restricted"]
-    },
-    "archived": {
-      "description": "Community archived.",
-      "type": "boolean"
-    },
-    "created_by": {
-      "description": "Community creator.",
-      "type": "integer"
-    },
-    "_collections": {
+    "pid": {"$ref": "local://communities/definitions-v1.0.0.json#/internal-pid"},
+    "metadata": {
       "type": "object",
-      "description": "Community collections.",
-      "additionalProperties": {
-        "type": "object",
-        "items": {
+      "description": "Resource metadata.",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "description": "Community title.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Community description.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Community type.",
+          "enum": [
+            "organization",
+            "event",
+            "topic",
+            "project"
+          ]
+        },
+        "alternate_identifiers": {
+          "type": "array",
+          "description": "Alternate identifiers for the community",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/identifier"
+          }
+        },
+        "curation_policy": {
+          "description": "Community curation policy.",
+          "type": "string"
+        },
+        "page": {
+          "description": "Community page.",
+          "type": "string"
+        },
+        "website": {
+          "description": "Community website.",
+          "type": "string"
+        },
+        "domains": {
+          "description": "Community domain.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "funding": {
+          "description": "Community funding.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "verified": {
+          "description": "Community verified.",
+          "type": "boolean"
+        },
+        "visibility": {
+          "description": "Community visibility.",
+          "enum": [
+            "public",
+            "private",
+            "hidden"
+          ]
+        },
+        "member_policy": {
+          "description": "Community member policy.",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "record_policy": {
+          "description": "Community record policy.",
+          "enum": [
+            "open",
+            "closed",
+            "restricted"
+          ]
+        },
+        "archived": {
+          "description": "Community archived.",
+          "type": "boolean"
+        },
+        "created_by": {
+          "description": "Community creator.",
+          "type": "integer"
+        },
+        "_collections": {
           "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "order": {
-              "type": "integer"
+          "description": "Community collections.",
+          "additionalProperties": {
+            "type": "object",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "order": {
+                  "type": "integer"
+                }
+              }
             }
           }
         }
       }
     }
-  },
-  "required": ["$schema", "id", "title", "type"]
+  }
 }

@@ -1,6 +1,6 @@
 {
   "mappings": {
-    "communities-v1.0.0": {
+    "_doc": {
       "numeric_detection": false,
       "properties": {
         "$schema": {
@@ -16,60 +16,64 @@
         "id": {
           "type": "keyword"
         },
-        "title": {
-          "type": "text"
-        },
-        "description": {
-          "type": "text"
-        },
-        "type": {
-          "type": "keyword"
-        },
-        "curation_policy": {
-          "type": "text"
-        },
-        "page": {
-          "type": "text"
-        },
-        "alternate_identifiers": {
-          "type": "object",
+        "metadata": {
           "properties": {
-            "identifier": {
+            "title": {
+              "type": "text"
+            },
+            "description": {
+              "type": "text"
+            },
+            "type": {
               "type": "keyword"
             },
-            "scheme": {
+            "curation_policy": {
+              "type": "text"
+            },
+            "page": {
+              "type": "text"
+            },
+            "alternate_identifiers": {
+              "type": "object",
+              "properties": {
+                "identifier": {
+                  "type": "keyword"
+                },
+                "scheme": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "website": {
               "type": "keyword"
+            },
+            "domains": {
+              "type": "keyword"
+            },
+            "verified": {
+              "type": "boolean"
+            },
+            "visibility": {
+              "type": "keyword"
+            },
+            "member_policy": {
+              "type": "keyword"
+            },
+            "record_policy": {
+              "type": "keyword"
+            },
+            "archived": {
+              "type": "boolean"
+            },
+            "created_by": {
+              "type": "integer"
+            },
+            "_collections": {
+              "type": "object",
+              "dynamic": false,
+              "enabled": false
             }
           }
-        },
-        "website": {
-          "type": "keyword"
-        },
-        "domains": {
-          "type": "keyword"
-        },
-        "verified": {
-          "type": "boolean"
-        },
-        "visibility": {
-          "type": "keyword"
-        },
-        "member_policy": {
-          "type": "keyword"
-        },
-        "record_policy": {
-          "type": "keyword"
-        },
-        "archived": {
-          "type": "boolean"
-        },
-        "created_by": {
-          "type": "integer"
-        },
-        "_collections": {
-          "type": "object",
-          "dynamic": false,
-          "enabled": false
         }
       }
     }

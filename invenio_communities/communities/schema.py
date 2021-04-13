@@ -54,13 +54,6 @@ def valid_domains():
 class CommunitySchemaMetadata(Schema):
     """Community metadata schema."""
 
-    schema_ = fields.Str(attribute="$schema", dump_to="$schema")
-
-    # TODO: why we need that as a GenFunction?
-    # id = GenFunction(
-    #     deserialize=pid_from_context_or_rec,
-    #     serialize=pid_from_context_or_rec  # to be added only when loading
-    # )
     title = SanitizedUnicode(required=True)
     description = SanitizedHTML()
     curation_policy = SanitizedHTML()
