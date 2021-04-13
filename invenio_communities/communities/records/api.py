@@ -32,20 +32,10 @@ class CommunityBase(Record):
     schema = ConstantField(
         '$schema', 'local://communities/communities-v1.0.0.json')
 
-    # TODO: Communities model doesn't have versioninig, some methods from
-    # "invenio_records.api.RecordBase" have to be overridden/removed
     model_cls = CommunityMetadata
 
     # TODO: communities-issue
     index = IndexField(
-        "communities-communities-communities-v1.0.0"
+        "communities-communities-v1.0.0",
+        search_alias="communities"
     )
-
-    def delete(self, force=False):
-        """Delete a community."""
-        with db.session.begin_nested():
-            if force:
-                db.session.delete(self.model)
-            else:
-                self.model.delete()
-        return self

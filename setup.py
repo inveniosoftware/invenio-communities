@@ -68,13 +68,12 @@ install_requires = [
     "invenio-base>=1.2.3",
     "invenio-i18n>=1.2.0",
     "invenio-indexer>=1.2.0",
-    "invenio-jsonschemas>=1.1.0",
+    "invenio-jsonschemas>=1.1.2",
     "invenio-mail>=1.0.2",
     "invenio-pidstore>=1.2.2",
     "invenio-records-permissions>=0.11.0,<0.12.0",
-    "invenio-records>=1.5.0a2",
+    "invenio-records>=1.5.0a4",
     "invenio-records-resources>=0.14.0",
-    "invenio-records-rest>=1.7.0",
     "uritemplate>=3.0.1",
 ]
 
