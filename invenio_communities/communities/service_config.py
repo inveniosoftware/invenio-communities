@@ -13,7 +13,6 @@ from flask_babelex import gettext as _
 
 from invenio_records_resources.services.records.links import RecordLink, \
     pagination_links
-from invenio_records_resources.services.records.components import DataComponent
 from invenio_records_resources.services.records.config import \
     RecordServiceConfig, SearchOptions as SearchOptionsBase
 from invenio_records_resources.services.records.search import terms_filter
@@ -63,8 +62,3 @@ class CommunityServiceConfig(RecordServiceConfig):
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")
-
-    # Service components
-    components = [
-        DataComponent
-    ] + RecordServiceConfig.components
