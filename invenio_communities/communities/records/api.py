@@ -25,7 +25,7 @@ from invenio_communities.communities.records.models import CommunityMetadata
 from .providers import CommunitiesIdProvider
 
 
-class CommunityBase(Record):
+class Community(Record):
     """Define API for community creation and manipulation."""
 
     pid = PIDField('id', provider=CommunitiesIdProvider)
