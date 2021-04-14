@@ -13,7 +13,7 @@ import json
 import pytest
 
 from flask import url_for
-from invenio_communities.communities.records.api import CommunityBase
+from invenio_communities.communities.records.api import Community
 
 # def assert_error_resp(res, expected_errors, expected_status_code=400):
 #     """Assert errors in a client response."""
@@ -79,7 +79,7 @@ def test_simple_flow(
 
     read_community = res.json
 
-    CommunityBase.index.refresh()
+    Community.index.refresh()
 
     # Search for created commmunity
     res = client.get(
@@ -100,7 +100,7 @@ def test_simple_flow(
 
     updated_community = res.json
 
-    CommunityBase.index.refresh()
+    Community.index.refresh()
 
     # Search for updated commmunity
     res = client.get(

@@ -17,7 +17,7 @@ from invenio_records_resources.services.records.config import \
     RecordServiceConfig, SearchOptions as SearchOptionsBase
 from invenio_records_resources.services.records.search import terms_filter
 
-from invenio_communities.communities.records.api import CommunityBase
+from invenio_communities.communities.records.api import Community
 
 from .permissions import CommunityPermissionPolicy
 from .schema import CommunitySchema
@@ -49,7 +49,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     permission_policy_cls = CommunityPermissionPolicy
 
     # Record specific configuration
-    record_cls = CommunityBase
+    record_cls = Community
 
     # Search configuration
     search = SearchOptions
