@@ -8,10 +8,13 @@
 
 """Community module tests."""
 
+import pytest
+
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
 
 
+@pytest.mark.skip()
 def test_simple_flow(
         db, es_clear, community, record, client, record_owner,
         community_owner):
@@ -60,6 +63,7 @@ def test_simple_flow(
     assert resp.status_code == 204
 
 
+@pytest.mark.skip()
 def test_alternate_flow(
         db, es_clear, community, record, client, record_owner,
         community_owner):
@@ -110,18 +114,21 @@ def test_alternate_flow(
 
 
 
+@pytest.mark.skip()
 def test_records_permissions(db, es_clear, community, record, client, users):
     """Test permissions on records."""
     # TODO
     pass
 
 
+@pytest.mark.skip()
 def test_records_validation(db, es_clear, community, record, client, users):
     """Test records validation."""
     # TODO
     pass
 
 
+@pytest.mark.skip()
 def test_records_search(db, es_clear, community, record, client, users):
     """Test records search."""
     # TODO

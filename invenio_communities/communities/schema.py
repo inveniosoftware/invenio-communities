@@ -98,5 +98,4 @@ class CommunitySchemaMetadata(Schema):
 class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
-    # TODO: remove revision_id?
-    metadata = fields.Nested(CommunitySchemaMetadata)
+    metadata = fields.Nested(CommunitySchemaMetadata, required=True)
