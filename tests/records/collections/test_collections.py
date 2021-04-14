@@ -8,10 +8,13 @@
 
 """Community module tests."""
 
+import pytest
+
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
 
 
+@pytest.mark.skip()
 def test_simple_flow(db, es_clear, community, accepted_community_record, client, community_owner):
     """Test basic operations on collections."""
     comid, community = community
@@ -89,6 +92,7 @@ def test_simple_flow(db, es_clear, community, accepted_community_record, client,
     assert resp.status_code == 404
 
 
+@pytest.mark.skip()
 def test_permissions(db, es_clear, community, accepted_community_record, client, community_owner, authenticated_user, record_owner):
     """Test collection permissions."""
     # TODO: write tests for permissions
