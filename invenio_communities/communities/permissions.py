@@ -1,106 +1,107 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2020 CERN.
+# Copyright (C) 2020-2021 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Community permissions."""
 
+from elasticsearch_dsl.query import Q
 from flask_principal import UserNeed
-from flask_security import current_user
 from invenio_access.permissions import any_user
-from invenio_records_permissions.generators import AnyUser, Generator
+from invenio_rdm_records.services.generators import \
+    IfRestricted as IfRestrictedBase
+from invenio_records_permissions.generators import AnyUser, \
+    AuthenticatedUser, Generator
 from invenio_records_permissions.policies import BasePermissionPolicy
 
-# from invenio_communities.members.permissions import CommunityMember
 
+class IfRestricted(IfRestrictedBase):
+    """IfRestricted.
 
-class CommunityVisibilityPolicy(Generator):
-    """Allows only community members to read the community if its hidden."""
+    IfRestricted(
+        'record',
+        then_=[RecordPermissionLevel('view')],
+        else_=[ActionNeed(superuser-access)],
+    )
 
-    def needs(self, community=None, **kwargs):
-        """."""
-        if community['visibility'] == 'public':
-            return [any_user]
+    A record permission level defines an aggregated set of
+    low-level permissions,
+    that grants increasing level of permissions to a record.
+
+    """
+
+    def generators(self, record):
+        """Get the "then" or "else" generators."""
+        if record is None:
+            # TODO - when permissions on links are checked, the record is not
+            # passes properly, causing below ``record.access`` to fail.
+            return self.else_
+        is_restricted = getattr(
+            record.access, self.field, "private")
+        return self.then_ if is_restricted == "private" else self.else_
+
+    def query_filter(self, **kwargs):
+        """Filters for current identity as super user."""
+        q_restricted = Q("match", **{f"access.{self.field}": "private"})
+        q_public = Q("match", **{f"access.{self.field}": "public"})
+        then_query = self.make_query(self.then_, **kwargs)
+        else_query = self.make_query(self.else_, **kwargs)
+        if then_query and else_query:
+            return (q_restricted & then_query) | (q_public & else_query)
+        elif then_query:
+            return (q_restricted & then_query) | q_public
+        elif else_query:
+            return q_public & else_query
         else:
-            return [CommunityMember(['admin', 'curator', 'member'])]
+            return q_public
 
 
-class CommunityOwner(Generator):
-    """Returns community owner need."""
+class CommunityOwners(Generator):
+    """Allows community owners."""
 
-    def needs(self, community=None, **kwargs):
-        """."""
-        return [UserNeed(community['created_by'])]
+    def needs(self, record=None, **kwargs):
+        """Enabling Needs."""
+        if record:
+            return [
+                UserNeed(owner.owner_id)
+                for owner in record.access.owned_by
+                ]
+        else:
+            return [any_user]
+
+    def query_filter(self, identity=None, **kwargs):
+        """Filters for current identity as owner."""
+        users = [n.value for n in identity.provides if n.method == "id"]
+        return Q(
+            "terms",
+            **{"access.owned_by.user": users}
+            )
 
 
 class CommunityPermissionPolicy(BasePermissionPolicy):
     """Permissions for Community CRUD operations."""
 
-    can_create = [AnyUser()]
+    can_create = [AuthenticatedUser()]
 
-    can_read = [AnyUser()]
+    can_read = [
+        IfRestricted(
+            'visibility',
+            then_=[CommunityOwners()],
+            else_=[AnyUser()]),
+        ]
 
-    can_update = [AnyUser()]
+    can_update = [CommunityOwners()]
 
-    can_delete = [AnyUser()]
+    can_delete = [CommunityOwners()]
 
-    can_search = [AnyUser()]
+    can_search = [
+        IfRestricted(
+            'visibility',
+            then_=[CommunityOwners()],
+            else_=[AnyUser()]),
+        ]
 
-    # can_read_community = [
-    #     CommunityVisibilityPolicy(),
-    # ]
-
-
-    # can_update_community = [
-    #     CommunityMember(['admin', 'curator']),
-    # ]
-    # can_delete_community = [
-    #     CommunityMember(['admin']),
-    # ]
-
-
-def allow_logged_in(*args, **kwargs):
-    """Permission that allows only logged in users to perform the operation."""
-    def can(self):
-        """."""
-        return current_user.is_authenticated
-    return type('AllowCommunityOwner', (), {'can': can})()
-
-
-# def can_read_community(record, *args, **kwargs):
-#     """Permission wrapper."""
-#     def can(self):
-#         """."""
-#         return CommunityPermissionPolicy(
-#             action='read_community',
-#             comid=record.pid,
-#             community=record,
-#         ).can()
-#     return type('AllowCommunityOwner', (), {'can': can})()
-
-
-def can_update_community(record, *args, **kwargs):
-    """Permission wrapper."""
-    def can(self):
-        """."""
-        return CommunityPermissionPolicy(
-            action='update_community',
-            comid=record.pid,
-            community=record,
-        ).can()
-    return type('AllowCommunityOwner', (), {'can': can})()
-
-
-def can_delete_community(record, *args, **kwargs):
-    """Permission wrapper."""
-    def can(self):
-        """."""
-        return CommunityPermissionPolicy(
-            action='delete_community',
-            comid=record.pid,
-            community=record,
-        ).can()
-    return type('AllowCommunityOwner', (), {'can': can})()
+    can_search_user_communities = [CommunityOwners()]
