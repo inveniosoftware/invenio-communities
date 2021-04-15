@@ -10,7 +10,6 @@
 
 from __future__ import absolute_import, print_function
 
-
 COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
 SUPPORT_EMAIL = 'test@email.org'
@@ -54,3 +53,11 @@ COMMUNITIES_DOMAINS = [
 
 # Overwrite to change available community member status options
 # COMMUNITY_MEMBER_STATUS = None
+
+
+COMMUNITIES_ROUTES = {
+    'index': '/communities',
+    'search': '/communities/search',
+    'new': '/communities/new',
+    'details': '/communities/<pid_value>'
+}

@@ -17,11 +17,11 @@ from invenio_pidstore.models import PersistentIdentifier
 from invenio_pidstore.resolver import Resolver
 from invenio_records.systemfields import ConstantField
 from invenio_records_resources.records.api import Record
-from invenio_records_resources.records.systemfields import IndexField, \
-    PIDField
+from invenio_records_resources.records.systemfields import IndexField, PIDField
 from werkzeug.local import LocalProxy
 
 from invenio_communities.communities.records.models import CommunityMetadata
+
 from .providers import CommunitiesIdProvider
 
 

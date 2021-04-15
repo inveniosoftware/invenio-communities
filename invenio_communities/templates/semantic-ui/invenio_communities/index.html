@@ -12,22 +12,24 @@
 {%- endblock %}
 
 {%- block page_body %}
-  <div class="ui container">
-    <div class="ui basic segment">
-      <a href="/communities/new">
-      <button class="ui right floated positive button">
-        <i class="fa fa-plus"></i>
-        New community
-      </button>
-    </a>
-    </div>
-    <div data-invenio-search-config='{{
-      search_app_helpers.invenio_records_rest.generate(
-        dict(
-          endpoint_id="comid",
-          app_id="community-search"
-        )
-      ) | tojson(indent=2) }}'></div>
+<div class="community-header">
+  <div class="ui container two column centered relaxed grid">
+    <div class="row">
+      <h1 class="ui header">
+        Communities
+      </h1>
   </div>
+  <div class="row">
+    <div class="ten wide column">
+      <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
+        <div class="ui fluid action input">
+          <input type="text" name="q" class="form-control" placeholder="{{ _("Type and press enter to search") }}">
+          <button type="submit" class="ui icon search button"><i class="search icon"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="ui divider hidden"></div>
+</div>
 </div>
 {%- endblock page_body %}

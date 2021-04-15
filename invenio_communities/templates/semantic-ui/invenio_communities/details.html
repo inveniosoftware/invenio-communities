@@ -11,23 +11,11 @@
 
 {%- block javascript %}
     {{ super() }}
-    {{ webpack['invenio-communities-records-search.js'] }}
 {%- endblock %}
 
 {% set active_header_menu_item = 'search' %}
 
 {%- block page_body %}
 {% include "invenio_communities/header.html" %}
-<div class="ui container">
-  {% set community_id = comid.pid_value | string %}
-  <div data-invenio-search-config='{{
-    search_app_helpers.invenio_records_rest.generate(
-      dict(
-        endpoint_id="recid",
-        app_id="communities-records-search",
-        hidden_params=[("community", community_id)],
-      )
-    ) | tojson(indent=2) }}'></div>
-</div>
 
 {%- endblock page_body %}

@@ -14,13 +14,13 @@
       <i class="users massive icon"></i>
     </div>
     <div class="six wide column">
-      <h1 class="ui header">{{ community.title }}</h1>
+      <h1 class="ui header">{{ community.metadata.title }}</h1>
       {% if community.website %}
       <p></p><a href="{{community.website}}">{{ community.website }}</a></p>
       {% endif %}
-      <p>{{ community.description | safe }}</p>
-      {% for domain in community.domains %}
-      <a href="/communities?domain={{ domain }}" class="links-underline">{{ domain }}</a>
+      <p>{{ community.metadata.description | safe }}</p>
+      {% for domain in community.metadata.domains %}
+      <a href="/communities/search?f=domain:{{ domain }}" class="links-underline">{{ domain }}</a>
       {% endfor %}
     </div>
     {# TODO: Add proper statistics #}
@@ -46,19 +46,16 @@
     </div>
     <div class="three wide column">
       {# TODO: use "url_for" with appropriate querystring parameter #}
-      <a href="/deposits/new/?community={{ comid.pid_value }}" class="ui positive button">
+      <!-- <a href="/uploads/new/?community={{ community.id }}" class="ui positive button">
         <i class="plus icon"></i>
         New upload
-      </a>
+      </a> -->
     </div>
   </div>
   {% set header_menu_items = {
-    'search': ('Search', url_for('invenio_communities.community_page', pid_value=comid.pid_value)),
-    'curate': ('Curate', url_for('invenio_communities_records.curation', pid_value=comid.pid_value)),
-    'members': ('Members', url_for('invenio_communities_members.members', pid_value=comid.pid_value)),
-    'settings': ('Settings', url_for('invenio_communities.settings', pid_value=comid.pid_value)),
-    'statistics': ('Statistics', None),
+    'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id)),
   } %}
+
   <div class="ui container secondary pointing menu">
     {% for header_menu_key, (header_menu_item, header_menu_link) in header_menu_items.items() %}
       <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}">{{ header_menu_item }}</a>
