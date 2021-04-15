@@ -108,13 +108,12 @@ setup(
             'invenio_communities = invenio_communities:InvenioCommunities',
         ],
         'invenio_base.blueprints': [
-            # 'invenio_communities = invenio_communities.views:ui_blueprint',
-            # 'invenio_communities_members = invenio_communities.members.views:ui_blueprint',
+            'invenio_communities = invenio_communities.views:create_ui_blueprint',
             # 'invenio_communities_records = invenio_communities.communities.records.views:ui_blueprint',
             # 'invenio_communities_collections = invenio_communities.communities.records.collections.views:ui_blueprint',
         ],
         'invenio_base.api_blueprints': [
-            'invenio_communities = invenio_communities.communities.views:create_communities_bp',
+            'invenio_communities_api = invenio_communities.views:create_api_blueprint',
         ],
         'invenio_db.models': [
             'invenio_communities = invenio_communities.communities.records.models',
@@ -129,7 +128,7 @@ setup(
             'communities = invenio_communities.communities.records.jsonschemas',
         ],
         'invenio_assets.webpack': [
-            # 'invenio_communities = invenio_communities.webpack:communities'
+            'invenio_communities = invenio_communities.webpack:communities'
         ],
         'invenio_celery.tasks': [
             # TODO: Add when necessary

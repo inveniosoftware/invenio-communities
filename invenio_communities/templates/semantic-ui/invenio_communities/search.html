@@ -1,0 +1,89 @@
+{#
+  Copyright (C) 2020 CERN.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+{% extends "invenio_communities/base.html" %}
+
+{%- block javascript %}
+    {{ super() }}
+    {{ webpack['invenio-communities-search.js'] }}
+{%- endblock %}
+
+{%- block page_body %}
+    <div data-invenio-search-config='{
+      "aggs": [
+        {
+          "aggName": "type",
+          "field": "metadata.type",
+          "title": "Type"
+        },
+        {
+          "aggName": "domain",
+          "field": "metadata.domains",
+          "title": "Domain"
+        }
+      ],
+      "appId": "commuties-search",
+      "initialQueryState": {
+          "hiddenParams": null,
+          "size": 10,
+          "page": 1,
+          "sortBy": "bestmatch"
+      },
+      "layoutOptions": {
+          "gridView": false,
+          "listView": true
+      },
+      "paginationOptions": {
+          "defaultValue": 10,
+          "resultsPerPage": [
+              {
+                  "text": "10",
+                  "value": 10
+              },
+              {
+                  "text": "20",
+                  "value": 20
+              },
+              {
+                  "text": "50",
+                  "value": 50
+              }
+          ]
+      },
+      "searchApi": {
+          "axios": {
+              "headers": {
+                  "Accept": "application/json"
+              },
+              "url": "/api/communities",
+              "withCredentials": true
+          }
+      },
+      "sortOrderDisabled": true,
+      "defaultSortingOnEmptyQueryString": {
+          "sortBy": "newest"
+      },
+      "sortOptions": [
+          {
+              "sortBy": "bestmatch",
+              "text": "Best match"
+          },
+          {
+              "sortBy": "newest",
+              "text": "Newest"
+          },
+          {
+              "sortBy": "oldest",
+              "text": "Oldest"
+          },
+          {
+              "sortBy": "version",
+              "text": "Version"
+          }
+      ]
+  }'>
+</div>
+{%- endblock page_body %}

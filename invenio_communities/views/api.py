@@ -6,10 +6,10 @@
 # Invenio-RDM-Records is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-"""Views."""
+"""API views."""
 
 
-def create_communities_bp(app):
-    """Create communities blueprint."""
+def create_api_blueprint(app):
+    """Create communities api blueprint."""
     ext = app.extensions["invenio-communities"]
     return ext.communities_resource.as_blueprint()

@@ -12,21 +12,15 @@ import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
 import { RichInputField } from "./forms";
-import { DeleteActionButton } from './fields'
+import { DeleteActionButton } from "./fields";
 import { Icon, Grid } from "semantic-ui-react";
-import { SelectField, TextField } from 'react-invenio-forms';
-
+import { SelectField, TextField } from "react-invenio-forms";
 
 const renderIdentifiers = ({ arrayPath, indexPath, ...arrayHelpers }) => {
   const path = `${arrayPath}.${indexPath}`; // alternate_identifiers.0
   return (
     <>
-      <TextField
-        required
-        fluid
-        label="Scheme"
-        fieldPath={`${path}.scheme`}
-      />
+      <TextField required fluid label="Scheme" fieldPath={`${path}.scheme`} />
       <TextField
         basic
         fluid
@@ -37,7 +31,6 @@ const renderIdentifiers = ({ arrayPath, indexPath, ...arrayHelpers }) => {
     </>
   );
 };
-
 
 const renderFunding = ({ arrayPath, indexPath, ...arrayHelpers }) => {
   return (
@@ -56,57 +49,57 @@ const renderFunding = ({ arrayPath, indexPath, ...arrayHelpers }) => {
   );
 };
 
-
 const COMMUNITY_TYPES = [
   { value: "organization", text: "Institution/Organization" },
   { value: "event", text: "Event" },
   { value: "topic", text: "Topic" },
-  { value: "project", text: "Project" }
+  { value: "project", text: "Project" },
 ];
 
 const VISIBILITY_TYPES = [
   { value: "public", text: "Public" },
   { value: "private", text: "Private" },
-  { value: "hidden", text: "Hidden" }
+  { value: "hidden", text: "Hidden" },
 ];
 
 const MEMBER_POLICY_TYPES = [
   { value: "open", text: "Open" },
-  { value: "closed", text: "Closed" }
-]
+  { value: "closed", text: "Closed" },
+];
 
 const RECORD_POLICY_TYPES = [
   { value: "open", text: "Open" },
   { value: "closed", text: "Closed" },
-  { value: "restricted", text: "Restricted" }
+  { value: "restricted", text: "Restricted" },
 ];
 
 const CommunityCreateForm = () => {
   const [globalError, setGlobalError] = useState(null);
   const [community, setCommunity] = useState({});
 
-  useEffect(() =>{
-    if (!formConfig.is_new){
-    var community_id = window.location.pathname.split('/')[2];
-    fetch("/api/communities/" + community_id)
-      .then(res => res.json())
-      .then(
-        (result) => { setCommunity(result.metadata); },
-        (error) => { },
-      )}
-      else{
-        setCommunity({})
-      }
-      }, [])
-  if (Object.keys(community).length === 0 && !formConfig.is_new){
+  useEffect(() => {
+    if (!formConfig.is_new) {
+      var community_id = window.location.pathname.split("/")[2];
+      fetch("/api/communities/" + community_id)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setCommunity(result.metadata);
+          },
+          (error) => {}
+        );
+    } else {
+      setCommunity({});
+    }
+  }, []);
+  if (Object.keys(community).length === 0 && !formConfig.is_new) {
     return (
       <div className="ui bottom attached loading tab">
         <p></p>
         <p></p>
       </div>
-  )
-  }
-  else{
+    );
+  } else {
     return (
       <div className="ui container">
         <Formik
@@ -123,7 +116,8 @@ const CommunityCreateForm = () => {
             record_policy: community.record_policy || "open",
             funding: community.funding || [],
             domains: community.domains || [],
-            alternate_identifiers: community.alternate_identifiers || []}}
+            alternate_identifiers: community.alternate_identifiers || [],
+          }}
           validationSchema={Yup.object({
             id: Yup.string()
               .required("Required")
@@ -142,56 +136,81 @@ const CommunityCreateForm = () => {
             type: Yup.string()
               .required("Required")
               .oneOf(
-                COMMUNITY_TYPES.map(c => {
+                COMMUNITY_TYPES.map((c) => {
                   return c.value;
                 })
               ),
             visibility: Yup.string()
               .required("Required")
               .oneOf(
-                VISIBILITY_TYPES.map(c => {
+                VISIBILITY_TYPES.map((c) => {
                   return c.value;
                 })
               ),
             website: Yup.string().url("Must be a valid URL"),
-            funding: Yup.array().of(Yup.string()
-            .max(20, "Must be 20 characters or less")),
-            domains: Yup.array().of(Yup.string().oneOf(
-              formConfig.domains.map( c => {
-                return c.value;
-              }))),
-            alternate_identifiers: Yup.array().of(Yup.object().shape({
-              scheme: Yup.string().max(20, "Must be 20 characters or less"),
-              identifier: Yup.string().max(20, "Must be 20 characters or less")
-            })),
+            funding: Yup.array().of(
+              Yup.string().max(20, "Must be 20 characters or less")
+            ),
+            domains: Yup.array().of(
+              Yup.string().oneOf(
+                formConfig.domains.map((c) => {
+                  return c.value;
+                })
+              )
+            ),
+            alternate_identifiers: Yup.array().of(
+              Yup.object().shape({
+                scheme: Yup.string().max(20, "Must be 20 characters or less"),
+                identifier: Yup.string().max(
+                  20,
+                  "Must be 20 characters or less"
+                ),
+              })
+            ),
             record_policy: Yup.string()
               .required("Required")
               .oneOf(
-                RECORD_POLICY_TYPES.map( c => {
+                RECORD_POLICY_TYPES.map((c) => {
                   return c.value;
                 })
               ),
             member_policy: Yup.string()
               .required("Required")
               .oneOf(
-                MEMBER_POLICY_TYPES.map( c => {
+                MEMBER_POLICY_TYPES.map((c) => {
                   return c.value;
                 })
               ),
           })}
           onSubmit={(values, { setSubmitting, setErrors, setFieldError }) => {
             setSubmitting(true);
-            const payload = _.pickBy(values, val => val !== "" && !_.isNil(val));
+            const { id, ...metadata } = _.pickBy(
+              values,
+              (val) => val !== "" && !_.isNil(val)
+            );
             if (formConfig.is_new) {
-              var request_promise = axios.post("/api/communities/", payload)
+              var request_promise = axios.post(
+                "/api/communities",
+                { id, metadata },
+                {
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  withCredentials: true,
+                }
+              );
             } else {
-              var request_promise = axios.put(`/api/communities/${community.id}`, payload)
+              var request_promise = axios.put(
+                `/api/communities/${community.id}`,
+                payload
+              );
             }
             request_promise
-              .then(response => {
-                window.location.href = `/communities/${payload.id}`;
+              .then((response) => {
+                window.location.href = `/communities/${response.data.id}`;
               })
-              .catch(error => {
+              .catch((error) => {
                 // TODO: handle nested fields
                 if (error.response.data.errors) {
                   error.response.data.errors.map(({ field, message }) =>
@@ -208,81 +227,96 @@ const CommunityCreateForm = () => {
             <Form>
               <Grid>
                 <Grid.Column width={10}>
-                {formConfig.is_new ? (
-              <h2>Create a community</h2>) : <h2 className="underline">Community Profile</h2>}
-              {formConfig.is_new ? (
-              <TextField required label='ID' fieldPath="id" fluid />
-              ): null}
-              <TextField required label="Title" fieldPath="title" fluid />
-              <SelectField
-                required
-                search
-                label="Type"
-                fieldPath="type"
-                options={COMMUNITY_TYPES}
-              />
-              <RichInputField label="Description" fieldPath="description" fluid/>
-              <RichInputField label="Page" fieldPath="page" fluid/>
-              <RichInputField label="Curation policy" fieldPath="curation_policy" fluid/>
-              <TextField label="Website" fieldPath="website" fluid/>
-              {/* <SelectField
+                  {formConfig.is_new ? (
+                    <h2>Create a community</h2>
+                  ) : (
+                    <h2 className="underline">Community Profile</h2>
+                  )}
+                  {formConfig.is_new ? (
+                    <TextField required label="ID" fieldPath="id" fluid />
+                  ) : null}
+                  <TextField required label="Title" fieldPath="title" fluid />
+                  <SelectField
+                    required
+                    search
+                    label="Type"
+                    fieldPath="type"
+                    options={COMMUNITY_TYPES}
+                  />
+                  <RichInputField
+                    label="Description"
+                    fieldPath="description"
+                    fluid
+                  />
+                  <RichInputField label="Page" fieldPath="page" fluid />
+                  <RichInputField
+                    label="Curation policy"
+                    fieldPath="curation_policy"
+                    fluid
+                  />
+                  <TextField label="Website" fieldPath="website" fluid />
+                  {/* <SelectField
                 required
                 search
                 label="Visibility"
                 fieldPath="visibility"
                 options={VISIBILITY_TYPES}
               /> */}
-              {/* <SelectField
+                  {/* <SelectField
                 required
                 search
                 label="Record policy"
                 fieldPath="record_policy"
                 options={RECORD_POLICY_TYPES}
               /> */}
-              {/* <SelectField
+                  {/* <SelectField
                 required
                 search
                 label="Member policy"
                 fieldPath="member_policy"
                 options={MEMBER_POLICY_TYPES}
               /> */}
-              {<SelectField
-                required
-                search
-                label="Domains"
-                fieldPath="domains"
-                options={formConfig.domains}
-                multiple
-              />}
-              {/* <ArrayField
+                  {
+                    <SelectField
+                      required
+                      search
+                      label="Domains"
+                      fieldPath="domains"
+                      options={formConfig.domains}
+                      multiple
+                    />
+                  }
+                  {/* <ArrayField
                 fieldPath="alternate_identifiers"
                 defaultNewValue={{ scheme: '', identifier: '' }}
                 renderArrayItem={renderIdentifiers}
                 addButtonLabel="Add alternate identifer"
               /> */}
-              {/* <ArrayField
+                  {/* <ArrayField
                 fieldPath="funding"
                 defaultNewValue=""
                 renderArrayItem={renderFunding}
                 addButtonLabel="Add funding"
               /> */}
-              <button
-                disabled={!isValid || isSubmitting}
-                className="ui positive button small"
-                type="submit"
-              >
-                Submit
-              </button>
-              {globalError ? (
-                <div className="help-block">{globalError}</div>
-              ) : null}
+                  <button
+                    disabled={!isValid || isSubmitting}
+                    className="ui positive button small"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                  {globalError ? (
+                    <div className="help-block">{globalError}</div>
+                  ) : null}
                 </Grid.Column>
                 <Grid.Column width={6}>
-              <div className="community-logo-form">
-                <Icon name="users" size="massive"></Icon>
-                <br></br>
-                <button className="ui positive button small">Upload new image</button>
-              </div>
+                  <div className="community-logo-form">
+                    <Icon name="users" size="massive"></Icon>
+                    <br></br>
+                    <button className="ui positive button small">
+                      Upload new image
+                    </button>
+                  </div>
                 </Grid.Column>
               </Grid>
             </Form>
@@ -290,8 +324,8 @@ const CommunityCreateForm = () => {
         </Formik>
       </div>
     );
-  };
-}
+  }
+};
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);

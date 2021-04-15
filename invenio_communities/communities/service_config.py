@@ -10,11 +10,12 @@
 """Invenio Communities Service API config."""
 
 from flask_babelex import gettext as _
-
+from invenio_records_resources.services.records.config import \
+    RecordServiceConfig
+from invenio_records_resources.services.records.config import \
+    SearchOptions as SearchOptionsBase
 from invenio_records_resources.services.records.links import RecordLink, \
     pagination_links
-from invenio_records_resources.services.records.config import \
-    RecordServiceConfig, SearchOptions as SearchOptionsBase
 from invenio_records_resources.services.records.search import terms_filter
 
 from invenio_communities.communities.records.api import Community
@@ -32,12 +33,12 @@ class SearchOptions(SearchOptionsBase):
                 'terms': {'field': 'metadata.type'},
             },
             'domain': {
-                'terms': {'field': 'metadata.domain'},
+                'terms': {'field': 'metadata.domains'},
             },
         },
         post_filters={
             'type': terms_filter('metadata.type'),
-            'domain': terms_filter('metadata.domain'),
+            'domain': terms_filter('metadata.domains'),
         }
     )
 
