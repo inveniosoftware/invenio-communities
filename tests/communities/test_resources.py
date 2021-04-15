@@ -56,6 +56,18 @@ def _assert_single_item_response(response):
         assert field in response_fields
 
 
+def _assert_optional_items_metadata(response):
+    """Assert the fields present on the metadata """
+    metadata_fields = response.json['metadata'].keys()
+    fields_to_check = [
+        "description", "type", "alternate_identifiers", "curation_policy",
+        "page", "website", "domains", "funding", "award"
+    ]
+      
+    for field in fields_to_check:
+        assert field in metadata_fields
+
+
 def test_simple_flow(
     app, client_with_login, location, minimal_community_record, headers,
     es_clear
@@ -121,3 +133,123 @@ def test_simple_flow(
     res = client.get(f'/communities/{id_}', headers=headers)
     assert res.status_code == 410
     assert res.json["message"] == "The record has been deleted."
+
+
+def test_post_metadata_schema_validation(
+    app, client_with_login, location, minimal_community_record, headers, es_clear
+):
+
+    client = client_with_login
+    """Test the validity of community shema metadata"""
+    
+    #Creta a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record)        
+    )
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+
+    created_community = res.json
+    id_ = created_community['id'] 
+    metadata_ = created_community['metadata']
+
+    # Assert required fields
+    assert 'title' in metadata_
+    assert 'type' in metadata_
+    
+    # Assert enums
+    assert metadata_['type'] in ['organization', 'event', 'topic', 'project',]
+    assert metadata_['member_policy'] == 'open' 
+
+    #TODO: check fields size constraits
+    #TODO: create a non-trivial community record for non-required fields \
+    #       modify fields to break size restrictions
+
+    # import ipdb; ipdb.set_trace()
+    # res = client.get(f'/communities/{id_}', headers=headers)
+    # assert res.status_code == 200
+    # read_community = res.json
+    # _assert_optional_items_metadata(res)
+
+
+def test_create_community_with_existing_id(
+    app, client_with_login, location, minimal_community_record, headers,
+    es_clear
+):
+    client = client_with_login
+    """Test creation of two community with the same id"""
+    
+    #Creta a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record)        
+    )
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    created_community1 = res.json
+    id1_ = created_community1['id']
+
+    #Creta another community with the same id
+    minimal_community_record['id'] = id1_  
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record)        
+    )
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    created_community2 = res.json
+    id2_ = created_community2['id']
+
+    assert id1_ != id2_
+    assert created_community1['metadata'] == created_community2['metadata'] 
+
+    # Read communities
+    res1 = client.get(f'/communities/{id1_}', headers=headers)
+    res2 = client.get(f'/communities/{id2_}', headers=headers)
+    assert res1.status_code == 200
+    assert res2.status_code == 200
+    assert res1.json['metadata'] == res2.json['metadata'] 
+
+
+def test_create_community_with_deleted_id(
+    app, client_with_login, location, minimal_community_record, headers,
+    es_clear
+):
+    client = client_with_login
+    """Test creation of two community with the same id"""
+    
+    #Creta a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record))
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    created_community = res.json
+    id_ = created_community['id']
+
+    # Read the community
+    res = client.get(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 200
+    assert res.json['metadata'] == \
+        created_community['metadata']
+
+    # Delete community
+    res = client.delete(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 204
+
+
+    #Creta another community with the same id
+    minimal_community_record['id'] = id_  
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record))
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    
+    # Read the community
+    res = client.get(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 200
+    assert res.json['metadata'] == \
+        created_community['metadata']
+
