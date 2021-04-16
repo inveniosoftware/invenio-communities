@@ -63,7 +63,7 @@ def _assert_optional_items_metadata(response):
         "description", "type", "alternate_identifiers", "curation_policy",
         "page", "website", "domains", "funding", "award"
     ]
-      
+
     for field in fields_to_check:
         assert field in metadata_fields
 
@@ -72,8 +72,8 @@ def test_simple_flow(
     app, client_with_login, location, minimal_community_record, headers,
     es_clear
 ):
-    client = client_with_login
     """Test a simple REST API flow."""
+    client = client_with_login
     # Create a community
     res = client.post(
         '/communities', headers=headers,
@@ -135,13 +135,13 @@ def test_simple_flow(
     assert res.json["message"] == "The record has been deleted."
 
 
-def test_post_metadata_schema_validation(
+def test_post_schema_validation(
     app, client_with_login, location, minimal_community_record, headers, es_clear
 ):
 
+    """Test the validity of community shema"""
     client = client_with_login
-    """Test the validity of community shema metadata"""
-    
+
     #Creta a community
     res = client.post(
         '/communities', headers=headers,
@@ -149,36 +149,78 @@ def test_post_metadata_schema_validation(
     )
     assert res.status_code == 201
     _assert_single_item_response(res)
+    _assert_optional_items_metadata(res)
 
     created_community = res.json
     id_ = created_community['id'] 
+
     metadata_ = created_community['metadata']
+    access_ = created_community['access']
 
     # Assert required fields
     assert 'title' in metadata_
     assert 'type' in metadata_
+    assert 'visibility' in access_
     
     # Assert enums
     assert metadata_['type'] in ['organization', 'event', 'topic', 'project',]
-    assert metadata_['member_policy'] == 'open' 
+    assert access_['visibility'] in ['public', 'private', 'hidden']
 
-    #TODO: check fields size constraits
-    #TODO: create a non-trivial community record for non-required fields \
-    #       modify fields to break size restrictions
 
-    # import ipdb; ipdb.set_trace()
-    # res = client.get(f'/communities/{id_}', headers=headers)
-    # assert res.status_code == 200
-    # read_community = res.json
-    # _assert_optional_items_metadata(res)
+def test_post_metadata_schema_validation(
+    app, client_with_login, location, minimal_community_record, headers, 
+    es_clear
+):
+    """Test the validity of community metadata shema"""
+    client = client_with_login
+
+    # Assert field size constraints id
+    data = copy.deepcopy(minimal_community_record)
+    data["id"] = "".join([str(i) for i in range(101)]),
+  
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(data)        
+    )
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred." 
+    
+    # Assert field size constraints title
+    data['id'] = 'comm_id'
+    data['metadata']['title'] = "".join([str(i) for i in range(251)])
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(data)        
+    )
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred."
+
+    # Assert field size constraints description
+    data['metadata']['title'] = 'Title'
+    data['metadata']['description'] = "".join([str(i) for i in range(1001)])
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(data)        
+    )
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred."
+    
+    # Create community
+    data['metadata']['description'] = "New community"
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(data)        
+    )
+    assert res.status_code == 201
+    _assert_single_item_response(res)
 
 
 def test_create_community_with_existing_id(
-    app, client_with_login, minimal_community_record, headers,
+    app, client_with_login, location, minimal_community_record, headers,
     es_clear
 ):
-    client = client_with_login
     """Test creation of two community with the same id"""
+    client = client_with_login
     
     #Creta a community
     res = client.post(
@@ -198,15 +240,14 @@ def test_create_community_with_existing_id(
     )
     assert res.status_code == 400
     assert res.json['message'] == f'Community {id_} already exists'
-
 
 
 def test_create_community_with_deleted_id(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
+    """Test creation of a community with a deleted id"""
     client = client_with_login
-    """Test creation of two community with the same id"""
     
     #Creta a community
     res = client.post(
@@ -217,16 +258,9 @@ def test_create_community_with_deleted_id(
     created_community = res.json
     id_ = created_community['id']
 
-    # Read the community
-    res = client.get(f'/communities/{id_}', headers=headers)
-    assert res.status_code == 200
-    assert res.json['metadata'] == \
-        created_community['metadata']
-
     # Delete community
     res = client.delete(f'/communities/{id_}', headers=headers)
     assert res.status_code == 204
-
 
     #Creta another community with the same id
     minimal_community_record['id'] = id_  
@@ -237,3 +271,27 @@ def test_create_community_with_deleted_id(
     assert res.json['message'] == f'Community {id_} already exists'
     
 
+def test_self_link(
+    app, client_with_login, minimal_community_record, headers,
+    es_clear
+): 
+    """Test self links generated"""
+    client = client_with_login
+    
+    #Creta a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record))
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    created_community = res.json
+    id_ = created_community['id']
+
+    assert '/'.join(created_community['links']['self'].split('/')[-2:]) == f'communities/{id_}'
+    
+
+@pytest.mark.skip()
+def test_get_response(app, client_with_login, minimal_community_record, headers,
+    es_clear
+):
+    pass
