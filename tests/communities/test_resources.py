@@ -174,7 +174,7 @@ def test_post_metadata_schema_validation(
 
 
 def test_create_community_with_existing_id(
-    app, client_with_login, location, minimal_community_record, headers,
+    app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
     client = client_with_login
@@ -187,33 +187,22 @@ def test_create_community_with_existing_id(
     )
     assert res.status_code == 201
     _assert_single_item_response(res)
-    created_community1 = res.json
-    id1_ = created_community1['id']
+    created_community = res.json
+    id_ = created_community['id']
 
     #Creta another community with the same id
-    minimal_community_record['id'] = id1_  
+    minimal_community_record['id'] = id_  
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(minimal_community_record)        
     )
-    assert res.status_code == 201
-    _assert_single_item_response(res)
-    created_community2 = res.json
-    id2_ = created_community2['id']
+    assert res.status_code == 400
+    assert res.json['message'] == f'Community {id_} already exists'
 
-    assert id1_ != id2_
-    assert created_community1['metadata'] == created_community2['metadata'] 
-
-    # Read communities
-    res1 = client.get(f'/communities/{id1_}', headers=headers)
-    res2 = client.get(f'/communities/{id2_}', headers=headers)
-    assert res1.status_code == 200
-    assert res2.status_code == 200
-    assert res1.json['metadata'] == res2.json['metadata'] 
 
 
 def test_create_community_with_deleted_id(
-    app, client_with_login, location, minimal_community_record, headers,
+    app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
     client = client_with_login
@@ -244,12 +233,7 @@ def test_create_community_with_deleted_id(
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(minimal_community_record))
-    assert res.status_code == 201
-    _assert_single_item_response(res)
+    assert res.status_code == 400
+    assert res.json['message'] == f'Community {id_} already exists'
     
-    # Read the community
-    res = client.get(f'/communities/{id_}', headers=headers)
-    assert res.status_code == 200
-    assert res.json['metadata'] == \
-        created_community['metadata']
 
