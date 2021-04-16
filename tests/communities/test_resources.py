@@ -49,7 +49,7 @@ def _assert_single_item_response(response):
     """Assert the fields present on a single item response."""
     response_fields = response.json.keys()
     fields_to_check = [
-        'created', 'id', 'links', 'metadata', 'updated'
+        'created', 'id', 'links', 'metadata', 'updated', 'access'
     ]
 
     for field in fields_to_check:
@@ -60,12 +60,23 @@ def _assert_optional_items_metadata(response):
     """Assert the fields present on the metadata """
     metadata_fields = response.json['metadata'].keys()
     fields_to_check = [
-        "description", "type", "alternate_identifiers", "curation_policy",
-        "page", "website", "domains", "funding", "award"
+        "title", "description", "type", "website", "alternate_identifiers", "funding",
+        "affiliations", "domains", "curation_policy", "page"
     ]
 
     for field in fields_to_check:
         assert field in metadata_fields
+
+
+def _assert_single_item_search(response):
+    """Assert the fields present on the metadata """
+    response_fields = response.json.keys()
+    fields_to_check = [
+        "aggregations", "hits", "links", "sortBy"
+    ]
+
+    for field in fields_to_check:
+        assert field in response_fields
 
 
 def test_simple_flow(
@@ -149,23 +160,21 @@ def test_post_schema_validation(
     )
     assert res.status_code == 201
     _assert_single_item_response(res)
-    _assert_optional_items_metadata(res)
 
     created_community = res.json
     id_ = created_community['id'] 
 
     metadata_ = created_community['metadata']
     access_ = created_community['access']
-
     # Assert required fields
     assert 'title' in metadata_
     assert 'type' in metadata_
     assert 'visibility' in access_
-    
+
     # Assert enums
     assert metadata_['type'] in ['organization', 'event', 'topic', 'project',]
     assert access_['visibility'] in ['public', 'private', 'hidden']
-
+    
 
 def test_post_metadata_schema_validation(
     app, client_with_login, location, minimal_community_record, headers, 
@@ -214,6 +223,11 @@ def test_post_metadata_schema_validation(
     assert res.status_code == 201
     _assert_single_item_response(res)
 
+    # TODO: create another payload with all the metadata fields and post request
+    # res = client.get(f'/communities/{id_}', headers=headers)
+    # assert res.status_code == 200
+    # _assert_optional_items_metadata(res)
+    
 
 def test_create_community_with_existing_id(
     app, client_with_login, location, minimal_community_record, headers,
@@ -267,11 +281,10 @@ def test_create_community_with_deleted_id(
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(minimal_community_record))
-    assert res.status_code == 400
-    assert res.json['message'] == f'Community {id_} already exists'
+    assert res.status_code == 201
     
 
-def test_self_link(
+def test_self_links(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ): 
@@ -286,12 +299,88 @@ def test_self_link(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
+    # assert '/'.join(created_community['links']['self'].split('/')[-2:]) == f'communities/{id_}'
+    assert created_community['links']['self'] == f'https://127.0.0.1:5000/api/communities/{id_}'
+    assert created_community['links']['self_html'] == f'https://127.0.0.1:5000/ui/communities/{id_}'
 
-    assert '/'.join(created_community['links']['self'].split('/')[-2:]) == f'communities/{id_}'
-    
 
-@pytest.mark.skip()
-def test_get_response(app, client_with_login, minimal_community_record, headers,
+def test_get_list_response(
+    app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
-    pass
+    """Test get response schema"""
+    client = client_with_login
+    # Create a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record))
+    assert res.status_code == 201
+
+    created_community = res.json
+    id_ = created_community["id"]
+
+    # Search for any commmunity
+    res = client.get(
+        f'/communities', query_string={'q': f''}, headers=headers)
+    assert res.status_code == 200
+    _assert_single_item_search(res)
+
+    #import ipdb; ipdb.set_trace()
+    assert res.json['hits']['total'] == 1
+    assert res.json['hits']['hits'][0]['metadata'] == \
+         created_community['metadata']
+    
+    # Create another community
+    data = copy.deepcopy(minimal_community_record)
+    data['id'] = "comm_id2"
+    data['metadata']['title'] = 'new title'
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(data))
+    assert res.status_code == 201
+    
+    id2_ = res.json["id"]
+
+    # Search filter for the second commmunity
+    res = client.get(
+        f'/communities', query_string={'q':'new'}, headers=headers)
+    assert res.status_code == 200
+    _assert_single_item_search(res)
+    assert res.json['hits']['total'] == 1
+    assert res.json['hits']['hits'][0]['id'] == id2_
+
+    # Sort by the oldest record, default is newest
+    # TODO: What other keywords does 'sort' support?
+    res = client.get(
+    f'/communities', query_string={'q':'', 'sort':'oldest'}, headers=headers)
+    assert res.status_code == 200
+    assert res.json['hits']['hits'][0]['id'] == id_
+    
+    # Test for page and size
+    res = client.get(
+    f'/communities', query_string={'q':'', 'size':'5', 'page':'2'}, headers=headers)
+    assert res.status_code == 200
+    assert res.json['hits']['total'] == 2
+
+
+def test_get_response(
+    app, client_with_login, minimal_community_record, headers,
+    es_clear
+):
+    """Test get response schema"""
+    client = client_with_login
+    # Create a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record))
+    assert res.status_code == 201
+    id_ = res.json["id"]
+
+    import ipdb; ipdb.set_trace()
+
+    # Read the community
+    res = client.get(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 200
+
+
+
