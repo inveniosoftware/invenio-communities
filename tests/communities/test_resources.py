@@ -61,9 +61,8 @@ def _assert_optional_items_metadata(response):
     metadata_fields = response.json['metadata'].keys()
     fields_to_check = [
         "title", "description", "type", "website", "alternate_identifiers", "funding",
-        "affiliations", "domains", "curation_policy", "page"
-    ]
-
+        "curation_policy", "page"
+    ] # domains, affiliations removed
     for field in fields_to_check:
         assert field in metadata_fields
 
@@ -183,53 +182,40 @@ def test_post_metadata_schema_validation(
     """Test the validity of community metadata shema"""
     client = client_with_login
 
-    # Assert field size constraints id
+    # Assert field size constraints 
     data = copy.deepcopy(minimal_community_record)
     data["id"] = "".join([str(i) for i in range(101)]),
-  
+    data['metadata']['title'] = "".join([str(i) for i in range(251)])
+    data['metadata']['description'] = "".join([str(i) for i in range(1001)])
+    
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(data)        
     )
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred." 
+    assert res.json["errors"][0]['field'] == 'id' 
+    assert res.json["errors"][0]['messages'] == ['Not a valid string.']
+    assert res.json["errors"][1]['field'] == 'title' 
+    assert res.json["errors"][1]['messages'] == ['Title is too long.']
+    assert res.json["errors"][2]['field'] == 'description' 
+    assert res.json["errors"][2]['messages'] == ['Description is too long.']
     
-    # Assert field size constraints title
+    # Assert field size constraints 
     data['id'] = 'comm_id'
-    data['metadata']['title'] = "".join([str(i) for i in range(251)])
-    res = client.post(
-        '/communities', headers=headers,
-        data=json.dumps(data)        
-    )
-    assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred."
+    data['metadata']['title'] = 'title'
+    data['metadata']['description'] = "new community"
 
-    # Assert field size constraints description
-    data['metadata']['title'] = 'Title'
-    data['metadata']['description'] = "".join([str(i) for i in range(1001)])
-    res = client.post(
-        '/communities', headers=headers,
-        data=json.dumps(data)        
-    )
-    assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred."
-    
     # Create community
-    data['metadata']['description'] = "New community"
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(data)        
     )
     assert res.status_code == 201
     _assert_single_item_response(res)
-
-    # TODO: create another payload with all the metadata fields and post request
-    # res = client.get(f'/communities/{id_}', headers=headers)
-    # assert res.status_code == 200
-    # _assert_optional_items_metadata(res)
     
 
-def test_create_community_with_existing_id(
+def test_post_community_with_existing_id(
     app, client_with_login, location, minimal_community_record, headers,
     es_clear
 ):
@@ -256,7 +242,7 @@ def test_create_community_with_existing_id(
     assert res.json['message'] == f'Community {id_} already exists'
 
 
-def test_create_community_with_deleted_id(
+def test_post_community_with_deleted_id(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
@@ -304,11 +290,11 @@ def test_self_links(
     assert created_community['links']['self_html'] == f'https://127.0.0.1:5000/ui/communities/{id_}'
 
 
-def test_get_list_response(
+def test_simple_search_response(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
-    """Test get response schema"""
+    """Test get/list and search functionality"""
     client = client_with_login
     # Create a community
     res = client.post(
@@ -363,24 +349,120 @@ def test_get_list_response(
     assert res.json['hits']['total'] == 2
 
 
-def test_get_response(
+def test_simple_get_response(
+    app, client_with_login, headers, es_clear
+):
+    """Test get response"""
+    client = client_with_login
+
+    big_community_record = \
+    {
+    "access": {
+        "visibility": "public",
+        "member_policy": "open",
+        "record_policy": "open",
+    },
+    "id": "my_community_id",
+    "metadata": {
+        "title": "My Community",
+        "description": "This is an example Community.",
+        "type": "event",
+        "alternate_identifiers": [{"scheme": "ror", "identifier": "03yrm5c26"}],
+        "curation_policy": "This is the kind of records we accept.",
+        "page": "Information for my community.",
+        "website": "https://inveniosoftware.org/", 
+        "funding": ["OpenAIRE"],   
+    }
+    }
+
+    # Create a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(big_community_record))
+        
+    assert res.status_code == 201
+    id_ = res.json["id"]
+
+    # Read the community
+    res = client.get(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 200
+    _assert_single_item_response(res)
+    _assert_optional_items_metadata(res)
+
+    # Read a non-existed community
+    res = client.get(f'/communities/{id_[:-1]}', headers=headers)
+    assert res.status_code == 404
+    assert res.message == 'The persistent identifier does not exist.'
+
+
+def test_simple_put_response(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
-    """Test get response schema"""
+    """Test put response"""
     client = client_with_login
     # Create a community
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(minimal_community_record))
     assert res.status_code == 201
-    id_ = res.json["id"]
+    created_community = res.json
+    id_ = created_community['id']
 
-    import ipdb; ipdb.set_trace()
+    data = copy.deepcopy(created_community)
+    data["metadata"] = \
+    {
+        "title": "New Community",
+        "description": "This is an example Community.",
+        "type": "event",
+        "alternate_identifiers": [{"scheme": "ror", "identifier": "03yrm5c26"}],
+        "curation_policy": "This is the kind of records we accept.",
+        "page": "Information for my community.",
+        "website": "https://inveniosoftware.org/", 
+        "funding": ["OpenAIRE"],   
+    }
+    
+    res = client.put(
+        f'/communities/{id_}', headers=headers, data=json.dumps(data))
+    assert res.status_code == 200
+    assert res.json['id'] == id_
+    assert res.json['metadata'] == data["metadata"]
+    assert res.json["revision_id"] == int(data["revision_id"])+1
+
+    # Update non-existing community
+    res = client.put(
+        f'/communities/{id_[:-1]}', headers=headers, data=json.dumps(data))
+    assert res.status_code == 404
+    assert res.json['message'] == 'The persistent identifier does not exist.'
+
+
+
+def test_simple_delete_response(
+    app, client_with_login, minimal_community_record, headers,
+    es_clear
+):
+    """Test delete and request deleted community """
+    client = client_with_login
+    
+    #Creta a community
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(minimal_community_record))
+    assert res.status_code == 201
+    #_assert_single_item_response(res)
+    created_community = res.json
+    id_ = created_community['id']
+
+    # Delete community
+    res = client.delete(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 204
 
     # Read the community
     res = client.get(f'/communities/{id_}', headers=headers)
-    assert res.status_code == 200
+    assert res.status_code == 410
+    assert res.json['message']  == 'The record has been deleted.'
 
-
-
+    # Delete non-existing community
+    res = client.delete(f'/communities/{id_[:-1]}', headers=headers)
+    assert res.status_code == 404
+    assert res.json['message']  == 'The persistent identifier does not exist.'
