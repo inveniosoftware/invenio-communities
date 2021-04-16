@@ -62,6 +62,7 @@ class CommunityServiceConfig(RecordServiceConfig):
 
     links_item = {
         "self": RecordLink("{+api}/communities/{id}"),
+        "self_html": RecordLink("{+ui}/communities/{id}"),
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")
