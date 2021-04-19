@@ -49,20 +49,27 @@ def _assert_single_item_response(response):
     """Assert the fields present on a single item response."""
     response_fields = response.json.keys()
     fields_to_check = [
-        'created', 'id', 'links', 'metadata', 'updated', 'access'
+        'created', 'id', 'links', 'metadata', 'updated'
     ]
 
     for field in fields_to_check:
         assert field in response_fields
 
 
-def _assert_optional_items_metadata(response):
-    """Assert the fields present on the metadata """
+def _assert_optional_items_response(response):
+    """Assert the fields present on the metadata and access"""
     metadata_fields = response.json['metadata'].keys()
     fields_to_check = [
-        "title", "description", "type", "website", "alternate_identifiers", "funding",
-        "curation_policy", "page", "domains", "affiliations"
+        "description", "curation_policy", "page", "website", 
+        "funding", "affiliations"
     ]
+
+    access_fields = response.json['access'].keys()
+    fields_to_check = [
+       "member_policy", "record_policy"
+    ]
+    # TODO: Add when general vocabularies are ready
+    # domains
     for field in fields_to_check:
         assert field in metadata_fields
 
@@ -115,7 +122,6 @@ def test_simple_flow(
     # Update community
     data = copy.deepcopy(read_community)
     data["metadata"]["title"] = 'New title'
-
     res = client.put(
         f'/communities/{id_}', headers=headers, data=json.dumps(data))
     assert res.status_code == 200
@@ -159,7 +165,6 @@ def test_post_schema_validation(
     )
     assert res.status_code == 201
     _assert_single_item_response(res)
-
     created_community = res.json
     id_ = created_community['id'] 
 
@@ -182,12 +187,12 @@ def test_post_metadata_schema_validation(
     """Test the validity of community metadata schema"""
     client = client_with_login
 
-    # Assert field size constraints 
+    # Alter paypload for each field for test
     data = copy.deepcopy(minimal_community_record)
-    data["id"] = "".join([str(i) for i in range(101)]),
-    data['metadata']['title'] = "".join([str(i) for i in range(251)])
-    data['metadata']['description'] = "".join([str(i) for i in range(1001)])
     
+    # Assert field size constraints  (id, title, description, curation policy, page)
+    # ID max 100
+    data["id"] = "".join([str(i) for i in range(101)]),
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(data)        
@@ -196,26 +201,53 @@ def test_post_metadata_schema_validation(
     assert res.json["message"] == "A validation error occurred." 
     assert res.json["errors"][0]['field'] == 'id' 
     assert res.json["errors"][0]['messages'] == ['Not a valid string.']
-    assert res.json["errors"][1]['field'] == 'title' 
-    assert res.json["errors"][1]['messages'] == ['Title is too long.']
-    assert res.json["errors"][2]['field'] == 'description' 
-    assert res.json["errors"][2]['messages'] == ['Description is too long.']
-    
-    # Assert field size constraints 
-    data['id'] = 'comm_id'
-    data['metadata']['title'] = 'title'
-    data['metadata']['description'] = "new community"
 
-    # Create community
+    # Title max 250
+    data["id"] = "my_comm"
+    data['metadata']['title'] = "".join([str(i) for i in range(251)])
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(data)        
     )
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred."    
+    assert res.json["errors"][0]['field'] == 'title' 
+    assert res.json["errors"][0]['messages'] == ['Title is too long.']   
+
+    # Description max 2000
+    data['metadata']['title'] = "New Title"
+    data['metadata']['description'] = "".join([str(i) for i in range(2001)])
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred."    
+    assert res.json["errors"][0]['field'] == 'description' 
+    assert res.json["errors"][0]['messages'] == ['Description is too long.']
+
+    # Curation policy max 2000
+    data['metadata']['description'] = "basic description"
+    data['metadata']['curation_policy'] = "".join([str(i) for i in range(2001)])
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred."    
+    assert res.json["errors"][0]['field'] == 'curation_policy' 
+    assert res.json["errors"][0]['messages'] == ['Curation policy is too long.']
+
+    # Curation policy max 2000
+    data['metadata']['curation_policy'] = "no policy"
+    data['metadata']['page'] = "".join([str(i) for i in range(2001)])
+    assert res.status_code == 400
+    assert res.json["message"] == "A validation error occurred."    
+    assert res.json["errors"][0]['field'] == 'page' 
+    assert res.json["errors"][0]['messages'] == ['Page is too long.']
+
+
+    data['metadata']['page'] = "basic page"
+    res = client.post(
+        '/communities', headers=headers,
+        data=json.dumps(data))        
     assert res.status_code == 201
     _assert_single_item_response(res)
-    # TODO: create bigger json payload as text fixture including all
-    # metadata fields, not only required ones.
-    # _assert_optional_items_metadata(response)
+    # # TODO: create bigger json payload as text fixture including all
+    # # TODO: test for empty string
+    # # _assert_optional_items_metadata(response)
     
 
 def test_post_community_with_existing_id(
@@ -391,7 +423,7 @@ def test_simple_get_response(
     res = client.get(f'/communities/{id_}', headers=headers)
     assert res.status_code == 200
     _assert_single_item_response(res)
-    _assert_optional_items_metadata(res)
+    _assert_optional_items_response(res)
 
     # Read a non-existed community
     res = client.get(f'/communities/{id_[:-1]}', headers=headers)
