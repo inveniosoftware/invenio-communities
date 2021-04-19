@@ -16,9 +16,11 @@ class CommunityResourceConfig(RecordResourceConfig):
     """Communities resource configuration."""
 
     blueprint_name = "communities"
-    url_prefix = "/communities"
+    url_prefix = ""
 
     routes = {
+        "communities-prefix": "/communities",
+        "user-prefix": "/user/communities",
         "list": "",
         "item": "/<pid_value>"
     }

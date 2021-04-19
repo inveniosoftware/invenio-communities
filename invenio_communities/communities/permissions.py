@@ -97,11 +97,6 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_delete = [CommunityOwners()]
 
-    can_search = [
-        IfRestricted(
-            'visibility',
-            then_=[CommunityOwners()],
-            else_=[AnyUser()]),
-        ]
+    can_search = [AnyUser()]
 
-    can_search_user_communities = [CommunityOwners()]
+    can_search_user_communities = [AuthenticatedUser()]
