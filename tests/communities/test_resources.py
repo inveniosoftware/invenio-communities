@@ -61,14 +61,14 @@ def _assert_optional_items_metadata(response):
     metadata_fields = response.json['metadata'].keys()
     fields_to_check = [
         "title", "description", "type", "website", "alternate_identifiers", "funding",
-        "curation_policy", "page"
-    ] # domains, affiliations removed
+        "curation_policy", "page", "domains", "affiliations"
+    ]
     for field in fields_to_check:
         assert field in metadata_fields
 
 
 def _assert_single_item_search(response):
-    """Assert the fields present on the metadata """
+    """Assert the fields present on the search response """
     response_fields = response.json.keys()
     fields_to_check = [
         "aggregations", "hits", "links", "sortBy"
@@ -139,7 +139,7 @@ def test_simple_flow(
     res = client.delete(f'/communities/{id_}', headers=headers)
     assert res.status_code == 204
 
-    # Read again community should give back 404
+    # Read again community, should return 404
     res = client.get(f'/communities/{id_}', headers=headers)
     assert res.status_code == 410
     assert res.json["message"] == "The record has been deleted."
@@ -149,7 +149,7 @@ def test_post_schema_validation(
     app, client_with_login, location, minimal_community_record, headers, es_clear
 ):
 
-    """Test the validity of community shema"""
+    """Test the validity of community json schema"""
     client = client_with_login
 
     #Creta a community
@@ -170,7 +170,7 @@ def test_post_schema_validation(
     assert 'type' in metadata_
     assert 'visibility' in access_
 
-    # Assert enums
+    # Assert required enums
     assert metadata_['type'] in ['organization', 'event', 'topic', 'project',]
     assert access_['visibility'] in ['public', 'private', 'hidden']
     
@@ -179,7 +179,7 @@ def test_post_metadata_schema_validation(
     app, client_with_login, location, minimal_community_record, headers, 
     es_clear
 ):
-    """Test the validity of community metadata shema"""
+    """Test the validity of community metadata schema"""
     client = client_with_login
 
     # Assert field size constraints 
@@ -213,13 +213,16 @@ def test_post_metadata_schema_validation(
     )
     assert res.status_code == 201
     _assert_single_item_response(res)
+    # TODO: create bigger json payload as text fixture including all
+    # metadata fields, not only required ones.
+    # _assert_optional_items_metadata(response)
     
 
 def test_post_community_with_existing_id(
     app, client_with_login, location, minimal_community_record, headers,
     es_clear
 ):
-    """Test creation of two community with the same id"""
+    """Test create two communities with the same id"""
     client = client_with_login
     
     #Creta a community
@@ -239,14 +242,14 @@ def test_post_community_with_existing_id(
         data=json.dumps(minimal_community_record)        
     )
     assert res.status_code == 400
-    assert res.json['message'] == f'Community {id_} already exists'
+    assert res.json['message'] == f'Community {id_} already exists.'
 
 
 def test_post_community_with_deleted_id(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
-    """Test creation of a community with a deleted id"""
+    """Test create a community with a deleted id"""
     client = client_with_login
     
     #Creta a community
@@ -268,13 +271,14 @@ def test_post_community_with_deleted_id(
         '/communities', headers=headers,
         data=json.dumps(minimal_community_record))
     assert res.status_code == 201
+    _assert_single_item_response(res)
     
 
-def test_self_links(
+def test_post_self_links(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ): 
-    """Test self links generated"""
+    """Test self links generated after post"""
     client = client_with_login
     
     #Creta a community
@@ -311,7 +315,6 @@ def test_simple_search_response(
     assert res.status_code == 200
     _assert_single_item_search(res)
 
-    #import ipdb; ipdb.set_trace()
     assert res.json['hits']['total'] == 1
     assert res.json['hits']['hits'][0]['metadata'] == \
          created_community['metadata']
@@ -324,7 +327,7 @@ def test_simple_search_response(
         '/communities', headers=headers,
         data=json.dumps(data))
     assert res.status_code == 201
-    
+
     id2_ = res.json["id"]
 
     # Search filter for the second commmunity
@@ -335,8 +338,7 @@ def test_simple_search_response(
     assert res.json['hits']['total'] == 1
     assert res.json['hits']['hits'][0]['id'] == id2_
 
-    # Sort by the oldest record, default is newest
-    # TODO: What other keywords does 'sort' support?
+    # Sort results by oldest
     res = client.get(
     f'/communities', query_string={'q':'', 'sort':'oldest'}, headers=headers)
     assert res.status_code == 200
@@ -352,7 +354,7 @@ def test_simple_search_response(
 def test_simple_get_response(
     app, client_with_login, headers, es_clear
 ):
-    """Test get response"""
+    """Test get response json schema"""
     client = client_with_login
 
     big_community_record = \
@@ -371,7 +373,9 @@ def test_simple_get_response(
         "curation_policy": "This is the kind of records we accept.",
         "page": "Information for my community.",
         "website": "https://inveniosoftware.org/", 
-        "funding": ["OpenAIRE"],   
+        "funding": ["OpenAIRE"],
+        "domains" : ["biological_sciences"],
+        "affiliations" : ["CERN"]   
     }
     }
 
@@ -379,7 +383,7 @@ def test_simple_get_response(
     res = client.post(
         '/communities', headers=headers,
         data=json.dumps(big_community_record))
-        
+    
     assert res.status_code == 201
     id_ = res.json["id"]
 
@@ -399,7 +403,7 @@ def test_simple_put_response(
     app, client_with_login, minimal_community_record, headers,
     es_clear
 ):
-    """Test put response"""
+    """Test put response basic functionality"""
     client = client_with_login
     # Create a community
     res = client.post(
@@ -436,7 +440,6 @@ def test_simple_put_response(
     assert res.json['message'] == 'The persistent identifier does not exist.'
 
 
-
 def test_simple_delete_response(
     app, client_with_login, minimal_community_record, headers,
     es_clear
@@ -449,7 +452,7 @@ def test_simple_delete_response(
         '/communities', headers=headers,
         data=json.dumps(minimal_community_record))
     assert res.status_code == 201
-    #_assert_single_item_response(res)
+    _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
 
