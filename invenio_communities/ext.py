@@ -45,7 +45,7 @@ class InvenioCommunities(object):
     def init_services(self, app):
         """Initialize communities service."""
         # Services
-        self.service = CommunityService(
+        self.communities_service = CommunityService(
             CommunityServiceConfig)
 
     def init_resource(self, app):
@@ -53,5 +53,5 @@ class InvenioCommunities(object):
         # Resources
         self.communities_resource = CommunityResource(
             CommunityResourceConfig,
-            self.service,
+            self.communities_service,
         )

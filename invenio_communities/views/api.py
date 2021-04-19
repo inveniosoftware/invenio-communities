@@ -9,7 +9,13 @@
 """API views."""
 
 
-def create_api_blueprint(app):
+def create_communities_api_blueprint(app):
     """Create communities api blueprint."""
     ext = app.extensions["invenio-communities"]
     return ext.communities_resource.as_blueprint()
+
+
+def create_user_communities_api_blueprint(app):
+    """Create user communities api blueprint."""
+    ext = app.extensions["invenio-communities"]
+    return ext.user_communities_resource.as_blueprint()

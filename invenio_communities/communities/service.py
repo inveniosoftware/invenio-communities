@@ -10,10 +10,30 @@
 
 """Invenio Communities Service API."""
 
+from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import RecordService
 
 
 class CommunityService(RecordService):
     """community Service."""
 
-    pass
+    def search_user_communities(
+            self, identity, params=None, es_preference=None, **kwargs):
+        """Search for records matching the querystring."""
+        self.require_permission(identity, 'search')
+
+        # Prepare and execute the search
+        params = params or {}
+        search_result = self._search(
+            'search', identity, params, es_preference, **kwargs).execute()
+
+        return self.result_list(
+            self,
+            identity,
+            search_result,
+            params,
+            links_tpl=LinksTemplate(self.config.links_user_search, context={
+                "args": params
+            }),
+            links_item_tpl=self.links_item_tpl,
+        )
