@@ -3,19 +3,30 @@
     "_doc": {
       "numeric_detection": false,
       "properties": {
-        "$schema": {
-          "type": "keyword",
-          "index": false
-        },
-        "_created": {
+        "created": {
           "type": "date"
         },
-        "_updated": {
+        "updated": {
           "type": "date"
         },
         "id": {
           "type": "keyword"
         },
+
+        "access": {
+          "properties": {
+            "visibility": {
+              "type": "keyword"
+            },
+            "member_policy": {
+              "type": "keyword"
+            },
+            "record_policy": {
+              "type": "keyword"
+            }
+          }
+        },
+
         "metadata": {
           "properties": {
             "title": {
@@ -33,45 +44,58 @@
             "page": {
               "type": "text"
             },
-            "alternate_identifiers": {
-              "type": "object",
-              "properties": {
-                "identifier": {
-                  "type": "keyword"
+            "affiliations" : {
+              "properties" : {
+                "identifiers" : {
+                  "properties": {
+                    "identifier" : {
+                      "type" : "keyword"
+                    },
+                    "scheme" : {
+                      "type" : "keyword"
+                    }
+                  }
                 },
-                "scheme": {
-                  "type": "keyword"
+                "name" : {
+                  "type" : "text"
+                }
+              }
+            },
+            "funding": {
+              "properties": {
+                "funder": {
+                  "properties": {
+                    "name": {
+                      "type": "text"
+                    },
+                    "identifier": {
+                      "type": "keyword"
+                    },
+                    "scheme": {
+                      "type": "keyword"
+                    }
+                  }
+                },
+                "award": {
+                  "properties": {
+                    "title": {
+                      "type": "text"
+                    },
+                    "number": {
+                      "type": "keyword"
+                    },
+                    "identifier": {
+                      "type": "keyword"
+                    },
+                    "scheme": {
+                      "type": "keyword"
+                    }
+                  }
                 }
               }
             },
             "website": {
               "type": "keyword"
-            },
-            "domains": {
-              "type": "keyword"
-            },
-            "verified": {
-              "type": "boolean"
-            },
-            "visibility": {
-              "type": "keyword"
-            },
-            "member_policy": {
-              "type": "keyword"
-            },
-            "record_policy": {
-              "type": "keyword"
-            },
-            "archived": {
-              "type": "boolean"
-            },
-            "created_by": {
-              "type": "integer"
-            },
-            "_collections": {
-              "type": "object",
-              "dynamic": false,
-              "enabled": false
             }
           }
         }
