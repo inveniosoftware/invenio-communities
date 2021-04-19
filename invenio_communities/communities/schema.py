@@ -6,78 +6,26 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
-"""Record schema."""
+"""Community schema."""
 
+from flask_babelex import lazy_gettext as _
 from flask import current_app
-from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_resources.services.records.schema import BaseRecordSchema
-from marshmallow import Schema, ValidationError, fields, missing, validate
-from marshmallow_utils.fields import GenFunction, SanitizedHTML, \
-    SanitizedUnicode
-from werkzeug.local import LocalProxy
+from marshmallow import Schema, fields, missing, validate
+from marshmallow_utils.fields import SanitizedHTML, SanitizedUnicode
+from invenio_rdm_records.services.schemas.metadata import FundingSchema, AffiliationSchema
 
 
-def load_creator(_, context):
-    """Load the record creator."""
-    old_data = context.get('record')
-    if old_data:
-        return old_data.get('created_by', missing)
-    return context.get('user_id', missing)
+def _not_blank(**kwargs):
+    """Returns a non-blank validation rule."""
+    return validate.Length(error=_('Cannot be blank.'), min=1, **kwargs)
 
 
-def serialize_creator(record, context):
-    """Load the record creator."""
-    return record.get('created_by', missing)
+class CommunityAccessSchema(Schema):
 
-
-def valid_domains():
-    """Return valid community domains."""
-    return {d['value'] for d in current_app.config['COMMUNITIES_DOMAINS']}
-
-
-# def pid_from_context_or_rec(data_value, context, **kwargs):
-#     """Get PID from marshmallow context."""
-#     pid = (context or {}).get('pid')
-#     pid_value = getattr(pid, 'pid_value', None) or data_value
-#     if not pid_value:
-#         raise ValidationError('Missing data for required field.')
-#     else:
-#         if not pid:  # check that the ID is not already taken
-#             if PersistentIdentifier.query.filter_by(
-#                     pid_type='comid', pid_value=pid_value).one_or_none():
-#                 raise ValidationError(
-#                     'ID "{}" is already assigned to a community.'.format(
-#                         pid_value))
-#         return pid_value
-
-
-class CommunitySchemaMetadata(Schema):
-    """Community metadata schema."""
-
-    title = SanitizedUnicode(required=True)
-    description = SanitizedHTML()
-    curation_policy = SanitizedHTML()
-    page = SanitizedHTML()
-    type = fields.Str(required=True, validate=validate.OneOf([
-        'organization',
-        'event',
-        'topic',
-        'project',
-    ]))
-    alternate_identifiers = fields.List(fields.Raw())
-    website = fields.Url()
-    funding = fields.List(fields.String())
-    domains = fields.List(fields.Str(
-        # NOTE: We need a double LocalProxy, because `validate.OneOf` is not
-        # lazy, and tries to evaluate the choices immediately, thus causing an
-        # "outside app context" Flask error.
-        validate=LocalProxy(lambda: validate.OneOf(LocalProxy(valid_domains))))
-    )
-    verified = fields.Boolean()
     visibility = fields.Str(validate=validate.OneOf([
         'public',
         'private',
-        'hidden',
     ]))
     member_policy = fields.Str(validate=validate.OneOf([
         'open',
@@ -88,14 +36,40 @@ class CommunitySchemaMetadata(Schema):
         'closed',
         'restricted',
     ]))
-    archived = fields.Boolean()
-    created_by = GenFunction(
-        deserialize=load_creator,
-        serialize=serialize_creator
+
+
+class CommunityMetadataSchema(Schema):
+    """Community metadata schema."""
+
+    COMMUNITY_TYPES = [
+        'organization',
+        'event',
+        'topic',
+        'project',
+    ]
+
+    title = SanitizedUnicode(required=True, validate=_not_blank(max=250))
+    description = SanitizedHTML(validate=_not_blank(max=2000))
+
+    curation_policy = SanitizedHTML(validate=_not_blank(max=2000))
+    page = SanitizedHTML(validate=_not_blank(max=2000))
+
+    # TODO: Use general small vocabularies
+    type = SanitizedUnicode(
+        required=True,
+        validate=validate.OneOf(COMMUNITY_TYPES)
     )
+    website = fields.Url(validate=_not_blank())
+    funding = fields.List(fields.Nested(FundingSchema))
+    affiliations = fields.List(fields.Nested(AffiliationSchema))
+
+    # TODO: Add when general vocabularies are ready
+    # domains = fields.List(fields.Str())
 
 
 class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
-    metadata = fields.Nested(CommunitySchemaMetadata, required=True)
+    id = SanitizedUnicode(validate=_not_blank(max=100))
+    metadata = fields.Nested(CommunityMetadataSchema, required=True)
+    access = fields.Nested(CommunityAccessSchema, required=True)
