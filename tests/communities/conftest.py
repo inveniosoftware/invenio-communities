@@ -43,13 +43,14 @@ def minimal_community_record(community_owner):
     """Minimal community data as dict coming from the external world."""
     return {
         "id": "comm_id",
+        "access": {
+            "visibility":"public",
+            "member_policy": "open"
+        },
         "metadata": {
             "title": "Title",
             "type": "topic",
-        },
-        "access": {
-            "visibility": "public",
-        },
+        }
     }
 
 
