@@ -24,8 +24,7 @@
           "description": "Community visibility.",
           "enum": [
             "public",
-            "private",
-            "hidden"
+            "private"
           ]
         },
         "member_policy": {
