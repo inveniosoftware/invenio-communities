@@ -1,100 +1,25 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "id": "local://communities/community-v1.0.0.json",
   "additionalProperties": false,
-  "title": "Invenio Community v1.0.0",
+  "title": "Invenio Community Schema v1.0.0",
   "type": "object",
-  "definitions": {
-    "identifier": {
-      "description": "A generic identifier.",
-      "additionalProperties": true,
-      "type": "object",
-      "properties": {
-        "scheme": {
-          "type": "string",
-          "description": "Identifier scheme."
-        },
-        "identifier": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "scheme",
-        "identifier"
-      ]
-    }
-  },
   "properties": {
     "$schema": {
-      "description": "JSONSchema for the community.",
+      "description": "JSONSchema declaration.",
       "type": "string"
     },
     "id": {
       "description": "Community identifier.",
       "type": "string"
     },
-    "pid": {"$ref": "local://communities/definitions-v1.0.0.json#/internal-pid"},
-    "metadata": {
+    "pid": {"$ref": "local://records/definitions-v1.0.0.json#/internal-pid"},
+
+    "access": {
       "type": "object",
       "description": "Resource metadata.",
       "additionalProperties": false,
       "properties": {
-        "title": {
-          "description": "Community title.",
-          "type": "string"
-        },
-        "description": {
-          "description": "Community description.",
-          "type": "string"
-        },
-        "type": {
-          "description": "Community type.",
-          "enum": [
-            "organization",
-            "event",
-            "topic",
-            "project"
-          ]
-        },
-        "alternate_identifiers": {
-          "type": "array",
-          "description": "Alternate identifiers for the community",
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/definitions/identifier"
-          }
-        },
-        "curation_policy": {
-          "description": "Community curation policy.",
-          "type": "string"
-        },
-        "page": {
-          "description": "Community page.",
-          "type": "string"
-        },
-        "website": {
-          "description": "Community website.",
-          "type": "string"
-        },
-        "domains": {
-          "description": "Community domain.",
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "funding": {
-          "description": "Community funding.",
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "verified": {
-          "description": "Community verified.",
-          "type": "boolean"
-        },
         "visibility": {
           "description": "Community visibility.",
           "enum": [
@@ -117,36 +42,74 @@
             "closed",
             "restricted"
           ]
+        }
+      }
+    },
+
+    "metadata": {
+      "type": "object",
+      "description": "Resource metadata.",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "description": "Community title.",
+          "type": "string"
         },
-        "archived": {
-          "description": "Community archived.",
-          "type": "boolean"
+        "description": {
+          "description": "Community description.",
+          "type": "string"
         },
-        "created_by": {
-          "description": "Community creator.",
-          "type": "integer"
+        "type": {
+          "description": "Community type.",
+          "enum": [
+            "organization",
+            "event",
+            "topic",
+            "project"
+          ]
         },
-        "_collections": {
-          "type": "object",
-          "description": "Community collections.",
-          "additionalProperties": {
+        "curation_policy": {
+          "description": "Community curation policy.",
+          "type": "string"
+        },
+        "page": {
+          "description": "Community page.",
+          "type": "string"
+        },
+        "website": {
+          "description": "Community website.",
+          "type": "string"
+        },
+        "funding": {
+          "type": "array",
+          "items": {
             "type": "object",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "order": {
-                  "type": "integer"
+            "additionalProperties": false,
+            "properties": {
+              "funder": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {"type": "string"},
+                  "identifier": {"$ref": "local://records/definitions-v1.0.0.json#/identifier"},
+                  "scheme": {"$ref": "local://records/definitions-v1.0.0.json#/scheme"}
+                }
+              },
+              "award": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "title": {"type": "string"},
+                  "number": {"type": "string"},
+                  "identifier": {"$ref": "local://records/definitions-v1.0.0.json#/identifier"},
+                  "scheme": {"$ref": "local://records/definitions-v1.0.0.json#/scheme"}
                 }
               }
             }
           }
+        },
+        "affiliations": {
+          "$ref": "local://records/definitions-v1.0.0.json#/affiliations"
         }
       }
     }
