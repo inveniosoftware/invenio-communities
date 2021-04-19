@@ -16,6 +16,7 @@ from flask import url_for
 
 from invenio_communities.communities.records.api import Community
 
+import time
 # def assert_error_resp(res, expected_errors, expected_status_code=400):
 #     """Assert errors in a client response."""
 #     assert res.status_code == expected_status_code
@@ -71,7 +72,7 @@ def _assert_optional_items_response(response):
     # TODO: Add when general vocabularies are ready
     # domains
     for field in fields_to_check:
-        assert field in metadata_fields
+        assert field in access_fields
 
 
 def _assert_single_item_search(response):
@@ -211,7 +212,7 @@ def test_post_metadata_schema_validation(
     )
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'title' 
+    assert res.json["errors"][0]['field'] == 'metadata.title' 
     assert res.json["errors"][0]['messages'] == ['Title is too long.']   
 
     # Description max 2000
@@ -219,7 +220,7 @@ def test_post_metadata_schema_validation(
     data['metadata']['description'] = "".join([str(i) for i in range(2001)])
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'description' 
+    assert res.json["errors"][0]['field'] == 'metadata.description' 
     assert res.json["errors"][0]['messages'] == ['Description is too long.']
 
     # Curation policy max 2000
@@ -227,7 +228,7 @@ def test_post_metadata_schema_validation(
     data['metadata']['curation_policy'] = "".join([str(i) for i in range(2001)])
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'curation_policy' 
+    assert res.json["errors"][0]['field'] == 'metadata.curation_policy' 
     assert res.json["errors"][0]['messages'] == ['Curation policy is too long.']
 
     # Curation policy max 2000
@@ -235,7 +236,7 @@ def test_post_metadata_schema_validation(
     data['metadata']['page'] = "".join([str(i) for i in range(2001)])
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'page' 
+    assert res.json["errors"][0]['field'] == 'metadata.page' 
     assert res.json["errors"][0]['messages'] == ['Page is too long.']
 
 
@@ -340,6 +341,8 @@ def test_simple_search_response(
 
     created_community = res.json
     id_ = created_community["id"]
+
+    # time.sleep(2.4)
 
     # Search for any commmunity
     res = client.get(
