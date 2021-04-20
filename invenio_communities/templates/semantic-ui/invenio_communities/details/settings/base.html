@@ -7,20 +7,15 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
-{% extends "invenio_communities/base.html" %}
+{% extends "invenio_communities/details/base.html" %}
 
-{% set active_header_menu_item = 'settings' %}
 {%- block page_body %}
-{% include "invenio_communities/header.html" %}
+{{ super() }}
 <div class="ui container grid community-settings">
   {%- block settings_menu %}
     {%- set menu_items = {
-      'profile': ('Profile', url_for('invenio_communities.settings', pid_value=comid.pid_value)),
-      'collections': ('Collections', url_for('invenio_communities_collections.settings', pid_value=comid.pid_value)),
-      'security': ('Security', None),
-      'harvesting': ('Harvesting', None),
-      'webhooks': ('Webhooks', None),
-      'verification': ('Verification', None),
+      'profile': ('Profile', url_for('invenio_communities.communities_settings', pid_value=community.id)),
+      'Privileges': ('Privileges', None),
     } %}
     <div class="three wide column">
       <div class="ui fluid vertical menu">

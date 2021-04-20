@@ -8,7 +8,7 @@
 
 """Routes for community-related pages provided by Invenio-Communities."""
 
-from flask import render_template
+from flask import current_app, render_template
 from flask_login import login_required
 
 from .decorators import pass_community
@@ -17,10 +17,10 @@ from .decorators import pass_community
 # Views
 #
 
-def communities_index():
+def communities_frontpage():
     """Communities index page."""
     return render_template(
-        "invenio_communities/index.html",
+        "invenio_communities/frontpage.html",
     )
 
 def communities_search():
@@ -40,6 +40,19 @@ def communities_new():
 def communities_detail(community=None, pid_value=None):
     """Community detail page."""
     return render_template(
-        "invenio_communities/details.html",
+        "invenio_communities/details/index.html",
         community=community.to_dict(), # TODO: use serializer
+        active_menu_tab="search"
+    )
+
+@pass_community
+def communities_settings(community=None, pid_value=None):
+    """Community settings page."""
+    return render_template(
+        "invenio_communities/details/settings/index.html",
+        community=community.to_dict(), # TODO: use serializer,
+        form_config=dict(
+            domains=current_app.config["COMMUNITIES_DOMAINS"]
+        ),
+        active_menu_tab="settings"
     )

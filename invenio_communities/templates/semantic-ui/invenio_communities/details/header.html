@@ -54,6 +54,8 @@
   </div>
   {% set header_menu_items = {
     'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id)),
+    'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id)),
+
   } %}
 
   <div class="ui container secondary pointing menu">

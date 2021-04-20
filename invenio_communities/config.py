@@ -43,7 +43,7 @@ COMMUNITIES_DOMAINS = [
 ]
 
 # Overwite to change the default indexer for community records
-# COMMUNITIES_INDEXER_RECEIVER = None
+# communities_frontpageER_RECEIVER = None
 
 # Overwrite to change generated URL for request management
 # COMMUNITIES_INVITATION_LINK_URL = None
@@ -56,8 +56,9 @@ COMMUNITIES_DOMAINS = [
 
 
 COMMUNITIES_ROUTES = {
-    'index': '/communities',
+    'frontpage': '/communities',
     'search': '/communities/search',
     'new': '/communities/new',
-    'details': '/communities/<pid_value>'
+    'details': '/communities/<pid_value>',
+    'settings': '/communities/<pid_value>/settings'
 }
