@@ -42,23 +42,11 @@ COMMUNITIES_DOMAINS = [
     {'text': 'Studies in Human Society', 'value': 'studies_in_human_society'},
 ]
 
-# Overwite to change the default indexer for community records
-# communities_frontpageER_RECEIVER = None
-
-# Overwrite to change generated URL for request management
-# COMMUNITIES_INVITATION_LINK_URL = None
-
-# Overwrite to change available community member roles
-# COMMUNITY_MEMBER_ROLES = None
-
-# Overwrite to change available community member status options
-# COMMUNITY_MEMBER_STATUS = None
-
-
 COMMUNITIES_ROUTES = {
     'frontpage': '/communities',
     'search': '/communities/search',
     'new': '/communities/new',
     'details': '/communities/<pid_value>',
-    'settings': '/communities/<pid_value>/settings'
+    'settings': '/communities/<pid_value>/settings',
+    'settings_privileges': '/communities/<pid_value>/settings/privileges',
 }

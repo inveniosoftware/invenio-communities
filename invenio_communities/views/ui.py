@@ -12,7 +12,8 @@ from flask import Blueprint
 from flask_menu import current_menu
 
 from .communities import communities_detail, communities_frontpage, \
-    communities_new, communities_search, communities_settings
+    communities_new, communities_search, communities_settings, \
+    communities_settings_privileges
 
 
 #
@@ -49,9 +50,15 @@ def create_ui_blueprint(app):
         view_func=communities_detail,
     )
 
+    # Settings tab routes
     blueprint.add_url_rule(
         routes["settings"],
         view_func=communities_settings,
+    )
+
+    blueprint.add_url_rule(
+        routes["settings_privileges"],
+        view_func=communities_settings_privileges,
     )
 
     def register_menu():

@@ -10,32 +10,39 @@
 
 <div class="community-header">
   <div class="ui container relaxed grid">
+    {% if community.image %}
     <div class="three wide column community-logo">
-      <i class="users massive icon"></i>
+      <div class="ui small image">
+        <img src="/static/images/invenio-rdm.svg" alt="No image found"/>
+      </div>
     </div>
-    <div class="six wide column">
-      <h1 class="ui header">{{ community.metadata.title }}</h1>
+    <div class="seven wide column">
+    {% else %}
+    <div class="ten wide column">
+    {% endif %}
+
+      <h2 class="ui header small">{{ community.metadata.title }}</h2>
       {% if community.website %}
       <p></p><a href="{{community.website}}">{{ community.website }}</a></p>
       {% endif %}
-      <p>{{ community.metadata.description | safe }}</p>
+      <p>{{ community.metadata.description }}</p>
       {% for domain in community.metadata.domains %}
       <a href="/communities/search?f=domain:{{ domain }}" class="links-underline">{{ domain }}</a>
       {% endfor %}
     </div>
     {# TODO: Add proper statistics #}
-    <div class="two wide column">
-      <div class="ui tiny statistic">
-        <div class=" value">
+    <div class="two wide floated right column">
+      <div class="ui mini statistic">
+        <div class="value">
           5,550
         </div>
-        <div class=" label">
+        <div class="label">
           Views
         </div>
       </div>
     </div>
-    <div class="two wide column">
-      <div class="ui tiny statistic">
+    <div class="two wide floated right column">
+      <div class="ui mini statistic">
         <div class=" value">
           4,200
         </div>
@@ -44,23 +51,22 @@
         </div>
       </div>
     </div>
-    <div class="three wide column">
+    <!-- <div class="three wide column"> -->
       {# TODO: use "url_for" with appropriate querystring parameter #}
       <!-- <a href="/uploads/new/?community={{ community.id }}" class="ui positive button">
         <i class="plus icon"></i>
         New upload
       </a> -->
-    </div>
+    <!-- </div> -->
   </div>
   {% set header_menu_items = {
-    'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id)),
-    'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id)),
-
+    'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon'),
+    'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon'),
   } %}
 
-  <div class="ui container secondary pointing menu">
-    {% for header_menu_key, (header_menu_item, header_menu_link) in header_menu_items.items() %}
-      <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}">{{ header_menu_item }}</a>
+  <div class="ui container secondary pointing menu community-header">
+    {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon) in header_menu_items.items() %}
+      <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}"><i aria-hidden="true" class="{{menu_icon}}"></i>{{ header_menu_item }}</a>
     {% endfor %}
   </div>
 </div>
