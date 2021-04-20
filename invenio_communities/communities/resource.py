@@ -12,7 +12,8 @@
 from flask import g
 from flask_resources import resource_requestctx, response_handler, route
 from invenio_records_resources.resources.records.resource import \
-    RecordResource, request_search_args
+    RecordResource, request_search_args, request_headers, request_view_args, \
+    request_data
 from invenio_records_resources.resources.records.utils import es_preference
 
 
@@ -58,6 +59,11 @@ class CommunityResource(RecordResource):
                 p(routes["user-prefix"], routes["list"]),
                 self.search_user_communities
             ),
+            route(
+                "POST",
+                p(routes["communities-prefix"], routes["item"]) + '/rename',
+                self.rename
+            )
         ]
 
     @request_search_args
@@ -73,3 +79,17 @@ class CommunityResource(RecordResource):
             es_preference=es_preference()
         )
         return hits.to_dict(), 200
+
+    @request_headers
+    @request_view_args
+    @request_data
+    @response_handler()
+    def rename(self):
+        """Rename a community."""
+        item = self.service.rename(
+            resource_requestctx.view_args["pid_value"],
+            g.identity,
+            resource_requestctx.data,
+            revision_id=resource_requestctx.headers.get("if_match"),
+        )
+        return item.to_dict(), 200
