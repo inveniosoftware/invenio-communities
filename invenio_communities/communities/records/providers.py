@@ -11,10 +11,9 @@
 
 from __future__ import absolute_import
 
-from invenio_pidstore.providers.base import BaseProvider
-
 from invenio_pidstore.errors import PIDAlreadyExists, PIDDoesNotExistError
 from invenio_pidstore.models import PIDStatus
+from invenio_pidstore.providers.base import BaseProvider
 
 
 class CommunitiesIdProvider(BaseProvider):
