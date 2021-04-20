@@ -10,6 +10,7 @@ from invenio_access.permissions import system_process
 from invenio_rdm_records.services.components import AccessComponent
 from invenio_records_resources.services.records.components import \
     ServiceComponent
+from marshmallow.exceptions import ValidationError
 
 
 class PIDComponent(ServiceComponent):
@@ -20,11 +21,21 @@ class PIDComponent(ServiceComponent):
         provider = record.__class__.pid.field._provider.create(record=record)
         setattr(record, 'pid', provider.pid)
 
-    def update(self, identity, record=None, **kwargs):
-        """Update the Community PIDs value."""
-        if record.pid.pid_value != record['id']:
-            record.__class__.pid.field._provider.update(
-                record.pid, record['id'])
+    def update(self, identity, record=None, data=None, **kwargs):
+        """Rename the Community PIDs value."""
+        if 'id' in data and record.pid.pid_value != data['id']:
+            raise ValidationError(
+                'The ID should be modified through the renaming URL instead',
+                'id')
+
+    def rename(self, identity, record=None, data=None, **kwargs):
+        """Rename the Community PIDs value."""
+        if record.pid.pid_value == data['id']:
+            raise ValidationError(
+                'A new ID value is required for the renaming', 'id')
+
+        record.__class__.pid.field._provider.update(
+            record.pid, data['id'])
 
 
 class CommunityAccessComponent(AccessComponent):
