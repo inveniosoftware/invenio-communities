@@ -6,28 +6,27 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useRef } from "react";
 import axios from "axios";
-import { Button, Icon, Modal } from "semantic-ui-react";
+import { Button, Form, Modal, Icon } from "semantic-ui-react";
 
-export const DeleteCommunityButton = (props) => {
+export const RenameCommunityButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const formInputRef = React.useRef(null);
 
   const handleOpen = () => setModalOpen(true);
 
   const handleClose = () => setModalOpen(false);
 
-  const handleDelete = async () => {
-    const resp = await axios.delete(
+  const handleRename = async () => {
+    const resp = await axios.post(
       `/api/communities/${props.community.id}`,
-      {},
+      { id: formInputRef.current.value },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
     handleClose();
-    window.location.href = `/communities`;
   };
 
   return (
@@ -41,19 +40,25 @@ export const DeleteCommunityButton = (props) => {
         labelPosition="left"
         type="button"
       >
-        <Icon name="trash"></Icon>Delete community
+        <Icon name="pencil"></Icon>Rename community
       </Button>
 
       <Modal open={modalOpen} onClose={handleClose} size="tiny">
         <Modal.Content>
-          <h3>Are you sure you want to delete this community?</h3>
+          <Form>
+            <Form.Input
+              label="Enter the new name of the community"
+              fluid
+              input={{ ref: formInputRef }}
+            />
+          </Form>
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={handleClose} floated="left">
             Cancel
           </Button>
-          <Button color="red" onClick={handleDelete}>
-            Delete
+          <Button color="red" onClick={handleRename}>
+            Rename
           </Button>
         </Modal.Actions>
       </Modal>

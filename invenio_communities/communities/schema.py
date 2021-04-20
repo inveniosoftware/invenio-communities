@@ -54,7 +54,7 @@ class CommunityMetadataSchema(Schema):
     ]
 
     title = SanitizedUnicode(required=True, validate=_not_blank(max=250))
-    description = SanitizedHTML(validate=_not_blank(max=2000))
+    description = SanitizedUnicode(validate=_not_blank(max=2000))
 
     curation_policy = SanitizedHTML(validate=_not_blank(max=2000))
     page = SanitizedHTML(validate=_not_blank(max=2000))

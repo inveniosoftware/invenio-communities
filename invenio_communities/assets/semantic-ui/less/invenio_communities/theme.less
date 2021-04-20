@@ -3,6 +3,12 @@
   margin-bottom: 20px;
   margin-top: -20px;
   padding-top: 20px;
+
+  &.ui.menu.secondary {
+    .item.active {
+      border-color: #fb8273;
+    }
+  }
 }
 
 .underline {
@@ -15,7 +21,7 @@
 
 .community-logo {
   max-width: 100%;
-  max-height: 200px;
+  max-height: 100px;
 }
 
 .community-logo-form {
@@ -38,8 +44,27 @@
     pointer-events: None;
   }
 
-  .danger-zone {
-    margin-top: 20px;
+  .header.communities-picture {
+    margin-top: -1px;
   }
 
+  .ui.negative.message.danger-zone {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: transparent;
+    color: inherit;
+
+    .header {
+      color: inherit;
+    }
+
+    .column.margin-top-25 {
+      margin-top: 25px;
+    };
+
+  }
+
+  .divider.no-margin {
+    margin: 0px;
+  }
 }

@@ -32,6 +32,8 @@ communities = WebpackThemeBundle(
                     './less/invenio_communities/theme.less',
                 'invenio-communities-new':
                     './js/invenio_communities/new.js',
+                'invenio-communities-privileges':
+                    './js/invenio_communities/settings/privileges.js',
                 'invenio-communities-profile':
                     './js/invenio_communities/settings/profile/index.js',
                 # 'invenio-communities-members':

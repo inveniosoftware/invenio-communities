@@ -15,7 +15,7 @@
   {%- block settings_menu %}
     {%- set menu_items = {
       'profile': ('Profile', url_for('invenio_communities.communities_settings', pid_value=community.id)),
-      'Privileges': ('Privileges', None),
+      'privileges': ('Privileges', url_for('invenio_communities.communities_settings_privileges', pid_value=community.id)),
     } %}
     <div class="three wide column">
       <div class="ui fluid vertical menu">
@@ -26,13 +26,6 @@
     </div>
   {%- endblock settings_menu %}
   {%- block settings_body %}
-    <div class="thirteen wide column">
-      {%- set form_config = {"is_new": False, "domains": config.COMMUNITIES_DOMAINS, "community": community} %}
-      <div
-        id="app"
-        data-form-config='{{ form_config | tojson }}'>
-      </div>
-    </div>
   {%- endblock settings_body %}
 </div>
 {%- endblock page_body %}

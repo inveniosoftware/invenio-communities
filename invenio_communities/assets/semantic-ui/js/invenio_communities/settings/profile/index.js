@@ -1,10 +1,11 @@
 /*
  * This file is part of Invenio.
- * Copyright (C) 2017-2020 CERN.
+ * Copyright (C) 2021 CERN.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
+
 import React, { Component, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Formik } from "formik";
@@ -28,6 +29,7 @@ import _pickBy from "lodash/pickBy";
 import _pick from "lodash/pick";
 
 import { DeleteCommunityButton } from "./DeleteCommunityButton";
+import { RenameCommunityButton } from "./RenameCommunityButton";
 
 import {
   Divider,
@@ -39,11 +41,11 @@ import {
   Form,
 } from "semantic-ui-react";
 import {
-  SelectField,
-  TextField,
   FieldLabel,
   RemoteSelectField,
   RichInputField,
+  SelectField,
+  TextField,
 } from "react-invenio-forms";
 
 // TODO: remove when type becomes a vocabulary
@@ -112,7 +114,7 @@ const removeEmptyValues = (obj) => {
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
 
-class CommunityCreateForm extends Component {
+class CommunityProfileForm extends Component {
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
       id: "",
@@ -125,6 +127,7 @@ class CommunityCreateForm extends Component {
         website: "",
         affiliations: [],
       },
+      // TODO: should this come from the backend?
       access: {
         visibility: "public",
         member_policy: "open",
@@ -199,7 +202,6 @@ class CommunityCreateForm extends Component {
               }
             );
             setSubmitting(false);
-            window.location.href = `/communities/${response.data.id}`;
           } catch (error) {
             // TODO: handle nested fields
             //   if (error.response.data.errors) {
@@ -217,13 +219,15 @@ class CommunityCreateForm extends Component {
         {({ isSubmitting, isValid, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">
             <Grid>
-              <Grid.Column width={16}>
-                <Header as="h2">Community Profile</Header>
-                <Divider />
-              </Grid.Column>
-
               <Grid.Row>
-                <Grid.Column width={10}>
+                <Grid.Column width={16}>
+                  <Header as="h2">{community.id}</Header>
+                  <Divider className="no-margin" />
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className="no-padding-tb">
+                <Grid.Column width={9}>
                   <TextField
                     fluid
                     fieldPath="metadata.title"
@@ -231,15 +235,9 @@ class CommunityCreateForm extends Component {
                       <FieldLabel
                         htmlFor="metadata.title"
                         icon={"book"}
-                        label="Display name"
+                        label="Community name"
                       />
                     }
-                  />
-                  <TextField
-                    label="Identifier"
-                    fieldPath="id"
-                    fluid
-                    className="communities-identifier"
                   />
                   <SelectField
                     search
@@ -254,11 +252,17 @@ class CommunityCreateForm extends Component {
                     options={COMMUNITY_TYPES}
                   />
                   <TextField
-                    label="Website url"
                     fieldPath="metadata.website"
+                    label={
+                      <FieldLabel
+                        htmlFor="metadata.website"
+                        icon="chain"
+                        label="Website"
+                      />
+                    }
                     fluid
                   />
-                  <RichInputField
+                  <TextField
                     fieldPath="metadata.description"
                     label={
                       <FieldLabel
@@ -267,8 +271,6 @@ class CommunityCreateForm extends Component {
                         label="Description"
                       />
                     }
-                    editorConfig={CKEditorConfig}
-                    fluid
                     optimized
                   />
                   <RichInputField
@@ -325,7 +327,7 @@ class CommunityCreateForm extends Component {
                     disabled={!isValid || isSubmitting}
                     loading={isSubmitting}
                     labelPosition="left"
-                    positive
+                    primary
                     type="submit"
                     icon
                   >
@@ -333,11 +335,13 @@ class CommunityCreateForm extends Component {
                     Save
                   </Button>
                 </Grid.Column>
-                <Grid.Column width={6}>
-                  <Grid relaxed>
-                    <Grid.Column floated="right" width={10} textAlign="left">
+                <Grid.Column width={7}>
+                  <Grid>
+                    <Grid.Column floated="right" width={10}>
                       <Grid.Row>
-                        <Header>Profile picture</Header>
+                        <Header className="communities-picture">
+                          Profile picture
+                        </Header>
                       </Grid.Row>
                       <Grid.Row>
                         {this.props.community.files ? (
@@ -347,22 +351,40 @@ class CommunityCreateForm extends Component {
                         )}
                       </Grid.Row>
                       <Grid.Row>
-                        <Button primary>Upload new image</Button>
+                        <Button icon labelPosition="left">
+                          <Icon name="upload"></Icon>
+                          Upload new picture
+                        </Button>
                       </Grid.Row>
                     </Grid.Column>
                   </Grid>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Column width={16} className="danger-zone">
-                <Header as="h2" color="red">
-                  Danger zone
-                </Header>
-                <Divider />
-              </Grid.Column>
-              <Grid.Row>
+              <Grid.Row className="ui message negative danger-zone">
+                <Grid.Column width={16}>
+                  <Header as="h2" color="red">
+                    Danger zone
+                  </Header>
+                  <Divider />
+                </Grid.Column>
+                <Grid.Column floated="left" width="12">
+                  <Header as="h4">Rename community</Header>
+                  <p>
+                    Here is an explanation of what will happen when you rename a
+                    community.
+                  </p>
+                </Grid.Column>
+                <Grid.Column floated="right" width="4">
+                  <RenameCommunityButton community={this.props.community} />
+                </Grid.Column>
+                {/* Empty column for margin */}
+                <Grid.Column width={16} className="margin-top-25"></Grid.Column>
                 <Grid.Column floated="left" width="12">
                   <Header as="h4">Delete community</Header>
-                  <p>Do you want to delete the community?</p>
+                  <p>
+                    Here is an explanation of what will happen when you delete a
+                    community.
+                  </p>
                 </Grid.Column>
                 <Grid.Column floated="right" width="4">
                   <DeleteCommunityButton community={this.props.community} />
@@ -381,7 +403,7 @@ const formConfig = JSON.parse(domContainer.dataset.formConfig);
 const community = JSON.parse(domContainer.dataset.community);
 
 ReactDOM.render(
-  <CommunityCreateForm formConfig={formConfig} community={community} />,
+  <CommunityProfileForm formConfig={formConfig} community={community} />,
   domContainer
 );
-export default CommunityCreateForm;
+export default CommunityProfileForm;

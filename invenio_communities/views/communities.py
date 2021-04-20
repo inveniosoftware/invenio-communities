@@ -47,12 +47,38 @@ def communities_detail(community=None, pid_value=None):
 
 @pass_community
 def communities_settings(community=None, pid_value=None):
-    """Community settings page."""
+    """Community settings/profile page."""
     return render_template(
-        "invenio_communities/details/settings/index.html",
+        "invenio_communities/details/settings/profile.html",
         community=community.to_dict(), # TODO: use serializer,
         form_config=dict(
-            domains=current_app.config["COMMUNITIES_DOMAINS"]
+            # domains=current_app.config["COMMUNITIES_DOMAINS"]
+        ),
+        active_menu_tab="settings"
+    )
+
+@pass_community
+def communities_settings_privileges(community=None, pid_value=None):
+    """Community settings/privileges page."""
+    return render_template(
+        "invenio_communities/details/settings/privileges.html",
+        community=community.to_dict(), # TODO: use serializer,
+        form_config=dict(
+            access=dict(
+                visibilty=[
+                    {'text': 'Public', 'value': 'public'},
+                    {'text': 'Private', 'value': 'private'}
+                ],
+                member_policy=[
+                    {'text': 'Open', 'value': 'open'},
+                    {'text': 'Closed', 'value': 'closed'}
+                ],
+                record_policy=[
+                    {'text': 'Open', 'value': 'open'},
+                    {'text': 'Closed', 'value': 'closed'},
+                    {'text': 'Restricted', 'value': 'restricted'}
+                ]
+            )
         ),
         active_menu_tab="settings"
     )
