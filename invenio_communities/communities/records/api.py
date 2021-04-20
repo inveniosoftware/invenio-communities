@@ -17,6 +17,7 @@ from invenio_records_resources.records.systemfields import IndexField, PIDField
 from invenio_communities.communities.records.models import CommunityMetadata
 
 from .providers import CommunitiesIdProvider
+from .systemfields.access import CommunityAccessField
 
 
 class Community(Record):
@@ -33,3 +34,5 @@ class Community(Record):
         "communities-communities-v1.0.0",
         search_alias="communities"
     )
+
+    access = CommunityAccessField()

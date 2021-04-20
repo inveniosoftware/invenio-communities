@@ -47,9 +47,10 @@ def minimal_community_record(community_owner):
         "metadata": {
             "title": "Title",
             "type": "topic",
-            "created_by": community_owner.id,
-            "member_policy": "open"
-        }
+        },
+        "access": {
+            "visibility": "public",
+        },
     }
 
 
