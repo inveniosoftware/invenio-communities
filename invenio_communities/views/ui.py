@@ -11,8 +11,8 @@
 from flask import Blueprint
 from flask_menu import current_menu
 
-from .communities import communities_detail, communities_index, \
-    communities_new, communities_search
+from .communities import communities_detail, communities_frontpage, \
+    communities_new, communities_search, communities_settings
 
 
 #
@@ -30,8 +30,8 @@ def create_ui_blueprint(app):
 
     # Communities URL rules
     blueprint.add_url_rule(
-        routes["index"],
-        view_func=communities_index,
+        routes["frontpage"],
+        view_func=communities_frontpage,
     )
 
     blueprint.add_url_rule(
@@ -49,11 +49,16 @@ def create_ui_blueprint(app):
         view_func=communities_detail,
     )
 
+    blueprint.add_url_rule(
+        routes["settings"],
+        view_func=communities_settings,
+    )
+
     def register_menu():
         """."""
         item = current_menu.submenu('main.communities')
         item.register(
-            'invenio_communities.communities_index',
+            'invenio_communities.communities_frontpage',
             'Communities',
             order=3,
         )

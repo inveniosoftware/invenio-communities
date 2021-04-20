@@ -8,8 +8,9 @@
 
 """Community access system field."""
 
-from invenio_rdm_records.records.systemfields.access import Owners, Owner, \
+from invenio_rdm_records.records.systemfields.access import Owner, Owners, \
     RecordAccessField
+
 
 class _Owner(Owner):
 

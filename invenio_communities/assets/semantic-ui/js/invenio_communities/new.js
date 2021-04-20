@@ -11,43 +11,8 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
-import { RichInputField } from "./forms";
-import { DeleteActionButton } from "./fields";
 import { Icon, Grid } from "semantic-ui-react";
-import { SelectField, TextField } from "react-invenio-forms";
-
-const renderIdentifiers = ({ arrayPath, indexPath, ...arrayHelpers }) => {
-  const path = `${arrayPath}.${indexPath}`; // alternate_identifiers.0
-  return (
-    <>
-      <TextField required fluid label="Scheme" fieldPath={`${path}.scheme`} />
-      <TextField
-        basic
-        fluid
-        fieldPath={`${path}.identifier`}
-        label="Identifier"
-      />
-      <DeleteActionButton deleteClick={() => arrayHelpers.remove(indexPath)} />
-    </>
-  );
-};
-
-const renderFunding = ({ arrayPath, indexPath, ...arrayHelpers }) => {
-  return (
-    <>
-      <TextField
-        label="Funding"
-        fieldPath={`${arrayPath}.${indexPath}`}
-        action={
-          <DeleteActionButton
-            icon="trash"
-            onClick={() => arrayHelpers.remove(indexPath)}
-          />
-        }
-      />
-    </>
-  );
-};
+import { SelectField, TextField, RichInputField } from "react-invenio-forms";
 
 const COMMUNITY_TYPES = [
   { value: "organization", text: "Institution/Organization" },
@@ -203,7 +168,7 @@ const CommunityCreateForm = () => {
             } else {
               var request_promise = axios.put(
                 `/api/communities/${community.id}`,
-                payload
+                { id, metadata }
               );
             }
             request_promise

@@ -29,9 +29,11 @@ communities = WebpackThemeBundle(
         'semantic-ui': dict(
             entry={
                 'invenio-communities-theme':
-                    './scss/invenio_communities/theme.scss',
+                    './less/invenio_communities/theme.less',
                 'invenio-communities-new':
                     './js/invenio_communities/new.js',
+                'invenio-communities-profile':
+                    './js/invenio_communities/settings/profile/index.js',
                 # 'invenio-communities-members':
                 #     './js/invenio_communities/members.js',
                 # 'invenio-communities-request':
@@ -44,8 +46,8 @@ communities = WebpackThemeBundle(
                 #     './js/invenio_communities/records_search.js',
                 # 'invenio-communities-records-curate':
                 #     './js/invenio_communities/curate.js',
-                'invenio-communities-collections-settings':
-                    './js/invenio_communities/collections/settings.js',
+                # 'invenio-communities-collections-settings':
+                #     './js/invenio_communities/collections/settings.js',
             },
             dependencies={
                 'semantic-ui-css': '^2.4.1',
