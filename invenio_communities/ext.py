@@ -8,13 +8,6 @@
 
 """Invenio communities extension."""
 
-from __future__ import absolute_import, print_function
-
-from flask_principal import identity_loaded
-from invenio_base.utils import obj_or_import_string
-from invenio_indexer.signals import before_record_index
-from werkzeug.utils import cached_property
-
 from invenio_communities.communities.resource_config import \
     CommunityResourceConfig
 from invenio_communities.communities.service_config import \
