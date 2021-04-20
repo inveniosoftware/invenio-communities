@@ -6,6 +6,8 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
+from invenio_access.permissions import system_process
+from invenio_rdm_records.services.components import AccessComponent
 from invenio_records_resources.services.records.components import \
     ServiceComponent
 
@@ -23,3 +25,32 @@ class PIDComponent(ServiceComponent):
         if record.pid.pid_value != record['id']:
             record.__class__.pid.field._provider.update(
                 record.pid, record['id'])
+
+
+class CommunityAccessComponent(AccessComponent):
+    """Service component for access integration."""
+
+    def _populate_access_and_validate(self, identity, data, record, **kwargs):
+        """Populate and validate the community's access field."""
+        if record is not None and "access" in data:
+            # populate the record's access field with the data already
+            # validated by marshmallow
+            record.update({"access": data.get("access")})
+            record.access.refresh_from_dict(record.get("access"))
+
+    def _init_owners(self, identity, record, **kwargs):
+        """If the record has no owners yet, add the current user."""
+        # if the given identity is that of a user, we add the
+        # corresponding user to the owners (record.access.owned_by)
+        is_sys_id = system_process in identity.provides
+        if not record.access.owned_by and not is_sys_id:
+            record.access.owned_by.add({"user": identity.id})
+
+    def create(self, identity, data=None, record=None, **kwargs):
+        """Add basic ownership fields to the record."""
+        self._populate_access_and_validate(identity, data, record, **kwargs)
+        self._init_owners(identity, record, **kwargs)
+
+    def update(self, identity, data=None, record=None, **kwargs):
+        """Update handler."""
+        self._populate_access_and_validate(identity, data, record, **kwargs)

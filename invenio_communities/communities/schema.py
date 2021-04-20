@@ -8,12 +8,15 @@
 
 """Community schema."""
 
-from flask_babelex import lazy_gettext as _
 from flask import current_app
+from flask_babelex import lazy_gettext as _
+from invenio_rdm_records.services.schemas.metadata import AffiliationSchema, \
+    FundingSchema
+from invenio_rdm_records.services.schemas.parent.access import Agent
 from invenio_records_resources.services.records.schema import BaseRecordSchema
 from marshmallow import Schema, fields, missing, validate
-from marshmallow_utils.fields import SanitizedHTML, SanitizedUnicode
-from invenio_rdm_records.services.schemas.metadata import FundingSchema, AffiliationSchema
+from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, \
+    SanitizedUnicode
 
 
 def _not_blank(**kwargs):
@@ -22,6 +25,8 @@ def _not_blank(**kwargs):
 
 
 class CommunityAccessSchema(Schema):
+
+    owned_by = fields.List(fields.Nested(Agent))
 
     visibility = fields.Str(validate=validate.OneOf([
         'public',
@@ -71,5 +76,5 @@ class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
     id = SanitizedUnicode(validate=_not_blank(max=100))
-    metadata = fields.Nested(CommunityMetadataSchema, required=True)
-    access = fields.Nested(CommunityAccessSchema, required=True)
+    metadata = NestedAttribute(CommunityMetadataSchema, required=True)
+    access = NestedAttribute(CommunityAccessSchema, required=True)

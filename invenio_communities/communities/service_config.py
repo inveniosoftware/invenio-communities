@@ -9,6 +9,8 @@
 
 """Invenio Communities Service API config."""
 
+from invenio_records_resources.services.records.components import \
+    DataComponent, MetadataComponent
 from invenio_records_resources.services.records.config import \
     RecordServiceConfig
 from invenio_records_resources.services.records.config import \
@@ -16,12 +18,10 @@ from invenio_records_resources.services.records.config import \
 from invenio_records_resources.services.records.links import RecordLink, \
     pagination_links
 from invenio_records_resources.services.records.search import terms_filter
-from invenio_records_resources.services.records.components import \
-    MetadataComponent, DataComponent
 
 from invenio_communities.communities.records.api import Community
 
-from .components import PIDComponent
+from .components import CommunityAccessComponent, PIDComponent
 from .permissions import CommunityPermissionPolicy
 from .schema import CommunitySchema
 
@@ -70,5 +70,6 @@ class CommunityServiceConfig(RecordServiceConfig):
     components = [
         DataComponent,
         MetadataComponent,
-        PIDComponent
+        PIDComponent,
+        CommunityAccessComponent,
     ]

@@ -20,6 +20,13 @@
       "description": "Resource metadata.",
       "additionalProperties": false,
       "properties": {
+        "owned_by": {
+          "description": "List of owners of the child records.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "local://records/definitions-v1.0.0.json#/agent"}
+        },
+
         "visibility": {
           "description": "Community visibility.",
           "enum": [
