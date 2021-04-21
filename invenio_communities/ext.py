@@ -8,8 +8,11 @@
 
 """Invenio communities extension."""
 
-from invenio_communities.communities import CommunityResource, \
-    CommunityResourceConfig, CommunityService, CommunityServiceConfig
+from invenio_records_resources.services import FileService
+
+from invenio_communities.communities import CommunityFileServiceConfig, \
+    CommunityResource, CommunityResourceConfig, CommunityService, \
+    CommunityServiceConfig
 
 from . import config
 
@@ -43,7 +46,9 @@ class InvenioCommunities(object):
         """Initialize communities service."""
         # Services
         self.service = CommunityService(
-            CommunityServiceConfig)
+            CommunityServiceConfig,
+            files_service=FileService(CommunityFileServiceConfig),
+        )
 
     def init_resource(self, app):
         """Initialize communities resources."""
