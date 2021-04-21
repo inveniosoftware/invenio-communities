@@ -66,6 +66,7 @@ install_requires = [
     "invenio-accounts>=1.4.3",
     "invenio-assets>=1.2.2",
     "invenio-base>=1.2.3",
+    "invenio-files-rest>=1.2.0",
     "invenio-i18n>=1.2.0",
     "invenio-indexer>=1.2.0",
     "invenio-jsonschemas>=1.1.2",
