@@ -61,7 +61,6 @@ class CommunityMetadataSchema(Schema):
 
     # TODO: Use general small vocabularies
     type = SanitizedUnicode(
-        required=True,
         validate=validate.OneOf(COMMUNITY_TYPES)
     )
     website = fields.Url(validate=_not_blank())

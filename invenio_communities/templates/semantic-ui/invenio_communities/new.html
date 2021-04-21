@@ -16,8 +16,7 @@
 
 
 {%- block page_body %}
-  {%- set form_config = {"is_new": True, "domains": config.COMMUNITIES_DOMAINS} %}
-  <div
+<div
     id="app"
     class="ui bottom attached active tab"
     data-form-config='{{ form_config | tojson }}'
