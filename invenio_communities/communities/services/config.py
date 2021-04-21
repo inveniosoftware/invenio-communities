@@ -9,6 +9,8 @@
 
 """Invenio Communities Service API config."""
 
+from invenio_records_resources.services import FileServiceConfig
+from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import \
     DataComponent, MetadataComponent
 from invenio_records_resources.services.records.config import \
@@ -63,6 +65,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     links_item = {
         "self": RecordLink("{+api}/communities/{id}"),
         "self_html": RecordLink("{+ui}/communities/{id}"),
+        "logo": RecordLink("{+api}/communities/{id}/logo"),
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")
@@ -74,3 +77,14 @@ class CommunityServiceConfig(RecordServiceConfig):
         PIDComponent,
         CommunityAccessComponent,
     ]
+
+
+class CommunityFileServiceConfig(FileServiceConfig):
+    """Configuration for community files."""
+
+    record_cls = Community
+    permission_policy_cls = CommunityPermissionPolicy
+
+    file_links_item = {
+        "self": FileLink("{+api}/communities/{id}/logo"),
+    }

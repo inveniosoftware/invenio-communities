@@ -20,6 +20,16 @@ from marshmallow.exceptions import ValidationError
 class CommunityService(RecordService):
     """community Service."""
 
+    def __init__(self, config, files_service=None):
+        """Constructor for CommunityService."""
+        super().__init__(config)
+        self._files = files_service
+
+    @property
+    def files(self):
+        """Community files service."""
+        return self._files
+
     def search_user_communities(
             self, identity, params=None, es_preference=None, **kwargs):
         """Search for records matching the querystring."""
@@ -78,4 +88,51 @@ class CommunityService(RecordService):
             identity,
             record,
             links_tpl=self.links_item_tpl,
+        )
+
+    def read_logo(self, id_, identity):
+        """Read the community's logo."""
+        record = self.record_cls.pid.resolve(id_)
+        self.require_permission(identity, 'read', record=record)
+        logo_file = record.files.get('logo')
+        if logo_file is None:
+            raise FileNotFoundError()
+        return self.files.file_result_item(
+            self.files,
+            identity,
+            logo_file,
+            record,
+            links_tpl=self.files.file_links_item_tpl(id_),
+        )
+
+    def update_logo(self, id_, identity, stream, content_length=None):
+        """Update the community's logo."""
+        record = self.record_cls.pid.resolve(id_)
+        self.require_permission(identity, 'update', record=record)
+
+        record.files['logo'] = stream
+        record.commit()
+        db.session.commit()
+        return self.files.file_result_item(
+            self.files,
+            identity,
+            record.files['logo'],
+            record,
+            links_tpl=self.files.file_links_item_tpl(id_),
+        )
+
+    def delete_logo(self, id_, identity):
+        """Delete the community's logo."""
+        record = self.record_cls.pid.resolve(id_)
+        deleted_file = record.files.pop('logo', None)
+        if deleted_file is None:
+            raise FileNotFoundError()
+        record.commit()
+        db.session.commit()
+        return self.files.file_result_item(
+            self.files,
+            identity,
+            deleted_file,
+            record,
+            links_tpl=self.files.file_links_item_tpl(id_),
         )
