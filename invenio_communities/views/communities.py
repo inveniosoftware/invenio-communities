@@ -34,6 +34,27 @@ def communities_new():
     """Communities creation page."""
     return render_template(
         "invenio_communities/new.html",
+        form_config=dict(
+            access=dict(
+                visibilty=[
+                    {
+                        'text': 'Public',
+                        'value': 'public',
+                        'icon': 'group',
+                        'helpText': 'Your community is publicly accessible ' \
+                                    'and shows up in search results.'
+                    },
+                    {
+                        'text': 'Restricted',
+                        'value': 'private',
+                        'icon': 'lock',
+                        'helpText': 'Your community is restricted to users ' \
+                                    'with access.'
+                    }
+                ]
+            ),
+            SITE_UI_URL=current_app.config["SITE_UI_URL"]
+        ),
     )
 
 @pass_community
