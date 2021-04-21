@@ -10,29 +10,47 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_records.systemfields import ConstantField
-from invenio_records_resources.records.api import Record
-from invenio_records_resources.records.systemfields import IndexField, PIDField
+from invenio_records.systemfields import ConstantField, ModelField
+from invenio_records_resources.records.api import FileRecord, Record
+from invenio_records_resources.records.systemfields import FilesField, \
+    IndexField, PIDField
+from werkzeug.local import LocalProxy
 
-from invenio_communities.communities.records.models import CommunityMetadata
-
+from . import models
 from .providers import CommunitiesIdProvider
 from .systemfields.access import CommunityAccessField
 
 
+class CommunityFile(FileRecord):
+    """Community file API."""
+
+    model_cls = models.CommunityFileMetadata
+    record_cls = LocalProxy(lambda: Community)
+
+
 class Community(Record):
-    """Define API for community creation and manipulation."""
+    """Community API."""
 
     pid = PIDField('id', provider=CommunitiesIdProvider, create=False)
     schema = ConstantField(
         '$schema', 'local://communities/communities-v1.0.0.json')
 
-    model_cls = CommunityMetadata
+    model_cls = models.CommunityMetadata
 
-    # TODO: communities-issue
     index = IndexField(
         "communities-communities-v1.0.0",
         search_alias="communities"
     )
 
     access = CommunityAccessField()
+
+    bucket_id = ModelField(dump=False)
+    bucket = ModelField(dump=False)
+    files = FilesField(
+        store=False,
+        file_cls=CommunityFile,
+        # Don't create
+        create=True,
+        # Don't delete, we'll manage in the service
+        delete=False,
+    )
