@@ -10,9 +10,12 @@
 
 import uuid
 import pytest
+import itertools
 from flask_security import login_user
 from invenio_accounts.testutils import create_test_user, login_user_via_session
 from invenio_app.factory import create_api
+from invenio_communities.communities.records.api import Community
+
 
 
 @pytest.fixture(scope='module')
@@ -39,17 +42,59 @@ def community_owner(db):
 
 
 @pytest.fixture(scope="function")
-def minimal_community_record(community_owner):
+def minimal_community(community_owner):
     """Minimal community data as dict coming from the external world."""
     return {
         "id": "comm_id",
         "access": {
             "visibility":"public",
-            "member_policy": "open"
         },
         "metadata": {
             "title": "Title",
-            "type": "topic",
+            "type": "topic"
+        }
+    }
+
+
+@pytest.fixture(scope="function")
+def full_community(community_owner):
+    """Full community data as dict coming from the external world."""
+    return  {
+        "access": {
+            "visibility": "public",
+            "member_policy": "open",
+            "record_policy": "open",
+        },
+        "id": "my_community_id",
+        "metadata": {
+            "title": "My Community",
+            "description": "This is an example Community.",
+            "type": "event",
+            "curation_policy": "This is the kind of records we accept.",
+            "page": "Information for my community.",
+            "website": "https://inveniosoftware.org/",
+            "funding":[{
+                "funder": {
+                    "name": "European Commission",
+                    "identifier": "00k4n6c32",
+                    "scheme": "ror"
+                },
+                "award": {
+                    "title": "OpenAIRE",
+                    "number": "246686",
+                    "identifier": ".../246686",
+                    "scheme": "openaire"
+                }
+            }],
+            "affiliations": [{
+                    "name": "CERN",
+                    "identifiers": [
+                        {
+                        "identifier": "01ggx4157",
+                        "scheme": "ror"
+                        }
+                    ]
+            }]
         }
     }
 
@@ -70,3 +115,20 @@ def client_with_login(client, users):
     login_user(user, remember=True)
     login_user_via_session(client, email=user.email)
     return client
+
+
+@pytest.fixture(scope="function")
+def create_many_records(app, client_with_login, minimal_community, headers):
+    """Multiple community created and posted to test search functionality."""
+    client = client_with_login
+    community_types = ['organization', 'event', 'topic', 'project']
+    N = 4
+    for (type_,ind) in itertools.product(community_types, list(range(N))):
+        minimal_community['id'] = f'comm_{type_}_{ind}'
+        minimal_community['metadata']['type'] = type_
+        client.post( '/communities', headers=headers, json=minimal_community) 
+
+    Community.index.refresh()
+
+    # Return ids of first and last created communities
+    return 'comm_organization_0', 'comm_project_3', N, N*len(community_types)
