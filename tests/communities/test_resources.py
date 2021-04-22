@@ -58,13 +58,13 @@ def _assert_optional_medatada_items_response(response):
     """Assert the fields present on the metadata"""
     metadata_fields = response.json['metadata'].keys()
     fields_to_check = [
-        "description", "curation_policy", "page", "website", 
+        "description", "curation_policy", "page", "website",
         "funding", "affiliations"
     ]
-    
+
     for field in fields_to_check:
         assert field in metadata_fields
-    
+
     # TODO: Add when general vocabularies are ready
     # domains
 
@@ -158,7 +158,7 @@ def test_simple_flow(
 
 
 def test_post_schema_validation(
-    app, client_with_login, location, minimal_community, headers, 
+    app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test the validity of community json schema"""
@@ -174,30 +174,30 @@ def test_post_schema_validation(
     assert minimal_community['metadata'] == created_community['metadata']
 
 
-    #id_ = created_community['id'] 
+    #id_ = created_community['id']
     metadata_ = created_community['metadata']
     access_ = created_community['access']
 
     # Assert required fields
     assert metadata_ == {"title": "Title", "type": "topic"}
-    assert minimal_community['access']['visibility'] == access_['visibility']                     
+    assert minimal_community['access']['visibility'] == access_['visibility']
 
     # Assert required enums
     data = copy.deepcopy(minimal_community)
     data['metadata']['type'] = 'foobar'
     res = client.post('/communities', headers=headers, json=data)
     assert res.status_code == 400
-    #assert res.json["message"] == "A validation error occurred." 
-    
+    #assert res.json["message"] == "A validation error occurred."
+
     data = copy.deepcopy(minimal_community)
     data['access']['visibility'] = 'foobar'
     res = client.post('/communities', headers=headers, json=data)
     assert res.status_code == 400
-    #assert res.json["message"] == "A validation error occurred." 
-    
+    #assert res.json["message"] == "A validation error occurred."
+
 
 def test_post_metadata_schema_validation(
-    app, client_with_login, location, minimal_community, headers, 
+    app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test the validity of community metadata schema"""
@@ -205,77 +205,77 @@ def test_post_metadata_schema_validation(
 
     # Alter paypload for each field for test
     data = copy.deepcopy(minimal_community)
-        
+
     # Assert field size constraints  (id, title, description, curation policy, page)
     # ID max 100
     data["id"] = "x" * 101
     res = client.post(
-        '/communities', headers=headers, json=data        
+        '/communities', headers=headers, json=data
     )
     assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred." 
-    assert res.json["errors"][0]['field'] == 'id' 
+    assert res.json["message"] == "A validation error occurred."
+    assert res.json["errors"][0]['field'] == 'id'
     #assert res.json["errors"][0]['messages'] == ['Not a valid string.']
 
     # Title max 250
     data["id"] = "my_comm"
     data['metadata']['title'] =  "x" * 251
     res = client.post(
-        '/communities', headers=headers, json=data        
+        '/communities', headers=headers, json=data
     )
     assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'metadata.title' 
-    #assert res.json["errors"][0]['messages'] == ['Title is too long.']   
+    assert res.json["message"] == "A validation error occurred."
+    assert res.json["errors"][0]['field'] == 'metadata.title'
+    #assert res.json["errors"][0]['messages'] == ['Title is too long.']
 
     # Description max 2000
     data['metadata']['title'] = "New Title"
     data['metadata']['description'] =  "x" * 2001
     res = client.post(
-        '/communities', headers=headers, json=data  
+        '/communities', headers=headers, json=data
     )
     assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'metadata.description' 
+    assert res.json["message"] == "A validation error occurred."
+    assert res.json["errors"][0]['field'] == 'metadata.description'
     #assert res.json["errors"][0]['messages'] == ['Description is too long.']
 
     # Curation policy max 2000
     data['metadata']['description'] = "basic description"
     data['metadata']['curation_policy'] =  "x" * 2001
     res = client.post(
-        '/communities', headers=headers, json=data        
+        '/communities', headers=headers, json=data
     )
     assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'metadata.curation_policy' 
+    assert res.json["message"] == "A validation error occurred."
+    assert res.json["errors"][0]['field'] == 'metadata.curation_policy'
     #assert res.json["errors"][0]['messages'] == ['Curation policy is too long.']
 
     # Curation policy max 2000
     data['metadata']['curation_policy'] = "no policy"
     data['metadata']['page'] = "".join([str(i) for i in range(2001)])
     res = client.post(
-        '/communities', headers=headers, json=data        
+        '/communities', headers=headers, json=data
     )
     assert res.status_code == 400
-    assert res.json["message"] == "A validation error occurred."    
-    assert res.json["errors"][0]['field'] == 'metadata.page' 
+    assert res.json["message"] == "A validation error occurred."
+    assert res.json["errors"][0]['field'] == 'metadata.page'
     #assert res.json["errors"][0]['messages'] == ['Page is too long.']
 
     data['metadata']['page'] = "basic page"
     res = client.post(
         '/communities', headers=headers, json=data
-    )        
+    )
     assert res.status_code == 201
     _assert_single_item_response(res)
 
-    
+
 def test_post_community_with_existing_id(
     app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test create two communities with the same id"""
     client = client_with_login
-    
+
     #Creta a community
     res = client.post(
         '/communities', headers=headers,
@@ -286,21 +286,21 @@ def test_post_community_with_existing_id(
     id_ = created_community['id']
 
     #Creta another community with the same id
-    minimal_community['id'] = id_  
+    minimal_community['id'] = id_
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
     assert res.status_code == 400
-    assert res.json['message'] == 'The persistent identifier is already registered.'    
+    assert res.json['message'] == 'The persistent identifier is already registered.'
 
 
 def test_post_community_with_deleted_id(
-    app, client_with_login, minimal_community, headers,
+    app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test create a community with a deleted id"""
     client = client_with_login
-    
+
     #Creta a community
     res = client.post(
         '/communities', headers=headers,
@@ -315,7 +315,7 @@ def test_post_community_with_deleted_id(
     assert res.status_code == 204
 
     #Creta another community with the same id
-    minimal_community['id'] = id_  
+    minimal_community['id'] = id_
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
@@ -324,12 +324,12 @@ def test_post_community_with_deleted_id(
 
 
 def test_post_self_links(
-    app, client_with_login, minimal_community, headers,
+    app, client_with_login, location, minimal_community, headers,
     es_clear
-): 
+):
     """Test self links generated after post"""
     client = client_with_login
-    
+
     #Creta a community
     res = client.post(
         '/communities', headers=headers,
@@ -344,13 +344,13 @@ def test_post_self_links(
 
 
 def test_simple_search_response(
-    app, client_with_login, minimal_community, create_many_records, headers,
+    app, client_with_login, location, minimal_community, create_many_records, headers,
     es_clear
 ):
     """Test get/list and search functionality"""
     client = client_with_login
 
-    # Create many communities, 
+    # Create many communities,
     id_oldest, id_newest, num_each, total = create_many_records
 
     # Search for any commmunity, default order newest
@@ -360,7 +360,7 @@ def test_simple_search_response(
     _assert_single_item_search(res)
     assert res.json['hits']['total'] == total
     assert res.json['hits']['hits'][0]['id'] == id_newest
-    assert res.json['hits']['hits'][0]['metadata'] == minimal_community['metadata']    
+    assert res.json['hits']['hits'][0]['metadata'] == minimal_community['metadata']
 
     # Search filter for the second commmunity
     res = client.get(
@@ -374,7 +374,7 @@ def test_simple_search_response(
     f'/communities', query_string={'q':'', 'sort':'oldest'}, headers=headers)
     assert res.status_code == 200
     assert res.json['hits']['hits'][0]['id'] == id_oldest
-    
+
     # Test for page and size
     res = client.get(
     f'/communities', query_string={'q':'', 'size':'5', 'page':'2'}, headers=headers)
@@ -384,11 +384,11 @@ def test_simple_search_response(
 
 
 def test_simple_get_response(
-    app, client_with_login, full_community, headers, 
+    app, client_with_login, location, full_community, headers,
     es_clear
 ):
     """Test get response json schema"""
-    client = client_with_login   
+    client = client_with_login
     # Create a community
     res = client.post(
         '/communities', headers=headers, json=full_community
@@ -399,7 +399,7 @@ def test_simple_get_response(
 
     created_community = res.json
 
-    # assert full_community['access'] == created_community['access'] 
+    # assert full_community['access'] == created_community['access']
     assert full_community['metadata'] == created_community['metadata']
     id_ = created_community["id"]
 
@@ -419,7 +419,7 @@ def test_simple_get_response(
 
 
 def test_simple_put_response(
-    app, client_with_login, minimal_community, headers,
+    app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test put response basic functionality"""
@@ -432,7 +432,7 @@ def test_simple_put_response(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
-    
+
     data = copy.deepcopy(minimal_community)
     data["metadata"] = \
     {
@@ -441,9 +441,9 @@ def test_simple_put_response(
         "type": "event",
         "curation_policy": "This is the kind of records we accept.",
         "page": "Information for my community.",
-        "website": "https://inveniosoftware.org/",  
+        "website": "https://inveniosoftware.org/",
     }
-    
+
     data["access"] = \
     {
         "visibility": "private",
@@ -475,7 +475,7 @@ def test_simple_put_response(
 
 
 def test_update_renamed_record(
-    app, client_with_login, minimal_community, headers,
+    app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test to update renamed entity"""
@@ -509,12 +509,12 @@ def test_update_renamed_record(
 
 
 def test_simple_delete_response(
-    app, client_with_login, minimal_community, headers,
+    app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
     """Test delete and request deleted community """
     client = client_with_login
-    
+
     #Creta a community
     res = client.post(
         '/communities', headers=headers,
