@@ -70,7 +70,6 @@ class CommunityServiceConfig(RecordServiceConfig):
 
     # Service components
     components = [
-        DataComponent,
         MetadataComponent,
         PIDComponent,
         CommunityAccessComponent,

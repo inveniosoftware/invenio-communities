@@ -16,8 +16,9 @@ from marshmallow.exceptions import ValidationError
 class PIDComponent(ServiceComponent):
     """Service component for Community PIDs."""
 
-    def create(self, identity, record=None, **kwargs):
+    def create(self, identity, record=None, data=None, **kwargs):
         """Create a Community PID from its metadata."""
+        record['id'] = data['id']
         provider = record.__class__.pid.field._provider.create(record=record)
         setattr(record, 'pid', provider.pid)
 
@@ -46,7 +47,8 @@ class CommunityAccessComponent(AccessComponent):
         if record is not None and "access" in data:
             # populate the record's access field with the data already
             # validated by marshmallow
-            record.update({"access": data.get("access")})
+            record.setdefault('access', {})
+            record['access'].update(data.get("access", {}))
             record.access.refresh_from_dict(record.get("access"))
 
     def _init_owners(self, identity, record, **kwargs):
