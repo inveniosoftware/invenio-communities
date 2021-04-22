@@ -397,8 +397,7 @@ def test_simple_get_response(
 
     created_community = res.json
 
-    assert full_community['access']['visibility'] == \
-                        created_community['access']['visibility'] 
+    # assert full_community['access'] == created_community['access'] 
     assert full_community['metadata'] == created_community['metadata']
     id_ = created_community["id"]
 
@@ -407,8 +406,8 @@ def test_simple_get_response(
     assert res.status_code == 200
     _assert_single_item_response(res)
     _assert_optional_medatada_items_response(res)
-    _assert_optional_access_items_response(res)
-    #assert full_community['access'] == res.json['access']
+    # _assert_optional_access_items_response(res)
+    # assert full_community['access'] == res.json['access']
     assert full_community['metadata'] == res.json['metadata']
 
     # Read a non-existed community
@@ -454,8 +453,6 @@ def test_simple_put_response(
     assert res.status_code == 200
     assert res.json['id'] == id_
     assert res.json['metadata'] == data["metadata"]
-    access_ = res.json['access'] 
-    del access_['owned_by']
     # assert access_== data["access"]
     assert res.json["revision_id"] == int(created_community["revision_id"])+1
 
@@ -507,8 +504,6 @@ def test_update_renamed_record(
     assert res.status_code == 200
     assert res.json['id'] == renamed_id_
     assert res.json['metadata'] == data["metadata"]
-    access_ = res.json['access'] 
-    del access_['owned_by']
     # assert access_== data["access"]
     assert res.json["revision_id"] == int(renamed_community["revision_id"])+1
 
