@@ -7,7 +7,7 @@ import {
   Grid,
   Label,
   List,
-  Modal,
+  Icon,
   Item,
   Button,
   Segment,
@@ -45,9 +45,20 @@ function ResultsGridItemTemplate({ result, index }) {
 
 function ResultsItemTemplate({ result, index }) {
   return (
-    <Item key={index} href={`/communities/${result.id}`}>
+    <Item key={index}>
       <Item.Content>
-        <Item.Header>{result.metadata.title}</Item.Header>
+        <Button
+          compact
+          size="small"
+          floated="right"
+          href={`/communities/${result.id}`}
+        >
+          <Icon name="eye" />
+          View
+        </Button>
+        <Item.Header href={`/communities/${result.id}`}>
+          {result.metadata.title}
+        </Item.Header>
         <Item.Description>
           <div
             dangerouslySetInnerHTML={{ __html: result.metadata.description }}

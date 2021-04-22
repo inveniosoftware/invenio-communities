@@ -10,46 +10,42 @@
 
 <div class="community-header">
   <div class="ui container relaxed grid">
-    {% if community.image %}
-    <div class="three wide column community-logo">
-      <div class="ui small image">
-        <img src="/static/images/invenio-rdm.svg" alt="No image found"/>
+    <div class="row">
+      {% if community.image %}
+      <div class="three wide column community-logo">
+        <div class="ui small image">
+          <img src="/static/images/invenio-rdm.svg" alt="No image found"/>
+        </div>
       </div>
-    </div>
-    <div class="seven wide column">
-    {% else %}
-    <div class="ten wide column">
-    {% endif %}
-
-      <h2 class="ui header small">{{ community.metadata.title }}</h2>
-      {% if community.website %}
-      <p></p><a href="{{community.website}}">{{ community.website }}</a></p>
+      <div class="nine wide column">
+      {% else %}
+      <div class="twelve wide column">
       {% endif %}
-      <p>{{ community.metadata.description }}</p>
-      {% for domain in community.metadata.domains %}
-      <a href="/communities/search?f=domain:{{ domain }}" class="links-underline">{{ domain }}</a>
-      {% endfor %}
-    </div>
-    {# TODO: Add proper statistics #}
-    <div class="two wide floated right column">
-      <div class="ui mini statistic">
-        <div class="value">
-          5,550
-        </div>
-        <div class="label">
-          Views
+
+        <h2 class="ui header">{{ community.metadata.title }}</h2>
+        <p>{{ community.metadata.description }}</p>
+      </div>
+      {# TODO: Add proper statistics #}
+      <!-- <div class="two wide floated right column">
+        <div class="ui mini statistic">
+          <div class="value">
+            5,550
+          </div>
+          <div class="label">
+            Views
+          </div>
         </div>
       </div>
-    </div>
-    <div class="two wide floated right column">
-      <div class="ui mini statistic">
-        <div class=" value">
-          4,200
+      <div class="two wide floated right column">
+        <div class="ui mini statistic">
+          <div class=" value">
+            4,200
+          </div>
+          <div class="label">
+            Downloads
+          </div>
         </div>
-        <div class="label">
-          Downloads
-        </div>
-      </div>
+      </div> -->
     </div>
     <!-- <div class="three wide column"> -->
       {# TODO: use "url_for" with appropriate querystring parameter #}
