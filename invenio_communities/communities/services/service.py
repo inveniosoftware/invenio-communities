@@ -11,8 +11,8 @@
 """Invenio Communities Service API."""
 
 from elasticsearch_dsl import Q
-from invenio_records_resources.services.base import LinksTemplate
 from invenio_db import db
+from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import RecordService
 from marshmallow.exceptions import ValidationError
 

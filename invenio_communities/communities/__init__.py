@@ -9,15 +9,10 @@
 
 """Community Service API."""
 
-from .links import CommunityLink, pagination_links
-from .resource import CommunityResource
-from .resource_config import CommunityResourceConfig
-from .service import CommunityService
-from .service_config import CommunityServiceConfig, SearchOptions
+from .resources import CommunityResource, CommunityResourceConfig
+from .services import CommunityService, CommunityServiceConfig, SearchOptions
 
 __all__ = (
-    'pagination_links',
-    'CommunityLink',
     'CommunityService',
     'CommunityServiceConfig',
     'CommunityResource',
