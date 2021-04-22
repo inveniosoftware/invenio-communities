@@ -10,8 +10,10 @@
 
 import copy
 import json
+
 import pytest
 from flask import url_for
+
 from invenio_communities.communities.records.api import Community
 
 # def assert_error_resp(res, expected_errors, expected_status_code=400):

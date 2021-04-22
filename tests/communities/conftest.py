@@ -8,14 +8,15 @@
 
 """Pytest configuration."""
 
-import uuid
-import pytest
 import itertools
+import uuid
+
+import pytest
 from flask_security import login_user
 from invenio_accounts.testutils import create_test_user, login_user_via_session
 from invenio_app.factory import create_api
-from invenio_communities.communities.records.api import Community
 
+from invenio_communities.communities.records.api import Community
 
 
 @pytest.fixture(scope='module')

@@ -11,7 +11,6 @@
 from flask_resources import HTTPJSONException, create_error_handler
 from invenio_records_resources.resources import RecordResourceConfig
 
-
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update({
     FileNotFoundError: create_error_handler(
