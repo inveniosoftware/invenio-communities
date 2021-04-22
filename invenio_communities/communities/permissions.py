@@ -100,3 +100,5 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_search = [AnyUser()]
 
     can_search_user_communities = [AuthenticatedUser()]
+
+    can_rename = [CommunityOwners()]
