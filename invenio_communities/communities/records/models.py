@@ -18,16 +18,6 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
     """Represent a community."""
 
     __tablename__ = 'communities_metadata'
-    __table_args__ = {'extend_existing': True}
-    __versioned__ = {'versioning': False}
 
-    is_deleted = db.Column(
-        db.Boolean(name="ck_communities_community_metadata_is_deleted"),
-        nullable=True,
-        default=False
-    )
-    """Was the community soft-deleted."""
-
-    def delete(self):
-        """Mark the community for deletion."""
-        self.is_deleted = True
+    # Enables SQLAlchemy-Continuum versioning
+    __versioned__ = {}
