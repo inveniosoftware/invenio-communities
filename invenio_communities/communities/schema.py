@@ -21,7 +21,8 @@ from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, \
 
 def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
-    return validate.Length(error=_('Cannot be blank.'), min=1, **kwargs)
+    max_ = kwargs.get('max','')
+    return validate.Length(error=_(f'Not empty string and less than {max_} characters allowed.'), min=1, **kwargs)
 
 
 class CommunityAccessSchema(Schema):
