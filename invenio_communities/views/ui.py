@@ -27,6 +27,7 @@ def create_ui_blueprint(app):
         "invenio_communities",
         __name__,
         template_folder="../templates",
+        static_folder='../static'
     )
 
     # Communities URL rules

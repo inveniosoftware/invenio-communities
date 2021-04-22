@@ -8,19 +8,38 @@
 
 {%- block javascript %}
     {{ super() }}
-  {{ webpack['invenio-communities-search.js'] }}
+  {{ webpack['invenio-communities-frontpage.js'] }}
 {%- endblock %}
 
 {%- block page_body %}
-<div class="community-header">
-  <div class="ui container two column centered relaxed grid">
-    <div class="row">
+<div class="community-header frontpage">
+  <div class="ui container centered grid">
+    <div class="centered one column row">
       <h1 class="ui header">
         Communities
       </h1>
-  </div>
+    </div>
+    <div class="row">
+      <div class="eight wide no-padding centered column">
+        <div class="ui relaxed grid">
+          <div class="three column row">
+            <div class="ten wide column">
+              <p>
+                Organize, curate and collaborate on records for your institution, project, topic or event.
+              </p>
+            </div>
+            <div class="right floated six wide column new-community-frontpage">
+              <a href="{{ config.COMMUNITIES_ROUTES['new'] }}" class="ui icon left labeled positive button" role="button">
+                <i class="icon plus"></i>
+                New community
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <div class="row">
-    <div class="ten wide column">
+    <div class="eight wide column no-padding">
       <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
         <div class="ui fluid action input">
           <input type="text" name="q" class="form-control" placeholder="{{ _("Type and press enter to search") }}">
@@ -31,5 +50,13 @@
   </div>
   <div class="ui divider hidden"></div>
 </div>
+</div>
+<div class="ui container">
+  {% if current_user.is_authenticated %}
+    <div class="ui header"><h2>My communities</h2></div>
+    <div id="user-communities"></div>
+  {% endif %}
+  <div class="ui header"><h2>Featured communities</h2></div>
+  <div id="featured-communities"></div>
 </div>
 {%- endblock page_body %}

@@ -1,13 +1,24 @@
 .community-header {
-  background-color: rgb(219, 219, 219);
+  background: #F8F8F9;
   margin-bottom: 20px;
   margin-top: -20px;
   padding-top: 20px;
 
   &.ui.menu.secondary {
+    margin-top: 0px;
+    padding-top: 0px;
     .item.active {
       border-color: #fb8273;
     }
+  }
+
+  &.frontpage {
+    // copied from SUI message class
+    box-shadow: 0px 0px 0px 1px rgba(34, 36, 38, 0.22) inset;
+  }
+
+  .new-community-frontpage {
+    margin-right: -4px;
   }
 }
 

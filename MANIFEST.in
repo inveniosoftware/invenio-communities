@@ -27,4 +27,5 @@ recursive-include invenio_communities *.js
 recursive-include invenio_communities *.po *.pot *.mo
 recursive-include invenio_communities *.py
 recursive-include invenio_communities *.less
+recursive-include invenio_communities *.png
 recursive-include tests *.py
