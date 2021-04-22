@@ -21,9 +21,9 @@ from invenio_records_resources.services.records.search import terms_filter
 
 from invenio_communities.communities.records.api import Community
 
+from ..schema import CommunitySchema
 from .components import CommunityAccessComponent, PIDComponent
 from .permissions import CommunityPermissionPolicy
-from .schema import CommunitySchema
 
 
 class SearchOptions(SearchOptionsBase):

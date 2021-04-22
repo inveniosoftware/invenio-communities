@@ -8,13 +8,10 @@
 
 """Invenio communities extension."""
 
-from invenio_communities.communities.resource_config import \
-    CommunityResourceConfig
-from invenio_communities.communities.service_config import \
-    CommunityServiceConfig
+from invenio_communities.communities import CommunityResource, \
+    CommunityResourceConfig, CommunityService, CommunityServiceConfig
 
 from . import config
-from .communities import CommunityResource, CommunityService
 
 
 class InvenioCommunities(object):
