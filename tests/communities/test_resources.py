@@ -185,9 +185,7 @@ def test_post_schema_validation(
     """Test the validity of community json schema"""
     client = client_with_login
     #Create a community
-    res = client.post(
-        '/communities', headers=headers,
-        json=minimal_community)
+    res = client.post('/communities', headers=headers, json=minimal_community)
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
@@ -209,7 +207,8 @@ def test_post_schema_validation(
 
 
 def test_post_metadata_schema_validation(
-    app, client_with_login, location, minimal_community, headers
+    app, client_with_login, location, minimal_community, headers,
+    es_clear
 ):
     """Test the validity of community metadata schema"""
     client = client_with_login
@@ -243,7 +242,8 @@ def test_post_metadata_schema_validation(
    
 
 def test_post_community_with_existing_id(
-    app, client_with_login, location, minimal_community, headers
+    app, client_with_login, location, minimal_community, headers,
+    es_clear
 ):
     """Test create two communities with the same id"""
     client = client_with_login
@@ -262,7 +262,8 @@ def test_post_community_with_existing_id(
 
 
 def test_post_community_with_deleted_id(
-    app, client_with_login, location, minimal_community, headers
+    app, client_with_login, location, minimal_community, headers,
+    es_clear
 ):
     """Test create a community with a deleted id"""
     client = client_with_login
@@ -285,7 +286,8 @@ def test_post_community_with_deleted_id(
 
 
 def test_post_self_links(
-    app, client_with_login, location, minimal_community, headers
+    app, client_with_login, location, minimal_community, headers,
+    es_clear
 ):
     """Test self links generated after post"""
     client = client_with_login
@@ -333,7 +335,6 @@ def test_simple_search_response(
     f'/communities', query_string={'q':'', 'sort':'oldest'}, headers=headers)
     assert res.status_code == 200
     assert res.json['hits']['hits'][0]['id'] == id_oldest
-
     # Test for page and size
     res = client.get(
     f'/communities', query_string={'q':'', 'size':'5', 'page':'2'}, headers=headers)
@@ -343,7 +344,8 @@ def test_simple_search_response(
 
 
 def test_simple_get_response(
-    app, client_with_login, location, full_community, headers
+    app, client_with_login, location, full_community, headers,
+    es_clear
 ):
     """Test get response json schema"""
     client = client_with_login
@@ -385,7 +387,6 @@ def test_simple_put_response(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
-
     data = copy.deepcopy(minimal_community)
     data["metadata"] = \
     {
