@@ -209,8 +209,7 @@ def test_post_schema_validation(
 
 
 def test_post_metadata_schema_validation(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    app, client_with_login, location, minimal_community, headers
 ):
     """Test the validity of community metadata schema"""
     client = client_with_login
@@ -244,8 +243,7 @@ def test_post_metadata_schema_validation(
    
 
 def test_post_community_with_existing_id(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    app, client_with_login, location, minimal_community, headers
 ):
     """Test create two communities with the same id"""
     client = client_with_login
@@ -264,8 +262,7 @@ def test_post_community_with_existing_id(
 
 
 def test_post_community_with_deleted_id(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    app, client_with_login, location, minimal_community, headers
 ):
     """Test create a community with a deleted id"""
     client = client_with_login
@@ -288,8 +285,7 @@ def test_post_community_with_deleted_id(
 
 
 def test_post_self_links(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    app, client_with_login, location, minimal_community, headers
 ):
     """Test self links generated after post"""
     client = client_with_login
@@ -346,8 +342,7 @@ def test_simple_search_response(
 
 
 def test_simple_get_response(
-    app, client_with_login, location, full_community, headers,
-    es_clear
+    app, client_with_login, location, full_community, headers
 ):
     """Test get response json schema"""
     client = client_with_login
