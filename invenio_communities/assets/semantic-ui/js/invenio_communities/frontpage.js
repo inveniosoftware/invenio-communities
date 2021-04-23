@@ -49,12 +49,7 @@ const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
 };
 
 const EmptyMessage = ({ message }) => {
-  return (
-    <Message>
-      <Message.Header>You don't own any community</Message.Header>
-      <Message.Content>{message}</Message.Content>
-    </Message>
-  );
+  return <Message icon="info" header={message} />;
 };
 
 class CommunitiesCardGroup extends Component {
@@ -99,7 +94,10 @@ class CommunitiesCardGroup extends Component {
         >
           <Item.Image src="/static/images/logo.png" />
           <Card.Content>
-            <Card.Header>{community.metadata.title}</Card.Header>
+            <Card.Header>
+              The 19th Cambridge Workshop on Cool Stars, Stellar Systems, and
+              the Sun
+            </Card.Header>
             <Card.Description>
               {community.metadata.description}
             </Card.Description>
@@ -132,7 +130,7 @@ if (userCommunitiesContainer) {
   ReactDOM.render(
     <CommunitiesCardGroup
       fetchDataUrl={`/api/user/communities?q=&sort=newest&page=1&size=5`}
-      emptyMessage="Create your own community."
+      emptyMessage="You are not a member of any community."
     />,
     userCommunitiesContainer
   );
