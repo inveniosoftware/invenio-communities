@@ -34,7 +34,7 @@ class _Owners(Owners):
 class CommunityAccess:
     """Access management per community."""
 
-    VISIBILITY_LEVELS = ('public', 'private')
+    VISIBILITY_LEVELS = ('public', 'restricted')
 
     owners_cls = _Owners
 

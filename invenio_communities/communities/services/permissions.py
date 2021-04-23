@@ -43,21 +43,6 @@ class IfRestricted(IfRestrictedBase):
             record.access, self.field, "private")
         return self.then_ if is_restricted == "private" else self.else_
 
-    def query_filter(self, **kwargs):
-        """Filters for current identity as super user."""
-        q_restricted = Q("match", **{f"access.{self.field}": "private"})
-        q_public = Q("match", **{f"access.{self.field}": "public"})
-        then_query = self.make_query(self.then_, **kwargs)
-        else_query = self.make_query(self.else_, **kwargs)
-        if then_query and else_query:
-            return (q_restricted & then_query) | (q_public & else_query)
-        elif then_query:
-            return (q_restricted & then_query) | q_public
-        elif else_query:
-            return q_public & else_query
-        else:
-            return q_public
-
 
 class CommunityOwners(Generator):
     """Allows community owners."""
