@@ -72,9 +72,6 @@ def communities_settings(community=None, pid_value=None):
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(), # TODO: use serializer,
-        form_config=dict(
-            # domains=current_app.config["COMMUNITIES_DOMAINS"]
-        ),
         active_menu_tab="settings"
     )
 
