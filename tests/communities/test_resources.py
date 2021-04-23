@@ -557,7 +557,6 @@ def test_logo_flow(
 
     # Get non-existent logo
     res = client.get(f'/communities/{id_}/logo')
-    # TODO: check
     assert res.status_code == 404
     assert res.json['message'] == 'No logo exists for this community.'
 
@@ -603,6 +602,11 @@ def test_logo_flow(
     # Delete logo
     res = client.delete(f'/communities/{id_}/logo', headers=headers)
     assert res.status_code == 204
+
+    # Try to get deleted logo
+    res = client.get(f'/communities/{id_}/logo')
+    assert res.status_code == 404
+    assert res.json['message'] == 'No logo exists for this community.'
 
     # TODO: Delete community and try all of the above operations
     # TODO: Check permissions

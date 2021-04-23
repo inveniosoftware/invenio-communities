@@ -49,8 +49,6 @@ class Community(Record):
     files = FilesField(
         store=False,
         file_cls=CommunityFile,
-        # Don't create
-        create=True,
         # Don't delete, we'll manage in the service
         delete=False,
     )
