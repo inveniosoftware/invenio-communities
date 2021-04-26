@@ -11,17 +11,16 @@
 <div class="community-header">
   <div class="ui container relaxed grid">
     <div class="row">
-      {% if community.image %}
-      <div class="three wide column community-logo">
-        <div class="ui small image">
-          <img src="/static/images/invenio-rdm.svg" alt="No image found"/>
+      {% if logo %}
+      <div class="two wide column community-logo">
+        <div class="ui tiny rounded image">
+          <img src="{{logo.links.self}}" alt="No image found"/>
         </div>
       </div>
-      <div class="nine wide column">
+      <div class="ten wide column">
       {% else %}
       <div class="twelve wide column">
       {% endif %}
-
         <h2 class="ui header">{{ community.metadata.title }}</h2>
         <p>{{ community.metadata.description }}</p>
       </div>
@@ -54,15 +53,16 @@
         New upload
       </a> -->
     <!-- </div> -->
-  </div>
-  {% set header_menu_items = {
-    'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon'),
-    'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon'),
-  } %}
-
-  <div class="ui container secondary pointing menu community-header">
-    {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon) in header_menu_items.items() %}
-      <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}"><i aria-hidden="true" class="{{menu_icon}}"></i>{{ header_menu_item }}</a>
-    {% endfor %}
+    {% set header_menu_items = {
+      'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon'),
+      'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon'),
+    } %}
+    <div class="row">
+      <div class="ui container secondary pointing menu community-header">
+        {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon) in header_menu_items.items() %}
+          <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}"><i aria-hidden="true" class="{{menu_icon}}"></i>{{ header_menu_item }}</a>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>

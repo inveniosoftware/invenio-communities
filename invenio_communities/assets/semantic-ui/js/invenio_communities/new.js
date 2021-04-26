@@ -45,7 +45,7 @@ class CommunityCreateForm extends Component {
               withCredentials: true,
             });
             setSubmitting(false);
-            window.location.href = `/communities/${response.data.id}`;
+            window.location.href = `/communities/${response.data.id}/settings`;
           } catch (error) {
             // TODO: handle nested fields
             //   if (error.response.data.errors) {

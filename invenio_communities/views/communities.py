@@ -11,7 +11,7 @@
 from flask import current_app, render_template
 from flask_login import login_required
 
-from .decorators import pass_community
+from .decorators import pass_community, pass_community_logo
 
 #
 # Views
@@ -58,20 +58,24 @@ def communities_new():
     )
 
 @pass_community
-def communities_detail(community=None, pid_value=None):
+@pass_community_logo
+def communities_detail(community=None, logo=None, pid_value=None):
     """Community detail page."""
     return render_template(
         "invenio_communities/details/index.html",
         community=community.to_dict(), # TODO: use serializer
+        logo=logo.to_dict() if logo else None,
         active_menu_tab="search"
     )
 
 @pass_community
-def communities_settings(community=None, pid_value=None):
+@pass_community_logo
+def communities_settings(community=None, logo=None, pid_value=None):
     """Community settings/profile page."""
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(), # TODO: use serializer,
+        logo=logo.to_dict() if logo else None,
         active_menu_tab="settings"
     )
 

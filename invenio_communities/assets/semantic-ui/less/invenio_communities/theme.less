@@ -55,8 +55,9 @@
     pointer-events: None;
   }
 
-  .header.communities-picture {
+  .header.communities-logo-header {
     margin-top: -1px;
+    margin-bottom: 10px
   }
 
   .ui.negative.message.danger-zone {
@@ -78,6 +79,17 @@
   .divider.no-margin {
     margin: 0px;
   }
+
+  .logo-buttons {
+    & button:first-child {
+      margin-top: -7px;
+    }
+
+    & button:not(:first-child) {
+      margin-top: 7px;
+    }
+
+  }
 }
 
 .communities-creation {
@@ -91,7 +103,6 @@
   }
 }
 
-.community-card {
-  // TODO: remove it when card is designed
-  height: 300px;
+.grid.community-settings {
+  margin-bottom: 10px;
 }
