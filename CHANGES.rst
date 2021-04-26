@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015-2020 CERN.
+    Copyright (C) 2015-2021 CERN.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -9,52 +9,7 @@
 Changes
 =======
 
-Version 2.1.1 (released 2020-08-28)
------------------------------------
-
-- Uses newest Invenio-Search-UI helpers to create search applications.
-
-Version 2.1.0 (released 2020-08-26)
------------------------------------
-
-- Members refactoring.
-- Adds permissions to all views.
-- Uses Invenio-Search-UI helpers to create search applications.
-- Initial REST API workflow tests for core and records.
-
-Version 2.0.6 (released 2020-08-03)
------------------------------------
-
-- Uses ``react-invenio-forms``.
-- Adds config-based domains.
-
-Version 2.0.5 (released 2020-06-09)
------------------------------------
-
-- Sets search button class.
-
-Version 2.0.4 (released 2020-06-02)
------------------------------------
-
-- More fixes to the Semantic-UI styling.
-
-Version 2.0.3 (released 2020-06-01)
------------------------------------
-
-- Fixes to the Semantic-UI styling.
-
-Version 2.0.2 (released 2020-05-29)
------------------------------------
-
-- Migration to Semantic-UI styling.
-- Use of ``invenio-search-ui`` reusable search application.
-
-Version 2.0.1 (released 2020-04-06)
------------------------------------
-
-- Added ElasticSearch v6 mappings.
-
-Version 2.0.0 (released 2020-04-05)
+Version 2.2.0 (released 2021-04-26)
 -----------------------------------
 
 - Initial public release.
