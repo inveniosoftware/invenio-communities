@@ -30,21 +30,6 @@ from invenio_communities.communities.records.api import Community
 #             for e in errors), payload
 
 
-# def create_test_community(client, user, data):
-#     """Create test community."""
-#     login_user_via_session(client, user=user)
-#     list_url = url_for('invenio_records_rest.comid_list')
-#     resp = client.post(list_url, json=data)
-#     assert resp.status_code == 201
-#     return resp
-
-
-# def logout_user_session(client):
-#     """Logout a user from the Flask test client session."""
-#     with client.session_transaction() as sess:
-#         del sess['user_id']
-
-
 def _assert_single_item_response(response):
     """Assert the fields present on a single item response."""
     response_fields = response.json.keys()
@@ -67,15 +52,12 @@ def _assert_optional_medatada_items_response(response):
     for field in fields_to_check:
         assert field in metadata_fields
 
-    # TODO: Add when general vocabularies are ready
-    # domains
-
 
 def _assert_optional_access_items_response(response):
     """Assert the fields present on the metadata"""
     access_fields = response.json['access'].keys()
     fields_to_check = [
-       "member_policy", "record_policy"
+       "visibility", "member_policy", "record_policy", "owned_by",
     ]
 
     for field in fields_to_check:
@@ -174,7 +156,6 @@ def test_post_schema_validation(
     _assert_single_item_response(res)
     created_community = res.json
     assert minimal_community['metadata'] == created_community['metadata']
-
 
     #id_ = created_community['id']
     metadata_ = created_community['metadata']
