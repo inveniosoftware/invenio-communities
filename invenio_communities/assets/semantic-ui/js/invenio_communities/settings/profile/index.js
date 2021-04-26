@@ -131,20 +131,18 @@ const LogoUploader = (props) => {
       });
       window.location.reload();
     },
+    onDropRejected: (rejectedFiles) => {
+      // TODO: show error message when files are rejected e.g size limit
+      console.log(rejectedFiles[0].errors);
+    },
     multiple: false,
     noClick: true,
+    noDrag: true,
     noKeyboard: true,
     disabled: false,
-  };
-
-  const deleteLogo = async () => {
-    const deleteURL = `/api/communities/${props.community.id}/logo`;
-    const response = await axios.delete(deleteURL, {
-      headers: {
-        "content-type": "application/octet-stream",
-      },
-    });
-    props.onImageUpload(response);
+    maxFiles: 1,
+    maxSize: 5000000, // 5Mb limit
+    accept: ".jpeg,.jpg,.png",
   };
 
   return (
