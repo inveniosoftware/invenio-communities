@@ -123,6 +123,9 @@ setup(
             # 'invenio_communities_records = invenio_communities.communities.records.models',
             # 'invenio_requests = invenio_communities.requests.models',
         ],
+        'invenio_db.alembic': [
+            'invenio_communities = invenio_communities:alembic',
+        ],
         'invenio_search.mappings': [
             'communities = invenio_communities.communities.records.mappings',
         ],
