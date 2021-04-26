@@ -65,6 +65,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     links_item = {
         "self": RecordLink("{+api}/communities/{id}"),
         "self_html": RecordLink("{+ui}/communities/{id}"),
+        "settings_html": RecordLink("{+ui}/communities/{id}/settings"),
         "logo": RecordLink("{+api}/communities/{id}/logo"),
         "rename": RecordLink("{+api}/communities/{id}/rename")
     }
