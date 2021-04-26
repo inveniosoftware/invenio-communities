@@ -13,5 +13,5 @@ from .resource import CommunityResource
 
 __all__ = (
     'CommunityResource',
-    'CommunityResourceConfig'
+    'CommunityResourceConfig',
 )

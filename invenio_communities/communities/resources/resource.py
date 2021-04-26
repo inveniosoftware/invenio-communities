@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2020 CERN.
+# Copyright (C) 2020-2021 CERN.
 # Copyright (C) 2020 Northwestern University.
 #
 # Invenio-Drafts-Resources is free software; you can redistribute it and/or
@@ -11,6 +11,7 @@
 
 from flask import g
 from flask_resources import resource_requestctx, response_handler, route
+from invenio_records_resources.resources.files.resource import request_stream
 from invenio_records_resources.resources.records.resource import \
     RecordResource, request_data, request_headers, request_search_args, \
     request_view_args
@@ -63,7 +64,22 @@ class CommunityResource(RecordResource):
                 "POST",
                 p(routes["communities-prefix"], routes["item"]) + '/rename',
                 self.rename
-            )
+            ),
+            route(
+                "GET",
+                p(routes["communities-prefix"], routes["item"]) + '/logo',
+                self.read_logo
+            ),
+            route(
+                "PUT",
+                p(routes["communities-prefix"], routes["item"]) + '/logo',
+                self.update_logo
+            ),
+            route(
+                "DELETE",
+                p(routes["communities-prefix"], routes["item"]) + '/logo',
+                self.delete_logo
+            ),
         ]
 
     @request_search_args
@@ -93,3 +109,34 @@ class CommunityResource(RecordResource):
             revision_id=resource_requestctx.headers.get("if_match"),
         )
         return item.to_dict(), 200
+
+    @request_view_args
+    def read_logo(self):
+        """Read logo's content."""
+        item = self.service.read_logo(
+            resource_requestctx.view_args["pid_value"],
+            g.identity,
+        )
+        return item.send_file(), 200
+
+    @request_view_args
+    @request_stream
+    @response_handler()
+    def update_logo(self):
+        """Upload logo content."""
+        item = self.service.update_logo(
+            resource_requestctx.view_args["pid_value"],
+            g.identity,
+            resource_requestctx.data["request_stream"],
+            content_length=resource_requestctx.data["request_content_length"],
+        )
+        return item.to_dict(), 200
+
+    @request_view_args
+    def delete_logo(self):
+        """Delete logo."""
+        self.service.delete_logo(
+            resource_requestctx.view_args["pid_value"],
+            g.identity,
+        )
+        return "", 204

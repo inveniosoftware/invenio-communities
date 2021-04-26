@@ -46,7 +46,7 @@ def communities_new():
                     },
                     {
                         'text': 'Restricted',
-                        'value': 'private',
+                        'value': 'restricted',
                         'icon': 'lock',
                         'helpText': 'Your community is restricted to users ' \
                                     'with access.'
@@ -72,9 +72,6 @@ def communities_settings(community=None, pid_value=None):
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(), # TODO: use serializer,
-        form_config=dict(
-            # domains=current_app.config["COMMUNITIES_DOMAINS"]
-        ),
         active_menu_tab="settings"
     )
 
@@ -88,7 +85,7 @@ def communities_settings_privileges(community=None, pid_value=None):
             access=dict(
                 visibilty=[
                     {'text': 'Public', 'value': 'public'},
-                    {'text': 'Private', 'value': 'private'}
+                    {'text': 'restricted', 'value': 'restricted'}
                 ],
                 member_policy=[
                     {'text': 'Open', 'value': 'open'},

@@ -399,11 +399,7 @@ class CommunityProfileForm extends Component {
 }
 
 const domContainer = document.getElementById("app");
-const formConfig = JSON.parse(domContainer.dataset.formConfig);
 const community = JSON.parse(domContainer.dataset.community);
 
-ReactDOM.render(
-  <CommunityProfileForm formConfig={formConfig} community={community} />,
-  domContainer
-);
+ReactDOM.render(<CommunityProfileForm community={community} />, domContainer);
 export default CommunityProfileForm;

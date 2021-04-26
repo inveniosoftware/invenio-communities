@@ -50,3 +50,4 @@ COMMUNITIES_ROUTES = {
     'settings': '/communities/<pid_value>/settings',
     'settings_privileges': '/communities/<pid_value>/settings/privileges',
 }
+"""Communities ui endpoints."""

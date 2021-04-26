@@ -31,7 +31,7 @@ class CommunityAccessSchema(Schema):
 
     visibility = fields.Str(validate=validate.OneOf([
         'public',
-        'private',
+        'restricted',
     ]))
     member_policy = fields.Str(validate=validate.OneOf([
         'open',

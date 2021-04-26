@@ -31,7 +31,7 @@
           "description": "Community visibility.",
           "enum": [
             "public",
-            "private"
+            "restricted"
           ]
         },
         "member_policy": {
@@ -116,6 +116,18 @@
         },
         "affiliations": {
           "$ref": "local://records/definitions-v1.0.0.json#/affiliations"
+        }
+      }
+    },
+
+    "files": {
+      "type": "object",
+      "description": "Files associated with the record",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to false for metadata only records."
         }
       }
     }

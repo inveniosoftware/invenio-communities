@@ -9,9 +9,11 @@
 """Community module tests."""
 
 import copy
-import json
+from io import BytesIO
+
 import pytest
 from flask import url_for
+
 from invenio_communities.communities.records.api import Community
 
 # def assert_error_resp(res, expected_errors, expected_status_code=400):
@@ -400,7 +402,7 @@ def test_simple_put_response(
 
     data["access"] = \
     {
-        "visibility": "private",
+        "visibility": "restricted",
         "member_policy": "closed",
         "record_policy": "restricted"
     }
@@ -447,7 +449,7 @@ def test_update_renamed_record(
     renamed_id_ = renamed_community['id']
     data["access"] = \
     {
-        "visibility": "private",
+        "visibility": "restricted",
         "member_policy": "closed",
         "record_policy": "restricted"
     }
@@ -489,3 +491,73 @@ def test_simple_delete_response(
     assert res.status_code == 404
     assert res.json['message']  == 'The persistent identifier does not exist.'
 
+
+def test_logo_flow(
+    app, client_with_login, location, minimal_community, headers, es_clear
+):
+    """Test logo workflow."""
+    client = client_with_login
+
+    # Create a community
+    res = client.post('/communities', headers=headers, json=minimal_community)
+    assert res.status_code == 201
+    created_community = res.json
+    id_ = created_community['id']
+    assert created_community['links']['logo'] == \
+        f'https://127.0.0.1:5000/api/communities/{id_}/logo'
+
+    # Get non-existent logo
+    res = client.get(f'/communities/{id_}/logo')
+    assert res.status_code == 404
+    assert res.json['message'] == 'No logo exists for this community.'
+
+    # Delete non-existent logo
+    res = client.delete(f'/communities/{id_}/logo', headers=headers)
+    assert res.status_code == 404
+    assert res.json['message'] == 'No logo exists for this community.'
+
+    # Update logo
+    res = client.put(
+        f'/communities/{id_}/logo',
+        headers={
+            **headers,
+            'content-type': 'application/octet-stream',
+        },
+        data=BytesIO(b'logo'),
+    )
+    assert res.status_code == 200
+    assert res.json['size'] == 4
+
+    # Get logo
+    res = client.get(f'/communities/{id_}/logo')
+    assert res.status_code == 200
+    assert res.data == b'logo'
+
+    # Update logo again
+    res = client.put(
+        f'/communities/{id_}/logo',
+        headers={
+            **headers,
+            'content-type': 'application/octet-stream',
+        },
+        data=BytesIO(b'new_logo'),
+    )
+    assert res.status_code == 200
+    assert res.json['size'] == 8
+
+    # Get new logo
+    res = client.get(f'/communities/{id_}/logo')
+    assert res.status_code == 200
+    assert res.data == b'new_logo'
+
+    # Delete logo
+    res = client.delete(f'/communities/{id_}/logo', headers=headers)
+    assert res.status_code == 204
+
+    # Try to get deleted logo
+    res = client.get(f'/communities/{id_}/logo')
+    assert res.status_code == 404
+    assert res.json['message'] == 'No logo exists for this community.'
+
+    # TODO: Delete community and try all of the above operations
+    # TODO: Check permissions
