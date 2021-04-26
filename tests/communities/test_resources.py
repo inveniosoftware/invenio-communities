@@ -75,6 +75,28 @@ def _assert_single_item_search(response):
         assert field in response_fields
 
 
+def _assert_error_fields_response(expected, response):
+    """Assert the fields present in response error list and fields tested """
+    error_fields = [item['field'] for item in response.json['errors']]
+
+    for field in expected:
+        assert field in error_fields
+
+
+def _asseert_error_messages_response(expected, response):
+    """Assert the error messages present in response error list and expected error messages """
+    error_messages_list = ['Must be one of: organization, event, topic, project.',
+                           'Must be one of: public, private.',
+                           'Must be one of: public, restricted.',
+                           'Not empty string and less than 2000 characters allowed.',
+                           'Not empty string and less than 250 characters allowed.',
+                           'Not empty string and less than 100 characters allowed.'
+                          ]
+    error_messages = set([item['messages'][0] for item in response.json['errors']])
+
+    assert expected == len(set(error_messages_list).intersection(error_messages))
+
+
 def test_simple_flow(
     app, client_with_login, location, minimal_community, headers,
     es_clear
@@ -162,8 +184,8 @@ def test_post_schema_validation(
     access_ = created_community['access']
 
     # Assert required fields
-    assert metadata_ == {"title": "Title", "type": "topic"}
-    assert minimal_community['access']['visibility'] == access_['visibility']
+    assert created_community['metadata'] == {"title": "Title", "type": "topic"}
+    assert created_community['access']['visibility'] == "public"
 
     # Assert required enums
     data = copy.deepcopy(minimal_community)
@@ -176,7 +198,13 @@ def test_post_schema_validation(
     data['access']['visibility'] = 'foobar'
     res = client.post('/communities', headers=headers, json=data)
     assert res.status_code == 400
-    #assert res.json["message"] == "A validation error occurred."
+    assert res.json["message"] == "A validation error occurred."
+    _assert_error_fields_response(set(['metadata.type','access.visibility']), res)
+    _asseert_error_messages_response(2, res)
+
+    # Delete the community
+    res = client.delete(f'/communities/{created_community["id"]}', headers=headers)
+    assert res.status_code == 204
 
 
 def test_post_metadata_schema_validation(
@@ -250,6 +278,10 @@ def test_post_metadata_schema_validation(
     assert res.status_code == 201
     _assert_single_item_response(res)
 
+    # Delete the community
+    res = client.delete(f'/communities/{data["id"]}', headers=headers)
+    assert res.status_code == 204
+
 
 def test_post_community_with_existing_id(
     app, client_with_login, location, minimal_community, headers
@@ -273,6 +305,10 @@ def test_post_community_with_existing_id(
         json=minimal_community)
     assert res.status_code == 400
     assert res.json['message'] == 'The persistent identifier is already registered.'
+
+    # Delete the community
+    res = client.delete(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 204
 
 
 def test_post_community_with_deleted_id(
@@ -321,6 +357,10 @@ def test_post_self_links(
     assert created_community['links']['self'] == f'https://127.0.0.1:5000/api/communities/{id_}'
     assert created_community['links']['self_html'] == f'https://127.0.0.1:5000/communities/{id_}'
 
+    # Delete the community
+    res = client.delete(f'/communities/{id_}', headers=headers)
+    assert res.status_code == 204
+
 
 def test_simple_search_response(
     app, client_with_login, location, minimal_community, create_many_records, headers,
@@ -331,7 +371,7 @@ def test_simple_search_response(
 
     # Create many communities,
     id_oldest, id_newest, num_each, total = create_many_records
-
+    Community.index.refresh()
     # Search for any commmunity, default order newest
     res = client.get(
         f'/communities', query_string={'q': f''}, headers=headers)
