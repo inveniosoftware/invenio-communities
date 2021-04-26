@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { Button, Icon, Modal } from "semantic-ui-react";
 
-export const DeleteCommunityButton = (props) => {
+export const DeleteButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleOpen = () => setModalOpen(true);
@@ -19,15 +19,9 @@ export const DeleteCommunityButton = (props) => {
   const handleClose = () => setModalOpen(false);
 
   const handleDelete = async () => {
-    const resp = await axios.delete(
-      `/api/communities/${props.community.id}`,
-      {},
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const resp = await props.onDelete();
     handleClose();
-    window.location.href = `/communities`;
+    if (props.redirectURL) window.location.href = props.redirectURL;
   };
 
   return (
@@ -41,13 +35,12 @@ export const DeleteCommunityButton = (props) => {
         labelPosition="left"
         type="button"
       >
-        <Icon name="trash"></Icon>Delete community
+        <Icon name="trash"></Icon>
+        {props.label}
       </Button>
 
       <Modal open={modalOpen} onClose={handleClose} size="tiny">
-        <Modal.Content>
-          <h3>Are you sure you want to delete this community?</h3>
-        </Modal.Content>
+        <Modal.Content>{props.confirmationMessage}</Modal.Content>
         <Modal.Actions>
           <Button onClick={handleClose} floated="left">
             Cancel

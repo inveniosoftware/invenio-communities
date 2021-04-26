@@ -86,13 +86,8 @@ class CommunitiesCardGroup extends Component {
     const { data } = this.state;
     return data.hits.map((community) => {
       return (
-        <Card
-          fluid
-          key={community.id}
-          href={`/communities/${community.id}`}
-          className="community-card"
-        >
-          <Item.Image src="/static/images/logo.png" />
+        <Card fluid key={community.id} href={`/communities/${community.id}`}>
+          <Item.Image size="medium" src={community.links.logo} />
           <Card.Content>
             <Card.Header>
               The 19th Cambridge Workshop on Cool Stars, Stellar Systems, and
@@ -138,6 +133,7 @@ if (userCommunitiesContainer) {
 ReactDOM.render(
   <CommunitiesCardGroup
     fetchDataUrl={`/api/communities?q=&sort=newest&page=1&size=5`}
+    emptyMessage="There are not featured communities."
   />,
   featuredCommunitiesContainer
 );

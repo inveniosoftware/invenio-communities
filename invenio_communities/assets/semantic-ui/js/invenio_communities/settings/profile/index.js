@@ -27,8 +27,9 @@ import _isArray from "lodash/isArray";
 import _isNull from "lodash/isNull";
 import _pickBy from "lodash/pickBy";
 import _pick from "lodash/pick";
+import Dropzone from "react-dropzone";
 
-import { DeleteCommunityButton } from "./DeleteCommunityButton";
+import { DeleteButton } from "./DeleteButton";
 import { RenameCommunityButton } from "./RenameCommunityButton";
 
 import {
@@ -113,6 +114,148 @@ const removeEmptyValues = (obj) => {
   }
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
+
+const LogoUploader = (props) => {
+  let dropzoneParams = {
+    preventDropOnDocument: true,
+    onDropAccepted: async (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      const uploadURL = props.community.links.logo;
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.put(uploadURL, file, {
+        headers: {
+          "content-type": "application/octet-stream",
+        },
+      });
+      window.location.reload();
+    },
+    multiple: false,
+    noClick: true,
+    noKeyboard: true,
+    disabled: false,
+  };
+
+  const deleteLogo = async () => {
+    const deleteURL = `/api/communities/${props.community.id}/logo`;
+    const response = await axios.delete(deleteURL, {
+      headers: {
+        "content-type": "application/octet-stream",
+      },
+    });
+    props.onImageUpload(response);
+  };
+
+  return (
+    <Dropzone {...dropzoneParams}>
+      {({ getRootProps, getInputProps, open: openFileDialog }) => (
+        <Grid.Column width={16}>
+          <span {...getRootProps()}>
+            <input {...getInputProps()} />
+            <Grid>
+              <Grid.Column floated="right" width={10}>
+                <Grid.Row>
+                  <Header className="communities-logo-header">
+                    Profile picture
+                  </Header>
+                </Grid.Row>
+                <Grid.Row>
+                  {props.logo ? (
+                    <Image
+                      src={props.logo.links.self}
+                      size="medium"
+                      wrapped
+                      rounded
+                    />
+                  ) : (
+                    <Icon name="users" size="massive" />
+                  )}
+                </Grid.Row>
+                <br />
+                <Grid.Row className="logo-buttons">
+                  <Button
+                    fluid
+                    icon
+                    labelPosition="left"
+                    type="button"
+                    onClick={openFileDialog}
+                  >
+                    <Icon name="upload"></Icon>
+                    Upload new picture
+                  </Button>
+                  {props.logo && (
+                    <DeleteButton
+                      label="Delete picture"
+                      redirectURL={`${props.community.links.self_html}/settings`}
+                      confirmationMessage={
+                        <h3>Are you sure you want to delete this picture?</h3>
+                      }
+                      onDelete={() =>
+                        axios.delete(props.community.links.logo, {
+                          headers: {
+                            "content-type": "application/octet-stream",
+                          },
+                        })
+                      }
+                    />
+                  )}
+                </Grid.Row>
+              </Grid.Column>
+            </Grid>
+          </span>
+        </Grid.Column>
+      )}
+    </Dropzone>
+  );
+};
+
+const DangerZone = (props) => (
+  <Grid.Row className="ui message negative danger-zone">
+    <Grid.Column width={16}>
+      <Header as="h2" color="red">
+        Danger zone
+      </Header>
+      <Divider />
+    </Grid.Column>
+    <Grid.Column floated="left" width="12">
+      <Header as="h4">Rename community</Header>
+      <p>
+        Here is an explanation of what will happen when you rename a community.
+      </p>
+    </Grid.Column>
+    <Grid.Column floated="right" width="4">
+      <RenameCommunityButton community={props.community} />
+    </Grid.Column>
+    {/* Empty column for margin */}
+    <Grid.Column width={16} className="margin-top-25"></Grid.Column>
+    <Grid.Column floated="left" width="12">
+      <Header as="h4">Delete community</Header>
+      <p>
+        Here is an explanation of what will happen when you delete a community.
+      </p>
+    </Grid.Column>
+    <Grid.Column floated="right" width="4">
+      <DeleteButton
+        community={props.community}
+        label="Delete community"
+        redirectURL="/communities"
+        confirmationMessage={
+          <h3>Are you sure you want to delete this community?</h3>
+        }
+        onDelete={() => {
+          return axios.delete(
+            props.community.links.self,
+            {},
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+        }}
+      />
+    </Grid.Column>
+  </Grid.Row>
+);
 
 class CommunityProfileForm extends Component {
   getInitialValues = () => {
@@ -273,31 +416,6 @@ class CommunityProfileForm extends Component {
                     }
                     optimized
                   />
-                  <RichInputField
-                    label="Curation policy"
-                    fieldPath="metadata.curation_policy"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.curation_policy"
-                        icon={"pencil"}
-                        label="Curation policy"
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  />
-                  <RichInputField
-                    fieldPath="metadata.page"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.page"
-                        icon={"pencil"}
-                        label="Page description"
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  />
                   <RemoteSelectField
                     fieldPath={"metadata.affiliations"}
                     suggestionAPIUrl="/api/vocabularies/affiliations"
@@ -323,6 +441,31 @@ class CommunityProfileForm extends Component {
                     noQueryMessage="Search for affiliations..."
                     allowAdditions
                   />
+                  <RichInputField
+                    label="Curation policy"
+                    fieldPath="metadata.curation_policy"
+                    label={
+                      <FieldLabel
+                        htmlFor="metadata.curation_policy"
+                        icon={"pencil"}
+                        label="Curation policy"
+                      />
+                    }
+                    editorConfig={CKEditorConfig}
+                    fluid
+                  />
+                  <RichInputField
+                    fieldPath="metadata.page"
+                    label={
+                      <FieldLabel
+                        htmlFor="metadata.page"
+                        icon={"pencil"}
+                        label="Page description"
+                      />
+                    }
+                    editorConfig={CKEditorConfig}
+                    fluid
+                  />
                   <Button
                     disabled={!isValid || isSubmitting}
                     loading={isSubmitting}
@@ -336,60 +479,13 @@ class CommunityProfileForm extends Component {
                   </Button>
                 </Grid.Column>
                 <Grid.Column width={7}>
-                  <Grid>
-                    <Grid.Column floated="right" width={10}>
-                      <Grid.Row>
-                        <Header className="communities-picture">
-                          Profile picture
-                        </Header>
-                      </Grid.Row>
-                      <Grid.Row>
-                        {this.props.community.files ? (
-                          <Image src={this.props.community.files} wrapped />
-                        ) : (
-                          <Icon name="users" size="massive" />
-                        )}
-                      </Grid.Row>
-                      <Grid.Row>
-                        <Button icon labelPosition="left">
-                          <Icon name="upload"></Icon>
-                          Upload new picture
-                        </Button>
-                      </Grid.Row>
-                    </Grid.Column>
-                  </Grid>
+                  <LogoUploader
+                    community={this.props.community}
+                    logo={this.props.logo}
+                  />
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row className="ui message negative danger-zone">
-                <Grid.Column width={16}>
-                  <Header as="h2" color="red">
-                    Danger zone
-                  </Header>
-                  <Divider />
-                </Grid.Column>
-                <Grid.Column floated="left" width="12">
-                  <Header as="h4">Rename community</Header>
-                  <p>
-                    Here is an explanation of what will happen when you rename a
-                    community.
-                  </p>
-                </Grid.Column>
-                <Grid.Column floated="right" width="4">
-                  <RenameCommunityButton community={this.props.community} />
-                </Grid.Column>
-                {/* Empty column for margin */}
-                <Grid.Column width={16} className="margin-top-25"></Grid.Column>
-                <Grid.Column floated="left" width="12">
-                  <Header as="h4">Delete community</Header>
-                  <p>
-                    Here is an explanation of what will happen when you delete a
-                    community.
-                  </p>
-                </Grid.Column>
-                <Grid.Column floated="right" width="4">
-                  <DeleteCommunityButton community={this.props.community} />
-                </Grid.Column>
-              </Grid.Row>
+              <DangerZone community={this.props.community} />
             </Grid>
           </Form>
         )}
@@ -400,6 +496,10 @@ class CommunityProfileForm extends Component {
 
 const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);
+const logo = JSON.parse(domContainer.dataset.logo);
 
-ReactDOM.render(<CommunityProfileForm community={community} />, domContainer);
+ReactDOM.render(
+  <CommunityProfileForm community={community} logo={logo} />,
+  domContainer
+);
 export default CommunityProfileForm;

@@ -19,14 +19,17 @@ export const RenameCommunityButton = (props) => {
   const handleClose = () => setModalOpen(false);
 
   const handleRename = async () => {
+    const newName = formInputRef.current.value;
     const resp = await axios.post(
-      `/api/communities/${props.community.id}`,
-      { id: formInputRef.current.value },
+      props.community.links.rename,
+      { id: newName },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
     handleClose();
+    // TODO: replace it with proper link from the rename response
+    window.location.href = `/communities/${newName}`;
   };
 
   return (
