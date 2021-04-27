@@ -8,10 +8,12 @@
 
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import { Button, Form, Modal, Icon } from "semantic-ui-react";
+import { Button, Form, Message, Modal, Grid, Icon } from "semantic-ui-react";
 
 export const RenameCommunityButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [error, setError] = useState("");
+
   const formInputRef = React.useRef(null);
 
   const handleOpen = () => setModalOpen(true);
@@ -19,17 +21,21 @@ export const RenameCommunityButton = (props) => {
   const handleClose = () => setModalOpen(false);
 
   const handleRename = async () => {
-    const newName = formInputRef.current.value;
-    const resp = await axios.post(
-      props.community.links.rename,
-      { id: newName },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    handleClose();
-    // TODO: replace it with proper link from the rename response
-    window.location.href = `/communities/${newName}`;
+    try {
+      const newName = formInputRef.current.value;
+      const resp = await axios.post(
+        props.community.links.rename,
+        { id: newName },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      handleClose();
+      // TODO: replace it with proper link from the rename response
+      window.location.href = `/communities/${newName}`;
+    } catch (error) {
+      setError(error.response.data.message);
+    }
   };
 
   return (
@@ -53,6 +59,14 @@ export const RenameCommunityButton = (props) => {
               label="Enter the new name of the community"
               fluid
               input={{ ref: formInputRef }}
+              {...(error
+                ? {
+                    error: {
+                      content: error,
+                      pointing: "above",
+                    },
+                  }
+                : {})}
             />
           </Form>
         </Modal.Content>

@@ -19,9 +19,13 @@ export const DeleteButton = (props) => {
   const handleClose = () => setModalOpen(false);
 
   const handleDelete = async () => {
-    const resp = await props.onDelete();
-    handleClose();
-    if (props.redirectURL) window.location.href = props.redirectURL;
+    try {
+      const resp = await props.onDelete();
+      handleClose();
+      if (props.redirectURL) window.location.href = props.redirectURL;
+    } catch (error) {
+      props.onError(error);
+    }
   };
 
   return (
