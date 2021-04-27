@@ -12,10 +12,21 @@ import axios from "axios";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
 
-import { Divider, Icon, Grid, Button, Header, Form } from "semantic-ui-react";
+import {
+  Divider,
+  Icon,
+  Grid,
+  Button,
+  Header,
+  Form,
+  Message,
+} from "semantic-ui-react";
 import { FieldLabel, RadioField, TextField } from "react-invenio-forms";
 
 class CommunityCreateForm extends Component {
+  state = {
+    error: "",
+  };
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
       access: {
@@ -47,21 +58,30 @@ class CommunityCreateForm extends Component {
             setSubmitting(false);
             window.location.href = response.data.links.settings_html;
           } catch (error) {
-            // TODO: handle nested fields
-            //   if (error.response.data.errors) {
-            //     error.response.data.errors.map(({ field, message }) =>
-            //       setFieldError(field, message)
-            //     );
-            //   } else if (error.response.data.message) {
-            //     setGlobalError(error.response.data.message);
-            //   }
-            // }
-            setSubmitting(false);
+            if (error.response.data.errors) {
+              error.response.data.errors.map(({ field, message }) =>
+                setFieldError(field, message)
+              );
+            } else if (error.response.data.message) {
+              this.setState({ error: error.response.data.message });
+            }
           }
+          setSubmitting(false);
         }}
       >
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
+            <Message
+              hidden={this.state.error == ""}
+              negative
+              className="flashed top-attached"
+            >
+              <Grid container>
+                <Grid.Column width={15} textAlign="left">
+                  <strong>{this.state.error}</strong>
+                </Grid.Column>
+              </Grid>
+            </Message>
             <Grid container centered>
               <Grid.Row>
                 <Grid.Column width={8} textAlign="center">
