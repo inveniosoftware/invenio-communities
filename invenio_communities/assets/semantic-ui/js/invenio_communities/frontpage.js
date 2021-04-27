@@ -19,6 +19,9 @@ import {
   Placeholder,
 } from "semantic-ui-react";
 
+import _truncate from "lodash/truncate";
+import { element } from "prop-types";
+
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   const PlaceholderItem = () => (
     <Grid.Column width={3}>
@@ -51,6 +54,40 @@ const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
 const EmptyMessage = ({ message }) => {
   return <Message icon="info" header={message} />;
 };
+
+class CommunityCard extends Component {
+  constructor() {
+    super();
+    this.imageRef = React.createRef();
+  }
+
+  render() {
+    return (
+      <Card fluid href={`/communities/${this.props.community.id}`}>
+        <img
+          ref={this.imageRef}
+          className="ui medium image community-image"
+          src={this.props.community.links.logo}
+          onError={(error) => {
+            if (!this.imageRef.current.src.includes(this.props.defaultLogo))
+              this.imageRef.current.src = this.props.defaultLogo;
+          }}
+        />
+
+        <Card.Content>
+          <Card.Header>
+            {_truncate(this.props.community.metadata.title, { length: 50 })}
+          </Card.Header>
+          <Card.Description>
+            {_truncate(this.props.community.metadata.description, {
+              length: 50,
+            })}
+          </Card.Description>
+        </Card.Content>
+      </Card>
+    );
+  }
+}
 
 class CommunitiesCardGroup extends Component {
   constructor(props) {
@@ -86,15 +123,11 @@ class CommunitiesCardGroup extends Component {
     const { data } = this.state;
     return data.hits.map((community) => {
       return (
-        <Card fluid key={community.id} href={`/communities/${community.id}`}>
-          <Item.Image size="medium" src={community.links.logo} />
-          <Card.Content>
-            <Card.Header>{community.metadata.title}</Card.Header>
-            <Card.Description>
-              {community.metadata.description}
-            </Card.Description>
-          </Card.Content>
-        </Card>
+        <CommunityCard
+          key={community.id}
+          community={community}
+          defaultLogo={this.props.defaultLogo}
+        />
       );
     });
   }
@@ -106,7 +139,9 @@ class CommunitiesCardGroup extends Component {
         {this.state.data.hits.length == 0 ? (
           <EmptyMessage message={this.props.emptyMessage} />
         ) : (
-          <Card.Group itemsPerRow={5}>{this.renderCards()}</Card.Group>
+          <Card.Group itemsPerRow={5} className="community-frontpage-cards">
+            {this.renderCards()}
+          </Card.Group>
         )}
       </PlaceholderLoader>
     );
@@ -123,6 +158,7 @@ if (userCommunitiesContainer) {
     <CommunitiesCardGroup
       fetchDataUrl={`/api/user/communities?q=&sort=newest&page=1&size=5`}
       emptyMessage="You are not a member of any community."
+      defaultLogo="/static/images/logo.png"
     />,
     userCommunitiesContainer
   );
@@ -131,6 +167,7 @@ ReactDOM.render(
   <CommunitiesCardGroup
     fetchDataUrl={`/api/communities?q=&sort=newest&page=1&size=5`}
     emptyMessage="There are not featured communities."
+    defaultLogo="/static/images/logo.png"
   />,
   featuredCommunitiesContainer
 );
