@@ -1,33 +1,17 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2020 CERN.
+# Copyright (C) 2021 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Community module tests."""
+"""Community resources tests."""
 
 import copy
 from io import BytesIO
 
-import pytest
-from flask import url_for
-
 from invenio_communities.communities.records.api import Community
-
-# def assert_error_resp(res, expected_errors, expected_status_code=400):
-#     """Assert errors in a client response."""
-#     assert res.status_code == expected_status_code
-#     payload = res.json
-#     errors = payload.get('errors', [])
-#     for field, msg in expected_errors:
-#         if not field:  # top-level "message" error
-#             assert msg in payload['message'].lower()
-#             continue
-#         assert any(
-#             e['field'] == field and msg in e['message'].lower()
-#             for e in errors), payload
 
 
 def _assert_single_item_response(response):
@@ -83,7 +67,7 @@ def _assert_error_fields_response(expected, response):
         assert field in error_fields
 
 
-def _asseert_error_messages_response(expected, response):
+def _assert_error_messages_response(expected, response):
     """Assert the error messages present in response error list and expected error messages """
     error_messages_list = ['Must be one of: organization, event, topic, project.',
                            'Must be one of: public, private.',
@@ -170,18 +154,12 @@ def test_post_schema_validation(
     """Test the validity of community json schema"""
     client = client_with_login
 
-    #Create a community
-    res = client.post(
-        '/communities', headers=headers,
-        json=minimal_community)
+    # Create a community
+    res = client.post('/communities', headers=headers, json=minimal_community)
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
     assert minimal_community['metadata'] == created_community['metadata']
-
-    #id_ = created_community['id']
-    metadata_ = created_community['metadata']
-    access_ = created_community['access']
 
     # Assert required fields
     assert created_community['metadata'] == {"title": "Title", "type": "topic"}
@@ -192,15 +170,14 @@ def test_post_schema_validation(
     data['metadata']['type'] = 'foobar'
     res = client.post('/communities', headers=headers, json=data)
     assert res.status_code == 400
-    #assert res.json["message"] == "A validation error occurred."
 
     data = copy.deepcopy(minimal_community)
     data['access']['visibility'] = 'foobar'
     res = client.post('/communities', headers=headers, json=data)
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."
-    _assert_error_fields_response(set(['metadata.type','access.visibility']), res)
-    _asseert_error_messages_response(2, res)
+    _assert_error_fields_response(set(['access.visibility']), res)
+    _assert_error_messages_response(1, res)
 
     # Delete the community
     res = client.delete(f'/communities/{created_community["id"]}', headers=headers)
