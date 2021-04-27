@@ -343,6 +343,7 @@ class CommunityProfileForm extends Component {
               }
             );
             setSubmitting(false);
+            window.location.reload();
           } catch (error) {
             // TODO: handle nested fields
             //   if (error.response.data.errors) {
