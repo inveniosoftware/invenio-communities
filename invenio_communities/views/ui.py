@@ -8,12 +8,37 @@
 
 """Communities UI views."""
 
-from flask import Blueprint
+from flask import Blueprint, current_app, render_template
 from flask_menu import current_menu
+from flask_login import current_user
+
+from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
+from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .communities import communities_detail, communities_frontpage, \
     communities_new, communities_search, communities_settings, \
     communities_settings_privileges
+
+
+#
+# Error handlers
+#
+def not_found_error(error):
+    """Handler for 'Not Found' errors."""
+    return render_template(current_app.config['THEME_404_TEMPLATE']), 404
+
+
+def record_tombstone_error(error):
+    """Tombstone page."""
+    return render_template("invenio_communities/tombstone.html"), 410
+
+
+def record_permission_denied_error(error):
+    """Handle permission denier error on record views."""
+    if not current_user.is_authenticated:
+        # trigger the flask-login unauthorized handler
+        return current_app.login_manager.unauthorized()
+    return render_template(current_app.config['THEME_403_TEMPLATE']), 403
 
 
 #
@@ -73,5 +98,11 @@ def create_ui_blueprint(app):
         return item
 
     blueprint.before_app_first_request(register_menu)
+
+    # Register error handlers
+    blueprint.register_error_handler(
+        PermissionDeniedError, record_permission_denied_error)
+    blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
+    blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
 
     return blueprint

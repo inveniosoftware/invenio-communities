@@ -65,6 +65,7 @@ def communities_detail(community=None, logo=None, pid_value=None):
         "invenio_communities/details/index.html",
         community=community.to_dict(), # TODO: use serializer
         logo=logo.to_dict() if logo else None,
+        permissions=community.has_permissions_to(['update']),
         active_menu_tab="search"
     )
 
@@ -76,6 +77,7 @@ def communities_settings(community=None, logo=None, pid_value=None):
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(), # TODO: use serializer,
         logo=logo.to_dict() if logo else None,
+        permissions=community.has_permissions_to(['update']),
         active_menu_tab="settings"
     )
 
@@ -89,7 +91,7 @@ def communities_settings_privileges(community=None, pid_value=None):
             access=dict(
                 visibilty=[
                     {'text': 'Public', 'value': 'public'},
-                    {'text': 'restricted', 'value': 'restricted'}
+                    {'text': 'Restricted', 'value': 'restricted'}
                 ],
                 member_policy=[
                     {'text': 'Open', 'value': 'open'},
@@ -102,5 +104,6 @@ def communities_settings_privileges(community=None, pid_value=None):
                 ]
             )
         ),
+        permissions=community.has_permissions_to(['update']),
         active_menu_tab="settings"
     )

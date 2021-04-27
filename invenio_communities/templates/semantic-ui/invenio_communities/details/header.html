@@ -54,12 +54,12 @@
       </a> -->
     <!-- </div> -->
     {% set header_menu_items = {
-      'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon'),
-      'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon'),
+      'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
+      'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
     } %}
     <div class="row">
       <div class="ui container secondary pointing menu community-header">
-        {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon) in header_menu_items.items() %}
+        {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon, permission_to_show ) in header_menu_items.items() if permission_to_show %}
           <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}"><i aria-hidden="true" class="{{menu_icon}}"></i>{{ header_menu_item }}</a>
         {% endfor %}
       </div>

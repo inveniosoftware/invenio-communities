@@ -40,8 +40,8 @@ class IfRestricted(IfRestrictedBase):
             # passes properly, causing below ``record.access`` to fail.
             return self.else_
         is_restricted = getattr(
-            record.access, self.field, "private")
-        return self.then_ if is_restricted == "private" else self.else_
+            record.access, self.field, "restricted")
+        return self.then_ if is_restricted == "restricted" else self.else_
 
 
 class CommunityOwners(Generator):

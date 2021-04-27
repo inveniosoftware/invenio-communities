@@ -72,6 +72,25 @@ class CommunityPrivilegesForm extends Component {
                 <Divider />
               </Grid.Column>
               <Grid.Column width={6}>
+                <Header as="h3">Community visibility</Header>
+                <p>This is a text explaining about the permission</p>
+                <SelectField
+                  fieldPath="access.visibility"
+                  options={this.props.formConfig.access.visibilty}
+                />
+                <Button
+                  compact
+                  primary
+                  icon
+                  labelPosition="left"
+                  loading={isSubmitting}
+                >
+                  <Icon name="save"></Icon>Save
+                </Button>
+              </Grid.Column>
+              {/* Used to clear the row space */}
+              <Grid.Column width={10} />
+              <Grid.Column width={6}>
                 <Header as="h3">Records permissions</Header>
                 <p>This is a text explaining about the permission</p>
                 <SelectField
@@ -92,25 +111,6 @@ class CommunityPrivilegesForm extends Component {
                   options={this.props.formConfig.access.member_policy}
                 />
                 <Button compact primary icon labelPosition="left">
-                  <Icon name="save"></Icon>Save
-                </Button>
-              </Grid.Column>
-              {/* Used to clear the row space */}
-              <Grid.Column width={10} />
-              <Grid.Column width={6}>
-                <Header as="h3">Community visibility</Header>
-                <p>This is a text explaining about the permission</p>
-                <SelectField
-                  fieldPath="access.visibility"
-                  options={this.props.formConfig.access.visibilty}
-                />
-                <Button
-                  compact
-                  primary
-                  icon
-                  labelPosition="left"
-                  loading={isSubmitting}
-                >
                   <Icon name="save"></Icon>Save
                 </Button>
               </Grid.Column>
