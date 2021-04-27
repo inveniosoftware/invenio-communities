@@ -89,10 +89,7 @@ class CommunitiesCardGroup extends Component {
         <Card fluid key={community.id} href={`/communities/${community.id}`}>
           <Item.Image size="medium" src={community.links.logo} />
           <Card.Content>
-            <Card.Header>
-              The 19th Cambridge Workshop on Cool Stars, Stellar Systems, and
-              the Sun
-            </Card.Header>
+            <Card.Header>{community.metadata.title}</Card.Header>
             <Card.Description>
               {community.metadata.description}
             </Card.Description>
