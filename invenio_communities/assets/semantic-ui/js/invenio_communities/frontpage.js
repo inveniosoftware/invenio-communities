@@ -166,7 +166,7 @@ if (userCommunitiesContainer) {
 ReactDOM.render(
   <CommunitiesCardGroup
     fetchDataUrl={`/api/communities?q=&sort=newest&page=1&size=5`}
-    emptyMessage="There are not featured communities."
+    emptyMessage="There are no featured communities."
     defaultLogo="/static/images/logo.png"
   />,
   featuredCommunitiesContainer
