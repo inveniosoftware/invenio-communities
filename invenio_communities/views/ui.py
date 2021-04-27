@@ -62,16 +62,20 @@ def create_ui_blueprint(app):
         view_func=communities_settings_privileges,
     )
 
-    def register_menu():
-        """."""
+    @blueprint.before_app_first_request
+    def register_menus():
+        """Register community menu items."""
         item = current_menu.submenu('main.communities')
         item.register(
             'invenio_communities.communities_frontpage',
             'Communities',
             order=3,
         )
-        return item
 
-    blueprint.before_app_first_request(register_menu)
+        item = current_menu.submenu('plus.community').register(
+            'invenio_communities.communities_new',
+            'New community',
+            order=3,
+        )
 
     return blueprint
