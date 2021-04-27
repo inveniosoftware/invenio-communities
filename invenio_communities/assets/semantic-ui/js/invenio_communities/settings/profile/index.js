@@ -40,6 +40,7 @@ import {
   Button,
   Header,
   Form,
+  Message,
 } from "semantic-ui-react";
 import {
   FieldLabel,
@@ -145,6 +146,18 @@ const LogoUploader = (props) => {
     accept: ".jpeg,.jpg,.png",
   };
 
+  let deleteLogo = () => {
+    try {
+      axios.delete(props.community.links.logo, {
+        headers: {
+          "content-type": "application/octet-stream",
+        },
+      });
+    } catch (error) {
+      props.onError(error);
+    }
+  };
+
   return (
     <Dropzone {...dropzoneParams}>
       {({ getRootProps, getInputProps, open: openFileDialog }) => (
@@ -189,13 +202,7 @@ const LogoUploader = (props) => {
                       confirmationMessage={
                         <h3>Are you sure you want to delete this picture?</h3>
                       }
-                      onDelete={() =>
-                        axios.delete(props.community.links.logo, {
-                          headers: {
-                            "content-type": "application/octet-stream",
-                          },
-                        })
-                      }
+                      onDelete={deleteLogo}
                     />
                   )}
                 </Grid.Row>
@@ -250,12 +257,17 @@ const DangerZone = (props) => (
             }
           );
         }}
+        onError={props.onError}
       />
     </Grid.Column>
   </Grid.Row>
 );
 
 class CommunityProfileForm extends Component {
+  state = {
+    error: "",
+  };
+
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
       id: "",
@@ -319,6 +331,10 @@ class CommunityProfileForm extends Component {
     return submittedCommunity;
   };
 
+  setGlobalError = (error) => {
+    this.setState({ error: error.response.data.message });
+  };
+
   render() {
     return (
       <Formik
@@ -346,20 +362,30 @@ class CommunityProfileForm extends Component {
             window.location.reload();
           } catch (error) {
             // TODO: handle nested fields
-            //   if (error.response.data.errors) {
-            //     error.response.data.errors.map(({ field, message }) =>
-            //       setFieldError(field, message)
-            //     );
-            //   } else if (error.response.data.message) {
-            //     setGlobalError(error.response.data.message);
-            //   }
-            // }
-            setSubmitting(false);
+            if (error.response.data.errors) {
+              error.response.data.errors.map(({ field, message }) =>
+                setFieldError(field, message)
+              );
+            } else if (error.response.data.message) {
+              this.setGlobalError(error.response.data.message);
+            }
           }
+          setSubmitting(false);
         }}
       >
         {({ isSubmitting, isValid, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">
+            <Message
+              hidden={this.state.error == ""}
+              negative
+              className="flashed top-attached"
+            >
+              <Grid container>
+                <Grid.Column width={15} textAlign="left">
+                  <strong>{this.state.error}</strong>
+                </Grid.Column>
+              </Grid>
+            </Message>
             <Grid>
               <Grid.Row>
                 <Grid.Column width={16}>
@@ -481,10 +507,14 @@ class CommunityProfileForm extends Component {
                   <LogoUploader
                     community={this.props.community}
                     logo={this.props.logo}
+                    onError={this.setGlobalError}
                   />
                 </Grid.Column>
               </Grid.Row>
-              <DangerZone community={this.props.community} />
+              <DangerZone
+                community={this.props.community}
+                onError={this.setGlobalError}
+              />
             </Grid>
           </Form>
         )}
