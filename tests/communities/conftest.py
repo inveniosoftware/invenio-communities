@@ -48,7 +48,7 @@ def minimal_community(community_owner):
     return {
         "id": "comm_id",
         "access": {
-            "visibility":"public",
+            "visibility": "public",
         },
         "metadata": {
             "title": "Title",
@@ -127,7 +127,7 @@ def create_many_records(app, client_with_login, minimal_community, headers):
     for (type_,ind) in itertools.product(community_types, list(range(N))):
         minimal_community['id'] = f'comm_{type_}_{ind}'
         minimal_community['metadata']['type'] = type_
-        client.post( '/communities', headers=headers, json=minimal_community) 
+        client.post( '/communities', headers=headers, json=minimal_community)
 
     Community.index.refresh()
 

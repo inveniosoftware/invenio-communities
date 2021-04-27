@@ -60,7 +60,7 @@ class CommunityService(RecordService):
             links_item_tpl=self.links_item_tpl,
         )
 
-    def rename(self, id_, identity, data, revision_id=None):
+    def rename(self, id_, identity, data, revision_id=None, raise_errors=True):
         """Rename a community."""
         record = self.record_cls.pid.resolve(id_)
 
@@ -71,6 +71,14 @@ class CommunityService(RecordService):
 
         if 'id' not in data:
             raise ValidationError('Missing data for required field.', 'id')
+
+        data, errors = self.schema.load(
+            data,
+            context={"identity": identity},
+            raise_errors=raise_errors,     # if False, flow is continued with
+            schema_args={'partial': True}  # data only containing valid data,
+                                           # but errors are reported
+        )                                  # (as warnings)
 
         # Run components
         for component in self.components:
