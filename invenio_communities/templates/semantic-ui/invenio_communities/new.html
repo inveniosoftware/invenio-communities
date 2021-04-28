@@ -9,6 +9,8 @@
 
 {% extends "invenio_communities/base.html" %}
 
+{%- set title = _("New community") -%}
+
 {%- block javascript %}
 {{ super() }}
 {{ webpack['invenio-communities-new.js'] }}
