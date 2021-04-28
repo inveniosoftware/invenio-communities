@@ -9,18 +9,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import {
-  Button,
-  Icon,
-  Item,
-  Card,
-  Grid,
-  Message,
-  Placeholder,
-} from "semantic-ui-react";
-
+import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
-import { element } from "prop-types";
 
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   const PlaceholderItem = () => (
@@ -64,15 +54,17 @@ class CommunityCard extends Component {
   render() {
     return (
       <Card fluid href={`/communities/${this.props.community.id}`}>
-        <img
-          ref={this.imageRef}
-          className="ui medium image community-image"
-          src={this.props.community.links.logo}
-          onError={(error) => {
-            if (!this.imageRef.current.src.includes(this.props.defaultLogo))
-              this.imageRef.current.src = this.props.defaultLogo;
-          }}
-        />
+        <div className="community-image">
+          <img
+            ref={this.imageRef}
+            className="ui image"
+            src={this.props.community.links.logo}
+            onError={(error) => {
+              if (!this.imageRef.current.src.includes(this.props.defaultLogo))
+                this.imageRef.current.src = this.props.defaultLogo;
+            }}
+          />
+        </div>
 
         <Card.Content>
           <Card.Header>
@@ -158,7 +150,7 @@ if (userCommunitiesContainer) {
     <CommunitiesCardGroup
       fetchDataUrl={`/api/user/communities?q=&sort=newest&page=1&size=5`}
       emptyMessage="You are not a member of any community."
-      defaultLogo="/static/images/logo.png"
+      defaultLogo="/static/images/placeholder.png"
     />,
     userCommunitiesContainer
   );
@@ -167,7 +159,7 @@ ReactDOM.render(
   <CommunitiesCardGroup
     fetchDataUrl={`/api/communities?q=&sort=newest&page=1&size=5`}
     emptyMessage="There are no featured communities."
-    defaultLogo="/static/images/logo.png"
+    defaultLogo="/static/images/placeholder.png"
   />,
   featuredCommunitiesContainer
 );
