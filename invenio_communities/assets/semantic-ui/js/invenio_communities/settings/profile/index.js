@@ -63,11 +63,12 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
     title: Yup.string().max(250, "Maximum number of characters is 2000"),
     description: Yup.string().max(2000, "Maximum number of characters is 2000"),
     website: Yup.string().url("Must be a valid URL"),
-    page: Yup.string().max(2000, "Maximum number of characters is 2000"),
-    curation_policy: Yup.string().max(
-      2000,
-      "Maximum number of characters is 2000"
-    ),
+    // TODO: Re-enable once properly integrated to be displayed
+    // page: Yup.string().max(2000, "Maximum number of characters is 2000"),
+    // curation_policy: Yup.string().max(
+    //   2000,
+    //   "Maximum number of characters is 2000"
+    // ),
   }),
 });
 
@@ -279,8 +280,9 @@ class CommunityProfileForm extends Component {
       metadata: {
         description: "",
         title: "",
-        curation_policy: "",
-        page: "",
+        // TODO: Re-enable once properly integrated to be displayed
+        // curation_policy: "",
+        // page: "",
         type: "organization",
         website: "",
         affiliations: [],
@@ -471,7 +473,8 @@ class CommunityProfileForm extends Component {
                     noQueryMessage="Search for affiliations..."
                     allowAdditions
                   />
-                  <RichInputField
+                  {/* TODO: Re-enable once properly integrated to be displayed */}
+                  {/* <RichInputField
                     label="Curation policy"
                     fieldPath="metadata.curation_policy"
                     label={
@@ -495,7 +498,7 @@ class CommunityProfileForm extends Component {
                     }
                     editorConfig={CKEditorConfig}
                     fluid
-                  />
+                  /> */}
                   <Button
                     disabled={!isValid || isSubmitting}
                     loading={isSubmitting}
