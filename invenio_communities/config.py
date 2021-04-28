@@ -51,3 +51,6 @@ COMMUNITIES_ROUTES = {
     'settings_privileges': '/communities/<pid_value>/settings/privileges',
 }
 """Communities ui endpoints."""
+
+COMMUNITIES_ENABLED = True
+"""Config to enable/disable communities blueprints."""
