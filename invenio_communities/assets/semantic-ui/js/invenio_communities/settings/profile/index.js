@@ -231,9 +231,7 @@ const DangerZone = (props) => (
     </Grid.Column>
     <Grid.Column floated="left" width="12">
       <Header as="h4">Rename community</Header>
-      <p>
-        Renaming your community can have unintended side effects.
-      </p>
+      <p>Renaming your community can have unintended side effects.</p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
       <RenameCommunityButton community={props.community} />
@@ -242,9 +240,7 @@ const DangerZone = (props) => (
     <Grid.Column width={16} className="margin-top-25"></Grid.Column>
     <Grid.Column floated="left" width="12">
       <Header as="h4">Delete community</Header>
-      <p>
-        Once deleted, it will be gone forever. Please be certain.
-      </p>
+      <p>Once deleted, it will be gone forever. Please be certain.</p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
       <DeleteButton
@@ -454,7 +450,7 @@ class CommunityProfileForm extends Component {
                     suggestionAPIHeaders={{
                       Accept: "application/vnd.inveniordm.v1+json",
                     }}
-                    placeholder={"Search for an affiliation by name"}
+                    placeholder={"Search for an organization by name"}
                     clearable
                     multiple
                     initialSuggestions={_get(
@@ -469,8 +465,8 @@ class CommunityProfileForm extends Component {
                         key: affiliation.name,
                       }))
                     }
-                    label="Affiliations"
-                    noQueryMessage="Search for affiliations..."
+                    label="Organizations"
+                    noQueryMessage="Search for organizations..."
                     allowAdditions
                   />
                   {/* TODO: Re-enable once properly integrated to be displayed */}
