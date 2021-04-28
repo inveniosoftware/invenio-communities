@@ -28,6 +28,15 @@ import {
   ResultsPerPage,
 } from "react-searchkit";
 
+const facetsValues = {
+  type: {
+    organization: "Organization",
+    event: "Event",
+    topic: "Topic",
+    project: "Project",
+  },
+};
+
 function ResultsGridItemTemplate({ result, index }) {
   return (
     <Card fluid key={index} href={`/communities/${result.metadata.id}`}>
@@ -208,7 +217,7 @@ const CommunitiesFacetsValues = ({
           ></i>
         ) : null}
         <Checkbox
-          label={bucket.label || keyField}
+          label={bucket.label || facetsConfig[keyField] || keyField}
           value={keyField}
           onClick={() => onFilterClicked(keyField)}
           checked={isSelected}
@@ -271,6 +280,8 @@ const defaultComponents = {
   "SearchBar.element": CommunitiesSearchBarElement,
   "SearchApp.results": CommunitiesResults,
 };
+const domContainer = document.getElementById("communities-search");
+const facetsConfig = JSON.parse(domContainer.dataset.facetsConfig);
 
 // Auto-initialize search app
 const initSearchApp = createSearchAppInit(defaultComponents);
