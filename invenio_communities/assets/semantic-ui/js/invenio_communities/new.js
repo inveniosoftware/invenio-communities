@@ -59,11 +59,9 @@ class CommunityCreateForm extends Component {
             window.location.href = response.data.links.settings_html;
           } catch (error) {
             if (error.response.data.errors) {
-              error.response.data.errors.map(({ field, message }) =>
-                setFieldError(field, message)
+              error.response.data.errors.map(({ field, messages }) =>
+                setFieldError(field, messages[0])
               );
-            } else if (error.response.data.message) {
-              this.setState({ error: error.response.data.message });
             }
           }
           setSubmitting(false);
@@ -71,17 +69,6 @@ class CommunityCreateForm extends Component {
       >
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
-            <Message
-              hidden={this.state.error == ""}
-              negative
-              className="flashed top-attached"
-            >
-              <Grid container>
-                <Grid.Column width={15} textAlign="left">
-                  <strong>{this.state.error}</strong>
-                </Grid.Column>
-              </Grid>
-            </Message>
             <Grid container centered>
               <Grid.Row>
                 <Grid.Column width={8} textAlign="center">
