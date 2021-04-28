@@ -66,7 +66,7 @@ class CommunityMetadataSchema(Schema):
     )
     website = fields.Url(validate=_not_blank())
     funding = fields.List(fields.Nested(FundingSchema))
-    affiliations = fields.List(fields.Nested(AffiliationSchema))
+    organizations = fields.List(fields.Nested(AffiliationSchema))
 
     # TODO: Add when general vocabularies are ready
     # domains = fields.List(fields.Str())

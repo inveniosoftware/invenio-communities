@@ -281,7 +281,7 @@ class CommunityProfileForm extends Component {
         // page: "",
         type: "organization",
         website: "",
-        affiliations: [],
+        organizations: [],
       },
       // TODO: should this come from the backend?
       access: {
@@ -291,14 +291,14 @@ class CommunityProfileForm extends Component {
       },
     });
 
-    // Deserialize affiliations
-    let affiliations = _map(
-      _get(initialValues, "metadata.affiliations"),
+    // Deserialize organizations
+    let organizations = _map(
+      _get(initialValues, "metadata.organizations"),
       "name"
     );
     return {
       ...initialValues,
-      metadata: { ...initialValues.metadata, affiliations },
+      metadata: { ...initialValues.metadata, organizations },
     };
   };
 
@@ -311,21 +311,21 @@ class CommunityProfileForm extends Component {
       return knownField ? knownField : { [key]: value };
     };
 
-    const affiliationsFieldPath = "metadata.affiliations";
-    const initialAffilliations = _get(
+    const organizationsFieldPath = "metadata.organizations";
+    const initialOrganizations = _get(
       this.props.community,
-      affiliationsFieldPath,
+      organizationsFieldPath,
       []
     );
-    const affiliations = submittedCommunity.metadata.affiliations.map(
-      (affiliation) => {
-        return findField(initialAffilliations, "name", affiliation);
+    const organizations = submittedCommunity.metadata.organizations.map(
+      (organization) => {
+        return findField(initialOrganizations, "name", organization);
       }
     );
 
     submittedCommunity = {
       ...submittedCommunity,
-      metadata: { ...values.metadata, affiliations },
+      metadata: { ...values.metadata, organizations },
     };
 
     // Clean values
@@ -445,7 +445,7 @@ class CommunityProfileForm extends Component {
                     optimized
                   />
                   <RemoteSelectField
-                    fieldPath={"metadata.affiliations"}
+                    fieldPath={"metadata.organizations"}
                     suggestionAPIUrl="/api/vocabularies/affiliations"
                     suggestionAPIHeaders={{
                       Accept: "application/vnd.inveniordm.v1+json",
@@ -455,14 +455,14 @@ class CommunityProfileForm extends Component {
                     multiple
                     initialSuggestions={_get(
                       this.props.community,
-                      "metadata.affiliations",
+                      "metadata.organizations",
                       []
                     )}
-                    serializeSuggestions={(affiliations) =>
-                      _map(affiliations, (affiliation) => ({
-                        text: affiliation.name,
-                        value: affiliation.name,
-                        key: affiliation.name,
+                    serializeSuggestions={(organizations) =>
+                      _map(organizations, (organization) => ({
+                        text: organization.name,
+                        value: organization.name,
+                        key: organization.name,
                       }))
                     }
                     label="Organizations"
