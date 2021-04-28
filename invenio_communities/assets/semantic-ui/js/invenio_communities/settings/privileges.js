@@ -52,15 +52,12 @@ class CommunityPrivilegesForm extends Component {
             );
             setSubmitting(false);
           } catch (error) {
-            // TODO: handle nested fields
-            //   if (error.response.data.errors) {
-            //     error.response.data.errors.map(({ field, message }) =>
-            //       setFieldError(field, message)
-            //     );
-            //   } else if (error.response.data.message) {
-            //     setGlobalError(error.response.data.message);
-            //   }
-            // }
+              if (error.response.data.errors) {
+                error.response.data.errors.map(({ field, messages }) =>
+                  setFieldError(field, messages[0])
+                );
+              }
+            }
             setSubmitting(false);
           }
         }}

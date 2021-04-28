@@ -364,10 +364,9 @@ class CommunityProfileForm extends Component {
             setSubmitting(false);
             window.location.reload();
           } catch (error) {
-            // TODO: handle nested fields
             if (error.response.data.errors) {
-              error.response.data.errors.map(({ field, message }) =>
-                setFieldError(field, message)
+              error.response.data.errors.map(({ field, messages }) =>
+                setFieldError(field, messages[0])
               );
             } else if (error.response.data.message) {
               this.setGlobalError(error.response.data.message);
