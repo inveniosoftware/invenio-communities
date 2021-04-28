@@ -87,7 +87,7 @@ def full_community(community_owner):
                     "scheme": "openaire"
                 }
             }],
-            "affiliations": [{
+            "organizations": [{
                     "name": "CERN",
                     "identifiers": [
                         {

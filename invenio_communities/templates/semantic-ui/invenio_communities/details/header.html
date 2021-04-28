@@ -12,25 +12,34 @@
   <div class="ui container relaxed grid">
     <div class="row">
       <div class="two wide column">
+        {% if logo %}
         <div class="ui rounded image community-image">
-          {% if logo %}
           <img src="{{logo.links.self}}" alt="No image found"/>
-          {% else %}
-          <img src="/static/images/placeholder.png" alt="No image found"/>
-          {% endif %}
         </div>
+        {% else %}
+        <div class="ui rounded image">
+          <img src="/static/images/placeholder.png" alt="No image found"/>
+        </div>
+        {% endif %}
       </div>
       <div class="ten wide column">
           <h2 class="ui header">{{ community.metadata.title }}</h2>
           <p>{{ community.metadata.description }}</p>
-          <a href="{{community.metadata.website}}"> <i class="linkify icon"></i>
-            {{community.metadata.website}}
-          </a>
-          <i class="tag icon community-tags"></i><div class="ui label small grey type-label">{{ community.metadata.type }}</div>
-          <i class="building outline icon community-tags"></i>
-          {%- for affiliation in community.metadata.affiliations %}
-            <span class="label label-keyword">{{ affiliation.name }}</span>
-          {%- endfor %}
+          {% if community.metadata.website %}
+            <a href="{{community.metadata.website}}"> <i class="linkify icon"></i>
+              {{community.metadata.website}}
+            </a>
+          {% endif %}
+          {% if community.metadata.type %}
+            <i class="tag icon community-tags"></i><div class="ui label small grey type-label">{{ types[community.metadata.type] }}</div>
+          {% endif %}
+          {% if community.metadata.organizations %}
+            <i class="building outline icon community-tags"></i>
+            {%- for organization in community.metadata.organizations %}
+              <span class="label label-keyword">{{ organization.name }}</span>
+            {%- endfor %}
+          {% endif %}
+
       </div>
       {# TODO: Add proper statistics #}
       <!-- <div class="two wide floated right column">

@@ -30,7 +30,7 @@ def _assert_optional_medatada_items_response(response):
     metadata_fields = response.json['metadata'].keys()
     fields_to_check = [
         "description", "curation_policy", "page", "website",
-        "funding", "affiliations"
+        "funding", "organizations"
     ]
 
     for field in fields_to_check:
