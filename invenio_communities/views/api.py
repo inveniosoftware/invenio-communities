@@ -10,6 +10,7 @@
 
 from flask import Blueprint
 
+
 def create_communities_api_blueprint(app):
     """Create communities api blueprint."""
     ext = app.extensions["invenio-communities"]

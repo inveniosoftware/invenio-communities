@@ -9,9 +9,9 @@
 from functools import wraps
 
 from flask import g
+from invenio_records_resources.services.errors import PermissionDeniedError
 
 from invenio_communities.proxies import current_communities
-from invenio_records_resources.services.errors import PermissionDeniedError
 
 
 def service():

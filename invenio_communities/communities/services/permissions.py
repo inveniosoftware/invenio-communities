@@ -14,7 +14,7 @@ from invenio_access.permissions import any_user
 from invenio_rdm_records.services.generators import \
     IfRestricted as IfRestrictedBase
 from invenio_records_permissions.generators import AnyUser, \
-    AuthenticatedUser, Generator
+    AuthenticatedUser, Generator, SystemProcess
 from invenio_records_permissions.policies import BasePermissionPolicy
 
 
@@ -69,7 +69,7 @@ class CommunityOwners(Generator):
 class CommunityPermissionPolicy(BasePermissionPolicy):
     """Permissions for Community CRUD operations."""
 
-    can_create = [AuthenticatedUser()]
+    can_create = [AuthenticatedUser(), SystemProcess()]
 
     can_read = [
         IfRestricted(
@@ -78,12 +78,12 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
             else_=[AnyUser()]),
         ]
 
-    can_update = [CommunityOwners()]
+    can_update = [CommunityOwners(), SystemProcess()]
 
-    can_delete = [CommunityOwners()]
+    can_delete = [CommunityOwners(), SystemProcess()]
 
-    can_search = [AnyUser()]
+    can_search = [AnyUser(), SystemProcess()]
 
-    can_search_user_communities = [AuthenticatedUser()]
+    can_search_user_communities = [AuthenticatedUser(), SystemProcess()]
 
-    can_rename = [CommunityOwners()]
+    can_rename = [CommunityOwners(), SystemProcess()]

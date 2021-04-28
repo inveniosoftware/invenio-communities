@@ -9,9 +9,8 @@
 """Communities UI views."""
 
 from flask import Blueprint, current_app, render_template
-from flask_menu import current_menu
 from flask_login import current_user
-
+from flask_menu import current_menu
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
