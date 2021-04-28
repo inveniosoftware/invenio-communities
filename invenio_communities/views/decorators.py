@@ -11,6 +11,7 @@ from functools import wraps
 from flask import g
 
 from invenio_communities.proxies import current_communities
+from invenio_records_resources.services.errors import PermissionDeniedError
 
 
 def service():
@@ -31,6 +32,7 @@ def pass_community(f):
         return f(**kwargs)
     return view
 
+
 def pass_community_logo(f):
     """Decorate a view to pass a community logo using the files service."""
     @wraps(f)
@@ -46,4 +48,21 @@ def pass_community_logo(f):
             kwargs['logo'] = None
 
         return f(**kwargs)
+    return view
+
+
+def require_community_owner(f):
+    """Decorate a view to require community owner for accessing the view."""
+    @wraps(f)
+    def view(**kwargs):
+        """."""
+        pid_value = kwargs.get('pid_value')
+        community = service().read(
+            id_=pid_value, identity=g.identity
+        )
+        if community.has_permissions_to(["update"])["can_update"]:
+            return f(**kwargs)
+        else:
+            raise PermissionDeniedError()
+
     return view
