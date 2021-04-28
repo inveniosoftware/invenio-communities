@@ -80,7 +80,9 @@ def communities_settings(community=None, logo=None, pid_value=None):
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(), # TODO: use serializer,
-        logo=logo.to_dict() if logo else None,
+        logo=logo.to_dict() if logo else None, # Pass permissions so we can disable partially UI components
+        # e.g Settings tab
+        permissions=community.has_permissions_to(['update']),
         active_menu_tab="settings"
     )
 
@@ -108,5 +110,8 @@ def communities_settings_privileges(community=None, pid_value=None):
                 ]
             )
         ),
+        # Pass permissions so we can disable partially UI components
+        # e.g Settings tab
+        permissions=community.has_permissions_to(['update']),
         active_menu_tab="settings"
     )

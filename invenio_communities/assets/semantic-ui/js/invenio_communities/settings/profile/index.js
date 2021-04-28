@@ -180,7 +180,12 @@ const LogoUploader = (props) => {
                       rounded
                     />
                   ) : (
-                    <Icon name="users" size="massive" />
+                    <Image
+                      src={props.defaultLogo}
+                      size="medium"
+                      wrapped
+                      rounded
+                    />
                   )}
                 </Grid.Row>
                 <br />
@@ -507,6 +512,7 @@ class CommunityProfileForm extends Component {
                   <LogoUploader
                     community={this.props.community}
                     logo={this.props.logo}
+                    defaultLogo={this.props.defaultLogo}
                     onError={this.setGlobalError}
                   />
                 </Grid.Column>
@@ -528,7 +534,11 @@ const community = JSON.parse(domContainer.dataset.community);
 const logo = JSON.parse(domContainer.dataset.logo);
 
 ReactDOM.render(
-  <CommunityProfileForm community={community} logo={logo} />,
+  <CommunityProfileForm
+    community={community}
+    logo={logo}
+    defaultLogo="/static/images/placeholder.png"
+  />,
   domContainer
 );
 export default CommunityProfileForm;
