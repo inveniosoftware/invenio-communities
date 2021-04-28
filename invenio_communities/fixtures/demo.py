@@ -8,55 +8,50 @@
 
 """Fake demo records."""
 
-import datetime
 import json
 import random
 
-from faker import Faker
 
-
-def create_fake_community():
+def create_fake_community(faker):
     """Create fake communities for demo purposes."""
-
-    fake = Faker()
     data_to_use = {
         "access": {
             "visibility": random.choice(["public", "restricted"]),
             "member_policy": random.choice(["open", "closed"]),
             "record_policy": random.choice(["open", "closed", "restricted"])
         },
-        "id": fake.domain_word(), # fake id creator ? fake.word() 
+        "id": faker.unique.domain_word(),
         "metadata": {
-            "title": fake.sentence(nb_words=5, variable_nb_words=True),
-            "description": fake.text(max_nb_chars=2000),
-            "type": random.choice(["organization", "event", "topic", "project"]),
-            "curation_policy": fake.text(max_nb_chars=2000),
-            "page": fake.text(max_nb_chars=2000),
-            "website": "https://" + fake.domain_name(), # fake.url()
-            "funding":[{
-                "funder": {
-                    "name": "European Commission",
-                    "identifier": "00k4n6c32",
-                    "scheme": "ror"
-                },
-                "award": {
-                    "title": "OpenAIRE",
-                    "number": "246686",
-                    "identifier": ".../246686",
-                    "scheme": "openaire"
-                }
-            }],
-            "affiliations": [{
-            "name": "CERN",
-            "identifiers": [
+            "title": faker.sentence(nb_words=5, variable_nb_words=True),
+            "description": faker.text(max_nb_chars=2000),
+            "type": random.choice(
+                ["organization", "event", "topic", "project"]),
+            "curation_policy": faker.text(max_nb_chars=2000),
+            "page": faker.text(max_nb_chars=2000),
+            "website": "https://" + faker.domain_name(),  # fake.url()
+            "funding": [
                 {
-                "identifier": "01ggx4157",
-                "scheme": "ror"
+                    "funder": {
+                        "name": "European Commission",
+                        "identifier": "03yrm5c26",
+                        "scheme": "ror",
+                    },
+                    "award": {
+                        "title": "OpenAIRE",
+                        "number": "246686",
+                        "identifier": "0000-0002-1825-0097",
+                        "scheme": "orcid",
+                    },
                 }
-            ]
-        }]
-        }
+            ],
+            "affiliations": [
+                {
+                    "name": "CERN",
+                    "identifiers": [
+                        {"identifier": "01ggx4157", "scheme": "ror"}],
+                }
+            ],
+        },
     }
 
     return json.loads(json.dumps(data_to_use))
-

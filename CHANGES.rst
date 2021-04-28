@@ -9,7 +9,7 @@
 Changes
 =======
 
-Version 2.2.0 (released 2021-04-26)
+Version 2.2.1 (released 2021-04-28)
 -----------------------------------
 
 - Initial public release.

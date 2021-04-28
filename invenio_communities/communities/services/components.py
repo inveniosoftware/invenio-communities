@@ -6,6 +6,8 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
+import re
+
 from invenio_access.permissions import system_process
 from invenio_rdm_records.services.components import AccessComponent
 from invenio_records_resources.services.records.components import \
@@ -16,8 +18,18 @@ from marshmallow.exceptions import ValidationError
 class PIDComponent(ServiceComponent):
     """Service component for Community PIDs."""
 
+    @classmethod
+    def _validate(cls, pid_value):
+        """Checks the validity of the provided pid value."""
+        blop = re.compile('^[-\w]+$')
+        if not bool(blop.match(pid_value)):
+            raise ValidationError(
+                'The ID should contain only letters with numbers or dashes')
+
     def create(self, identity, record=None, data=None, **kwargs):
         """Create a Community PID from its metadata."""
+        data['id'] = data['id'].lower()
+        self._validate(data['id'])
         record['id'] = data['id']
         provider = record.__class__.pid.field._provider.create(record=record)
         setattr(record, 'pid', provider.pid)
@@ -31,10 +43,11 @@ class PIDComponent(ServiceComponent):
 
     def rename(self, identity, record=None, data=None, **kwargs):
         """Rename the Community PIDs value."""
+        data['id'] = data['id'].lower()
         if record.pid.pid_value == data['id']:
             raise ValidationError(
                 'A new ID value is required for the renaming', 'id')
-
+        self._validate(data['id'])
         record.__class__.pid.field._provider.update(
             record.pid, data['id'])
 

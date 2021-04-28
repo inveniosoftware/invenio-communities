@@ -103,6 +103,9 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
+        'flask.commands': [
+            'communities = invenio_communities.cli:communities',
+        ],
         'invenio_base.apps': [
             'invenio_communities = invenio_communities:InvenioCommunities',
         ],
@@ -136,8 +139,7 @@ setup(
             'invenio_communities = invenio_communities.webpack:communities'
         ],
         'invenio_celery.tasks': [
-            # TODO: Add when necessary
-            # 'invenio_communities = invenio_communities.tasks',
+            'invenio_communities = invenio_communities.fixtures.tasks',
         ],
     },
     extras_require=extras_require,

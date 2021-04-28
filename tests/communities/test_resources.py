@@ -473,7 +473,7 @@ def test_update_renamed_record(
     app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
-    """Test to update renamed entity"""
+    """Test to update renamed entity."""
     client = client_with_login
     # Create a community
     res = client.post('/communities', headers=headers, json=minimal_community)
@@ -484,17 +484,17 @@ def test_update_renamed_record(
 
     # Rename the communnity
     data = copy.deepcopy(minimal_community)
-    data['id'] = "Renamed comm"
+    data['id'] = "renamed_comm"
     res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
     assert res.status_code == 200
     renamed_community = res.json
     renamed_id_ = renamed_community['id']
     data["access"] = \
-    {
-        "visibility": "restricted",
-        "member_policy": "closed",
-        "record_policy": "restricted"
-    }
+        {
+            "visibility": "restricted",
+            "member_policy": "closed",
+            "record_policy": "restricted"
+        }
     res = client.put(f'/communities/{renamed_id_}', headers=headers, json=data)
     assert res.status_code == 200
     assert res.json['id'] == renamed_id_
@@ -507,10 +507,10 @@ def test_simple_delete_response(
     app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
-    """Test delete and request deleted community """
+    """Test delete and request deleted community."""
     client = client_with_login
 
-    #Creta a community
+    # Create a community
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
@@ -603,3 +603,45 @@ def test_logo_flow(
 
     # TODO: Delete community and try all of the above operations
     # TODO: Check permissions
+
+
+def test_invalid_community_ids(
+    app, client_with_login, location, minimal_community, headers,
+    es_clear
+):
+    """Test for invalid community IDs handling."""
+    client = client_with_login
+    # Create a community with invalid ID
+    minimal_community['id'] = 'comm id'
+    res = client.post('/communities', headers=headers, json=minimal_community)
+    assert res.status_code == 400
+    assert res.json['errors'][0]['messages'][0] == \
+        'The ID should contain only letters with numbers or dashes'
+
+    minimal_community['id'] = 'comm_id'
+    res = client.post('/communities', headers=headers, json=minimal_community)
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    created_community = res.json
+    id_ = created_community['id']
+
+    # Rename the communnity
+    data = copy.deepcopy(minimal_community)
+    data['id'] = "Renamed comm"
+    res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
+    assert res.status_code == 400
+    assert res.json['errors'][0]['messages'][0] == \
+        'The ID should contain only letters with numbers or dashes'
+
+    data = copy.deepcopy(minimal_community)
+    data = {}
+    res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
+    assert res.status_code == 400
+    assert res.json['errors'][0]['messages'][0] == \
+        'Missing data for required field.'
+
+    new_id = "Renamed_comm"
+    data['id'] = new_id
+    res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
+    assert res.status_code == 200
+    assert res.json['id'] == new_id.lower()

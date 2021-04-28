@@ -13,17 +13,21 @@
     <div class="row">
       {% if logo %}
       <div class="two wide column">
-        <div class="ui tiny rounded image">
+        <div class="ui small rounded image">
           <img src="{{logo.links.self}}" alt="No image found"/>
         </div>
       </div>
-      <div class="ten wide column">
       {% else %}
-      <div class="twelve wide column">
-      {% endif %}
-        <h2 class="ui header">{{ community.metadata.title }}</h2>
-        <p>{{ community.metadata.description }}</p>
+      <div class="two wide column">
+        <div class="ui small rounded image">
+          <img src="/static/images/placeholder.png" alt="No image found"/>
+        </div>
       </div>
+      {% endif %}
+        <div class="ten wide column">
+          <h2 class="ui header">{{ community.metadata.title }}</h2>
+          <p>{{ community.metadata.description }}</p>
+        </div>
       {# TODO: Add proper statistics #}
       <!-- <div class="two wide floated right column">
         <div class="ui mini statistic">
