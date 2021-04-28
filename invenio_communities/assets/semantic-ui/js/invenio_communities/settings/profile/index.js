@@ -231,7 +231,7 @@ const DangerZone = (props) => (
     <Grid.Column floated="left" width="12">
       <Header as="h4">Rename community</Header>
       <p>
-        Here is an explanation of what will happen when you rename a community.
+        Renaming your community can have unintended side effects.
       </p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
@@ -242,7 +242,7 @@ const DangerZone = (props) => (
     <Grid.Column floated="left" width="12">
       <Header as="h4">Delete community</Header>
       <p>
-        Here is an explanation of what will happen when you delete a community.
+        Once deleted, it will be gone forever. Please be certain.
       </p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
