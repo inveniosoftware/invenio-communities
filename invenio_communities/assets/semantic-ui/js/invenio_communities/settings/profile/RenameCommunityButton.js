@@ -20,7 +20,10 @@ export const RenameCommunityButton = (props) => {
 
   const handleClose = () => setModalOpen(false);
 
-  const handleRename = async () => {
+  const handleRename = async (event) => {
+    // stop event propagation so the submit event is restricted in the modal
+    // form
+    event.stopPropagation();
     try {
       const newName = formInputRef.current.value;
       const resp = await axios.post(
@@ -57,7 +60,7 @@ export const RenameCommunityButton = (props) => {
 
       <Modal open={modalOpen} onClose={handleClose} size="tiny">
         <Modal.Content>
-          <Form>
+          <Form onSubmit={handleRename}>
             <Form.Input
               label="Enter the new name of the community"
               fluid
