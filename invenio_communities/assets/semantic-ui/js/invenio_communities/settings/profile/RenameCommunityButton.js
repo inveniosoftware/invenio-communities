@@ -31,8 +31,7 @@ export const RenameCommunityButton = (props) => {
         }
       );
       handleClose();
-      // TODO: replace it with proper link from the rename response
-      window.location.href = `/communities/${newName}`;
+      window.location.href = `/communities/${newName}/settings`;
     } catch (error) {
       const responseErrors = error.response.data.errors;
       const invalidIdError = responseErrors
