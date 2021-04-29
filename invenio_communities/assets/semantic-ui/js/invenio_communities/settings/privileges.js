@@ -54,13 +54,10 @@ class CommunityPrivilegesForm extends Component {
             setSubmitting(false);
             window.location.reload();
           } catch (error) {
-            // TODO: handle nested fields
             if (error.response.data.errors) {
               error.response.data.errors.map(({ field, messages }) =>
                 setFieldError(field, messages[0])
               );
-            } else if (error.response.data.message) {
-              setGlobalError(error.response.data.message);
             }
             setSubmitting(false);
           }
