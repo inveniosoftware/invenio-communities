@@ -37,6 +37,10 @@ class CommunityCreateForm extends Component {
     return initialValues;
   };
 
+  setGlobalError = (error) => {
+    this.setState({ error: error.response.data.message });
+  };
+
   render() {
     return (
       <Formik
@@ -62,6 +66,8 @@ class CommunityCreateForm extends Component {
               error.response.data.errors.map(({ field, messages }) =>
                 setFieldError(field, messages[0])
               );
+            } else if (error.response.data.message) {
+              this.setGlobalError(error.response.data.message);
             }
           }
           setSubmitting(false);
@@ -69,6 +75,17 @@ class CommunityCreateForm extends Component {
       >
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
+            <Message
+              hidden={this.state.error == ""}
+              negative
+              className="flashed top-attached"
+            >
+              <Grid container>
+                <Grid.Column width={15} textAlign="left">
+                  <strong>{this.state.error}</strong>
+                </Grid.Column>
+              </Grid>
+            </Message>
             <Grid container centered>
               <Grid.Row>
                 <Grid.Column width={8} textAlign="center">

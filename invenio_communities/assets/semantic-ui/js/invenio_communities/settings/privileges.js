@@ -12,10 +12,13 @@ import axios from "axios";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
 
-import { Divider, Icon, Grid, Button, Header, Form } from "semantic-ui-react";
+import { Divider, Icon, Grid, Button, Header, Form, Message } from "semantic-ui-react";
 import { RadioField } from "react-invenio-forms";
 
 class CommunityPrivilegesForm extends Component {
+  state = {
+    error: "",
+  };
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
       access: {
@@ -27,6 +30,10 @@ class CommunityPrivilegesForm extends Component {
     });
 
     return initialValues;
+  };
+
+  setGlobalError = (error) => {
+    this.setState({ error: error.response.data.message });
   };
 
   render() {
@@ -58,6 +65,8 @@ class CommunityPrivilegesForm extends Component {
               error.response.data.errors.map(({ field, messages }) =>
                 setFieldError(field, messages[0])
               );
+            } else if (error.response.data.message) {
+              this.setGlobalError(error.response.data.message);
             }
             setSubmitting(false);
           }
@@ -65,6 +74,17 @@ class CommunityPrivilegesForm extends Component {
       >
         {({ isSubmitting, handleSubmit, values }) => (
           <Form onSubmit={handleSubmit}>
+            <Message
+              hidden={this.state.error == ""}
+              negative
+              className="flashed top-attached"
+            >
+              <Grid container>
+                <Grid.Column width={15} textAlign="left">
+                  <strong>{this.state.error}</strong>
+                </Grid.Column>
+              </Grid>
+            </Message>
             <Grid>
               <Grid.Column width={16}>
                 <Header as="h2">Community permissions</Header>
