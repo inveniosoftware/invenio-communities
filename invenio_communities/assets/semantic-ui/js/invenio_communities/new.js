@@ -37,6 +37,10 @@ class CommunityCreateForm extends Component {
     return initialValues;
   };
 
+  setGlobalError = (error) => {
+    this.setState({ error: error.response.data.message });
+  };
+
   render() {
     return (
       <Formik
@@ -59,11 +63,11 @@ class CommunityCreateForm extends Component {
             window.location.href = response.data.links.settings_html;
           } catch (error) {
             if (error.response.data.errors) {
-              error.response.data.errors.map(({ field, message }) =>
-                setFieldError(field, message)
+              error.response.data.errors.map(({ field, messages }) =>
+                setFieldError(field, messages[0])
               );
             } else if (error.response.data.message) {
-              this.setState({ error: error.response.data.message });
+              this.setGlobalError(error.response.data.message);
             }
           }
           setSubmitting(false);

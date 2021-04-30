@@ -9,6 +9,7 @@
 import re
 
 from invenio_access.permissions import system_process
+from invenio_pidstore.errors import PIDAlreadyExists
 from invenio_rdm_records.services.components import AccessComponent
 from invenio_records_resources.services.records.components import \
     ServiceComponent
@@ -24,14 +25,22 @@ class PIDComponent(ServiceComponent):
         blop = re.compile('^[-\w]+$')
         if not bool(blop.match(pid_value)):
             raise ValidationError(
-                'The ID should contain only letters with numbers or dashes')
+                'The ID should contain only letters with numbers or dashes.',
+                field_name='id',
+            )
 
     def create(self, identity, record=None, data=None, **kwargs):
         """Create a Community PID from its metadata."""
         data['id'] = data['id'].lower()
         self._validate(data['id'])
         record['id'] = data['id']
-        provider = record.__class__.pid.field._provider.create(record=record)
+        try:
+            provider = record.__class__.pid.field._provider.create(record=record)
+        except PIDAlreadyExists:
+            raise ValidationError(
+                'A community with this identifier already exists.',
+                field_name='id',
+            )
         setattr(record, 'pid', provider.pid)
 
     def update(self, identity, record=None, data=None, **kwargs):
@@ -39,17 +48,26 @@ class PIDComponent(ServiceComponent):
         if 'id' in data and record.pid.pid_value != data['id']:
             raise ValidationError(
                 'The ID should be modified through the renaming URL instead',
-                'id')
+                field_name='id',
+            )
 
     def rename(self, identity, record=None, data=None, **kwargs):
         """Rename the Community PIDs value."""
         data['id'] = data['id'].lower()
         if record.pid.pid_value == data['id']:
             raise ValidationError(
-                'A new ID value is required for the renaming', 'id')
+                'A new ID value is required for the renaming',
+                field_name='id',
+            )
         self._validate(data['id'])
-        record.__class__.pid.field._provider.update(
-            record.pid, data['id'])
+        try:
+            record.__class__.pid.field._provider.update(
+                record.pid, data['id'])
+        except PIDAlreadyExists:
+            raise ValidationError(
+                'A community with this identifier already exists.',
+                field_name='id',
+            )
 
 
 class CommunityAccessComponent(AccessComponent):

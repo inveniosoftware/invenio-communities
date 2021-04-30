@@ -70,7 +70,10 @@ class CommunityService(RecordService):
         self.require_permission(identity, "rename", record=record)
 
         if 'id' not in data:
-            raise ValidationError('Missing data for required field.', 'id')
+            raise ValidationError(
+                'Missing data for required field.',
+                field_name='id',
+            )
 
         data, errors = self.schema.load(
             data,

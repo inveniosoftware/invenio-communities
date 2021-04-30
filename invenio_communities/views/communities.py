@@ -111,19 +111,22 @@ def communities_settings_privileges(community=None, pid_value=None):
         form_config=dict(
             access=dict(
                 visibilty=[
-                    {'text': 'Public', 'value': 'public'},
-                    {'text': 'Restricted', 'value': 'restricted'}
-                ],
-                member_policy=[
-                    {'text': 'Open', 'value': 'open'},
-                    {'text': 'Closed', 'value': 'closed'}
-                ],
-                record_policy=[
-                    {'text': 'Open', 'value': 'open'},
-                    {'text': 'Closed', 'value': 'closed'},
-                    {'text': 'Restricted', 'value': 'restricted'}
+                    {
+                        'text': 'Public',
+                        'value': 'public',
+                        'icon': 'group',
+                        'helpText': 'Your community is publicly accessible ' \
+                                    'and shows up in search results.'
+                    },
+                    {
+                        'text': 'Restricted',
+                        'value': 'restricted',
+                        'icon': 'lock',
+                        'helpText': 'Your community is restricted to users ' \
+                                    'with access.'
+                    }
                 ]
-            )
+            ),
         ),
         # TODO: inject this from a vocabulary in the community
         types={

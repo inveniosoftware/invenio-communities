@@ -7,20 +7,14 @@
 
 """Tests for the CLI."""
 
-<<<<<<< HEAD
-=======
 from faker import Faker
 
->>>>>>> 82d13755d4301a52e25fb03f28992a947a6956b5
 from invenio_communities.fixtures.demo import create_fake_community
 from invenio_communities.fixtures.tasks import create_demo_community
 
 
 def test_fake_demo_community_creation(app, db, location, es_clear):
     """Assert that demo community creation works without failing."""
-<<<<<<< HEAD
-    create_demo_community(create_fake_community())
-=======
+    
     faker = Faker()
     create_demo_community(create_fake_community(faker))
->>>>>>> 82d13755d4301a52e25fb03f28992a947a6956b5

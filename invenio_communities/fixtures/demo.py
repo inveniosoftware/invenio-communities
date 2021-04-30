@@ -43,13 +43,13 @@ def create_fake_community(faker):
                     },
                 }
             ],
-            "affiliations": [
+            "organizations": [
                 {
                     "name": "CERN",
                     "identifiers": [
                         {
-                            "identifier": "01ggx4157", 
-                            "scheme": "ror"
+                          "identifier": "01ggx4157", 
+                          "scheme": "ror"
                         }
                     ],
                 }

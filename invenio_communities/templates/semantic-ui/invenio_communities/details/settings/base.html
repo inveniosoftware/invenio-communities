@@ -9,6 +9,8 @@
 
 {% extends "invenio_communities/details/base.html" %}
 
+{%- set title = community.metadata.title + _(" settings") -%}
+
 {%- block page_body %}
 {{ super() }}
 <div class="ui container grid communities-settings">

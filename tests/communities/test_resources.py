@@ -281,7 +281,8 @@ def test_post_community_with_existing_id(
         '/communities', headers=headers,
         json=minimal_community)
     assert res.status_code == 400
-    assert res.json['message'] == 'The persistent identifier is already registered.'
+    assert res.json['errors'][0]['messages'][0] == \
+        'A community with this identifier already exists.'
 
     # Delete the community
     res = client.delete(f'/communities/{id_}', headers=headers)
@@ -313,7 +314,8 @@ def test_post_community_with_deleted_id(
         '/communities', headers=headers,
         json=minimal_community)
     assert res.status_code == 400
-    assert res.json['message'] == 'The persistent identifier is already registered.'
+    assert res.json['errors'][0]['messages'][0] == \
+        'A community with this identifier already exists.'
 
 
 def test_post_self_links(
@@ -348,7 +350,7 @@ def test_simple_search_response(
 
     # Create many communities,
     id_oldest, id_newest, num_each, total = create_many_records
-    Community.index.refresh()
+
     # Search for any commmunity, default order newest
     res = client.get(
         f'/communities', query_string={'q': f''}, headers=headers)
@@ -616,7 +618,7 @@ def test_invalid_community_ids(
     res = client.post('/communities', headers=headers, json=minimal_community)
     assert res.status_code == 400
     assert res.json['errors'][0]['messages'][0] == \
-        'The ID should contain only letters with numbers or dashes'
+        'The ID should contain only letters with numbers or dashes.'
 
     minimal_community['id'] = 'comm_id'
     res = client.post('/communities', headers=headers, json=minimal_community)
@@ -631,7 +633,7 @@ def test_invalid_community_ids(
     res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
     assert res.status_code == 400
     assert res.json['errors'][0]['messages'][0] == \
-        'The ID should contain only letters with numbers or dashes'
+        'The ID should contain only letters with numbers or dashes.'
 
     data = copy.deepcopy(minimal_community)
     data = {}
