@@ -18,6 +18,7 @@ import { RadioField } from "react-invenio-forms";
 class CommunityPrivilegesForm extends Component {
   state = {
     error: "",
+    isSaved: false
   };
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
@@ -36,7 +37,12 @@ class CommunityPrivilegesForm extends Component {
     this.setState({ error: error.response.data.message });
   };
 
+  setIsSavedState = (newValue) => {
+    this.setState({isSaved: newValue})
+  }
+
   render() {
+    const { isSaved } = this.state
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
@@ -57,9 +63,9 @@ class CommunityPrivilegesForm extends Component {
                 },
                 withCredentials: true,
               }
-            );
+            )
             setSubmitting(false);
-            window.location.reload();
+            this.setIsSavedState(true);
           } catch (error) {
             if (error.response.data.errors) {
               error.response.data.errors.map(({ field, messages }) =>
@@ -106,6 +112,7 @@ class CommunityPrivilegesForm extends Component {
                           "access.visibility",
                           item.value
                         );
+                        this.setIsSavedState(false);
                       }}
                     />
                     <label className="helptext">{item.helpText}</label>
@@ -117,8 +124,10 @@ class CommunityPrivilegesForm extends Component {
                   icon
                   labelPosition="left"
                   loading={isSubmitting}
+                  toggle
+                  active={isSaved}
                 >
-                  <Icon name="save"></Icon>Save
+                  <Icon name="save"></Icon>{isSaved ?'Saved': 'Save'}
                 </Button>
               </Grid.Column>
               <Grid.Column width={8} />
