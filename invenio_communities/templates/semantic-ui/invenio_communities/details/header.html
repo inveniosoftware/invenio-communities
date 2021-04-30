@@ -11,23 +11,36 @@
 <div class="community-header">
   <div class="ui container relaxed grid">
     <div class="row">
-      {% if logo %}
       <div class="two wide column">
-        <div class="ui small rounded image">
+        {% if logo %}
+        <div class="ui rounded image community-image">
           <img src="{{logo.links.self}}" alt="No image found"/>
         </div>
-      </div>
-      {% else %}
-      <div class="two wide column">
-        <div class="ui small rounded image">
+        {% else %}
+        <div class="ui rounded image">
           <img src="/static/images/placeholder.png" alt="No image found"/>
         </div>
+        {% endif %}
       </div>
-      {% endif %}
-        <div class="ten wide column">
+      <div class="ten wide column">
           <h2 class="ui header">{{ community.metadata.title }}</h2>
           <p>{{ community.metadata.description }}</p>
-        </div>
+          {% if community.metadata.website %}
+            <a href="{{community.metadata.website}}"> <i class="linkify icon"></i>
+              {{community.metadata.website}}
+            </a>
+          {% endif %}
+          {% if community.metadata.type %}
+            <i class="tag icon community-tags"></i><div class="ui label small grey type-label">{{ types[community.metadata.type] }}</div>
+          {% endif %}
+          {% if community.metadata.organizations %}
+            <i class="building outline icon community-tags"></i>
+            {%- for organization in community.metadata.organizations %}
+              <span class="label label-keyword">{{ organization.name }}</span>
+            {%- endfor %}
+          {% endif %}
+
+      </div>
       {# TODO: Add proper statistics #}
       <!-- <div class="two wide floated right column">
         <div class="ui mini statistic">

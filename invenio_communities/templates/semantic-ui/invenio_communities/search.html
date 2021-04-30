@@ -12,7 +12,7 @@
 {%- endblock %}
 
 {%- block page_body %}
-    <div data-invenio-search-config='{
+    <div id="communities-search" data-invenio-search-config='{
       "aggs": [
         {
           "aggName": "type",
@@ -84,6 +84,11 @@
               "text": "Version"
           }
       ]
-  }'>
+  }' data-facets-config='{
+        "organization":"Organization",
+        "event":"Event",
+        "topic":"Topic",
+        "project":"Project"
+    }'>
 </div>
 {%- endblock page_body %}

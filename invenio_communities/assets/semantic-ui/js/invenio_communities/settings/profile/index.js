@@ -63,11 +63,12 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
     title: Yup.string().max(250, "Maximum number of characters is 2000"),
     description: Yup.string().max(2000, "Maximum number of characters is 2000"),
     website: Yup.string().url("Must be a valid URL"),
-    page: Yup.string().max(2000, "Maximum number of characters is 2000"),
-    curation_policy: Yup.string().max(
-      2000,
-      "Maximum number of characters is 2000"
-    ),
+    // TODO: Re-enable once properly integrated to be displayed
+    // page: Yup.string().max(2000, "Maximum number of characters is 2000"),
+    // curation_policy: Yup.string().max(
+    //   2000,
+    //   "Maximum number of characters is 2000"
+    // ),
   }),
 });
 
@@ -230,9 +231,7 @@ const DangerZone = (props) => (
     </Grid.Column>
     <Grid.Column floated="left" width="12">
       <Header as="h4">Rename community</Header>
-      <p>
-        Here is an explanation of what will happen when you rename a community.
-      </p>
+      <p>Renaming your community can have unintended side effects.</p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
       <RenameCommunityButton community={props.community} />
@@ -241,9 +240,7 @@ const DangerZone = (props) => (
     <Grid.Column width={16} className="margin-top-25"></Grid.Column>
     <Grid.Column floated="left" width="12">
       <Header as="h4">Delete community</Header>
-      <p>
-        Here is an explanation of what will happen when you delete a community.
-      </p>
+      <p>Once deleted, it will be gone forever. Please be certain.</p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
       <DeleteButton
@@ -279,11 +276,12 @@ class CommunityProfileForm extends Component {
       metadata: {
         description: "",
         title: "",
-        curation_policy: "",
-        page: "",
+        // TODO: Re-enable once properly integrated to be displayed
+        // curation_policy: "",
+        // page: "",
         type: "organization",
         website: "",
-        affiliations: [],
+        organizations: [],
       },
       // TODO: should this come from the backend?
       access: {
@@ -293,14 +291,14 @@ class CommunityProfileForm extends Component {
       },
     });
 
-    // Deserialize affiliations
-    let affiliations = _map(
-      _get(initialValues, "metadata.affiliations"),
+    // Deserialize organizations
+    let organizations = _map(
+      _get(initialValues, "metadata.organizations"),
       "name"
     );
     return {
       ...initialValues,
-      metadata: { ...initialValues.metadata, affiliations },
+      metadata: { ...initialValues.metadata, organizations },
     };
   };
 
@@ -313,21 +311,21 @@ class CommunityProfileForm extends Component {
       return knownField ? knownField : { [key]: value };
     };
 
-    const affiliationsFieldPath = "metadata.affiliations";
-    const initialAffilliations = _get(
+    const organizationsFieldPath = "metadata.organizations";
+    const initialOrganizations = _get(
       this.props.community,
-      affiliationsFieldPath,
+      organizationsFieldPath,
       []
     );
-    const affiliations = submittedCommunity.metadata.affiliations.map(
-      (affiliation) => {
-        return findField(initialAffilliations, "name", affiliation);
+    const organizations = submittedCommunity.metadata.organizations.map(
+      (organization) => {
+        return findField(initialOrganizations, "name", organization);
       }
     );
 
     submittedCommunity = {
       ...submittedCommunity,
-      metadata: { ...values.metadata, affiliations },
+      metadata: { ...values.metadata, organizations },
     };
 
     // Clean values
@@ -447,31 +445,32 @@ class CommunityProfileForm extends Component {
                     optimized
                   />
                   <RemoteSelectField
-                    fieldPath={"metadata.affiliations"}
+                    fieldPath={"metadata.organizations"}
                     suggestionAPIUrl="/api/vocabularies/affiliations"
                     suggestionAPIHeaders={{
                       Accept: "application/vnd.inveniordm.v1+json",
                     }}
-                    placeholder={"Search for an affiliation by name"}
+                    placeholder={"Search for an organization by name"}
                     clearable
                     multiple
                     initialSuggestions={_get(
                       this.props.community,
-                      "metadata.affiliations",
+                      "metadata.organizations",
                       []
                     )}
-                    serializeSuggestions={(affiliations) =>
-                      _map(affiliations, (affiliation) => ({
-                        text: affiliation.name,
-                        value: affiliation.name,
-                        key: affiliation.name,
+                    serializeSuggestions={(organizations) =>
+                      _map(organizations, (organization) => ({
+                        text: organization.name,
+                        value: organization.name,
+                        key: organization.name,
                       }))
                     }
-                    label="Affiliations"
-                    noQueryMessage="Search for affiliations..."
+                    label="Organizations"
+                    noQueryMessage="Search for organizations..."
                     allowAdditions
                   />
-                  <RichInputField
+                  {/* TODO: Re-enable once properly integrated to be displayed */}
+                  {/* <RichInputField
                     label="Curation policy"
                     fieldPath="metadata.curation_policy"
                     label={
@@ -495,7 +494,7 @@ class CommunityProfileForm extends Component {
                     }
                     editorConfig={CKEditorConfig}
                     fluid
-                  />
+                  /> */}
                   <Button
                     disabled={!isValid || isSubmitting}
                     loading={isSubmitting}

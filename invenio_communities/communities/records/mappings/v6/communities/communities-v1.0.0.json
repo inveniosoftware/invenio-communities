@@ -51,7 +51,7 @@
             "page": {
               "type": "text"
             },
-            "affiliations" : {
+            "organizations" : {
               "properties" : {
                 "identifiers" : {
                   "properties": {

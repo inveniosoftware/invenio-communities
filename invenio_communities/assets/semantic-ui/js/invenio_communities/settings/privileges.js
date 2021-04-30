@@ -19,8 +19,9 @@ class CommunityPrivilegesForm extends Component {
     let initialValues = _defaultsDeep(this.props.community, {
       access: {
         visibility: "public",
-        member_policy: "open",
-        record_policy: "open",
+        // TODO: Re-enable once properly integrated to be displayed
+        // member_policy: "open",
+        // record_policy: "open",
       },
     });
 
@@ -88,8 +89,8 @@ class CommunityPrivilegesForm extends Component {
                   <Icon name="save"></Icon>Save
                 </Button>
               </Grid.Column>
-              {/* Used to clear the row space */}
-              <Grid.Column width={10} />
+              {/* TODO: Re-enable once properly integrated to be displayed */}
+              {/* <Grid.Column width={10} />
               <Grid.Column width={6}>
                 <Header as="h3">Records permissions</Header>
                 <p>This is a text explaining about the permission</p>
@@ -101,7 +102,6 @@ class CommunityPrivilegesForm extends Component {
                   <Icon name="save"></Icon>Save
                 </Button>
               </Grid.Column>
-              {/* Used to clear the row space */}
               <Grid.Column width={10} />
               <Grid.Column width={6}>
                 <Header as="h3">Members permission policy</Header>
@@ -114,8 +114,7 @@ class CommunityPrivilegesForm extends Component {
                   <Icon name="save"></Icon>Save
                 </Button>
               </Grid.Column>
-              {/* Used to clear the row space */}
-              <Grid.Column width={10} />
+              <Grid.Column width={10} /> */}
             </Grid>
           </Form>
         )}

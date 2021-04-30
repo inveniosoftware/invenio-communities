@@ -114,7 +114,7 @@
             }
           }
         },
-        "affiliations": {
+        "organizations": {
           "$ref": "local://records/definitions-v1.0.0.json#/affiliations"
         }
       }
