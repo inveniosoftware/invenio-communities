@@ -19,12 +19,12 @@
         {
           "aggName": "type",
           "field": "metadata.type",
-          "title": "Type"
+          "title": "{{_("Type")}}"
         },
         {
           "aggName": "domain",
           "field": "metadata.domains",
-          "title": "Domain"
+          "title": "{{_("Domain")}}"
         }
       ],
       "appId": "commuties-search",
@@ -71,26 +71,26 @@
       "sortOptions": [
           {
               "sortBy": "bestmatch",
-              "text": "Best match"
+              "text": "{{_("Best match")}}"
           },
           {
               "sortBy": "newest",
-              "text": "Newest"
+              "text": "{{_("Newest")}}"
           },
           {
               "sortBy": "oldest",
-              "text": "Oldest"
+              "text": "{{_("Oldest")}}"
           },
           {
               "sortBy": "version",
-              "text": "Version"
+              "text": "{{_("Version")}}"
           }
       ]
   }' data-facets-config='{
-        "organization":"Organization",
-        "event":"Event",
-        "topic":"Topic",
-        "project":"Project"
+        "organization":"{{_("Organization")}}",
+        "event":"{{_("Event")}}",
+        "topic":"{{_("Topic")}}",
+        "project":"{{_("Project")}}"
     }'>
 </div>
 {%- endblock page_body %}

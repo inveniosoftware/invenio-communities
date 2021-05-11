@@ -74,7 +74,7 @@ install_requires = [
     "invenio-pidstore>=1.2.2",
     "invenio-records-permissions>=0.11.0,<0.12.0",
     "invenio-records>=1.5.0a4",
-    "invenio-records-resources>=0.14.0",
+    "invenio-records-resources>=0.15.1",
     "invenio-rdm-records>=0.29.4",
     "uritemplate>=3.0.1",
 ]
