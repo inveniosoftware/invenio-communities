@@ -9,6 +9,7 @@
 
 """Invenio Communities Service API config."""
 
+from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import \
@@ -17,9 +18,9 @@ from invenio_records_resources.services.records.config import \
     RecordServiceConfig
 from invenio_records_resources.services.records.config import \
     SearchOptions as SearchOptionsBase
+from invenio_records_resources.services.records.facets import TermsFacet
 from invenio_records_resources.services.records.links import RecordLink, \
     pagination_links
-from invenio_records_resources.services.records.search import terms_filter
 
 from invenio_communities.communities.records.api import Community
 
@@ -31,20 +32,20 @@ from .permissions import CommunityPermissionPolicy
 class SearchOptions(SearchOptionsBase):
     """Search options."""
 
-    facets_options = dict(
-        aggs={
-            'type': {
-                'terms': {'field': 'metadata.type'},
-            },
-            'domain': {
-                'terms': {'field': 'metadata.domains'},
-            },
-        },
-        post_filters={
-            'type': terms_filter('metadata.type'),
-            'domain': terms_filter('metadata.domains'),
-        }
-    )
+    facets = {
+        'type': TermsFacet(
+            field='metadata.type',
+            label=_('Type'),
+            value_labels={
+                'organization': _('Organization'),
+                'event': _('Event'),
+                'topic': _('Topic'),
+                'project': _('Project'),
+            }
+        ),
+        'domain': TermsFacet(field='metadata.domains'),
+
+    }
 
 
 class CommunityServiceConfig(RecordServiceConfig):

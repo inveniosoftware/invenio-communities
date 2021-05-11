@@ -62,6 +62,7 @@ setup_requires = [
 ]
 
 install_requires = [
+    "flask>=1.1,<2.0",
     "flask-resources>=0.7.0,<0.8.0",
     "invenio-accounts>=1.4.3",
     "invenio-assets>=1.2.2",
@@ -74,8 +75,8 @@ install_requires = [
     "invenio-pidstore>=1.2.2",
     "invenio-records-permissions>=0.11.0,<0.12.0",
     "invenio-records>=1.5.0a4",
-    "invenio-records-resources>=0.14.0",
-    "invenio-rdm-records>=0.29.4",
+    "invenio-records-resources>=0.15.1",
+    "invenio-rdm-records>=0.30.1",
     "uritemplate>=3.0.1",
 ]
 
