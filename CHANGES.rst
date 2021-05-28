@@ -9,6 +9,14 @@
 Changes
 =======
 
+
+Version 2.3.0 (released 2021-05-28)
+-----------------------------------
+
+- Improve visual feedback when changing permissions.
+- Align facets with new records-resources faceting paradigm.
+
+
 Version 2.2.5 (released 2021-04-29)
 -----------------------------------
 
