@@ -57,6 +57,14 @@ def can_user_create_community(user):
     if confirmed_date is None:
         return False
 
+    if user.email:
+        email_domain = user.email.rsplit('@', 1)[-1].lower()
+        blacklisted_email_domains = current_app.config.get(
+            'ZENODO_BLACKLISTED_EMAIL_DOMAINS', [])
+        has_blacklisted_domain = email_domain in blacklisted_email_domains
+        if has_blacklisted_domain:
+            return False
+
     delta = current_date - confirmed_date
 
     return delta >= community_user_confirmed_since

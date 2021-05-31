@@ -7,7 +7,7 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
-{%- set new_disabled_message = "To create a community your account must be verified for at least " + humanize.naturaldelta(config.COMMUNITIES_USER_CONFIRMED_SINCE) + ". If you want to speed up the process, you can contact our support team describing your case." -%}
+{%- set new_disabled_message = "To create a community your account must be verified for at least " + humanize.naturaldelta(config.COMMUNITIES_USER_CONFIRMED_SINCE) + ". If you still see this message after that period you are using an email domain that is frequently used by spam users and you will need to use a different one." -%}
 {% set can_create_community = can_user_create_community(current_user) %}
 
 <div class="well">

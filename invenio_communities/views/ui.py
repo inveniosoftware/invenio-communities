@@ -179,8 +179,9 @@ def new():
     if not can_user_create_community(current_user):
         error_message = (
             "To create a community your account must be verified "
-            "for at least {}. If you want to speed up the process, you "
-            "can contact our support team describing your case.".format(
+            "for at least {}. If you still see this message after that period "
+            "you are using an email domain that is frequently used by spam "
+            " users and you will need to use a different one.".format(
                 humanize.naturaldelta(
                     current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE'])))
         error_code = 403
