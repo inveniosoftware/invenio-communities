@@ -63,21 +63,10 @@ setup_requires = [
 
 install_requires = [
     "flask>=1.1,<2.0",
-    "flask-resources>=0.7.0,<0.8.0",
-    "invenio-accounts>=1.4.3",
-    "invenio-assets>=1.2.2",
-    "invenio-base>=1.2.3",
     "invenio-files-rest>=1.2.0",
-    "invenio-i18n>=1.2.0",
-    "invenio-indexer>=1.2.0",
-    "invenio-jsonschemas>=1.1.2",
     "invenio-mail>=1.0.2",
-    "invenio-pidstore>=1.2.2",
+    "invenio-rdm-records>=0.30.9,<0.31.0",
     "invenio-records-permissions>=0.11.0,<0.12.0",
-    "invenio-records>=1.5.0a4",
-    "invenio-records-resources>=0.15.1",
-    "invenio-rdm-records>=0.30.1",
-    "uritemplate>=3.0.1",
 ]
 
 packages = find_packages()
