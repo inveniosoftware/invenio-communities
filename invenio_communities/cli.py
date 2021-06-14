@@ -11,6 +11,8 @@
 import click
 from faker import Faker
 from flask.cli import with_appcontext
+from invenio_access.permissions import system_identity
+from invenio_communities.proxies import current_communities
 
 from .fixtures.demo import create_fake_community
 from .fixtures.tasks import create_demo_community
@@ -19,7 +21,6 @@ from .fixtures.tasks import create_demo_community
 @click.group()
 def communities():
     """Invenio communities commands."""
-    pass
 
 
 @communities.command('demo')
@@ -33,3 +34,14 @@ def demo():
         create_demo_community.delay(fake_data)
 
     click.secho('Created communities!', fg='green')
+
+
+@communities.command("rebuild-index")
+@with_appcontext
+def rebuild_index():
+    click.secho("Reindexing communities...", fg="green")
+
+    communities_service = current_communities.service
+    communities_service.rebuild_index(identity=system_identity)
+
+    click.secho("Reindexed communities!", fg="green")
