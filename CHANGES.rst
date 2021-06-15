@@ -9,8 +9,12 @@
 Changes
 =======
 
+Version 2.3.2 (released 2021-06-15)
+-----------------------------------
 
-Version 2.3.1 (released 2021-06-10)
+- Remove invenio dependencies to depend only on rdm-records.
+
+Version 2.3.1 (removed)
 -----------------------------------
 
 - Remove invenio dependencies to depend only on rdm-records.
