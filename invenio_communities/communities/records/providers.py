@@ -52,6 +52,15 @@ class CommunitiesIdProvider(BaseProvider):
             parameters.
         :returns: A :class:`CommunitiesIdProvider` instance.
         """
+        try:
+            existing_pid = cls.get(record['id']).pid
+        except PIDDoesNotExistError:
+            pass
+        else:
+            raise PIDAlreadyExists(
+                existing_pid.pid_type,
+                existing_pid.pid_value
+            )
         kwargs['pid_value'] = record['id']
         kwargs['status'] = cls.default_status
         kwargs['object_type'] = cls.object_type
