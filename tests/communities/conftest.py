@@ -74,27 +74,8 @@ def full_community(community_owner):
             "curation_policy": "This is the kind of records we accept.",
             "page": "Information for my community.",
             "website": "https://inveniosoftware.org/",
-            "funding":[{
-                "funder": {
-                    "name": "European Commission",
-                    "identifier": "00k4n6c32",
-                    "scheme": "ror"
-                },
-                "award": {
-                    "title": "OpenAIRE",
-                    "number": "246686",
-                    "identifier": ".../246686",
-                    "scheme": "openaire"
-                }
-            }],
             "organizations": [{
                     "name": "CERN",
-                    "identifiers": [
-                        {
-                        "identifier": "01ggx4157",
-                        "scheme": "ror"
-                        }
-                    ]
             }]
         }
     }
