@@ -1,15 +1,17 @@
+#!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 #
-# This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2020 Northwestern University.
+# Copyright (C) 2021 TU Wien.
 #
-# Invenio is free software; you can redistribute it and/or modify it
+# Invenio-Communities is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 # Usage:
-#   ./run-tests.sh [-K|--keep-services] [pytest options and args...]
+#   ./run-tests.sh [pytest options and args...]
 #
-# Note: the DB, SEARCH and MQ services to use are determined by corresponding environment
+# Note: the DB, SEARCH and CACHE services to use are determined by corresponding environment
 #       variables if they are set -- otherwise, the following defaults are used:
 #       DB=postgresql, SEARCH=elasticsearch and MQ=redis
 #
@@ -52,6 +54,8 @@ fi
 python -m check_manifest --ignore ".*-requirements.txt"
 python -m sphinx.cmd.build -qnNW docs docs/_build/html
 eval "$(docker-services-cli up --db ${DB:-postgresql} --search ${SEARCH:-elasticsearch} --mq ${MQ:-redis} --env)"
-python -m pytest "${pytest_args[@]}"
+# Note: expansion of pytest_args looks like below to not cause an unbound
+# variable error when 1) "nounset" and 2) the array is empty.
+python -m pytest ${pytest_args[@]+"${pytest_args[@]}"}
 tests_exit_code=$?
 exit "$tests_exit_code"
