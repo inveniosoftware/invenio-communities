@@ -62,7 +62,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    "flask>=1.1,<2.0",
+    "flask>=1.0.4,<2.0",
     "invenio-files-rest>=1.2.0",
     "invenio-mail>=1.0.2",
     "invenio-rdm-records>=0.32.0,<0.33.0",
