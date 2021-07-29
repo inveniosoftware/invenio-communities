@@ -29,27 +29,8 @@ def create_fake_community(faker):
             "curation_policy": faker.text(max_nb_chars=2000),
             "page": faker.text(max_nb_chars=2000),
             "website": "https://" + faker.domain_name(),  # fake.url()
-            "funding": [
-                {
-                    "funder": {
-                        "name": "European Commission",
-                        "identifier": "03yrm5c26",
-                        "scheme": "ror",
-                    },
-                    "award": {
-                        "title": "OpenAIRE",
-                        "number": "246686",
-                        "identifier": "0000-0002-1825-0097",
-                        "scheme": "orcid",
-                    },
-                }
-            ],
             "organizations": [
-                {
-                    "name": "CERN",
-                    "identifiers": [
-                        {"identifier": "01ggx4157", "scheme": "ror"}],
-                }
+                { "name": "CERN" }
             ],
         },
     }
