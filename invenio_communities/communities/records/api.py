@@ -14,7 +14,6 @@ from invenio_records.systemfields import ConstantField, ModelField
 from invenio_records_resources.records.api import FileRecord, Record
 from invenio_records_resources.records.systemfields import FilesField, \
     IndexField, PIDField
-from werkzeug.local import LocalProxy
 
 from . import models
 from .providers import CommunitiesIdProvider
@@ -25,7 +24,7 @@ class CommunityFile(FileRecord):
     """Community file API."""
 
     model_cls = models.CommunityFileMetadata
-    record_cls = LocalProxy(lambda: Community)
+    record_cls = None  # defined below
 
 
 class Community(Record):
@@ -52,3 +51,6 @@ class Community(Record):
         # Don't delete, we'll manage in the service
         delete=False,
     )
+
+
+CommunityFile.record_cls = Community
