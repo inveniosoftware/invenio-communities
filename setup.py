@@ -18,7 +18,7 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'invenio-app>=1.3.0,<2.0.0',
+    'invenio-app>=1.3.1,<2.0.0',
     'pytest-invenio>=1.4.1,<2.0.0'
 ]
 
@@ -57,14 +57,14 @@ for name, reqs in extras_require.items():
     extras_require['all'].extend(reqs)
 
 setup_requires = [
-    'Babel>=1.3',
+    'Babel>=2.8',
     'pytest-runner>=3.0.0,<5',
 ]
 
 install_requires = [
-    "invenio-files-rest>=1.2.0",
+    "invenio-files-rest>=1.3.0",
     "invenio-mail>=1.0.2",
-    "invenio-rdm-records>=0.33.0,<0.34.0",
+    "invenio-rdm-records>=0.33.1,<0.34.0",
 ]
 
 packages = find_packages()
