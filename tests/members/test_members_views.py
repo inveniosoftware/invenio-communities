@@ -11,7 +11,7 @@
 import pytest
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
-from six.moves.urllib.parse import urljoin
+from urllib.parse import urljoin
 
 
 @pytest.mark.skip()

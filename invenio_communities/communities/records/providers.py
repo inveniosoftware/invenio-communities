@@ -6,9 +6,7 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""DataCite PID provider."""
-
-from __future__ import absolute_import
+"""Community PID provider."""
 
 from invenio_pidstore.errors import PIDAlreadyExists, PIDDoesNotExistError
 from invenio_pidstore.models import PIDStatus

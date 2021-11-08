@@ -17,8 +17,6 @@ You include one of the bundles in a page like the example below (using
 
 """
 
-from __future__ import absolute_import, print_function
-
 from invenio_assets.webpack import WebpackThemeBundle
 
 communities = WebpackThemeBundle(

@@ -8,8 +8,6 @@
 
 """Community database models."""
 
-from __future__ import absolute_import, print_function
-
 from invenio_db import db
 from invenio_files_rest.models import Bucket
 from invenio_records.models import RecordMetadataBase

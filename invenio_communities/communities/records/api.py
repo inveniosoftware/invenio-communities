@@ -8,8 +8,6 @@
 
 """Records API."""
 
-from __future__ import absolute_import, print_function
-
 from invenio_records.systemfields import ConstantField, ModelField
 from invenio_records_resources.records.api import FileRecord, Record
 from invenio_records_resources.records.systemfields import FilesField, \

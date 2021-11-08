@@ -8,8 +8,6 @@
 
 """Invenio digital library framework."""
 
-from __future__ import absolute_import, print_function
-
 from .ext import InvenioCommunities
 from .proxies import current_communities
 
