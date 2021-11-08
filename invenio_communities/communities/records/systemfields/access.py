@@ -8,27 +8,8 @@
 
 """Community access system field."""
 
-from invenio_rdm_records.records.systemfields.access import Owner, Owners, \
-    RecordAccessField
-
-
-class _Owner(Owner):
-
-    @property
-    def user(self):
-        if self.owner_type == 'user':
-            return self.owner_id
-
-
-class _Owners(Owners):
-
-    owner_cls = _Owner
-
-    def __init__(self, owners=None, owner_cls=None):
-        """Create a new list of owners."""
-        self.owner_cls = owner_cls or self.owner_cls
-        for owner in owners or []:
-            self.add(owner)
+from invenio_records.systemfields import SystemField
+from .owners import Owners
 
 
 class CommunityAccess:
@@ -38,7 +19,7 @@ class CommunityAccess:
     MEMBER_POLICY_LEVELS = ('open', 'closed')
     RECORD_POLICY_LEVELS = ('open', 'closed', 'restricted')
 
-    owners_cls = _Owners
+    owners_cls = Owners
 
     def __init__(
         self,
@@ -179,12 +160,21 @@ class CommunityAccess:
         )
 
 
-class CommunityAccessField(RecordAccessField):
-    """System field for managing community access."""
+# TODO: Move to Invenio-Records-Resources and make reusable. Duplicated from
+# Invenio-RDM-Records.
+class CommunityAccessField(SystemField):
+    """System field for managing record access."""
 
-    def __init__(self, *args, access_obj_class=CommunityAccess, **kwargs):
-        """Create a new CommunityAccessField instance."""
-        super().__init__(*args, access_obj_class=access_obj_class, **kwargs)
+    access_obj_class = CommunityAccess
+
+    def __init__(self, key="access", access_obj_class=None):
+        """Create a new RecordAccessField instance."""
+        self._access_obj_class = access_obj_class or self.access_obj_class
+        super().__init__(key=key)
+
+    def _from_dict(self, instance, data):
+        """Allows to override behavior in subclass."""
+        return
 
     def obj(self, instance):
         """Get the access object."""
@@ -201,11 +191,36 @@ class CommunityAccessField(RecordAccessField):
         self._set_cache(instance, obj)
         return obj
 
-    # NOTE: The original RecordAccessField dumps some non-existing fields
-    def post_dump(self, *args, **kwargs):
-        """Called before a record is dumped."""
-        pass
+    def set_obj(self, record, obj):
+        """Set the access object."""
+        # We accept both dicts and access class objects.
+        if isinstance(obj, dict):
+            obj = self._access_obj_class.from_dict(obj)
 
-    def pre_load(self, *args, **kwargs):
-        """Called before a record is dumped."""
-        pass
+        assert isinstance(obj, self._access_obj_class)
+
+        # We do not dump the object until the pre_commit hook
+        # I.e. record.access != record['access']
+        self._set_cache(record, obj)
+
+    def __get__(self, record, owner=None):
+        """Get the record's access object."""
+        if record is None:
+            # access by class
+            return self
+
+        # access by object
+        return self.obj(record)
+
+    def __set__(self, record, obj):
+        """Set the records access object."""
+        self.set_obj(record, obj)
+
+    def pre_commit(self, record):
+        """Dump the configured values before the record is committed."""
+        obj = self.obj(record)
+        if obj is not None:
+            # only set the 'access' property if one was present in the
+            # first place -- this was a problem in the unit test:
+            # tests/resources/test_resources.py:test_simple_flow
+            record["access"] = obj.dump()

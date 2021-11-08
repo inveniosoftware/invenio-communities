@@ -13,7 +13,7 @@
       "description": "Community identifier.",
       "type": "string"
     },
-    "pid": {"$ref": "local://records/definitions-v1.0.0.json#/internal-pid"},
+    "pid": {"$ref": "local://definitions-v1.0.0.json#/internal-pid"},
 
     "access": {
       "type": "object",
@@ -24,7 +24,7 @@
           "description": "List of owners of the child records.",
           "type": "array",
           "uniqueItems": true,
-          "items": {"$ref": "local://records/definitions-v1.0.0.json#/agent"}
+          "items": {"$ref": "local://communities/definitions-v2.0.0.json#/agent"}
         },
 
         "visibility": {
@@ -97,8 +97,8 @@
                 "additionalProperties": false,
                 "properties": {
                   "name": {"type": "string"},
-                  "identifier": {"$ref": "local://records/definitions-v1.0.0.json#/identifier"},
-                  "scheme": {"$ref": "local://records/definitions-v1.0.0.json#/scheme"}
+                  "identifier": {"$ref": "local://definitions-v1.0.0.json#/identifier"},
+                  "scheme": {"$ref": "local://definitions-v1.0.0.json#/scheme"}
                 }
               },
               "award": {
@@ -107,15 +107,15 @@
                 "properties": {
                   "title": {"type": "string"},
                   "number": {"type": "string"},
-                  "identifier": {"$ref": "local://records/definitions-v1.0.0.json#/identifier"},
-                  "scheme": {"$ref": "local://records/definitions-v1.0.0.json#/scheme"}
+                  "identifier": {"$ref": "local://definitions-v1.0.0.json#/identifier"},
+                  "scheme": {"$ref": "local://definitions-v1.0.0.json#/scheme"}
                 }
               }
             }
           }
         },
         "organizations": {
-          "$ref": "local://records/definitions-v1.0.0.json#/affiliations"
+          "$ref": "local://communities/definitions-v2.0.0.json#/affiliations"
         }
       }
     },

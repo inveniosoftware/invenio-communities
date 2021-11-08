@@ -10,6 +10,12 @@
 
 import pytest
 from invenio_db.utils import drop_alembic_version_table
+# Invenio-Vocabularies define an Alembic migration that include subjects and
+# affiliations tables. The SQLAlchemy models are however not registered by
+# default. This means that when alembic creates the database vs when SQLAlchemy
+# creates the database there's a discrepancy. Importing the subjects model
+# here, ensures the model get's registered, and we avoid the discrepancy.
+from invenio_vocabularies.contrib.subjects import models
 
 
 def test_alembic(base_app, database):

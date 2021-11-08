@@ -18,8 +18,9 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
+    'Faker>=2.0.3',
     'invenio-app>=1.3.2,<2.0.0',
-    'pytest-invenio>=1.4.2,<2.0.0'
+    'pytest-invenio>=1.4.2,<2.0.0',
 ]
 
 invenio_db_version = '>=1.0.9,<2.0.0'
@@ -63,7 +64,7 @@ setup_requires = [
 install_requires = [
     'invenio-files-rest>=1.3.0',
     'invenio-mail>=1.0.2',
-    'invenio-rdm-records>=0.33.1,<0.34.0',
+    'invenio-vocabularies>=0.9.2,<0.10.0'
 ]
 
 packages = find_packages()

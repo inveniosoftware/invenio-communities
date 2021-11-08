@@ -8,13 +8,12 @@
 
 """Community schema."""
 
-from flask import current_app
 from flask_babelex import lazy_gettext as _
-from invenio_rdm_records.services.schemas.metadata import AffiliationSchema, \
-    FundingSchema
-from invenio_rdm_records.services.schemas.parent.access import Agent
 from invenio_records_resources.services.records.schema import BaseRecordSchema
-from marshmallow import Schema, fields, missing, validate
+from invenio_vocabularies.contrib.affiliations.schema import \
+    AffiliationRelationSchema
+from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
+from marshmallow import Schema, fields, validate
 from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, \
     SanitizedUnicode
 
@@ -22,7 +21,19 @@ from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, \
 def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
     max_ = kwargs.get('max','')
-    return validate.Length(error=_(f'Not empty string and less than {max_} characters allowed.'), min=1, **kwargs)
+    return validate.Length(
+        error=_(f'Not empty string and less than {max_} characters allowed.'),
+        min=1,
+        **kwargs
+    )
+
+
+# TODO: Move to Invenio-Records-Resources and make reusable (duplicated from
+# Invenio-RDM-Records).
+class Agent(Schema):
+    """An agent schema."""
+
+    user = fields.Integer(required=True)
 
 
 class CommunityAccessSchema(Schema):
@@ -65,8 +76,8 @@ class CommunityMetadataSchema(Schema):
         validate=validate.OneOf(COMMUNITY_TYPES)
     )
     website = fields.Url(validate=_not_blank())
-    funding = fields.List(fields.Nested(FundingSchema))
-    organizations = fields.List(fields.Nested(AffiliationSchema))
+    funding = fields.List(fields.Nested(FundingRelationSchema))
+    organizations = fields.List(fields.Nested(AffiliationRelationSchema))
 
     # TODO: Add when general vocabularies are ready
     # domains = fields.List(fields.Str())
