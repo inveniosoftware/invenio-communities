@@ -23,5 +23,7 @@ def app_config(app_config):
         "invenio_records.resolver.InvenioRefResolver"
     app_config['RECORDS_REFRESOLVER_STORE'] = \
         "invenio_jsonschemas.proxies.current_refresolver_store"
+    # Variable not used. We set it to silent warnings
+    app_config['JSONSCHEMAS_HOST'] = 'not-used'
 
     return app_config
