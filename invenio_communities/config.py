@@ -8,8 +8,6 @@
 
 """Default configuration."""
 
-from __future__ import absolute_import, print_function
-
 COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
 SUPPORT_EMAIL = 'test@email.org'

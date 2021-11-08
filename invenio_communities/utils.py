@@ -8,8 +8,6 @@
 
 """Utilities."""
 
-# from __future__ import absolute_import, print_function
-
 # from datetime import timedelta
 # from functools import partial
 
@@ -22,7 +20,7 @@
 # from invenio_pidstore.resolver import Resolver
 # from invenio_records.api import Record
 # from invenio_records_rest.utils import LazyPIDValue
-# from six.moves.urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
+# from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 # from werkzeug.routing import BaseConverter
 # from werkzeug.utils import cached_property
 
