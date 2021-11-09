@@ -10,11 +10,8 @@
 
 import pytest
 
+pytest_plugins = ("celery.contrib.pytest", )
 
-@pytest.fixture(scope='module')
-def celery_config():
-    """Override pytest-invenio fixture."""
-    return {}
 
 @pytest.fixture(scope='module')
 def app_config(app_config):
