@@ -1,53 +1,48 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2021 CERN.
 #
-# Invenio is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
+# Invenio-Communities is free software; you can redistribute it and/or
+# modify it under the terms of the MIT License; see LICENSE file for more
+# details.
 
-"""Pytest configuration."""
+"""Pytest configuration.
 
-import uuid
+See https://pytest-invenio.readthedocs.io/ for documentation on which test
+fixtures are available.
+"""
 
 import pytest
-from invenio_accounts.testutils import create_test_user
+from invenio_app.factory import create_api
 from invenio_indexer.api import RecordIndexer
-from invenio_pidstore.models import PersistentIdentifier, PIDStatus
-
-from invenio_communities.communities.records.api import Record
+from mock_module.api import MockRecord
 
 
-@pytest.fixture
-def record_owner(db):
-    """Record owner user."""
-    yield create_test_user('record-owner@inveniosoftware.org')
+@pytest.fixture(scope="module")
+def extra_entry_points():
+    """Extra entry points to load the mock_module features."""
+    return {
+        'invenio_db.model': [
+            'mock_module = mock_module.models',
+        ],
+        'invenio_jsonschemas.schemas': [
+            'mock_module = mock_module.jsonschemas',
+        ],
+        'invenio_search.mappings': [
+            'mocks = mock_module.mappings',
+        ]
+    }
 
 
-@pytest.fixture
-def record(db, es, record_owner):
-    """Record fixture."""
-    record = Record.create({
-        'title': 'Title',
-        '_owners': [record_owner.id],
-    })
-    recid = PersistentIdentifier.create(
-        pid_type='recid', pid_value='12345',
-        object_uuid=record.id, object_type='rec',
-        status=PIDStatus.REGISTERED)
-    db.session.commit()
-    RecordIndexer().index_by_id(str(record.id))
-    yield recid, record
+@pytest.fixture(scope="module")
+def create_app(instance_path, entry_points):
+    """Application factory fixture."""
+    return create_api
 
 
-# @pytest.fixture
-# def accepted_community_record(db, es, community, record, record_owner):
-#     """Community record fixture."""
-#     comid, community = community
-#     recid, record = record
-#     # request = CommunityInclusionRequest.create(record_owner, id_=uuid.uuid4())
-#     comm_record = CommunityRecord.create(record, recid, community, request)
-#     comm_record.status = comm_record.Status.ACCEPTED
-#     db.session.commit()
-#     RecordIndexer().index_by_id(str(record.id))
-#     yield comm_record
+@pytest.fixture()
+def indexer():
+    """Indexer instance with correct Record class."""
+    return RecordIndexer(
+        record_cls=MockRecord, record_to_index=lambda r: (r.index._name, '_doc')
+    )

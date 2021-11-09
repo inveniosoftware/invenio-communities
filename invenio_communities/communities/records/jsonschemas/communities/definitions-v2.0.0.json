@@ -1,4 +1,18 @@
 {
+  "communities": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "default": {
+        "type": "string"
+      },
+      "ids": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      }
+    }
+  },
   "affiliation": {
     "type": "object",
     "additionalProperties": false,
