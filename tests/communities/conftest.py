@@ -31,13 +31,13 @@ def users(app):
 
 
 @pytest.fixture
-def authenticated_user(db):
+def authenticated_user(app):
     """Authenticated user."""
     yield create_test_user('authed@inveniosoftware.org')
 
 
 @pytest.fixture
-def community_owner(db):
+def community_owner(app):
     """Record owner user."""
     yield create_test_user('community-owner@inveniosoftware.org')
 

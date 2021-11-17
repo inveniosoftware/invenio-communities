@@ -606,11 +606,10 @@ def test_logo_flow(
     # TODO: Check permissions
 
 
-def test_invalid_community_ids(
+def test_invalid_community_ids_create(
     app, client_with_login, location, minimal_community, headers,
     es_clear
 ):
-    """Test for invalid community IDs handling."""
     client = client_with_login
     # Create a community with invalid ID
     minimal_community['id'] = 'comm id'
@@ -618,6 +617,15 @@ def test_invalid_community_ids(
     assert res.status_code == 400
     assert res.json['errors'][0]['messages'][0] == \
         'The ID should contain only letters with numbers or dashes.'
+
+
+
+def test_invalid_community_ids(
+    app, client_with_login, location, minimal_community, headers,
+    es_clear
+):
+    """Test for invalid community IDs handling."""
+    client = client_with_login
 
     minimal_community['id'] = 'comm_id'
     res = client.post('/communities', headers=headers, json=minimal_community)

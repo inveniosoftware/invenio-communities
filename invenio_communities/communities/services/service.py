@@ -12,6 +12,7 @@ from elasticsearch_dsl import Q
 from invenio_db import db
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import RecordService
+from invenio_records_resources.services.uow import RecordCommitOp, unit_of_work
 from marshmallow.exceptions import ValidationError
 
 
@@ -58,7 +59,9 @@ class CommunityService(RecordService):
             links_item_tpl=self.links_item_tpl,
         )
 
-    def rename(self, id_, identity, data, revision_id=None, raise_errors=True):
+    @unit_of_work()
+    def rename(self, id_, identity, data, revision_id=None, raise_errors=True,
+               uow=None):
         """Rename a community."""
         record = self.record_cls.pid.resolve(id_)
 
@@ -82,15 +85,10 @@ class CommunityService(RecordService):
         )                                  # (as warnings)
 
         # Run components
-        for component in self.components:
-            if hasattr(component, 'rename'):
-                component.rename(identity, data=data, record=record)
+        self.run_components(
+            'rename', identity, data=data, record=record, uow=uow)
 
-        record.commit()
-        db.session.commit()
-
-        if self.indexer:
-            self.indexer.index(record)
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
 
         return self.result_item(
             self,
@@ -114,14 +112,16 @@ class CommunityService(RecordService):
             links_tpl=self.files.file_links_item_tpl(id_),
         )
 
-    def update_logo(self, id_, identity, stream, content_length=None):
+    @unit_of_work()
+    def update_logo(self, id_, identity, stream, content_length=None,
+                    uow=None):
         """Update the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         self.require_permission(identity, 'update', record=record)
 
         record.files['logo'] = stream
-        record.commit()
-        db.session.commit()
+        uow.register(RecordCommitOp(record))
+
         return self.files.file_result_item(
             self.files,
             identity,
@@ -130,14 +130,16 @@ class CommunityService(RecordService):
             links_tpl=self.files.file_links_item_tpl(id_),
         )
 
-    def delete_logo(self, id_, identity):
+    @unit_of_work()
+    def delete_logo(self, id_, identity, uow=None):
         """Delete the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         deleted_file = record.files.pop('logo', None)
         if deleted_file is None:
             raise FileNotFoundError()
-        record.commit()
-        db.session.commit()
+
+        uow.register(RecordCommitOp(record))
+
         return self.files.file_result_item(
             self.files,
             identity,
