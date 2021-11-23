@@ -13,6 +13,7 @@ associated with a record.
 """
 
 from invenio_db import db
+from invenio_records.api import Record
 
 from invenio_communities.communities.records.api import Community
 
@@ -35,8 +36,9 @@ class CommunitiesRelationManager:
         """Get the community id"""
         if isinstance(val, str):
             return val
-        elif isinstance(val, Community):
+        elif isinstance(val, Record):
             return str(val.id)
+        return None
 
     def _lookup_community(self, community_id):
         """Retrieve a community by id.
@@ -59,14 +61,11 @@ class CommunitiesRelationManager:
         """
         community_id = self._to_id(community_or_id)
 
-        if request:
-            # TODO
-            raise NotImplementedError("Request not yet supported")
-
         # Create M2M object
         obj = self._m2m_model_cls(
             record_id=self._record_id,
-            community_id=community_id
+            community_id=community_id,
+            request_id=self._to_id(request)
         )
         db.session.add(obj)
 

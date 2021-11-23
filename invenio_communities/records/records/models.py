@@ -7,6 +7,7 @@
 # details.
 
 from invenio_db import db
+from invenio_requests.records.models import RequestMetadata
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils.types import UUIDType
 
@@ -22,7 +23,6 @@ class CommunityRelationMixin:
 
         class CommunityRecordM2M(db.Model, CommunityRelationMixin):
             __record_model__ = MyParentRecord
-            __request_model__ = MyRequestRecord
     """
 
     __record_model__ = None
@@ -46,11 +46,11 @@ class CommunityRelationMixin:
             primary_key=True,
         )
 
-    # @declared_attr
-    # def request_id(cls):
-    #     """Foreign key to a related request."""
-    #     return db.Column(
-    #         UUIDType,
-    #         db.ForeignKey(cls.__request_model__.id, ondelete="SET NULL"),
-    #         nullable=True,
-    #     )
+    @declared_attr
+    def request_id(cls):
+        """Foreign key to a related request."""
+        return db.Column(
+            UUIDType,
+            db.ForeignKey(RequestMetadata.id, ondelete="SET NULL"),
+            nullable=True,
+        )
