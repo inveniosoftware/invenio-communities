@@ -28,15 +28,19 @@ class IfRestrictedBase(Generator):
     """IfRestricted generator.
 
     IfRestricted(
-        'record',
+        'record', 'restricted', 'public'
         then_=[RecordPermissionLevel('view')],
         else_=[ActionNeed(superuser-access)],
     )
     """
 
-    def __init__(self, field, then_, else_):
+    def __init__(self, field_getter,
+                 field_name, then_value, else_value, then_, else_):
         """Constructor."""
-        self.field = field
+        self.field_getter = field_getter
+        self.field_name = field_name
+        self.then_value = then_value
+        self.else_value = else_value
         self.then_ = then_
         self.else_ = else_
 
@@ -47,9 +51,8 @@ class IfRestrictedBase(Generator):
             # passes properly, causing below ``record.access`` to fail.
             return self.else_
         # TODO: Next statement should be made more reusable
-        is_restricted = getattr(
-            record.access.protection, self.field, "restricted")
-        return self.then_ if is_restricted == "restricted" else self.else_
+        is_then_value = self.field_getter(record) or self.then_value
+        return self.then_ if is_then_value == self.then_value else self.else_
 
     def needs(self, record=None, **kwargs):
         """Set of Needs granting permission."""
@@ -73,34 +76,50 @@ class IfRestrictedBase(Generator):
     def query_filter(self, **kwargs):
         """Filters for current identity as super user."""
         # TODO: Next two statement should be made more reusable
-        q_restricted = Q("match", **{f"access.{self.field}": "restricted"})
-        q_public = Q("match", **{f"access.{self.field}": "public"})
+        q_then = Q("match", **{self.field_name: self.then_value})
+        q_else = Q("match", **{self.field_name: self.else_value})
         then_query = self.make_query(self.then_, **kwargs)
         else_query = self.make_query(self.else_, **kwargs)
 
         if then_query and else_query:
-            return (q_restricted & then_query) | (q_public & else_query)
+            return (q_then & then_query) | (q_else & else_query)
         elif then_query:
-            return (q_restricted & then_query) | q_public
+            return (q_then & then_query) | q_else
         elif else_query:
-            return q_public & else_query
+            return q_else & else_query
         else:
-            return q_public
+            return q_else
 
 
 # TODO: Remove class once IfRestrictedBase has been moved.
 class IfRestricted(IfRestrictedBase):
     """IfRestricted."""
 
-    def generators(self, record):
-        """Get the "then" or "else" generators."""
-        if record is None:
-            # TODO - when permissions on links are checked, the record is not
-            # passes properly, causing below ``record.access`` to fail.
-            return self.else_
-        is_restricted = getattr(
-            record.access, self.field, "restricted")
-        return self.then_ if is_restricted == "restricted" else self.else_
+    def __init__(self, field, then_, else_):
+        """Initialize."""
+        super().__init__(
+            lambda r: getattr(r.access, field, None),
+            f"access.{field}",
+            "restricted",
+            "public",
+            then_,
+            else_,
+        )
+
+
+class IfPolicyClosed(IfRestrictedBase):
+    """If policy is closed."""
+
+    def __init__(self, field, then_, else_):
+        """Initialize."""
+        super().__init__(
+            lambda r: getattr(r.access, field, None),
+            f"access.{field}",
+            "open",
+            "closed",
+            then_,
+            else_,
+        )
 
 
 class CommunityOwners(Generator):
@@ -146,3 +165,15 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_search_user_communities = [AuthenticatedUser(), SystemProcess()]
 
     can_rename = [CommunityOwners(), SystemProcess()]
+
+    can_submit_record = [
+        IfPolicyClosed(
+            'record_policy',
+            then_=[CommunityOwners(), SystemProcess()],
+            else_=[IfRestricted(
+                'visibility',
+                then_=[CommunityOwners()],
+                else_=[AuthenticatedUser()]),
+            ],
+        ),
+    ]
