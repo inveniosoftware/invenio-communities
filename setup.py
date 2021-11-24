@@ -130,6 +130,9 @@ setup(
         'invenio_celery.tasks': [
             'invenio_communities = invenio_communities.fixtures.tasks',
         ],
+        'invenio_requests.entity_resolvers': [
+            'communities = invenio_communities.requests.resolver:CommunityResolver',
+        ],
     },
     extras_require=extras_require,
     install_requires=install_requires,
