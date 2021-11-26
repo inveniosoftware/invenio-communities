@@ -14,6 +14,7 @@ entry point.
 """
 
 from invenio_requests.resolvers.default import RecordResolver
+from invenio_requests.resolvers.default.records import RecordPKProxy
 
 from ..communities.records.api import Community
 
@@ -28,7 +29,11 @@ class CommunityResolver(RecordResolver):
     type_id = 'community'
     """Type identifier for this resolver."""
 
-
     def __init__(self):
         """Initialize the default record resolver."""
-        super().__init__(Community, type_key="community")
+        super().__init__(
+            Community, type_key=self.type_id, proxy_cls=RecordPKProxy)
+
+    def _reference_entity(self, entity):
+        """Create a reference dict for the given record."""
+        return {self.type_key: str(entity.id)}

@@ -64,7 +64,7 @@ setup_requires = [
 install_requires = [
     'invenio-files-rest>=1.3.0',
     'invenio-mail>=1.0.2',
-    'invenio-requests>=0.1.2,<0.2.0',
+    'invenio-requests>=0.1.3,<0.2.0',
     'invenio-vocabularies>=0.9.3,<0.10.0',
 ]
 

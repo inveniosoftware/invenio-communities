@@ -87,5 +87,10 @@ class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
     id = SanitizedUnicode(validate=_not_blank(max=100))
+    uuid = fields.Method(serialize='get_uuid')
     metadata = NestedAttribute(CommunityMetadataSchema, required=True)
     access = NestedAttribute(CommunityAccessSchema, required=True)
+
+    def get_uuid(self, obj):
+        """Get the internal UUID."""
+        return str(obj.id)
