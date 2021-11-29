@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2016-2021 CERN.
+ * Copyright (C) 2021 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +11,6 @@ import React, { Component, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _isNil from "lodash/isNil";
 import _get from "lodash/get";
@@ -49,6 +49,7 @@ import {
   SelectField,
   TextField,
 } from "react-invenio-forms";
+import { CommunitiesApiClient } from "../../api";
 
 // TODO: remove when type becomes a vocabulary
 const COMMUNITY_TYPES = [
@@ -122,15 +123,10 @@ const LogoUploader = (props) => {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
       const file = acceptedFiles[0];
-      const uploadURL = props.community.links.logo;
       const formData = new FormData();
       formData.append("file", file);
-
-      const response = await axios.put(uploadURL, file, {
-        headers: {
-          "content-type": "application/octet-stream",
-        },
-      });
+      const client = new CommunitiesApiClient();
+      await client.updateLogo(props.community.id, file);
       window.location.reload();
     },
     onDropRejected: (rejectedFiles) => {
@@ -147,15 +143,11 @@ const LogoUploader = (props) => {
     accept: ".jpeg,.jpg,.png",
   };
 
-  let deleteLogo = () => {
-    try {
-      axios.delete(props.community.links.logo, {
-        headers: {
-          "content-type": "application/octet-stream",
-        },
-      });
-    } catch (error) {
-      props.onError(error);
+  let deleteLogo = async () => {
+    const client = new CommunitiesApiClient();
+    const response = await client.deleteLogo(props.community.id);
+    if (response.code >= 400) {
+      props.onError(response.errors);
     }
   };
 
@@ -251,13 +243,8 @@ const DangerZone = (props) => (
           <h3>Are you sure you want to delete this community?</h3>
         }
         onDelete={() => {
-          return axios.delete(
-            props.community.links.self,
-            {},
-            {
-              headers: { "Content-Type": "application/json" },
-            }
-          );
+          const client = new CommunitiesApiClient();
+          return client.delete(props.community.id);
         }}
         onError={props.onError}
       />
@@ -334,8 +321,8 @@ class CommunityProfileForm extends Component {
     return submittedCommunity;
   };
 
-  setGlobalError = (error) => {
-    this.setState({ error: error.response.data.message });
+  setGlobalError = (errorMsg) => {
+    this.setState({ error: errorMsg });
   };
 
   render() {
@@ -349,30 +336,21 @@ class CommunityProfileForm extends Component {
         ) => {
           setSubmitting(true);
           const payload = this.serializeValues(values);
-          try {
-            const response = await axios.put(
-              `/api/communities/${this.props.community.id}`,
-              payload,
-              {
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                withCredentials: true,
-              }
-            );
-            setSubmitting(false);
+          const client = new CommunitiesApiClient()
+          const response = await client.update(this.props.community.id, payload);
+          if (response.code < 400) {
             window.location.reload();
-          } catch (error) {
-            if (error.response.data.errors) {
-              error.response.data.errors.map(({ field, messages }) =>
+          } else {
+            setSubmitting(false);
+            if (response.errors) {
+              response.errors.map(({ field, messages }) =>
                 setFieldError(field, messages[0])
               );
-            } else if (error.response.data.message) {
-              this.setGlobalError(error.response.data.message);
+            }
+            if (response.data.message) {
+              this.setGlobalError(response.data.message);
             }
           }
-          setSubmitting(false);
         }}
       >
         {({ isSubmitting, isValid, handleSubmit }) => (
