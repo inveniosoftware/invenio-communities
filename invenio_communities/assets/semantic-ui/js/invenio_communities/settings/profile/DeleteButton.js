@@ -1,14 +1,13 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2016-2021 CERN.
+ * Copyright (C) 2021 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
 import { Button, Icon, Modal } from "semantic-ui-react";
 
 export const DeleteButton = (props) => {

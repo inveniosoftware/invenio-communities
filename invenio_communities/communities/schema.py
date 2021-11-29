@@ -22,7 +22,7 @@ def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
     max_ = kwargs.get('max','')
     return validate.Length(
-        error=_(f'Not empty string and less than {max_} characters allowed.'),
+        error=_(f'Field cannot be blank or longer than {max_} characters.'),
         min=1,
         **kwargs
     )
@@ -86,7 +86,7 @@ class CommunityMetadataSchema(Schema):
 class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
-    id = SanitizedUnicode(validate=_not_blank(max=100))
+    id = SanitizedUnicode(required=True, validate=_not_blank(max=100))
     uuid = fields.Method(serialize='get_uuid')
     metadata = NestedAttribute(CommunityMetadataSchema, required=True)
     access = NestedAttribute(CommunityAccessSchema, required=True)

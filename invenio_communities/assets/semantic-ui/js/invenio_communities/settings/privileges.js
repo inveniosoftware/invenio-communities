@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2016-2021 CERN.
+ * Copyright (C) 2021 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -9,12 +10,14 @@
 import React, { Component, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Formik } from "formik";
-import axios from "axios";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
 
 import { Divider, Icon, Grid, Button, Header, Form, Message } from "semantic-ui-react";
 import { RadioField } from "react-invenio-forms";
+
+import { CommunitiesApiClient } from "../api";
+
 
 class CommunityPrivilegesForm extends Component {
   state = {
@@ -34,8 +37,8 @@ class CommunityPrivilegesForm extends Component {
     return initialValues;
   };
 
-  setGlobalError = (error) => {
-    this.setState({ error: error.response.data.message });
+  setGlobalError = (errorMsg) => {
+    this.setState({ error: errorMsg });
   };
 
   setIsSavedState = (newValue) => {
@@ -52,31 +55,22 @@ class CommunityPrivilegesForm extends Component {
           { setSubmitting, setErrors, setFieldError }
         ) => {
           setSubmitting(true);
-          const payload = values;
-          try {
-            await axios.put(
-              `/api/communities/${this.props.community.id}`,
-              payload,
-              {
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                withCredentials: true,
-              }
-            )
-            setSubmitting(false);
+          const client = new CommunitiesApiClient();
+          const response = await client.update(this.props.community.id, values);
+          if (response.code < 400) {
             this.setIsSavedState(true);
-          } catch (error) {
-            if (error.response.data.errors) {
-              error.response.data.errors.map(({ field, messages }) =>
-                setFieldError(field, messages[0])
+          } else {
+            if (response.errors) {
+              response.errors.map(({ field, messages }) =>
+              setFieldError(field, messages[0])
               );
-            } else if (error.response.data.message) {
-              this.setGlobalError(error.response.data.message);
             }
-            setSubmitting(false);
+
+            if (response.data.message) {
+              this.setGlobalError(response.data.message);
+            }
           }
+          setSubmitting(false);
         }}
       >
         {({ isSubmitting, handleSubmit, values }) => (
@@ -127,6 +121,7 @@ class CommunityPrivilegesForm extends Component {
                   loading={isSubmitting}
                   toggle
                   active={isSaved}
+                  type="submit"
                 >
                   <Icon name="save"></Icon>{isSaved ?'Saved': 'Save'}
                 </Button>
