@@ -8,6 +8,7 @@
 
 """Invenio communities extension."""
 
+from flask_principal import identity_loaded
 from invenio_records_resources.services import FileService
 
 from invenio_communities.communities import CommunityFileServiceConfig, \
@@ -15,6 +16,7 @@ from invenio_communities.communities import CommunityFileServiceConfig, \
     CommunityServiceConfig
 
 from . import config
+from .utils import load_community_needs
 
 
 class InvenioCommunities(object):
@@ -33,6 +35,7 @@ class InvenioCommunities(object):
         if app.config["COMMUNITIES_ENABLED"]:
             self.init_services(app)
             self.init_resource(app)
+            self.init_hooks(app)
 
     def init_config(self, app):
         """Initialize configuration.
@@ -58,3 +61,9 @@ class InvenioCommunities(object):
             CommunityResourceConfig,
             self.service,
         )
+
+    def init_hooks(self, app):
+        """Initialize hooks."""
+        @identity_loaded.connect_via(app)
+        def on_identity_loaded(_, identity):
+            load_community_needs(identity, self.service)
