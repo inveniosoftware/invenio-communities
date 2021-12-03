@@ -8,6 +8,14 @@
 
 """Utilities."""
 
+from datetime import datetime, timedelta
+
+from elasticsearch_dsl import Q
+from flask import session
+from invenio_records_resources.services.errors import PermissionDeniedError
+
+from .communities.services.permissions import CommunityNeed
+
 # from datetime import timedelta
 # from functools import partial
 
@@ -157,3 +165,77 @@
 # #         user=user,
 # #         status=CommunityMemberStatus.ACCEPTED
 # #     )
+
+
+def search_communities(service, identity):
+    """Search for communities owned by the given identity.
+
+    We cannot use high-level service functions here because the given
+    identity may not be fully initialized yet, and thus fail permission
+    checks.
+    """
+    # TODO this needs to be revisited once memberships are in!
+    search_result = service._search(
+        'search',
+        identity,
+        params={},
+        es_preference=None,
+        extra_filter=Q(
+            "term",
+            **{"access.owned_by.user": identity.id}
+        ),
+        permission_action='read',
+    ).execute()
+
+    return search_result
+
+
+def load_community_needs(identity, service):
+    """Add community-related needs to the freshly loaded identity.
+
+    Note that this function is intended to be called as handler for the
+    identity-loaded signal, where we don't have control over the handler
+    execution order.
+    Thus, the given identity may not be fully initialized and still missing
+    some needs (e.g. 'authenticated_user'), so we cannot rely on high-level
+    service functions because permission checks may fail.
+    """
+    if identity.id is None:
+        # no user is logged in
+        return
+
+    # NOTE: this function would get called on each page load, so we want to
+    #       cache the search results
+    COMMUNITY_NEEDS_KEY = "communities-community-needs"
+    EXPIRATION_KEY = "communities-needs-cache-expires"
+    community_needs = session.get(COMMUNITY_NEEDS_KEY, None)
+
+    # TODO we have to somehow invalidate the cache when the user is added
+    #      to more communities!
+    now = datetime.utcnow()
+    expires_at = session.get(EXPIRATION_KEY, None)
+    if expires_at is None or expires_at < now:
+        community_needs = None
+
+    try:
+        if community_needs is None:
+            # if there's nothing cached, start the community search
+            community_needs = []
+            in_ten_minutes = now + timedelta(minutes=10)
+            expires_at = session[EXPIRATION_KEY] = in_ten_minutes
+
+            # NOTE: we cannot use the service method here, because the
+            #       identity may not be fully loaded yet, and thus miss
+            #       some required needs (e.g. 'authenticated_user')
+            for community in search_communities(service, identity):
+                community_needs.append(CommunityNeed(str(community.id)))
+
+        # add the needs for all results to the identity
+        for need in community_needs:
+            identity.provides.add(need)
+
+    except PermissionDeniedError:
+        community_needs = []
+
+    finally:
+        session[COMMUNITY_NEEDS_KEY] = set(community_needs or [])
