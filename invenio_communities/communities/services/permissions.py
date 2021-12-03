@@ -12,15 +12,18 @@
 """Community permissions."""
 
 import operator
-from functools import reduce
+from functools import partial, reduce
 from itertools import chain
 
 from elasticsearch_dsl.query import Q
-from flask_principal import UserNeed
+from flask_principal import Need, UserNeed
 from invenio_access.permissions import any_user
 from invenio_records_permissions.generators import AnyUser, \
     AuthenticatedUser, Generator, SystemProcess
 from invenio_records_permissions.policies import BasePermissionPolicy
+
+# TODO this is temporary and should be revisited when membership is a thing
+CommunityNeed = partial(Need, "community")
 
 
 # TODO: Move class to Invenio-Records-Permissions and make more reusable ()

@@ -10,9 +10,11 @@
 
 from .config import CommunityFileServiceConfig, CommunityServiceConfig, \
     SearchOptions
+from .permissions import CommunityNeed
 from .service import CommunityService
 
 __all__ = (
+    'CommunityNeed',
     'CommunityService',
     'CommunityServiceConfig',
     'CommunityFileServiceConfig',
