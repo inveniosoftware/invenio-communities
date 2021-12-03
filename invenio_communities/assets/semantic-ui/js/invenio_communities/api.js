@@ -5,12 +5,12 @@
 // Invenio-communities is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import axios from 'axios';
+import axios from "axios";
 
 const apiConfig = {
   withCredentials: true,
-  xsrfCookieName: 'csrftoken',
-  xsrfHeaderName: 'X-CSRFToken',
+  xsrfCookieName: "csrftoken",
+  xsrfHeaderName: "X-CSRFToken",
 };
 const configuredAxios = axios.create(apiConfig);
 
@@ -39,11 +39,11 @@ export class CommunitiesApiClient {
   constructor() {
     this.options = {
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       withCredentials: true,
-    }
+    };
   }
 
   /**
@@ -79,7 +79,7 @@ export class CommunitiesApiClient {
     return this._createResponse(() =>
       configuredAxios.post("/api/communities", payload, {
         ...this.options,
-        ...options
+        ...options,
       })
     );
   }
@@ -94,14 +94,10 @@ export class CommunitiesApiClient {
   async update(communityId, payload, options) {
     options = options || {};
     return this._createResponse(() =>
-      configuredAxios.put(
-        `/api/communities/${communityId}`,
-        payload,
-        {
-          ...this.options,
-          ...options
-        }
-      )
+      configuredAxios.put(`/api/communities/${communityId}`, payload, {
+        ...this.options,
+        ...options,
+      })
     );
   }
 
@@ -114,13 +110,10 @@ export class CommunitiesApiClient {
   async delete(communityId, options) {
     options = options || {};
     return this._createResponse(() =>
-      configuredAxios.delete(
-        `/api/communities/${communityId}`,
-        {
-          ...this.options,
-          ...options
-        }
-      )
+      configuredAxios.delete(`/api/communities/${communityId}`, {
+        ...this.options,
+        ...options,
+      })
     );
   }
 
@@ -136,15 +129,14 @@ export class CommunitiesApiClient {
     return this._createResponse(() =>
       configuredAxios.post(
         `/api/communities/${communityId}/rename`,
-        {id: newId},
+        { id: newId },
         {
           ...this.options,
-          ...options
+          ...options,
         }
       )
     );
   }
-
 
   /**
    * Update the community logo.
@@ -158,17 +150,13 @@ export class CommunitiesApiClient {
     const headers = {
       ...this.options.headers,
       "Content-Type": "application/octet-stream",
-    }
+    };
     return this._createResponse(() =>
-      configuredAxios.put(
-        `/api/communities/${communityId}/logo`,
-        payload,
-        {
-          ...this.options,
-          "headers": headers,
-          ...options
-        }
-      )
+      configuredAxios.put(`/api/communities/${communityId}/logo`, payload, {
+        ...this.options,
+        headers: headers,
+        ...options,
+      })
     );
   }
 
@@ -183,16 +171,13 @@ export class CommunitiesApiClient {
     const headers = {
       ...this.options.headers,
       "Content-Type": "application/octet-stream",
-    }
+    };
     return this._createResponse(() =>
-      configuredAxios.delete(
-        `/api/communities/${communityId}/logo`,
-        {
-          ...this.options,
-          "headers": headers,
-          ...options
-        }
-      )
+      configuredAxios.delete(`/api/communities/${communityId}/logo`, {
+        ...this.options,
+        headers: headers,
+        ...options,
+      })
     );
   }
 }
