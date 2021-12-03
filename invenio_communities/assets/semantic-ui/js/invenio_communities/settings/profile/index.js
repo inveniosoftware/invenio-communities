@@ -9,7 +9,7 @@
 
 import React, { Component, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Formik } from "formik";
+import { Formik, getIn } from "formik";
 import * as Yup from "yup";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _isNil from "lodash/isNil";
@@ -336,8 +336,11 @@ class CommunityProfileForm extends Component {
         ) => {
           setSubmitting(true);
           const payload = this.serializeValues(values);
-          const client = new CommunitiesApiClient()
-          const response = await client.update(this.props.community.id, payload);
+          const client = new CommunitiesApiClient();
+          const response = await client.update(
+            this.props.community.id,
+            payload
+          );
           if (response.code < 400) {
             window.location.reload();
           } else {
@@ -423,9 +426,9 @@ class CommunityProfileForm extends Component {
                   />
                   <RemoteSelectField
                     fieldPath={"metadata.organizations"}
-                    suggestionAPIUrl="/api/vocabularies/affiliations"
+                    suggestionAPIUrl="/api/affiliations"
                     suggestionAPIHeaders={{
-                      Accept: "application/vnd.inveniordm.v1+json",
+                      Accept: "application/json",
                     }}
                     placeholder={"Search for an organization by name"}
                     clearable
@@ -445,6 +448,7 @@ class CommunityProfileForm extends Component {
                     label="Organizations"
                     noQueryMessage="Search for organizations..."
                     allowAdditions
+                    search={(filteredOptions, searchQuery) => filteredOptions}
                   />
                   {/* TODO: Re-enable once properly integrated to be displayed */}
                   {/* <RichInputField
