@@ -14,6 +14,7 @@ from invenio_records_resources.services.records.components import \
     ServiceComponent
 from marshmallow.exceptions import ValidationError
 
+from ...utils import on_membership_change
 
 class PIDComponent(ServiceComponent):
     """Service component for Community PIDs."""
@@ -142,6 +143,7 @@ class CommunityAccessComponent(AccessComponent):
         is_sys_id = system_process in identity.provides
         if not record.access.owned_by and not is_sys_id:
             record.access.owned_by.add({"user": identity.id})
+            on_membership_change(identity=identity)
 
     def create(self, identity, data=None, record=None, **kwargs):
         """Add basic ownership fields to the record."""
