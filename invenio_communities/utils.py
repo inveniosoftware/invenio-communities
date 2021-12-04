@@ -8,10 +8,8 @@
 
 """Utilities."""
 
-from datetime import datetime, timedelta
-
 from elasticsearch_dsl import Q
-from flask import session
+from invenio_cache import current_cache
 from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .communities.services.permissions import CommunityNeed
@@ -204,38 +202,42 @@ def load_community_needs(identity, service):
         # no user is logged in
         return
 
-    # NOTE: this function would get called on each page load, so we want to
-    #       cache the search results
-    COMMUNITY_NEEDS_KEY = "communities-community-needs"
-    EXPIRATION_KEY = "communities-needs-cache-expires"
-    community_needs = session.get(COMMUNITY_NEEDS_KEY, None)
+    # Cache keys
+    #
+    # The cache of communities must be invalidated on:
+    # 1) on creation of a community (likely this one is modelled via membership
+    #    in the future).
+    # 2) add/remove/change of membership
+    #
+    # We construct the cache key for each membership entity (e.g. user,
+    # role, system role). This way, once a membership is added/removed/updated
+    # we can cache the list of associated communities for this entity.
+    # Once a user logs in, we get the cache for each of the membership
+    # entities and combine it into a single list.
 
-    # TODO we have to somehow invalidate the cache when the user is added
-    #      to more communities!
-    now = datetime.utcnow()
-    expires_at = session.get(EXPIRATION_KEY, None)
-    if expires_at is None or expires_at < now:
-        community_needs = None
+    # Currently, only users are supported (no roles or system roles)
+    cache_key = identity_cache_key(identity)
+    communities = current_cache.get(cache_key)
+    if communities is None:
+        try:
+            communities = []
+            for c in search_communities(service, identity):
+                communities.append(str(c.uuid))
+            current_cache.set(cache_key, communities, timeout=24*3600)
+        except PermissionDeniedError:
+            communities = []
 
-    try:
-        if community_needs is None:
-            # if there's nothing cached, start the community search
-            community_needs = []
-            in_ten_minutes = now + timedelta(minutes=10)
-            expires_at = session[EXPIRATION_KEY] = in_ten_minutes
 
-            # NOTE: we cannot use the service method here, because the
-            #       identity may not be fully loaded yet, and thus miss
-            #       some required needs (e.g. 'authenticated_user')
-            for community in search_communities(service, identity):
-                community_needs.append(CommunityNeed(str(community.id)))
+    # Add community needs to identity
+    for c_id in communities:
+        identity.provides.add(CommunityNeed(c_id))
 
-        # add the needs for all results to the identity
-        for need in community_needs:
-            identity.provides.add(need)
 
-    except PermissionDeniedError:
-        community_needs = []
+def on_membership_change(identity=None):
+    """Handler called when a membership is changed."""
+    if identity is not None:
+        current_cache.delete(identity_cache_key(identity))
 
-    finally:
-        session[COMMUNITY_NEEDS_KEY] = set(community_needs or [])
+def identity_cache_key(identity):
+    """Make the cache key for storing the communities for a user."""
+    return f"user-communities:{identity.id}"
