@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2021 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -60,7 +61,7 @@ class CommunityService(RecordService):
         )
 
     @unit_of_work()
-    def rename(self, id_, identity, data, revision_id=None, raise_errors=True,
+    def rename(self, identity, id_, data, revision_id=None, raise_errors=True,
                uow=None):
         """Rename a community."""
         record = self.record_cls.pid.resolve(id_)
@@ -97,7 +98,7 @@ class CommunityService(RecordService):
             links_tpl=self.links_item_tpl,
         )
 
-    def read_logo(self, id_, identity):
+    def read_logo(self, identity, id_):
         """Read the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         self.require_permission(identity, 'read', record=record)
@@ -113,7 +114,7 @@ class CommunityService(RecordService):
         )
 
     @unit_of_work()
-    def update_logo(self, id_, identity, stream, content_length=None,
+    def update_logo(self, identity, id_, stream, content_length=None,
                     uow=None):
         """Update the community's logo."""
         record = self.record_cls.pid.resolve(id_)
@@ -131,7 +132,7 @@ class CommunityService(RecordService):
         )
 
     @unit_of_work()
-    def delete_logo(self, id_, identity, uow=None):
+    def delete_logo(self, identity, id_, uow=None):
         """Delete the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         deleted_file = record.files.pop('logo', None)

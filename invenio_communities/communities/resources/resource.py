@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2021 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -102,8 +103,8 @@ class CommunityResource(RecordResource):
     def rename(self):
         """Rename a community."""
         item = self.service.rename(
-            resource_requestctx.view_args["pid_value"],
             g.identity,
+            resource_requestctx.view_args["pid_value"],
             resource_requestctx.data,
             revision_id=resource_requestctx.headers.get("if_match"),
         )
@@ -113,8 +114,8 @@ class CommunityResource(RecordResource):
     def read_logo(self):
         """Read logo's content."""
         item = self.service.read_logo(
-            resource_requestctx.view_args["pid_value"],
             g.identity,
+            resource_requestctx.view_args["pid_value"],
         )
         return item.send_file(), 200
 
@@ -124,8 +125,8 @@ class CommunityResource(RecordResource):
     def update_logo(self):
         """Upload logo content."""
         item = self.service.update_logo(
-            resource_requestctx.view_args["pid_value"],
             g.identity,
+            resource_requestctx.view_args["pid_value"],
             resource_requestctx.data["request_stream"],
             content_length=resource_requestctx.data["request_content_length"],
         )
@@ -135,7 +136,7 @@ class CommunityResource(RecordResource):
     def delete_logo(self):
         """Delete logo."""
         self.service.delete_logo(
-            resource_requestctx.view_args["pid_value"],
             g.identity,
+            resource_requestctx.view_args["pid_value"],
         )
         return "", 204
