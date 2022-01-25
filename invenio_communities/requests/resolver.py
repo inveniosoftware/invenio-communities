@@ -13,8 +13,8 @@ is registered in Invenio-Requests via the "invenio_requests.entity_resolvers"
 entry point.
 """
 
-from invenio_requests.resolvers.default import RecordResolver
-from invenio_requests.resolvers.default.records import RecordPKProxy
+from invenio_records_resources.references.resolvers.records import \
+    RecordPKProxy, RecordResolver
 
 from ..communities.records.api import Community
 from ..communities.services.permissions import CommunityNeed
