@@ -119,3 +119,38 @@ def make_member_identity():
         return i
 
     return _make_member_identity
+
+
+@pytest.fixture(scope="module")
+def create_community_identity(create_user_identity, make_member_identity):
+    """Create a community identity."""
+    i = 0
+
+    def _create_community_identity(community, role):
+        """Creating function."""
+        nonlocal i  # Needed to close over i
+        identity = create_user_identity(f"{i}@example.com")
+        identity = make_member_identity(identity, community, role)
+        i += 1
+        return identity
+
+    return _create_community_identity
+
+
+@pytest.fixture()
+def generate_invitation_input_data():
+    """Generate invitation data used as input to invitation service."""
+
+    def _generate_invitation_input_data(
+            community_uuid, entity_dict, role="reader"):
+        return {
+            "type": "community-member-invitation",
+            "receiver": entity_dict,
+            "payload": {
+                "role": role,
+            },
+            # Added by resource
+            "topic": {'community': str(community_uuid)}
+        }
+
+    return _generate_invitation_input_data

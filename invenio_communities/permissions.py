@@ -5,7 +5,6 @@
 # Copyright (C) 2021 Graz University of Technology.
 # Copyright (C) 2021 TU Wien.
 # Copyright (C) 2022 Northwestern University.
-
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -13,7 +12,6 @@
 """Community permissions."""
 
 import operator
-from collections import namedtuple
 from functools import reduce
 from itertools import chain
 
@@ -128,9 +126,56 @@ class IfPolicyClosed(IfRestrictedBase):
         )
 
 
+class CommunityRoleManager:
+    """Manages representations of community role permissions."""
+
+    def __init__(self, community_uuid, role):
+        """Constructor."""
+        self.community_uuid = community_uuid
+        self.role = role
+
+    @classmethod
+    def check_string(cls, string):
+        """Check if string is a CommunityRole string."""
+        return (
+            string.startswith("community::") and
+            string.count("::") == 2
+        )
+
+    @classmethod
+    def check_need(cls, need):
+        """Check if need is a CommunityRole."""
+        return (
+            need.method == "role" and
+            cls.check_string(need.value)
+        )
+
+    @classmethod
+    def from_string(cls, string):
+        """Constructor from string."""
+        assert cls.check_string(string)
+        _, c_uuid, role = string.split("::", 3)
+        return CommunityRoleManager(c_uuid, role)
+
+    @classmethod
+    def from_need(cls, need):
+        """Constructor from need."""
+        assert cls.check_need(need)
+        return cls.from_string(need.value)
+
+    def to_string(self):
+        """Create string."""
+        return f'community::{self.community_uuid}::{self.role}'
+
+    def to_need(self):
+        """Create need."""
+        return RoleNeed(self.to_string())
+
+
 def create_community_role_need(community_id, role):
     """Generate a community role need."""
-    return RoleNeed(f'community::{community_id}::{role}')
+    return CommunityRoleManager(community_id, role).to_need()
+
 
 # Community Generators
 
@@ -235,11 +280,6 @@ class OwnerMember(Generator):
             return []
 
         return [create_community_role_need(member.community_id, "owner")]
-
-    # TODO
-    # def query_filter(self, identity=None, **kwargs):
-    #     """Filters for current identity."""
-    #     pass
 
 
 class ManagerMember(Generator):
@@ -373,16 +413,13 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # Because can_search_members has already been applied, any user who got
     # through can read the record.
     can_read_search_members = [AnyUser(), SystemProcess()]
-
     can_read_member = [
         IfCommunityRestricted(
             then_=[AnyMember()],
             else_=[AnyUser()]
         ),
     ]
-
     can_update_member = [SelfMember(), OwnerMember(), ManagerMember()]
-
     can_delete_member = [SelfMember(), OwnerMember(), ManagerMember()]
 
 
@@ -403,9 +440,6 @@ def search_memberships(service, identity):
         extra_filter=Q("term", **{"user_id": identity.id}),
         permission_action='read_search_members',
     ).execute()
-
-
-CommunityRole = namedtuple("CommunityRole", ["c_uuid", "role"])
 
 
 def load_community_needs(identity, service):
@@ -441,7 +475,7 @@ def load_community_needs(identity, service):
     if memberships is None:
         try:
             memberships = [
-                CommunityRole(m.community_id, m.role)
+                CommunityRoleManager(m.community_id, m.role).to_string()
                 for m in search_memberships(service, identity)
             ]
             current_cache.set(cache_key, memberships, timeout=24*3600)
@@ -450,7 +484,7 @@ def load_community_needs(identity, service):
 
     # Add community needs to identity
     identity.provides.update({
-        create_community_role_need(m.c_uuid, m.role) for m in memberships
+        CommunityRoleManager.from_string(m).to_need() for m in memberships
     })
 
 

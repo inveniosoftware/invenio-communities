@@ -13,7 +13,10 @@ from invenio_requests.customizations import RequestAction, RequestState, \
     BaseRequestType
 
 from ...proxies import current_communities
+from .common import REQUEST_TYPE_ID
+from .permissions import InvitationPermissionPolicy
 from .schemas import MemberInvitationPayloadSchema
+
 
 # Actions
 
@@ -50,7 +53,7 @@ class AcceptAction(RequestAction):
 class CommunityMemberInvitation(BaseRequestType):
     """Community member invitation request type."""
 
-    type_id = 'community-member-invitation'
+    type_id = REQUEST_TYPE_ID
     name = _('Community Member Invitation')
     available_statuses = {
         "open": RequestState.OPEN,
@@ -72,3 +75,4 @@ class CommunityMemberInvitation(BaseRequestType):
     allowed_receiver_ref_types = ["user"]
     allowed_topic_ref_types = ["community"]
     payload_schema = MemberInvitationPayloadSchema().fields
+    permission_policy_cls = InvitationPermissionPolicy
