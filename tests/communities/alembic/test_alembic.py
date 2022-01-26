@@ -19,6 +19,8 @@ from invenio_vocabularies.contrib.names import models
 from invenio_vocabularies.contrib.subjects import models
 
 
+# TODO: reactvate invenio-communities #383
+@pytest.mark.skip()
 def test_alembic(base_app, database):
     """Test alembic recipes."""
     db = database
