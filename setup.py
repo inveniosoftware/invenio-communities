@@ -9,8 +9,6 @@
 
 """Invenio module that adds support for communities."""
 
-from __future__ import absolute_import, print_function
-
 import os
 
 from setuptools import find_packages, setup
@@ -109,6 +107,7 @@ setup(
         ],
         'invenio_base.api_blueprints': [
             'invenio_communities_api = invenio_communities.views:create_communities_api_blueprint',
+            'invenio_communities_invitations_api = invenio_communities.views:create_invitations_api_bp_from_app',
         ],
         'invenio_db.models': [
             'invenio_communities = invenio_communities.communities.records.models',
@@ -159,5 +158,5 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Development Status :: 3 - Alpha",
-     ],
+    ],
 )

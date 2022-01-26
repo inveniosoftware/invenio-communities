@@ -75,15 +75,6 @@ def full_community(community_owner):
 
 
 @pytest.fixture()
-def headers():
-    """Default headers for making requests."""
-    return {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-    }
-
-
-@pytest.fixture()
 def client_with_login(client, users):
     """Log in a user to the client."""
     user = users[0]

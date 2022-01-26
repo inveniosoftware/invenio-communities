@@ -8,11 +8,16 @@
 """Invitation request types."""
 
 from flask_babelex import lazy_gettext as _
+from invenio_access.permissions import system_identity
 from invenio_requests.customizations import RequestAction, RequestState, \
     BaseRequestType
+from invenio_requests.records.api import RequestEventType
 
 from ...proxies import current_communities
+from .common import REQUEST_TYPE_ID
+from .permissions import InvitationPermissionPolicy
 from .schemas import MemberInvitationPayloadSchema
+
 
 # Actions
 
@@ -21,11 +26,7 @@ class AcceptAction(RequestAction):
 
     status_from = ['open']
     status_to = 'accepted'
-
-    def can_execute(self, identity):
-        """Check if the accept action can be executed."""
-        # TODO
-        return True
+    event_type = RequestEventType.ACCEPTED.value
 
     def execute(self, identity, uow):
         """Accept entity into community."""
@@ -36,7 +37,7 @@ class AcceptAction(RequestAction):
         }
 
         current_communities.service.members.create(
-            identity,
+            system_identity,  # TODO: revisit in #391
             data=member_data,
             uow=uow
         )
@@ -44,12 +45,36 @@ class AcceptAction(RequestAction):
         super().execute(identity, uow)
 
 
+class DeclineAction(RequestAction):
+    """Decline action."""
+
+    status_from = ['open']
+    status_to = 'declined'
+    event_type = RequestEventType.DECLINED.value
+
+
+class CancelAction(RequestAction):
+    """Cancel a request."""
+
+    status_from = ['open']
+    status_to = 'cancelled'
+    event_type = RequestEventType.CANCELLED.value
+
+
+class ExpireAction(RequestAction):
+    """Expire action."""
+
+    status_from = ['open']
+    status_to = 'expired'
+    event_type = RequestEventType.EXPIRED.value
+
+
 # Request types
 
 class CommunityMemberInvitation(BaseRequestType):
     """Community member invitation request type."""
 
-    type_id = 'community-member-invitation'
+    type_id = REQUEST_TYPE_ID
     name = _('Community Member Invitation')
     available_statuses = {
         "open": RequestState.OPEN,
@@ -61,9 +86,9 @@ class CommunityMemberInvitation(BaseRequestType):
     default_status = "open"
     available_actions = {
         "accept": AcceptAction,
-        # "cancel": CancelAction,
-        # "decline": DeclineAction,
-        # "expire": ExpireAction,
+        "cancel": CancelAction,
+        "decline": DeclineAction,
+        "expire": ExpireAction,
     }
     creator_can_be_none = False
     topic_can_be_none = False
@@ -71,3 +96,4 @@ class CommunityMemberInvitation(BaseRequestType):
     allowed_receiver_ref_types = ["user"]
     allowed_topic_ref_types = ["community"]
     payload_schema = MemberInvitationPayloadSchema().fields
+    permission_policy_cls = InvitationPermissionPolicy
