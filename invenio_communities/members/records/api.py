@@ -6,7 +6,7 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 from invenio_db import db
-from invenio_records.systemfields import ConstantField, ModelField
+from invenio_records.systemfields import ModelField
 from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
 
@@ -23,7 +23,7 @@ class Member(Record):
     metadata = None
 
     index = IndexField(
-        "community_members-member-v1.0.0", search_alias="community_members"
+        "communitymembers-members-v1.0.0", search_alias="communitymembers"
     )
     """The ES index used."""
 

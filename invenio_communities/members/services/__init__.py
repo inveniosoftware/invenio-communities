@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Invenio.
 # Copyright (C) 2022 Northwestern University.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
@@ -10,10 +9,12 @@
 
 
 from .config import MemberServiceConfig
+from .permissions import CommunityMembersPermissionPolicy
 from .service import MemberService
 
 
 __all__ = (
-    'MemberService',
-    'MemberServiceConfig',
+    "CommunityMembersPermissionPolicy",
+    "MemberService",
+    "MemberServiceConfig",
 )
