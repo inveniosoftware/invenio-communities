@@ -21,7 +21,7 @@ from invenio_communities.members import MemberService, \
     MemberServiceConfig
 
 from . import config
-from .utils import load_community_needs
+from .permissions import load_community_needs
 
 
 class InvenioCommunities(object):
@@ -73,4 +73,4 @@ class InvenioCommunities(object):
         """Initialize hooks."""
         @identity_loaded.connect_via(app)
         def on_identity_loaded(_, identity):
-            load_community_needs(identity, self.service)
+            load_community_needs(identity, self.service.members)
