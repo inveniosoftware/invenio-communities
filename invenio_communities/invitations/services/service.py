@@ -19,7 +19,6 @@ from ...members import AlreadyMemberError
 from ...proxies import current_communities
 
 
-
 class InvitationService(RecordService):
     """Invitation Service.
 
@@ -46,21 +45,7 @@ class InvitationService(RecordService):
         entity = ResolverRegistry.resolve_entity_proxy(
             entity_dict).resolve()
 
-        # Check if entity is already a member of community
-        try:
-            current_communities.service.members.read(
-                identity,
-                {
-                    **community_dict,
-                    **entity_dict
-                }
-            )
-        except NoResultFound:
-            # No, so we are good to proceed and create membership
-            pass
-        else:
-            # Yes, so we raise an exception
-            raise AlreadyMemberError()
+        self._assert_can_invite(identity, entity_dict)
 
         request_item = current_requests_service.create(
             identity,
@@ -73,3 +58,16 @@ class InvitationService(RecordService):
         )
 
         return request_item
+
+    def _assert_can_invite(self, identity, entity_dict):
+        """Raises if can't invite."""
+        pass
+        # TODO: can't invite if already member
+        # Can't if already member of community
+        # already_member = current_communities.service.members.is_member(
+        #     identity, entity_dict
+        # )
+        # if already_member:
+        #     raise AlreadyMemberError()
+
+        # TODO: can't invite if already invited

@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
-# Copyright (C) 2021 Northwestern University.
+# Copyright (C) 2021-2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +10,6 @@
 """Invenio Communities Service API."""
 
 from elasticsearch_dsl import Q
-from invenio_db import db
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import RecordService
 from invenio_records_resources.services.uow import RecordCommitOp, unit_of_work
