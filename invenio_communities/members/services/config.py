@@ -9,8 +9,9 @@
 
 from invenio_records_resources.services import Link, RecordServiceConfig
 
+from ...communities.records.api import Community
+from ...permissions import CommunityPermissionPolicy
 from ..records import Member
-from .permissions import CommunityMembersPermissionPolicy
 from .schema import MemberSchema
 
 
@@ -31,10 +32,11 @@ class MemberLink(Link):
 class MemberServiceConfig(RecordServiceConfig):
     """Member Service Config."""
 
+    community_cls = Community
     record_cls = Member
     schema = MemberSchema
 
-    permission_policy_cls = CommunityMembersPermissionPolicy
+    permission_policy_cls = CommunityPermissionPolicy
     # result_item_cls = RequestEventItem
 
     # ResultItem configurations
