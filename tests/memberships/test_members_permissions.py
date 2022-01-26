@@ -62,6 +62,9 @@ def test_can_delete_member(
         community_creation_input_data
     )._record
     owner_identity = make_member_identity(owner_identity, community, "owner")
+    owner_membership = community_service.members.get_member(
+        community.id, owner_identity.id
+    )
     policy = CommunityPermissionPolicy
 
     # Member can leave
@@ -97,13 +100,6 @@ def test_can_delete_member(
     )
 
     # Manager can't remove owner
-    owner_membership = Member.create(
-        {},
-        community_id=community.id,
-        user_id=owner_identity.id,
-        role="owner"
-    )
-
     assert not (
         policy(action="delete_member", record=owner_membership)
         .allows(manager_identity)
@@ -135,6 +131,10 @@ def test_can_update_member(
         community_creation_input_data
     )._record
     owner_identity = make_member_identity(owner_identity, community, "owner")
+    owner_membership = community_service.members.get_member(
+        community.id, owner_identity.id
+    )
+
     policy = CommunityPermissionPolicy
 
     # Member can update self
@@ -170,13 +170,6 @@ def test_can_update_member(
     )
 
     # Manager can't update owner
-    owner_membership = Member.create(
-        {},
-        community_id=community.id,
-        user_id=owner_identity.id,
-        role="owner"
-    )
-
     assert not (
         policy(action="update_member", record=owner_membership)
         .allows(manager_identity)
