@@ -15,6 +15,7 @@ from invenio_db.utils import drop_alembic_version_table
 # default. This means that when alembic creates the database vs when SQLAlchemy
 # creates the database there's a discrepancy. Importing the subjects model
 # here, ensures the model get's registered, and we avoid the discrepancy.
+from invenio_vocabularies.contrib.names import models
 from invenio_vocabularies.contrib.subjects import models
 
 
