@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -9,25 +10,17 @@
 """Pytest configuration."""
 
 import itertools
-import uuid
 
 import pytest
 from flask_security import login_user
 from invenio_accounts.testutils import create_test_user, login_user_via_session
-from invenio_app.factory import create_api
 
 from invenio_communities.communities.records.api import Community
 
 
 @pytest.fixture(scope='module')
-def create_app(instance_path):
-    """Application factory fixture."""
-    return create_api
-
-
-@pytest.fixture(scope='module')
 def users(app):
-    yield [create_test_user('user{}@inveniosoftware.org'.format(i)) for i in range(3)]
+    yield [create_test_user(f'user{i}@inveniosoftware.org') for i in range(3)]
 
 
 @pytest.fixture

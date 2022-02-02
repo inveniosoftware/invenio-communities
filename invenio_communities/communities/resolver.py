@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2021 CERN.
+# Copyright (C) 2022 Northwestern University.
 #
 # Invenio-Communities is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -16,8 +17,8 @@ entry point.
 from invenio_records_resources.references.resolvers.records import \
     RecordPKProxy, RecordResolver
 
-from ..communities.records.api import Community
-from ..communities.services.permissions import CommunityNeed
+from .records.api import Community
+from .services.permissions import CommunityNeed
 
 
 class CommunityPKProxy(RecordPKProxy):

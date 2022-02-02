@@ -34,6 +34,7 @@ def test_alembic(base_app, database):
     assert 'communities_metadata' in tables
     assert 'communities_files' in tables
     assert 'communities_metadata_version' in tables
+    assert 'communities_members' in tables
 
     # Check that Alembic agrees that there's no further tables to create.
     assert not ext.alembic.compare_metadata()

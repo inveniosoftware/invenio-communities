@@ -6,19 +6,14 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-"""Members."""
+"""Members Services."""
 
-from .errors import AlreadyMemberError
-from .records import Member, MemberModel
-from .services import MemberService, MemberServiceConfig
+
+from .config import MemberServiceConfig
+from .service import MemberService
 
 
 __all__ = (
-    'AlreadyMemberError',
-    'Member',
-    'MemberModel',
-    # 'MemberResource',
-    # 'MemberResourceConfig',
     'MemberService',
     'MemberServiceConfig',
 )

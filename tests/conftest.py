@@ -10,6 +10,8 @@
 
 import pytest
 
+from invenio_app.factory import create_api
+
 pytest_plugins = ("celery.contrib.pytest", )
 
 
@@ -24,3 +26,9 @@ def app_config(app_config):
     app_config['JSONSCHEMAS_HOST'] = 'not-used'
 
     return app_config
+
+
+@pytest.fixture(scope="module")
+def create_app(instance_path):
+    """Application factory fixture."""
+    return create_api
