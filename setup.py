@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -111,7 +112,7 @@ setup(
         ],
         'invenio_db.models': [
             'invenio_communities = invenio_communities.communities.records.models',
-            # 'invenio_communities_members = invenio_communities.members.models',
+            'invenio_communities_members = invenio_communities.members.records.models',
             # 'invenio_communities_records = invenio_communities.communities.records.models',
             # 'invenio_requests = invenio_communities.requests.models',
         ],
@@ -131,7 +132,10 @@ setup(
             'invenio_communities = invenio_communities.fixtures.tasks',
         ],
         'invenio_requests.entity_resolvers': [
-            'communities = invenio_communities.requests.resolver:CommunityResolver',
+            'communities = invenio_communities.communities.resolver:CommunityResolver',
+        ],
+        'invenio_requests.types': [
+            'community_member_invitation = invenio_communities.invitations:CommunityMemberInvitation',
         ],
     },
     extras_require=extras_require,

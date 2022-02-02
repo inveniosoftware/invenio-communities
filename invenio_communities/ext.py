@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -14,6 +15,10 @@ from invenio_records_resources.services import FileService
 from invenio_communities.communities import CommunityFileServiceConfig, \
     CommunityResource, CommunityResourceConfig, CommunityService, \
     CommunityServiceConfig
+from invenio_communities.invitations import InvitationService, \
+    InvitationServiceConfig
+from invenio_communities.members import MemberService, \
+    MemberServiceConfig
 
 from . import config
 from .utils import load_community_needs
@@ -52,6 +57,8 @@ class InvenioCommunities(object):
         self.service = CommunityService(
             CommunityServiceConfig,
             files_service=FileService(CommunityFileServiceConfig),
+            invitations_service=InvitationService(InvitationServiceConfig()),
+            members_service=MemberService(MemberServiceConfig())
         )
 
     def init_resource(self, app):

@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2022 Northwestern University.
+#
+# Invenio-Communities is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License; see LICENSE file for more details.
+
+"""Member Model."""
+
+from invenio_db import db
+from invenio_accounts.models import User
+from invenio_records.models import RecordMetadataBase
+from sqlalchemy_utils.types import UUIDType
+
+from ...communities.records.models import CommunityMetadata
+
+
+class MemberModel(db.Model, RecordMetadataBase):
+    """Member model."""
+
+    __tablename__ = "communities_members"
+
+    # TODO: add id
+    id = None
+
+    community_id = db.Column(
+        UUIDType,
+        db.ForeignKey(CommunityMetadata.id, ondelete="CASCADE"),
+        primary_key=True
+    )
+
+    user_id = db.Column(
+        db.Integer(),
+        db.ForeignKey(User.id, ondelete="CASCADE"),
+        nullable=True
+    )
+
+    # TODO: add group + visibility

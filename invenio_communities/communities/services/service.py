@@ -20,15 +20,29 @@ from marshmallow.exceptions import ValidationError
 class CommunityService(RecordService):
     """community Service."""
 
-    def __init__(self, config, files_service=None):
+    def __init__(
+            self, config, files_service=None, invitations_service=None,
+            members_service=None):
         """Constructor for CommunityService."""
         super().__init__(config)
         self._files = files_service
+        self._invitations = invitations_service
+        self._members = members_service
 
     @property
     def files(self):
         """Community files service."""
         return self._files
+
+    @property
+    def invitations(self):
+        """Community invitations service."""
+        return self._invitations
+
+    @property
+    def members(self):
+        """Community members service."""
+        return self._members
 
     def search_user_communities(
             self, identity, params=None, es_preference=None, **kwargs):
