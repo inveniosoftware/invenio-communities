@@ -32,10 +32,9 @@ class InvenioCommunities(object):
         self.init_config(app)
         app.extensions['invenio-communities'] = self
 
-        if app.config["COMMUNITIES_ENABLED"]:
-            self.init_services(app)
-            self.init_resource(app)
-            self.init_hooks(app)
+        self.init_services(app)
+        self.init_resource(app)
+        self.init_hooks(app)
 
     def init_config(self, app):
         """Initialize configuration.
