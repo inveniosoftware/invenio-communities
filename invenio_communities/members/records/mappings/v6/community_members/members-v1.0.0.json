@@ -17,6 +17,9 @@
         },
         "user_id": {
           "type": "keyword"
+        },
+        "role": {
+          "type": "keyword"
         }
       }
     }

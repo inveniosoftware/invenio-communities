@@ -9,8 +9,17 @@
 
 from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services.records.schema import BaseRecordSchema
-from marshmallow import fields, validates_schema, ValidationError
+from marshmallow import fields, validate, validates_schema, ValidationError
 from marshmallow_utils.fields import SanitizedUnicode
+
+
+# TODO find a way to make those more configurable
+ROLE_TYPES = [
+    "owner",
+    "manager",
+    "curator",
+    "reader"
+]
 
 
 class MemberSchema(BaseRecordSchema):
@@ -19,16 +28,15 @@ class MemberSchema(BaseRecordSchema):
     # input and output
     community = SanitizedUnicode(required=True)
     user = fields.Integer()
-    # TODO: add group
-    # group = SanitizedUnicode()
-    # TODO: add role
-    # role = SanitizedUnicode(
-    #     required=True,
-    #     validate=validate.OneOf(ROLE_TYPES)
-    # )
+    role = fields.String(
+        required=True,
+        validate=validate.OneOf(ROLE_TYPES)
+    )
     # TODO: add visibility
     # visibility = SanitizedUnicode(
     #   required=True, validate=_not_blank(max=100))
+    # TODO: add group
+    # group = SanitizedUnicode()
 
     # output only
     # TODO: add name

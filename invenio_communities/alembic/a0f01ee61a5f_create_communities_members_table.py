@@ -16,7 +16,7 @@ from sqlalchemy_utils import types
 revision = 'a0f01ee61a5f'
 down_revision = 'de9c14cbb0b2'
 branch_labels = ()
-depends_on = None
+depends_on = ["9848d0149abd"]
 
 
 def upgrade():
@@ -46,6 +46,7 @@ def upgrade():
         sa.Column('id', types.uuid.UUIDType(), nullable=False),
         sa.Column('community_id', types.uuid.UUIDType(), nullable=False),
         sa.Column('user_id', sa.Integer(), nullable=True),
+        sa.Column('role', sa.String(length=50), nullable=False),
         sa.ForeignKeyConstraint(
             ['community_id'],
             ['communities_metadata.id'],

@@ -11,8 +11,8 @@ from flask_babelex import lazy_gettext as _
 from invenio_requests.customizations import RequestAction, RequestState, \
     BaseRequestType
 
-from invenio_communities.proxies import current_communities
-
+from ...proxies import current_communities
+from .schemas import MemberInvitationPayloadSchema
 
 # Actions
 
@@ -32,7 +32,7 @@ class AcceptAction(RequestAction):
         member_data = {
             **self.request.receiver.reference_dict,
             **self.request.topic.reference_dict,
-            # TODO: add role + visibility
+            "role": self.request["payload"]["role"]
         }
 
         current_communities.service.members.create(
@@ -70,4 +70,4 @@ class CommunityMemberInvitation(BaseRequestType):
     allowed_creator_ref_types = ["community"]
     allowed_receiver_ref_types = ["user"]
     allowed_topic_ref_types = ["community"]
-    payload_schema = None
+    payload_schema = MemberInvitationPayloadSchema().fields

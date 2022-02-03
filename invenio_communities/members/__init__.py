@@ -10,7 +10,7 @@
 
 from .errors import AlreadyMemberError
 from .records import Member, MemberModel
-from .services import MemberService, MemberServiceConfig
+from .services import MemberService, MemberServiceConfig, ROLE_TYPES
 
 
 __all__ = (
@@ -21,4 +21,5 @@ __all__ = (
     # 'MemberResourceConfig',
     'MemberService',
     'MemberServiceConfig',
+    "ROLE_TYPES",
 )
