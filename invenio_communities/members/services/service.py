@@ -36,7 +36,9 @@ class MemberService(RecordService):
 
         member_record = self.record_cls.create(
             {},
-            **self._to_id(data),
+            community_id=data.get("community"),
+            user_id=data.get("user"),
+            role=data.get("role")
         )
 
         # Persist record (DB and index)
