@@ -42,7 +42,6 @@ export class CommunitiesApiClient {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      withCredentials: true,
     };
   }
 

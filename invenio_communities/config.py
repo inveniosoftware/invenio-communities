@@ -8,6 +8,8 @@
 
 """Default configuration."""
 
+from invenio_communities.communities.services import facets
+
 COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
 SUPPORT_EMAIL = 'test@email.org'
@@ -52,3 +54,19 @@ COMMUNITIES_ROUTES = {
 
 COMMUNITIES_ENABLED = True
 """Config to enable/disable communities blueprints."""
+
+COMMUNITIES_FACETS = {
+    'type': {
+        'facet': facets.type,
+        'ui': {
+            'field': 'type',
+        }
+    },
+    'visibility': {
+        'facet': facets.visibility,
+        'ui': {
+            'field': 'visibility',
+        }
+    }
+}
+"""Available facets defined for this module."""

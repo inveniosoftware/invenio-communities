@@ -22,6 +22,7 @@ from invenio_records_resources.services.records.links import RecordLink, \
     pagination_links
 
 from invenio_communities.communities.records.api import Community
+from invenio_communities.communities.services import facets
 
 from ..schema import CommunitySchema
 from .components import CommunityAccessComponent, PIDComponent
@@ -32,18 +33,8 @@ class SearchOptions(SearchOptionsBase):
     """Search options."""
 
     facets = {
-        'type': TermsFacet(
-            field='metadata.type',
-            label=_('Type'),
-            value_labels={
-                'organization': _('Organization'),
-                'event': _('Event'),
-                'topic': _('Topic'),
-                'project': _('Project'),
-            }
-        ),
-        'domain': TermsFacet(field='metadata.domains'),
-
+        'type': facets.type,
+        'visibility': facets.visibility
     }
 
 
