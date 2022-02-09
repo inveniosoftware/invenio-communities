@@ -9,7 +9,7 @@
 """Test alembic recipes for Invenio-RDM-Records."""
 
 import pytest
-from invenio_db.utils import drop_alembic_version_table
+from invenio_db.utils import alembic_test_context, drop_alembic_version_table
 # Invenio-Vocabularies define an Alembic migration that include subjects and
 # affiliations tables. The SQLAlchemy models are however not registered by
 # default. This means that when alembic creates the database vs when SQLAlchemy
@@ -26,6 +26,8 @@ def test_alembic(base_app, database):
 
     if db.engine.name == 'sqlite':
         raise pytest.skip('Upgrades are not supported on SQLite.')
+
+    base_app.config['ALEMBIC_CONTEXT'] = alembic_test_context()
 
     # Check that this package's SQLAlchemy models have been properly registered
     tables = [x.name for x in db.get_tables_for_bind()]

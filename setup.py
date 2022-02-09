@@ -23,7 +23,7 @@ tests_require = [
     'pytest-invenio>=1.4.2,<2.0.0',
 ]
 
-invenio_db_version = '>=1.0.9,<2.0.0'
+invenio_db_version = '>=1.0.11,<2.0.0'
 invenio_search_version = '>=1.4.2,<2.0.0'
 
 extras_require = {
@@ -64,7 +64,7 @@ setup_requires = [
 install_requires = [
     'invenio-files-rest>=1.3.0',
     'invenio-mail>=1.0.2',
-    'invenio-requests>=0.2.3,<0.3.0',
+    'invenio-requests>=0.2.4,<0.3.0',
     'invenio-vocabularies>=0.10.2,<0.11.0',
 ]
 
