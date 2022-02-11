@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -52,24 +52,25 @@ communities = WebpackThemeBundle(
                 #     './js/invenio_communities/collections/settings.js',
             },
             dependencies={
-                'semantic-ui-css': '^2.4.1',
-                'semantic-ui-react': '^0.88.2',
                 '@ckeditor/ckeditor5-build-classic': '^16.0.0',
                 '@ckeditor/ckeditor5-react': '^2.1.0',
-                'axios': '^0.19.0',
-                'formik': '^2.0.6',
-                'lodash': '^4.17.15',
-                'luxon': '^1.21.1',
-                'path': '^0.12.7',
-                'prop-types': '^15.7.2',
-                'qs': '^6.9.1',
-                'react': '^16.12.0',
-                'react-dom': '^16.11.0',
-                'react-redux': '^7.1.3',
-                'react-searchkit': '^0.15.0',
-                'redux': '^4.0.5',
+                '@semantic-ui-react/css-patch': '^1.0.0',
+                'axios': '^0.21.0',
+                'formik': '^2.1.0',
+                'lodash': '^4.17.0',
+                'luxon': '^1.23.0',
+                'path': '^0.12.0',
+                'prop-types': '^15.7.0',
+                'qs': '^6.9.0',
+                'react': '^16.13.0',
+                'react-dom': '^16.13.0',
+                'react-redux': '^7.2.0',
+                'react-searchkit': '^1.0.0-alpha.12',
+                'redux': '^4.0.0',
                 'redux-thunk': '^2.3.0',
-                'yup': '^0.27.0',
+                'semantic-ui-css': '^2.4.0',
+                'semantic-ui-react': '^2.1.0',
+                'yup': '^0.28.0',
             }
         ),
     }
