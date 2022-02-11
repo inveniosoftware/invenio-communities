@@ -54,11 +54,12 @@ class InvenioCommunities(object):
     def init_services(self, app):
         """Initialize communities service."""
         # Services
+
         self.service = CommunityService(
-            CommunityServiceConfig,
-            files_service=FileService(CommunityFileServiceConfig),
-            invitations_service=InvitationService(InvitationServiceConfig()),
-            members_service=MemberService(MemberServiceConfig())
+            config=app.config["COMMUNITIES_COMMUNITY_SERVICE_CONFIG"],
+            files_service=FileService(app.config["COMMUNITIES_FILE_SERVICE_CONFIG"]),
+            invitations_service=InvitationService(app.config["COMMUNITIES_INVITATION_SERVICE_CONFIG"]),
+            members_service=MemberService(app.config["COMMUNITIES_MEMBER_SERVICE_CONFIG"])
         )
 
     def init_resource(self, app):
