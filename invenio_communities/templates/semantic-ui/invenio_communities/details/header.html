@@ -40,7 +40,12 @@
               <span class="label label-keyword">{{ organization.name }}</span>
             {%- endfor %}
           {% endif %}
-
+      </div>
+      <div id="community-upload-button" class="four wide right floated right aligned column">
+        <a href="/uploads/new?community={{ community.id }}" class="ui positive button">
+          <i class="plus icon"></i>
+          New upload
+        </a>
       </div>
       {# TODO: Add proper statistics #}
       <!-- <div class="two wide floated right column">
@@ -64,13 +69,6 @@
         </div>
       </div> -->
     </div>
-    <!-- <div class="three wide column"> -->
-      {# TODO: use "url_for" with appropriate querystring parameter #}
-      <!-- <a href="/uploads/new/?community={{ community.id }}" class="ui positive button">
-        <i class="plus icon"></i>
-        New upload
-      </a> -->
-    <!-- </div> -->
     {% set header_menu_items = {
       'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
       'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
