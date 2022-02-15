@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: invenio-communities 2.7.0.dev5\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2022-02-15 14:04+0100\n"
+"POT-Creation-Date: 2022-02-15 16:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,6 +116,10 @@ msgid ""
 " The\n"
 "    metadata of the community is kept for archival purposes.\n"
 "  "
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:47
+msgid "New upload"
 msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/index.html:12
