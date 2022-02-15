@@ -1,0 +1,148 @@
+# Translations template for invenio-communities.
+# Copyright (C) 2022 CERN
+# This file is distributed under the same license as the invenio-communities
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+# 
+# Translators:
+# Tibor Simko <tibor.simko@cern.ch>, 2022
+# Alexander Gruber <alexander.gruber@tugraz.at>, 2022
+# Alizee Pace <alizee.pace@gmail.com>, 2022
+# Mojib Wali <mojib.wali@tugraz.at>, 2022
+# chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: invenio-communities 2.7.0.dev5\n"
+"Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
+"POT-Creation-Date: 2022-02-15 14:04+0100\n"
+"PO-Revision-Date: 2016-08-18 12:29+0000\n"
+"Last-Translator: chriz_uniba <christina.zeller@uni-bamberg.de>, 2022\n"
+"Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: invenio_communities/communities/schema.py:25
+msgid "Field cannot be blank or longer than {max_} characters."
+msgstr ""
+
+#: invenio_communities/communities/services/facets.py:15
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:25
+msgid "Type"
+msgstr "Typ"
+
+#: invenio_communities/communities/services/facets.py:17
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:93
+msgid "Organization"
+msgstr "Organisation"
+
+#: invenio_communities/communities/services/facets.py:18
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:94
+msgid "Event"
+msgstr ""
+
+#: invenio_communities/communities/services/facets.py:19
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:95
+msgid "Topic"
+msgstr ""
+
+#: invenio_communities/communities/services/facets.py:20
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:96
+msgid "Project"
+msgstr ""
+
+#: invenio_communities/communities/services/facets.py:26
+msgid "Visibility"
+msgstr "Sichtbarkeit"
+
+#: invenio_communities/communities/services/facets.py:28
+msgid "Public"
+msgstr "Öffentlich"
+
+#: invenio_communities/invitations/services/request_types.py:53
+msgid "Community Member Invitation"
+msgstr ""
+
+#: invenio_communities/members/services/schema.py:54
+msgid "There must be one of {}"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
+msgid "Communities"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:50
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:12
+msgid "Search communities"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
+msgid "New community"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:30
+msgid "Domain"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:79
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:77
+msgid "Best match"
+msgstr "Höchste Übereinstimmung"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:83
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:81
+msgid "Newest"
+msgstr "Neuester"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:87
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:85
+msgid "Oldest"
+msgstr "Ältester"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:91
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:89
+msgid "Version"
+msgstr "Version"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:12
+msgid "Tombstone"
+msgstr "Grabstein"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:15
+msgid "Gone"
+msgstr "Entfernt"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:17
+#, python-format
+msgid ""
+"\n"
+"    The community you are trying to access was removed from %(sitename)s. The\n"
+"    metadata of the community is kept for archival purposes.\n"
+"  "
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/index.html:12
+msgid "Search "
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:17
+msgid "Access status"
+msgstr "Zugriffsstatus"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:22
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:26
+msgid "Resource types"
+msgstr "Arten von Ressourcen"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:32
+msgid "Languages"
+msgstr "Sprachen"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
+msgid " settings"
+msgstr ""
