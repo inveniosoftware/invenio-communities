@@ -22,7 +22,7 @@ def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
     max_ = kwargs.get('max','')
     return validate.Length(
-        error=_(f'Field cannot be blank or longer than {max_} characters.'),
+        error=_('Field cannot be blank or longer than {max_} characters.'.format(max_=max_)),
         min=1,
         **kwargs
     )
