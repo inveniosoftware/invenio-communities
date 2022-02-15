@@ -27,6 +27,7 @@ class MemberModel(db.Model, RecordMetadataBase):
     community_id = db.Column(
         UUIDType,
         db.ForeignKey(CommunityMetadata.id, ondelete="CASCADE"),
+        nullable=False
     )
 
     user_id = db.Column(
