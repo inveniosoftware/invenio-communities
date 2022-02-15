@@ -138,6 +138,9 @@ setup(
         'invenio_requests.types': [
             'community_member_invitation = invenio_communities.invitations:CommunityMemberInvitation',
         ],
+        'invenio_i18n.translations': [
+            'messages = invenio_communities',
+        ],
     },
     extras_require=extras_require,
     install_requires=install_requires,
