@@ -92,7 +92,7 @@ class CommunityCreateForm extends Component {
             <Grid container centered>
               <Grid.Row>
                 <Grid.Column width={8} textAlign="center">
-                  <Header as="h2">Setup your new community</Header>
+                  <Header className="mt-15" as="h2">Setup your new community</Header>
                   <Divider />
                 </Grid.Column>
               </Grid.Row>
