@@ -10,6 +10,7 @@
 # Alizee Pace <alizee.pace@gmail.com>, 2022
 # chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
 # Mojib Wali <mojib.wali@tugraz.at>, 2022
+# David Eckhard <dabombeeer@gmail.com>, 2022
 # 
 #, fuzzy
 msgid ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2022-02-15 16:07+0100\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2022\n"
+"Last-Translator: David Eckhard <dabombeeer@gmail.com>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr ""
 
 #: invenio_communities/communities/schema.py:25
 msgid "Field cannot be blank or longer than {max_} characters."
-msgstr ""
+msgstr "Feld kann nicht leer oder länger als {max_} Zeichen sein."
 
 #: invenio_communities/communities/services/facets.py:15
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:25
@@ -44,17 +45,17 @@ msgstr "Organisation"
 #: invenio_communities/communities/services/facets.py:18
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:94
 msgid "Event"
-msgstr ""
+msgstr "Ereignis"
 
 #: invenio_communities/communities/services/facets.py:19
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:95
 msgid "Topic"
-msgstr ""
+msgstr "Thema"
 
 #: invenio_communities/communities/services/facets.py:20
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:96
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 #: invenio_communities/communities/services/facets.py:26
 msgid "Visibility"
@@ -66,28 +67,28 @@ msgstr "Öffentlich"
 
 #: invenio_communities/invitations/services/request_types.py:53
 msgid "Community Member Invitation"
-msgstr ""
+msgstr "Community Mitglieder Einladung"
 
 #: invenio_communities/members/services/schema.py:54
 msgid "There must be one of {}"
-msgstr ""
+msgstr "Eines von {} muss vorhanden sein"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
 msgid "Communities"
-msgstr ""
+msgstr "Communities"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:50
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:12
 msgid "Search communities"
-msgstr ""
+msgstr "Communities durchsuchen"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
 msgid "New community"
-msgstr ""
+msgstr "Neue Community"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:30
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:79
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:77
@@ -125,6 +126,9 @@ msgid ""
 "    metadata of the community is kept for archival purposes.\n"
 "  "
 msgstr ""
+"\n"
+"    Die Community, auf die Sie zuzugreifen versuchen, wurde von %(sitename)s entfernt.\n"
+"Die Metadaten der Community werden zu Archivierungszwecken aufbewahrt."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:47
 msgid "New upload"
@@ -132,7 +136,7 @@ msgstr "Neuer Eintrag"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/index.html:12
 msgid "Search "
-msgstr ""
+msgstr "Durchsuche"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:17
 msgid "Access status"
@@ -149,4 +153,4 @@ msgstr "Sprachen"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
 msgid " settings"
-msgstr ""
+msgstr "Einstellungen"
