@@ -26,5 +26,6 @@ visibility = TermsFacet(
     label=_('Visibility'),
     value_labels={
         'public': _('Public'),
+        'restricted': _('Restricted'),
     }
 )
