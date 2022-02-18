@@ -9,6 +9,8 @@
 
 {# TODO: Use url_for instead #}
 
+{%- from "invenio_theme/macros/truncate.html" import truncate_text %}
+
 <div class="community-header">
   <div class="ui container relaxed grid">
     <div class="row">
@@ -25,7 +27,7 @@
       </div>
       <div class="ten wide column">
           <h2 class="ui header">{{ community.metadata.title }}</h2>
-          <p>{{ community.metadata.description }}</p>
+          {{ truncate_text(community.metadata.description) }}
           {% if community.metadata.website %}
             <a href="{{community.metadata.website}}"> <i class="linkify icon"></i>
               {{community.metadata.website}}

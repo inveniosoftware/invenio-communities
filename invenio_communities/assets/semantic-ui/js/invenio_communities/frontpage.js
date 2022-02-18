@@ -71,9 +71,12 @@ class CommunityCard extends Component {
             {_truncate(this.props.community.metadata.title, { length: 50 })}
           </Card.Header>
           <Card.Description>
-            {_truncate(this.props.community.metadata.description, {
-              length: 50,
-            })}
+            <div
+              className="truncate-lines-2"
+              dangerouslySetInnerHTML={{
+                __html: this.props.community.metadata.description,
+              }}
+            />
           </Card.Description>
         </Card.Content>
       </Card>
