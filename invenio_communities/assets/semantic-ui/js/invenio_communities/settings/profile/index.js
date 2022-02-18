@@ -517,7 +517,7 @@ ReactDOM.render(
   <CommunityProfileForm
     community={community}
     logo={logo}
-    defaultLogo="/static/images/placeholder.png"
+    defaultLogo="/static/images/square-placeholder.png"
   />,
   domContainer
 );
