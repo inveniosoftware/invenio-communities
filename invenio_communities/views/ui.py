@@ -104,6 +104,14 @@ def create_ui_blueprint(app):
                 order=3,
             )
 
+            current_menu.submenu('requests.communities').register(
+                'invenio_app_rdm_records.dashboard',
+                endpoint_arguments_constructor=lambda: {
+                            'dashboard_name': 'requests',
+                },
+                order=3
+            )
+
         # Register error handlers
         blueprint.register_error_handler(
             PermissionDeniedError, record_permission_denied_error)
