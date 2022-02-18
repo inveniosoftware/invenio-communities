@@ -150,7 +150,7 @@ if (userCommunitiesContainer) {
     <CommunitiesCardGroup
       fetchDataUrl={`/api/user/communities?q=&sort=newest&page=1&size=5`}
       emptyMessage="You are not a member of any community."
-      defaultLogo="/static/images/placeholder.png"
+      defaultLogo="/static/images/square-placeholder.png"
     />,
     userCommunitiesContainer
   );
@@ -159,7 +159,7 @@ ReactDOM.render(
   <CommunitiesCardGroup
     fetchDataUrl={`/api/communities?q=&sort=newest&page=1&size=5`}
     emptyMessage="There are no featured communities."
-    defaultLogo="/static/images/placeholder.png"
+    defaultLogo="/static/images/square-placeholder.png"
   />,
   featuredCommunitiesContainer
 );
