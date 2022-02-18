@@ -104,13 +104,19 @@ class CommunityCreateForm extends Component {
                     label={
                       <FieldLabel
                         htmlFor="metadata.title"
-                        icon={"book"}
+                        icon="book"
                         label="Community name"
                       />
                     }
                   />
                   <TextField
-                    label="Identifier"
+                    label={
+                      <FieldLabel
+                        htmlFor="id"
+                        icon="barcode"
+                        label="Identifier"
+                      />
+                    }
                     fieldPath="id"
                     helpText={`This is your community's unique identifier. You will be able to access your community
                     through the URL: ${
