@@ -266,7 +266,7 @@ class CommunityProfileForm extends Component {
         // TODO: Re-enable once properly integrated to be displayed
         // curation_policy: "",
         // page: "",
-        type: "organization",
+        type: "",
         website: "",
         organizations: [],
       },
@@ -392,6 +392,7 @@ class CommunityProfileForm extends Component {
                   />
                   <SelectField
                     search
+                    clearable
                     fieldPath="metadata.type"
                     label={
                       <FieldLabel
