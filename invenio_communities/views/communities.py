@@ -101,9 +101,10 @@ def communities_settings(community=None, logo=None, pid_value=None):
         active_menu_tab="settings"
     )
 
-@pass_community
 @require_community_owner
-def communities_settings_privileges(community=None, pid_value=None):
+@pass_community
+@pass_community_logo
+def communities_settings_privileges(community=None, logo=None, pid_value=None):
     """Community settings/privileges page."""
     return render_template(
         "invenio_communities/details/settings/privileges.html",
@@ -138,5 +139,6 @@ def communities_settings_privileges(community=None, pid_value=None):
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
         permissions=community.has_permissions_to(['update']),
-        active_menu_tab="settings"
+        active_menu_tab="settings",
+        logo=logo.to_dict() if logo else None
     )

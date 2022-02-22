@@ -24,7 +24,7 @@ def pass_community(f):
     """
     @wraps(f)
     def view(**kwargs):
-        pid_value = kwargs.get('pid_value')
+        pid_value = kwargs['pid_value']
         community = service().read(
             id_=pid_value, identity=g.identity
         )
@@ -39,7 +39,7 @@ def pass_community_logo(f):
     def view(**kwargs):
         """."""
         try:
-            pid_value = kwargs.get('pid_value')
+            pid_value = kwargs['pid_value']
             files = service().read_logo(
                 id_=pid_value, identity=g.identity
             )
@@ -56,7 +56,7 @@ def require_community_owner(f):
     @wraps(f)
     def view(**kwargs):
         """."""
-        pid_value = kwargs.get('pid_value')
+        pid_value = kwargs['pid_value']
         community = service().read(
             id_=pid_value, identity=g.identity
         )
