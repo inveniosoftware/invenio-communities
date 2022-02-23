@@ -17,17 +17,24 @@ entry point.
 from invenio_records_resources.references.resolvers.records import \
     RecordPKProxy, RecordResolver
 
-from ..permissions import create_community_role_need
+from ..permissions import CommunityRoleNeed
 from .records.api import Community
 
 
 class CommunityPKProxy(RecordPKProxy):
     """Resolver proxy for a Record entity using the UUID."""
 
-    def get_need(self):
-        """Return community member need."""
+    def get_needs(self, ctx=None):
+        """Return community role needs.
+
+        Defaults to all community roles of a community.
+        """
+        ctx = ctx or {}
+        roles = ctx.get(
+            'community_roles', ['owner', 'manager', 'curator', 'reader']
+        )
         comid = str(self._parse_ref_dict_id(self._ref_dict))
-        return create_community_role_need(comid, "member")
+        return [CommunityRoleNeed(comid, role) for role in roles]
 
 
 class CommunityResolver(RecordResolver):

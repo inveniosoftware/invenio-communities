@@ -69,10 +69,16 @@ class CommunityMemberInvitation(BaseRequestType):
         # "decline": DeclineAction,
         # "expire": ExpireAction,
     }
+
     creator_can_be_none = False
     topic_can_be_none = False
-    allowed_creator_ref_types = ["community"]
-    allowed_receiver_ref_types = ["user"]
-    allowed_topic_ref_types = ["community"]
+
+    allowed_creators_ref_types = ["community"]
+    allowed_receivers_ref_types = ["user"]
+    allowed_topics_ref_types = ["community"]
+
     payload_schema = MemberInvitationPayloadSchema().fields
-    permission_policy_cls = InvitationPermissionPolicy
+
+    needs_context = {
+        "community_roles": ['owner', 'manager',]
+    }

@@ -14,7 +14,7 @@
 
 import operator
 from collections import namedtuple
-from functools import reduce
+from functools import partial, reduce
 from itertools import chain
 
 from elasticsearch_dsl.query import Q
@@ -27,6 +27,25 @@ from invenio_records_permissions.policies import BasePermissionPolicy
 from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .communities.records.api import Community
+
+_Need = namedtuple('Need', ['method', 'value', 'role'])
+
+CommunityRoleNeed = partial(_Need, 'community')
+"""Defines a need for a community role.
+
+You can create a community role need like below
+
+.. code-block:: python
+
+    need = CommunityRoleNeed(community.id, 'manager')
+    # Community role needs can be identified by their method attribute
+    assert need.method == 'community
+    # The community identifier can be accessed via the value attribute
+    assert need.value == community.id
+    # The role held within the community can be accessed via the role attribute
+    assert need.role == 'manager
+"""
+
 
 
 # TODO: Move class to Invenio-Records-Permissions and make more reusable ()
