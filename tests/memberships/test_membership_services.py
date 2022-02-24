@@ -106,10 +106,6 @@ def invitation_creation_input_data(another_user, community):
     return {
         "type": "community-member-invitation",
         "receiver": {"user": another_user.id},
-        "payload": {
-            "role": "reader",
-        },
-        # Added by resource
         "topic": {'community': community.data['uuid']}
     }
 
@@ -133,8 +129,7 @@ def test_invite_user_flow(
     assert invitation_dict['is_open'] is True
     assert {'community': community_id} == invitation_dict['topic']
     assert {'user': user_id} == invitation_dict['receiver']
-    assert {'community': community_id} == invitation_dict['created_by']
-    assert 'reader' == invitation_dict["payload"]['role']
+    assert {'community': community_id} == invitation_dict['created_by']  # noqa
 
     # Accept
     invitation = requests_service.execute_action(
@@ -156,7 +151,6 @@ def test_invite_user_flow(
 
     member_dict = next(members.hits, None)
     assert member_dict["id"]
-    assert "reader" == member_dict["role"]
 
     # Invite accepted fails
     with pytest.raises(AlreadyMemberError) as e:

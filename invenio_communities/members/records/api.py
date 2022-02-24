@@ -33,11 +33,9 @@ class Member(Record):
     user_id = ModelField("user_id")
     """The data-layer id of the user (or None)."""
 
-    role = ModelField("role")
-    """The role of the entity."""
-
-    # TODO: add visibility
     # TODO: add group
+    # TODO: add role + visibility
+
 
     @classmethod
     def get_record(cls, id_, with_deleted=True):

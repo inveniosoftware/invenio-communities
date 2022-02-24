@@ -35,6 +35,4 @@ class MemberModel(db.Model, RecordMetadataBase):
         nullable=True
     )
 
-    role = db.Column(db.String(50), nullable=False)
-
     # TODO: add group + visibility

@@ -10,7 +10,6 @@
 
 from .config import MemberServiceConfig
 from .permissions import CommunityMembersPermissionPolicy
-from .schema import ROLE_TYPES
 from .service import MemberService
 
 
@@ -18,5 +17,4 @@ __all__ = (
     "CommunityMembersPermissionPolicy",
     "MemberService",
     "MemberServiceConfig",
-    "ROLE_TYPES",
 )
