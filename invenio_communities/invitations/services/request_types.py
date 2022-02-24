@@ -8,7 +8,6 @@
 """Invitation request types."""
 
 from flask_babelex import lazy_gettext as _
-from invenio_access.permissions import system_identity
 from invenio_requests.customizations import RequestAction, RequestState, \
     BaseRequestType
 
@@ -37,7 +36,7 @@ class AcceptAction(RequestAction):
         }
 
         current_communities.service.members.create(
-            system_identity,  # TODO: revisit in #391
+            identity,
             data=member_data,
             uow=uow
         )

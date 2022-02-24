@@ -17,17 +17,22 @@ entry point.
 from invenio_records_resources.references.resolvers.records import \
     RecordPKProxy, RecordResolver
 
-from ..permissions import create_community_role_need
 from .records.api import Community
+from .services.permissions import CommunityNeed
 
 
 class CommunityPKProxy(RecordPKProxy):
     """Resolver proxy for a Record entity using the UUID."""
 
     def get_need(self):
-        """Return community member need."""
+        """Return the user need of the community's owner."""
+        # TODO this may become difficult once there's multiple levels
+        #      of membership (owner, manager, curator, ...)
+        #      -> which needs should be generated? None, and let the
+        #         user create the set of required needs from the
+        #         resolved entity? or keep the 'owner' need?
         comid = str(self._parse_ref_dict_id(self._ref_dict))
-        return create_community_role_need(comid, "member")
+        return CommunityNeed(comid)
 
 
 class CommunityResolver(RecordResolver):

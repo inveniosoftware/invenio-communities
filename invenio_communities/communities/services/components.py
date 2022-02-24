@@ -2,21 +2,19 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
-# Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 import re
 
-from invenio_access.permissions import system_identity, system_process
+from invenio_access.permissions import system_process
 from invenio_pidstore.errors import PIDAlreadyExists
 from invenio_records_resources.services.records.components import \
     ServiceComponent
 from marshmallow.exceptions import ValidationError
 
-from ...permissions import on_membership_change
-from ...proxies import current_communities
+from ...utils import on_membership_change
 
 class PIDComponent(ServiceComponent):
     """Service component for Community PIDs."""
@@ -155,29 +153,3 @@ class CommunityAccessComponent(AccessComponent):
     def update(self, identity, data=None, record=None, **kwargs):
         """Update handler."""
         self._populate_access_and_validate(identity, data, record, **kwargs)
-
-
-class OwnershipComponent(ServiceComponent):
-    """Service component for owner membership integration."""
-
-    def create(self, identity, data=None, record=None, uow=None, **kwargs):
-        """Make an owner member from the identity."""
-        # If the identity is the system, we don't create an entry
-        # (it doesn't have an integer id)
-        if system_process in identity.provides:
-            return
-
-        # invenio-records-resources places the uow in the instance directly
-        # but will eventually pass it to the method
-        uow = self.uow
-        current_communities.service.members.create(
-            system_identity,  # we use the system identity to bootstrap
-            data={
-                "community": str(record.id),
-                "user": identity.id,
-                "role": "owner"
-            },
-            uow=uow
-        )
-        # Invalidate the membership cache
-        on_membership_change(identity=identity)
