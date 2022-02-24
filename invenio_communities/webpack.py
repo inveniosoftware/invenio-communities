@@ -38,20 +38,8 @@ communities = WebpackThemeBundle(
                     './js/invenio_communities/frontpage.js',
                 'invenio-communities-details-search':
                     './js/invenio_communities/search/index.js',
-                # 'invenio-communities-members':
-                #     './js/invenio_communities/members.js',
-                # 'invenio-communities-request':
-                #     './js/invenio_communities/request.js',
-                # 'invenio-communities-records':
-                #     './js/invenio_communities/records.js',
                 'invenio-communities-search':
                     './js/invenio_communities/search.js',
-                # 'invenio-communities-records-search':
-                #     './js/invenio_communities/records_search.js',
-                # 'invenio-communities-records-curate':
-                #     './js/invenio_communities/curate.js',
-                # 'invenio-communities-collections-settings':
-                #     './js/invenio_communities/collections/settings.js',
             },
             dependencies={
                 '@ckeditor/ckeditor5-build-classic': '^16.0.0',

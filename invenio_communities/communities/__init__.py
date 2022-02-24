@@ -9,11 +9,10 @@
 """Community Service API."""
 
 from .resources import CommunityResource, CommunityResourceConfig
-from .services import CommunityFileServiceConfig, CommunityNeed, \
-    CommunityService, CommunityServiceConfig, SearchOptions
+from .services import CommunityFileServiceConfig, CommunityService, \
+    CommunityServiceConfig, SearchOptions
 
 __all__ = (
-    'CommunityNeed',
     'CommunityService',
     'CommunityServiceConfig',
     'CommunityFileServiceConfig',

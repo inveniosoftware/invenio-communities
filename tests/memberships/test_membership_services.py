@@ -104,7 +104,7 @@ def community(community_service, community_owner_identity,
 def invitation_creation_input_data(another_user, community):
     """Full invitation data used as input to invitation service."""
     return {
-        "type": "community-member-invitation",
+        "type": "community-invitation",
         "receiver": {"user": another_user.id},
         "payload": {
             "role": "reader",
@@ -129,7 +129,7 @@ def test_invite_user_flow(
     )
 
     invitation_dict = invitation.to_dict()
-    assert 'open' == invitation_dict['status']
+    assert 'submitted' == invitation_dict['status']
     assert invitation_dict['is_open'] is True
     assert {'community': community_id} == invitation_dict['topic']
     assert {'user': user_id} == invitation_dict['receiver']
