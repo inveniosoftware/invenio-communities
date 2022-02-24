@@ -6,15 +6,12 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-from .errors import AlreadyInvitedError
-from .services import CommunityMemberInvitation, InvitationPermissionPolicy, \
-    InvitationService, InvitationServiceConfig
+from .services import CommunityMemberInvitation, InvitationService, \
+    InvitationServiceConfig
 
 
 __all__ = [
-    "AlreadyInvitedError",
     "CommunityMemberInvitation",
-    "InvitationPermissionPolicy",
     "InvitationService",
     "InvitationServiceConfig",
 ]

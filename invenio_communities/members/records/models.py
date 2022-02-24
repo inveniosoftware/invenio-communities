@@ -12,7 +12,6 @@ import uuid
 from invenio_db import db
 from invenio_accounts.models import User
 from invenio_records.models import RecordMetadataBase
-from sqlalchemy import Index
 from sqlalchemy_utils.types import UUIDType
 
 from ...communities.records.models import CommunityMetadata
@@ -22,9 +21,6 @@ class MemberModel(db.Model, RecordMetadataBase):
     """Member model."""
 
     __tablename__ = "communities_members"
-    __table_args__ = (
-        Index('ix_community_user', 'community_id', 'user_id', unique=True),
-    )
 
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
 

@@ -7,14 +7,12 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 from .config import InvitationServiceConfig
-from .permissions import InvitationPermissionPolicy
 from .request_types import CommunityMemberInvitation
 from .service import InvitationService
 
 
 __all__ = [
     "CommunityMemberInvitation",
-    "InvitationPermissionPolicy",
     "InvitationService",
     "InvitationServiceConfig",
 ]

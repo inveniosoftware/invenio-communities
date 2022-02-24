@@ -13,10 +13,10 @@ from sqlalchemy.dialects import mysql, postgresql
 from sqlalchemy_utils.types import JSONType, UUIDType
 
 # revision identifiers, used by Alembic.
-revision = 'f701a32e6fbe'
+revision = 'f261e5ee8743'
 down_revision = 'de9c14cbb0b2'
 branch_labels = ()
-depends_on = '9848d0149abd'
+depends_on = ["9848d0149abd"]
 
 
 def upgrade():
@@ -36,12 +36,12 @@ def upgrade():
         sa.Column(
             'json',
             sa.JSON()
-            .with_variant(JSONType(), 'mysql')
-            .with_variant(
-                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()),
-                'postgresql'
-            )
-            .with_variant(JSONType(), 'sqlite'),
+                .with_variant(JSONType(), 'mysql')
+                .with_variant(
+                    postgresql.JSONB(none_as_null=True, astext_type=sa.Text()),
+                    'postgresql'
+                )
+                .with_variant(JSONType(), 'sqlite'),
             nullable=True
         ),
         sa.Column('version_id', sa.Integer(), nullable=False),
@@ -67,15 +67,8 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_communities_members'))
     )
-    op.create_index(
-        'ix_community_user',
-        'communities_members',
-        ['community_id', 'user_id'],
-        unique=True
-    )
 
 
 def downgrade():
     """Downgrade database."""
-    op.drop_index('ix_community_user', table_name='communities_members')
     op.drop_table('communities_members')

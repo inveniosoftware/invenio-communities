@@ -54,27 +54,33 @@ def community(community_service, community_owner_identity,
     )
 
 
+@pytest.fixture()
+def invitation_creation_input_data(another_user, community):
+    """Full invitation data used as input to invitation service."""
+    return {
+        "type": "community-member-invitation",
+        "receiver": {"user": another_user.id},
+        "payload": {
+            "role": "reader",
+        },
+        # Added by resource
+        "topic": {'community': community.data['uuid']}
+    }
+
+
 # Tests
 
 def test_invite_user_flow(
-        another_identity, community_creation_input_data,
-        community_service, create_user_identity,
-        generate_invitation_input_data, make_member_identity,
+        another_identity, community, community_owner_identity,
+        community_service, invitation_creation_input_data,
         requests_service):
-    owner_identity = create_user_identity("owner@example.com")
-    community = community_service.create(
-        owner_identity,
-        community_creation_input_data
-    )._record
-    community_id = str(community.id)
-    owner_identity = make_member_identity(owner_identity, community, "owner")
+    community_id = community.data['uuid']
     user_id = str(another_identity.id)
 
     # Invite
-    data = generate_invitation_input_data(
-        community_id, {"user": user_id}, "reader"
+    invitation = community_service.invitations.create(
+        community_owner_identity, invitation_creation_input_data
     )
-    invitation = community_service.invitations.create(owner_identity, data)
 
     invitation_dict = invitation.to_dict()
     assert 'open' == invitation_dict['status']
@@ -98,7 +104,7 @@ def test_invite_user_flow(
 
     # Get membership
     members = community_service.members.search(
-        owner_identity,
+        community_owner_identity,
         community_id,
         extra_filter=Q('term', community_id=community_id),
     )
@@ -107,6 +113,12 @@ def test_invite_user_flow(
     assert member_dict["id"]
     assert "reader" == member_dict["role"]
 
+
+    # TODO: Re-enable in #391
+    # with pytest.raises(AlreadyMemberError) as e:
+    #     community_service.invitations.create(
+    #         community_owner_identity, invitation_creation_input_data
+    #     )
 
 @pytest.fixture()
 def get_membership_id(community_service):
