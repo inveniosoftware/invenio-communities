@@ -45,6 +45,3 @@ class MemberSchema(BaseRecordSchema):
             raise ValidationError(
                 _("There must be one of {}".format(valid_entities))
             )
-
-    # community is coming in from the API
-    # community_id is coming in from the Record when dumping

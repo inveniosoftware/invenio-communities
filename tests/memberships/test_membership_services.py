@@ -8,13 +8,14 @@
 """Test community invitations service."""
 
 import pytest
-from elasticsearch_dsl.query import Q
 from flask_principal import Identity, Need, UserNeed
+
 from invenio_accounts.testutils import create_test_user
 from invenio_requests import current_requests_service
 
 from invenio_communities.proxies import current_communities
-from invenio_communities.members import AlreadyMemberError, Member
+from invenio_communities.members import AlreadyMemberError
+
 
 # Fixtures
 
@@ -117,7 +118,6 @@ def test_invite_user_flow(
         community_service, invitation_creation_input_data,
         requests_service):
     community_id = community.data['uuid']
-    user_id = str(another_identity.id)
 
     # Invite
     invitation = community_service.invitations.create(
@@ -128,7 +128,7 @@ def test_invite_user_flow(
     assert 'open' == invitation_dict['status']
     assert invitation_dict['is_open'] is True
     assert {'community': community_id} == invitation_dict['topic']
-    assert {'user': user_id} == invitation_dict['receiver']
+    assert {'user': str(another_identity.id)} == invitation_dict['receiver']
     assert {'community': community_id} == invitation_dict['created_by']  # noqa
 
     # Accept
@@ -141,16 +141,16 @@ def test_invite_user_flow(
     assert invitation_dict['is_open'] is False
     assert invitation_dict['is_closed'] is True
 
-    Member.index.refresh()
-
     # Get membership
-    members = community_service.members.search(
+    member = community_service.members.read(
         community_owner_identity,
-        extra_filter=Q('term', community_id=community_id),
+        {
+            "community": community_id,
+            "user": str(another_identity.id),
+        }
     )
 
-    member_dict = next(members.hits, None)
-    assert member_dict["id"]
+    assert member
 
     # Invite accepted fails
     with pytest.raises(AlreadyMemberError) as e:

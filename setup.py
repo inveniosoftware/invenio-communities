@@ -121,7 +121,6 @@ setup(
         ],
         'invenio_search.mappings': [
             'communities = invenio_communities.communities.records.mappings',
-            'communitymembers = invenio_communities.members.records.mappings',
         ],
         'invenio_jsonschemas.schemas': [
             'communities = invenio_communities.communities.records.jsonschemas',

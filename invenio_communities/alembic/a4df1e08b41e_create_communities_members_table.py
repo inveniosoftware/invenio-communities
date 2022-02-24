@@ -13,7 +13,7 @@ from sqlalchemy.dialects import mysql, postgresql
 from sqlalchemy_utils import types
 
 # revision identifiers, used by Alembic.
-revision = 'a0f01ee61a5f'
+revision = 'a4df1e08b41e'
 down_revision = 'de9c14cbb0b2'
 branch_labels = ()
 depends_on = None
@@ -43,7 +43,6 @@ def upgrade():
                 .with_variant(types.json.JSONType(), 'sqlite'),
             nullable=True),
         sa.Column('version_id', sa.Integer(), nullable=False),
-        sa.Column('id', types.uuid.UUIDType(), nullable=False),
         sa.Column('community_id', types.uuid.UUIDType(), nullable=False),
         sa.Column('user_id', sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
@@ -62,7 +61,10 @@ def upgrade():
             ),
             ondelete='CASCADE'
         ),
-        sa.PrimaryKeyConstraint('id', name=op.f('pk_communities_members'))
+        sa.PrimaryKeyConstraint(
+            'community_id',
+            name=op.f('pk_communities_members')
+        )
     )
 
 

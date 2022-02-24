@@ -7,8 +7,6 @@
 
 """Member Model."""
 
-import uuid
-
 from invenio_db import db
 from invenio_accounts.models import User
 from invenio_records.models import RecordMetadataBase
@@ -22,11 +20,13 @@ class MemberModel(db.Model, RecordMetadataBase):
 
     __tablename__ = "communities_members"
 
-    id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
+    # TODO: add id
+    id = None
 
     community_id = db.Column(
         UUIDType,
         db.ForeignKey(CommunityMetadata.id, ondelete="CASCADE"),
+        primary_key=True
     )
 
     user_id = db.Column(
