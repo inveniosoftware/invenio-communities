@@ -13,7 +13,6 @@ from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_records_resources.services.records import RecordService
 from invenio_records_resources.services.uow import RecordCommitOp, \
     RecordDeleteOp, unit_of_work
-from sqlalchemy.orm.exc import NoResultFound
 
 from ...permissions import create_community_role_need
 from ..errors import LastOwnerError, OwnerSelfRoleChangeError, \
@@ -211,19 +210,3 @@ class MemberService(RecordService):
             }),
             links_item_tpl=self.links_item_tpl,
         )
-
-    def get_member(self, community_uuid, user_id):
-        """Get member associated with community and user ids."""
-        return self.record_cls.model_cls.query.filter_by(
-            community_id=community_uuid,
-            user_id=user_id,
-        ).one()
-
-    def is_member(self, community_uuid, user_id):
-        """Check if member exists based on community and user ids."""
-        try:
-            self.get_member(community_uuid, user_id)
-        except NoResultFound:
-            return False
-
-        return True
