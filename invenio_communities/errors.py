@@ -9,4 +9,4 @@
 
 
 class CommunityError(Exception):
-    """Exception raised when entity is already a member."""
+    """Base class for all community exceptions."""

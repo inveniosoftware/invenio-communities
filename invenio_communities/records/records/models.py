@@ -6,6 +6,8 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
+"""Abstract database model for modelling community/record relationships."""
+
 from invenio_db import db
 from invenio_requests.records.models import RequestMetadata
 from sqlalchemy.ext.declarative import declared_attr

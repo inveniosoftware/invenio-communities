@@ -8,8 +8,9 @@
 """Invitation request types."""
 
 from flask_babelex import lazy_gettext as _
-from invenio_requests.customizations import RequestAction, RequestState, \
-    BaseRequestType
+from invenio_requests.customizations import CancelAction, \
+    CreateAndSubmitAction, DeclineAction, DeleteAction, ExpireAction, \
+    RequestAction, RequestType
 
 from ...proxies import current_communities
 from .schemas import MemberInvitationPayloadSchema
@@ -19,13 +20,8 @@ from .schemas import MemberInvitationPayloadSchema
 class AcceptAction(RequestAction):
     """Accept action."""
 
-    status_from = ['open']
+    status_from = ['submitted']
     status_to = 'accepted'
-
-    def can_execute(self, identity):
-        """Check if the accept action can be executed."""
-        # TODO
-        return True
 
     def execute(self, identity, uow):
         """Accept entity into community."""
@@ -44,26 +40,24 @@ class AcceptAction(RequestAction):
         super().execute(identity, uow)
 
 
+
+
 # Request types
 
-class CommunityMemberInvitation(BaseRequestType):
+
+class CommunityMemberInvitation(RequestType):
     """Community member invitation request type."""
 
-    type_id = 'community-member-invitation'
-    name = _('Community Member Invitation')
-    available_statuses = {
-        "open": RequestState.OPEN,
-        "cancelled": RequestState.CLOSED,
-        "declined": RequestState.CLOSED,
-        "accepted": RequestState.CLOSED,
-        "expired": RequestState.CLOSED,
-    }
-    default_status = "open"
+    type_id = 'community-invitation'
+    name = _('Community invitation')
+    create_action = 'create'
     available_actions = {
+        "create": CreateAndSubmitAction,
+        "delete": DeleteAction,
         "accept": AcceptAction,
-        # "cancel": CancelAction,
-        # "decline": DeclineAction,
-        # "expire": ExpireAction,
+        "cancel": CancelAction,
+        "decline": DeclineAction,
+        "expire": ExpireAction,
     }
     creator_can_be_none = False
     topic_can_be_none = False
@@ -71,3 +65,6 @@ class CommunityMemberInvitation(BaseRequestType):
     allowed_receiver_ref_types = ["user"]
     allowed_topic_ref_types = ["community"]
     payload_schema = MemberInvitationPayloadSchema().fields
+    needs_context = {
+        "community_roles": ['owner', 'manager',]
+    }
