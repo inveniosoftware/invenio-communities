@@ -13,15 +13,3 @@ from ..errors import CommunityError
 
 class AlreadyMemberError(CommunityError):
     """Exception raised when entity is already a member."""
-
-
-class LastOwnerError(CommunityError):
-    """Exception raised when entity is last owner and trying to leave."""
-
-
-class OwnerSelfRoleChangeError(CommunityError):
-    """Exception raised when owner tries to change their role."""
-
-
-class ManagerSelfRoleChangeError(CommunityError):
-    """Exception raised when manager tries to change their role."""

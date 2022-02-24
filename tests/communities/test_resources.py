@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
-# Copyright (C) 2022 Northwestern University.
+#
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
@@ -12,7 +12,6 @@ import copy
 from io import BytesIO
 
 from invenio_communities.communities.records.api import Community
-from invenio_communities.members import Member
 
 
 def _assert_single_item_response(response):
@@ -91,8 +90,6 @@ def test_simple_flow(
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
 
@@ -158,8 +155,6 @@ def test_post_schema_validation(
 
     # Create a community
     res = client.post('/communities', headers=headers, json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
@@ -256,8 +251,6 @@ def test_post_metadata_schema_validation(
     res = client.post(
         '/communities', headers=headers, json=data
     )
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
 
@@ -272,12 +265,10 @@ def test_post_community_with_existing_id(
     """Test create two communities with the same id"""
     client = client_with_login
 
-    #Create a community
+    #Creta a community
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
@@ -303,12 +294,10 @@ def test_post_community_with_deleted_id(
     """Test create a community with a deleted id"""
     client = client_with_login
 
-    #Create a community
+    #Creta a community
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
@@ -334,12 +323,10 @@ def test_post_self_links(
     """Test self links generated after post"""
     client = client_with_login
 
-    #Create a community
+    #Creta a community
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
@@ -402,7 +389,6 @@ def test_simple_get_response(
     res = client.post(
         '/communities', headers=headers, json=full_community
     )
-    Member.index.refresh()
     assert res.status_code == 201
     _assert_single_item_response(res)
     _assert_optional_medatada_items_response(res)
@@ -442,7 +428,6 @@ def test_simple_put_response(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
-    Member.index.refresh()
 
     data = copy.deepcopy(minimal_community)
     data["metadata"] = \
@@ -493,14 +478,12 @@ def test_update_renamed_record(
     client = client_with_login
     # Create a community
     res = client.post('/communities', headers=headers, json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
 
-    # Rename the community
+    # Rename the communnity
     data = copy.deepcopy(minimal_community)
     data['id'] = "renamed_comm"
     res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
@@ -532,8 +515,6 @@ def test_simple_delete_response(
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
-    Member.index.refresh()
-
     assert res.status_code == 201
     _assert_single_item_response(res)
     created_community = res.json
@@ -567,7 +548,6 @@ def test_logo_flow(
     id_ = created_community['id']
     assert created_community['links']['logo'] == \
         f'https://127.0.0.1:5000/api/communities/{id_}/logo'
-    Member.index.refresh()
 
     # Get non-existent logo
     res = client.get(f'/communities/{id_}/logo')
@@ -653,7 +633,6 @@ def test_invalid_community_ids(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
-    Member.index.refresh()
 
     # Rename the communnity
     data = copy.deepcopy(minimal_community)

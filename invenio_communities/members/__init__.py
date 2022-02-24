@@ -8,22 +8,18 @@
 
 """Members."""
 
-from .errors import AlreadyMemberError, LastOwnerError, \
-    ManagerSelfRoleChangeError, OwnerSelfRoleChangeError
+from .errors import AlreadyMemberError
 from .records import Member, MemberModel
 from .services import MemberService, MemberServiceConfig, ROLE_TYPES
 
 
 __all__ = (
     'AlreadyMemberError',
-    'LastOwnerError',
     'Member',
     'MemberModel',
     # 'MemberResource',
     # 'MemberResourceConfig',
-    "ManagerSelfRoleChangeError",
     'MemberService',
     'MemberServiceConfig',
-    "OwnerSelfRoleChangeError",
     "ROLE_TYPES",
 )
