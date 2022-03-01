@@ -37,3 +37,17 @@ def create_invitations_api_bp_from_app(app):
             "invenio_communities_invitations_api",
             __name__,
         )
+
+
+def create_members_api_bp_from_app(app):
+    """Create members api blueprint."""
+    ext = app.extensions["invenio-communities"]
+    # control blueprint endpoints registration
+    if app.config["COMMUNITIES_ENABLED"]:
+        return ext.members_resource.as_blueprint()
+    else:
+        # return dummy blueprint
+        return Blueprint(
+            "invenio_communities_members_api",
+            __name__,
+        )

@@ -1,38 +1,47 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2022 Northwestern University.
 #
-# Invenio is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
+# Invenio-Communities is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License; see LICENSE file for more details.
 
-"""Invenio Communities Resource API config."""
+"""Member Resource API config."""
 
+import marshmallow as ma
 from flask_resources import HTTPJSONException, create_error_handler
 from invenio_records_resources.resources import RecordResourceConfig
 
-community_error_handlers = RecordResourceConfig.error_handlers.copy()
-community_error_handlers.update({
-    FileNotFoundError: create_error_handler(
-        HTTPJSONException(
-            code=404,
-            description="No logo exists for this community.",
-        )
-    ),
-})
+from ...errors import CommunityHidden
+from ..errors import OwnerSelfRoleChangeError
 
 
-class CommunityResourceConfig(RecordResourceConfig):
-    """Communities resource configuration."""
+class MemberResourceConfig(RecordResourceConfig):
+    """Member resource configuration."""
 
-    blueprint_name = "communities"
+    blueprint_name = "community_members"
     url_prefix = ""
 
     routes = {
-        "communities-prefix": "/communities",
-        "user-prefix": "/user/communities",
-        "list": "",
-        "item": "/<pid_value>"
+        "item": "/communities/<pid_value>/members/<member_id>",
+        "list": "/communities/<pid_value>/members"
+    }
+    request_view_args = {
+        "pid_value": ma.fields.Str(),
+        "member_id": ma.fields.Str(),
     }
 
-    error_handlers = community_error_handlers
+    error_handlers = {
+        CommunityHidden: create_error_handler(
+            HTTPJSONException(
+                code=404,
+                description="Not found.",
+            )
+        ),
+        # Passing this error as a generic permission error for now
+        OwnerSelfRoleChangeError: create_error_handler(
+            HTTPJSONException(
+                code=403,
+                description="Permission denied.",
+            )
+        ),
+    }

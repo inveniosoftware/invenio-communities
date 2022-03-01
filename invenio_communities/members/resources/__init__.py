@@ -6,12 +6,12 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Community views."""
+"""Member views."""
 
-from .config import CommunityResourceConfig
-from .resource import CommunityResource
+from .config import MemberResourceConfig
+from .resource import MemberResource
 
 __all__ = (
-    'CommunityResource',
-    'CommunityResourceConfig',
+    'MemberResource',
+    'MemberResourceConfig',
 )

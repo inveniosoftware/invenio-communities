@@ -9,4 +9,8 @@
 
 
 class CommunityError(Exception):
-    """Exception raised when entity is already a member."""
+    """Base exception for community errors."""
+
+
+class CommunityHidden(CommunityError):
+    """Exception raised to mask community presence over permision denial."""

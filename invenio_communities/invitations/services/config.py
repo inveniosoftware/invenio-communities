@@ -35,6 +35,7 @@ class InvitationLink(Link):
         """
         vars.update({"invitation_id": record.id})
 
+
 class SearchOptions(SearchOptionsBase):
     """Search options."""
 

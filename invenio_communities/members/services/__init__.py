@@ -9,7 +9,7 @@
 
 
 from .config import MemberServiceConfig
-from .schema import ROLE_TYPES
+from .schemas import ROLE_TYPES
 from .service import MemberService
 
 

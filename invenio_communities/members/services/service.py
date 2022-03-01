@@ -10,14 +10,22 @@
 from elasticsearch_dsl.query import Q
 from invenio_records_resources.services import LinksTemplate
 from invenio_records_resources.services.errors import PermissionDeniedError
-from invenio_records_resources.services.records import RecordService
+from invenio_records_resources.services.records import RecordService, \
+    ServiceSchemaWrapper
 from invenio_records_resources.services.uow import RecordCommitOp, \
     RecordDeleteOp, unit_of_work
 from sqlalchemy.orm.exc import NoResultFound
 
+from ...errors import CommunityHidden
 from ...permissions import create_community_role_need
 from ..errors import LastOwnerError, OwnerSelfRoleChangeError, \
     ManagerSelfRoleChangeError
+from .schemas import MemberBulkSchema, MemberCreationSchema, MemberUpdateSchema
+
+
+def member_is_current_user(identity, member):
+    """Check if identity is same as member's user id."""
+    return identity.id == member.user_id
 
 
 class MemberService(RecordService):
@@ -27,6 +35,28 @@ class MemberService(RecordService):
     def community_cls(self):
         """Return community class."""
         return self.config.community_cls
+
+    def links_item_tpl(self, community_id):
+        """Item links template."""
+        return LinksTemplate(
+            self.config.links_item,
+            context={"community_id": community_id}
+        )
+
+    @property
+    def creation_schema(self):
+        """Schema for creation."""
+        return ServiceSchemaWrapper(self, schema=MemberCreationSchema)
+
+    @property
+    def bulk_schema(self):
+        """Schema for bulk actions."""
+        return ServiceSchemaWrapper(self, schema=MemberBulkSchema)
+
+    @property
+    def update_schema(self):
+        """Schema for update."""
+        return ServiceSchemaWrapper(self, schema=MemberUpdateSchema)
 
     @unit_of_work()
     def create(self, identity, data, uow=None):
@@ -39,7 +69,7 @@ class MemberService(RecordService):
         )
 
         # Validate data (if there are errors, .load() raises)
-        data, errors = self.schema.load(
+        data, errors = self.creation_schema.load(
             data,
             context={"identity": identity},
         )
@@ -61,25 +91,78 @@ class MemberService(RecordService):
             links_tpl=self.links_item_tpl,
         )
 
-    def read(self, identity, id_):
+    def read(self, identity, community_id, id_):
         """Read member record.
 
-        :param id_: a dict of the primary keys
+        :param community_id: community resource-layer (pid) id
+        :param id_: membership data-layer id
         """
         member_record = self.record_cls.get_record(id_)
 
         self.require_permission(identity, "read_member", record=member_record)
 
+        # TODO? add a DB call to make sure the passed community_id is for
+        #       the community_uuid in membership record?
+
+        # Identity dependent injected field
+        member_record["is_current_user"] = member_is_current_user(
+            identity, member_record
+        )
+
+        # TODO Inject the "member" section
+        # member_record["member"] = self.inject_member()
+        # This might be done
+        # - in deeper layer via a systemfield (à-la relations) or
+        # - here via explicit call (and explicit call for search)
+
         return self.result_item(
             self,
             identity,
             member_record,
-            links_tpl=self.links_item_tpl,
+            links_tpl=self.links_item_tpl(community_id),
         )
 
     @unit_of_work()
+    def bulk_update(self, identity, community_id, data, uow=None):
+        """Bulk update."""
+        community = self.community_cls.pid.resolve(community_id)
+
+        try:
+            self.require_permission(
+                identity, "bulk_update_members", record=community
+            )
+        except PermissionDeniedError:
+            raise CommunityHidden()
+
+        data, _ = self.bulk_schema.load(
+            data,
+            context=dict(
+                identity=identity,
+            )
+        )
+
+        patch = {
+            k: v for k, v in data.items()
+            if k in ["role", "visibility"] and data.get(k)
+        }
+        # Short-circuit if no role or visibility
+        if not patch:
+            return True
+
+        for member in data.get("members"):
+            self.update(
+                identity,
+                member["id"],
+                patch,
+                revision_id=member["revision_id"],
+                uow=uow
+            )
+
+        return True
+
+    @unit_of_work()
     def update(self, identity, id_, data, revision_id=None, uow=None):
-        """Replace a record."""
+        """Update a member's role/visibility."""
         member_record = self.record_cls.get_record(id_)
 
         self.check_revision_id(member_record, revision_id)
@@ -89,7 +172,7 @@ class MemberService(RecordService):
             identity, "update_member", record=member_record
         )
 
-        data, _ = self.schema.load(
+        data, _ = self.update_schema.load(
             data,
             context=dict(
                 identity=identity,
@@ -99,13 +182,7 @@ class MemberService(RecordService):
 
         self._assert_can_change_role(identity, member_record)
 
-        member_record.update(
-            dict(
-                community_id=data.get("community"),
-                user_id=data.get("user"),
-                role=data.get("role")
-            )
-        )
+        member_record.update(data)
 
         uow.register(RecordCommitOp(member_record, self.indexer))
 

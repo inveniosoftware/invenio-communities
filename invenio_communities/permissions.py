@@ -397,7 +397,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # Placed here because passed record is a community
 
     can_create_member = [CommunityOwner(), CommunityManager(), SystemProcess()]
-
+    can_bulk_update_members = [CommunityMember(), SystemProcess()]
     can_search_members = [
         SystemProcess(),
         IfRestricted(
@@ -472,20 +472,28 @@ def load_community_needs(identity, service):
 
     # Currently, only users are supported (no roles or system roles)
     cache_key = identity_cache_key(identity)
-    memberships = current_cache.get(cache_key)
-    if memberships is None:
+    membership_strings = current_cache.get(cache_key)
+    if membership_strings is None:
         try:
-            memberships = [
-                CommunityRoleManager(m.community_id, m.role).to_string()
-                for m in search_memberships(service, identity)
+            community_role_pairs = []
+            for m in search_memberships(service, identity):
+                community_role_pairs.append(
+                    CommunityRoleManager(m.community_id, "member")
+                )
+                community_role_pairs.append(
+                    CommunityRoleManager(m.community_id, m.role)
+                )
+            membership_strings = [
+                cr.to_string() for cr in community_role_pairs
             ]
-            current_cache.set(cache_key, memberships, timeout=24*3600)
+            current_cache.set(cache_key, membership_strings, timeout=24*3600)
         except PermissionDeniedError:
-            memberships = []
+            membership_strings = []
 
     # Add community needs to identity
     identity.provides.update({
-        CommunityRoleManager.from_string(m).to_need() for m in memberships
+        CommunityRoleManager.from_string(m).to_need()
+        for m in membership_strings
     })
 
 

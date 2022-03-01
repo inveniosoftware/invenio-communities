@@ -112,18 +112,12 @@ def test_invite_user_flow(
 def get_membership_id(community_service):
     """Get membership."""
 
-    def _get_membership_id(community_id, user_id):
+    def _get_membership_id(community_uuid, user_id):
         """Wrapped."""
-        members = community_service.members.search(
-            system_identity,
-            community_id,
-            extra_filter=(
-                Q('term', community_id=community_id) &
-                Q('term', user_id=user_id)
-            )
+        member = community_service.members.get_member(
+            community_uuid, user_id
         )
-        member_dict = next(members.hits, None)
-        return member_dict["id"]
+        return member.id
 
     return _get_membership_id
 
@@ -161,11 +155,15 @@ def test_owner_can_leave_if_at_least_1_other_owner(
     # Now owner can leave
     community_service.members.delete(owner_identity, membership_id)
 
+    # Old owner not a member anymore
     with pytest.raises(NoResultFound):
-        community_service.members.read(owner2_identity, membership_id)
+        community_id = community.pid.pid_value
+        community_service.members.read(
+            owner2_identity, community_id, membership_id
+        )
 
 
-def test_update_role(
+def test_update_member_role(
         create_user_identity, community_service, community_creation_input_data,
         get_membership_id, make_member_identity):
     owner_identity = create_user_identity("owner@example.com")
@@ -173,6 +171,7 @@ def test_update_role(
         owner_identity,
         community_creation_input_data
     )._record
+    community_id = community.pid.pid_value
     Member.index.refresh()
     owner_membership_id = get_membership_id(community.id, owner_identity.id)
     owner_identity = make_member_identity(owner_identity, community, "owner")
@@ -205,14 +204,12 @@ def test_update_role(
         owner_identity,
         membership.id,
         data={
-            "community": str(community.id),
-            "user": member_identity.id,
             "role": "curator"
         }
     )
 
     membership_result = community_service.members.read(
-        owner_identity, membership.id
+        owner_identity, community_id, membership.id
     )
     assert "curator" == membership_result.to_dict()["role"]
 
@@ -221,14 +218,12 @@ def test_update_role(
         manager_identity,
         membership.id,
         data={
-            "community": str(community.id),
-            "user": member_identity.id,
             "role": "reader"
         }
     )
 
     membership_result = community_service.members.read(
-        owner_identity, membership.id
+        owner_identity, community_id, membership.id
     )
     assert "reader" == membership_result.to_dict()["role"]
 
@@ -238,14 +233,12 @@ def test_update_role(
             owner_identity,
             owner_membership_id,
             data={
-                "community": str(community.id),
-                "user": owner_identity.id,
                 "role": "reader"
             }
         )
     # still an owner
     membership_result = community_service.members.read(
-        owner_identity, owner_membership_id
+        owner_identity, community_id, owner_membership_id
     )
     assert "owner" == membership_result.to_dict()["role"]
 
@@ -255,14 +248,12 @@ def test_update_role(
             manager_identity,
             manager_membership.id,
             data={
-                "community": str(community.id),
-                "user": manager_identity.id,
                 "role": "reader"
             }
         )
     # still a manager
     membership_result = community_service.members.read(
-        owner_identity, manager_membership.id
+        owner_identity, community_id, manager_membership.id
     )
     assert "manager" == membership_result.to_dict()["role"]
 
@@ -272,14 +263,12 @@ def test_update_role(
             manager_identity,
             owner_membership_id,
             data={
-                "community": str(community.id),
-                "user": owner_identity.id,
                 "role": "reader"
             }
         )
     # still an owner
     membership_result = community_service.members.read(
-        owner_identity, owner_membership_id
+        owner_identity, community_id, owner_membership_id
     )
     assert "owner" == membership_result.to_dict()["role"]
 

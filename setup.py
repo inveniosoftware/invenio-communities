@@ -108,6 +108,7 @@ setup(
         'invenio_base.api_blueprints': [
             'invenio_communities_api = invenio_communities.views:create_communities_api_blueprint',
             'invenio_communities_invitations_api = invenio_communities.views:create_invitations_api_bp_from_app',
+            'invenio_communities_members_api = invenio_communities.views:create_members_api_bp_from_app',
         ],
         'invenio_db.models': [
             'invenio_communities = invenio_communities.communities.records.models',

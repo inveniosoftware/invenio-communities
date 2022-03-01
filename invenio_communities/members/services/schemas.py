@@ -9,7 +9,8 @@
 
 from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services.records.schema import BaseRecordSchema
-from marshmallow import fields, validate, validates_schema, ValidationError
+from marshmallow import Schema, fields, validate, validates_schema, \
+    ValidationError
 from marshmallow_utils.fields import SanitizedUnicode
 
 
@@ -22,8 +23,40 @@ ROLE_TYPES = [
 ]
 
 
-class MemberSchema(BaseRecordSchema):
-    """Schema for a community member."""
+class MemberBulkItemSchema(Schema):
+    """Schema for bulk item."""
+
+    # input
+    id = fields.Str(required=True)
+    revision_id = fields.Integer(required=True)
+
+
+class MemberBulkSchema(BaseRecordSchema):
+    """Schema for bulk member change/delete."""
+
+    # input
+    members = fields.List(fields.Nested(MemberBulkItemSchema))
+    role = fields.String(
+        required=True,
+        validate=validate.OneOf(ROLE_TYPES)
+    )
+    # TODO: add visibility
+
+
+class MemberUpdateSchema(Schema):
+    """Member update schema.
+
+    In this context, all fields are optional.
+    """
+
+    role = fields.String(
+        validate=validate.OneOf(ROLE_TYPES)
+    )
+    # TODO: add visibility
+
+
+class MemberCreationSchema(BaseRecordSchema):
+    """Schema for the creation of a community member."""
 
     # input and output
     community = SanitizedUnicode(required=True)
@@ -33,14 +66,8 @@ class MemberSchema(BaseRecordSchema):
         validate=validate.OneOf(ROLE_TYPES)
     )
     # TODO: add visibility
-    # visibility = SanitizedUnicode(
-    #   required=True, validate=_not_blank(max=100))
     # TODO: add group
     # group = SanitizedUnicode()
-
-    # output only
-    # TODO: add name
-    # name = SanitizedUnicode(dump_only=True)
 
     @validates_schema
     def validate_member_entity(self, data, **kwargs):
@@ -54,5 +81,19 @@ class MemberSchema(BaseRecordSchema):
                 _("There must be one of {}".format(valid_entities))
             )
 
-    # community is coming in from the API
-    # community_id is coming in from the Record when dumping
+
+class MemberSchema(BaseRecordSchema):
+    """Schema for community member otherwise."""
+
+    # input
+    role = fields.String(
+        required=True,
+        validate=validate.OneOf(ROLE_TYPES)
+    )
+
+    # output only
+    is_current_user = fields.Bool(dump_only=True)
+    # TODO: add name
+    # name = SanitizedUnicode(dump_only=True)
+
+    # TODO: add visibility
