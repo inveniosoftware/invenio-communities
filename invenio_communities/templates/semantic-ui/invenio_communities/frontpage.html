@@ -43,18 +43,18 @@
         </div>
       </div>
     </div>
-  <div class="row">
-    <div class="eight wide column no-padding">
-      <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
-        <div class="ui fluid action input">
-          <input type="text" name="q" class="form-control" placeholder="{{ _("Search communities") }}">
-          <button type="submit" class="ui icon search button"><i class="search icon"></i></button>
-        </div>
-      </form>
+    <div class="row">
+      <div class="eight wide column no-padding">
+        <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
+          <div class="ui fluid action input">
+            <input type="text" name="q" class="form-control" placeholder="{{ _("Search communities") }}">
+            <button type="submit" class="ui icon search button"><i class="search icon"></i></button>
+          </div>
+        </form>
+      </div>
     </div>
+    <div class="ui divider hidden"></div>
   </div>
-  <div class="ui divider hidden"></div>
-</div>
 </div>
 <div class="ui container communities-frontpage">
   {% if current_user.is_authenticated %}
