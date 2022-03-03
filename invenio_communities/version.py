@@ -13,4 +13,4 @@ This file is imported by ``invenio_communities.__init__``,
 and parsed by ``setup.py``.
 """
 
-__version__ = "2.7.0.dev9"
+__version__ = "2.8.0.dev0"

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -65,8 +65,8 @@ setup_requires = [
 install_requires = [
     'invenio-files-rest>=1.3.0',
     'invenio-mail>=1.0.2',
-    'invenio-requests>=0.2.7,<0.3.0',
-    'invenio-vocabularies>=0.10.2,<0.11.0',
+    'invenio-requests>=0.3.0,<0.4.0',
+    'invenio-vocabularies>=0.11.0,<0.12.0',
 ]
 
 packages = find_packages()
