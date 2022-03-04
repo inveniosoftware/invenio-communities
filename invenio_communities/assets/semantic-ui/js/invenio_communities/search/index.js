@@ -5,7 +5,6 @@
 // terms of the MIT License; see LICENSE file for more details.
 
 
-import $ from "jquery";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   CommunityBucketAggregationElement,
@@ -18,6 +17,7 @@ import {
   CommunityCountComponent,
   CommunityEmptyResults,
   CommunityErrorComponent,
+  CommunityToggleComponent,
 } from "./components";
 
 const initSearchApp = createSearchAppInit({
@@ -31,4 +31,5 @@ const initSearchApp = createSearchAppInit({
   "SearchBar.element": CommunityRecordSearchBarElement,
   "Count.element": CommunityCountComponent,
   "Error.element": CommunityErrorComponent,
+  "SearchFilters.ToggleComponent": CommunityToggleComponent,
 });

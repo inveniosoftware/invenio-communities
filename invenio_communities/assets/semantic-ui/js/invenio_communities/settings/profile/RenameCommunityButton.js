@@ -8,10 +8,10 @@
  */
 
 import React, { useState, useRef } from "react";
-import axios from "axios";
-import { Button, Form, Message, Modal, Grid, Icon } from "semantic-ui-react";
+import { Button, Form, Modal, Icon } from "semantic-ui-react";
 
 import { CommunitiesApiClient } from "../../api";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 // WARNING: This DOES NOT RENAME a community! It changes its id.
 export const RenameCommunityButton = (props) => {
@@ -53,14 +53,14 @@ export const RenameCommunityButton = (props) => {
         labelPosition="left"
         type="button"
       >
-        <Icon name="pencil"></Icon>Rename community
+        <Icon name="pencil"></Icon>{i18next.t("Rename community")}
       </Button>
 
       <Modal open={modalOpen} onClose={handleClose} size="tiny">
         <Modal.Content>
           <Form onSubmit={handleRename}>
             <Form.Input
-              label="Enter the new name of the community"
+              label={i18next.t("Enter the new name of the community")}
               fluid
               input={{ ref: formInputRef }}
               {...(error
@@ -76,10 +76,10 @@ export const RenameCommunityButton = (props) => {
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={handleClose} floated="left">
-            Cancel
+            {i18next.t("Cancel")}
           </Button>
           <Button color="red" onClick={handleRename}>
-            Rename
+            {i18next.t("Rename")}
           </Button>
         </Modal.Actions>
       </Modal>

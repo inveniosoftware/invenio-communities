@@ -11,9 +11,10 @@ import { Card, Item, Button, Icon } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import axios from "axios";
 import { createSearchAppInit } from "@js/invenio_search_ui";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 // TODO: Use global search config context to get community data
-const COMMUNITY_ID = window.location.pathname.split('/')[2];
+const COMMUNITY_ID = window.location.pathname.split("/")[2];
 
 const ResultsItemTemplate = ({ result, index }) => {
   const community_record = result.metadata._communities.pending.find(
@@ -45,7 +46,7 @@ const ResultsItemTemplate = ({ result, index }) => {
             disabled={status !== "pending"}
             onClick={() => handleRequest("accept")}
           >
-            <Icon name="check" /> Accept
+            <Icon name="check" /> {i18next.t("Accept")}
           </Button>
           <Button
             size="tiny"
@@ -53,19 +54,23 @@ const ResultsItemTemplate = ({ result, index }) => {
             disabled={status !== "pending"}
             onClick={() => handleRequest("reject")}
           >
-            <Icon name="delete" inverted /> Reject
+            <Icon name="delete" inverted /> {i18next.t("Reject")}
           </Button>
           <Button
             size="tiny"
             disabled
             // onClick={() => handleRequest("comment")}
           >
-            <Icon name="comment" /> Comment
+            <Icon name="comment" /> {i18next.t("Comment")}
           </Button>
         </Item.Description>
         <Item.Extra>
           {status === "pending" ? null : (
-            <span>Record was successfully {status}ed</span>
+            <span>
+              {i18next.t("Record was successfully {{status}}ed", {
+                status: status,
+              })}
+            </span>
           )}
         </Item.Extra>
       </Item.Content>

@@ -72,8 +72,8 @@
       </div> -->
     </div>
     {% set header_menu_items = {
-      'search': ('Search', url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
-      'settings': ('Settings', url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
+      'search': (_('Search'), url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
+      'settings': (_('Settings'), url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
     } %}
     <div class="ui container secondary pointing menu community-header">
       {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon, permission_to_show ) in header_menu_items.items() if permission_to_show %}

@@ -19,12 +19,12 @@ import {
   Segment,
   Header,
 } from "semantic-ui-react";
-import { BucketAggregation, Toggle } from "react-searchkit";
-import _find from "lodash/find";
+import { BucketAggregation, Toggle, withState } from "react-searchkit";
 import _get from "lodash/get";
 import _truncate from "lodash/truncate";
 import Overridable from "react-overridable";
 import { SearchBar } from "@js/invenio_search_ui/components";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 export const CommunityRecordResultsListItem = ({ result, index }) => {
   const access_status_id = _get(result, "ui.access_status.id", "open");
@@ -71,7 +71,7 @@ export const CommunityRecordResultsListItem = ({ result, index }) => {
           </Label>
           <Label size="tiny" className={`access-status ${access_status_id}`}>
             {access_status_icon && (
-              <i className={`icon ${access_status_icon}`}></i>
+              <i className={`icon ${access_status_icon}`}/>
             )}
             {access_status}
           </Label>
@@ -79,9 +79,9 @@ export const CommunityRecordResultsListItem = ({ result, index }) => {
         <Item.Header as="h2">
           <a href={viewLink}>{title}</a>
         </Item.Header>
-        <Item.Meta className="creatibutors">
+        <Item className="creatibutors">
           <SearchItemCreators creators={creators} />
-        </Item.Meta>
+        </Item>
         <Item.Description>
           {_truncate(description_stripped, { length: 350 })}
         </Item.Description>
@@ -94,7 +94,7 @@ export const CommunityRecordResultsListItem = ({ result, index }) => {
           {createdDate && (
             <div>
               <small>
-                {"Uploaded on"} <span>{createdDate}</span>
+                {i18next.t("Uploaded on")} <span>{createdDate}</span>
               </small>
             </div>
           )}
@@ -131,18 +131,21 @@ export const CommunityRecordSearchBarContainer = () => {
   );
 };
 
-export const CommunityRecordSearchBarElement = ({
+export const CommunityRecordSearchBarElement = withState(({
   placeholder: passedPlaceholder,
   queryString,
   onInputChange,
   executeSearch,
+  updateQueryState
 }) => {
-  const placeholder = passedPlaceholder || "Search";
+  const placeholder = passedPlaceholder || i18next.t("Search");
   const onBtnSearchClick = () => {
+    updateQueryState({ filters: [] });
     executeSearch();
   };
   const onKeyPress = (event) => {
     if (event.key === "Enter") {
+      updateQueryState({ filters: [] });
       executeSearch();
     }
   };
@@ -163,7 +166,7 @@ export const CommunityRecordSearchBarElement = ({
       onKeyPress={onKeyPress}
     />
   );
-};
+});
 
 export const CommunityRecordFacetsValues = ({
   bucket,
@@ -188,12 +191,16 @@ export const CommunityRecordFacetsValues = ({
           </Label>
         </List.Content>
         {hasChildren ? (
-          <button className="iconhold"
-                  onClick={() => setisActive(!isActive)}
-                  aria-label={`${isActive ? "hide subfacets" : "show subfacets" }`}
-            >
-              <i className={`angle ${isActive ? "down" : "right"} icon`}></i>
-          </button>
+          <Button
+            className="iconhold"
+            icon={`angle ${isActive ? "down" : "right"} icon`}
+            onClick={() => setisActive(!isActive)}
+            aria-label={`${
+              isActive
+                ? i18next.t("hide subfacets")
+                : i18next.t("show subfacets")
+            }`}
+          />
         ) : null}
         <Checkbox
           label={bucket.label || keyField}
@@ -214,30 +221,21 @@ export const CommunityRecordFacetsValues = ({
 export const SearchHelpLinks = () => {
   return (
     <Overridable id={"RdmSearch.SearchHelpLinks"}>
-      <Grid className="padded-small">
-        <Grid.Row className="no-padded">
-          <Grid.Column></Grid.Column>
-        </Grid.Row>
-        <Grid.Row className="no-padded">
-          <Grid.Column>
-            <Card className="borderless-facet">
-              <Card.Content>
-                <a href="/help/search">"Search guide"</a>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <List>
+        <List.Item>
+          <a href="/help/search">{i18next.t("Search guide")}</a>
+        </List.Item>
+      </List>
     </Overridable>
   );
 };
 
 export const CommunityRecordFacets = ({ aggs, currentResultsState }) => {
   return (
-    <aside aria-label="filters" id="search-filters">
+    <aside aria-label={i18next.t("filters")} id="search-filters">
       <Toggle
-        title="Versions"
-        label="View all versions"
+        title={i18next.t("Versions")}
+        label={i18next.t("View all versions")}
         filterValue={["allversions", "true"]}
       />
       {aggs.map((agg) => {
@@ -247,16 +245,47 @@ export const CommunityRecordFacets = ({ aggs, currentResultsState }) => {
           </div>
         );
       })}
-      <SearchHelpLinks />
+      <Card className="borderless-facet">
+        <Card.Content>
+          <Card.Header as="h2">{ i18next.t('Help') }</Card.Header>
+          <SearchHelpLinks />
+        </Card.Content>
+      </Card>
     </aside>
   );
 };
 
-export const CommunityBucketAggregationElement = ({ title, containerCmp }) => {
+export const CommunityBucketAggregationElement = ({agg, title, containerCmp, updateQueryFilters}) => {
+
+  const clearFacets = () => {
+    if (containerCmp.props.selectedFilters.length) {
+      updateQueryFilters(
+        [agg.aggName, ''],
+        containerCmp.props.selectedFilters
+      );
+    }
+  }
+
+  const hasSelections = () => {
+    return !!containerCmp.props.selectedFilters.length;
+  }
+
   return (
     <Card className="borderless-facet">
       <Card.Content>
-        <Card.Header>{title}</Card.Header>
+        <Card.Header as="h2">
+          {title}
+          <Button basic icon
+                  size="mini"
+                  floated="right"
+                  onClick={clearFacets}
+                  aria-label={ i18next.t('Clear selection') }
+                  title={ i18next.t('Clear selection') }
+                  disabled={!hasSelections()}
+          >
+            { i18next.t('Clear') }
+          </Button>
+        </Card.Header>
       </Card.Content>
       <Card.Content>{containerCmp}</Card.Content>
     </Card>
@@ -286,7 +315,7 @@ export const CommunityToggleComponent = ({
   return (
     <Card className="borderless-facet">
       <Card.Content>
-        <Card.Header>{title}</Card.Header>
+        <Card.Header as="h2">{title}</Card.Header>
       </Card.Content>
       <Card.Content>
         <Checkbox
@@ -308,24 +337,46 @@ export const CommunityCountComponent = ({ totalResults }) => {
 
 export const CommunityEmptyResults = (props) => {
   const queryString = props.queryString;
+  const searchPath = props.searchPath || '/search';
+
   return (
-    <>
-      <Segment placeholder textAlign="center">
-        <Header icon>
-          <Icon name="search" />
-          "No results found!"
-        </Header>
-        {queryString && (
-          <em>
-            "Current search" "{queryString}"
-          </em>
-        )}
-        <br />
-        <Button primary onClick={() => props.resetQuery()}>
-          "Clear query"
-        </Button>
-      </Segment>
-    </>
+      <Grid>
+        <Grid.Row centered>
+          <Grid.Column width={12} textAlign="center">
+            <Header as="h2">
+              {i18next.t("We couldn't find any matches for ")}
+              {queryString && (`'${queryString}'`) || i18next.t('your search')}
+            </Header>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row centered>
+          <Grid.Column width={8} textAlign="center">
+            <Button primary onClick={props.resetQuery}>
+              <Icon name="search"/>
+              { i18next.t('Start over') }
+              </Button>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row centered>
+          <Grid.Column width={12}>
+            <Segment secondary padded size="large">
+              <Header as="h3" size="small">{i18next.t('ProTip')}!</Header>
+              <p>
+                <a href={`${searchPath}?q=metadata.publication_date:[2017-01-01 TO *]`}>
+                  metadata.publication_date:[2017-01-01 TO *]
+                </a> { i18next.t('will give you all the publications from 2017 until today') }.
+              </p>
+              <p>
+              {i18next.t('For more tips, check out our ')}
+              <a href="/help/search" title={i18next.t('Search guide')}>
+                {i18next.t('search guide')}
+              </a>
+              {i18next.t(' for defining advanced search queries')}.
+              </p>
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
   );
 };
 
@@ -351,9 +402,10 @@ export function SearchItemCreators({ creators }) {
       case "orcid":
         icon = (
           <a
+            className="identifier-link"
             href={"https://orcid.org/" + `${firstId.identifier}`}
-            aria-label={`${creatorName}: ORCID profile`}
-            title={`${creatorName}: ORCID profile`}
+            aria-label={`${creatorName}: ${i18next.t("ORCID profile")}`}
+            title={`${creatorName}: ${i18next.t("ORCID profile")}`}
           >
             <img
               className="inline-id-icon"
@@ -367,8 +419,8 @@ export function SearchItemCreators({ creators }) {
         icon = (
           <a
             href={"https://ror.org/" + `${firstId.identifier}`}
-            aria-label={`${creatorName}: ROR profile`}
-            title={`${creatorName}: ROR profile`}
+            aria-label={`${creatorName}: ${i18next.t("ROR profile")}`}
+            title={`${creatorName}: ${i18next.t("ROR profile")}`}
           >
             <img
               className="inline-id-icon"
@@ -388,18 +440,19 @@ export function SearchItemCreators({ creators }) {
     let creatorName = _get(creator, "person_or_org.name", "No name");
     let link = (
       <a
+        class="creatibutor-link"
         href={`/search?q=metadata.creators.person_or_org.name:"${creatorName}"`}
-        title={`${creatorName}: Search`}
+        title={`${creatorName}: ${i18next.t("Search")}`}
       >
-        {creatorName}
+        <span class="creatibutor-name">{creatorName}</span>
       </a>
     );
     return link;
   }
   return creators.map((creator, index) => (
-    <span key={index}>
-      {getIcon(creator)}
+    <span class="creatibutor-wrap" key={index}>
       {getLink(creator)}
+      {getIcon(creator)}
       {index < creators.length - 1 && ";"}
     </span>
   ));

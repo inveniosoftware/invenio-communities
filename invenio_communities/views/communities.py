@@ -9,6 +9,7 @@
 """Routes for community-related pages provided by Invenio-Communities."""
 
 from flask import current_app, render_template
+from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 
 from .decorators import pass_community, pass_community_logo, \
@@ -42,15 +43,15 @@ def communities_new():
                         'text': 'Public',
                         'value': 'public',
                         'icon': 'group',
-                        'helpText': 'Your community is publicly accessible ' \
-                                    'and shows up in search results.'
+                        'helpText': _('Your community is publicly accessible' \
+                                    ' and shows up in search results.')
                     },
                     {
                         'text': 'Restricted',
                         'value': 'restricted',
                         'icon': 'lock',
-                        'helpText': 'Your community is restricted to users ' \
-                                    'with access.'
+                        'helpText': _('Your community is restricted to users' \
+                                    ' with access.')
                     }
                 ]
             ),
@@ -116,15 +117,15 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
                         'text': 'Public',
                         'value': 'public',
                         'icon': 'group',
-                        'helpText': 'Your community is publicly accessible ' \
-                                    'and shows up in search results.'
+                        'helpText': _('Your community is publicly accessible' \
+                                    ' and shows up in search results.')
                     },
                     {
                         'text': 'Restricted',
                         'value': 'restricted',
                         'icon': 'lock',
-                        'helpText': 'Your community is restricted to users ' \
-                                    'with access.'
+                        'helpText': _('Your community is restricted to users' \
+                                    ' with access.')
                     }
                 ]
             ),

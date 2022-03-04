@@ -35,6 +35,7 @@ import {
   Pagination,
   ResultsPerPage,
 } from "react-searchkit";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 const facetsValues = {
   type: {
@@ -73,7 +74,7 @@ function ResultsItemTemplate({ result, index }) {
           href={`/communities/${result.id}`}
         >
           <Icon name="eye" />
-          View
+          {i18next.t("View")}
         </Button>
         <Item.Header href={`/communities/${result.id}`}>
           {result.metadata.title}
@@ -108,7 +109,15 @@ export const CommunitiesResults = ({
                   className="small padding-tb-5 deposit-result-header"
                 >
                   <Grid.Column width={4}>
-                    <Count label={() => <>{total} result(s) found</>} />
+                    <Count
+                      label={() => (
+                        <>
+                          {i18next.t("{{total}} result(s) found", {
+                            total: total,
+                          })}
+                        </>
+                      )}
+                    />
                   </Grid.Column>
                   <Grid.Column
                     width={12}
@@ -118,7 +127,13 @@ export const CommunitiesResults = ({
                     {sortOptions && (
                       <Sort
                         values={sortOptions}
-                        label={(cmp) => <>Sort by {cmp}</>}
+                        label={(cmp) => (
+                          <>
+                            {i18next.t("Sort by {{cmp}}", {
+                              cmp: cmp,
+                            })}
+                          </>
+                        )}
                       />
                     )}
                   </Grid.Column>
@@ -146,7 +161,13 @@ export const CommunitiesResults = ({
           <Grid.Column textAlign="right" width={4}>
             <ResultsPerPage
               values={paginationOptions.resultsPerPage}
-              label={(cmp) => <> {cmp} results per page</>}
+              label={(cmp) => (
+                <>
+                  {i18next.t("{{cmp}} results per page", {
+                    cmp: cmp,
+                  })}
+                </>
+              )}
             />
           </Grid.Column>
         </Grid.Row>
@@ -161,7 +182,7 @@ export const CommunitiesSearchBarElement = ({
   onInputChange,
   executeSearch,
 }) => {
-  const placeholder = passedPlaceholder || "Search";
+  const placeholder = passedPlaceholder || i18next.t("Search");
   const onBtnSearchClick = () => {
     executeSearch();
   };
@@ -258,14 +279,14 @@ export const CommunitiesSearchLayout = (props) => (
       <Grid.Row columns={3}>
         <Grid.Column width={4} />
         <Grid.Column width={8}>
-          <SearchBar placeholder="Search communities..." />
+          <SearchBar placeholder={i18next.t("Search communities...")} />
         </Grid.Column>
         <Grid.Column width={4}>
           <Button
             color="green"
             icon="upload"
             href="/communities/new"
-            content="New community"
+            content={i18next.t("New community")}
             floated="right"
           />
         </Grid.Column>

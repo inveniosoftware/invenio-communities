@@ -7,9 +7,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: invenio-communities 2.7.0.dev6\n"
+"Project-Id-Version: invenio-communities 2.7.0.dev8\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2022-02-23 11:02+0100\n"
+"POT-Creation-Date: 2022-03-08 13:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Restricted"
 msgstr ""
 
-#: invenio_communities/invitations/services/request_types.py:57
+#: invenio_communities/invitations/services/request_types.py:53
 msgid "Community Member Invitation"
 msgstr ""
 
@@ -67,8 +67,30 @@ msgstr ""
 msgid "There must be one of {}"
 msgstr ""
 
+#: invenio_communities/views/schema.py:45
+#: invenio_communities/views/schema.py:119
+msgid "Your community is publicly accessible and shows up in search results."
+msgstr ""
+
+#: invenio_communities/views/schema.py:52
+#: invenio_communities/views/schema.py:126
+msgid "Your community is restricted to users with access."
+msgstr ""
+
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:24
 msgid "Communities"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:33
+msgid ""
+"Organize, curate and collaborate on records for your institution, "
+"project, topic or event."
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:39
+#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
+msgid "New community"
 msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:50
@@ -76,8 +98,12 @@ msgstr ""
 msgid "Search communities"
 msgstr ""
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
-msgid "New community"
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:61
+msgid "My communities"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:64
+msgid "Featured communities"
 msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:30
@@ -126,8 +152,13 @@ msgstr ""
 msgid "New upload"
 msgstr ""
 
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:74
+msgid "Settings"
+msgstr ""
+
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/index.html:12
-msgid "Search "
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:73
+msgid "Search"
 msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:17
@@ -145,5 +176,13 @@ msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
 msgid " settings"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
+msgid "Profile"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
+msgid "Privileges"
 msgstr ""
 

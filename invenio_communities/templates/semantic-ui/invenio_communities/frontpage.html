@@ -21,7 +21,7 @@
   <div class="ui container centered grid">
     <div class="centered one column row">
       <h1 class="ui header">
-        Communities
+        {{_('Communities')}}
       </h1>
     </div>
     <div class="row">
@@ -30,13 +30,13 @@
           <div class="three column row">
             <div class="ten wide column">
               <p>
-                Organize, curate and collaborate on records for your institution, project, topic or event.
+                {{_('Organize, curate and collaborate on records for your institution, project, topic or event.')}}
               </p>
             </div>
             <div class="right floated six wide column new-communities-frontpage">
               <a href="{{ config.COMMUNITIES_ROUTES['new'] }}" class="ui icon left labeled positive button" role="button">
                 <i class="icon plus"></i>
-                New community
+                {{_('New community')}}
               </a>
             </div>
           </div>
@@ -58,10 +58,10 @@
 </div>
 <div class="ui container communities-frontpage">
   {% if current_user.is_authenticated %}
-    <div class="ui header"><h2>My communities</h2></div>
+    <div class="ui header"><h2>{{_('My communities')}}</h2></div>
     <div id="user-communities"></div>
   {% endif %}
-  <div class="ui header"><h2>Featured communities</h2></div>
+  <div class="ui header"><h2>{{_('Featured communities')}}</h2></div>
   <div id="featured-communities"></div>
 </div>
 {%- endblock page_body %}

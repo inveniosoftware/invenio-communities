@@ -8,12 +8,13 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Formik, Form, FieldArray, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import _ from "lodash";
 import { Grid } from "semantic-ui-react";
 import { TextField, SelectField } from "react-invenio-forms";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
@@ -23,9 +24,9 @@ var userRole = formConfig.communityMember.role;
 var urlObject = new URL(window.location);
 
 const COMMUNITY_ROLES = [
-  { value: "admin", text: "Administrator" },
-  { value: "curator", text: "Curator" },
-  { value: "member", text: "Member" },
+  { value: "admin", text: i18next.t("Administrator") },
+  { value: "curator", text: i18next.t("Curator") },
+  { value: "member", text: i18next.t("Member") },
 ];
 
 const CommunityMembers = () => {
@@ -163,10 +164,12 @@ const CommunityMembers = () => {
     return (
       <div class="container ui">
         {requestSuccess ? (
-          <p>You have succesfully requested to join the community</p>
+          <p>
+            {i18next.t("You have succesfully requested to join the community")}
+          </p>
         ) : (
           <button class="ui positive button" onClick={joinCommunity}>
-            Join this community
+            {i18next.t("Join this community")}
           </button>
         )}
       </div>
@@ -180,25 +183,25 @@ const CommunityMembers = () => {
               class={activeTab === "accepted" ? "active item" : "item"}
               onClick={() => changeTab("accepted")}
             >
-              Members
+              {i18next.t("Members")}
             </a>
             <a
               class={activeTab === "pending" ? "active item" : "item"}
               onClick={() => changeTab("pending")}
             >
-              Pending Memberships
+              {i18next.t("Pending Memberships")}
             </a>
             <a
               class={activeTab === "rejected" ? "active item" : "item"}
               onClick={() => changeTab("rejected")}
             >
-              Rejected Memberships
+              {i18next.t("Rejected Memberships")}
             </a>
             <a
               class={activeTab === "addition" ? "active item" : "item"}
               onClick={() => changeTab("addition")}
             >
-              Invite Member
+              {i18next.t("Invite Member")}
             </a>
           </div>
         ) : null}
@@ -207,13 +210,15 @@ const CommunityMembers = () => {
             case "accepted":
               return (
                 <div>
-                  <h1>Community members</h1>
+                  <h1>{i18next.t("Community members")}</h1>
                   <table class="ui celled table">
                     <thead>
                       <tr>
-                        <th>Username</th>
-                        <th>Role</th>
-                        {userRole === "admin" ? <th>Remove Member</th> : null}
+                        <th>{i18next.t("Username")}</th>
+                        <th>{i18next.t("Role")}</th>
+                        {userRole === "admin" ? (
+                          <th>{i18next.t("Remove Member")}</th>
+                        ) : null}
                       </tr>
                     </thead>
                     <tbody>
@@ -266,16 +271,16 @@ const CommunityMembers = () => {
             case "pending":
               return (
                 <div>
-                  <h1>Community member requests</h1>
+                  <h1>{i18next.t("Community member requests")}</h1>
                   <table class="ui celled table">
                     <thead>
                       <tr>
-                        <th>Username or Email</th>
-                        <th>Role</th>
-                        <th>Request Type</th>
-                        <th>Comments</th>
-                        <th>Accept</th>
-                        <th>Reject</th>
+                        <th>{i18next.t("Username or Email")}</th>
+                        <th>{i18next.t("Role")}</th>
+                        <th>{i18next.t("Request Type")}</th>
+                        <th>{i18next.t("Comments")}</th>
+                        <th>{i18next.t("Accept")}</th>
+                        <th>{i18next.t("Reject")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -337,13 +342,15 @@ const CommunityMembers = () => {
             case "rejected":
               return (
                 <div>
-                  <h1>Community members</h1>
+                  <h1>{i18next.t("Community members")}</h1>
                   <table class="ui celled table">
                     <thead>
                       <tr>
-                        <th>Username or Email</th>
-                        <th>Comments</th>
-                        {userRole === "admin" ? <th>Remove request</th> : null}
+                        <th>{i18next.t("Username or Email")}</th>
+                        <th>{i18next.t("Comments")}</th>
+                        {userRole === "admin" ? (
+                          <th>{i18next.t("Remove request")}</th>
+                        ) : null}
                       </tr>
                     </thead>
                     <tbody>
@@ -375,7 +382,7 @@ const CommunityMembers = () => {
             case "addition":
               return (
                 <div class="form-group">
-                  <h1>Invite a member</h1>
+                  <h1>{i18next.t("Invite a member")}</h1>
                   <Formik
                     initialValues={{
                       email: "",
@@ -433,7 +440,7 @@ const CommunityMembers = () => {
                         <Grid>
                           <Grid.Column width={4}>
                             <TextField
-                              label="Email"
+                              label={i18next.t("Email")}
                               placeholder="example@email.com"
                               fieldPath="email"
                               fluid
@@ -443,14 +450,14 @@ const CommunityMembers = () => {
                             <SelectField
                               defaultValue={COMMUNITY_ROLES[2].value}
                               options={COMMUNITY_ROLES}
-                              label="Role"
+                              label={i18next.t("Role")}
                               fieldPath="role"
                               fluid
                             />
                           </Grid.Column>
                           <Grid.Column width={4}>
                             <TextField
-                              label="Comment"
+                              label={i18next.t("Comment")}
                               placeholder="Write a message to the invited person"
                               fieldPath="comment"
                               fluid
@@ -463,7 +470,7 @@ const CommunityMembers = () => {
                           class="ui positive button small"
                           type="submit"
                         >
-                          Submit
+                          {i18next.t("Submit")}
                         </button>
                         {globalError ? (
                           <div class="help-block">{globalError}</div>

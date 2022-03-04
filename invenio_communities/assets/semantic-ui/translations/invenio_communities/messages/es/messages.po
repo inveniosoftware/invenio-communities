@@ -1,0 +1,337 @@
+# 
+# Translators:
+# Pablo Garcia Marcos <garcia.marcos.pablo@cern.ch>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"POT-Creation-Date: 2022-03-3T16:07:00.0000\n"
+"PO-Revision-Date: 2022-03-3 16:07+0000\n"
+"Last-Translator: Pablo Garcia Marcos <garcia.marcos.pablo@cern.ch>, 2022\n"
+"Language-Team: \n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"mime-version: 1.0\n"
+
+msgid "Required"
+msgstr "Obligatorio"
+
+msgid "Must be 32 characters or less"
+msgstr "Debe tener un máximo de 32 caracteres"
+
+msgid "Must be 120 characters or less"
+msgstr "Debe tener un máximo de 120 caracteres"
+
+msgid "Must be 250 characters or less"
+msgstr "Debe tener un máximo de 250 caracteres"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Search for organizations..."
+msgstr "Buscar organizaciones..."
+
+msgid "Submit"
+msgstr "Enviar"
+
+msgid "Are you sure you want to delete the collection:"
+msgstr "¿Está seguro de que desea eliminar la siguiente colección?"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Remove"
+msgstr "Retirar"
+
+msgid "New collection"
+msgstr "Nueva colección"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Institution/Organization"
+msgstr "Institución/Organización"
+
+msgid "Event"
+msgstr "Evento"
+
+msgid "Topic"
+msgstr "Tema"
+
+msgid "Project"
+msgstr "Proyecto"
+
+msgid "Maximum number of characters is 2000"
+msgstr "El máximo de caracteres es 2000"
+
+msgid "Must be a valid URL"
+msgstr "Debe ser una URL válida"
+
+msgid "Profile picture"
+msgstr "Imagen de perfil"
+
+msgid "Upload new picture"
+msgstr "Subir nueva imagen"
+
+msgid "Delete picture"
+msgstr "Eliminar imagen"
+
+msgid "Are you sure you want to delete this picture?"
+msgstr "¿Está seguro de que desea eliminar esta imagen?"
+
+msgid "Danger zone"
+msgstr "Zona de peligro"
+
+msgid "Rename community"
+msgstr "Renombrar comunidad"
+
+msgid "Renaming your community can have unintended side effects."
+msgstr "Renombrar su comunidad puede tener efectos secundarios inesperados."
+
+msgid "Delete community"
+msgstr "Eliminar comunidad"
+
+msgid "Once deleted, it will be gone forever. Please be certain."
+msgstr "Una vez eliminada, no podrá recuperarla. Por favor asegurese."
+
+msgid "Are you sure you want to delete this community?"
+msgstr "¿Está seguro de que desea eliminar esta comunidad?"
+
+msgid "Community name"
+msgstr "Nombre de la comunidad"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Website"
+msgstr "Sitio web"
+
+msgid "Search for an organization by name"
+msgstr "Buscar una organización por nombre"
+
+msgid "Organizations"
+msgstr "Organizaciones"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Enter the new name of the community"
+msgstr "Introduzca el nuevo nombre de la comunidad"
+
+msgid "Rename"
+msgstr "Renombrar"
+
+msgid "Community permissions"
+msgstr "Permisos de la comunidad"
+
+msgid "Saved"
+msgstr "Guardado"
+
+msgid "Accept"
+msgstr "Aceptar"
+
+msgid "Reject"
+msgstr "Rechazar"
+
+msgid "Comment"
+msgstr "Comentar"
+
+msgid "Record was successfully {{status}}ed"
+msgstr "El registro ahora tiene el estado {{status}}"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Curator"
+msgstr "Curador"
+
+msgid "Member"
+msgstr "Miembro"
+
+msgid "You have succesfully requested to join the community"
+msgstr "Ha solicitado exitosamente unirse a la comunidad"
+
+msgid "Join this community"
+msgstr "Unirse a esta comunidad"
+
+msgid "Members"
+msgstr "Miembros"
+
+msgid "Pending Memberships"
+msgstr "Membresías pendientes"
+
+msgid "Rejected Memberships"
+msgstr "Membresías rechazadas"
+
+msgid "Invite Member"
+msgstr "Invitar miembro"
+
+msgid "Community members"
+msgstr "Miembros de la comunidad"
+
+msgid "Username"
+msgstr "Nombre de usuario"
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Remove Member"
+msgstr "Eliminar miembro"
+
+msgid "Community member requests"
+msgstr "Solicitudes de miembro de la comunidad"
+
+msgid "Username or Email"
+msgstr "Nombre de usuario o Email"
+
+msgid "Request Type"
+msgstr "Tipo de solicitud"
+
+msgid "Comments"
+msgstr "Comentarios"
+
+msgid "Remove request"
+msgstr "Eliminar solicitud"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Setup your new community"
+msgstr "Configurar su nueva comunidad"
+
+msgid "Identifier"
+msgstr "Identificador"
+
+msgid "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}"
+msgstr "Este es el identificador único de su comunidad. Podrá acceder a su comunidad a traves de la URL: {{url}}"
+
+msgid "Community visibility"
+msgstr "Visibilidad de la comunidad"
+
+msgid "Create community"
+msgstr "Crear comunidad"
+
+msgid "Request to {{title}} submitted"
+msgstr "Solicitud a {{title}} enviada"
+
+msgid "Add community"
+msgstr "Añadir comunidad"
+
+msgid "Request for this record to be added to {{title}}"
+msgstr "Solicitud para añadir este registro a {{title}}"
+
+msgid "Message"
+msgstr "Mensaje"
+
+msgid "Write a message for the community curator..."
+msgstr "Escriba un mensaje para el curador de la comunidad..."
+
+msgid "Send a message to the other party."
+msgstr "Envíe el mensaje a otro grupo."
+
+msgid "Pending requests ({{length}})"
+msgstr "Solicitudes pendientes ({{length}})"
+
+msgid "The collections for this record have been updated."
+msgstr "Las colecciones para este registro han sido actualizadas."
+
+msgid "collections"
+msgstr "colecciones"
+
+msgid "Done"
+msgstr "Hecho"
+
+msgid "You have been invited to join the Community: {{title}} as a (n) {{role}}"
+msgstr "Ha sido invitado a unirse a la comunidad: {{title}} como un/a {{role}}"
+
+msgid "You have succesfully declined the invitation."
+msgstr "Ha rechazado exitosamente la invitación."
+
+msgid "Decline"
+msgstr "Rechazar"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "{{total}} result(s) found"
+msgstr "{{total}} resultado(s) encontrado(s)"
+
+msgid "Sort by {{cmp}}"
+msgstr "Ordenar por {{cmp}}"
+
+msgid "{{cmp}} resultados por página"
+msgstr "{{cmp}} resultados por página"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Search communities..."
+msgstr "Buscar comunidades..."
+
+msgid "New community"
+msgstr "Nueva comunidad"
+
+msgid "Uploaded on"
+msgstr "Subido en"
+
+msgid "hide subfacets"
+msgstr "ocultar subfacetas"
+
+msgid "show subfacets"
+msgstr "mostrar subfacetas"
+
+msgid "Search guide"
+msgstr "Guía de búsqueda"
+
+msgid "Versions"
+msgstr "Versiones"
+
+msgid "View all versions"
+msgstr "Ver todas las versiones"
+
+msgid "Help"
+msgstr "Ayuda"
+
+msgid "Clear selection"
+msgstr "Borrar selección"
+
+msgid "Clear"
+msgstr "Borrar"
+
+msgid "We couldn't find any matches for "
+msgstr "No pudimos encontrar ninguna coincidencia para "
+
+msgid "your search"
+msgstr "tu busqueda"
+
+msgid "Start over"
+msgstr "Empezar de nuevo"
+
+msgid "ProTip"
+msgstr "Consejo"
+
+msgid "will give you all the publications from 2017 until today"
+msgstr "te dará todas las publicaciones desde 2017 hasta hoy"
+
+msgid "For more tips, check out our "
+msgstr "Para más consejos, consulta nuestra "
+
+msgid " for defining advanced search queries"
+msgstr " para definir consultas de búsqueda avanzadas"
+
+msgid "ORCID profile"
+msgstr "Perfil de ORCID"
+
+msgid "ROR profile"
+msgstr "Perfil de ROR"
