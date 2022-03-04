@@ -9,7 +9,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import _isEmpty from 'lodash/isEmpty';
+import _isEmpty from "lodash/isEmpty";
 
 import "semantic-ui-css/semantic.min.css";
 import {
@@ -21,10 +21,10 @@ import {
   List,
   Form,
   Message,
-  TextArea,
   Button,
   Dropdown,
 } from "semantic-ui-react";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 const useInvenioSearchAPI = (baseURL) => {
   const [query, setQuery] = useState("");
@@ -55,9 +55,8 @@ const CommunitiesRequestDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
   const [response, setResponse] = useState(null);
-  const [{ query, data, isLoading, isError }, setQuery] = useInvenioSearchAPI(
-    "/api/communities"
-  );
+  const [{ query, data, isLoading, isError }, setQuery] =
+    useInvenioSearchAPI("/api/communities");
 
   const handleSubmit = () => {
     axios
@@ -71,11 +70,14 @@ const CommunitiesRequestDropdown = () => {
           data: resp.data,
           message: (
             <>
-              Request to{" "}
-              <a href={`/communities/${community.metadata.id}`}>
-                {community.metadata.title}
-              </a>{" "}
-              submitted
+              {i18next.t("Request to {{title}} submitted", {
+                title: (
+                  <a href={`/communities/${community.metadata.id}`}>
+                    {community.metadata.title}
+                  </a>
+                ),
+                interpolation: { escapeValue: false },
+              })}
             </>
           ),
           status: "success",
@@ -114,7 +116,7 @@ const CommunitiesRequestDropdown = () => {
   return (
     <>
       <Dropdown
-        text="Add community"
+        text={i18next.t("Add community")}
         icon="add"
         labeled
         button
@@ -128,45 +130,54 @@ const CommunitiesRequestDropdown = () => {
             <Dropdown.Item selected={false} active={false}>
               <Form>
                 <p>
-                  Request for this record to be added to{" "}
-                  <a href={`/communities/${community.metadata.id}`}>
-                    {community.metadata.title}
-                  </a>
+                  {i18next.t(
+                    "Request for this record to be added to {{title}}",
+                    {
+                      title: (
+                        <a href={`/communities/${community.metadata.id}`}>
+                          {community.metadata.title}
+                        </a>
+                      ),
+                      interpolation: { escapeValue: false },
+                    }
+                  )}
                 </p>
                 <Form.Input
-                  label="Message"
+                  label={i18next.t("Message")}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Write a message for the community curator..."
+                  placeholder={i18next.t(
+                    "Write a message for the community curator..."
+                  )}
                 />
                 <Button positive onClick={handleSubmit}>
-                  Submit
+                  {i18next.t("Submit")}
                 </Button>
                 <Button negative onClick={handleCancel}>
-                  Cancel
+                  {i18next.t("Cancel")}
                 </Button>
               </Form>
             </Dropdown.Item>
           ) : (
-              <>
-                <Dropdown.Header content="Search communities" />
-                <Input
-                  icon="search"
-                  value={query}
-                  // TODO: debounce
-                  onChange={(e) => setQuery(e.target.value)}
-                  iconPosition="left"
-                  name="community-query"
+            <>
+              <Dropdown.Header content="Search communities" />
+              <Input
+                icon="search"
+                value={query}
+                // TODO: debounce
+                onChange={(e) => setQuery(e.target.value)}
+                iconPosition="left"
+                name="community-query"
+              />
+              {options.map(({ key, text, value }) => (
+                <Dropdown.Item
+                  key={key}
+                  text={text}
+                  onClick={() => setCommunity(value)}
                 />
-                {options.map(({ key, text, value }) => (
-                  <Dropdown.Item
-                    key={key}
-                    text={text}
-                    onClick={() => setCommunity(value)}
-                  />
-                ))}
-              </>
-            )}
+              ))}
+            </>
+          )}
         </Dropdown.Menu>
       </Dropdown>
       {/* TODO: extract error message into separate component */}
@@ -198,16 +209,16 @@ const CommunityPendingItem = ({ communityRecord }) => {
   const [response, setResponse] = useState(null);
   const [showMessageInput, setShowMessageInput] = useState(false);
   const [message, setMessage] = useState("");
-  debugger
+  debugger;
   const handle = (action) => {
     return () => {
       axios
         .post(
           `/api/communities/${communityRecord.comid}/records/requests/${communityRecord.id}/${action}`,
-          { 'message': message }
+          { message: message }
         )
         .then((resp) => {
-          if (action == 'comment') {
+          if (action == "comment") {
             setShowMessageInput(false);
           }
           console.log(resp.data);
@@ -254,30 +265,31 @@ const CommunityPendingItem = ({ communityRecord }) => {
           ) : null}
         </List.Content>
       </List.Item>
-      {showMessageInput ?
+      {showMessageInput ? (
         <div className="ui active modal">
           <Form>
             <div className="content">
-              <p>
-                Send a message to the other party.
-          </p>
+              <p>{i18next.t("Send a message to the other party.")}</p>
               <Form.Input
                 label="Message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Write a message for the community curator..."
+                placeholder={i18next.t(
+                  "Write a message for the community curator..."
+                )}
               />
             </div>
             <div className="actions">
               <Button positive onClick={handle("comment")}>
-                Submit
-          </Button>
+                {i18next.t("Submit")}
+              </Button>
               <Button negative onClick={() => setShowMessageInput(false)}>
-                Cancel
-          </Button>
+                {i18next.t("Cancel")}
+              </Button>
             </div>
           </Form>
-        </div> : null}
+        </div>
+      ) : null}
     </>
   );
 };
@@ -287,7 +299,10 @@ const CommunityGallery = ({ communitiesRecords, renderItem }) => {
   return (
     <List>
       {communitiesRecords.map((communityRecord) => (
-        <RenderItem key={communityRecord.id} communityRecord={communityRecord} />
+        <RenderItem
+          key={communityRecord.id}
+          communityRecord={communityRecord}
+        />
       ))}
     </List>
   );
@@ -303,7 +318,9 @@ const App = () => {
         panels={[
           {
             key: "pending-requests",
-            title: `Pending requests (${pending_communities.length})`,
+            title: i18next.t("Pending requests ({{length}})", {
+              length: pending_communities.length,
+            }),
             content: {
               content: (
                 <>
@@ -327,20 +344,22 @@ const CommunitiesCollectionDropdown = ({ communityRecord }) => {
   const [ongoingRequest, setOngoingRequest] = useState(false);
   const [response, setResponse] = useState(null);
   const [toggleEdit, setToggleEdit] = useState(false);
-  const recordCollections= communityRecord._collections || []
-  const [currentCollections, setCurrentCollections] = useState(recordCollections.map((collection)=>
-  collection.id
-));
-
+  const recordCollections = communityRecord._collections || [];
+  const [currentCollections, setCurrentCollections] = useState(
+    recordCollections.map((collection) => collection.id)
+  );
 
   const handleChange = (new_collections) => {
     setOngoingRequest(true);
     axios
-      .put(`/api/communities/${communityRecord.comid}/records/${__RECORD.recid}`, {
-        'collections': new_collections.map(collection => ({
-          'id': collection
-        }))
-      })
+      .put(
+        `/api/communities/${communityRecord.comid}/records/${__RECORD.recid}`,
+        {
+          collections: new_collections.map((collection) => ({
+            id: collection,
+          })),
+        }
+      )
       .then((resp) => {
         setCurrentCollections(new_collections);
         setResponse({
@@ -348,7 +367,7 @@ const CommunitiesCollectionDropdown = ({ communityRecord }) => {
           data: resp.data,
           message: (
             <>
-              The collections for this record have been updated.
+              {i18next.t("The collections for this record have been updated.")}
             </>
           ),
           status: "success",
@@ -370,61 +389,66 @@ const CommunitiesCollectionDropdown = ({ communityRecord }) => {
       });
   };
 
-  const availableCollections = __COMMUNITIES[communityRecord.comid]._collections || {}
+  const availableCollections =
+    __COMMUNITIES[communityRecord.comid]._collections || {};
 
-  const options = Object.entries(availableCollections).map(([collection_id, collection]) => ({
-    key: collection_id,
-    text: collection.title,
-    value: collection_id,
-  }));
-
-
-console.log(availableCollections)
-  return (
-    (!_isEmpty(options) ?
-      ( toggleEdit ? (
-      <>
-      <Dropdown
-        placeholder='collections'
-        fluid
-        multiple selection
-        disabled={ongoingRequest}
-        options={options}
-        defaultValue={currentCollections}
-        onChange={(e, { value }) => handleChange(value)} />
-        { response ? (
-            <Message
-              size="tiny"
-              positive={response.status !== "error"}
-              negative={response.status === "error"}
-            >
-              {response.message}
-            </Message>
-          ) : null
-        }
-        <Button positive size="small" onClick={() => setToggleEdit(false)}>Done</Button>
-      </>):
-      <>
-      <List>
-        {currentCollections.map((collection_id)=>(
-          <List.Item key={collection_id}>
-            <List.Header>
-              {availableCollections[collection_id].title}
-            </List.Header>
-          </List.Item>
-        ))}
-      </List>
-      <Button color="orange" size="small" onClick={() => setToggleEdit(true)}>Edit</Button>
-      </>
-      )
-      : null)
+  const options = Object.entries(availableCollections).map(
+    ([collection_id, collection]) => ({
+      key: collection_id,
+      text: collection.title,
+      value: collection_id,
+    })
   );
-};
 
+  console.log(availableCollections);
+  return !_isEmpty(options) ? (
+    toggleEdit ? (
+      <>
+        <Dropdown
+          placeholder={i18next.t("collections")}
+          fluid
+          multiple
+          selection
+          disabled={ongoingRequest}
+          options={options}
+          defaultValue={currentCollections}
+          onChange={(e, { value }) => handleChange(value)}
+        />
+        {response ? (
+          <Message
+            size="tiny"
+            positive={response.status !== "error"}
+            negative={response.status === "error"}
+          >
+            {response.message}
+          </Message>
+        ) : null}
+        <Button positive size="small" onClick={() => setToggleEdit(false)}>
+          {i18next.t("Done")}
+        </Button>
+      </>
+    ) : (
+      <>
+        <List>
+          {currentCollections.map((collection_id) => (
+            <List.Item key={collection_id}>
+              <List.Header>
+                {availableCollections[collection_id].title}
+              </List.Header>
+            </List.Item>
+          ))}
+        </List>
+        <Button color="orange" size="small" onClick={() => setToggleEdit(true)}>
+          Edit
+        </Button>
+      </>
+    )
+  ) : null;
+};
 
 const domContainer = document.querySelector("#communities-management");
 const __RECORD = JSON.parse(domContainer.dataset.record);
-const __COMMUNITIES_DATA = JSON.parse(domContainer.dataset.communities)
+const __COMMUNITIES_DATA = JSON.parse(domContainer.dataset.communities);
 const __RECORD_COMMUNITIES = __COMMUNITIES_DATA.record_communities;
 const __COMMUNITIES = __COMMUNITIES_DATA.communities;
 

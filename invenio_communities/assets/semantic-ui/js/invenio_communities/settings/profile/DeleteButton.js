@@ -9,6 +9,7 @@
 
 import React, { useState } from "react";
 import { Button, Icon, Modal } from "semantic-ui-react";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 export const DeleteButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,10 +47,10 @@ export const DeleteButton = (props) => {
         <Modal.Content>{props.confirmationMessage}</Modal.Content>
         <Modal.Actions>
           <Button onClick={handleClose} floated="left">
-            Cancel
+            {i18next.t("Cancel")}
           </Button>
           <Button color="red" onClick={handleDelete}>
-            Delete
+            {i18next.t("Delete")}
           </Button>
         </Modal.Actions>
       </Modal>

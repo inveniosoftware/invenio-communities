@@ -9,8 +9,10 @@
 import React from "react";
 import { Input } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
-import { defaultComponents as searchDefaultComponents, createSearchAppInit } from "@js/invenio_search_ui";
-
+import {
+  defaultComponents as searchDefaultComponents,
+  createSearchAppInit,
+} from "@js/invenio_search_ui";
 
 // TODO: Remove after https://github.com/inveniosoftware/react-searchkit/issues/117
 // is addressed

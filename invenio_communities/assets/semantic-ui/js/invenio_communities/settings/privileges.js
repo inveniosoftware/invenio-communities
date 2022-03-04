@@ -7,22 +7,30 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Formik } from "formik";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
 
-import { Divider, Icon, Grid, Button, Header, Form, Message } from "semantic-ui-react";
+import {
+  Divider,
+  Icon,
+  Grid,
+  Button,
+  Header,
+  Form,
+  Message,
+} from "semantic-ui-react";
 import { RadioField } from "react-invenio-forms";
 
 import { CommunitiesApiClient } from "../api";
-
+import { i18next } from "@translations/invenio_communities/i18next";
 
 class CommunityPrivilegesForm extends Component {
   state = {
     error: "",
-    isSaved: false
+    isSaved: false,
   };
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
@@ -42,11 +50,11 @@ class CommunityPrivilegesForm extends Component {
   };
 
   setIsSavedState = (newValue) => {
-    this.setState({isSaved: newValue})
-  }
+    this.setState({ isSaved: newValue });
+  };
 
   render() {
-    const { isSaved } = this.state
+    const { isSaved } = this.state;
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
@@ -62,7 +70,7 @@ class CommunityPrivilegesForm extends Component {
           } else {
             if (response.errors) {
               response.errors.map(({ field, messages }) =>
-              setFieldError(field, messages[0])
+                setFieldError(field, messages[0])
               );
             }
 
@@ -88,11 +96,11 @@ class CommunityPrivilegesForm extends Component {
             </Message>
             <Grid>
               <Grid.Column width={16}>
-                <Header as="h2">Community permissions</Header>
+                <Header as="h2">{i18next.t("Community permissions")}</Header>
                 <Divider />
               </Grid.Column>
               <Grid.Column width={8}>
-                <Header as="h3">Community visibility</Header>
+                <Header as="h3">{i18next.t("Community visibility")}</Header>
                 {this.props.formConfig.access.visibilty.map((item) => (
                   <React.Fragment key={item.value}>
                     <RadioField
@@ -123,7 +131,8 @@ class CommunityPrivilegesForm extends Component {
                   active={isSaved}
                   type="submit"
                 >
-                  <Icon name="save"></Icon>{isSaved ?'Saved': 'Save'}
+                  <Icon name="save"></Icon>
+                  {isSaved ? i18next.t("Saved") : i18next.t("Save")}
                 </Button>
               </Grid.Column>
               <Grid.Column width={8} />

@@ -50,20 +50,27 @@ import {
   TextField,
 } from "react-invenio-forms";
 import { CommunitiesApiClient } from "../../api";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 // TODO: remove when type becomes a vocabulary
 const COMMUNITY_TYPES = [
-  { value: "organization", text: "Institution/Organization" },
-  { value: "event", text: "Event" },
-  { value: "topic", text: "Topic" },
-  { value: "project", text: "Project" },
+  { value: "organization", text: i18next.t("Institution/Organization") },
+  { value: "event", text: i18next.t("Event") },
+  { value: "topic", text: i18next.t("Topic") },
+  { value: "project", text: i18next.t("Project") },
 ];
 
 const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
-    title: Yup.string().max(250, "Maximum number of characters is 2000"),
-    description: Yup.string().max(2000, "Maximum number of characters is 2000"),
-    website: Yup.string().url("Must be a valid URL"),
+    title: Yup.string().max(
+      250,
+      i18next.t("Maximum number of characters is 2000")
+    ),
+    description: Yup.string().max(
+      2000,
+      i18next.t("Maximum number of characters is 2000")
+    ),
+    website: Yup.string().url(i18next.t("Must be a valid URL")),
     // TODO: Re-enable once properly integrated to be displayed
     // page: Yup.string().max(2000, "Maximum number of characters is 2000"),
     // curation_policy: Yup.string().max(
@@ -161,7 +168,7 @@ const LogoUploader = (props) => {
               <Grid.Column floated="right" width={10}>
                 <Grid.Row>
                   <Header className="communities-logo-header">
-                    Profile picture
+                    {i18next.t("Profile picture")}
                   </Header>
                 </Grid.Row>
                 <Grid.Row>
@@ -191,14 +198,18 @@ const LogoUploader = (props) => {
                     onClick={openFileDialog}
                   >
                     <Icon name="upload"></Icon>
-                    Upload new picture
+                    {i18next.t("Upload new picture")}
                   </Button>
                   {props.logo && (
                     <DeleteButton
-                      label="Delete picture"
+                      label={i18next.t("Delete picture")}
                       redirectURL={`${props.community.links.self_html}/settings`}
                       confirmationMessage={
-                        <h3>Are you sure you want to delete this picture?</h3>
+                        <h3>
+                          {i18next.t(
+                            "Are you sure you want to delete this picture?"
+                          )}
+                        </h3>
                       }
                       onDelete={deleteLogo}
                     />
@@ -217,13 +228,15 @@ const DangerZone = (props) => (
   <Grid.Row className="ui message negative danger-zone">
     <Grid.Column width={16}>
       <Header as="h2" color="red">
-        Danger zone
+        {i18next.t("Danger zone")}
       </Header>
       <Divider />
     </Grid.Column>
     <Grid.Column floated="left" width="12">
-      <Header as="h4">Rename community</Header>
-      <p>Renaming your community can have unintended side effects.</p>
+      <Header as="h4">{i18next.t("Rename community")}</Header>
+      <p>
+        {i18next.t("Renaming your community can have unintended side effects.")}
+      </p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
       <RenameCommunityButton community={props.community} />
@@ -231,16 +244,20 @@ const DangerZone = (props) => (
     {/* Empty column for margin */}
     <Grid.Column width={16} className="margin-top-25"></Grid.Column>
     <Grid.Column floated="left" width="12">
-      <Header as="h4">Delete community</Header>
-      <p>Once deleted, it will be gone forever. Please be certain.</p>
+      <Header as="h4">{i18next.t("Delete community")}</Header>
+      <p>
+        {i18next.t("Once deleted, it will be gone forever. Please be certain.")}
+      </p>
     </Grid.Column>
     <Grid.Column floated="right" width="4">
       <DeleteButton
         community={props.community}
-        label="Delete community"
+        label={i18next.t("Delete community")}
         redirectURL="/communities"
         confirmationMessage={
-          <h3>Are you sure you want to delete this community?</h3>
+          <h3>
+            {i18next.t("Are you sure you want to delete this community?")}
+          </h3>
         }
         onDelete={() => {
           const client = new CommunitiesApiClient();
@@ -386,7 +403,7 @@ class CommunityProfileForm extends Component {
                       <FieldLabel
                         htmlFor="metadata.title"
                         icon={"book"}
-                        label="Community name"
+                        label={i18next.t("Community name")}
                       />
                     }
                   />
@@ -398,7 +415,7 @@ class CommunityProfileForm extends Component {
                       <FieldLabel
                         htmlFor="metadata.type"
                         icon="tag"
-                        label="Type"
+                        label={i18next.t("Type")}
                       />
                     }
                     options={COMMUNITY_TYPES}
@@ -409,7 +426,7 @@ class CommunityProfileForm extends Component {
                       <FieldLabel
                         htmlFor="metadata.website"
                         icon="chain"
-                        label="Website"
+                        label={i18next.t("Website")}
                       />
                     }
                     fluid
@@ -420,7 +437,7 @@ class CommunityProfileForm extends Component {
                       <FieldLabel
                         htmlFor="metadata.description"
                         icon={"pencil"}
-                        label="Description"
+                        label={i18next.t("Description")}
                       />
                     }
                     optimized
@@ -431,7 +448,9 @@ class CommunityProfileForm extends Component {
                     suggestionAPIHeaders={{
                       Accept: "application/json",
                     }}
-                    placeholder={"Search for an organization by name"}
+                    placeholder={i18next.t(
+                      "Search for an organization by name"
+                    )}
                     clearable
                     multiple
                     initialSuggestions={_get(
@@ -446,8 +465,8 @@ class CommunityProfileForm extends Component {
                         key: organization.name,
                       }))
                     }
-                    label="Organizations"
-                    noQueryMessage="Search for organizations..."
+                    label={i18next.t("Organizations")}
+                    noQueryMessage={i18next.t("Search for organizations...")}
                     allowAdditions
                     search={(filteredOptions, searchQuery) => filteredOptions}
                   />
@@ -486,7 +505,7 @@ class CommunityProfileForm extends Component {
                     icon
                   >
                     <Icon name="save" />
-                    Save
+                    {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
                 <Grid.Column width={7}>

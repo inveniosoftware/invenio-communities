@@ -15,8 +15,8 @@
 <div class="ui container grid communities-settings">
   {%- block settings_menu %}
     {%- set menu_items = {
-      'profile': ('Profile', url_for('invenio_communities.communities_settings', pid_value=community.id), ),
-      'privileges': ('Privileges', url_for('invenio_communities.communities_settings_privileges', pid_value=community.id)),
+      'profile': (_('Profile'), url_for('invenio_communities.communities_settings', pid_value=community.id), ),
+      'privileges': (_('Privileges'), url_for('invenio_communities.communities_settings_privileges', pid_value=community.id)),
     } %}
     <div class="three wide column">
       <div class="ui fluid vertical menu">

@@ -1,101 +1,104 @@
-# Translations template for invenio-communities.
+# English translations for invenio-communities.
 # Copyright (C) 2022 CERN
 # This file is distributed under the same license as the invenio-communities
 # project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
-# 
-# Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2022
-# Alizee Pace <alizee.pace@gmail.com>, 2022
-# chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
-# Mojib Wali <mojib.wali@tugraz.at>, 2022
-# David Eckhard <dabombeeer@gmail.com>, 2022
-# Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
-# Alexander Gruber <alexander.gruber@tugraz.at>, 2022
-# 
-#, fuzzy
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: invenio-communities 2.7.0.dev6\n"
+"Project-Id-Version: invenio-communities 2.7.0.dev8\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2022-02-23 11:02+0100\n"
-"PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Alexander Gruber <alexander.gruber@tugraz.at>, 2022\n"
-"Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
+"POT-Creation-Date: 2022-03-08 13:36+0100\n"
+"PO-Revision-Date: 2022-03-08 13:37+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: invenio_communities/communities/schema.py:25
 msgid "Field cannot be blank or longer than {max_} characters."
-msgstr "Feld kann nicht leer oder länger als {max_} Zeichen sein."
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:15
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:25
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:17
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:93
 msgid "Organization"
-msgstr "Organisation"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:18
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:94
 msgid "Event"
-msgstr "Ereignis"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:19
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:95
 msgid "Topic"
-msgstr "Thema"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:20
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:96
 msgid "Project"
-msgstr "Projekt"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:26
 msgid "Visibility"
-msgstr "Sichtbarkeit"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:28
 msgid "Public"
-msgstr "Öffentlich"
+msgstr ""
 
 #: invenio_communities/communities/services/facets.py:29
 msgid "Restricted"
-msgstr "Eingeschränkt"
+msgstr ""
 
-#: invenio_communities/invitations/services/request_types.py:57
+#: invenio_communities/invitations/services/request_types.py:53
 msgid "Community Member Invitation"
-msgstr "Community Mitglieder Einladung"
+msgstr ""
 
 #: invenio_communities/members/services/schema.py:54
 msgid "There must be one of {}"
-msgstr "Eines von {} muss vorhanden sein"
+msgstr ""
+
+#: invenio_communities/views/schema.py:45
+#: invenio_communities/views/schema.py:119
+msgid "Your community is publicly accessible and shows up in search results."
+msgstr ""
+
+#: invenio_communities/views/schema.py:52
+#: invenio_communities/views/schema.py:126
+msgid "Your community is restricted to users with access."
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:24
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:22
 msgid "Communities"
-msgstr "Communities"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:33
-msgid "Organize, curate and collaborate on records for your institution, project, topic or event."
+msgid ""
+"Organize, curate and collaborate on records for your institution, "
+"project, topic or event."
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:39
+#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
+msgid "New community"
 msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:50
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:12
 msgid "Search communities"
-msgstr "Communities durchsuchen"
-
-#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:39
-msgid "New community"
-msgstr "Neue Community"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:61
 msgid "My communities"
@@ -107,70 +110,81 @@ msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:30
 msgid "Domain"
-msgstr "Domain"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:79
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:77
 msgid "Best match"
-msgstr "Höchste Übereinstimmung"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:83
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:81
 msgid "Newest"
-msgstr "Neuester"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:87
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:85
 msgid "Oldest"
-msgstr "Ältester"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:91
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:89
 msgid "Version"
-msgstr "Version"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:12
 msgid "Tombstone"
-msgstr "Vermerk"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:15
 msgid "Gone"
-msgstr "Entfernt"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:17
 #, python-format
 msgid ""
 "\n"
-"    The community you are trying to access was removed from %(sitename)s. The\n"
+"    The community you are trying to access was removed from %(sitename)s."
+" The\n"
 "    metadata of the community is kept for archival purposes.\n"
 "  "
 msgstr ""
-"\n"
-"    Die Community, auf die Sie zuzugreifen versuchen, wurde von %(sitename)s entfernt.\n"
-"Die Metadaten der Community werden zu Archivierungszwecken aufbewahrt."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:47
 msgid "New upload"
-msgstr "Neuer Eintrag"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:74
+msgid "Settings"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/index.html:12
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:73
 msgid "Search"
-msgstr "Suchen"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:17
 msgid "Access status"
-msgstr "Zugriffsstatus"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:22
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:26
 msgid "Resource types"
-msgstr "Arten von Ressourcen"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:32
 msgid "Languages"
-msgstr "Sprachen"
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
 msgid " settings"
-msgstr "Einstellungen"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
+msgid "Profile"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
+msgid "Privileges"
+msgstr ""
+
