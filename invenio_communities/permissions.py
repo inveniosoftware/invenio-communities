@@ -398,6 +398,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_create_member = [CommunityOwner(), CommunityManager(), SystemProcess()]
     can_bulk_update_members = [CommunityMember(), SystemProcess()]
+    can_bulk_delete_members = [CommunityMember(), SystemProcess()]
     can_search_members = [
         SystemProcess(),
         IfRestricted(

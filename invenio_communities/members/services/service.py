@@ -20,7 +20,8 @@ from ...errors import CommunityHidden
 from ...permissions import create_community_role_need
 from ..errors import LastOwnerError, OwnerSelfRoleChangeError, \
     ManagerSelfRoleChangeError
-from .schemas import MemberBulkSchema, MemberCreationSchema, MemberUpdateSchema
+from .schemas import MemberCreationSchema, MemberBulkDeleteSchema, \
+    MemberBulkUpdateSchema, MemberUpdateSchema
 
 
 def member_is_current_user(identity, member):
@@ -49,9 +50,14 @@ class MemberService(RecordService):
         return ServiceSchemaWrapper(self, schema=MemberCreationSchema)
 
     @property
-    def bulk_schema(self):
-        """Schema for bulk actions."""
-        return ServiceSchemaWrapper(self, schema=MemberBulkSchema)
+    def bulk_update_schema(self):
+        """Schema for bulk update."""
+        return ServiceSchemaWrapper(self, schema=MemberBulkUpdateSchema)
+
+    @property
+    def bulk_delete_schema(self):
+        """Schema for bulk delete."""
+        return ServiceSchemaWrapper(self, schema=MemberBulkDeleteSchema)
 
     @property
     def update_schema(self):
@@ -134,7 +140,7 @@ class MemberService(RecordService):
         except PermissionDeniedError:
             raise CommunityHidden()
 
-        data, _ = self.bulk_schema.load(
+        data, _ = self.bulk_update_schema.load(
             data,
             context=dict(
                 identity=identity,
@@ -209,6 +215,35 @@ class MemberService(RecordService):
         )
         if manager_need in identity.provides and member_record.role == "owner":
             raise PermissionDeniedError()
+
+    @unit_of_work()
+    def bulk_delete(self, identity, community_id, data, uow=None):
+        """Delete member(s)."""
+        community = self.community_cls.pid.resolve(community_id)
+
+        try:
+            self.require_permission(
+                identity, "bulk_delete_members", record=community
+            )
+        except PermissionDeniedError:
+            raise CommunityHidden()
+
+        data, _ = self.bulk_delete_schema.load(
+            data,
+            context=dict(
+                identity=identity,
+            )
+        )
+
+        for member in data.get("members"):
+            self.delete(
+                identity,
+                member["id"],
+                revision_id=member["revision_id"],
+                uow=uow
+            )
+
+        return True
 
     @unit_of_work()
     def delete(self, identity, id_, revision_id=None, uow=None):

@@ -12,7 +12,7 @@ from flask_resources import HTTPJSONException, create_error_handler
 from invenio_records_resources.resources import RecordResourceConfig
 
 from ...errors import CommunityHidden
-from ..errors import OwnerSelfRoleChangeError
+from ..errors import LastOwnerError, OwnerSelfRoleChangeError
 
 
 class MemberResourceConfig(RecordResourceConfig):
@@ -44,4 +44,11 @@ class MemberResourceConfig(RecordResourceConfig):
                 description="Permission denied.",
             )
         ),
+        LastOwnerError: create_error_handler(
+            HTTPJSONException(
+                code=400,
+                description="Invalid action.",
+            )
+        ),
+
     }

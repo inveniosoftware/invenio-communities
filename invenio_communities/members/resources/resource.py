@@ -27,6 +27,7 @@ class MemberResource(RecordResource):
         return [
             route("GET", routes["item"], self.read),
             route("PATCH", routes["list"], self.bulk_update),
+            route("DELETE", routes["list"], self.bulk_delete),
         ]
 
     @request_view_args
@@ -60,3 +61,14 @@ class MemberResource(RecordResource):
         )
 
         return "", 204, {"Location": location}
+
+    @request_view_args
+    @request_data
+    def bulk_delete(self):
+        """Delete member(s)."""
+        self.service.bulk_delete(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            data=resource_requestctx.data
+        )
+        return "", 204

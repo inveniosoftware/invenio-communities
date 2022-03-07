@@ -31,16 +31,24 @@ class MemberBulkItemSchema(Schema):
     revision_id = fields.Integer(required=True)
 
 
-class MemberBulkSchema(BaseRecordSchema):
+class MemberBulkSchema(Schema):
     """Schema for bulk member change/delete."""
 
     # input
     members = fields.List(fields.Nested(MemberBulkItemSchema))
+
+
+class MemberBulkUpdateSchema(MemberBulkSchema):
+    """Schema for bulk update."""
     role = fields.String(
         required=True,
         validate=validate.OneOf(ROLE_TYPES)
     )
     # TODO: add visibility
+
+
+class MemberBulkDeleteSchema(MemberBulkSchema):
+    """Schema for bulk delete."""
 
 
 class MemberUpdateSchema(Schema):

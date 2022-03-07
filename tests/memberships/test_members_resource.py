@@ -35,7 +35,7 @@ def assert_item_response(response, code=200, body_override=None):
     expected = {
         # TODO when UserService is integrated
         # "member": {
-        #     "user": f"{another_user.id}", # str on purpose
+        #     "user": f"{user_1.id}", # str on purpose
         #     "name": "Lars Holm Nielsen",
         #     "description": "CERN",
         #     "links": {
@@ -63,15 +63,21 @@ def logged_client(client, user):
 # Fixtures
 
 @pytest.fixture()
-def another_user(app, db):
+def user_1(app, db):
     """Community owner user."""
-    return create_test_user('another_user@example.com')
+    return create_test_user('user_1@example.com')
 
 
 @pytest.fixture()
-def yet_another_user(app, db):
+def user_2(app, db):
     """A non-community affiliated user."""
-    return create_test_user('yet_another_user@example.com')
+    return create_test_user('user_2@example.com')
+
+
+@pytest.fixture()
+def user_3(app, db):
+    """A non-community affiliated user."""
+    return create_test_user('user_3@example.com')
 
 
 @pytest.fixture()
@@ -115,11 +121,11 @@ def private_community(community_creation_input_data, community_service, owner):
 
 
 def test_read_member(
-        another_user, client, community, community_service,
+        user_1, client, community, community_service,
         generate_invitation_input_data, headers, make_member_identity, owner):
     community_id = community.pid.pid_value  # id on the URL
     # community_uuid = str(community.id)  # id in the DB
-    # another_user_id = str(another_user.id)
+    # another_user_id = str(user_1.id)
     # we have to give them the owner identity in tests
     owner_identity = make_member_identity(
         identity_of(owner), community, "owner"
@@ -128,7 +134,7 @@ def test_read_member(
         owner_identity,
         data={
             "community": str(community.id),
-            "user": another_user.id,
+            "user": user_1.id,
             "role": "reader"
         }
     )._record
@@ -150,7 +156,7 @@ def test_read_member(
 
 
 def test_bulk_update_members(
-        another_user, client, community, community_service,
+        user_1, client, community, community_service,
         headers, make_member_identity, owner):
     community_id = community.pid.pid_value  # id on the URL
     # we have to give them the owner identity in tests
@@ -161,7 +167,7 @@ def test_bulk_update_members(
         owner_identity,
         data={
             "community": str(community.id),
-            "user": another_user.id,
+            "user": user_1.id,
             "role": "reader"
         }
     )._record
@@ -200,8 +206,8 @@ def test_bulk_update_members(
 
 
 def test_bulk_update_members_errors(
-        another_user, client, private_community, community_service,
-        headers, make_member_identity, owner, yet_another_user):
+        user_1, client, private_community, community_service,
+        headers, make_member_identity, owner, user_2):
     community_id = private_community.pid.pid_value  # id on the URL
     # we have to give them the owner identity in tests
     owner_identity = make_member_identity(
@@ -211,7 +217,7 @@ def test_bulk_update_members_errors(
         owner_identity,
         data={
             "community": str(private_community.id),
-            "user": another_user.id,
+            "user": user_1.id,
             "role": "reader"
         }
     )._record
@@ -219,7 +225,7 @@ def test_bulk_update_members_errors(
 
     # A non-member calling endpoint of private community should get 404
     # (to not reveal community)
-    client = logged_client(client, yet_another_user)
+    client = logged_client(client, user_2)
     r = client.patch(
         f'/communities/{community_id}/members',
         headers=headers,
@@ -291,6 +297,180 @@ def test_bulk_update_members_errors(
         json=bulk_update_json
     )
     assert r.status_code == 403
+    r = client.get(
+        f'/communities/{community_id}/members/{owner_membership.id}',
+        headers=headers,
+    )
+    override = {
+        "id": f"{owner_membership.id}",
+        "is_current_user": True,
+        "links": {
+            "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members/{owner_membership.id}"  # noqa
+        },
+        "role": "owner"
+    }
+    assert_item_response(r, body_override=override)
+
+
+def test_bulk_delete_members(
+        user_1, user_2, client, community, community_service, headers,
+        make_member_identity, owner):
+    community_id = community.pid.pid_value  # id on the URL
+    # we have to give them the owner identity in tests
+    owner_identity = make_member_identity(
+        identity_of(owner), community, "owner"
+    )
+    membership_1 = community_service.members.create(
+        owner_identity,
+        data={
+            "community": str(community.id),
+            "user": user_1.id,
+            "role": "reader"
+        }
+    )._record
+    membership_2 = community_service.members.create(
+        owner_identity,
+        data={
+            "community": str(community.id),
+            "user": user_2.id,
+            "role": "curator"
+        }
+    )._record
+    Member.index.refresh()
+    client = logged_client(client, owner)
+    bulk_delete_json = {
+        "members": [
+            {"id": membership_1.id, "revision_id": 1},
+            {"id": membership_2.id, "revision_id": 1}
+        ]
+    }
+
+    r = client.delete(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        json=bulk_delete_json
+    )
+
+    assert r.status_code == 204
+    assert not r.json
+
+    r = client.get(
+        f'/communities/{community_id}/members/{membership_1.id}',
+        headers=headers,
+    )
+    assert 404 == r.status_code
+    r = client.get(
+        f'/communities/{community_id}/members/{membership_2.id}',
+        headers=headers,
+    )
+    assert 404 == r.status_code
+
+
+def test_bulk_delete_members_errors(
+        user_1, user_2, user_3, client, private_community, community_service,
+        headers, make_member_identity, owner):
+    community_id = private_community.pid.pid_value  # id on the URL
+    # we have to give them the owner identity in tests
+    owner_identity = make_member_identity(
+        identity_of(owner), private_community, "owner"
+    )
+    membership_1 = community_service.members.create(
+        owner_identity,
+        data={
+            "community": str(private_community.id),
+            "user": user_1.id,
+            "role": "reader"
+        }
+    )._record
+    membership_2 = community_service.members.create(
+        owner_identity,
+        data={
+            "community": str(private_community.id),
+            "user": user_2.id,
+            "role": "curator"
+        }
+    )._record
+    Member.index.refresh()
+
+    # A non-member calling endpoint of private community should get 404
+    # (to not reveal community)
+    client = logged_client(client, user_3)
+    r = client.delete(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        json={}  # Permission should be denied first
+    )
+    assert r.status_code == 404
+
+    # An invalid request body cancels the whole delete and returns 400
+    bulk_delete_json = {
+        "members": [
+            {"id": membership_1.id, "revision_id": 1},
+            {"foo": "bar"},
+        ],
+    }
+    client = logged_client(client, owner)
+    r = client.delete(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        json=bulk_delete_json
+    )
+    assert r.status_code == 400
+    r = client.get(
+        f'/communities/{community_id}/members/{membership_1.id}',
+        headers=headers,
+    )
+    override = {
+        "id": f"{membership_1.id}",
+        "links": {
+            "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members/{membership_1.id}"  # noqa
+        },
+    }
+    assert_item_response(r, body_override=override)
+
+    # An invalid revision_id cancels the whole delete and returns 412
+    bulk_delete_json = {
+        "members": [
+            {"id": membership_1.id, "revision_id": 0},
+            {"id": membership_2.id, "revision_id": 1}
+        ]
+    }
+    client = logged_client(client, owner)
+    r = client.delete(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        json=bulk_delete_json
+    )
+    assert r.status_code == 412
+    r = client.get(
+        f'/communities/{community_id}/members/{membership_2.id}',
+        headers=headers,
+    )
+    override = {
+        "id": f"{membership_2.id}",
+        "links": {
+            "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members/{membership_2.id}"  # noqa
+        },
+        "role": "curator"
+    }
+    assert_item_response(r, body_override=override)
+
+    # Attempting to delete last owner cancels whole delete and returns 400
+    owner_membership = community_service.members.get_member(
+        str(private_community.id), owner.id
+    )
+    bulk_delete_json = {
+        "members": [
+            {"id": owner_membership.id, "revision_id": 1}
+        ]
+    }
+    client = logged_client(client, owner)
+    r = client.delete(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        json=bulk_delete_json
+    )
+    assert 400 == r.status_code
     r = client.get(
         f'/communities/{community_id}/members/{owner_membership.id}',
         headers=headers,
