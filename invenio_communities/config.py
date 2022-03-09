@@ -9,6 +9,9 @@
 """Default configuration."""
 
 from invenio_communities.communities.services import facets
+from invenio_communities.communities import CommunityServiceConfig, CommunityFileServiceConfig
+from invenio_communities.invitations import InvitationServiceConfig
+from invenio_communities.members import MemberServiceConfig
 
 COMMUNITIES_MEMBERSHIP_REQUESTS_CONFIRMLINK_EXPIRES_IN = 1000000
 
@@ -41,6 +44,18 @@ COMMUNITIES_DOMAINS = [
     {'text': 'Studies in Creative Arts and Writing', 'value': 'studies_in_creative_arts_and_writing'},
     {'text': 'Studies in Human Society', 'value': 'studies_in_human_society'},
 ]
+
+COMMUNITIES_COMMUNITY_SERVICE_CONFIG = CommunityServiceConfig
+"""Configuration of Community service."""
+
+COMMUNITIES_FILE_SERVICE_CONFIG = CommunityFileServiceConfig
+"""Configuration of Communities file service."""
+
+COMMUNITIES_INVITATION_SERVICE_CONFIG = InvitationServiceConfig
+"""Configuration of Communities invitation service."""
+
+COMMUNITIES_MEMBER_SERVICE_CONFIG = MemberServiceConfig
+"""Configuration of Communities member service."""
 
 COMMUNITIES_ROUTES = {
     'frontpage': '/communities',
