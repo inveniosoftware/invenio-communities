@@ -31,3 +31,36 @@ file_filter = invenio_communities/translations/<lang>/LC_MESSAGES/messages.po
 source_file = invenio_communities/translations/messages.pot
 source_lang = en
 type = PO
+
+# Translate JavaScript strings
+# 1) Navigate to the invenio_communities/theme/assets/semantic-ui/translations/invenio_communities folder
+# 2) Install i18n dev dependencies
+#    npm install
+# 3) Add a new language
+#    npm run init_catalog lang <lang>
+# 4) Extract translation keys/values
+#    $ npm run extract_messages
+# 5) Update the ./messages/index.js file
+#    import TRANSLATE_<lang> from './<lang>/translations.json'
+#    export const translations = {
+#      ...rest,
+#      <lang>: { translation: TRANSLATE_<lang> }
+#    }
+# 6) Install the transifex-client
+#    $ pip install transifex-client
+# 7) Push source (.pot) and translations (.po) to Transifex
+#    $ tx push -s -t
+# 8) Pull translations for a single language from Transifex
+#    $ tx pull -l <lang>
+# 9) Pull translations for all languages from Transifex
+#    $ tx pull -a
+# 10) Compile .po files for all languages
+#    $ npm run compile_catalog
+# 11) Convert .po file for a single language
+#    $ npm run compile_catalog lang <lang>
+
+[invenio.invenio-communities-messages-ui]
+file_filter = invenio_communities/assets/semantic-ui/translations/invenio_communities/messages/<lang>/messages.po
+source_file = invenio_communities/assets/semantic-ui/translations/invenio_communities/translations.pot
+source_lang = en
+type = PO

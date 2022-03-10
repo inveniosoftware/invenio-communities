@@ -1,17 +1,17 @@
 # 
 # Translators:
-# Pablo Garcia Marcos <garcia.marcos.pablo@cern.ch>, 2022
+# Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-03-3T16:07:00.0000\n"
-"PO-Revision-Date: 2022-03-3 16:07+0000\n"
-"Last-Translator: Pablo Garcia Marcos <garcia.marcos.pablo@cern.ch>, 2022\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2022-03-01T08:18:33.908Z\n"
+"PO-Revision-Date: 2022-03-10 09:30+0000\n"
+"Last-Translator: Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/inveniosoftware/teams/23537/es/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "mime-version: 1.0\n"
 
@@ -213,8 +213,12 @@ msgstr "Configurar su nueva comunidad"
 msgid "Identifier"
 msgstr "Identificador"
 
-msgid "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}"
-msgstr "Este es el identificador único de su comunidad. Podrá acceder a su comunidad a traves de la URL: {{url}}"
+msgid ""
+"This is your community's unique identifier. You will be able to access your "
+"community through the URL: {{url}}"
+msgstr ""
+"Este es el identificador único de su comunidad. Podrá acceder a su comunidad"
+" a traves de la URL: {{url}}"
 
 msgid "Community visibility"
 msgstr "Visibilidad de la comunidad"
@@ -252,8 +256,10 @@ msgstr "colecciones"
 msgid "Done"
 msgstr "Hecho"
 
-msgid "You have been invited to join the Community: {{title}} as a (n) {{role}}"
-msgstr "Ha sido invitado a unirse a la comunidad: {{title}} como un/a {{role}}"
+msgid ""
+"You have been invited to join the Community: {{title}} as a (n) {{role}}"
+msgstr ""
+"Ha sido invitado a unirse a la comunidad: {{title}} como un/a {{role}}"
 
 msgid "You have succesfully declined the invitation."
 msgstr "Ha rechazado exitosamente la invitación."
@@ -270,8 +276,8 @@ msgstr "{{total}} resultado(s) encontrado(s)"
 msgid "Sort by {{cmp}}"
 msgstr "Ordenar por {{cmp}}"
 
-msgid "{{cmp}} resultados por página"
-msgstr "{{cmp}} resultados por página"
+msgid "{{cmp}} results per page"
+msgstr ""
 
 msgid "Search"
 msgstr "Buscar"
