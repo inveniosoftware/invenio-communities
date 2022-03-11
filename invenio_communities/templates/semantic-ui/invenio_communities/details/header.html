@@ -73,6 +73,7 @@
     </div>
     {% set header_menu_items = {
       'search': (_('Search'), url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
+      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), 'users icon', true),
       'settings': (_('Settings'), url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
     } %}
     <div class="ui container secondary pointing menu community-header">
