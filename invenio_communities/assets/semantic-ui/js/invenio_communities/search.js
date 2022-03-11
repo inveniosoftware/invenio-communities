@@ -124,9 +124,7 @@ export const CommunitiesResults = ({
                         values={sortOptions}
                         label={(cmp) => (
                           <>
-                            {i18next.t("Sort by {{cmp}}", {
-                              cmp: cmp,
-                            })}
+                            {i18next.t("Sort by")} {cmp}
                           </>
                         )}
                       />
@@ -158,9 +156,7 @@ export const CommunitiesResults = ({
               values={paginationOptions.resultsPerPage}
               label={(cmp) => (
                 <>
-                  {i18next.t("{{cmp}} results per page", {
-                    cmp: cmp,
-                  })}
+                  {cmp} {i18next.t("results per page")}
                 </>
               )}
             />

@@ -15,9 +15,10 @@ from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .communities import communities_detail, communities_frontpage, \
-    communities_new, communities_search, communities_settings, \
-    communities_settings_privileges, invitations, members
-
+    communities_new, communities_requests, communities_search, \
+    communities_settings, communities_settings_privileges, invitations, \
+    members
+from ..searchapp import search_app_context
 
 #
 # Error handlers
@@ -84,6 +85,11 @@ def create_ui_blueprint(app):
         )
 
         blueprint.add_url_rule(
+            routes["requests"],
+            view_func=communities_requests,
+        )
+
+        blueprint.add_url_rule(
             routes["settings_privileges"],
             view_func=communities_settings_privileges,
         )
@@ -119,5 +125,6 @@ def create_ui_blueprint(app):
             PermissionDeniedError, record_permission_denied_error)
         blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
         blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
+        blueprint.app_context_processor(search_app_context)
 
     return blueprint

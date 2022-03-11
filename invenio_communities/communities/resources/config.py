@@ -32,7 +32,7 @@ class CommunityResourceConfig(RecordResourceConfig):
         "communities-prefix": "/communities",
         "user-prefix": "/user/communities",
         "list": "",
-        "item": "/<pid_value>"
+        "item": "/<pid_value>",
     }
 
     error_handlers = community_error_handlers

@@ -17,9 +17,10 @@ COMMUNITIES_ROUTES = {
     'new': '/communities/new',
     'details': '/communities/<pid_value>',
     'settings': '/communities/<pid_value>/settings',
+    'requests': '/communities/<pid_value>/requests',
     'settings_privileges': '/communities/<pid_value>/settings/privileges',
     'members': '/communities/<pid_value>/members',
-    'invitations': '/communities/<pid_value>/invitations'
+    'invitations': '/communities/<pid_value>/invitations',
 }
 """Communities ui endpoints."""
 
@@ -42,6 +43,33 @@ COMMUNITIES_FACETS = {
 }
 """Available facets defined for this module."""
 
+COMMUNITIES_SORT_OPTIONS = {
+    "bestmatch": dict(
+        title=_('Best match'),
+        fields=['_score'],  # ES defaults to desc on `_score` field
+    ),
+    "newest": dict(
+        title=_('Newest'),
+        fields=['-created'],
+    ),
+    "oldest": dict(
+        title=_('Oldest'),
+        fields=['created'],
+    ),
+    "version": dict(
+        title=_('Version'),
+        fields=['-versions.index'],
+    ),
+    "updated-desc": dict(
+        title=_('Recently updated'),
+        fields=['-updated'],
+    ),
+    "updated-asc": dict(
+        title=_('Least recently updated'),
+        fields=['updated'],
+    ),
+}
+"""Definitions of available record sort options."""
 
 COMMUNITIES_ROLES = {
     'reader': dict(
@@ -65,3 +93,9 @@ COMMUNITIES_ROLES = {
     ),
 }
 """Community roles."""
+
+COMMUNITIES_REQUESTS_SEARCH = {
+    'facets': ['type', 'status'],
+    'sort': ['bestmatch', 'newest', 'oldest'],
+}
+"""Community requests search configuration (i.e list of community requests)"""
