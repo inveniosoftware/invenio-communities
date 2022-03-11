@@ -265,11 +265,11 @@ msgstr "View"
 msgid "{{total}} result(s) found"
 msgstr "{{total}} result(s) found"
 
-msgid "Sort by {{cmp}}"
-msgstr "Sort by {{cmp}}"
+msgid "Sort by"
+msgstr "Sort by"
 
-msgid "{{cmp}} results per page"
-msgstr "{{cmp}}  results per page"
+msgid "results per page"
+msgstr "results per page"
 
 msgid "Search"
 msgstr "Search"

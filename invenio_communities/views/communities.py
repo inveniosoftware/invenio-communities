@@ -102,6 +102,28 @@ def communities_settings(community=None, logo=None, pid_value=None):
         active_menu_tab="settings"
     )
 
+@pass_community
+@pass_community_logo
+def communities_requests(community=None, logo=None, pid_value=None):
+    """Community requests page."""
+    return render_template(
+        "invenio_communities/details/requests/index.html",
+        community=community.to_dict(), # TODO: use serializer,
+        logo=logo.to_dict() if logo else None,
+        # TODO: inject this from a vocabulary in the community
+        types={
+            "organization": "Organization",
+            "event": "Event",
+            "topic": "Topic",
+            "project": "Project"
+        },
+        # Pass permissions so we can disable partially UI components
+        # e.g Settings tab
+        permissions=community.has_permissions_to(['update']),
+        endpoint = f'/api/requests?receiver=community:{community["uuid"]}',
+        active_menu_tab="requests"
+    )
+
 @require_community_owner
 @pass_community
 @pass_community_logo

@@ -80,7 +80,8 @@
     </div>
     {% set header_menu_items = {
       'search': (_('Search'), url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
-      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), 'users icon', true),
+      'requests': (_('Requests'), url_for('invenio_communities.communities_requests', pid_value=community.id), 'comments icon', permissions.can_update),
+      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), 'users icon', True),
       'settings': (_('Settings'), url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
     } %}
     <div class="ui container secondary pointing menu community-header">

@@ -273,10 +273,10 @@ msgstr "Ver"
 msgid "{{total}} result(s) found"
 msgstr "{{total}} resultado(s) encontrado(s)"
 
-msgid "Sort by {{cmp}}"
-msgstr "Ordenar por {{cmp}}"
+msgid "Sort by"
+msgstr "Ordenar por"
 
-msgid "{{cmp}} results per page"
+msgid "results per page"
 msgstr ""
 
 msgid "Search"

@@ -261,11 +261,11 @@ msgstr "View"
 msgid "{{total}} result(s) found"
 msgstr "{{total}} result(s) found"
 
-msgid "Sort by {{cmp}}"
-msgstr "Sort by {{cmp}}"
+msgid "Sort by"
+msgstr "Sort by"
 
-msgid "{{cmp}} results per page"
-msgstr "{{cmp}}  results per page"
+msgid "results per page"
+msgstr "results per page"
 
 msgid "Search"
 msgstr "Search"
@@ -329,3 +329,27 @@ msgstr "ORCID profile"
 
 msgid "ROR profile"
 msgstr "ROR profile"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "Closed"
+msgstr "Closed"
+
+msgid "Search requests..."
+msgstr "Search requests..."
+
+msgid "filters"
+msgstr "filters"
+
+msgid "All done!"
+msgstr "All done!"
+
+msgid "You've caught up with all open requests."
+msgstr "You've caught up with all open requests."
+
+msgid "No requests found!"
+msgstr "No requests found!"
+
+msgid "Reset search"
+msgstr "Reset search"

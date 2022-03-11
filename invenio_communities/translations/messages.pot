@@ -161,6 +161,10 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:77
+msgid "Requests"
+msgstr ""
+
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/search.html:17
 msgid "Access status"
 msgstr ""
@@ -185,4 +189,9 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
 msgid "Privileges"
 msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/base.html:11
+msgid " requests"
+msgstr ""
+
 
