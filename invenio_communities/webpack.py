@@ -40,6 +40,8 @@ communities = WebpackThemeBundle(
                     './js/invenio_communities/search/index.js',
                 'invenio-communities-search':
                     './js/invenio_communities/search.js',
+                'invenio-communities-members':
+                './js/invenio_communities/members/index.js'
             },
             dependencies={
                 '@ckeditor/ckeditor5-build-classic': '^16.0.0',

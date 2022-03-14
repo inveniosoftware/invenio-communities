@@ -16,7 +16,7 @@ from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .communities import communities_detail, communities_frontpage, \
     communities_new, communities_search, communities_settings, \
-    communities_settings_privileges
+    communities_settings_privileges, members
 
 
 #
@@ -86,6 +86,11 @@ def create_ui_blueprint(app):
         blueprint.add_url_rule(
             routes["settings_privileges"],
             view_func=communities_settings_privileges,
+        )
+
+        blueprint.add_url_rule(
+            routes['members'],
+            view_func=members
         )
 
         @blueprint.before_app_first_request

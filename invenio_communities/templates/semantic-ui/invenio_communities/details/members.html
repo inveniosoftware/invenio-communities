@@ -17,11 +17,11 @@
 {% set active_header_menu_item = 'members' %}
 
 {%- block page_body %}
-{% include "invenio_communities/header.html" %}
+  {% include "invenio_communities/details/header.html" %}
 
-{%- set form_config = {"communityMember": community_member, "community": community} %}
-<div
-  id="app"
-  data-form-config='{{ form_config | tojson }}'>
-></div>
+
+  <h1>To be continued....</h1>
+  <div
+    id="app"
+  ></div>
 {%- endblock page_body %}
