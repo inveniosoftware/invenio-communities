@@ -148,7 +148,7 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
 @pass_community
 def members(community=None, pid_value=None):
     return render_template(
-        "invenio_communities/details/members.html",
+        "invenio_communities/details/members/members.html",
         community=community.to_dict(),
         types={
             "organization": "Organization",
@@ -157,4 +157,21 @@ def members(community=None, pid_value=None):
             "project": "Project"
         },
         permissions=community.has_permissions_to(['update']),
+        active_menu_tab="members",
+    )
+
+
+@pass_community
+def invitations(community=None, pid_value=None):
+    return render_template(
+        "invenio_communities/details/members/invitations.html",
+        community=community.to_dict(),
+        types={
+            "organization": "Organization",
+            "event": "Event",
+            "topic": "Topic",
+            "project": "Project"
+        },
+        permissions=community.has_permissions_to(['update']),
+        active_menu_tab="members",
     )
