@@ -5,7 +5,6 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-from invenio_db import db
 from invenio_records.systemfields import ModelField
 from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
@@ -38,14 +37,3 @@ class Member(Record):
 
     # TODO: add visibility
     # TODO: add group
-
-    @classmethod
-    def get_record(cls, id_, with_deleted=True):
-        """Return Member."""
-
-        with db.session.no_autoflush:
-            query = cls.model_cls.query.filter_by(**id_)
-            if not with_deleted:
-                query = query.filter(cls.model_cls.is_deleted != True)
-            obj = query.one()
-            return cls(obj.data, model=obj)

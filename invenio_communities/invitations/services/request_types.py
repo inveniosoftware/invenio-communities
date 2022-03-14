@@ -15,6 +15,7 @@ from invenio_requests.customizations import CancelAction, \
 from ...proxies import current_communities
 from .schemas import MemberInvitationPayloadSchema
 
+
 # Actions
 
 class AcceptAction(RequestAction):
@@ -32,17 +33,12 @@ class AcceptAction(RequestAction):
         }
 
         current_communities.service.members.create(
-            identity,
+            system_identity,  # TODO: revisit in #391
             data=member_data,
             uow=uow
         )
 
         super().execute(identity, uow)
-
-
-
-
-# Request types
 
 
 class CommunityMemberInvitation(RequestType):
