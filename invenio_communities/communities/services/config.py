@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -12,7 +13,7 @@ from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import \
-    DataComponent, MetadataComponent
+    MetadataComponent
 from invenio_records_resources.services.records.config import \
     RecordServiceConfig
 from invenio_records_resources.services.records.config import \
@@ -24,9 +25,10 @@ from invenio_records_resources.services.records.links import RecordLink, \
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
 
+from ...permissions import CommunityPermissionPolicy
 from ..schema import CommunitySchema
-from .components import CommunityAccessComponent, PIDComponent
-from .permissions import CommunityPermissionPolicy
+from .components import CommunityAccessComponent, OwnershipComponent, \
+    PIDComponent
 
 
 class SearchOptions(SearchOptionsBase):
@@ -69,6 +71,7 @@ class CommunityServiceConfig(RecordServiceConfig):
         MetadataComponent,
         PIDComponent,
         CommunityAccessComponent,
+        OwnershipComponent
     ]
 
 

@@ -28,6 +28,7 @@ class CommunityPKProxy(RecordPKProxy):
         """Return community member need."""
         ctx = ctx or {}
         roles = ctx.get(
+            # TODO: replace with COMMUNITIES_ROLES
             'community_roles', ['owner', 'manager', 'curator', 'reader']
         )
         comid = str(self._parse_ref_dict_id(self._ref_dict))

@@ -8,18 +8,23 @@
 
 """API views."""
 
-from flask import Blueprint
-
 
 def create_communities_api_blueprint(app):
     """Create communities api blueprint."""
     ext = app.extensions["invenio-communities"]
     # control blueprint endpoints registration
-    if app.config["COMMUNITIES_ENABLED"]:
-        return ext.communities_resource.as_blueprint()
-    else:
-        # return dummy blueprint
-        return Blueprint(
-            "invenio_communities_api",
-            __name__,
-        )
+    return ext.communities_resource.as_blueprint()
+
+
+def create_invitations_api_bp_from_app(app):
+    """Create invitations api blueprint."""
+    ext = app.extensions["invenio-communities"]
+    # control blueprint endpoints registration
+    return ext.invitations_resource.as_blueprint()
+
+
+def create_members_api_bp_from_app(app):
+    """Create members api blueprint."""
+    ext = app.extensions["invenio-communities"]
+    # control blueprint endpoints registration
+    return ext.members_resource.as_blueprint()

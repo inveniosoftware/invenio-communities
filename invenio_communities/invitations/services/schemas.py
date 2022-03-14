@@ -7,14 +7,13 @@
 
 """Invitation schemas."""
 
-from invenio_requests.services.schemas import RequestSchema
-from marshmallow import fields, validate, validates
+from marshmallow import Schema, fields, validate, validates
 
 from ...members import ROLE_TYPES
 
 
 
-class MemberInvitationPayloadSchema(RequestSchema):
+class MemberInvitationPayloadSchema(Schema):
     """Community Member Invitation Schema."""
 
     role = fields.String(required=True)

@@ -16,9 +16,9 @@ from invenio_communities.communities import CommunityFileServiceConfig, \
     CommunityResource, CommunityResourceConfig, CommunityService, \
     CommunityServiceConfig
 from invenio_communities.invitations import InvitationService, \
-    InvitationServiceConfig
+    InvitationServiceConfig, InvitationResource, InvitationResourceConfig
 from invenio_communities.members import MemberService, \
-    MemberServiceConfig
+    MemberServiceConfig, MemberResource, MemberResourceConfig
 
 from . import config
 from .utils import load_community_needs
@@ -69,8 +69,18 @@ class InvenioCommunities(object):
             self.service,
         )
 
+        self.invitations_resource = InvitationResource(
+            InvitationResourceConfig,
+            self.service.invitations,
+        )
+
+        self.members_resource = MemberResource(
+            MemberResourceConfig,
+            self.service.members,
+        )
+
     def init_hooks(self, app):
         """Initialize hooks."""
         @identity_loaded.connect_via(app)
         def on_identity_loaded(_, identity):
-            load_community_needs(identity, self.service)
+            load_community_needs(identity, self.service.members)

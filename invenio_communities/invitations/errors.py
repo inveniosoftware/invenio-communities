@@ -5,12 +5,11 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-"""Community base error."""
+"""Invitations Errors."""
 
 
-class CommunityError(Exception):
-    """Base exception for community errors."""
+from ..errors import CommunityError
 
 
-class CommunityHidden(CommunityError):
-    """Exception raised to mask community presence over permision denial."""
+class AlreadyInvitedError(CommunityError):
+    """Exception raised when entity is already a member."""
