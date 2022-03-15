@@ -1,30 +1,68 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022 CERN.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 """Members Service Config."""
 
+from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import Link, RecordServiceConfig, \
-    pagination_links
+    SearchOptions, pagination_links
 
 from ...communities.records.api import Community
 from ...permissions import CommunityPermissionPolicy
 from ..records import Member
-from .schemas import MemberSchema
+from . import facets
+from .schemas import MemberEntitySchema
 
 
-class MemberLink(Link):
-    """Link variables setter for RequestEvent links."""
+class PublicSearchOptions(SearchOptions):
+    # TODO: should restrict fields that's being searched on.
+    # query_parser_cls = QueryParser
+    sort_default = 'bestmatch'
+    # TODO: sort options should be by username and not expose e.g. creation
+    # date
+    sort_default_no_query = 'newest'
+    sort_options = {
+        "bestmatch": dict(
+            title=_('Best match'),
+            fields=['_score'],  # ES defaults to desc on `_score` field
+        ),
+        "newest": dict(
+            title=_('Newest'),
+            fields=['-created'],
+        ),
+    }
 
-    @staticmethod
-    def vars(record, vars):
-        """Variables for the URI template."""
-        vars.update({
-            "member_id": record.id,
-        })
+
+class MemberSearchOptions(PublicSearchOptions):
+    """Search options."""
+    sort_default = 'bestmatch'
+    sort_default_no_query = 'newest'
+    sort_options = {
+        "bestmatch": dict(
+            title=_('Best match'),
+            fields=['_score'],  # ES defaults to desc on `_score` field
+        ),
+        # TODO add user name
+        "newest": dict(
+            title=_('Newest'),
+            fields=['-created'],
+        ),
+        "oldest": dict(
+            title=_('Oldest'),
+            fields=['created'],
+        ),
+    }
+
+    facets = {
+        'role': facets.role,
+        'visibility': facets.visibility,
+    }
+
 
 
 class MemberServiceConfig(RecordServiceConfig):
@@ -32,14 +70,15 @@ class MemberServiceConfig(RecordServiceConfig):
 
     community_cls = Community
     record_cls = Member
-    schema = MemberSchema
+    schema = MemberEntitySchema
 
     permission_policy_cls = CommunityPermissionPolicy
 
-    # ResultItem configurations
-    links_item = {
-        "self": MemberLink("{+api}/communities/{community_id}/members/{member_id}"),  # noqa
-    }
+    search = MemberSearchOptions
+    search_public = PublicSearchOptions
+
+    # No links
+    links_item = {}
 
     # ResultList configurations
     links_search = pagination_links(

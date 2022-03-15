@@ -15,12 +15,11 @@ from invenio_records_resources.services import FileService
 from invenio_communities.communities import CommunityFileServiceConfig, \
     CommunityResource, CommunityResourceConfig, CommunityService, \
     CommunityServiceConfig
-from invenio_communities.invitations import InvitationService, \
-    InvitationServiceConfig, InvitationResource, InvitationResourceConfig
-from invenio_communities.members import MemberService, \
-    MemberServiceConfig, MemberResource, MemberResourceConfig
+from invenio_communities.members import MemberResource, MemberResourceConfig, \
+    MemberService, MemberServiceConfig
 
 from . import config
+from .roles import RoleRegistry
 from .utils import load_community_needs
 
 
@@ -51,13 +50,15 @@ class InvenioCommunities(object):
             if k.startswith('COMMUNITIES_'):
                 app.config.setdefault(k, getattr(config, k))
 
+        self.roles_registry = RoleRegistry(app.config['COMMUNITIES_ROLES'])
+
+
     def init_services(self, app):
         """Initialize communities service."""
         # Services
         self.service = CommunityService(
             CommunityServiceConfig,
             files_service=FileService(CommunityFileServiceConfig),
-            invitations_service=InvitationService(InvitationServiceConfig()),
             members_service=MemberService(MemberServiceConfig())
         )
 
@@ -68,12 +69,6 @@ class InvenioCommunities(object):
             CommunityResourceConfig,
             self.service,
         )
-
-        self.invitations_resource = InvitationResource(
-            InvitationResourceConfig,
-            self.service.invitations,
-        )
-
         self.members_resource = MemberResource(
             MemberResourceConfig,
             self.service.members,
@@ -83,4 +78,4 @@ class InvenioCommunities(object):
         """Initialize hooks."""
         @identity_loaded.connect_via(app)
         def on_identity_loaded(_, identity):
-            load_community_needs(identity, self.service.members)
+            load_community_needs(identity)

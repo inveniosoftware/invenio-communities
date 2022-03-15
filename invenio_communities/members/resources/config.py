@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022 CERN.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -11,8 +12,7 @@ import marshmallow as ma
 from flask_resources import HTTPJSONException, create_error_handler
 from invenio_records_resources.resources import RecordResourceConfig
 
-from ...errors import CommunityHidden
-from ..errors import LastOwnerError, OwnerSelfRoleChangeError
+from ..errors import AlreadyMemberError, InvalidMemberError
 
 
 class MemberResourceConfig(RecordResourceConfig):
@@ -22,8 +22,9 @@ class MemberResourceConfig(RecordResourceConfig):
     url_prefix = ""
 
     routes = {
-        "item": "/communities/<pid_value>/members/<member_id>",
-        "list": "/communities/<pid_value>/members"
+        "members": "/communities/<pid_value>/members",
+        "publicmembers": "/communities/<pid_value>/members/public",
+        "invitations": "/communities/<pid_value>/invitations",
     }
     request_view_args = {
         "pid_value": ma.fields.Str(),
@@ -31,24 +32,16 @@ class MemberResourceConfig(RecordResourceConfig):
     }
 
     error_handlers = {
-        CommunityHidden: create_error_handler(
-            HTTPJSONException(
-                code=404,
-                description="Not found.",
-            )
-        ),
-        # Passing this error as a generic permission error for now
-        OwnerSelfRoleChangeError: create_error_handler(
-            HTTPJSONException(
-                code=403,
-                description="Permission denied.",
-            )
-        ),
-        LastOwnerError: create_error_handler(
+        InvalidMemberError: create_error_handler(
             HTTPJSONException(
                 code=400,
-                description="Invalid action.",
+                description="Invalid member specified.",
             )
         ),
-
+        AlreadyMemberError: create_error_handler(
+            HTTPJSONException(
+                code=400,
+                description="A member was already added or invited.",
+            )
+        ),
     }

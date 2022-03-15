@@ -18,8 +18,10 @@ from itertools import chain
 
 from elasticsearch_dsl.query import Q
 from flask_principal import UserNeed
-from invenio_access.permissions import any_user
+from invenio_access.permissions import any_user, system_process
 from invenio_records_permissions.generators import Generator
+
+from .proxies import current_roles
 
 _Need = namedtuple('Need', ['method', 'value', 'role'])
 
@@ -139,23 +141,125 @@ class IfPolicyClosed(IfRestrictedBase):
         )
 
 
-class CommunityOwners(Generator):
-    """Allows community owners."""
+#
+# Community membership generators
+#
+class CommunityRoles(Generator):
+    """Base class for community roles generators."""
+
+    def roles(self, **kwargs):
+        """R."""
+        raise NotImplementedError
+
+    def communities(self, identity):
+        raise NotImplementedError
 
     def needs(self, record=None, **kwargs):
         """Enabling Needs."""
-        if record:
-             return [
-                UserNeed(owner.owner_id)
-                for owner in record.access.owned_by
+        roles = self.roles(**kwargs)
+        if roles:
+            return [
+                CommunityRoleNeed(str(record.id), role)
+                for role in roles
             ]
-        else:
-            return [any_user]
+        return []
 
     def query_filter(self, identity=None, **kwargs):
         """Filters for current identity as owner."""
-        users = [n.value for n in identity.provides if n.method == "id"]
+        # Gives access to all community members.
         return Q(
             "terms",
-            **{"access.owned_by.user": users}
-            )
+            **{"id": self.communities(identity)}
+        )
+
+
+class CommunityMembers(CommunityRoles):
+    """Roles representing all members of a community."""
+
+    def roles(self, **kwargs):
+        return [r.name for r in current_roles]
+
+    def communities(self, identity):
+        return [
+            n.value for n in identity.provides if n.method == 'community']
+
+
+class CommunityManagers(CommunityRoles):
+    """Roles representing all managers of a community."""
+
+    def roles(self, role=None, member=None, **kwargs):
+        allowed_roles = []
+        if role is not None and member is not None:
+            # Update from an old role to a new role. The must restrictive set
+            # applies.
+            new_allowed_roles = set(current_roles.manager_roles(role))
+            old_allowed_roles = set(current_roles.manager_roles(member.role))
+            allowed_roles = new_allowed_roles & old_allowed_roles
+        elif role is not None:
+            # Adding/inviting a new role
+            allowed_roles = current_roles.manager_roles(role)
+        elif member is not None:
+            # Deleting or updating a member with a given role (without changing
+            # role)
+            allowed_roles = current_roles.manager_roles(member.role)
+        else:
+            raise NotImplementedError(
+                "You must provide a role and/or a member.")
+
+        return [r.name for r in allowed_roles]
+
+
+class CommunityOwners(CommunityRoles):
+    """Roles representing the owners of a community."""
+
+    def roles(self, **kwargs):
+        return [current_roles.owner_role.name]
+
+    def communities(self, identity):
+        return [
+            n.value for n in identity.provides
+            if n.method == 'community'
+            and n.role == current_roles.owner_role.name
+        ]
+
+
+class CommunitySelfMember(Generator):
+    """Allows a member themselves (only for users)."""
+
+    def needs(self, member=None, **kwargs):
+        """Enabling needs."""
+        if member.user_id is not None:
+            return [UserNeed(member.user_id)]
+        return []
+
+    def query_filter(self, identity=None, **kwargs):
+        """Not implemented."""
+        raise NotImplementedError("Search permission not supported.")
+
+#
+# Business-level rules.
+#
+class AllowedMemberTypes(Generator):
+    """Generator to restrict to set of allowed member types.
+
+    We are restricting member types that can be added/invited via permissions
+    so that it's easily overridable for an instance to change behavior.
+
+    A system process is allowed to do anything.
+    """
+
+    def __init__(self, *allowed_member_types):
+        """Allowed member types."""
+        self.allowed_member_types = allowed_member_types
+
+    def needs(self, **kwargs):
+        """Enabling needs."""
+        return [system_process]
+
+    def excludes(self, member_types=None, **kwargs):
+        """Preventing needs."""
+        if member_types:
+            for m in member_types:
+                if m not in self.allowed_member_types:
+                    return [any_user]
+        return []

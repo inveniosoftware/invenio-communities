@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -24,13 +24,13 @@ def users(app):
 
 
 @pytest.fixture
-def authenticated_user(app):
+def authenticated_user(app, db):
     """Authenticated user."""
     yield create_test_user('authed@inveniosoftware.org')
 
 
 @pytest.fixture
-def community_owner(app):
+def community_owner(app, db):
     """Record owner user."""
     yield create_test_user('community-owner@inveniosoftware.org')
 
