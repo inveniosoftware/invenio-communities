@@ -1,20 +1,30 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Pytest configuration."""
 
-import pytest
+from copy import deepcopy
 
+import pytest
+from flask_principal import AnonymousIdentity
+from invenio_access.permissions import any_user as any_user_need
+from invenio_accounts.models import Role
 from invenio_app.factory import create_api
+from invenio_requests.proxies import current_requests_service
+
+from invenio_communities.proxies import current_communities
 
 pytest_plugins = ("celery.contrib.pytest", )
 
 
+#
+# Application
+#
 @pytest.fixture(scope='module')
 def app_config(app_config):
     """Override pytest-invenio app_config fixture."""
@@ -41,3 +51,111 @@ def headers():
         'content-type': 'application/json',
         'accept': 'application/json',
     }
+
+
+#
+# Services
+#
+@pytest.fixture(scope="module")
+def community_service(app):
+    """Community service."""
+    return current_communities.service
+
+
+@pytest.fixture(scope="module")
+def member_service(community_service):
+    """Members subservice."""
+    return community_service.members
+
+
+@pytest.fixture(scope="module")
+def requests_service(app):
+    """Requests service."""
+    return current_requests_service
+
+
+#
+# Users and groups
+#
+@pytest.fixture(scope="module")
+def anon_identity():
+    """A new user."""
+    identity = AnonymousIdentity()
+    identity.provides.add(any_user_need)
+    return identity
+
+
+@pytest.fixture(scope="module")
+def users(UserFixture, app, database):
+    users = {}
+    for r in ['owner', 'manager', 'curator', 'reader']:
+        u = UserFixture(
+            email=f'{r}@{r}.org',
+            password=r,
+        )
+        u.create(app, database)
+        users[r] = u
+    return users
+
+
+@pytest.fixture(scope="module")
+def group(database):
+    r = Role(name='it-dep')
+    database.session.add(r)
+    database.session.commit()
+    return r
+
+
+@pytest.fixture(scope="module")
+def owner(users):
+    """Community owner user."""
+    return users['owner']
+
+
+@pytest.fixture(scope="module")
+def any_user(UserFixture, app, database):
+    """A user without privileges or memberships."""
+    u = UserFixture(
+        email=f'anyuser@anyuser.org',
+        password='anyuser',
+    )
+    u.create(app, database)
+    u.identity # compute identity
+    return u
+
+
+#
+# Communities
+#
+@pytest.fixture(scope="module")
+def minimal_community():
+    """Minimal community metadata."""
+    return  {
+        "access": {
+            "visibility": "public",
+            "record_policy": "open",
+        },
+        "id": "public",
+        "metadata": {
+            "title": "My Community",
+        }
+    }
+
+
+@pytest.fixture(scope="module")
+def community(community_service, owner, minimal_community, location):
+    """A community."""
+    c =  community_service.create(owner.identity, minimal_community)
+    owner.refresh()
+    return c
+
+
+@pytest.fixture(scope="module")
+def restricted_community(community_service, owner, minimal_community, location):
+    """A restricted community."""
+    data = deepcopy(minimal_community)
+    data['access']['visibility'] = 'restricted'
+    data['id'] = 'restricted'
+    c =  community_service.create(owner.identity, data)
+    owner.refresh()
+    return c

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2022 Northwestern University.
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -83,7 +83,7 @@ def _assert_error_messages_response(expected, response):
 
 def test_simple_flow(
     app, client_with_login, location, minimal_community, headers,
-    es_clear
+    es_clear, db
 ):
     """Test a simple REST API flow."""
     client = client_with_login
@@ -109,7 +109,7 @@ def test_simple_flow(
 
     Community.index.refresh()
 
-    # Search for created commmunity
+    # Search for created community
     res = client.get(
         f'/communities', query_string={'q': f'id:{id_}'}, headers=headers)
     assert res.status_code == 200
@@ -151,7 +151,7 @@ def test_simple_flow(
 
 def test_post_schema_validation(
     app, client_with_login, location, minimal_community, headers,
-    es_clear
+    es_clear, db
 ):
     """Test the validity of community json schema"""
     client = client_with_login
@@ -189,7 +189,7 @@ def test_post_schema_validation(
 
 
 def test_post_metadata_schema_validation(
-    app, client_with_login, location, minimal_community, headers
+    app, client_with_login, location, minimal_community, headers, db
 ):
     """Test the validity of community metadata schema"""
     client = client_with_login

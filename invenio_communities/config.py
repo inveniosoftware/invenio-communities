@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -55,12 +55,12 @@ COMMUNITIES_ROLES = {
     'manager': dict(
         title=_('Manager'),
         description=_('Can manage members, curate records and view restricted records'),
-        can_manage_members=['manager', 'curator', 'reader'],
+        can_manage_roles=['manager', 'curator', 'reader'],
     ),
     'owner': dict(
         title=_('Owner'),
         description=_('Full administrative access to the entire community.'),
-        can_manage_members=['owner', 'manager', 'curator', 'reader'],
+        can_manage_roles=['owner', 'manager', 'curator', 'reader'],
         is_owner=True
     ),
 }
