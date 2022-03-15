@@ -1,44 +1,20 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Utilities."""
 
-from elasticsearch_dsl import Q
 from invenio_cache import current_cache
-from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .generators import CommunityRoleNeed
+from .members.records.api import Member
 
 
-def search_communities(service, identity):
-    """Search for communities owned by the given identity.
-
-    We cannot use high-level service functions here because the given
-    identity may not be fully initialized yet, and thus fail permission
-    checks.
-    """
-    # TODO this needs to be revisited once memberships are in!
-    search_result = service._search(
-        'search',
-        identity,
-        params={},
-        es_preference=None,
-        extra_filter=Q(
-            "term",
-            **{"access.owned_by.user": identity.id}
-        ),
-        permission_action='read',
-    ).execute()
-
-    return search_result
-
-
-def load_community_needs(identity, service):
+def load_community_needs(identity):
     """Add community-related needs to the freshly loaded identity.
 
     Note that this function is intended to be called as handler for the
@@ -66,21 +42,17 @@ def load_community_needs(identity, service):
     # entities and combine it into a single list.
 
     # Currently, only users are supported (no roles or system roles)
-    cache_key = identity_cache_key(identity)
-    communities = current_cache.get(cache_key)
-    if communities is None:
-        try:
-            communities = []
-            for c in search_communities(service, identity):
-                communities.append(str(c.uuid))
-            current_cache.set(cache_key, communities, timeout=24*3600)
-        except PermissionDeniedError:
-            communities = []
+    # cache_key = identity_cache_key(identity)
+    # community_roles = current_cache.get(cache_key)
+    # if community_roles is None:
+    #         community_roles = Member.get_memberships(identity)
+    #         current_cache.set(cache_key, community_roles, timeout=24*3600)
 
+    # TODO: Fix caching issues
 
     # Add community needs to identity
-    for c_id in communities:
-        identity.provides.add(CommunityRoleNeed(c_id, 'owner'))
+    for c_id, role in Member.get_memberships(identity):
+        identity.provides.add(CommunityRoleNeed(c_id, role))
 
 
 def on_membership_change(identity=None):

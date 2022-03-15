@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -15,8 +15,9 @@ from invenio_records_resources.services.records.components import \
     ServiceComponent
 from marshmallow.exceptions import ValidationError
 
-from ...permissions import on_membership_change
-from ...proxies import current_communities
+from ...proxies import current_communities, current_roles
+from ...utils import on_membership_change
+
 
 class PIDComponent(ServiceComponent):
     """Service component for Community PIDs."""
@@ -138,19 +139,9 @@ class CommunityAccessComponent(AccessComponent):
             record['access'].update(data.get("access", {}))
             record.access.refresh_from_dict(record.get("access"))
 
-    def _init_owners(self, identity, record, **kwargs):
-        """If the record has no owners yet, add the current user."""
-        # if the given identity is that of a user, we add the
-        # corresponding user to the owners (record.access.owned_by)
-        is_sys_id = system_process in identity.provides
-        if not record.access.owned_by and not is_sys_id:
-            record.access.owned_by.add({"user": identity.id})
-            on_membership_change(identity=identity)
-
     def create(self, identity, data=None, record=None, **kwargs):
         """Add basic ownership fields to the record."""
         self._populate_access_and_validate(identity, data, record, **kwargs)
-        self._init_owners(identity, record, **kwargs)
 
     def update(self, identity, data=None, record=None, **kwargs):
         """Update handler."""
@@ -160,24 +151,21 @@ class CommunityAccessComponent(AccessComponent):
 class OwnershipComponent(ServiceComponent):
     """Service component for owner membership integration."""
 
-    def create(self, identity, data=None, record=None, uow=None, **kwargs):
+    def create(self, identity, data=None, record=None, **kwargs):
         """Make an owner member from the identity."""
-        # If the identity is the system, we don't create an entry
-        # (it doesn't have an integer id)
         if system_process in identity.provides:
             return
 
-        # invenio-records-resources places the uow in the instance directly
-        # but will eventually pass it to the method
-        uow = self.uow
-        current_communities.service.members.create(
-            system_identity,  # we use the system identity to bootstrap
-            data={
-                "community": str(record.id),
-                "user": identity.id,
-                "role": "owner"
-            },
-            uow=uow
+        member = {
+            "type": "user",
+            "id": str(identity.id),
+        }
+        self.service.members.add(
+            system_identity,
+            record.id,
+            {"members": [member], "role": current_roles.owner_role.name},
+            uow=self.uow,
         )
+
         # Invalidate the membership cache
         on_membership_change(identity=identity)

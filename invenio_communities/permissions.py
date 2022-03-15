@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2021 Graz University of Technology.
 # Copyright (C) 2021 TU Wien.
 # Copyright (C) 2022 Northwestern University.
@@ -12,13 +12,15 @@
 """Community permissions."""
 
 from invenio_records_permissions.generators import AnyUser, \
-    AuthenticatedUser, SystemProcess
+    AuthenticatedUser, Disable, SystemProcess
 from invenio_records_permissions.policies import BasePermissionPolicy
 
-from .generators import CommunityOwners, IfPolicyClosed, IfRestricted
+from .generators import AllowedMemberTypes, CommunityManagers, \
+    CommunityMembers, CommunityOwners, CommunitySelfMember, IfPolicyClosed, \
+    IfRestricted
+
 
 # Permission Policy
-
 class CommunityPermissionPolicy(BasePermissionPolicy):
     """Permissions for Community CRUD operations."""
 
@@ -28,7 +30,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_read = [
         IfRestricted(
             'visibility',
-            then_=[CommunityOwners()],
+            then_=[CommunityMembers()],
             else_=[AnyUser()]),
         ]
 
@@ -45,40 +47,55 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_submit_record = [
         IfPolicyClosed(
             'record_policy',
-            then_=[CommunityOwners(), SystemProcess()],
+            then_=[CommunityMembers(), SystemProcess()],
             else_=[IfRestricted(
                 'visibility',
-                then_=[CommunityOwners()],
+                then_=[CommunityMembers()],
                 else_=[AuthenticatedUser()]),
             ],
         ),
     ]
 
-    # Placed here because passed record is a community
+    can_members_add = [
+        CommunityManagers(),
+        AllowedMemberTypes('group'),
+        SystemProcess(),
+    ]
 
-    # can_create_member = [CommunityOwners(), SystemProcess()]
+    can_members_invite = [
+        CommunityManagers(),
+        AllowedMemberTypes('user', 'email'),
+        SystemProcess(),
+    ]
 
-    # can_search_members = [
-    #     SystemProcess(),
-    #     IfRestricted(
-    #         'visibility',
-    #         then_=[CommunityOwners()],
-    #         else_=[AnyUser()]
-    #     ),
-    # ]
+    can_members_search = [
+        CommunityMembers(),
+        SystemProcess(),
+    ]
 
-    # Members (passed record is a member)
+    can_members_search_public = [
+        IfRestricted(
+            'visibility',
+            then_=[CommunityMembers()],
+            else_=[AnyUser()]
+        ),
+        SystemProcess(),
+    ]
 
-    # This is a new performance enhancing permission to be used when reading
-    # a record from the search results.
-    # Because can_search_members has already been applied, any user who got
-    # through can read the record.
-    # can_read_search_members = [AnyUser(), SystemProcess()]
-    # can_read_member = [
-    #     IfCommunityRestricted(
-    #         then_=[AnyMember()],
-    #         else_=[AnyUser()]
-    #     ),
-    # ]
-    # can_update_member = [SelfMember(), OwnerMember(), ManagerMember()]
-    # can_delete_member = [SelfMember(), OwnerMember(), ManagerMember()]
+    # Ability to use membership update api
+    can_members_bulk_update = [
+        CommunityMembers(),
+        SystemProcess(),
+    ]
+
+    can_members_bulk_delete = can_members_bulk_update
+
+    # Ability to update a single membership
+    can_members_update = [
+        CommunityManagers(),
+        CommunitySelfMember(),
+        SystemProcess(),
+    ]
+
+    # Ability to delete a single membership
+    can_members_delete = can_members_update

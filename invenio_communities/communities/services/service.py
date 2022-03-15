@@ -55,10 +55,6 @@ class CommunityService(RecordService):
             identity,
             params,
             es_preference,
-            extra_filter=Q(
-                "term",
-                **{"access.owned_by.user": identity.id}
-            ),
             permission_action='read',
             **kwargs).execute()
 

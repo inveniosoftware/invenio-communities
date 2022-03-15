@@ -10,7 +10,3 @@
 
 class CommunityError(Exception):
     """Base exception for community errors."""
-
-
-class CommunityHidden(CommunityError):
-    """Exception raised to mask community presence over permision denial."""

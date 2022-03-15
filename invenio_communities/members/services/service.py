@@ -1,36 +1,37 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022 CERN.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-"""Members Service."""
+"""Members service."""
 
 from elasticsearch_dsl.query import Q
+from flask_babelex import gettext as _
+from invenio_access.permissions import system_identity
+from invenio_accounts.models import Role
+from invenio_db import db
 from invenio_records_resources.services import LinksTemplate
-from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_records_resources.services.records import RecordService, \
     ServiceSchemaWrapper
 from invenio_records_resources.services.uow import RecordCommitOp, \
     RecordDeleteOp, unit_of_work
+from invenio_requests import current_requests_service
+from marshmallow import ValidationError
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
-from ...errors import CommunityHidden
-from ...permissions import create_community_role_need
-from ..errors import LastOwnerError, OwnerSelfRoleChangeError, \
-    ManagerSelfRoleChangeError
-from .schemas import MemberCreationSchema, MemberBulkDeleteSchema, \
-    MemberBulkUpdateSchema, MemberUpdateSchema
-
-
-def member_is_current_user(identity, member):
-    """Check if identity is same as member's user id."""
-    return identity.id == member.user_id
+from ...proxies import current_roles
+from ..errors import AlreadyMemberError, InvalidMemberError
+from .request import CommunityInvitation
+from .schemas import AddBulkSchema, DeleteBulkSchema, InviteBulkSchema, \
+    MemberDumpSchema, PublicDumpSchema, UpdateBulkSchema
 
 
 class MemberService(RecordService):
-    """Member Service."""
+    """Community members service."""
 
     @property
     def community_cls(self):
@@ -45,272 +46,268 @@ class MemberService(RecordService):
         )
 
     @property
-    def creation_schema(self):
+    def member_dump_schema(self):
         """Schema for creation."""
-        return ServiceSchemaWrapper(self, schema=MemberCreationSchema)
+        return ServiceSchemaWrapper(self, schema=MemberDumpSchema)
 
     @property
-    def bulk_update_schema(self):
-        """Schema for bulk update."""
-        return ServiceSchemaWrapper(self, schema=MemberBulkUpdateSchema)
+    def public_dump_schema(self):
+        """Schema for creation."""
+        return ServiceSchemaWrapper(self, schema=PublicDumpSchema)
 
     @property
-    def bulk_delete_schema(self):
-        """Schema for bulk delete."""
-        return ServiceSchemaWrapper(self, schema=MemberBulkDeleteSchema)
+    def add_schema(self):
+        """Schema for creation."""
+        return ServiceSchemaWrapper(self, schema=AddBulkSchema)
+
+    @property
+    def invite_schema(self):
+        """Schema for creation."""
+        return ServiceSchemaWrapper(self, schema=InviteBulkSchema)
 
     @property
     def update_schema(self):
-        """Schema for update."""
-        return ServiceSchemaWrapper(self, schema=MemberUpdateSchema)
+        """Schema for bulk update."""
+        return ServiceSchemaWrapper(self, schema=UpdateBulkSchema)
 
+    @property
+    def delete_schema(self):
+        """Schema for bulk delete."""
+        return ServiceSchemaWrapper(self, schema=DeleteBulkSchema)
+
+    #
+    # Add and invite
+    #
     @unit_of_work()
-    def create(self, identity, data, uow=None):
-        """Create member."""
-        community_id = data.get("community")
-        community_record = self.community_cls.get_record(community_id)
+    def add(self, identity, community_id, data, uow=None):
+        """Add group members.
 
-        self.require_permission(
-            identity, "create_member", record=community_record
+        The default permission policy only allow groups to be added. Users must
+        be invited.
+        """
+        return self._create(
+            identity,
+            community_id,
+            data,
+            self.add_schema,
+            "members_add",
+            self._add_factory,
+            uow
         )
 
+    @unit_of_work()
+    def invite(self, identity, community_id, data, uow=None):
+        """Invite group members.
+
+        Only users and email member types can be invited, and a member can only
+        have one invitation per community
+
+        Email member type is not yet supported.
+        """
+        return self._create(
+            identity,
+            community_id,
+            data,
+            self.invite_schema,
+            "members_invite",
+            self._invite_factory,
+            uow
+        )
+
+    def _create(self, identity, community_id, data, schema, action, factory,
+                uow):
+        """Internal method used for both adding and inviting users/groups.
+
+        The methods are shared because adding and inviting users/groups share
+        the most of the same permission and integrity checks.
+        """
+        community = self.community_cls.get_record(community_id)
+
         # Validate data (if there are errors, .load() raises)
-        data, errors = self.creation_schema.load(
+        data, errors = schema.load(
             data,
             context={"identity": identity},
         )
+        role = data['role']
+        members = data['members']
+        member_types = {m['type'] for m in data['members']}
+        message = data.get('message')
+        # Users are expected to explicitly change their visibility themselves
+        # due to data privacy concerns.
+        # The system identity can set the visible property to support data
+        # migration use cases.
+        visible = data.get('visible', False)
+        if visible and identity != system_identity:
+            raise ValidationError("Visible must be false")
 
-        member_record = self.record_cls.create(
-            {},
-            community_id=data.get("community"),
-            user_id=data.get("user"),
-            role=data.get("role")
-        )
-
-        # Persist record (DB and index)
-        uow.register(RecordCommitOp(member_record, indexer=self.indexer))
-
-        return self.result_item(
-            self,
-            identity,
-            member_record,
-            links_tpl=self.links_item_tpl,
-        )
-
-    def read(self, identity, community_id, id_):
-        """Read member record.
-
-        :param community_id: community resource-layer (pid) id
-        :param id_: membership data-layer id
-        """
-        member_record = self.record_cls.get_record(id_)
-
-        self.require_permission(identity, "read_member", record=member_record)
-
-        # TODO? add a DB call to make sure the passed community_id is for
-        #       the community_uuid in membership record?
-
-        # Identity dependent injected field
-        member_record["is_current_user"] = member_is_current_user(
-            identity, member_record
-        )
-
-        # TODO Inject the "member" section
-        # member_record["member"] = self.inject_member()
-        # This might be done
-        # - in deeper layer via a systemfield (à-la relations) or
-        # - here via explicit call (and explicit call for search)
-
-        return self.result_item(
-            self,
-            identity,
-            member_record,
-            links_tpl=self.links_item_tpl(community_id),
-        )
-
-    @unit_of_work()
-    def bulk_update(self, identity, community_id, data, uow=None):
-        """Bulk update."""
-        community = self.community_cls.pid.resolve(community_id)
-
-        try:
-            self.require_permission(
-                identity, "bulk_update_members", record=community
-            )
-        except PermissionDeniedError:
-            raise CommunityHidden()
-
-        data, _ = self.bulk_update_schema.load(
-            data,
-            context=dict(
-                identity=identity,
-            )
-        )
-
-        patch = {
-            k: v for k, v in data.items()
-            if k in ["role", "visibility"] and data.get(k)
-        }
-        # Short-circuit if no role or visibility
-        if not patch:
-            return True
-
-        for member in data.get("members"):
-            self.update(
-                identity,
-                member["id"],
-                patch,
-                revision_id=member["revision_id"],
-                uow=uow
-            )
-
-        return True
-
-    @unit_of_work()
-    def update(self, identity, id_, data, revision_id=None, uow=None):
-        """Update a member's role/visibility."""
-        member_record = self.record_cls.get_record(id_)
-
-        self.check_revision_id(member_record, revision_id)
-
-        # Permissions
+        # Permission checks - validates that:
+        # - identity has permission to manage members
+        # - identity has permission to add/invite for a given role (e.g.
+        #   managers should not be able to invite owners because it would make
+        #   privilege escalation possible).
+        # - identity is allowed to create a specific member type (e.g. usually
+        #   we only allow adding groups, and inviting users/emails however in
+        #   a migration use case we may want to allow adding users directly).
         self.require_permission(
-            identity, "update_member", record=member_record
+            identity, action,
+            record=community,
+            role=role.name,
+            member_types=member_types
         )
 
-        data, _ = self.update_schema.load(
-            data,
-            context=dict(
-                identity=identity,
-                record=member_record
-            )
-        )
+        # Add/invite members via the factory function.
+        for m in members:
+            # TODO: Add support for inviting an email
+            if m['type'] == 'email':
+                raise ValidationError('Invalid member type: email')
+            factory(identity, community, role, visible, m, message, uow)
 
-        self._assert_can_change_role(identity, member_record)
+        return True
 
-        member_record.update(data)
+    def _add_factory(self, identity, community, role, visible, member, message,
+                     uow, active=True, request_id=None):
+        """Add a member to the community."""
+        # TODO: inefficient to do here, should be done in bulk instead.
+        if member['type'] == 'group':
+            try:
+                member['id'] = Role.query.filter_by(name=member['id']).one().id
+            except NoResultFound as e:
+                raise InvalidMemberError(member) from e
 
-        uow.register(RecordCommitOp(member_record, self.indexer))
-
-        return self.result_item(
-            self,
-            identity,
-            member_record,
-            links_tpl=self.links_item_tpl,
-        )
-
-    def _assert_can_change_role(self, identity, member_record):
-        """Raises if identity can't change role."""
-        # Owner/Manager trying to change their role
-        # TODO? account for group maybe (we do want person owner though...)
-        if identity.id == member_record.user_id:
-            if member_record.role == "owner":
-                raise OwnerSelfRoleChangeError()
-            if member_record.role == "manager":
-                raise ManagerSelfRoleChangeError()
-
-        # Manager trying to change owner
-        manager_need = create_community_role_need(
-            member_record.community_id, "manager"
-        )
-        if manager_need in identity.provides and member_record.role == "owner":
-            raise PermissionDeniedError()
-
-    @unit_of_work()
-    def bulk_delete(self, identity, community_id, data, uow=None):
-        """Delete member(s)."""
-        community = self.community_cls.pid.resolve(community_id)
-
+        member_arg = {member['type'] + '_id': member['id']}
         try:
-            self.require_permission(
-                identity, "bulk_delete_members", record=community
+            # Integrity checks happens here which will validate:
+            # - if a user/group is already a member
+            # - if a user is already invited
+            member = self.record_cls.create(
+                {},
+                community_id=community.id,
+                role=role.name,
+                active=active,
+                visible=visible,
+                request_id=request_id,
+                **member_arg
             )
-        except PermissionDeniedError:
-            raise CommunityHidden()
+        except IntegrityError as e:
+            raise AlreadyMemberError() from e
 
-        data, _ = self.bulk_delete_schema.load(
-            data,
-            context=dict(
-                identity=identity,
+        # TODO: Change this to bulk index all member records in one request
+        # instead of N single indexing requests.
+        uow.register(RecordCommitOp(member, indexer=self.indexer))
+
+    def _invite_factory(self, identity, community, role, visible, member,
+                        message, uow):
+        """Invite a member to the community."""
+        if member['type'] == 'group':
+            # Groups cannot be invited, because groups have no one who can
+            # accept an invitation.
+            raise InvalidMemberError(member)
+
+        # Add member entry
+        if member['type'] == 'user':
+            # Create request
+            # TODO: Fix me with a nicer role title.
+            title = _('Invitation to join "{community}" as {role}.').format(
+                community=community.metadata["title"],
+                role=role.title,
             )
-        )
-
-        for member in data.get("members"):
-            self.delete(
+            request_item = current_requests_service.create(
                 identity,
-                member["id"],
-                revision_id=member["revision_id"],
-                uow=uow
+                {'title': title},
+                CommunityInvitation,
+                {'user': member['id']},
+                creator=community,
+                # TODO: perhaps topic should be the actual membership record
+                # instead
+                topic=community,
+                uow=uow,
+                # TODO: set expire date (7 days - should be configurable)
+                # TODO: have a regular celery task for running the expire
+                # actions
+            )
+            # TODO: create request comment instead of description in case a
+            # message was provided.
+            if message:
+                pass
+            # Create an inactive member entry linked to the request.
+            self._add_factory(
+                identity,
+                community,
+                role,
+                visible,
+                member,
+                message,
+                uow,
+                active=False,
+                request_id=request_item.id
             )
 
-        return True
-
-    @unit_of_work()
-    def delete(self, identity, id_, revision_id=None, uow=None):
-        """Delete member."""
-        member_record = self.record_cls.get_record(id_)
-
-        self.check_revision_id(member_record, revision_id)
-
-        # Permissions
-        self.require_permission(
-            identity, "delete_member", record=member_record
+    def search(
+            self, identity, community_id, params=None, es_preference=None,
+            **kwargs
+        ):
+        # TODO: 1) users/groups must be indexed extra into members so search
+        # ranking works properly
+        return self._members_search(
+            identity,
+            community_id,
+            'members_search',
+            self.member_dump_schema,
+            self.config.search,
+            params=None,
+            es_preference=None,
+            **kwargs
         )
 
-        # Check if last owner
-        if self._deleting_last_owner(identity, member_record):
-            raise LastOwnerError()
-
-        # Run components
-        self.run_components(
-            'delete_member', identity, record=member_record, uow=uow
+    def search_public(
+            self, identity, community_id, params=None, es_preference=None,
+            **kwargs
+        ):
+        """Search public members matching the querystring."""
+        # The search for members is split two methods (public, members) to
+        # prevent leaking of information. E.g. the public serialization
+        # must now have all fields present.
+        # TODO: limit fields on which the query works on to avoid leaking
+        # information
+        return self._members_search(
+            identity,
+            community_id,
+            'members_search_public',
+            self.public_dump_schema,
+            self.config.search_public,
+            extra_filter=Q('term', **{'visible': True}),
+            params=None,
+            es_preference=None,
+            **kwargs
         )
 
-        uow.register(
-            RecordDeleteOp(member_record, self.indexer, index_refresh=True)
-        )
+    def _members_search(
+            self, identity, community_id, permission_action, schema,
+            search_opts, extra_filter=None, params=None, es_preference=None,
+            **kwargs
+        ):
+        """Members search."""
+        community = self.community_cls.get_record(community_id)
+        self.require_permission(identity, permission_action, record=community)
 
-        return True
+        # Apply extra filters
+        filter = Q('term', **{'community_id': community.id})
+        if extra_filter:
+            filter &= extra_filter
 
-    def _deleting_last_owner(self, identity, member_record):
-        """Check if member_record is last owner of its community."""
-        if member_record.role != "owner":
-            return False
+        # Prepare and execute the search
+        params = params or {}
 
         search = self._search(
             'search_members',
             identity,
-            params={},
-            es_preference=None,
-            permission_action='read_search_members',
-            extra_filter=(
-                Q('term', community_id=str(member_record.community_id)) &
-                Q('term', role="owner")
-            )
+            params,
+            es_preference,
+            search_opts=search_opts,
+            permission_action=None,
+            extra_filter=filter,
+            **kwargs
         )
-
-        owners = [h for h in search.execute()]
-
-        return len(owners) == 1
-
-    def search(
-            self, identity, community_id, params=None, es_preference=None,
-            **kwargs):
-        """Search for records matching the querystring."""
-        # community id is the uuid for now
-        community_record = self.community_cls.get_record(community_id)
-
-        self.require_permission(
-            identity, 'search_members', record=community_record
-        )
-
-        # Prepare and execute the search
-        params = params or {}
-        # Using permission_action='read_search_members' leverages the already
-        # done search_members check.
-        search = self._search(
-            'search_members', identity, params, es_preference,
-            permission_action='read_search_members', **kwargs)
         search_result = search.execute()
 
         return self.result_list(
@@ -321,21 +318,169 @@ class MemberService(RecordService):
             links_tpl=LinksTemplate(self.config.links_search, context={
                 "args": params
             }),
-            links_item_tpl=self.links_item_tpl,
+            links_item_tpl=self.links_item_tpl(community.id),
+            schema=schema,
         )
 
-    def get_member(self, community_uuid, user_id):
-        """Get member associated with community and user ids."""
-        return self.record_cls.model_cls.query.filter_by(
-            community_id=community_uuid,
-            user_id=user_id,
-        ).one()
+    @unit_of_work()
+    def update(self, identity, community_id, data, uow=None):
+        """Bulk update."""
+        community = self.community_cls.get_record(community_id)
 
-    def is_member(self, community_uuid, user_id):
-        """Check if member exists based on community and user ids."""
-        try:
-            self.get_member(community_uuid, user_id)
-        except NoResultFound:
-            return False
+        # Permission check - validates that:
+        # - identity has permission to change any member at all (incl self)
+        self.require_permission(
+            identity, "members_bulk_update",
+            record=community,
+        )
+
+        # Validate data (if there are errors, .load() raises)
+        data, errors = self.update_schema.load(
+            data,
+            context={"identity": identity},
+        )
+
+        # Schema validates that role and/or visibility are defined.
+        members = self.record_cls.get_members(
+            community.id, members=data['members'])
+        if len(members) != len(data['members']):
+            raise InvalidMemberError()
+        role = data.get('role')
+        visible = data.get('visible')
+
+        # Perform updates (and check permissions)
+        for m in members:
+            self._update(identity, community, m, role, visible, uow)
+
+        # Make sure we're not left owner-less if a role was changed.
+        if role is not None:
+            if not self.record_cls.has_members(
+                    community_id, role=current_roles.owner_role.name):
+                raise ValidationError(
+                    _("A community must have at least one owner.")
+                )
 
         return True
+
+    def _update(self, identity, community, member, role, visible, uow):
+        """Update a member's role/visibility."""
+        # DO NOT USE DIRECTLY - always use update() which will correctly check
+        # if we're left without an owner!
+        self.require_permission(
+            identity,
+            "members_update",
+            record=community,
+            member=member,
+            role=role.name if role is not None else None,
+        )
+        is_self = (
+            identity.id is not None and
+            str(member.user_id) == str(identity.id)
+        )
+
+        # Pre-conditions:
+        # You cannot change your own role (owners, managers, members = all)
+        # For owners/managers, this prevents them accidentally loosing access.
+        # They will have to ask another owner/manager to change their role.
+        # For curators/readers, they should not be be allowed to change their
+        # own role. Having a business rule avoid making the permissions overly
+        # complex.
+        if role is not None and is_self:
+            raise ValidationError(_("You cannot change your own role."))
+
+        # Owners/managers can change visibility to false for users, and
+        # true/false for groups. Users themselves can change their own
+        # visibility. System identity can can always change for all.
+        if visible is not None and member.user_id is not None:
+            if visible and not (is_self or system_identity == identity):
+                raise ValidationError(_(
+                    "You can only set public visibility on your own "
+                    "membership."))
+
+        # Update membership
+        if role is not None:
+            member.role = role.name
+        if visible is not None:
+            member.visible = visible
+
+        uow.register(RecordCommitOp(member, self.indexer))
+
+        return True
+
+
+    @unit_of_work()
+    def delete(self, identity, community_id, data, uow=None):
+        """Bulk delete."""
+        community = self.community_cls.get_record(community_id)
+
+        # Permission check - validates that:
+        # - identity has permission to delete any member at all (incl self)
+        self.require_permission(
+            identity, "members_bulk_delete",
+            record=community,
+        )
+
+        # Validate data (if there are errors, .load() raises)
+        data, errors = self.delete_schema.load(
+            data,
+            context={"identity": identity},
+        )
+        members = self.record_cls.get_members(
+            community.id, members=data['members'])
+        if len(members) != len(data['members']):
+            raise InvalidMemberError()
+
+        # Perform deletes (and check permissions)
+        for m in members:
+            self.require_permission(
+                identity,
+                "members_delete",
+                record=community,
+                member=m,
+            )
+            uow.register(RecordDeleteOp(m, self.indexer, force=True))
+
+        # Make sure we're not left owner-less
+        if not self.record_cls.has_members(
+                community_id, role=current_roles.owner_role.name):
+            raise ValidationError(
+                _("A community must have at least one owner.")
+            )
+
+        return True
+
+    @unit_of_work()
+    def accept_invite(self, identity, request_id, uow=None):
+        """Accept an invitation."""
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        member.active = True
+        # TODO: recompute permissions for member.
+        uow.register(RecordCommitOp(member, indexer=self.indexer))
+
+    @unit_of_work()
+    def decline_invite(self, identity, request_id, uow=None):
+        """Decline an invitation."""
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+
+    def read_many(self, *args, **kwargs):
+        """Not implemented."""
+        raise NotImplementedError("Use search() or search_public()")
+
+    def read_all(self, *args, **kwargs):
+        """Not implemented."""
+        raise NotImplementedError("Use search() or search_public()")
+
+    def read(self, *args, **kwargs):
+        """Not implemented."""
+        raise NotImplementedError("Use search() or search_public()")
+
+    def create(self, *args, **kwargs):
+        """Not implemented."""
+        raise NotImplementedError("Use add() or invite()")
