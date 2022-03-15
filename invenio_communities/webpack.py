@@ -41,7 +41,7 @@ communities = WebpackThemeBundle(
                 'invenio-communities-search':
                     './js/invenio_communities/search.js',
                 'invenio-communities-members':
-                    './js/invenio_communities/members/index.js',
+                    './js/invenio_communities/members/members/index.js',
                 'invenio-communities-invitations':
                     './js/invenio_communities/members/invitations.js'
             },
