@@ -10,18 +10,78 @@
 {% extends "invenio_communities/details/members/base.html" %}
 
 {%- block javascript %}
-{{ super() }}
-{{ webpack['invenio-communities-invitations.js'] }}
+  {{ super() }}
+  {{ webpack['invenio-communities-invitations.js'] }}
 {%- endblock javascript %}
 
 {% set active_menu_item = 'invitations' %}
 
 {%- block settings_body %}
-<div class="thirteen wide column">
-  <div
-    id="app"
-    data-community='{{ community | tojson}}'>
+
+  <div class="thirteen wide column">
+    <div data-invenio-search-config='{
+    "appId": "invitations-search",
+    "initialQueryState": {
+        "hiddenParams": null,
+        "size": 10,
+        "page": 1,
+        "sortBy": "bestmatch"
+    },
+    "layoutOptions": {
+        "gridView": false,
+        "listView": true
+    },
+    "paginationOptions": {
+        "defaultValue": 10,
+        "resultsPerPage": [
+            {
+                "text": "10",
+                "value": 10
+            },
+            {
+                "text": "20",
+                "value": 20
+            },
+            {
+                "text": "50",
+                "value": 50
+            }
+        ]
+    },
+    "searchApi": {
+        "axios": {
+            "headers": {
+                "Accept": "application/json"
+            },
+            "url" : "/api/communities",
+{#            "url": "/api/communities/{{'community_id'}}/invitations",#}
+            "withCredentials": true
+        }
+    },
+    "sortOrderDisabled": true,
+    "defaultSortingOnEmptyQueryString": {
+        "sortBy": "newest"
+    },
+    "sortOptions": [
+        {
+            "sortBy": "bestmatch",
+            "text": "{{ _("Best match") }}"
+        },
+        {
+            "sortBy": "newest",
+            "text": "{{ _("Newest") }}"
+        },
+        {
+            "sortBy": "oldest",
+            "text": "{{ _("Oldest") }}"
+        },
+        {
+            "sortBy": "version",
+            "text": "{{ _("Version") }}"
+        }
+    ]}'
+    >
+    </div>
   </div>
-  TODO
-</div>
+
 {%- endblock settings_body %}

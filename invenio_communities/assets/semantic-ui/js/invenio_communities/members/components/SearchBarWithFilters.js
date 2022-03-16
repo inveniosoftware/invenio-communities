@@ -8,7 +8,6 @@
 
 import React, { Component } from "react";
 import { Grid, Label } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { SearchBar, withState } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
