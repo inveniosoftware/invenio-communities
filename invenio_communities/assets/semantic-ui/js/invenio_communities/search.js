@@ -19,8 +19,8 @@ import {
   Item,
   Button,
   Segment,
+  Accordion
 } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   SearchAppFacets,
@@ -37,14 +37,6 @@ import {
 } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 
-const facetsValues = {
-  type: {
-    organization: "Organization",
-    event: "Event",
-    topic: "Topic",
-    project: "Project",
-  },
-};
 
 function ResultsGridItemTemplate({ result, index }) {
   return (
@@ -71,6 +63,8 @@ function ResultsItemTemplate({ result, index }) {
           compact
           size="small"
           floated="right"
+          icon
+          labelPosition="left"
           href={`/communities/${result.id}`}
         >
           <Icon name="eye" />
@@ -214,7 +208,7 @@ const CommunitiesFacets = ({ aggs, currentResultsState }) => {
     <>
       {aggs.map((agg) => {
         return (
-          <div className="ui accordion" key={agg.title}>
+          <div className="rdm-facet-container" key={agg.title}>
             <BucketAggregation title={agg.title} agg={agg} />
           </div>
         );
@@ -223,49 +217,101 @@ const CommunitiesFacets = ({ aggs, currentResultsState }) => {
   );
 };
 
-const CommunitiesFacetsValues = ({
+export const RDMCommunityParentFacetValue = ({
+  bucket,
+  keyField,
+  isSelected,
+  childAggCmps,
+  onFilterClicked,
+}) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <Accordion className="rdm-multi-facet">
+      <Accordion.Title onClick={() => {}} key={`panel-${bucket.label}`}
+      active={isActive}
+      className="facet-wrapper parent"
+      >
+        <List.Content className="facet-wrapper">
+        <Icon name="angle right" onClick={() => setIsActive(!isActive)}/>
+        <Checkbox
+            label={bucket.label || keyField}
+            id={`${keyField}-facet-checkbox`}
+            aria-describedby={`${keyField}-count`}
+            value={keyField}
+            checked={isSelected}
+            onClick={() => onFilterClicked(keyField)}
+          />
+          <Label circular id={`${keyField}-count`} className="facet-count">
+            {bucket.doc_count}
+          </Label>
+        </List.Content>
+      </Accordion.Title>
+      <Accordion.Content active={isActive}>{childAggCmps}</Accordion.Content>
+    </Accordion>
+  );
+};
+
+export const RDMCommunityFacetValue = ({
+  bucket,
+  keyField,
+  isSelected,
+  onFilterClicked,
+}) => {
+  return (
+    <>
+      <List.Content className="facet-wrapper">
+        <Checkbox
+          onClick={() => onFilterClicked(keyField)}
+          label={bucket.label || keyField}
+          id={`${keyField}-facet-checkbox`}
+          aria-describedby={`${keyField}-count`}
+          value={keyField}
+          checked={isSelected}
+        />
+        <Label circular id={`${keyField}-count`} className="facet-count">
+          {bucket.doc_count}
+        </Label>
+      </List.Content>
+    </>
+  );
+};
+
+export const CommunitiesFacetsValues = ({
   bucket,
   isSelected,
   onFilterClicked,
   getChildAggCmps,
 }) => {
   const childAggCmps = getChildAggCmps(bucket);
-  const [isActive, setisActive] = useState(false);
   const hasChildren = childAggCmps && childAggCmps.props.buckets.length > 0;
   const keyField = bucket.key_as_string ? bucket.key_as_string : bucket.key;
   return (
     <List.Item key={bucket.key}>
-      <div
-        className={`facet-wrapper title ${
-          hasChildren ? "" : "facet-subtitle"
-        } ${isActive ? "active" : ""}`}
-      >
-        <List.Content className="facet-count">
-          <Label circular>{bucket.doc_count}</Label>
-        </List.Content>
-        {hasChildren ? (
-          <i
-            className={`angle ${isActive ? "down" : "right"} icon`}
-            onClick={() => setisActive(!isActive)}
-          ></i>
-        ) : null}
-        <Checkbox
-          label={bucket.label || facetsConfig[keyField] || keyField}
-          value={keyField}
-          onClick={() => onFilterClicked(keyField)}
-          checked={isSelected}
+      {hasChildren ? (
+        <RDMCommunityParentFacetValue
+          bucket={bucket}
+          keyField={keyField}
+          isSelected={isSelected}
+          childAggCmps={childAggCmps}
+          onFilterClicked={onFilterClicked}
         />
-      </div>
-      <div className={`content facet-content ${isActive ? "active" : ""}`}>
-        {childAggCmps}
-      </div>
+      ) : (
+        <RDMCommunityFacetValue
+          bucket={bucket}
+          keyField={keyField}
+          isSelected={isSelected}
+          onFilterClicked={onFilterClicked}
+        />
+      )}
     </List.Item>
   );
 };
 
+
 const RDMBucketAggregationElement = ({ title, containerCmp }) => {
   return (
-    <Card className="borderless-facet">
+    <Card className="borderless facet">
       <Card.Content>
         <Card.Header>{title}</Card.Header>
       </Card.Content>
