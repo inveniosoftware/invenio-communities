@@ -17,12 +17,12 @@
 {%- endblock %}
 
 {%- block page_body %}
-<div class="ui container fluid community-header">
-  <div class="ui container community-search">
+<div class="ui container fluid community-header-outer compact">
+  <div class="ui container community-search community-header">
     <h3 class="ui header">{{_("Communities")}}</h3>
   </div>
 </div>
-<div id="communities-search" data-invenio-search-config='{
+<div id="communities-search" class="rel-mt-3" data-invenio-search-config='{
   "aggs": [
     {
       "aggName": "type",

@@ -11,12 +11,12 @@
 
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
 
-<div class="community-header">
-  <div class="ui container relaxed grid">
+<div class="ui container fluid community-header-outer with-submenu">
+  <div class="ui container relaxed grid community-header">
     <div class="row">
       <div class="two wide column">
         {% if logo %}
-        <div class="ui rounded image community-image">
+        <div class="ui rounded image medium community-image">
           <img src="{{logo.links.self}}" alt="No image found"/>
         </div>
         {% else %}
@@ -34,7 +34,10 @@
             </a>
           {% endif %}
           {% if community.metadata.type %}
-            <i class="tag icon community-tags"></i><div class="ui label small grey type-label">{{ types[community.metadata.type] }}</div>
+            <i class="tag icon community-tags"></i>
+            <div class="ui label small grey type-label">
+              {{ types[community.metadata.type] }}
+            </div>
           {% endif %}
           {% if community.metadata.organizations %}
             <i class="building outline icon community-tags"></i>
@@ -43,9 +46,13 @@
             {%- endfor %}
           {% endif %}
       </div>
-      <div id="community-upload-button" class="four wide right floated right aligned column">
-        <a href="/uploads/new?community={{ community.id }}" class="ui positive button">
+
+      <div id="community-upload-button"
+           class="four wide right aligned column">
+        <a href="/uploads/new?community={{ community.id }}"
+           class="ui positive button labeled icon">
           <i class="plus icon"></i>
+
           {{ _("New upload") }}
         </a>
       </div>

@@ -18,6 +18,7 @@ import {
   Message,
   Segment,
   Header,
+  Accordion
 } from "semantic-ui-react";
 import { BucketAggregation, Toggle, withState } from "react-searchkit";
 import _get from "lodash/get";
@@ -168,52 +169,93 @@ export const CommunityRecordSearchBarElement = withState(({
   );
 });
 
-export const CommunityRecordFacetsValues = ({
+export const CommunityParentFacetValue = ({
+  bucket,
+  keyField,
+  isSelected,
+  childAggCmps,
+  onFilterClicked,
+}) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <Accordion className="rdm-multi-facet">
+      <Accordion.Title onClick={() => {}} key={`panel-${bucket.label}`}
+      active={isActive}
+      className="facet-wrapper parent"
+      >
+        <List.Content className="facet-wrapper">
+        <Icon name="angle right" onClick={() => setIsActive(!isActive)}/>
+        <Checkbox
+            label={bucket.label || keyField}
+            id={`${keyField}-facet-checkbox`}
+            aria-describedby={`${keyField}-count`}
+            value={keyField}
+            checked={isSelected}
+            onClick={() => onFilterClicked(keyField)}
+          />
+          <Label circular id={`${keyField}-count`} className="facet-count">
+            {bucket.doc_count}
+          </Label>
+        </List.Content>
+      </Accordion.Title>
+      <Accordion.Content active={isActive}>{childAggCmps}</Accordion.Content>
+    </Accordion>
+  );
+};
+
+export const CommunityFacetValue = ({
+  bucket,
+  keyField,
+  isSelected,
+  onFilterClicked,
+}) => {
+  return (
+    <>
+      <List.Content className="facet-wrapper">
+        <Checkbox
+          onClick={() => onFilterClicked(keyField)}
+          label={bucket.label || keyField}
+          id={`${keyField}-facet-checkbox`}
+          aria-describedby={`${keyField}-count`}
+          value={keyField}
+          checked={isSelected}
+        />
+        <Label circular id={`${keyField}-count`} className="facet-count">
+          {bucket.doc_count}
+        </Label>
+      </List.Content>
+    </>
+  );
+};
+
+export const CommunitiesFacetsValues = ({
   bucket,
   isSelected,
   onFilterClicked,
   getChildAggCmps,
 }) => {
   const childAggCmps = getChildAggCmps(bucket);
-  const [isActive, setisActive] = useState(false);
   const hasChildren = childAggCmps && childAggCmps.props.buckets.length > 0;
   const keyField = bucket.key_as_string ? bucket.key_as_string : bucket.key;
   return (
     <List.Item key={bucket.key}>
-      <div
-        className={`facet-wrapper title ${
-          hasChildren ? "" : "facet-subtitle"
-        } ${isActive ? "active" : ""}`}
-      >
-        <List.Content className="facet-count">
-          <Label circular id={`${keyField}-count`}>
-            {bucket.doc_count}
-          </Label>
-        </List.Content>
-        {hasChildren ? (
-          <Button
-            className="iconhold"
-            icon={`angle ${isActive ? "down" : "right"} icon`}
-            onClick={() => setisActive(!isActive)}
-            aria-label={`${
-              isActive
-                ? i18next.t("hide subfacets")
-                : i18next.t("show subfacets")
-            }`}
-          />
-        ) : null}
-        <Checkbox
-          label={bucket.label || keyField}
-          id={`${keyField}-facet-checkbox`}
-          aria-describedby={`${keyField}-count`}
-          value={keyField}
-          onClick={() => onFilterClicked(keyField)}
-          checked={isSelected}
+      {hasChildren ? (
+        <CommunityParentFacetValue
+          bucket={bucket}
+          keyField={keyField}
+          isSelected={isSelected}
+          childAggCmps={childAggCmps}
+          onFilterClicked={onFilterClicked}
         />
-      </div>
-      <div className={`content facet-content ${isActive ? "active" : ""}`}>
-        {childAggCmps}
-      </div>
+      ) : (
+        <CommunityFacetValue
+          bucket={bucket}
+          keyField={keyField}
+          isSelected={isSelected}
+          onFilterClicked={onFilterClicked}
+        />
+      )}
     </List.Item>
   );
 };
@@ -230,6 +272,7 @@ export const SearchHelpLinks = () => {
   );
 };
 
+
 export const CommunityRecordFacets = ({ aggs, currentResultsState }) => {
   return (
     <aside aria-label={i18next.t("filters")} id="search-filters">
@@ -240,12 +283,12 @@ export const CommunityRecordFacets = ({ aggs, currentResultsState }) => {
       />
       {aggs.map((agg) => {
         return (
-          <div className="ui accordion" key={agg.title}>
+          <div className="facet-container" key={agg.title}>
             <BucketAggregation title={agg.title} agg={agg} />
           </div>
         );
       })}
-      <Card className="borderless-facet">
+      <Card className="borderless facet">
         <Card.Content>
           <Card.Header as="h2">{ i18next.t('Help') }</Card.Header>
           <SearchHelpLinks />
@@ -271,7 +314,7 @@ export const CommunityBucketAggregationElement = ({agg, title, containerCmp, upd
   }
 
   return (
-    <Card className="borderless-facet">
+    <Card className="borderless facet">
       <Card.Content>
         <Card.Header as="h2">
           {title}
@@ -313,7 +356,7 @@ export const CommunityToggleComponent = ({
 
   var isChecked = _isChecked(userSelectionFilters);
   return (
-    <Card className="borderless-facet">
+    <Card className="borderless facet">
       <Card.Content>
         <Card.Header as="h2">{title}</Card.Header>
       </Card.Content>
@@ -401,8 +444,7 @@ export function SearchItemCreators({ creators }) {
     switch (firstId.scheme) {
       case "orcid":
         icon = (
-          <a
-            className="identifier-link"
+          <a className="identifier-link"
             href={"https://orcid.org/" + `${firstId.identifier}`}
             aria-label={`${creatorName}: ${i18next.t("ORCID profile")}`}
             title={`${creatorName}: ${i18next.t("ORCID profile")}`}
@@ -440,17 +482,17 @@ export function SearchItemCreators({ creators }) {
     let creatorName = _get(creator, "person_or_org.name", "No name");
     let link = (
       <a
-        class="creatibutor-link"
+        className="creatibutor-link"
         href={`/search?q=metadata.creators.person_or_org.name:"${creatorName}"`}
         title={`${creatorName}: ${i18next.t("Search")}`}
       >
-        <span class="creatibutor-name">{creatorName}</span>
+        <span className="creatibutor-name">{creatorName}</span>
       </a>
     );
     return link;
   }
   return creators.map((creator, index) => (
-    <span class="creatibutor-wrap" key={index}>
+    <span className="creatibutor-wrap" key={index}>
       {getLink(creator)}
       {getIcon(creator)}
       {index < creators.length - 1 && ";"}

@@ -88,7 +88,7 @@ const CommunitiesRequestDropdown = () => {
         setResponse({
           response: error.response,
           message:
-            error.response.status == 500
+            error.response.status === 500
               ? "Unknown error"
               : error.response.data.message,
           status: "error",
@@ -218,7 +218,7 @@ const CommunityPendingItem = ({ communityRecord }) => {
           { message: message }
         )
         .then((resp) => {
-          if (action == "comment") {
+          if (action === "comment") {
             setShowMessageInput(false);
           }
           console.log(resp.data);
@@ -233,7 +233,7 @@ const CommunityPendingItem = ({ communityRecord }) => {
           setResponse({
             response: error.response,
             message:
-              error.response.status == 500
+              error.response.status === 500
                 ? "Unknown error"
                 : error.response.data.message,
             status: "error",
@@ -378,7 +378,7 @@ const CommunitiesCollectionDropdown = ({ communityRecord }) => {
         setResponse({
           response: error.response,
           message:
-            error.response.status == 500
+            error.response.status === 500
               ? "Unknown error"
               : error.response.data.message,
           status: "error",

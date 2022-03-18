@@ -18,8 +18,8 @@ import { i18next } from "@translations/invenio_communities/i18next";
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
-var communityID = formConfig.community.id;
 
+var communityID = formConfig.community.id;
 var userRole = formConfig.communityMember.role;
 var urlObject = new URL(window.location);
 

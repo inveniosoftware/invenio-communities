@@ -17,30 +17,25 @@
 {%- endblock %}
 
 {%- block page_body %}
-<div class="community-header frontpage">
-  <div class="ui container centered grid">
+<div class="ui container fluid community-header-outer">
+  <div class="ui container centered grid community-header rel-pt-1">
     <div class="centered one column row">
       <h1 class="ui header">
         {{_('Communities')}}
       </h1>
     </div>
-    <div class="row">
-      <div class="eight wide no-padding centered column">
-        <div class="ui relaxed grid">
-          <div class="three column row">
-            <div class="ten wide column">
-              <p>
-                {{_('Organize, curate and collaborate on records for your institution, project, topic or event.')}}
-              </p>
-            </div>
-            <div class="right floated six wide column new-communities-frontpage">
-              <a href="{{ config.COMMUNITIES_ROUTES['new'] }}" class="ui icon left labeled positive button" role="button">
-                <i class="icon plus"></i>
-                {{_('New community')}}
-              </a>
-            </div>
-          </div>
-        </div>
+    <div class="centered two column row">
+      <div class="one wide column"></div>
+      <div class="six wide column">
+        <p>
+          {{_('Organize, curate and collaborate on records for your institution, project, topic or event.')}}
+        </p>
+      </div>
+      <div class="three wide column center">
+        <a href="{{ config.COMMUNITIES_ROUTES['new'] }}" class="ui icon left labeled positive button" role="button">
+          <i class="icon plus"></i>
+          {{_('New community')}}
+        </a>
       </div>
     </div>
     <div class="row">
@@ -56,12 +51,15 @@
     <div class="ui divider hidden"></div>
   </div>
 </div>
-<div class="ui container communities-frontpage">
+<div class="ui container communities-frontpage rel-mt-3 rel-mb-2">
   {% if current_user.is_authenticated %}
-    <div class="ui header"><h2>{{_('My communities')}}</h2></div>
-    <div id="user-communities"></div>
+    <h2 class="ui header">{{_('My communities')}}</h2>
+    <div class="ui divider hidden"></div>
+    <div id="user-communities" class="rel-mb-2"></div>
   {% endif %}
-  <div class="ui header"><h2>{{_('Featured communities')}}</h2></div>
+  <div class="ui divider"></div>
+  <h2 class="ui header">{{_('Featured communities')}}</h2>
+  <div class="ui divider hidden"></div>
   <div id="featured-communities"></div>
 </div>
 {%- endblock page_body %}
