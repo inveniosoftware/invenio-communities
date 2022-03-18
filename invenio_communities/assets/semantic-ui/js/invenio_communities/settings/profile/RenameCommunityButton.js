@@ -14,7 +14,8 @@ import { CommunitiesApiClient } from "../../api";
 import { i18next } from "@translations/invenio_communities/i18next";
 
 // WARNING: This DOES NOT RENAME a community! It changes its id.
-export const RenameCommunityButton = (props) => {
+export const RenameCommunityButton = ({ community }) => {
+
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,13 +31,13 @@ export const RenameCommunityButton = (props) => {
     event.stopPropagation();
     const newId = formInputRef.current.value;
     const client = new CommunitiesApiClient();
-    const response = await client.updateId(props.community.id, newId);
+    const response = await client.updateId(community.id, newId);
     if (response.code < 400) {
       window.location.href = `/communities/${newId}/settings`;
       handleClose();
     } else {
       const invalidIdError = response.errors
-        .filter((error) => error.field == "id")
+        .filter((error) => error.field === "id")
         .map((error) => error.messages[0]);
       setError(invalidIdError);
     }
@@ -53,7 +54,7 @@ export const RenameCommunityButton = (props) => {
         labelPosition="left"
         type="button"
       >
-        <Icon name="pencil"></Icon>{i18next.t("Rename community")}
+        <Icon name="pencil"/>{i18next.t("Rename community")}
       </Button>
 
       <Modal open={modalOpen} onClose={handleClose} size="tiny">

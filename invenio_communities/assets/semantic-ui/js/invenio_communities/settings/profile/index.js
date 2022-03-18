@@ -12,13 +12,11 @@ import ReactDOM from "react-dom";
 import { Formik, getIn } from "formik";
 import * as Yup from "yup";
 import _defaultsDeep from "lodash/defaultsDeep";
-import _isNil from "lodash/isNil";
 import _get from "lodash/get";
 import _map from "lodash/map";
 import _mapValues from "lodash/mapValues";
 import _find from "lodash/find";
 import _cloneDeep from "lodash/cloneDeep";
-import _set from "lodash/set";
 import _isNumber from "lodash/isNumber";
 import _isBoolean from "lodash/isBoolean";
 import _isEmpty from "lodash/isEmpty";
@@ -26,7 +24,6 @@ import _isObject from "lodash/isObject";
 import _isArray from "lodash/isArray";
 import _isNull from "lodash/isNull";
 import _pickBy from "lodash/pickBy";
-import _pick from "lodash/pick";
 import Dropzone from "react-dropzone";
 
 import { DeleteButton } from "./DeleteButton";
@@ -41,11 +38,11 @@ import {
   Header,
   Form,
   Message,
+  Segment
 } from "semantic-ui-react";
 import {
   FieldLabel,
   RemoteSelectField,
-  RichInputField,
   SelectField,
   TextField,
 } from "react-invenio-forms";
@@ -79,21 +76,6 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
     // ),
   }),
 });
-
-const CKEditorConfig = {
-  removePlugins: [
-    "Image",
-    "ImageCaption",
-    "ImageStyle",
-    "ImageToolbar",
-    "ImageUpload",
-    "MediaEmbed",
-    "Table",
-    "TableToolbar",
-    "TableProperties",
-    "TableCellProperties",
-  ],
-};
 
 /**
  * Remove empty fields from community
@@ -158,115 +140,91 @@ const LogoUploader = (props) => {
     }
   };
 
+
   return (
     <Dropzone {...dropzoneParams}>
       {({ getRootProps, getInputProps, open: openFileDialog }) => (
-        <Grid.Column width={16}>
-          <span {...getRootProps()}>
-            <input {...getInputProps()} />
-            <Grid>
-              <Grid.Column floated="right" width={10}>
-                <Grid.Row>
-                  <Header className="communities-logo-header">
-                    {i18next.t("Profile picture")}
-                  </Header>
-                </Grid.Row>
-                <Grid.Row>
-                  {props.logo ? (
-                    <Image
-                      src={props.logo.links.self}
-                      size="medium"
-                      wrapped
-                      rounded
-                    />
-                  ) : (
-                    <Image
-                      src={props.defaultLogo}
-                      size="medium"
-                      wrapped
-                      rounded
-                    />
-                  )}
-                </Grid.Row>
-                <br />
-                <Grid.Row className="logo-buttons">
-                  <Button
-                    fluid
-                    icon
-                    labelPosition="left"
-                    type="button"
-                    onClick={openFileDialog}
-                  >
-                    <Icon name="upload"></Icon>
-                    {i18next.t("Upload new picture")}
-                  </Button>
-                  {props.logo && (
-                    <DeleteButton
-                      label={i18next.t("Delete picture")}
-                      redirectURL={`${props.community.links.self_html}/settings`}
-                      confirmationMessage={
-                        <h3>
-                          {i18next.t(
-                            "Are you sure you want to delete this picture?"
-                          )}
-                        </h3>
-                      }
-                      onDelete={deleteLogo}
-                    />
-                  )}
-                </Grid.Row>
-              </Grid.Column>
-            </Grid>
-          </span>
-        </Grid.Column>
+        <span {...getRootProps()}>
+          <input {...getInputProps()} />
+          <Header className="mt-0">{i18next.t("Profile picture")}</Header>
+          {props.logo ? (
+            <Image src={props.logo.links.self} fluid wrapped rounded />
+          ) : (
+            <Image src={props.defaultLogo} fluid wrapped rounded />
+          )}
+          <Divider hidden />
+          <Button
+            fluid
+            icon
+            labelPosition="left"
+            type="button"
+            onClick={openFileDialog}
+          >
+            <Icon name="upload" />
+            {i18next.t("Upload new picture")}
+          </Button>
+          {props.logo && (
+            <DeleteButton
+              label={i18next.t("Delete picture")}
+              redirectURL={`${props.community.links.self_html}/settings`}
+              confirmationMessage={
+                <h3>
+                  {i18next.t("Are you sure you want to delete this picture?")}
+                </h3>
+              }
+              onDelete={deleteLogo}
+            />
+          )}
+        </span>
       )}
     </Dropzone>
   );
 };
 
-const DangerZone = (props) => (
-  <Grid.Row className="ui message negative danger-zone">
-    <Grid.Column width={16}>
+const DangerZone = ({ community, onError }) => (
+    <Segment color="red" tertiary className="rel-mt-2">
       <Header as="h2" color="red">
         {i18next.t("Danger zone")}
       </Header>
-      <Divider />
-    </Grid.Column>
-    <Grid.Column floated="left" width="12">
-      <Header as="h4">{i18next.t("Rename community")}</Header>
-      <p>
-        {i18next.t("Renaming your community can have unintended side effects.")}
-      </p>
-    </Grid.Column>
-    <Grid.Column floated="right" width="4">
-      <RenameCommunityButton community={props.community} />
-    </Grid.Column>
-    {/* Empty column for margin */}
-    <Grid.Column width={16} className="margin-top-25"></Grid.Column>
-    <Grid.Column floated="left" width="12">
-      <Header as="h4">{i18next.t("Delete community")}</Header>
-      <p>
-        {i18next.t("Once deleted, it will be gone forever. Please be certain.")}
-      </p>
-    </Grid.Column>
-    <Grid.Column floated="right" width="4">
-      <DeleteButton
-        community={props.community}
-        label={i18next.t("Delete community")}
-        redirectURL="/communities"
-        confirmationMessage={
-          <h3>
-            {i18next.t("Are you sure you want to delete this community?")}
-          </h3>
-        }
-        onDelete={() => {
-          const client = new CommunitiesApiClient();
-          return client.delete(props.community.id);
-        }}
-        onError={props.onError}
-      />
-    </Grid.Column>
-  </Grid.Row>
+      <Grid>
+        <Grid.Column width="12">
+          <Header as="h4">{i18next.t("Rename community")}</Header>
+          <p>
+            {i18next.t(
+              "Renaming your community can have unintended side effects."
+            )}
+          </p>
+        </Grid.Column>
+        <Grid.Column floated="right" width="4">
+          <RenameCommunityButton community={community} />
+        </Grid.Column>
+        <Grid.Column floated="left" width="12">
+          <Header as="h4">{i18next.t("Delete community")}</Header>
+          <p>
+            {i18next.t(
+              "Once deleted, it will be gone forever. Please be certain."
+            )}
+          </p>
+        </Grid.Column>
+        <Grid.Column floated="right" width="4">
+          <DeleteButton
+            community={community}
+            label={i18next.t("Delete community")}
+            redirectURL="/communities"
+            confirmationMessage={
+              <h3>
+                {i18next.t("Are you sure you want to delete this community?")}
+              </h3>
+            }
+            onDelete={() => {
+              const client = new CommunitiesApiClient();
+              return client.delete(community.id);
+            }}
+            onError={onError}
+          />
+        </Grid.Column>
+      </Grid>
+    </Segment>
 );
 
 class CommunityProfileForm extends Component {
@@ -376,9 +334,9 @@ class CommunityProfileForm extends Component {
         {({ isSubmitting, isValid, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">
             <Message
-              hidden={this.state.error == ""}
+              hidden={this.state.error === ""}
               negative
-              className="flashed top-attached"
+              className="flashed top attached"
             >
               <Grid container>
                 <Grid.Column width={15} textAlign="left">
@@ -390,7 +348,7 @@ class CommunityProfileForm extends Component {
               <Grid.Row>
                 <Grid.Column width={16}>
                   <Header as="h2">{community.id}</Header>
-                  <Divider className="no-margin" />
+                  <Divider />
                 </Grid.Column>
               </Grid.Row>
 
@@ -508,7 +466,7 @@ class CommunityProfileForm extends Component {
                     {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
-                <Grid.Column width={7}>
+                <Grid.Column width={4} floated="right">
                   <LogoUploader
                     community={this.props.community}
                     logo={this.props.logo}
@@ -517,10 +475,14 @@ class CommunityProfileForm extends Component {
                   />
                 </Grid.Column>
               </Grid.Row>
-              <DangerZone
-                community={this.props.community}
-                onError={this.setGlobalError}
-              />
+              <Grid.Row className="danger-zone">
+                <Grid.Column width={16}>
+                  <DangerZone
+                    community={this.props.community}
+                    onError={this.setGlobalError}
+                  />
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
           </Form>
         )}

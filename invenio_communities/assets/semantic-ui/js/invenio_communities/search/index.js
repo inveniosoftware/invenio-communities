@@ -9,7 +9,7 @@ import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   CommunityBucketAggregationElement,
   CommunityRecordFacets,
-  CommunityRecordFacetsValues,
+  CommunitiesFacetsValues,
   CommunityRecordResultsGridItem,
   CommunityRecordResultsListItem,
   CommunityRecordSearchBarContainer,
@@ -18,11 +18,11 @@ import {
   CommunityEmptyResults,
   CommunityErrorComponent,
   CommunityToggleComponent,
-} from "./components";
+} from './components';
 
 const initSearchApp = createSearchAppInit({
   "BucketAggregation.element": CommunityBucketAggregationElement,
-  "BucketAggregationValues.element": CommunityRecordFacetsValues,
+  "BucketAggregationValues.element": CommunitiesFacetsValues,
   "ResultsGrid.item": CommunityRecordResultsGridItem,
   "EmptyResults.element": CommunityEmptyResults,
   "ResultsList.item": CommunityRecordResultsListItem,

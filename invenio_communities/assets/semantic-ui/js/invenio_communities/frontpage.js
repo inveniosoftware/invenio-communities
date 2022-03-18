@@ -11,6 +11,7 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
+import { Image } from "react-invenio-forms";
 
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   const PlaceholderItem = () => (
@@ -46,26 +47,14 @@ const EmptyMessage = ({ message }) => {
 };
 
 class CommunityCard extends Component {
-  constructor() {
-    super();
-    this.imageRef = React.createRef();
-  }
 
   render() {
     return (
       <Card fluid href={`/communities/${this.props.community.id}`}>
-        <div className="community-image">
-          <img
-            ref={this.imageRef}
-            className="ui image"
-            src={this.props.community.links.logo}
-            onError={(error) => {
-              if (!this.imageRef.current.src.includes(this.props.defaultLogo))
-                this.imageRef.current.src = this.props.defaultLogo;
-            }}
-          />
-        </div>
-
+        <Image
+          src={this.props.community.links.logo}
+          fallbackSrc={this.props.defaultLogo}
+        />
         <Card.Content>
           <Card.Header>
             {_truncate(this.props.community.metadata.title, { length: 50 })}
@@ -131,7 +120,7 @@ class CommunitiesCardGroup extends Component {
     const { isLoading } = this.state;
     return (
       <PlaceholderLoader isLoading={isLoading}>
-        {this.state.data.hits.length == 0 ? (
+        {this.state.data.hits.length === 0 ? (
           <EmptyMessage message={this.props.emptyMessage} />
         ) : (
           <Card.Group itemsPerRow={5} className="community-frontpage-cards">

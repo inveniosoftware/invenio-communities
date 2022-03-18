@@ -8,7 +8,6 @@
 
 import React from "react";
 import { Input } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import {
   defaultComponents as searchDefaultComponents,
   createSearchAppInit,

@@ -13,7 +13,7 @@
 
 {%- block page_body %}
 {{ super() }}
-<div class="ui container grid">
+<div class="ui container grid rel-mt-2">
   {%- block settings_menu %}
     {%- set menu_items = {
       'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), ),

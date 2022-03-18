@@ -31,8 +31,11 @@ class CommunityCreateForm extends Component {
   state = {
     error: "",
   };
+
   getInitialValues = () => {
-    let initialValues = _defaultsDeep(this.props.community, {
+    const { community } = this.props;
+
+    let initialValues = _defaultsDeep(community, {
       access: {
         visibility: "public",
       },
@@ -46,9 +49,12 @@ class CommunityCreateForm extends Component {
   };
 
   render() {
+    const { community, formConfig } = this.props;
+    const { error } = this.state;
+
     return (
       <Formik
-        initialValues={this.getInitialValues(this.props.community)}
+        initialValues={this.getInitialValues(community)}
         onSubmit={async (
           values,
           { setSubmitting, setErrors, setFieldError }
@@ -79,13 +85,13 @@ class CommunityCreateForm extends Component {
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
             <Message
-              hidden={this.state.error == ""}
+              hidden={error === ""}
               negative
               className="flashed top-attached"
             >
               <Grid container>
                 <Grid.Column width={15} textAlign="left">
-                  <strong>{this.state.error}</strong>
+                  <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>
@@ -123,15 +129,17 @@ class CommunityCreateForm extends Component {
                     helpText={i18next.t(
                       "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}",
                       {
-                        url: `${this.props.formConfig.SITE_UI_URL}/communities/${_get(values, "id", "")}`,
+                        url: `${
+                          formConfig.SITE_UI_URL
+                        }/communities/${_get(values, "id", "")}`,
                         interpolation: { escapeValue: false },
                       }
                     )}
                     fluid
-                    className="communities-identifier"
+                    className="text-muted"
                   />
                   <Header as="h3">{i18next.t("Community visibility")}</Header>
-                  {this.props.formConfig.access.visibilty.map((item) => (
+                  {formConfig.access.visibility.map((item) => (
                     <React.Fragment key={item.value}>
                       <RadioField
                         key={item.value}
@@ -163,7 +171,7 @@ class CommunityCreateForm extends Component {
                     loading={isSubmitting}
                     type="submit"
                   >
-                    <Icon name="plus"></Icon>
+                    <Icon name="plus" />
                     {i18next.t("Create community")}
                   </Button>
                 </Grid.Column>

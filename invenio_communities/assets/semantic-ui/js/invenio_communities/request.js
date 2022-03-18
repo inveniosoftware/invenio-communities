@@ -9,8 +9,8 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import _ from "lodash";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { Button, Container, Header } from "semantic-ui-react";
 
 const RequestPage = () => {
   const [globalError, setGlobalError] = useState(null);
@@ -19,37 +19,37 @@ const RequestPage = () => {
   const domContainer = document.getElementById("app");
   const formConfig = JSON.parse(domContainer.dataset.formConfig);
 
-  var community = formConfig.community;
-  var communityID = formConfig.community.id;
-  var membership = formConfig.membership;
-  var token = formConfig.token;
+  const {
+    community,
+    community: { id },
+    membership,
+    token,
+  } = formConfig;
 
-  var handleInvitation = (action) => {
-    var payload = { token: token };
-    axios
-      .post(
+  const handleInvitation = async (action) => {
+    const payload = { token: token };
+    try {
+      await axios.post(
         `/api/communities/${communityID}/members/requests/${membership.id}/${action}`,
         payload
-      )
-      .then((response) => {
-        if (action === "accept") {
-          window.location = `/communities/${communityID}/members/?tab=accepted`;
-        } else {
-          setRequestDecline(true);
-        }
-      })
-      .catch((error) => {
-        // TODO: handle nested fields
-        if (error) {
-          setGlobalError(error);
-        }
-        console.log(error.response.data);
-      });
+      );
+      if (action === "accept") {
+        window.location = `/communities/${communityID}/members/?tab=accepted`;
+      } else {
+        setRequestDecline(true);
+      }
+    } catch (error) {
+      // TODO: handle nested fields
+      if (error) {
+        setGlobalError(error);
+      }
+      console.log(error.response.data);
+    }
   };
 
   return (
-    <div className="ui container">
-      <h2>
+    <Container>
+      <Header as="h2">
         {i18next.t(
           "You have been invited to join the Community: {{title}} as a (n) {{role}}",
           {
@@ -58,32 +58,22 @@ const RequestPage = () => {
             interpolation: { escapeValue: false },
           }
         )}
-      </h2>
+      </Header>
       {requestDecline ? ( //maybe redirect to community page
-        <div className="help-block">
-          {i18next.t("You have succesfully declined the invitation.")}
-        </div>
+        <>{i18next.t("You have successfully declined the invitation.")}</>
       ) : (
-        <div>
-          <div class="ui buttons">
-            <button
-              class="ui positive button"
-              onClick={() => handleInvitation("accept")}
-            >
-              {i18next.t("Accept")}
-            </button>
-            <div class="or"></div>
-            <button
-              class="ui button"
-              onClick={() => handleInvitation("reject")}
-            >
-              {i18next.t("Decline")}
-            </button>
-          </div>
-        </div>
+        <Button.Group>
+          <Button positive={} onClick={() => handleInvitation("accept")}>
+            {i18next.t("Accept")}
+          </Button>
+          <Button.Or />
+          <Button onClick={() => handleInvitation("reject")}>
+            {i18next.t("Decline")}
+          </Button>
+        </Button.Group>
       )}
-      {globalError ? <div className="help-block">{globalError}</div> : null}
-    </div>
+      {globalError ? <>{globalError}</> : null}
+    </Container>
   );
 };
 
