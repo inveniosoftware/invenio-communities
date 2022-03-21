@@ -38,7 +38,7 @@ def communities_new():
         "invenio_communities/new.html",
         form_config=dict(
             access=dict(
-                visibilty=[
+                visibility=[
                     {
                         'text': 'Public',
                         'value': 'public',
