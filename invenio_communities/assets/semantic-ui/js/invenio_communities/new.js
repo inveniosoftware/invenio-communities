@@ -32,29 +32,22 @@ class CommunityCreateForm extends Component {
     error: "",
   };
 
-  getInitialValues = () => {
-    const { community } = this.props;
-
-    let initialValues = _defaultsDeep(community, {
-      access: {
-        visibility: "public",
-      },
-    });
-
-    return initialValues;
-  };
-
   setGlobalError = (errorMsg) => {
     this.setState({ error: errorMsg });
   };
 
   render() {
-    const { community, formConfig } = this.props;
+    const { formConfig } = this.props;
     const { error } = this.state;
 
     return (
       <Formik
-        initialValues={this.getInitialValues(community)}
+        initialValues={{
+          access: {
+            visibility: "public",
+          },
+          id: "",
+        }}
         onSubmit={async (
           values,
           { setSubmitting, setErrors, setFieldError }
@@ -129,9 +122,7 @@ class CommunityCreateForm extends Component {
                     helpText={i18next.t(
                       "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}",
                       {
-                        url: `${
-                          formConfig.SITE_UI_URL
-                        }/communities/${_get(values, "id", "")}`,
+                        url: `${formConfig.SITE_UI_URL}/communities/${values["id"]}`,
                         interpolation: { escapeValue: false },
                       }
                     )}
