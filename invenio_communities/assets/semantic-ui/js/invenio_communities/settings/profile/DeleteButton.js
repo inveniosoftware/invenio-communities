@@ -20,19 +20,21 @@ export const DeleteButton = (props) => {
 
   const handleDelete = async () => {
     try {
-      const resp = await props.onDelete();
-      handleClose();
-      if (props.redirectURL) window.location.href = props.redirectURL;
+      await props.onDelete();
+      if (props.redirectURL) {
+        window.location.href = props.redirectURL;
+      }
     } catch (error) {
       props.onError(error);
     }
+    handleClose();
   };
 
   return (
     <>
       <Button
         compact
-        color="red"
+        negative
         onClick={handleOpen}
         fluid
         icon

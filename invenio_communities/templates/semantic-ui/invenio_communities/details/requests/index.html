@@ -22,7 +22,9 @@
   <div
     id="app"
     data-community='{{ community | tojson }}'
-    data-invenio-config='{{ search_app_communities_requests_config(app_id="communities-requests-search", endpoint=endpoint) | tojson }}'>
+    data-invenio-config='{{
+      search_app_communities_requests_config(app_id="communities-requests-search",
+      endpoint="/api/requests", hidden_params=[["receiver", "community:"+community['uuid'] ]]) | tojson }}'>
   </div>
   {%- endblock requests_body %}
 {%- endblock page_body %}

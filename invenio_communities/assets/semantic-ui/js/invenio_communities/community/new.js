@@ -10,7 +10,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Formik } from "formik";
-import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
 
 import {
@@ -22,18 +21,56 @@ import {
   Form,
   Message,
 } from "semantic-ui-react";
-import { FieldLabel, RadioField, TextField } from "react-invenio-forms";
+import {
+  FieldLabel,
+  RadioField,
+  TextField,
+  withCancel,
+} from "react-invenio-forms";
 
-import { CommunitiesApiClient } from "./api";
+import { CommunityApi } from "../api";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { communityErrorSerializer } from "../api/serializers";
 
 class CommunityCreateForm extends Component {
   state = {
     error: "",
   };
 
+  componentWillUnmount() {
+    this.cancellableCreate && this.cancellableCreate.cancel();
+  }
+
   setGlobalError = (errorMsg) => {
     this.setState({ error: errorMsg });
+  };
+
+  onSubmit = async (values, { setSubmitting, setFieldError }) => {
+    setSubmitting(true);
+    const client = new CommunityApi();
+    const payload = {
+      metadata: {},
+      ...values,
+    };
+    this.cancellableCreate = withCancel(client.create(payload));
+
+    try {
+      const response = await this.cancellableCreate.promise;
+      setSubmitting(false);
+      window.location.href = response.data.links.settings_html;
+    } catch (error) {
+      if (error === "UNMOUNTED") return;
+
+      const { errors, message } = communityErrorSerializer(error);
+
+      if (message) {
+        this.setGlobalError(message);
+      }
+
+      if (errors) {
+        errors.map(({ field, messages }) => setFieldError(field, messages[0]));
+      }
+    }
   };
 
   render() {
@@ -48,32 +85,7 @@ class CommunityCreateForm extends Component {
           },
           id: "",
         }}
-        onSubmit={async (
-          values,
-          { setSubmitting, setErrors, setFieldError }
-        ) => {
-          setSubmitting(true);
-          const client = new CommunitiesApiClient();
-          const payload = {
-            metadata: {},
-            ...values,
-          };
-          const response = await client.create(payload);
-          setSubmitting(false);
-          if (response.code < 400) {
-            window.location.href = response.data.links.settings_html;
-          } else {
-            if (response.errors) {
-              response.errors.map(({ field, messages }) =>
-                setFieldError(field, messages[0])
-              );
-            }
-
-            if (response.data.message) {
-              this.setGlobalError(response.data.message);
-            }
-          }
-        }}
+        onSubmit={this.onSubmit}
       >
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">

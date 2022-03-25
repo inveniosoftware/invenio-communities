@@ -27,7 +27,7 @@ communities = WebpackThemeBundle(
         'semantic-ui': dict(
             entry={
                 'invenio-communities-new':
-                    './js/invenio_communities/new.js',
+                    './js/invenio_communities/community/new.js',
                 'invenio-communities-privileges':
                     './js/invenio_communities/settings/privileges.js',
                 'invenio-communities-profile':
@@ -35,11 +35,11 @@ communities = WebpackThemeBundle(
                 'invenio-communities-requests':
                     './js/invenio_communities/requests/index.js',
                 'invenio-communities-frontpage':
-                    './js/invenio_communities/frontpage.js',
+                    './js/invenio_communities/community/frontpage.js',
                 'invenio-communities-details-search':
-                    './js/invenio_communities/search/index.js',
+                    './js/invenio_communities/details_search/index.js',
                 'invenio-communities-search':
-                    './js/invenio_communities/search.js',
+                    './js/invenio_communities/community/search.js',
                 'invenio-communities-members':
                     './js/invenio_communities/members/members/member_view/index.js',
                 'invenio-communities-members-manager':
@@ -47,7 +47,7 @@ communities = WebpackThemeBundle(
                 'invenio-communities-members-public':
                     './js/invenio_communities/members/members/public_view/index.js',
                 'invenio-communities-invitations':
-                    './js/invenio_communities/members/invitations.js'
+                    './js/invenio_communities/members/invitations/index.js'
             },
             dependencies={
                 '@ckeditor/ckeditor5-build-classic': '^16.0.0',

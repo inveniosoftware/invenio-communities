@@ -134,8 +134,21 @@ export class MemberDropdown extends Component {
       value: initialValue,
     };
   }
+
+  onChange = (e, data) => {
+    const { updateMember } = this.props;
+
+    // empty catch prevents state from being set if updateMember errors
+    try {
+      updateMember(data.value);
+      this.setState({
+        value: data.value,
+      });
+    } catch (e) {}
+  };
+
   render() {
-    const { options, updateMember } = this.props;
+    const { options } = this.props;
     const { value } = this.state;
     return (
       <Menu compact>
@@ -144,14 +157,10 @@ export class MemberDropdown extends Component {
           options={options}
           item
           fluid
+          value={value}
           openOnFocus={false}
           selectOnBlur={false}
-          onChange={(e, data) => {
-            updateMember(data.value);
-            this.setState({
-              value: data.value,
-            });
-          }}
+          onChange={this.onChange}
         />
       </Menu>
     );

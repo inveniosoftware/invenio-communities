@@ -9,30 +9,46 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
+import _isEmpty from "lodash/isEmpty";
+import PropTypes from "prop-types";
 
-export const ViewButton = ({ onClick }) => (
-  <Button size="tiny" content={i18next.t("View")} onClick={onClick} />
-);
+export const ActionButtons = ({
+  actions,
+  onReInvite,
+  onView,
+  onCancel,
+  status,
+}) => {
+  status = status.toLowerCase();
+  const actionsPossible = !_isEmpty(actions);
 
-export const CancelButton = ({ onClick }) => (
-  <Button size="tiny" content={i18next.t("Cancel")} onClick={onClick} />
-);
-
-export const ReInviteButton = ({ onClick }) => (
-  <Button content={i18next.t("Re invite")} onClick={onClick} />
-);
-
-export const ActionButtons = ({ status, onReInvite, onView, onCancel }) => {
-  const condition = false;
-
-  if (condition) {
-    return <ReInviteButton onClick={() => onReInvite()} />;
-  }
+  const showViewButton = true;
+  const showCancel = status === "submitted" && actionsPossible;
+  const showReInviteButton = status === "expired" && actionsPossible;
 
   return (
     <>
-      <ViewButton onClick={() => onView()} />
-      <CancelButton onClick={() => onCancel()} />
+      {showReInviteButton && (
+        <Button
+          size="tiny"
+          content={i18next.t("Re invite")}
+          onClick={onReInvite}
+        />
+      )}
+      {showViewButton && (
+        <Button size="tiny" content={i18next.t("View")} onClick={onView} />
+      )}
+      {showCancel && (
+        <Button size="tiny" content={i18next.t("Cancel")} onClick={onCancel} />
+      )}
     </>
   );
+};
+
+ActionButtons.propTypes = {
+  actions: PropTypes.object.isRequired,
+  onReInvite: PropTypes.func,
+  onView: PropTypes.func,
+  onCancel: PropTypes.func,
+  status: PropTypes.string.isRequired,
 };

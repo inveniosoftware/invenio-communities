@@ -11,6 +11,10 @@ import { Label, Popup } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export const ErrorPopup = ({ trigger, error, onClose }) => {
+  if (!error) {
+    return null;
+  }
+
   return (
     <Popup
       basic
@@ -21,7 +25,7 @@ export const ErrorPopup = ({ trigger, error, onClose }) => {
         <Label
           content={error}
           basic
-          className="mb-5 error-colored"
+          className="mb-5 error"
           pointing="below"
           removeIcon="close"
           onRemove={onClose}

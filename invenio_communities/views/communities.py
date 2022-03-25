@@ -15,6 +15,7 @@ from flask_login import login_required
 from .decorators import pass_community, pass_community_logo, \
     require_community_owner, pass_community_endpoint
 
+
 #
 # Views
 #
@@ -25,11 +26,13 @@ def communities_frontpage():
         "invenio_communities/frontpage.html",
     )
 
+
 def communities_search():
     """Communities search page."""
     return render_template(
         "invenio_communities/search.html",
     )
+
 
 @login_required
 def communities_new():
@@ -44,14 +47,14 @@ def communities_new():
                         'value': 'public',
                         'icon': 'group',
                         'helpText': _('Your community is publicly accessible' \
-                                    ' and shows up in search results.')
+                                      ' and shows up in search results.')
                     },
                     {
                         'text': 'Restricted',
                         'value': 'restricted',
                         'icon': 'lock',
                         'helpText': _('Your community is restricted to users' \
-                                    ' with access.')
+                                      ' with access.')
                     }
                 ]
             ),
@@ -59,13 +62,14 @@ def communities_new():
         ),
     )
 
+
 @pass_community
 @pass_community_logo
 def communities_detail(community=None, logo=None, pid_value=None):
     """Community detail page."""
     return render_template(
         "invenio_communities/details/index.html",
-        community=community.to_dict(), # TODO: use serializer
+        community=community.to_dict(),  # TODO: use serializer
         logo=logo.to_dict() if logo else None,
         # TODO: inject this from a vocabulary in the community
         types={
@@ -80,6 +84,7 @@ def communities_detail(community=None, logo=None, pid_value=None):
         active_menu_tab="search"
     )
 
+
 @pass_community
 @pass_community_logo
 @require_community_owner
@@ -87,7 +92,7 @@ def communities_settings(community=None, logo=None, pid_value=None):
     """Community settings/profile page."""
     return render_template(
         "invenio_communities/details/settings/profile.html",
-        community=community.to_dict(), # TODO: use serializer,
+        community=community.to_dict(),  # TODO: use serializer,
         logo=logo.to_dict() if logo else None,
         # TODO: inject this from a vocabulary in the community
         types={
@@ -102,13 +107,14 @@ def communities_settings(community=None, logo=None, pid_value=None):
         active_menu_tab="settings"
     )
 
+
 @pass_community
 @pass_community_logo
 def communities_requests(community=None, logo=None, pid_value=None):
     """Community requests page."""
     return render_template(
         "invenio_communities/details/requests/index.html",
-        community=community.to_dict(), # TODO: use serializer,
+        community=community.to_dict(),  # TODO: use serializer,
         logo=logo.to_dict() if logo else None,
         # TODO: inject this from a vocabulary in the community
         types={
@@ -120,9 +126,9 @@ def communities_requests(community=None, logo=None, pid_value=None):
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
         permissions=community.has_permissions_to(['update']),
-        endpoint = f'/api/requests?receiver=community:{community["uuid"]}',
         active_menu_tab="requests"
     )
+
 
 @require_community_owner
 @pass_community
@@ -131,7 +137,7 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
     """Community settings/privileges page."""
     return render_template(
         "invenio_communities/details/settings/privileges.html",
-        community=community.to_dict(), # TODO: use serializer,
+        community=community.to_dict(),  # TODO: use serializer,
         form_config=dict(
             access=dict(
                 visibilty=[
@@ -140,14 +146,14 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
                         'value': 'public',
                         'icon': 'group',
                         'helpText': _('Your community is publicly accessible' \
-                                    ' and shows up in search results.')
+                                      ' and shows up in search results.')
                     },
                     {
                         'text': 'Restricted',
                         'value': 'restricted',
                         'icon': 'lock',
                         'helpText': _('Your community is restricted to users' \
-                                    ' with access.')
+                                      ' with access.')
                     }
                 ]
             ),

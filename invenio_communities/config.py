@@ -108,7 +108,6 @@ COMMUNITIES_MEMBERS_SEARCH = {
 }
 """Community requests search configuration (i.e list of community requests)"""
 
-
 COMMUNITIES_MEMBERS_FACETS = {
     'role': {
         'facet': facets.role,
@@ -124,3 +123,26 @@ COMMUNITIES_MEMBERS_FACETS = {
     }
 }
 """Available facets defined for this module."""
+
+COMMUNITIES_INVITATIONS_SEARCH = {
+    'facets': ['type', 'status'],
+    'sort': ['bestmatch', 'newest', 'oldest'],
+}
+"""Community invitations search configuration (i.e list of community invitations)"""
+
+COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
+    "bestmatch": dict(
+        title=_('Best match'),
+        fields=['_score'],  # ES defaults to desc on `_score` field
+    ),
+    "newest": dict(
+        title=_('Newest'),
+        fields=['-created'],
+    ),
+    "oldest": dict(
+        title=_('Oldest'),
+        fields=['created'],
+    ),
+
+}
+"""Definitions of available record sort options."""

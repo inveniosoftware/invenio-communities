@@ -7,83 +7,110 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { useState, useRef } from "react";
+import React, { useState, Component } from "react";
 import { Button, Form, Modal, Icon } from "semantic-ui-react";
 
-import { CommunitiesApiClient } from "../../api";
+import { CommunityApi } from "../../api";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { withCancel } from "react-invenio-forms";
+import { communityErrorSerializer } from "../../api/serializers";
 
 // WARNING: This DOES NOT RENAME a community! It changes its id.
-export const RenameCommunityButton = ({ community }) => {
+export class RenameCommunityButton extends Component {
+  constructor(props) {
+    super(props);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [error, setError] = useState("");
+    this.state = {
+      modalOpen: false,
+      error: "",
+    };
 
-  const formInputRef = React.useRef(null);
+    this.formInputRef = React.createRef();
+  }
 
-  const handleOpen = () => setModalOpen(true);
+  componentWillUnmount() {
+    this.cancellableRename && this.cancellableRename.cancel();
+  }
 
-  const handleClose = () => setModalOpen(false);
+  handleOpen = () => this.setState({ modalOpen: true });
 
-  const handleRename = async (event) => {
+  handleClose = () => this.setState({ modalOpen: false });
+
+  handleRename = async (event) => {
     // stop event propagation so the submit event is restricted in the modal
     // form
     event.stopPropagation();
-    const newId = formInputRef.current.value;
-    const client = new CommunitiesApiClient();
-    const response = await client.updateId(community.id, newId);
-    if (response.code < 400) {
+    const { community } = this.props;
+    const newId = this.formInputRef.current.value;
+    const client = new CommunityApi();
+
+    this.cancellableRename = withCancel(client.updateId(community.id, newId));
+
+    try {
+      await this.cancellableRename.promise;
+
       window.location.href = `/communities/${newId}/settings`;
-      handleClose();
-    } else {
-      const invalidIdError = response.errors
-        .filter((error) => error.field === "id")
-        .map((error) => error.messages[0]);
-      setError(invalidIdError);
+      this.handleClose();
+    } catch (error) {
+      if (error === "UNMOUNTED") return;
+
+      const { errors } = communityErrorSerializer(error);
+
+      if (errors) {
+        const invalidIdError = errors
+          .filter((error) => error.field === "id")
+          .map((error) => error.messages[0]);
+        this.setState({ error: invalidIdError });
+      }
     }
   };
 
-  return (
-    <>
-      <Button
-        compact
-        color="red"
-        onClick={handleOpen}
-        fluid
-        icon
-        labelPosition="left"
-        type="button"
-      >
-        <Icon name="pencil"/>{i18next.t("Rename community")}
-      </Button>
+  render() {
+    const { modalOpen, error } = this.state;
 
-      <Modal open={modalOpen} onClose={handleClose} size="tiny">
-        <Modal.Content>
-          <Form onSubmit={handleRename}>
-            <Form.Input
-              label={i18next.t("Enter the new name of the community")}
-              fluid
-              input={{ ref: formInputRef }}
-              {...(error
-                ? {
-                    error: {
-                      content: error,
-                      pointing: "above",
-                    },
-                  }
-                : {})}
-            />
-          </Form>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button onClick={handleClose} floated="left">
-            {i18next.t("Cancel")}
-          </Button>
-          <Button color="red" onClick={handleRename}>
-            {i18next.t("Rename")}
-          </Button>
-        </Modal.Actions>
-      </Modal>
-    </>
-  );
-};
+    return (
+      <>
+        <Button
+          compact
+          negative
+          onClick={this.handleOpen}
+          fluid
+          icon
+          labelPosition="left"
+          type="button"
+        >
+          <Icon name="pencil" />
+          {i18next.t("Rename community")}
+        </Button>
+
+        <Modal open={modalOpen} onClose={this.handleClose} size="tiny">
+          <Modal.Content>
+            <Form onSubmit={this.handleRename}>
+              <Form.Input
+                label={i18next.t("Enter the new name of the community")}
+                fluid
+                input={{ ref: this.formInputRef }}
+                {...(error
+                  ? {
+                      error: {
+                        content: error,
+                        pointing: "above",
+                      },
+                    }
+                  : {})}
+              />
+            </Form>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={this.handleClose} floated="left">
+              {i18next.t("Cancel")}
+            </Button>
+            <Button color="red" onClick={this.handleRename}>
+              {i18next.t("Rename")}
+            </Button>
+          </Modal.Actions>
+        </Modal>
+      </>
+    );
+  }
+}

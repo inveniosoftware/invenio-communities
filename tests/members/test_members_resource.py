@@ -34,6 +34,7 @@ def new_user_data(new_user):
         "role": "reader",
     }
 
+
 #
 # Add
 #
@@ -114,7 +115,7 @@ def test_invite(client, headers, community_id, owner, new_user_data, db):
 
 
 def test_invite_deny(
-        client, headers, community_id, new_user, new_user_data, db):
+    client, headers, community_id, new_user, new_user_data, db):
     """Test invite REST API."""
     client = new_user.login(client)
     r = client.post(
@@ -129,7 +130,7 @@ def test_invite_deny(
 # Update
 #
 def test_update(
-        client, headers, community_id, owner, public_reader):
+    client, headers, community_id, owner, public_reader):
     """Test update of members."""
     client = owner.login(client)
     data = {
@@ -149,7 +150,7 @@ def test_update(
 # Delete
 #
 def test_delete(
-        client, headers, community_id, owner, public_reader):
+    client, headers, community_id, owner, public_reader):
     """Test delete of members."""
     client = public_reader.login(client)
     data = {
@@ -167,7 +168,7 @@ def test_delete(
 # Search and serialization
 #
 def test_search(
-        client, headers, community_id, owner, public_reader, db, clean_index):
+    client, headers, community_id, owner, public_reader, db, clean_index):
     """Search."""
     client = owner.login(client)
     r = client.get(
@@ -190,7 +191,7 @@ def test_search(
 
 
 def test_search_public(
-        client, headers, community_id, new_user, public_reader, clean_index):
+    client, headers, community_id, new_user, public_reader, clean_index):
     """Search public members."""
     client = new_user.login(client)
     r = client.get(
@@ -217,7 +218,6 @@ def test_search_public(
     assert 'type' in hit['member']
     assert 'name' in hit['member']
     assert 'description' in hit['member']
-
 
 # TODO: member serialization/links
 # TODO: request serialization/links

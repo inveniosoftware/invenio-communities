@@ -6,20 +6,16 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Input,
   Card,
   Container,
-  Checkbox,
   Grid,
-  Label,
-  List,
   Icon,
   Item,
   Button,
   Segment,
-  Accordion
 } from "semantic-ui-react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
@@ -36,8 +32,7 @@ import {
   ResultsPerPage,
 } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { CommunitiesFacetsValues } from './search/components';
-
+import { CommunitiesFacetsValues } from "../details_search/components";
 
 function ResultsGridItemTemplate({ result, index }) {
   return (
