@@ -30,7 +30,10 @@ class Role:
     is_owner: bool = False
     """This role is the owner role (only one can exists)."""
 
-    def can_manage(self, role_name):
+    can_manage: bool = False
+    """This role has manage permissions."""
+
+    def can_manage_role(self, role_name):
         """Determine if this role can manage the role name."""
         return role_name in self.can_manage_roles
 
@@ -78,10 +81,16 @@ class RoleRegistry:
         """Get the owner role"""
         return self._owner
 
+    def can(self, action):
+        """Returns the roles that can do the action."""
+        for role in self.roles:
+            if getattr(role, f"can_{action}"):
+                yield role
+
     def manager_roles(self, role_name):
         """Get all roles that can manage members a given role.
 
-        A manager can manage other manages, curators and readers.
+        A manager can manage other managers, curators and readers.
         An owner can manage other owners, managers, curators and readers.
 
         This is used for instance to ensure that a manager cannot invite an
@@ -90,6 +99,6 @@ class RoleRegistry:
         allowed_roles = []
 
         for role in self.roles:
-            if role.can_manage(role_name):
+            if role.can_manage_role(role_name):
                 allowed_roles.append(role)
         return allowed_roles

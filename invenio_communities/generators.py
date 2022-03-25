@@ -187,6 +187,13 @@ class CommunityMembers(CommunityRoles):
 class CommunityManagers(CommunityRoles):
     """Roles representing all managers of a community."""
 
+    def roles(self, **kwargs):
+        return [r.name for r in current_roles.can("manage")]
+
+
+class CommunityManagersForRole(CommunityRoles):
+    """Roles representing all managers of a community for a role update."""
+
     def roles(self, role=None, member=None, **kwargs):
         allowed_roles = []
         if role is not None and member is not None:
