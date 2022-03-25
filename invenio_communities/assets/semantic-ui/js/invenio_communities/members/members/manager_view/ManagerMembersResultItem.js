@@ -8,13 +8,12 @@ import {
   Button,
   Label,
   Table,
-  Checkbox,
   Dropdown,
 } from 'semantic-ui-react';
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
-import { config } from "../../mockedData";
+import { config as mockedConfig } from "../../mockedData";
 import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
 
@@ -132,7 +131,7 @@ export class ManagerMemberViewResultItem extends Component {
               selection
               value={result.visible ? "public" : "hidden"} //TODO: Improve this
               options={dropdownVisibilityOptionsGenerator(
-                config.visibility.options
+                mockedConfig.visibility.options
               )}
               onChange={this.updateVisibility}
             />

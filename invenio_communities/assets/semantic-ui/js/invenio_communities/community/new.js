@@ -172,6 +172,7 @@ class CommunityCreateForm extends Component {
                     icon
                     labelPosition="left"
                     loading={isSubmitting}
+                    disabled={isSubmitting}
                     type="submit"
                   >
                     <Icon name="plus" />

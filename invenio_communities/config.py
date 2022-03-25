@@ -21,7 +21,9 @@ COMMUNITIES_ROUTES = {
     'settings_privileges': '/communities/<pid_value>/settings/privileges',
     'members': '/communities/<pid_value>/members',
     'invitations': '/communities/<pid_value>/invitations',
+    'invitation_details': '/communities/<pid_value>/invitations/<invitation_pid_value>'
 }
+
 """Communities ui endpoints."""
 
 COMMUNITIES_ENABLED = True
@@ -93,7 +95,7 @@ COMMUNITIES_ROLES = {
         can_manage_roles=['owner', 'manager', 'curator', 'reader'],
         is_owner=True,
         can_manage=True
-),
+    ),
 }
 """Community roles."""
 
@@ -147,3 +149,4 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 
 }
 """Definitions of available record sort options."""
+
