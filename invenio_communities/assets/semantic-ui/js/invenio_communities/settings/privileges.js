@@ -24,8 +24,9 @@ import {
 } from "semantic-ui-react";
 import { RadioField } from "react-invenio-forms";
 
-import { CommunitiesApiClient } from "../api";
+import { CommunityApi } from "../api";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { communityErrorSerializer } from "../api/serializers";
 
 class CommunityPrivilegesForm extends Component {
   state = {
@@ -53,44 +54,50 @@ class CommunityPrivilegesForm extends Component {
     this.setState({ isSaved: newValue });
   };
 
+  onSubmit = async (values, { setSubmitting, setFieldError }) => {
+    setSubmitting(true);
+
+    try {
+      const client = new CommunityApi();
+      await client.update(this.props.community.id, values);
+
+      this.setIsSavedState(true);
+    } catch (error) {
+      if (error === "UNMOUNTED") return;
+
+      const { message, errors } = communityErrorSerializer(error);
+
+      if (message) {
+        this.setGlobalError(message);
+      }
+
+      if (errors) {
+        errors.forEach(({ field, messages }) =>
+          setFieldError(field, messages[0])
+        );
+      }
+    }
+
+    setSubmitting(false);
+  };
+
   render() {
-    const { isSaved } = this.state;
+    const { isSaved, error } = this.state;
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
-        onSubmit={async (
-          values,
-          { setSubmitting, setErrors, setFieldError }
-        ) => {
-          setSubmitting(true);
-          const client = new CommunitiesApiClient();
-          const response = await client.update(this.props.community.id, values);
-          if (response.code < 400) {
-            this.setIsSavedState(true);
-          } else {
-            if (response.errors) {
-              response.errors.map(({ field, messages }) =>
-                setFieldError(field, messages[0])
-              );
-            }
-
-            if (response.data.message) {
-              this.setGlobalError(response.data.message);
-            }
-          }
-          setSubmitting(false);
-        }}
+        onSubmit={this.onSubmit}
       >
         {({ isSubmitting, handleSubmit, values }) => (
           <Form onSubmit={handleSubmit}>
             <Message
-              hidden={this.state.error === ""}
+              hidden={error === ""}
               negative
               className="flashed top attached"
             >
               <Grid container>
                 <Grid.Column width={15} textAlign="left">
-                  <strong>{this.state.error}</strong>
+                  <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>

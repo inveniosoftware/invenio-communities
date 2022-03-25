@@ -16,9 +16,6 @@ export const InvitationsResults = ({
   paginationOptions,
   currentResultsState,
 }) => {
-  // TODO: Remove Mocked data
-  currentResultsState.data = generateInvitations(names);
-
   const { total } = currentResultsState.data;
   return (
     total && (

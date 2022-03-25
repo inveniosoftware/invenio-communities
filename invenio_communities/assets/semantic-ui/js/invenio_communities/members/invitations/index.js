@@ -8,14 +8,14 @@
 
 import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { InvitationsResults } from "./invitations/InvitationsResults";
-import { InvitationsSearchBarElement } from "./invitations/InvitationsSearchBarElement";
-import { InvitationsSearchLayout } from "./invitations/InvitationsSearchLayout";
-import { InvitationsResultsContainer } from "./invitations/InvitationsResultsContainer";
-import {InvitationResultItemWithState} from "./invitations/InvitationResultItemWithState";
+import { InvitationsResults } from "./InvitationsResults";
+import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
+import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
+import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
+import {InvitationResultItemControlled} from "./InvitationResultItemControlled";
 
 const defaultComponents = {
-  "ResultsList.item": InvitationResultItemWithState,
+  "ResultsList.item": InvitationResultItemControlled,
   "SearchApp.layout": InvitationsSearchLayout,
   "SearchBar.element": InvitationsSearchBarElement,
   "SearchApp.results": InvitationsResults,

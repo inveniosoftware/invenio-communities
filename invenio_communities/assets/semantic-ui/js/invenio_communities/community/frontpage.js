@@ -8,10 +8,10 @@
 
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
 import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
-import { Image } from "react-invenio-forms";
+import { Image, withCancel } from "react-invenio-forms";
+import { http } from "../api/config";
 
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   const PlaceholderItem = () => (
@@ -47,7 +47,6 @@ const EmptyMessage = ({ message }) => {
 };
 
 class CommunityCard extends Component {
-
   render() {
     return (
       <Card fluid href={`/communities/${this.props.community.id}`}>
@@ -83,20 +82,21 @@ class CommunitiesCardGroup extends Component {
     };
   }
 
+  componentWillUnmount() {
+    this.cancellableFetch && this.cancellableFetch.cancel();
+  }
+
   componentDidMount() {
     this.fetchData();
   }
 
   fetchData = async () => {
     this.setState({ isLoading: true });
+    this.cancellableFetch = withCancel(http.get(this.props.fetchDataUrl));
+
     try {
-      const response = await axios(this.props.fetchDataUrl, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await this.cancellableFetch.promise;
+
       this.setState({ data: response.data.hits, isLoading: false });
     } catch (error) {
       // TODO: handle error response

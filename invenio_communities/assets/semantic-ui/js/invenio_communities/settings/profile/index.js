@@ -7,7 +7,7 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Formik, getIn } from "formik";
 import * as Yup from "yup";
@@ -38,7 +38,7 @@ import {
   Header,
   Form,
   Message,
-  Segment
+  Segment,
 } from "semantic-ui-react";
 import {
   FieldLabel,
@@ -46,8 +46,9 @@ import {
   SelectField,
   TextField,
 } from "react-invenio-forms";
-import { CommunitiesApiClient } from "../../api";
+import { CommunityApi } from "../../api";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { communityErrorSerializer } from "../../api/serializers";
 
 // TODO: remove when type becomes a vocabulary
 const COMMUNITY_TYPES = [
@@ -114,9 +115,14 @@ const LogoUploader = (props) => {
       const file = acceptedFiles[0];
       const formData = new FormData();
       formData.append("file", file);
-      const client = new CommunitiesApiClient();
-      await client.updateLogo(props.community.id, file);
-      window.location.reload();
+
+      try {
+        const client = new CommunityApi();
+        await client.updateLogo(props.community.id, file);
+        window.location.reload();
+      } catch (error) {
+        props.onError(error);
+      }
     },
     onDropRejected: (rejectedFiles) => {
       // TODO: show error message when files are rejected e.g size limit
@@ -133,13 +139,9 @@ const LogoUploader = (props) => {
   };
 
   let deleteLogo = async () => {
-    const client = new CommunitiesApiClient();
-    const response = await client.deleteLogo(props.community.id);
-    if (response.code >= 400) {
-      props.onError(response.errors);
-    }
+    const client = new CommunityApi();
+    await client.deleteLogo(props.community.id);
   };
-
 
   return (
     <Dropzone {...dropzoneParams}>
@@ -173,6 +175,7 @@ const LogoUploader = (props) => {
                 </h3>
               }
               onDelete={deleteLogo}
+              onError={props.onError}
             />
           )}
         </span>
@@ -182,49 +185,49 @@ const LogoUploader = (props) => {
 };
 
 const DangerZone = ({ community, onError }) => (
-    <Segment color="red" className="rel-mt-2">
-      <Header as="h2" color="red">
-        {i18next.t("Danger zone")}
-      </Header>
-      <Grid>
-        <Grid.Column width="12">
-          <Header as="h4">{i18next.t("Rename community")}</Header>
-          <p>
-            {i18next.t(
-              "Renaming your community can have unintended side effects."
-            )}
-          </p>
-        </Grid.Column>
-        <Grid.Column floated="right" width="4">
-          <RenameCommunityButton community={community} />
-        </Grid.Column>
-        <Grid.Column floated="left" width="12">
-          <Header as="h4">{i18next.t("Delete community")}</Header>
-          <p>
-            {i18next.t(
-              "Once deleted, it will be gone forever. Please be certain."
-            )}
-          </p>
-        </Grid.Column>
-        <Grid.Column floated="right" width="4">
-          <DeleteButton
-            community={community}
-            label={i18next.t("Delete community")}
-            redirectURL="/communities"
-            confirmationMessage={
-              <h3>
-                {i18next.t("Are you sure you want to delete this community?")}
-              </h3>
-            }
-            onDelete={() => {
-              const client = new CommunitiesApiClient();
-              return client.delete(community.id);
-            }}
-            onError={onError}
-          />
-        </Grid.Column>
-      </Grid>
-    </Segment>
+  <Segment color="red" className="rel-mt-2">
+    <Header as="h2" color="red">
+      {i18next.t("Danger zone")}
+    </Header>
+    <Grid>
+      <Grid.Column width="12">
+        <Header as="h4">{i18next.t("Rename community")}</Header>
+        <p>
+          {i18next.t(
+            "Renaming your community can have unintended side effects."
+          )}
+        </p>
+      </Grid.Column>
+      <Grid.Column floated="right" width="4">
+        <RenameCommunityButton community={community} />
+      </Grid.Column>
+      <Grid.Column floated="left" width="12">
+        <Header as="h4">{i18next.t("Delete community")}</Header>
+        <p>
+          {i18next.t(
+            "Once deleted, it will be gone forever. Please be certain."
+          )}
+        </p>
+      </Grid.Column>
+      <Grid.Column floated="right" width="4">
+        <DeleteButton
+          community={community}
+          label={i18next.t("Delete community")}
+          redirectURL="/communities"
+          confirmationMessage={
+            <h3>
+              {i18next.t("Are you sure you want to delete this community?")}
+            </h3>
+          }
+          onDelete={async () => {
+            const client = new CommunityApi();
+            await client.delete(community.id);
+          }}
+          onError={onError}
+        />
+      </Grid.Column>
+    </Grid>
+  </Segment>
 );
 
 class CommunityProfileForm extends Component {
@@ -296,8 +299,33 @@ class CommunityProfileForm extends Component {
     return submittedCommunity;
   };
 
-  setGlobalError = (errorMsg) => {
-    this.setState({ error: errorMsg });
+  setGlobalError = (error) => {
+    const { message } = communityErrorSerializer(error);
+    this.setState({ error: message });
+  };
+
+  onSubmit = async (values, { setSubmitting, setFieldError }) => {
+    setSubmitting(true);
+    const payload = this.serializeValues(values);
+    const client = new CommunityApi();
+
+    try {
+      await client.update(this.props.community.id, payload);
+      window.location.reload();
+    } catch (error) {
+      if (error === "UNMOUNTED") return;
+
+      const { message, errors } = communityErrorSerializer(error);
+
+      setSubmitting(false);
+
+      if (message) {
+        this.setGlobalError(error);
+      }
+      if (errors) {
+        errors.map(({ field, messages }) => setFieldError(field, messages[0]));
+      }
+    }
   };
 
   render() {
@@ -305,31 +333,7 @@ class CommunityProfileForm extends Component {
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
         validationSchema={COMMUNITY_VALIDATION_SCHEMA}
-        onSubmit={async (
-          values,
-          { setSubmitting, setErrors, setFieldError }
-        ) => {
-          setSubmitting(true);
-          const payload = this.serializeValues(values);
-          const client = new CommunitiesApiClient();
-          const response = await client.update(
-            this.props.community.id,
-            payload
-          );
-          if (response.code < 400) {
-            window.location.reload();
-          } else {
-            setSubmitting(false);
-            if (response.errors) {
-              response.errors.map(({ field, messages }) =>
-                setFieldError(field, messages[0])
-              );
-            }
-            if (response.data.message) {
-              this.setGlobalError(response.data.message);
-            }
-          }
-        }}
+        onSubmit={this.onSubmit}
       >
         {({ isSubmitting, isValid, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">

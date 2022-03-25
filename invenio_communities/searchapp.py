@@ -16,14 +16,14 @@ from invenio_search_ui.searchconfig import search_app_config
 def search_app_context():
     """Search app context processor."""
     return {
-        #The Following functions should be defined for the communties
+        # The Following functions should be defined for the communties
         # search_app_communities_config
         # search_app_communities_records_config
         # search_app_communities_members_config
         # search_app_communities_invitations_config
         # search_app_communities_requests_config
 
-        #For them, the following configurations should be applied, respectively
+        # For them, the following configurations should be applied, respectively
         # COMMUNITIES_SEARCH
         # COMMUNITIES_RECORDS_SEARCH
         # COMMUNITIES_MEMBERS_SEARCH
@@ -32,17 +32,24 @@ def search_app_context():
 
         'search_app_communities_requests_config': partial(
             search_app_config,
-            config_name = 'COMMUNITIES_REQUESTS_SEARCH',
-            available_facets = current_app.config['REQUESTS_FACETS'],
-            sort_options = current_app.config['COMMUNITIES_SORT_OPTIONS'],
+            config_name='COMMUNITIES_REQUESTS_SEARCH',
+            available_facets=current_app.config['REQUESTS_FACETS'],
+            sort_options=current_app.config['COMMUNITIES_SORT_OPTIONS'],
             headers={"Accept": "application/json"},
             initial_filters=[["is_open", "true"]]
         ),
         'search_app_communities_members_config': partial(
             search_app_config,
-            config_name = 'COMMUNITIES_MEMBERS_SEARCH',
-            available_facets = current_app.config['COMMUNITIES_MEMBERS_FACETS'],
-            sort_options = current_app.config['RDM_SORT_OPTIONS'],
-            headers = {"Accept": "application/json"}
+            config_name='COMMUNITIES_MEMBERS_SEARCH',
+            available_facets=current_app.config['COMMUNITIES_MEMBERS_FACETS'],
+            sort_options=current_app.config['RDM_SORT_OPTIONS'],
+            headers={"Accept": "application/json"}
         ),
+        'search_app_communities_invitations_config': partial(
+            search_app_config,
+            config_name='COMMUNITIES_INVITATIONS_SEARCH',
+            available_facets=current_app.config['REQUESTS_FACETS'],
+            sort_options=current_app.config['COMMUNITIES_INVITATIONS_SORT_OPTIONS'],
+            headers={"Accept": "application/json"},
+        )
     }

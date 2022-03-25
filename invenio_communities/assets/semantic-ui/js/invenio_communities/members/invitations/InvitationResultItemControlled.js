@@ -10,8 +10,11 @@ import React, { Component } from "react";
 import { InvitationResultItem } from "./InvitationResultItem";
 import PropTypes from "prop-types";
 import { randomBool } from "../mock";
+import { CommunityActionsApi } from "../../api";
+import { errorSerializer } from "../../api/serializers";
+import { withCancel } from "react-invenio-forms";
 
-export class InvitationResultItemWithState extends Component {
+export class InvitationResultItemControlled extends Component {
   constructor(props) {
     super(props);
 
@@ -19,28 +22,13 @@ export class InvitationResultItemWithState extends Component {
       loading: false,
       error: "",
       success: false,
-      currentRole: props.result.role.title,
     };
-  }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { success } = this.state;
-    const timerAlreadySet = !!this.successTimer;
-
-    if (success) {
-      if (timerAlreadySet) {
-        clearTimeout(this.successTimer);
-      }
-
-      this.successTimer = setTimeout(
-        () => this.setState({ success: false }),
-        3000
-      );
-    }
+    this.actionsApi = new CommunityActionsApi(props.result.links);
   }
 
   componentWillUnmount() {
-    this.successTimer && clearTimeout(this.successTimer);
+    this.cancellableDecline && this.cancellableDecline.cancel();
   }
 
   onRoleChange = (role) => {
@@ -67,16 +55,43 @@ export class InvitationResultItemWithState extends Component {
           }),
         500
       );
+      throw Error;
     }
   };
 
+  onCancel = async () => {
+    this.setState({ loading: true });
+
+    try {
+      const payload = { content: "sorry!", format: "html" };
+
+      this.cancellableDecline = withCancel(
+        this.actionsApi.declineAction(payload)
+      );
+      await this.cancellableDecline.promise;
+
+      this.setState({ loading: false, success: true, error: "" });
+    } catch (error) {
+      if (error === "UNMOUNTED") return;
+
+      this.setState({
+        loading: false,
+        error: errorSerializer(error),
+        success: false,
+      });
+    }
+  };
+
+  onView = () => {};
+
+  onReInvite = () => {};
+
   render() {
     const { result, index } = this.props;
-    const { loading, error, success, currentRole } = this.state;
+    const { loading, error, success } = this.state;
 
     return (
       <InvitationResultItem
-        currentRole={currentRole}
         invitation={result}
         key={index}
         onRoleChange={(role) => this.onRoleChange(role)}
@@ -84,12 +99,16 @@ export class InvitationResultItemWithState extends Component {
         error={error}
         success={success}
         onErrorClose={() => this.setState({ error: "" })}
+        onSuccessTimeOut={() => this.setState({ success: false })}
+        onCancel={this.onCancel}
+        onView={this.onView}
+        onReInvite={this.onReInvite}
       />
     );
   }
 }
 
-InvitationResultItemWithState.propTypes = {
+InvitationResultItemControlled.propTypes = {
   result: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
 };
