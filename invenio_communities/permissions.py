@@ -31,8 +31,10 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         IfRestricted(
             'visibility',
             then_=[CommunityMembers()],
-            else_=[AnyUser()]),
-        ]
+            else_=[AnyUser()]
+        ),
+        SystemProcess(),
+    ]
 
     can_update = [CommunityOwners(), SystemProcess()]
 
