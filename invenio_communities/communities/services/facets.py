@@ -29,3 +29,23 @@ visibility = TermsFacet(
         'restricted': _('Restricted'),
     }
 )
+
+role = TermsFacet(
+    field='role',
+    label=_('Visibility'),
+    value_labels={
+        'owner': _('Owner'),
+        'reader': _('Reader'),
+        'manager': _('Manager'),
+        'curator': _('Curator'),
+    }
+)
+
+visible = TermsFacet(
+    field='visible',
+    label=_('Visibility'),
+    value_labels={
+        'hidden': _('Hidden'),
+        'restricted': _('Restricted'),
+    }
+)

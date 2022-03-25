@@ -11,6 +11,7 @@
 from flask import Blueprint, current_app, render_template
 from flask_login import current_user
 from flask_menu import current_menu
+from invenio_communities.searchapp import search_app_context
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
@@ -125,6 +126,8 @@ def create_ui_blueprint(app):
             PermissionDeniedError, record_permission_denied_error)
         blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
         blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
+
+        # Register context processor
         blueprint.app_context_processor(search_app_context)
 
     return blueprint

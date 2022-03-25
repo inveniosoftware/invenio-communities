@@ -10,20 +10,20 @@ import _truncate from "lodash/truncate";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 
 import _upperFirst from "lodash/upperFirst";
-import { MembersResultsItem } from "./MembersResultItem";
-import { MembersResultsGridItem } from "./MembersResultsGridItem";
-import { MembersSearchBarElement } from "../components/MembersSearchBarElement";
-import { MembersResults } from "./MembersResult";
-import { MembersResultsContainer } from "./MembersResultContainer";
-import { MembersSearchLayout } from "./MembersSearchLayout";
+import { ManagerMembersResultsItem } from "./ManagerMembersResultItem";
+import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
+import { MembersResults } from "../components/MembersResult";
+import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
+import { MembersSearchLayout } from "../components/MembersSearchLayout";
+import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
 
 const defaultComponents = {
-  "ResultsList.item": MembersResultsItem,
+  "ResultsList.item": ManagerMembersResultsItem,
   "ResultsGrid.item": MembersResultsGridItem,
   "SearchApp.layout": MembersSearchLayout,
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
-  "ResultsList.container": MembersResultsContainer,
+  "ResultsList.container": ManagerMembersResultsContainer,
 };
 
 // Auto-initialize search app

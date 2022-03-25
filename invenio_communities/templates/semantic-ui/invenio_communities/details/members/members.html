@@ -11,70 +11,19 @@
 
 {%- block javascript %}
 {{ super() }}
-{{ webpack['invenio-communities-members.js'] }}
+{% if permissions.can_members_manage %}
+  {{ webpack['invenio-communities-members-manager.js'] }}
+{% elif permissions.can_members_search %}
+  {{ webpack['invenio-communities-members.js'] }}
+{% elif permissions.can_members_search_public %}
+  {{ webpack['invenio-communities-members-public.js'] }}
+{% endif %}
 {%- endblock javascript %}
 
 {% set active_menu_item = 'members' %}
 
 {%- block settings_body %}
 <div class="thirteen wide column">
-  <div data-invenio-search-config='{
-    "appId": "members-search",
-    "initialQueryState": {
-        "hiddenParams": null,
-        "size": 10,
-        "page": 1
-    },
-    "layoutOptions": {
-        "gridView": false,
-        "listView": true
-    },
-    "paginationOptions": {
-        "defaultValue": 10,
-        "resultsPerPage": [
-            {
-                "text": "10",
-                "value": 10
-            },
-            {
-                "text": "20",
-                "value": 20
-            },
-            {
-                "text": "50",
-                "value": 50
-            }
-        ]
-    },
-    "searchApi": {
-        "axios": {
-            "headers": {
-                "Accept": "application/json"
-            },
-            "url": "/api/communities",
-            "withCredentials": true
-        }
-    },
-    "sortOrderDisabled": true,
-    "sortOptions": [
-        {
-            "sortBy": "bestmatch",
-            "text": "{{_("Best match")}}"
-        },
-        {
-            "sortBy": "newest",
-            "text": "{{_("Newest")}}"
-        },
-        {
-            "sortBy": "oldest",
-            "text": "{{_("Oldest")}}"
-        },
-        {
-            "sortBy": "version",
-            "text": "{{_("Version")}}"
-        }
-    ]}' 
-    >
-  </div>
+    <div data-invenio-search-config='{{ search_app_communities_members_config(app_id="community-members-search", endpoint=endpoint) | tojson }}'></div>
 </div>
 {%- endblock settings_body %}

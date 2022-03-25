@@ -335,7 +335,7 @@ export const config = {
     options: [
       {
         title: "Public",
-        value: "public", //true or false
+        value: "public",
         description: "Your community membership is visible to everyone.",
       },
       {
