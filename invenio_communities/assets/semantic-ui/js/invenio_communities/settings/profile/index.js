@@ -182,7 +182,7 @@ const LogoUploader = (props) => {
 };
 
 const DangerZone = ({ community, onError }) => (
-    <Segment color="red" tertiary className="rel-mt-2">
+    <Segment color="red" className="rel-mt-2">
       <Header as="h2" color="red">
         {i18next.t("Danger zone")}
       </Header>
@@ -352,7 +352,7 @@ class CommunityProfileForm extends Component {
                 </Grid.Column>
               </Grid.Row>
 
-              <Grid.Row className="no-padding-tb">
+              <Grid.Row className="pt-0 pb-0">
                 <Grid.Column width={9}>
                   <TextField
                     fluid

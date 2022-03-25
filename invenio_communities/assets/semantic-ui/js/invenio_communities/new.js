@@ -80,7 +80,7 @@ class CommunityCreateForm extends Component {
             <Message
               hidden={error === ""}
               negative
-              className="flashed top-attached"
+              className="flashed top attached"
             >
               <Grid container>
                 <Grid.Column width={15} textAlign="left">
