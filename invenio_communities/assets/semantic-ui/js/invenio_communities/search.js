@@ -103,7 +103,7 @@ export const CommunitiesResults = ({
               <Grid>
                 <Grid.Row
                   verticalAlign="middle"
-                  className="small padding-tb-5 deposit-result-header"
+                  className="small pt-5 pb-5 highlight-background"
                 >
                   <Grid.Column width={4}>
                     <Count
@@ -119,7 +119,7 @@ export const CommunitiesResults = ({
                   <Grid.Column
                     width={12}
                     textAlign="right"
-                    className="padding-r-5"
+                    className="pr-5"
                   >
                     {sortOptions && (
                       <Sort

@@ -198,7 +198,7 @@ const RequestsResults = ({
               <Grid>
                 <Grid.Row
                   verticalAlign="middle"
-                  className="small padding-tb-5 deposit-result-header"
+                  className="small padding-tb-5 highlight-background"
                 >
                   <Grid.Column width={4}>
                     <Count
@@ -512,5 +512,5 @@ export const defaultComponents = (appId) => {
     [buildUID('SearchApp.results', '', appId)]: RequestsResults,
     [buildUID('SearchBar.element', '', appId)]: RecordSearchBarElement,
     [buildUID('EmptyResults.element', '', appId)]: RequestsEmptyResultsWithState,
-  } 
+  }
 };
