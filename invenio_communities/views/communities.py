@@ -8,14 +8,13 @@
 
 """Routes for community-related pages provided by Invenio-Communities."""
 
-from flask import current_app, render_template
+from flask import current_app, render_template, g
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 from invenio_records_resources.services.errors import PermissionDeniedError
+from invenio_requests.proxies import current_requests_service
 
-from .decorators import pass_community, pass_community_logo, \
-    pass_community_endpoint
-
+from .decorators import pass_community, pass_community_logo
 
 
 #
@@ -69,7 +68,7 @@ def communities_new():
 @pass_community_logo
 def communities_detail(community=None, logo=None, pid_value=None):
     """Community detail page."""
-    permissions=community.has_permissions_to(
+    permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites']
     )
     return render_template(
@@ -94,7 +93,7 @@ def communities_detail(community=None, logo=None, pid_value=None):
 @pass_community_logo
 def communities_settings(community=None, logo=None, pid_value=None):
     """Community settings/profile page."""
-    permissions=community.has_permissions_to(
+    permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites']
     )
     if not permissions['can_update']:
@@ -121,7 +120,7 @@ def communities_settings(community=None, logo=None, pid_value=None):
 @pass_community_logo
 def communities_requests(community=None, logo=None, pid_value=None):
     """Community requests page."""
-    permissions=community.has_permissions_to(
+    permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites']
     )
     if not permissions['can_search_requests']:
@@ -191,7 +190,7 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
 
 @pass_community
 def members(community=None, pid_value=None, endpoint=None):
-    permissions=community.has_permissions_to(
+    permissions = community.has_permissions_to(
         [
             "update",
             "members_search",
@@ -234,4 +233,34 @@ def invitations(community=None, pid_value=None):
             "project": "Project"
         },
         permissions=permissions,
+    )
+
+
+@pass_community
+def invitation_details(community=None, pid_value=None, invitation_pid_value=None):
+    invitation = current_requests_service.read(
+        id_=invitation_pid_value, identity=g.identity
+    )
+    query_config = dict(
+        size=current_app.config['REQUESTS_TIMELINE_PAGE_SIZE']
+    )
+
+    permissions = community.has_permissions_to(
+        ['update', 'read', 'search_requests', 'search_invites']
+    )
+    if not permissions['can_search_invites']:
+        raise PermissionDeniedError()
+
+    return render_template(
+        "invenio_communities/details/members/invitation_details.html",
+        community=community.to_dict(),
+        types={
+            "organization": "Organization",
+            "event": "Event",
+            "topic": "Topic",
+            "project": "Project"
+        },
+        permissions=permissions,
+        request=invitation.to_dict(),
+        default_query_config=query_config,
     )

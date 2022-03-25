@@ -69,4 +69,5 @@ def pass_community_endpoint(f):
             raise PermissionDeniedError()
         kwargs['endpoint'] = endpoint
         return f(**kwargs)
+
     return view

@@ -17,8 +17,9 @@ from invenio_records_resources.services.errors import PermissionDeniedError
 from .communities import communities_detail, communities_frontpage, \
     communities_new, communities_requests, communities_search, \
     communities_settings, communities_settings_privileges, invitations, \
-    members
+    members, invitation_details
 from ..searchapp import search_app_context
+
 
 #
 # Error handlers
@@ -101,6 +102,12 @@ def create_ui_blueprint(app):
         routes['invitations'],
         view_func=invitations
     )
+
+    blueprint.add_url_rule(
+        routes['invitation_details'],
+        view_func=invitation_details
+    )
+
 
     @blueprint.before_app_first_request
     def register_menus():
