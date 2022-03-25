@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018-2022 CERN.
+# Copyright (C) 2022 CERN.
 #
 # Invenio-App-RDM is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +10,6 @@
 from functools import partial
 
 from flask import current_app
-
 from invenio_search_ui.searchconfig import search_app_config
 
 
@@ -38,5 +37,12 @@ def search_app_context():
             sort_options = current_app.config['COMMUNITIES_SORT_OPTIONS'],
             headers={"Accept": "application/json"},
             initial_filters=[["is_open", "true"]]
-        )
+        ),
+        'search_app_communities_members_config': partial(
+            search_app_config,
+            config_name = 'COMMUNITIES_MEMBERS_SEARCH',
+            available_facets = current_app.config['COMMUNITIES_MEMBERS_FACETS'],
+            sort_options = current_app.config['RDM_SORT_OPTIONS'],
+            headers = {"Accept": "application/json"}
+        ),
     }

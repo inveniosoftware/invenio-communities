@@ -11,13 +11,9 @@ import { Grid } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import { ResultsList, Pagination, ResultsPerPage } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { mockedPublicViewData, mockedMemberViewData } from "../mockedData";
 import _upperFirst from "lodash/upperFirst";
 
 export const MembersResults = ({ paginationOptions, currentResultsState }) => {
-  // TODO: Remove Mocked data
-  // currentResultsState.data = mockedPublicViewData;
-  currentResultsState.data = mockedMemberViewData;
   const { total } = currentResultsState.data;
   return (
     total && (

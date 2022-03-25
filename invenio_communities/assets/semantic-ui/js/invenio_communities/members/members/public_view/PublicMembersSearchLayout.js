@@ -13,8 +13,6 @@ import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { SearchBar } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 import _upperFirst from "lodash/upperFirst";
-import { SearchBarWithFiltersWithState } from "../components/SearchBarWithFilters";
-import { isMember } from "../mockedData";
 
 const PublicViewSearchBar = () => {
   return (
@@ -28,22 +26,13 @@ const PublicViewSearchBar = () => {
   );
 };
 
-export class MembersSearchLayout extends Component {
+export class PublicMembersSearchLayout extends Component {
   render() {
     const { config, updateQueryState } = this.props;
-    // const filters = currentResultsState.data.aggregations;
     const sortOptions = config.sortOptions;
     return (
       <>
-        {isMember ? (
-          <SearchBarWithFiltersWithState
-            searchBarPlaceholder={i18next.t("Search members...")}
-            sortOptions={sortOptions}
-            updateQueryState={updateQueryState}
-          />
-        ) : (
-          <PublicViewSearchBar />
-        )}
+        <PublicViewSearchBar />
         <SearchAppResultsPane layoutOptions={config.layoutOptions} />
       </>
     );

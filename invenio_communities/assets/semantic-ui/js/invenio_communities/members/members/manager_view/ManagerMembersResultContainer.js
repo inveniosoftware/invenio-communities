@@ -7,18 +7,27 @@
  */
 
 import React from "react";
-import { Table } from "semantic-ui-react";
+import { Table, Checkbox, Dropdown, Menu } from "semantic-ui-react";
 import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
 import _upperFirst from "lodash/upperFirst";
-import { isMember } from "../mockedData";
 
-export const MembersResultsContainer = ({ results }) => {
-  return isMember ? (
+export const ManagerMembersResultsContainer = ({ results }) => {
+  const options = [
+    { key: 1, text: "Choice 1", value: 1 },
+    { key: 2, text: "Choice 2", value: 2 },
+    { key: 3, text: "Choice 3", value: 3 },
+  ];
+  return (
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell width={8}>{i18next.t("Members")}</Table.HeaderCell>
+          <Table.HeaderCell width={7}>
+            <Checkbox className="mr-10" />
+            <Menu compact>
+              <Dropdown text="Dropdown" options={options} simple item />
+            </Menu>
+          </Table.HeaderCell>
           <Table.HeaderCell width={2}>
             {i18next.t("Member since")}
           </Table.HeaderCell>
@@ -27,15 +36,6 @@ export const MembersResultsContainer = ({ results }) => {
           </Table.HeaderCell>
           <Table.HeaderCell width={2}>{i18next.t("Role")}</Table.HeaderCell>
           <Table.HeaderCell width={2} />
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>{results}</Table.Body>
-    </Table>
-  ) : (
-    <Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell>{i18next.t("Members")}</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>{results}</Table.Body>

@@ -101,3 +101,26 @@ COMMUNITIES_REQUESTS_SEARCH = {
     'sort': ['bestmatch', 'newest', 'oldest'],
 }
 """Community requests search configuration (i.e list of community requests)"""
+
+COMMUNITIES_MEMBERS_SEARCH = {
+    'facets': ['role', 'visibility'],
+    'sort': ['bestmatch', 'newest', 'oldest'],
+}
+"""Community requests search configuration (i.e list of community requests)"""
+
+
+COMMUNITIES_MEMBERS_FACETS = {
+    'role': {
+        'facet': facets.role,
+        'ui': {
+            'field': 'role',
+        }
+    },
+    'visibility': {
+        'facet': facets.visible,
+        'ui': {
+            'field': 'visible',
+        }
+    }
+}
+"""Available facets defined for this module."""

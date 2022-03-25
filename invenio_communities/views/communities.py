@@ -13,7 +13,7 @@ from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 
 from .decorators import pass_community, pass_community_logo, \
-    require_community_owner
+    require_community_owner, pass_community_endpoint
 
 #
 # Views
@@ -168,7 +168,8 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
 
 
 @pass_community
-def members(community=None, pid_value=None):
+@pass_community_endpoint
+def members(community=None, pid_value=None, endpoint=None):
     return render_template(
         "invenio_communities/details/members/members.html",
         community=community.to_dict(),
@@ -176,10 +177,18 @@ def members(community=None, pid_value=None):
             "organization": "Organization",
             "event": "Event",
             "topic": "Topic",
-            "project": "Project"
+            "project": "Project",
         },
-        permissions=community.has_permissions_to(['update']),
+        permissions=community.has_permissions_to(
+            [
+                "update",
+                "members_search",
+                "members_search_public",
+                "members_manage"
+            ]
+        ),
         active_menu_tab="members",
+        endpoint=endpoint,
     )
 
 
