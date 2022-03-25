@@ -16,8 +16,8 @@ from invenio_records_permissions.generators import AnyUser, \
 from invenio_records_permissions.policies import BasePermissionPolicy
 
 from .generators import AllowedMemberTypes, CommunityManagers, \
-    CommunityMembers, CommunityOwners, CommunitySelfMember, IfPolicyClosed, \
-    IfRestricted
+    CommunityManagersForRole, CommunityMembers, CommunityOwners, \
+    CommunitySelfMember, IfPolicyClosed, IfRestricted
 
 
 # Permission Policy
@@ -57,14 +57,19 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
     can_members_add = [
-        CommunityManagers(),
+        CommunityManagersForRole(),
         AllowedMemberTypes('group'),
         SystemProcess(),
     ]
 
     can_members_invite = [
-        CommunityManagers(),
+        CommunityManagersForRole(),
         AllowedMemberTypes('user', 'email'),
+        SystemProcess(),
+    ]
+
+    can_members_manage = [
+        CommunityManagers(),
         SystemProcess(),
     ]
 
@@ -92,7 +97,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Ability to update a single membership
     can_members_update = [
-        CommunityManagers(),
+        CommunityManagersForRole(),
         CommunitySelfMember(),
         SystemProcess(),
     ]
