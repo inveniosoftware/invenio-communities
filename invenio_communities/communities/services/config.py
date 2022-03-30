@@ -26,8 +26,8 @@ from invenio_communities.communities.services.results import CommunityFeaturedLi
 
 from ...permissions import CommunityPermissionPolicy
 from ..schema import CommunityFeaturedSchema, CommunitySchema
-from .components import CommunityAccessComponent, FeaturedCommunityComponent, OwnershipComponent, \
-    PIDComponent
+from .components import CommunityAccessComponent, FeaturedCommunityComponent, OAISetComponent, \
+    OwnershipComponent, PIDComponent
 
 from flask_babelex import lazy_gettext as _
 
@@ -97,6 +97,7 @@ class CommunityServiceConfig(RecordServiceConfig):
         CommunityAccessComponent,
         OwnershipComponent,
         FeaturedCommunityComponent,
+        OAISetComponent,
     ]
 
 
