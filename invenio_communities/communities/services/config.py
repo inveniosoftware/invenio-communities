@@ -9,7 +9,6 @@
 
 """Invenio Communities Service API config."""
 
-from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import \
@@ -18,7 +17,6 @@ from invenio_records_resources.services.records.config import \
     RecordServiceConfig
 from invenio_records_resources.services.records.config import \
     SearchOptions as SearchOptionsBase
-from invenio_records_resources.services.records.facets import TermsFacet
 from invenio_records_resources.services.records.links import RecordLink, \
     pagination_links
 
@@ -38,6 +36,15 @@ class SearchOptions(SearchOptionsBase):
         'type': facets.type,
         'visibility': facets.visibility
     }
+
+
+class CommunityMembersLink(RecordLink):
+    """Link variables setter for Community Members links."""
+
+    @staticmethod
+    def vars(record, vars):
+        """Variables for the URI template."""
+        vars.update({"community_uuid": record.id})
 
 
 class CommunityServiceConfig(RecordServiceConfig):
@@ -60,7 +67,9 @@ class CommunityServiceConfig(RecordServiceConfig):
         "self_html": RecordLink("{+ui}/communities/{id}"),
         "settings_html": RecordLink("{+ui}/communities/{id}/settings"),
         "logo": RecordLink("{+api}/communities/{id}/logo"),
-        "rename": RecordLink("{+api}/communities/{id}/rename")
+        "rename": RecordLink("{+api}/communities/{id}/rename"),
+        "members": CommunityMembersLink("{+api}/communities/{community_uuid}/members"),
+        "public_members": CommunityMembersLink("{+api}/communities/{community_uuid}/members/public")
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")

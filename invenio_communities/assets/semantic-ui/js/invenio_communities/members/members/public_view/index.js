@@ -6,10 +6,8 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import _truncate from "lodash/truncate";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 
-import _upperFirst from "lodash/upperFirst";
 import { PublicMembersResultsItem } from "./PublicMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";

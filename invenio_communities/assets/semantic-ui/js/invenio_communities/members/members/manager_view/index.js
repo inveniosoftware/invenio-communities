@@ -6,19 +6,28 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import _truncate from "lodash/truncate";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 
-import _upperFirst from "lodash/upperFirst";
-import { ManagerMembersResultsItem } from "./ManagerMembersResultItem";
+import { ManagerMemberViewResultItem } from "./ManagerMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersSearchLayout } from "../components/MembersSearchLayout";
 import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
+import { parametrize } from 'react-overridable';
+
+
+const domContainer = document.getElementById("community-members-search-root");
+const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
+
+const ManagerMembersResultItemWithConfig = parametrize(ManagerMemberViewResultItem, {
+  roles: communitiesRoles,
+});
+
+
 
 const defaultComponents = {
-  "ResultsList.item": ManagerMembersResultsItem,
+  "ResultsList.item": ManagerMembersResultItemWithConfig,
   "ResultsGrid.item": MembersResultsGridItem,
   "SearchApp.layout": MembersSearchLayout,
   "SearchBar.element": MembersSearchBarElement,

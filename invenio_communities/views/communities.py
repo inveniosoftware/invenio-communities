@@ -47,14 +47,14 @@ def communities_new():
                         'text': 'Public',
                         'value': 'public',
                         'icon': 'group',
-                        'helpText': _('Your community is publicly accessible' \
+                        'helpText': _('Your community is publicly accessible'
                                       ' and shows up in search results.')
                     },
                     {
                         'text': 'Restricted',
                         'value': 'restricted',
                         'icon': 'lock',
-                        'helpText': _('Your community is restricted to users' \
+                        'helpText': _('Your community is restricted to users'
                                       ' with access.')
                     }
                 ]
@@ -139,15 +139,13 @@ def communities_requests(community=None, logo=None, pid_value=None):
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
         permissions=permissions,
-        endpoint = f'/api/requests?receiver=community:{community["uuid"]}',
-        active_menu_tab="requests"
     )
 
 @pass_community
 @pass_community_logo
 def communities_settings_privileges(community=None, logo=None, pid_value=None):
     """Community settings/privileges page."""
-    permissions=community.has_permissions_to(
+    permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites']
     )
     if not permissions['can_update']:
@@ -162,14 +160,14 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
                         'text': 'Public',
                         'value': 'public',
                         'icon': 'group',
-                        'helpText': _('Your community is publicly accessible' \
+                        'helpText': _('Your community is publicly accessible'
                                       ' and shows up in search results.')
                     },
                     {
                         'text': 'Restricted',
                         'value': 'restricted',
                         'icon': 'lock',
-                        'helpText': _('Your community is restricted to users' \
+                        'helpText': _('Your community is restricted to users'
                                       ' with access.')
                     }
                 ]
@@ -185,13 +183,11 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
         permissions=permissions,
-        active_menu_tab="settings",
         logo=logo.to_dict() if logo else None
     )
 
 
 @pass_community
-@pass_community_endpoint
 def members(community=None, pid_value=None, endpoint=None):
     permissions=community.has_permissions_to(
         [
@@ -199,7 +195,7 @@ def members(community=None, pid_value=None, endpoint=None):
             "members_search",
             "members_search_public",
             "members_manage",
-            "read", 
+            "read",
             "search_requests",
             "search_invites"
         ]
@@ -216,14 +212,12 @@ def members(community=None, pid_value=None, endpoint=None):
             "project": "Project",
         },
         permissions=permissions,
-        active_menu_tab="members",
-        endpoint=endpoint,
     )
 
 
 @pass_community
 def invitations(community=None, pid_value=None):
-    permissions=community.has_permissions_to(
+    permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites']
     )
     if not permissions['can_search_invites']:
@@ -238,5 +232,4 @@ def invitations(community=None, pid_value=None):
             "project": "Project"
         },
         permissions=permissions,
-        active_menu_tab="members",
     )

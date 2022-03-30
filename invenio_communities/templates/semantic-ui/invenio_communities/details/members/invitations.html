@@ -15,14 +15,17 @@
 {%- endblock javascript %}
 
 {% set active_menu_item = 'invitations' %}
+{% set active_menu_tab = 'members' %}
 
 {%- block settings_body %}
 
   <div class="thirteen wide column">
     <div
+      id="community-invitations-search-root"
+      data-communities-roles='{{ config.COMMUNITIES_ROLES | tojson }}'
       data-invenio-search-config='{{
         search_app_communities_invitations_config(app_id="communities-invitations-search",
-        hidden_params=[["created_by", "community:"+community['uuid'] ]], endpoint = "/api/requests") | tojson }}'>
+        hidden_params=[["created_by", "community:"+community['uuid'] ]]) | tojson }}'>
     </div>
   </div>
 

@@ -10,21 +10,23 @@
 {% extends "invenio_communities/details/base.html" %}
 
 {%- set title = community.metadata.title + _(" requests") -%}
+{% set active_menu_tab = 'requests' %}
 
 {%- block javascript %}
 {{ super() }}
 {{ webpack['invenio-communities-requests.js'] }}
 {%- endblock javascript %}
 
+
 {%- block page_body %}
 {{ super() }}
   {%- block requests_body %}
   <div
-    id="app"
+    id="communities-request-search-root"
+    class="rel-mt-2"
     data-community='{{ community | tojson }}'
-    data-invenio-config='{{
-      search_app_communities_requests_config(app_id="communities-requests-search",
-      endpoint="/api/requests", hidden_params=[["receiver", "community:"+community['uuid'] ]]) | tojson }}'>
+    data-invenio-search-config='{{ search_app_communities_requests_config(app_id="communities-requests-search",
+      hidden_params=[["receiver", "community:"+community['uuid'] ]] ) | tojson }}'>
   </div>
   {%- endblock requests_body %}
 {%- endblock page_body %}

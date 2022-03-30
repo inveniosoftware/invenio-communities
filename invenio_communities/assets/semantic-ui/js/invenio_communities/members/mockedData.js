@@ -345,30 +345,5 @@ export const config = {
           "Your community membership is only visible to other members of the community.",
       },
     ],
-  },
-  role: {
-    options: [
-      {
-        title: "Reader",
-        value: "reader",
-        description: "Can view restricted records.",
-      },
-      {
-        title: "Curator",
-        value: "curator",
-        description: "Can curate records and view restricted records.",
-      },
-      {
-        title: "Manager",
-        value: "manager",
-        description:
-          "Can manage members, curate records and view restricted records.",
-      },
-      {
-        title: "Owner",
-        value: "owner",
-        description: "Full administrative access to the entire community.",
-      },
-    ],
-  },
+  }
 };

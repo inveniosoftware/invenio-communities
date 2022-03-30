@@ -24,9 +24,8 @@ export const InvitationsSearchLayout = ({ config, updateQueryState }) => {
           <Button
             content={i18next.t("Invite members")}
             positive
-            size="tiny"
-            className="ml-10"
-            compact
+            size="medium"
+            className="ml-5"
           />
         }
       />

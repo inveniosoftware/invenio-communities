@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import { Grid, Item, Button, Label, Table, Checkbox } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
+import {
+  Grid,
+  Item,
+  Button,
+  Label,
+  Table,
+  Checkbox,
+  Dropdown,
+} from 'semantic-ui-react';
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
-import { MemberDropdown } from "../../components/Dropdowns";
 import { config } from "../../mockedData";
 import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
@@ -13,19 +19,19 @@ const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
 
 const dropdownOptionsGenerator = (value) => {
-  return value.map((element) => {
+  return Object.entries(value).map(([key, settings]) => {
     return {
-      key: element.value,
-      text: element.title,
-      value: element.value,
+      key: key,
+      text: settings.title,
+      value: key,
       content: (
         <Item.Group>
-          <Item className="members-dopdown-option">
+          <Item className="members-dropdown-option">
             <Item.Content>
               <Item.Description>
-                <strong>{element.title}</strong>
+                <strong>{settings.title}</strong>
               </Item.Description>
-              <Item.Meta>{element.description}</Item.Meta>
+              <Item.Meta>{settings.description}</Item.Meta>
             </Item.Content>
           </Item>
         </Item.Group>
@@ -42,7 +48,7 @@ const dropdownVisibilityOptionsGenerator = (value) => {
       value: element.value,
       content: (
         <Item.Group>
-          <Item className="members-dopdown-option">
+          <Item className="members-dropdown-option">
             <Item.Content>
               <Item.Description>
                 <strong>{element.title}</strong>
@@ -56,7 +62,7 @@ const dropdownVisibilityOptionsGenerator = (value) => {
   });
 };
 
-class ManagerMemberViewResultItem extends Component {
+export class ManagerMemberViewResultItem extends Component {
   updateVisibility = (value) => {
     const visible = value === "public";
     // TODO: membersApi.edit(result); + NOTIFICATIONS
@@ -69,20 +75,19 @@ class ManagerMemberViewResultItem extends Component {
   };
 
   render() {
-    const { result } = this.props;
+    const { result, roles } = this.props;
     const avatar = result.member.links.avatar;
     return (
       <Table.Row>
         <Table.Cell>
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
-              <Item className="flex-container" key={result.id}>
+              <Item className="flex" key={result.id}>
                 <Checkbox className="mr-10 mt-10" />
 
                 <Image
                   src={avatar}
                   avatar
-                  fallbackSrc="/static/images/square-placeholder.png"
                 />
                 <Item.Content className="ml-10">
                   <Item.Header
@@ -121,12 +126,13 @@ class ManagerMemberViewResultItem extends Component {
         <Table.Cell>{timestampToRelativeTime(result.created)}</Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_visible ? (
-            <MemberDropdown
-              initialValue={result.visible ? "Public" : "Hidden"} //TODO: Improve this
+            <Dropdown
+              selection
+              value={result.visible ? "public" : "hidden"} //TODO: Improve this
               options={dropdownVisibilityOptionsGenerator(
                 config.visibility.options
               )}
-              updateMember={this.updateVisibility}
+              onChange={this.updateVisibility}
             />
           ) : result.visible ? (
             "Public"
@@ -136,10 +142,11 @@ class ManagerMemberViewResultItem extends Component {
         </Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_role ? (
-            <MemberDropdown
-              initialValue={result.role}
-              options={dropdownOptionsGenerator(config.role.options)}
-              updateMember={this.updateRole}
+            <Dropdown
+              selection
+              value={result.role}
+              options={dropdownOptionsGenerator(roles)}
+              onChange={this.updateRole}
             />
           ) : (
             _upperFirst(result.role)
@@ -175,8 +182,6 @@ class ManagerMemberViewResultItem extends Component {
 
 ManagerMemberViewResultItem.propTypes = {
   result: PropTypes.object.isRequired,
+  roles: PropTypes.object.isRequired,
 };
 
-export function ManagerMembersResultsItem({ result, index, ...props }) {
-  return <ManagerMemberViewResultItem result={result} />;
-}

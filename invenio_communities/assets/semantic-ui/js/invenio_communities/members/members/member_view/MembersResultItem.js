@@ -1,31 +1,31 @@
 import React, { Component } from "react";
 import { Grid, Item, Button, Label, Table } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
 import { MemberDropdown } from "../../components/Dropdowns";
-import { config, isMember } from "../../mockedData";
+import { config as mockedConfig } from "../../mockedData";
 import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
 
+
 const dropdownOptionsGenerator = (value) => {
-  return value.map((element) => {
+  return Object.entries(value).map(([key, settings]) => {
     return {
-      key: element.value,
-      text: element.title,
-      value: element.value,
+      key: key,
+      text: settings.title,
+      value: key,
       content: (
         <Item.Group>
-          <Item className="members-dopdown-option">
+          <Item className="members-dropdown-option">
             <Item.Content>
               <Item.Description>
-                <strong>{element.title}</strong>
+                <strong>{settings.title}</strong>
               </Item.Description>
-              <Item.Meta>{element.description}</Item.Meta>
+              <Item.Meta>{settings.description}</Item.Meta>
             </Item.Content>
           </Item>
         </Item.Group>
@@ -42,7 +42,7 @@ const dropdownVisibilityOptionsGenerator = (value) => {
       value: element.value,
       content: (
         <Item.Group>
-          <Item className="members-dopdown-option">
+          <Item className="members-dropdown-option">
             <Item.Content>
               <Item.Description>
                 <strong>{element.title}</strong>
@@ -69,20 +69,19 @@ class MemberViewResultItem extends Component {
   };
 
   render() {
-    const { result } = this.props;
+    const { result, config } = this.props;
     const avatar = result.member.links.avatar;
     return (
       <Table.Row>
         <Table.Cell>
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
-              <Item className="flex-container" key={result.id}>
+              <Item className="flex" key={result.id} image>
                 <Image
                   src={avatar}
                   avatar
-                  fallbackSrc="/static/images/square-placeholder.png"
                 />
-                <Item.Content className="ml-10">
+                <Item.Content>
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
                   >
@@ -122,7 +121,7 @@ class MemberViewResultItem extends Component {
             <MemberDropdown
               initialValue={result.visible ? "Public" : "Hidden"} //TODO: Improve this
               options={dropdownVisibilityOptionsGenerator(
-                config.visibility.options
+                mockedConfig.visibility.options
               )}
               updateMember={this.updateVisibility}
             />
@@ -136,7 +135,7 @@ class MemberViewResultItem extends Component {
           {result.permissions.can_update_role ? (
             <MemberDropdown
               initialValue={result.role}
-              options={dropdownOptionsGenerator(config.role.options)}
+              options={dropdownOptionsGenerator(config.roles.options)}
               updateMember={this.updateRole}
             />
           ) : (

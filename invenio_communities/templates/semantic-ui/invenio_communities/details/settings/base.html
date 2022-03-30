@@ -12,7 +12,7 @@
 
 {%- block page_body %}
 {{ super() }}
-<div class="ui container grid communities-settings">
+<div class="ui container grid communities-settings rel-mt-2">
   {%- block settings_menu %}
     {%- set menu_items = {
       'profile': (_('Profile'), url_for('invenio_communities.communities_settings', pid_value=community.id), ),
