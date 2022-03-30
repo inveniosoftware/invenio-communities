@@ -13,7 +13,7 @@ import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
 import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
-import {InvitationResultItemControlled} from "./InvitationResultItemControlled";
+import { InvitationResultItemControlled } from "./InvitationResultItemControlled";
 
 const domContainer = document.getElementById("community-invitations-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);

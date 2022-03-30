@@ -407,7 +407,6 @@ class MemberService(RecordService):
 
         return True
 
-
     @unit_of_work()
     def delete(self, identity, community_id, data, uow=None):
         """Bulk delete."""

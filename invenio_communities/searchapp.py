@@ -46,6 +46,8 @@ def search_app_context():
             available_facets=current_app.config['COMMUNITIES_MEMBERS_FACETS'],
             sort_options=current_app.config['RDM_SORT_OPTIONS'],
             headers={"Accept": "application/json"},
+            default_size=25,
+            pagination_options=(25, 50, 75),
         ),
         'search_app_communities_invitations_config': partial(
             search_app_config,

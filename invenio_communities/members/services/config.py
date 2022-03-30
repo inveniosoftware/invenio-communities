@@ -64,7 +64,6 @@ class MemberSearchOptions(PublicSearchOptions):
     }
 
 
-
 class MemberServiceConfig(RecordServiceConfig):
     """Member Service Config."""
 
