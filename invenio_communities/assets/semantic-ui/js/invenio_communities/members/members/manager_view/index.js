@@ -7,23 +7,24 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
-
 import { ManagerMemberViewResultItem } from "./ManagerMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersSearchLayout } from "../components/MembersSearchLayout";
 import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
-import { parametrize } from 'react-overridable';
-
+import { parametrize } from "react-overridable";
+import SearchResultsBulkActionsManager from "../../components/bulk_actions/SearchResultsBulkActionsManager"
 
 const domContainer = document.getElementById("community-members-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
 
-const ManagerMembersResultItemWithConfig = parametrize(ManagerMemberViewResultItem, {
-  roles: communitiesRoles,
-});
-
+const ManagerMembersResultItemWithConfig = parametrize(
+  ManagerMemberViewResultItem,
+  {
+    config: { roles: communitiesRoles },
+  }
+);
 
 
 const defaultComponents = {
@@ -36,4 +37,7 @@ const defaultComponents = {
 };
 
 // Auto-initialize search app
-createSearchAppInit(defaultComponents);
+createSearchAppInit(defaultComponents,
+  true,
+  "invenio-search-config",
+  false, SearchResultsBulkActionsManager);

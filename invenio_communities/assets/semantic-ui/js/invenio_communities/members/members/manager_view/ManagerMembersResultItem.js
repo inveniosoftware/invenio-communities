@@ -1,3 +1,6 @@
+import {
+  SearchResultsRowCheckbox
+} from '../../components/bulk_actions/SearchResultsRowCheckbox';
 import React, { Component } from "react";
 import {
   Grid,
@@ -75,7 +78,7 @@ export class ManagerMemberViewResultItem extends Component {
   };
 
   render() {
-    const { result, roles } = this.props;
+    const { result, config } = this.props;
     const avatar = result.member.links.avatar;
     return (
       <Table.Row>
@@ -83,8 +86,7 @@ export class ManagerMemberViewResultItem extends Component {
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item className="flex" key={result.id}>
-                <Checkbox className="mr-10 mt-10" />
-
+                  <SearchResultsRowCheckbox rowId={result.id}/>
                 <Image
                   src={avatar}
                   avatar
@@ -145,7 +147,7 @@ export class ManagerMemberViewResultItem extends Component {
             <Dropdown
               selection
               value={result.role}
-              options={dropdownOptionsGenerator(roles)}
+              options={dropdownOptionsGenerator(config.roles)}
               onChange={this.updateRole}
             />
           ) : (
@@ -182,6 +184,6 @@ export class ManagerMemberViewResultItem extends Component {
 
 ManagerMemberViewResultItem.propTypes = {
   result: PropTypes.object.isRequired,
-  roles: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
 };
 

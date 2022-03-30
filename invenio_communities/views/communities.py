@@ -17,6 +17,7 @@ from .decorators import pass_community, pass_community_logo, \
     pass_community_endpoint
 
 
+
 #
 # Views
 #
@@ -140,6 +141,7 @@ def communities_requests(community=None, logo=None, pid_value=None):
         # e.g Settings tab
         permissions=permissions,
     )
+
 
 @pass_community
 @pass_community_logo

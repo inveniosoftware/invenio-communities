@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Grid, Item, Button, Label, Table } from "semantic-ui-react";
+import { Grid, Item, Button, Label, Table, Dropdown } from 'semantic-ui-react';
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
-import { MemberDropdown } from "../../components/Dropdowns";
 import { config as mockedConfig } from "../../mockedData";
 import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
@@ -118,12 +117,17 @@ class MemberViewResultItem extends Component {
         <Table.Cell>{timestampToRelativeTime(result.created)}</Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_visible ? (
-            <MemberDropdown
-              initialValue={result.visible ? "Public" : "Hidden"} //TODO: Improve this
+            <Dropdown
+              // TODO: connect to the backend
+              value={result.visible ? "Public" : "Hidden"}
+              item
+              selection
+              openOnFocus={false}
+              selectOnBlur={false}
               options={dropdownVisibilityOptionsGenerator(
                 mockedConfig.visibility.options
               )}
-              updateMember={this.updateVisibility}
+              onChange={this.updateVisibility}
             />
           ) : result.visible ? (
             "Public"
@@ -133,10 +137,14 @@ class MemberViewResultItem extends Component {
         </Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_role ? (
-            <MemberDropdown
-              initialValue={result.role}
+            <Dropdown
+              value={result.role}
+              item
+              selection
+              openOnFocus={false}
+              selectOnBlur={false}
               options={dropdownOptionsGenerator(config.roles.options)}
-              updateMember={this.updateRole}
+              onChange={this.updateRole}
             />
           ) : (
             _upperFirst(result.role)
