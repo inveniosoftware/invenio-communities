@@ -11,7 +11,6 @@
 from flask import Blueprint, current_app, render_template
 from flask_login import current_user
 from flask_menu import current_menu
-from invenio_communities.searchapp import search_app_context
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
@@ -56,78 +55,76 @@ def create_ui_blueprint(app):
         static_folder='../static'
     )
 
-    # control blueprint endpoints registration
-    if app.config["COMMUNITIES_ENABLED"]:
-        # Communities URL rules
-        blueprint.add_url_rule(
-            routes["frontpage"],
-            view_func=communities_frontpage,
+    # Communities URL rules
+    blueprint.add_url_rule(
+        routes["frontpage"],
+        view_func=communities_frontpage,
+    )
+
+    blueprint.add_url_rule(
+        routes["search"],
+        view_func=communities_search,
+    )
+
+    blueprint.add_url_rule(
+        routes["new"],
+        view_func=communities_new,
+    )
+
+    blueprint.add_url_rule(
+        routes["details"],
+        view_func=communities_detail,
+    )
+
+    # Settings tab routes
+    blueprint.add_url_rule(
+        routes["settings"],
+        view_func=communities_settings,
+    )
+
+    blueprint.add_url_rule(
+        routes["requests"],
+        view_func=communities_requests,
+    )
+
+    blueprint.add_url_rule(
+        routes["settings_privileges"],
+        view_func=communities_settings_privileges,
+    )
+
+    blueprint.add_url_rule(
+        routes['members'],
+        view_func=members
+    )
+
+    blueprint.add_url_rule(
+        routes['invitations'],
+        view_func=invitations
+    )
+
+    @blueprint.before_app_first_request
+    def register_menus():
+        """Register community menu items."""
+        item = current_menu.submenu('main.communities')
+        item.register(
+            'invenio_communities.communities_frontpage',
+            'Communities',
+            order=3,
         )
 
-        blueprint.add_url_rule(
-            routes["search"],
-            view_func=communities_search,
+        item = current_menu.submenu('plus.community').register(
+            'invenio_communities.communities_new',
+            'New community',
+            order=3,
         )
 
-        blueprint.add_url_rule(
-            routes["new"],
-            view_func=communities_new,
-        )
+    # Register error handlers
+    blueprint.register_error_handler(
+        PermissionDeniedError, record_permission_denied_error)
+    blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
+    blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
 
-        blueprint.add_url_rule(
-            routes["details"],
-            view_func=communities_detail,
-        )
-
-        # Settings tab routes
-        blueprint.add_url_rule(
-            routes["settings"],
-            view_func=communities_settings,
-        )
-
-        blueprint.add_url_rule(
-            routes["requests"],
-            view_func=communities_requests,
-        )
-
-        blueprint.add_url_rule(
-            routes["settings_privileges"],
-            view_func=communities_settings_privileges,
-        )
-
-        blueprint.add_url_rule(
-            routes['members'],
-            view_func=members
-        )
-
-        blueprint.add_url_rule(
-            routes['invitations'],
-            view_func=invitations
-        )
-
-        @blueprint.before_app_first_request
-        def register_menus():
-            """Register community menu items."""
-            item = current_menu.submenu('main.communities')
-            item.register(
-                'invenio_communities.communities_frontpage',
-                'Communities',
-                order=3,
-            )
-
-            item = current_menu.submenu('plus.community').register(
-                'invenio_communities.communities_new',
-                'New community',
-                order=3,
-            )
-
-        # Register error handlers
-        blueprint.register_error_handler(
-            PermissionDeniedError, record_permission_denied_error)
-        blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
-        blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
-
-        # Register context processor
-        blueprint.app_context_processor(search_app_context)
+    # Register context processor
+    blueprint.app_context_processor(search_app_context)
 
     return blueprint

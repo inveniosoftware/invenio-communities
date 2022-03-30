@@ -15,7 +15,7 @@ class PublicMemberPublicViewResultItem extends Component {
         <Table.Cell>
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
-              <Item className="flex-container" key={result.id}>
+              <Item className="flex" key={result.id}>
                 <Image
                   src={avatar}
                   avatar

@@ -30,65 +30,70 @@ export class SearchBarWithFilters extends Component {
     const currentSort = currentQueryState.sortBy;
     const filters = currentResultsState.data.aggregations; // TODO: filters come from the backend
     return (
-      <Grid>
-        <Grid.Row>
-          <Grid.Column className="flex-container" width={16}>
-            <SearchBar
-              uiProps={{ className: "contents-container" }}
-              placeholder={searchBarPlaceholder}
-            />
+      <>
+        <div className="auto-column-grid">
+          <div>
+            <SearchBar fluid placeholder={searchBarPlaceholder} />
+          </div>
+          <div className="rel-ml-2">
             <>
               {Object.entries(filters).map((filter) => (
                 <DropdownFilter
-                  className="ml-20"
+                  key={filter[0]}
                   filterKey={filter[0]}
                   filterLabel={filter[1].label}
                   filterValues={filter[1].buckets}
                   currentQueryState={currentQueryState}
                   updateQueryState={updateQueryState}
+                  size="large"
                   {...uiProps}
                 />
               ))}
               {sortOptions && (
                 <DropdownSort
-                  className="ml-20"
                   filterKey="sort"
                   filterLabel={_upperFirst(currentSort)}
                   filterValues={sortOptions}
                   currentQueryState={currentQueryState}
                   updateQueryState={updateQueryState}
+                  size="large"
                   {...uiProps}
                 />
               )}
             </>
             {customCmp && customCmp}
-          </Grid.Column>
+          </div>
+        </div>
 
-          {currentFilters.map((filter) => {
-            return (
-              <FilterLabel
-                filter={filter}
-                currentQueryState={currentQueryState}
-                updateQueryState={updateQueryState}
-              />
-            );
-          })}
-
-          {currentFilters.length > 0 && (
-            <Label
-              as="a"
-              onClick={() => {
-                currentQueryState.filters = [];
-                updateQueryState(currentQueryState);
-              }}
-              color="blue"
-              className="ml-15 mt-15"
-            >
-              {i18next.t("Clear all filters")}
-            </Label>
-          )}
-        </Grid.Row>
-      </Grid>
+        <div className="rel-mb-1">
+          <div>
+            {currentFilters.map((filter) => {
+              return (
+                <FilterLabel
+                  filter={filter}
+                  currentQueryState={currentQueryState}
+                  updateQueryState={updateQueryState}
+                />
+              );
+            })}
+          </div>
+          <div>
+            {currentFilters.length > 0 && (
+              <Label
+                as="a"
+                onClick={() => {
+                  currentQueryState.filters = [];
+                  updateQueryState(currentQueryState);
+                }}
+                color="blue"
+                className="ml-15 mt-15"
+              >
+                {i18next.t("Clear all filters")}
+              </Label>
+            )}
+          </div>
+        </div>
+      </>
     );
   }
 }

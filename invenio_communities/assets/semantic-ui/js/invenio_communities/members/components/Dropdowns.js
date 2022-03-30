@@ -7,17 +7,8 @@
  */
 
 import React, { Component } from "react";
-import { Dropdown, Button, Icon, Menu } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
+import { Dropdown } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import _upperFirst from "lodash/upperFirst";
-
-const triggerButton = (name) => (
-  <Button icon fluid>
-    {name}
-    <Icon name="caret down" />
-  </Button>
-);
 
 export class DropdownSort extends Component {
   onChangeSort = (e, data) => {
@@ -47,12 +38,12 @@ export class DropdownSort extends Component {
 
     return (
       <Dropdown
-        {...uiProps}
-        icon={null}
-        trigger={triggerButton(filterLabel)}
+        button
+        text={filterLabel}
         options={options}
         onChange={this.onChangeSort}
         selectOnBlur={false}
+        {...uiProps}
       />
     );
   }
@@ -102,13 +93,14 @@ export class DropdownFilter extends Component {
 
     return (
       <Dropdown
-        {...uiProps}
-        icon={null}
-        trigger={triggerButton(filterLabel)}
+        item
+        button
+        text={filterLabel}
         options={options}
         onChange={this.onChangeFilter}
         selectOnBlur={false}
         value={null}
+        {...uiProps}
       />
     );
   }
@@ -124,55 +116,4 @@ DropdownFilter.propTypes = {
 
 DropdownFilter.defaultProps = {
   filterLabel: "",
-};
-
-export class MemberDropdown extends Component {
-  constructor(props) {
-    const { initialValue } = props;
-    super(props);
-    this.state = {
-      value: initialValue,
-    };
-  }
-
-  onChange = (e, data) => {
-    const { updateMember } = this.props;
-
-    // empty catch prevents state from being set if updateMember errors
-    try {
-      updateMember(data.value);
-      this.setState({
-        value: data.value,
-      });
-    } catch (e) {}
-  };
-
-  render() {
-    const { options } = this.props;
-    const { value } = this.state;
-    return (
-      <Menu compact>
-        <Dropdown
-          text={_upperFirst(value)}
-          options={options}
-          item
-          fluid
-          value={value}
-          openOnFocus={false}
-          selectOnBlur={false}
-          onChange={this.onChange}
-        />
-      </Menu>
-    );
-  }
-}
-
-MemberDropdown.propTypes = {
-  options: PropTypes.array.isRequired,
-  updateMember: PropTypes.func.isRequired,
-  initialValue: PropTypes.string,
-};
-
-MemberDropdown.defaultProps = {
-  initialValue: "",
 };

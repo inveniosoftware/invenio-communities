@@ -8,9 +8,7 @@
 
 import React from "react";
 import { Table, Checkbox, Dropdown, Menu } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
 
 export const ManagerMembersResultsContainer = ({ results }) => {
   const options = [
@@ -25,7 +23,7 @@ export const ManagerMembersResultsContainer = ({ results }) => {
           <Table.HeaderCell width={7}>
             <Checkbox className="mr-10" />
             <Menu compact>
-              <Dropdown text="Dropdown" options={options} simple item />
+              <Dropdown text="Dropdown" options={options} simple item/>
             </Menu>
           </Table.HeaderCell>
           <Table.HeaderCell width={2}>

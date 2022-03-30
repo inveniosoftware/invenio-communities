@@ -87,13 +87,14 @@ export class InvitationResultItemControlled extends Component {
   onReInvite = () => {};
 
   render() {
-    const { result, index } = this.props;
-    const { loading, error, success } = this.state;
+    const { result, config } = this.props;
+    const { loading, error, success, currentRole } = this.state;
 
     return (
       <InvitationResultItem
+        roles={config.roles}
+        currentRole={currentRole}
         invitation={result}
-        key={index}
         onRoleChange={(role) => this.onRoleChange(role)}
         isLoading={loading}
         error={error}
@@ -111,4 +112,5 @@ export class InvitationResultItemControlled extends Component {
 InvitationResultItemControlled.propTypes = {
   result: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  config: PropTypes.object.isRequired
 };

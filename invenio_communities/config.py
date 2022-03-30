@@ -82,7 +82,8 @@ COMMUNITIES_ROLES = {
     ),
     'manager': dict(
         title=_('Manager'),
-        description=_('Can manage members, curate records and view restricted records'),
+        description=_('Can manage members, curate records '
+                      'and view restricted records'),
         can_manage_roles=['manager', 'curator', 'reader'],
         can_manage=True
     ),

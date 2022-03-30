@@ -18,7 +18,7 @@ role = TermsFacet(
     value_labels=lambda keys: {k: current_roles[k].title for k in keys},
 )
 
-visibility  = TermsFacet(
+visibility = TermsFacet(
     field='visible',
     label=_('Visibility'),
     value_labels={"true": _("Public"), "false": _("Hidden")}

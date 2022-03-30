@@ -9,8 +9,6 @@ import {
   SearchAppResultsPane,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _get from "lodash/get";
-import _truncate from "lodash/truncate";
 import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import {
@@ -22,7 +20,6 @@ import {
   SearchBar,
   Sort,
   withState,
-  buildUID,
 } from "react-searchkit";
 import {
   Button,
@@ -42,7 +39,7 @@ import { DateTime } from "luxon";
 import Overridable from "react-overridable";
 
 
-const RecordSearchBarElement = withState(
+export const RecordSearchBarElement = withState(
   ({
     placeholder: passedPlaceholder,
     queryString,
@@ -81,7 +78,7 @@ const RecordSearchBarElement = withState(
   }
 );
 
-const RecordFacetsValues = ({
+export const RecordFacetsValues = ({
   bucket,
   isSelected,
   onFilterClicked,
@@ -131,7 +128,7 @@ const RecordFacetsValues = ({
   );
 };
 
-const BucketAggregationElement = ({
+export const BucketAggregationElement = ({
   agg,
   title,
   containerCmp,
@@ -183,7 +180,7 @@ const SearchHelpLinks = () => {
   );
 };
 
-const RequestsResults = ({
+export const RequestsResults = ({
   sortOptions,
   paginationOptions,
   currentResultsState,
@@ -238,7 +235,7 @@ const RequestsResults = ({
           </Grid.Column>
         </Grid.Row>
         <Grid.Row verticalAlign="middle">
-          <Grid.Column width={4}></Grid.Column>
+          <Grid.Column width={4}/>
           <Grid.Column width={8} textAlign="center">
             <Pagination
               options={{
@@ -264,7 +261,7 @@ const RequestsResults = ({
   );
 };
 
-function RequestsResultsGridItemTemplate({ result, index }) {
+export const RequestsResultsGridItemTemplate = ({ result, index }) => {
   return (
     <Card fluid key={index} href={`/me/requests/${result.metadata.id}`}>
       <Card.Content>
@@ -279,7 +276,7 @@ function RequestsResultsGridItemTemplate({ result, index }) {
   );
 }
 
-function RequestsResultsItemTemplate({ result, index }) {
+export const RequestsResultsItemTemplate = ({ result, index }) => {
   const createdDate = new Date(result.created);
   const timestampToRelativeTime = (timestamp) =>
     DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
@@ -398,9 +395,9 @@ RequestStatusFilterComponent.propTypes = {
   currentQueryState: PropTypes.object.isRequired,
 };
 
-const RequestStatusFilter = withState(RequestStatusFilterComponent);
+export const RequestStatusFilter = withState(RequestStatusFilterComponent);
 
-const RequestsSearchLayout = (props) => {
+export const RequestsSearchLayout = (props) => {
   return (
     <Container>
       <Grid>
@@ -426,12 +423,12 @@ const RequestsSearchLayout = (props) => {
   );
 };
 
-const RequestsFacets = ({ aggs, currentResultsState }) => {
+export const RequestsFacets = ({ aggs, currentResultsState }) => {
   return (
     <aside aria-label={i18next.t("filters")} id="search-filters">
       {aggs.map((agg) => {
         return (
-          <div className="ui accordion" key={agg.title}>
+          <div className="rdm-facet-container" key={agg.title}>
             <BucketAggregation title={agg.title} agg={agg} />
           </div>
         );
@@ -441,8 +438,8 @@ const RequestsFacets = ({ aggs, currentResultsState }) => {
   );
 };
 
-const RequestsEmptyResults = (props) => {
-  const { queryString, userSelectionFilters } = props;
+export const RequestsEmptyResults = ({ queryString, userSelectionFilters, updateQueryState }) => {
+
   const is_open = userSelectionFilters.some(
     (obj) => obj.includes("is_open") && obj.includes("true")
   );
@@ -478,7 +475,7 @@ const RequestsEmptyResults = (props) => {
         {queryString && (
           <Button
             primary
-            onClick={() => props.updateQueryState(elementsToReset)}
+            onClick={() => updateQueryState(elementsToReset)}
           >
             {i18next.t("Reset search")}
           </Button>
@@ -497,20 +494,6 @@ const RequestsEmptyResults = (props) => {
   );
 };
 
-const RequestsEmptyResultsWithState = withState(
+export const RequestsEmptyResultsWithState = withState(
   RequestsEmptyResults
 );
-
-export const defaultComponents = (appId) => {
-  return {
-    [buildUID('BucketAggregation.element', '', appId)]: BucketAggregationElement,
-    [buildUID('BucketAggregationValues.element', '', appId)]: RecordFacetsValues,
-    [buildUID('SearchApp.facets', '', appId)]: RequestsFacets,
-    [buildUID('ResultsList.item', '', appId)]: RequestsResultsItemTemplate,
-    [buildUID('ResultsGrid.item', '', appId)]: RequestsResultsGridItemTemplate,
-    [buildUID('SearchApp.layout', '', appId)]: RequestsSearchLayout,
-    [buildUID('SearchApp.results', '', appId)]: RequestsResults,
-    [buildUID('SearchBar.element', '', appId)]: RecordSearchBarElement,
-    [buildUID('EmptyResults.element', '', appId)]: RequestsEmptyResultsWithState,
-  }
-};

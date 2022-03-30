@@ -6,50 +6,42 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React from "react";
-import { randomKey, roles, randomBool } from "../mock";
+import React, { Component } from "react";
 import { DateTime } from "luxon";
-import { Table, Grid, Container, List, Icon, Loader } from "semantic-ui-react";
+import {
+  Table,
+  Grid,
+  Container,
+  List,
+  Icon,
+  Loader, Dropdown,
+} from 'semantic-ui-react';
 import { Image } from "react-invenio-forms";
 import { ActionButtons } from "./InvitationActionButtons";
 import PropTypes from "prop-types";
 import { ErrorPopup } from "../components/ErrorPopup";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { MemberDropdown } from "../components/Dropdowns";
 import { SuccessIcon } from "../components/SuccessIcon";
 import _sample from "lodash/sample";
 
-const RoleContent = ({ title, description }) => (
-  <List>
-    <List.Item>
-      <List.Content>
-        <List.Header>{title}</List.Header>
-        <List.Description>{description}</List.Description>
-      </List.Content>
-    </List.Item>
-  </List>
-);
-
-const RoleSelection = ({ initialValue, onChange, status }) => {
-  if (status !== "submitted") {
-    return initialValue;
-  }
-
-  const options = roles.map(({ title, description }, index) => ({
-    key: randomKey(index),
-    text: title,
-    value: title.toLowerCase(),
-    is_selected: initialValue === title,
-    content: <RoleContent title={title} description={description} />,
-  }));
-
-  return (
-    <MemberDropdown
-      updateMember={onChange}
-      initialValue={initialValue}
-      options={options}
-    />
-  );
+const dropdownOptionsGenerator = (value) => {
+  return Object.entries(value).map(([key, settings]) => {
+    return {
+      key: key,
+      text: settings.title,
+      value: key,
+      content: (
+        <List>
+          <List.Item>
+            <List.Content>
+              <List.Header>{settings.title}</List.Header>
+              <List.Description>{settings.description}</List.Description>
+            </List.Content>
+          </List.Item>
+        </List>
+      ),
+    };
+  });
 };
 
 const formattedTime = (expires_at) =>
@@ -59,32 +51,27 @@ export const InvitationResultItem = ({
   invitation,
   onRoleChange,
   isLoading,
-  key,
   error,
   success,
   onSuccessTimeOut,
   onErrorClose,
+  roles,
   onView,
   onReInvite,
   onCancel,
 }) => {
   const { receiver, status, expires_at, links } = invitation;
 
-  const role = _sample(roles);
-
-  const avatar = links.avatar || "/static/images/square-placeholder.png";
-
   return (
-    <Table.Row className="community-member-item" key={key}>
+    <Table.Row className="community-member-item">
       <Table.Cell>
         <Grid textAlign="left" verticalAlign="middle">
           <Grid.Column width={4}>
-            <Image src={avatar} avatar circular />
+            <Image src={"/abc"} avatar circular />
           </Grid.Column>
           <Grid.Column width={12}>
             <List>
               <List.Item as="a">{receiver.name || receiver.user}</List.Item>
-              <List.Item as="small">{receiver.description}</List.Item>
             </List>
           </Grid.Column>
         </Grid>
@@ -103,26 +90,28 @@ export const InvitationResultItem = ({
                 timeOutDelay={4000}
                 onTimeOut={onSuccessTimeOut}
               />
-
               <ErrorPopup
                 onClose={onErrorClose}
                 error={error}
-                trigger={<Icon name="exclamation circle error" />}
+                trigger={<Icon name="exclamation circle" className="error" />}
               />
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Table.Cell>
       <Table.Cell>
-        <RoleSelection
-          canEditRole={randomBool()}
-          initialValue={role.title}
-          loading={isLoading}
-          onChange={(role) => {
+      <Dropdown
+        options={dropdownOptionsGenerator(roles)}
+        selection
+        fluid
+        // TODO - replace with role added to invitation payload
+        value="curator"
+        openOnFocus={false}
+        selectOnBlur={false}
+        onChange={(e, { value: role }) => {
             onRoleChange(role);
           }}
-          status={status}
-        />
+      />
       </Table.Cell>
       <Table.Cell>
         <Container fluid textAlign="right">
@@ -141,7 +130,6 @@ export const InvitationResultItem = ({
 
 InvitationResultItem.propTypes = {
   invitation: PropTypes.object.isRequired,
-  key: PropTypes.number.isRequired,
   onRoleChange: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
   error: PropTypes.string,
@@ -151,6 +139,7 @@ InvitationResultItem.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onReInvite: PropTypes.func.isRequired,
   onView: PropTypes.func.isRequired,
+  roles: PropTypes.object.isRequired,
 };
 
 InvitationResultItem.defaultProps = {
