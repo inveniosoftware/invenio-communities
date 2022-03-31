@@ -50,23 +50,6 @@ def pass_community_logo(f):
     return view
 
 
-def require_community_owner(f):
-    """Decorate a view to require community owner for accessing the view."""
-    @wraps(f)
-    def view(**kwargs):
-        """."""
-        pid_value = kwargs['pid_value']
-        community = service().read(
-            id_=pid_value, identity=g.identity
-        )
-        if community.has_permissions_to(["update"])["can_update"]:
-            return f(**kwargs)
-        else:
-            raise PermissionDeniedError()
-
-    return view
-
-
 def pass_community_endpoint(f):
     """Decorate a view to calculate community endpoint."""
     @wraps(f)

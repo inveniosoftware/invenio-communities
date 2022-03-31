@@ -11,9 +11,10 @@
 from flask import current_app, render_template
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
+from invenio_records_resources.services.errors import PermissionDeniedError
 
 from .decorators import pass_community, pass_community_logo, \
-    require_community_owner, pass_community_endpoint
+    pass_community_endpoint
 
 
 #
@@ -67,6 +68,9 @@ def communities_new():
 @pass_community_logo
 def communities_detail(community=None, logo=None, pid_value=None):
     """Community detail page."""
+    permissions=community.has_permissions_to(
+        ['update', 'read', 'search_requests', 'search_invites']
+    )
     return render_template(
         "invenio_communities/details/index.html",
         community=community.to_dict(),  # TODO: use serializer
@@ -80,16 +84,20 @@ def communities_detail(community=None, logo=None, pid_value=None):
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
-        permissions=community.has_permissions_to(['update']),
+        permissions=permissions,
         active_menu_tab="search"
     )
 
 
 @pass_community
 @pass_community_logo
-@require_community_owner
 def communities_settings(community=None, logo=None, pid_value=None):
     """Community settings/profile page."""
+    permissions=community.has_permissions_to(
+        ['update', 'read', 'search_requests', 'search_invites']
+    )
+    if not permissions['can_update']:
+        raise PermissionDeniedError()
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(),  # TODO: use serializer,
@@ -103,7 +111,7 @@ def communities_settings(community=None, logo=None, pid_value=None):
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
-        permissions=community.has_permissions_to(['update']),
+        permissions=permissions,
         active_menu_tab="settings"
     )
 
@@ -112,6 +120,11 @@ def communities_settings(community=None, logo=None, pid_value=None):
 @pass_community_logo
 def communities_requests(community=None, logo=None, pid_value=None):
     """Community requests page."""
+    permissions=community.has_permissions_to(
+        ['update', 'read', 'search_requests', 'search_invites']
+    )
+    if not permissions['can_search_requests']:
+        raise PermissionDeniedError()
     return render_template(
         "invenio_communities/details/requests/index.html",
         community=community.to_dict(),  # TODO: use serializer,
@@ -125,16 +138,20 @@ def communities_requests(community=None, logo=None, pid_value=None):
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
-        permissions=community.has_permissions_to(['update']),
+        permissions=permissions,
+        endpoint = f'/api/requests?receiver=community:{community["uuid"]}',
         active_menu_tab="requests"
     )
 
-
-@require_community_owner
 @pass_community
 @pass_community_logo
 def communities_settings_privileges(community=None, logo=None, pid_value=None):
     """Community settings/privileges page."""
+    permissions=community.has_permissions_to(
+        ['update', 'read', 'search_requests', 'search_invites']
+    )
+    if not permissions['can_update']:
+        raise PermissionDeniedError()
     return render_template(
         "invenio_communities/details/settings/privileges.html",
         community=community.to_dict(),  # TODO: use serializer,
@@ -167,7 +184,7 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
-        permissions=community.has_permissions_to(['update']),
+        permissions=permissions,
         active_menu_tab="settings",
         logo=logo.to_dict() if logo else None
     )
@@ -176,6 +193,19 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
 @pass_community
 @pass_community_endpoint
 def members(community=None, pid_value=None, endpoint=None):
+    permissions=community.has_permissions_to(
+        [
+            "update",
+            "members_search",
+            "members_search_public",
+            "members_manage",
+            "read", 
+            "search_requests",
+            "search_invites"
+        ]
+    )
+    if not permissions['can_read']:
+        raise PermissionDeniedError()
     return render_template(
         "invenio_communities/details/members/members.html",
         community=community.to_dict(),
@@ -185,14 +215,7 @@ def members(community=None, pid_value=None, endpoint=None):
             "topic": "Topic",
             "project": "Project",
         },
-        permissions=community.has_permissions_to(
-            [
-                "update",
-                "members_search",
-                "members_search_public",
-                "members_manage"
-            ]
-        ),
+        permissions=permissions,
         active_menu_tab="members",
         endpoint=endpoint,
     )
@@ -200,6 +223,11 @@ def members(community=None, pid_value=None, endpoint=None):
 
 @pass_community
 def invitations(community=None, pid_value=None):
+    permissions=community.has_permissions_to(
+        ['update', 'read', 'search_requests', 'search_invites']
+    )
+    if not permissions['can_search_invites']:
+        raise PermissionDeniedError()
     return render_template(
         "invenio_communities/details/members/invitations.html",
         community=community.to_dict(),
@@ -209,6 +237,6 @@ def invitations(community=None, pid_value=None):
             "topic": "Topic",
             "project": "Project"
         },
-        permissions=community.has_permissions_to(['update']),
+        permissions=permissions,
         active_menu_tab="members",
     )

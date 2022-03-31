@@ -44,6 +44,10 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_search_user_communities = [AuthenticatedUser(), SystemProcess()]
 
+    can_search_invites = [CommunityManagers(), SystemProcess()]
+
+    can_search_requests = [CommunityManagers(), SystemProcess()]
+
     can_rename = [CommunityOwners(), SystemProcess()]
 
     can_submit_record = [
