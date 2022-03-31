@@ -16,12 +16,12 @@
 <div class="ui container grid rel-mt-2">
   {%- block settings_menu %}
     {%- set menu_items = {
-      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), ),
-      'invitations': (_('Invitations'), url_for('invenio_communities.invitations', pid_value=community.id)),
+      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), permissions.can_read),
+      'invitations': (_('Invitations'), url_for('invenio_communities.invitations', pid_value=community.id), permissions.can_search_invites),
     } %}
     <div class="three wide column">
       <div class="ui fluid vertical menu">
-        {% for menu_key, (menu_item, menu_link, ) in menu_items.items() %}
+        {% for menu_key, (menu_item, menu_link, permission_to_show) in menu_items.items() if permission_to_show %}
           <a href="{{ menu_link }}" class="{{ 'brand item active' if active_menu_item and menu_key == active_menu_item }} {{ 'disabled' if not menu_link }} item">{{ menu_item }}</a>
         {% endfor %}
       </div>
