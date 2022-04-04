@@ -15,12 +15,10 @@ import { MembersSearchLayout } from "../components/MembersSearchLayout";
 import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
 import { parametrize } from "react-overridable";
 import { MembersSearchAppContext as MembersSearchAppContextCmp } from "./MembersSearchAppContext";
+import { memberVisibilityTypes } from "../";
 
 const domContainer = document.getElementById("community-members-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
-const communitiesVisibility = JSON.parse(
-  domContainer.dataset.communitiesMembersVisibility
-);
 const community = JSON.parse(domContainer.dataset.community);
 const permissions = JSON.parse(domContainer.dataset.permissions);
 
@@ -29,7 +27,7 @@ const ManagerMembersResultItemWithConfig = parametrize(
   {
     config: {
       roles: communitiesRoles,
-      visibility: communitiesVisibility,
+      visibility: memberVisibilityTypes,
       permissions: permissions,
     },
   }
@@ -41,7 +39,7 @@ const ManagerMembersResultContainerWithCommunity = parametrize(
     community: community,
     config: {
       roles: communitiesRoles,
-      visibility: communitiesVisibility,
+      visibility: memberVisibilityTypes,
       permissions: permissions,
     },
   }

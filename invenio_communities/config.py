@@ -102,19 +102,6 @@ COMMUNITIES_ROLES = {
 }
 """Community roles."""
 
-# TODO temporarily added options for UIs - to be moved?
-COMMUNITIES_MEMBERS_VISIBILITY = {
-    'public': dict(
-        visible=True,
-        title=_('Public'),
-        description=_('Member publicly visible in the community members list'),
-    ),
-    'hidden': dict(
-        visible=False,
-        title=_('Hidden'),
-        description=_('Member hidden in the community members list'),
-    )
-}
 
 COMMUNITIES_REQUESTS_SEARCH = {
     'facets': ['type', 'status'],

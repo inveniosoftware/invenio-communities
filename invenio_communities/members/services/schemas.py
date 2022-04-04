@@ -146,8 +146,8 @@ class MemberDumpSchema(PublicDumpSchema):
         return {
             # TODO: is_self and not the last owner
             'can_leave': self.is_self(obj),
-            'can_delete': True and not self.is_self(obj),
-            'can_update_role': not self.is_self(obj),
+            'can_delete': False,
+            'can_update_role': False,
             # owners/managers, prior value of visibility, self, prior
             'can_update_visible': self.is_self(obj),
         }

@@ -17,6 +17,3 @@ const apiConfig = {
 };
 
 export const http = axios.create(apiConfig);
-
-export const errorSerializer = (error) =>
-  error?.response?.data?.message || error?.message;

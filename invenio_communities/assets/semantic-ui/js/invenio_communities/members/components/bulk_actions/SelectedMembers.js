@@ -21,12 +21,14 @@ export class SelectedMembers extends Component {
   };
 
   render() {
-    const { selectedMembers } = this.props;
+    const { selectedMembers, displayingGroups } = this.props;
 
     return !_isEmpty(selectedMembers) ? (
       <>
         <Header as="h4" className="ml-20">
-          {i18next.t("Selected members and groups:")}
+          {i18next.t(
+            displayingGroups ? "Selected groups" : "Selected members"
+          )}
         </Header>
         <Segment className="selected-members-header mb-20 mr-20 ml-20">
           {Object.entries(selectedMembers).map(([memberId, member]) => (
@@ -43,7 +45,10 @@ export class SelectedMembers extends Component {
         <Segment placeholder>
           <Header icon>
             <Icon name="users" />
-            {i18next.t("No people or groups selected.")}
+
+            {i18next.t(
+              displayingGroups ? "No groups selected." : "No people selected."
+            )}
           </Header>
         </Segment>
       </div>
@@ -54,4 +59,9 @@ export class SelectedMembers extends Component {
 SelectedMembers.propTypes = {
   selectedMembers: PropTypes.object.isRequired,
   updateSelectedMembers: PropTypes.func.isRequired,
+  displayingGroups: PropTypes.bool,
+};
+
+SelectedMembers.defaultProps = {
+  displayingGroups: false,
 };

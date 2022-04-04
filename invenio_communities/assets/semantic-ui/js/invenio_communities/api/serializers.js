@@ -15,9 +15,9 @@ export const payloadSerializer = (content, format) => ({
 });
 
 export const communityErrorSerializer = (error) => ({
-  message: error.response.data?.message,
-  errors: error.response.data?.errors,
-  status: error.response.data.status,
+  message: error?.response?.data?.message,
+  errors: error?.response?.data?.errors,
+  status: error?.response?.data?.status,
 });
 
 export const bulkMembersSerializer = (members) =>
