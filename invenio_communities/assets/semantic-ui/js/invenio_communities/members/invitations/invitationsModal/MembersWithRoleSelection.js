@@ -72,6 +72,7 @@ export class MembersWithRoleSelection extends Component {
           <SelectedMembers
             updateSelectedMembers={this.updateSelectedMembers}
             selectedMembers={selectedMembers}
+            displayingGroups={false}
           />
           <Form>
             <Form.Field>
@@ -114,9 +115,11 @@ export class MembersWithRoleSelection extends Component {
             floated="left"
             onClick={modalClose}
           />
-          <Trans key="communityInviteMembersSelected" count={selectedCount}>
-            You are about to invite {{ selectedCount }} users
-          </Trans>
+          {selectedCount > 0 && (
+            <Trans key="communityInviteMembersSelected" count={selectedCount}>
+              You are about to invite {{ selectedCount }} users
+            </Trans>
+          )}
           <Button
             content={i18next.t("Invite")}
             labelPosition="left"

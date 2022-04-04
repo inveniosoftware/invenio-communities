@@ -48,7 +48,7 @@ export class InvitationResultItem extends Component {
       <Table.Row className="community-member-item">
         <Table.Cell>
           <Image src="/abc" avatar circular className="rel-mr-1" />
-          <Header size="small" as="a">
+          <Header size="small" as="b">
             {member.name}
           </Header>
         </Table.Cell>

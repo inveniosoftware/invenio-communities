@@ -18,18 +18,13 @@ export class CommunityInvitationsApi {
   }
 
   createInvite = async (members, role, message = undefined) => {
-    let payload;
+    const payload = {
+      members: bulkMembersSerializer(members),
+      role: role,
+    };
+
     if (message) {
-      payload = {
-        members: bulkMembersSerializer(members),
-        role: role,
-        message: message,
-      };
-    } else {
-      payload = {
-        members: bulkMembersSerializer(members),
-        role: role,
-      };
+      payload.message = message;
     }
 
     return await http.post(this.#urls.invitations, payload);

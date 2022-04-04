@@ -8,6 +8,8 @@ import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
 import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
+import { ModalContext } from "../../components/modal_manager";
+import { modalModeEnum } from "../../components/RemoveMemberModal";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
@@ -53,6 +55,18 @@ export class ManagerMembersResultItem extends Component {
     this.setState({ result: { ...result, ...{ visible: value } } });
   };
 
+  openLeaveOrRemoveModal = (openModalCallback, isRemoving = true) => {
+    const { result } = this.props;
+    const { api } = this.context;
+
+    const { member } = result;
+
+    const modalAction = () => api.removeMember(member);
+    const modalMode = isRemoving ? modalModeEnum.remove : modalModeEnum.leave;
+
+    openModalCallback({ modalMode, modalAction });
+  };
+
   render() {
     const { config } = this.props;
     const { result } = this.state;
@@ -71,12 +85,8 @@ export class ManagerMembersResultItem extends Component {
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
                   >
-                    <a
-                      className={result.member.is_group && "mt-10"}
-                      href={`/members/${result.id}`}
-                    >
-                      {result.member.name}
-                    </a>
+                    <b>{result.member.name}</b>
+
                     {result.member.is_group && (
                       <Label className="ml-10">{i18next.t("Group")}</Label>
                     )}
@@ -131,29 +141,30 @@ export class ManagerMembersResultItem extends Component {
             _upperFirst(result.role)
           )}
         </Table.Cell>
-        <Table.Cell>
-          {result.permissions.can_leave && (
-            <Button
-              fluid
-              negative
-              onClick={() => {
-                // TODO: implement api call + redirect
-              }}
-            >
-              {i18next.t("Leave...")}
-            </Button>
+
+        <ModalContext.Consumer>
+          {({ openModal }) => (
+            <Table.Cell>
+              {result.permissions.can_leave && (
+                <Button
+                  fluid
+                  negative
+                  onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
+                >
+                  {i18next.t("Leave...")}
+                </Button>
+              )}
+              {result.permissions.can_delete && (
+                <Button
+                  fluid
+                  onClick={() => this.openLeaveOrRemoveModal(openModal, true)}
+                >
+                  {i18next.t("Remove...")}
+                </Button>
+              )}
+            </Table.Cell>
           )}
-          {result.permissions.can_delete && (
-            <Button
-              fluid
-              onClick={() => {
-                // TODO: implement api call + redirect
-              }}
-            >
-              {i18next.t("Remove...")}
-            </Button>
-          )}
-        </Table.Cell>
+        </ModalContext.Consumer>
       </Table.Row>
     );
   }

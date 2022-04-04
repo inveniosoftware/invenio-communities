@@ -33,11 +33,17 @@ class ActionDropdown extends Component {
     this.state = { error: undefined, loading: false, actionSuccess: undefined };
   }
 
+  componentWillUnmount() {
+    this.cancellableAction && this.cancellableAction.cancel();
+  }
+
   handleOnChange = async (e, { value }) => {
     const { successCallback, action, resource } = this.props;
     this.setState({ loading: true, actionSuccess: false });
+    this.cancellableAction = withCancel(action(resource, value));
+
     try {
-      const response = await withCancel(action(resource, value));
+      const response = await this.cancellableAction.promise;
       successCallback(response, value);
       this.setState({ loading: false, actionSuccess: true });
     } catch (error) {

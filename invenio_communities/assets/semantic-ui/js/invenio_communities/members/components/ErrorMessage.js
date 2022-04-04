@@ -1,16 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Message } from "semantic-ui-react";
+import { communityErrorSerializer } from "../../api/serializers";
 
 export class ErrorMessage extends Component {
   render() {
     const { error } = this.props;
+    let { errors, message } = communityErrorSerializer(error);
+
+    if (!message) {
+      message = error.message;
+    }
+ 
     return (
       <Message className="ml-20 mr-20" negative>
-        <Message.Header>{error.message}</Message.Header>
-        {error.errors && (
+        <Message.Header>{message}</Message.Header>
+        {errors && (
           <Message.List>
-            {error.errors.map((error) => {
+            {errors.map((error) => {
               return (
                 <Message.Item>
                   <strong>{error.field}: </strong>

@@ -23,10 +23,18 @@ export class CommunityMembersApi {
     return await http.get(this.endpoint);
   };
 
-  deleteMember = async (payload) => {
+  removeMemberBase = async (payload) => {
     return await http.delete(this.endpoint, {
       data: payload,
     });
+  };
+
+  removeMember = async ({ type, id }) => {
+    const payload = {
+      members: [{ type, id }],
+    };
+
+    return this.removeMemberBase(payload);
   };
 
   updateMembers = async (payload) => {

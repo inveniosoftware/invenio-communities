@@ -68,6 +68,7 @@ export class GroupTabPane extends Component {
           <SelectedMembers
             updateSelectedMembers={this.updateSelectedMembers}
             selectedMembers={selectedMembers}
+            displayingGroups={true}
           />
           <Form>
             <Form.Field>
@@ -99,11 +100,14 @@ export class GroupTabPane extends Component {
             floated="left"
             onClick={modalClose}
           />
-          <Trans key="communityInviteMembersSelected" count={selectedCount}>
-            You are about to invite {{ selectedCount }} groups
-          </Trans>
+          {selectedCount > 0 && (
+            <Trans key="communityInviteMembersSelected" count={selectedCount}>
+              You are about to add {{ selectedCount }} groups
+            </Trans>
+          )}
+
           <Button
-            content={i18next.t("Invite")}
+            content={i18next.t("Add")}
             labelPosition="left"
             loading={loading}
             disabled={loading || selectedCount === 0}

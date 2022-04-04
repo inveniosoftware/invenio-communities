@@ -15,9 +15,12 @@ import {
   Count,
 } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { ModalContextProvider } from "../../components/modal_manager";
+import RemoveMemberModal from "../../components/RemoveMemberModal";
 
 export const MembersResults = ({ paginationOptions, currentResultsState }) => {
   const { total } = currentResultsState.data;
+
   return (
     total && (
       <Grid>
@@ -26,7 +29,10 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
             <Grid>
               <Grid.Row>
                 <Grid.Column>
-                  <ResultsList />
+                  <ModalContextProvider>
+                    <ResultsList />
+                    <RemoveMemberModal/>
+                  </ModalContextProvider>
                 </Grid.Column>
               </Grid.Row>
             </Grid>

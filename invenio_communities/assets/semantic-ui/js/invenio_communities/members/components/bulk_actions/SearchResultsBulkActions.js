@@ -26,19 +26,19 @@ export class SearchResultsBulkActions extends Component {
     setAllSelected(!allSelected, true);
   };
 
-  handleActionOnChange = (e, { value }) => {
-    if (value) {
-      const { optionSelectionCallback } = this.props;
-      this.setState({ action: value });
+  handleActionOnChange = (e, { value, ...props }) => {
+    if (!value) return;
 
-      const { selectedCount, bulkActionContext } = this.context;
-      const selected = _pickBy(
-        bulkActionContext,
-        ({ selected }) => selected === true
-      );
-      optionSelectionCallback(value, selected, selectedCount);
-      this.setState({ action: undefined });
-    }
+    const { optionSelectionCallback } = this.props;
+    this.setState({ action: value });
+
+    const { selectedCount, bulkActionContext } = this.context;
+    const selected = _pickBy(
+      bulkActionContext,
+      ({ selected }) => selected === true
+    );
+    optionSelectionCallback(value, selected, selectedCount);
+    this.setState({ action: undefined });
   };
 
   render() {

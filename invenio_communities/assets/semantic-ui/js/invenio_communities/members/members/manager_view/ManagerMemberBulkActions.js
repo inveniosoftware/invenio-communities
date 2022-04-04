@@ -35,6 +35,10 @@ class ManagerMemberBulkActionsCmp extends Component {
     };
   }
 
+  componentWillUnmount() {
+    this.cancellableAction && this.cancellableAction.cancel();
+  }
+
   get bulkActions() {
     const { roles, visibilities, permissions } = this.props;
     return [
@@ -128,8 +132,12 @@ class ManagerMemberBulkActionsCmp extends Component {
     );
 
     this.setState({ loading: true });
+
+    this.cancellableAction = withCancel(
+      actionToPerform(members, actionParameter)
+    );
     try {
-      await withCancel(actionToPerform(members, actionParameter));
+      await this.cancellableAction.promise;
 
       this.setState({ loading: false });
       this.handleModalClose();
@@ -139,13 +147,14 @@ class ManagerMemberBulkActionsCmp extends Component {
       setAllSelected(false, true);
     } catch (error) {
       if (error === "UNMOUNTED") return;
-      console.error(error);
+
       this.setState({ loading: false, error: error });
     }
   };
 
   get currentAction() {
     const { currentAction } = this.state;
+
     return this.bulkActions.find((option) => {
       return option.value === currentAction;
     });
@@ -156,7 +165,8 @@ class ManagerMemberBulkActionsCmp extends Component {
     const selectedCount = Object.keys(selectedMembers).length;
 
     const currentActionRender =
-      this.currentAction && this.currentAction.renderOnActive();
+      this.currentAction?.renderOnActive && this.currentAction.renderOnActive();
+
     const currentActionText = this.currentAction?.text;
 
     const actionDisabled =
