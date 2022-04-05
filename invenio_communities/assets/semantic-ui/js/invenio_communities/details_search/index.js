@@ -4,23 +4,22 @@
 // Invenio is free software; you can redistribute it and/or modify it under the
 // terms of the MIT License; see LICENSE file for more details.
 
-
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
-  CommunityBucketAggregationElement,
-  CommunityRecordFacets,
   CommunitiesFacetsValues,
+  CommunityBucketAggregationElement,
+  CommunityCountComponent,
+  CommunityEmptyResults,
+  CommunityErrorComponent,
+  CommunityRecordFacets,
   CommunityRecordResultsGridItem,
   CommunityRecordResultsListItem,
   CommunityRecordSearchBarContainer,
   CommunityRecordSearchBarElement,
-  CommunityCountComponent,
-  CommunityEmptyResults,
-  CommunityErrorComponent,
   CommunityToggleComponent,
-} from './components';
+} from "./components";
 
-const initSearchApp = createSearchAppInit({
+createSearchAppInit({
   "BucketAggregation.element": CommunityBucketAggregationElement,
   "BucketAggregationValues.element": CommunitiesFacetsValues,
   "ResultsGrid.item": CommunityRecordResultsGridItem,
@@ -31,5 +30,5 @@ const initSearchApp = createSearchAppInit({
   "SearchBar.element": CommunityRecordSearchBarElement,
   "Count.element": CommunityCountComponent,
   "Error.element": CommunityErrorComponent,
-  "SearchFilters.ToggleComponent": CommunityToggleComponent,
+  "SearchFilters.Toggle.element": CommunityToggleComponent,
 });

@@ -1,15 +1,14 @@
-import React, { Component } from "react";
-import { Grid, Item, Button, Label, Table, Dropdown } from 'semantic-ui-react';
 import { i18next } from "@translations/invenio_communities/i18next";
-import { Image } from "react-invenio-forms";
-import PropTypes from "prop-types";
-import { config as mockedConfig } from "../../mockedData";
-import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
+import { DateTime } from "luxon";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Image } from "react-invenio-forms";
+import { Button, Dropdown, Grid, Item, Label, Table } from "semantic-ui-react";
+import { config as mockedConfig } from "../../mockedData";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
-
 
 const dropdownOptionsGenerator = (value) => {
   return Object.entries(value).map(([key, settings]) => {
@@ -76,10 +75,7 @@ class MemberViewResultItem extends Component {
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item className="flex" key={result.id} image>
-                <Image
-                  src={avatar}
-                  avatar
-                />
+                <Image src={avatar} avatar />
                 <Item.Content>
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
@@ -172,6 +168,6 @@ MemberViewResultItem.propTypes = {
   result: PropTypes.object.isRequired,
 };
 
-export function MembersResultsItem({ result, index, ...props }) {
+export function MembersResultsItem({ result }) {
   return <MemberViewResultItem result={result} />;
 }

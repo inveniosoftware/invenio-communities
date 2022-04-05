@@ -8,12 +8,10 @@
 
 import React from "react";
 import { Card } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
-import _upperFirst from "lodash/upperFirst";
 
-export function MembersResultsGridItem({ result, index }) {
+export function MembersResultsGridItem({ result }) {
   return (
-    <Card fluid key={index} href={`/members/${result.id}`}>
+    <Card fluid href={`/members/${result.id}`}>
       <Card.Content>
         <Card.Header>{result.member.name}</Card.Header>
         <Card.Description>

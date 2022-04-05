@@ -6,22 +6,25 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from 'react-overridable';
+import { parametrize } from "react-overridable";
+import { InvitationResultItemControlled } from "./InvitationResultItemControlled";
 import { InvitationsResults } from "./InvitationsResults";
+import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
-import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
-import { InvitationResultItemControlled } from "./InvitationResultItemControlled";
 
-const domContainer = document.getElementById("community-invitations-search-root");
+const domContainer = document.getElementById(
+  "community-invitations-search-root"
+);
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
 
-const InvitationResultItemControlledWithConfig = parametrize(InvitationResultItemControlled, {
-  config: { roles: communitiesRoles },
-});
-
+const InvitationResultItemControlledWithConfig = parametrize(
+  InvitationResultItemControlled,
+  {
+    config: { roles: communitiesRoles },
+  }
+);
 
 const defaultComponents = {
   "ResultsList.item": InvitationResultItemControlledWithConfig,

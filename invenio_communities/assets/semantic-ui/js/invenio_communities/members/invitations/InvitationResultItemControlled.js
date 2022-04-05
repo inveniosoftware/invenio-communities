@@ -6,13 +6,13 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import { InvitationResultItem } from "./InvitationResultItem";
 import PropTypes from "prop-types";
-import { randomBool } from "../mock";
+import React, { Component } from "react";
+import { withCancel } from "react-invenio-forms";
 import { CommunityActionsApi } from "../../api";
 import { errorSerializer } from "../../api/serializers";
-import { withCancel } from "react-invenio-forms";
+import { randomBool } from "../mock";
+import { InvitationResultItem } from "./InvitationResultItem";
 
 export class InvitationResultItemControlled extends Component {
   constructor(props) {
@@ -111,6 +111,5 @@ export class InvitationResultItemControlled extends Component {
 
 InvitationResultItemControlled.propTypes = {
   result: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  config: PropTypes.object.isRequired
+  config: PropTypes.object.isRequired,
 };

@@ -9,8 +9,10 @@ import {
   SearchAppResultsPane,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
-import React, { Component, useState } from "react";
+import { DateTime } from "luxon";
 import PropTypes from "prop-types";
+import React, { Component, useState } from "react";
+import Overridable from "react-overridable";
 import {
   BucketAggregation,
   Count,
@@ -35,9 +37,6 @@ import {
   List,
   Segment,
 } from "semantic-ui-react";
-import { DateTime } from "luxon";
-import Overridable from "react-overridable";
-
 
 export const RecordSearchBarElement = withState(
   ({
@@ -82,9 +81,8 @@ export const RecordFacetsValues = ({
   bucket,
   isSelected,
   onFilterClicked,
-  getChildAggCmps,
+  childAggCmps,
 }) => {
-  const childAggCmps = getChildAggCmps(bucket);
   const [isActive, setisActive] = useState(false);
   const hasChildren = childAggCmps && childAggCmps.props.buckets.length > 0;
   const keyField = bucket.key_as_string ? bucket.key_as_string : bucket.key;
@@ -235,7 +233,7 @@ export const RequestsResults = ({
           </Grid.Column>
         </Grid.Row>
         <Grid.Row verticalAlign="middle">
-          <Grid.Column width={4}/>
+          <Grid.Column width={4} />
           <Grid.Column width={8} textAlign="center">
             <Pagination
               options={{
@@ -261,9 +259,9 @@ export const RequestsResults = ({
   );
 };
 
-export const RequestsResultsGridItemTemplate = ({ result, index }) => {
+export const RequestsResultsGridItemTemplate = ({ result }) => {
   return (
-    <Card fluid key={index} href={`/me/requests/${result.metadata.id}`}>
+    <Card fluid href={`/me/requests/${result.metadata.id}`}>
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
@@ -274,15 +272,15 @@ export const RequestsResultsGridItemTemplate = ({ result, index }) => {
       </Card.Content>
     </Card>
   );
-}
+};
 
-export const RequestsResultsItemTemplate = ({ result, index }) => {
+export const RequestsResultsItemTemplate = ({ result }) => {
   const createdDate = new Date(result.created);
   const timestampToRelativeTime = (timestamp) =>
     DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
   const differenceInDays = timestampToRelativeTime(createdDate.toISOString());
   return (
-    <Item key={index}>
+    <Item>
       <Item.Content>
         <Item.Header>
           {result.type && (
@@ -316,7 +314,7 @@ export const RequestsResultsItemTemplate = ({ result, index }) => {
       </Item.Content>
     </Item>
   );
-}
+};
 
 class RequestStatusFilterComponent extends Component {
   constructor(props) {
@@ -438,8 +436,11 @@ export const RequestsFacets = ({ aggs, currentResultsState }) => {
   );
 };
 
-export const RequestsEmptyResults = ({ queryString, userSelectionFilters, updateQueryState }) => {
-
+export const RequestsEmptyResults = ({
+  queryString,
+  userSelectionFilters,
+  updateQueryState,
+}) => {
   const is_open = userSelectionFilters.some(
     (obj) => obj.includes("is_open") && obj.includes("true")
   );
@@ -473,10 +474,7 @@ export const RequestsEmptyResults = ({ queryString, userSelectionFilters, update
           {i18next.t("No requests found!")}
         </Header>
         {queryString && (
-          <Button
-            primary
-            onClick={() => updateQueryState(elementsToReset)}
-          >
+          <Button primary onClick={() => updateQueryState(elementsToReset)}>
             {i18next.t("Reset search")}
           </Button>
         )}
@@ -494,6 +492,4 @@ export const RequestsEmptyResults = ({ queryString, userSelectionFilters, update
   );
 };
 
-export const RequestsEmptyResultsWithState = withState(
-  RequestsEmptyResults
-);
+export const RequestsEmptyResultsWithState = withState(RequestsEmptyResults);
