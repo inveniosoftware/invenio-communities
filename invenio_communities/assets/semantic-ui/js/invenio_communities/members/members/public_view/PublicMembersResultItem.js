@@ -1,10 +1,8 @@
-import React, { Component } from "react";
-import { Grid, Item, Label, Table } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
-import _upperFirst from "lodash/upperFirst";
+import React, { Component } from "react";
+import { Image } from "react-invenio-forms";
+import { Grid, Item, Label, Table } from "semantic-ui-react";
 
 class PublicMemberPublicViewResultItem extends Component {
   render() {
@@ -59,6 +57,6 @@ PublicMemberPublicViewResultItem.propTypes = {
   result: PropTypes.object.isRequired,
 };
 
-export function PublicMembersResultsItem({ result, index, ...props }) {
+export function PublicMembersResultsItem({ result }) {
   return <PublicMemberPublicViewResultItem result={result} />;
 }

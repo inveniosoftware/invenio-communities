@@ -6,37 +6,37 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React from "react";
-import {
-  Input,
-  Card,
-  Container,
-  Grid,
-  Icon,
-  Item,
-  Button,
-  Segment,
-} from "semantic-ui-react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   SearchAppFacets,
   SearchAppResultsPane,
 } from "@js/invenio_search_ui/components";
+import { i18next } from "@translations/invenio_communities/i18next";
+import React from "react";
 import {
   BucketAggregation,
-  SearchBar,
   Count,
-  Sort,
-  ResultsList,
   Pagination,
+  ResultsList,
   ResultsPerPage,
+  SearchBar,
+  Sort,
 } from "react-searchkit";
-import { i18next } from "@translations/invenio_communities/i18next";
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  Icon,
+  Input,
+  Item,
+  Segment,
+} from "semantic-ui-react";
 import { CommunitiesFacetsValues } from "../details_search/components";
 
-function ResultsGridItemTemplate({ result, index }) {
+function ResultsGridItemTemplate({ result }) {
   return (
-    <Card fluid key={index} href={`/communities/${result.metadata.id}`}>
+    <Card fluid href={`/communities/${result.metadata.id}`}>
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
@@ -52,9 +52,9 @@ function ResultsGridItemTemplate({ result, index }) {
   );
 }
 
-function ResultsItemTemplate({ result, index }) {
+function ResultsItemTemplate({ result }) {
   return (
-    <Item key={index}>
+    <Item>
       <Item.Content>
         <Button
           compact
@@ -111,11 +111,7 @@ export const CommunitiesResults = ({
                       )}
                     />
                   </Grid.Column>
-                  <Grid.Column
-                    width={12}
-                    textAlign="right"
-                    className="pr-5"
-                  >
+                  <Grid.Column width={12} textAlign="right" className="pr-5">
                     {sortOptions && (
                       <Sort
                         values={sortOptions}
@@ -263,7 +259,6 @@ const defaultComponents = {
   "SearchApp.results": CommunitiesResults,
 };
 const domContainer = document.getElementById("communities-search");
-const facetsConfig = JSON.parse(domContainer.dataset.facetsConfig);
 
 // Auto-initialize search app
-const initSearchApp = createSearchAppInit(defaultComponents);
+createSearchAppInit(defaultComponents);
