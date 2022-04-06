@@ -144,6 +144,8 @@ class CommunityService(RecordService):
     def delete_logo(self, identity, id_, uow=None):
         """Delete the community's logo."""
         record = self.record_cls.pid.resolve(id_)
+        # update permission on community is required to be able to remove logo.
+        self.require_permission(identity, 'update', record=record)
         deleted_file = record.files.pop('logo', None)
         if deleted_file is None:
             raise FileNotFoundError()
