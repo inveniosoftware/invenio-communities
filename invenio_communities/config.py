@@ -29,6 +29,9 @@ COMMUNITIES_ROUTES = {
 COMMUNITIES_ENABLED = True
 """Config to enable/disable communities blueprints."""
 
+COMMUNITIES_ALLOW_GROUP_INVITES = True
+"""Config to allow invitation of groups."""
+
 COMMUNITIES_FACETS = {
     'type': {
         'facet': facets.type,
