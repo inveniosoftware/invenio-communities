@@ -18,7 +18,12 @@ const domContainer = document.getElementById(
   "community-invitations-search-root"
 );
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
+const communityUUID = JSON.parse(domContainer.dataset.communityUuid);
 
+
+const communityAllowGroupInvites = JSON.parse(
+  domContainer.dataset.communityAllowGroupInvites
+);
 const InvitationResultItemControlledWithConfig = parametrize(
   InvitationResultItemControlled,
   {
@@ -26,9 +31,15 @@ const InvitationResultItemControlledWithConfig = parametrize(
   }
 );
 
+const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
+  roles: communitiesRoles,
+  communityID: communityUUID,
+  communityAllowGroupInvites: communityAllowGroupInvites,
+});
+
 const defaultComponents = {
   "ResultsList.item": InvitationResultItemControlledWithConfig,
-  "SearchApp.layout": InvitationsSearchLayout,
+  "SearchApp.layout": InvitationsSearchLayoutWithConfig,
   "SearchBar.element": InvitationsSearchBarElement,
   "SearchApp.results": InvitationsResults,
   "ResultsList.container": InvitationsResultsContainer,

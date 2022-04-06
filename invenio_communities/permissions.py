@@ -110,3 +110,5 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Ability to delete a single membership
     can_members_delete = can_members_update
+
+    can_invite_owners = [CommunityOwners(), SystemProcess()]
