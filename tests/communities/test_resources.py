@@ -613,6 +613,11 @@ def test_logo_flow(
     assert res.status_code == 200
     assert res.data == b'new_logo'
 
+    # Delete logo with unauthorized user
+    with app.test_client() as anon_client:
+        res = anon_client.delete(f'/communities/{id_}/logo', headers=headers)
+        assert res.status_code == 403
+
     # Delete logo
     res = client.delete(f'/communities/{id_}/logo', headers=headers)
     assert res.status_code == 204
@@ -623,7 +628,6 @@ def test_logo_flow(
     assert res.json['message'] == 'No logo exists for this community.'
 
     # TODO: Delete community and try all of the above operations
-    # TODO: Check permissions
 
 
 def test_invalid_community_ids_create(
