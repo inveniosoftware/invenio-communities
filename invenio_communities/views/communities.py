@@ -13,7 +13,6 @@ from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_requests.proxies import current_requests_service
-from copy import deepcopy
 
 from .decorators import pass_community, pass_community_logo
 
@@ -62,31 +61,6 @@ def communities_new():
             ),
             SITE_UI_URL=current_app.config["SITE_UI_URL"]
         ),
-    )
-
-
-@pass_community
-@pass_community_logo
-def communities_detail(community=None, logo=None, pid_value=None):
-    """Community detail page."""
-    permissions = community.has_permissions_to(
-        ['update', 'read', 'search_requests', 'search_invites']
-    )
-    return render_template(
-        "invenio_communities/details/index.html",
-        community=community.to_dict(),  # TODO: use serializer
-        logo=logo.to_dict() if logo else None,
-        # TODO: inject this from a vocabulary in the community
-        types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project"
-        },
-        # Pass permissions so we can disable partially UI components
-        # e.g Settings tab
-        permissions=permissions,
-        active_menu_tab="search"
     )
 
 

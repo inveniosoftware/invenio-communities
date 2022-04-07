@@ -15,22 +15,8 @@ from invenio_search_ui.searchconfig import search_app_config
 
 def search_app_context():
     """Search app context processor."""
+
     return {
-        # The Following functions should be defined for the communities
-        # search_app_communities_config
-        # search_app_communities_records_config
-        # search_app_communities_members_config
-        # search_app_communities_invitations_config
-        # search_app_communities_requests_config
-
-        # For them, the following configurations should be applied,
-        # respectively
-        # COMMUNITIES_SEARCH
-        # COMMUNITIES_RECORDS_SEARCH
-        # COMMUNITIES_MEMBERS_SEARCH
-        # COMMUNITIES_INVITATIONS_SEARCH
-        # COMMUNITIES_REQUESTS_SEARCH
-
         'search_app_communities_requests_config': partial(
             search_app_config,
             config_name='COMMUNITIES_REQUESTS_SEARCH',
