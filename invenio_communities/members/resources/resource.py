@@ -8,14 +8,12 @@
 
 """Invenio Communities Resource API."""
 
-from flask import current_app, g
+from flask import g
 from flask_resources import resource_requestctx, response_handler, route
-from invenio_records_resources.resources.files.resource import request_stream
 from invenio_records_resources.resources.records.resource import \
-    RecordResource, request_data, request_headers, request_search_args, \
+    RecordResource, request_data, request_search_args, \
     request_view_args
 from invenio_records_resources.resources.records.utils import es_preference
-from invenio_records_resources.services import Link
 
 
 class MemberResource(RecordResource):

@@ -15,7 +15,11 @@ export const ManagerMembersResultsContainer = ({ results, totalResults }) => {
   const options = [
     { key: 1, value: "change_role", text: i18next.t("Change role") },
     { key: 2, value: "change_visibility", text: i18next.t("Change role") },
-    { key: 3, value: "remove_from_community", text: i18next.t("Remove from community") },
+    {
+      key: 3,
+      value: "remove_from_community",
+      text: i18next.t("Remove from community"),
+    },
   ];
   console.log(totalResults);
   return (
@@ -23,12 +27,7 @@ export const ManagerMembersResultsContainer = ({ results, totalResults }) => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell width={7}>
-            <div className="flex">
-              <SearchResultsBulkActions
-                bulkDropdownOptions={options}
-                bulkId="members-search"
-              />
-            </div>
+            <SearchResultsBulkActions bulkDropdownOptions={options} />
           </Table.HeaderCell>
           <Table.HeaderCell width={2}>
             {i18next.t("Member since")}

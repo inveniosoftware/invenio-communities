@@ -32,7 +32,7 @@ export class SearchResultsBulkActions extends Component {
 
     return (
       <Overridable id="SearchResultsBulkActionsManager.layout">
-        <>
+        <div className="flex">
           <Checkbox
             className="align-self-center mr-10"
             onChange={this.handleOnChange}
@@ -45,7 +45,7 @@ export class SearchResultsBulkActions extends Component {
             item
             selection
           />
-        </>
+        </div>
       </Overridable>
     );
   }

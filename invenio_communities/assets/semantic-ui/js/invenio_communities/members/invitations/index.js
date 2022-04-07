@@ -6,13 +6,14 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from "react-overridable";
-import { InvitationResultItemControlled } from "./InvitationResultItemControlled";
+import { parametrize } from 'react-overridable';
 import { InvitationsResults } from "./InvitationsResults";
-import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
+import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
+import { InvitationResultItem } from "./InvitationResultItem";
 
 const domContainer = document.getElementById(
   "community-invitations-search-root"
@@ -24,12 +25,11 @@ const communityUUID = JSON.parse(domContainer.dataset.communityUuid);
 const communityAllowGroupInvites = JSON.parse(
   domContainer.dataset.communityAllowGroupInvites
 );
-const InvitationResultItemControlledWithConfig = parametrize(
-  InvitationResultItemControlled,
-  {
-    config: { roles: communitiesRoles },
-  }
-);
+
+const InvitationResultItemWithConfig = parametrize(InvitationResultItem, {
+  config: { roles: communitiesRoles },
+});
+
 
 const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   roles: communitiesRoles,
@@ -38,7 +38,7 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
 });
 
 const defaultComponents = {
-  "ResultsList.item": InvitationResultItemControlledWithConfig,
+  "ResultsList.item": InvitationResultItemWithConfig,
   "SearchApp.layout": InvitationsSearchLayoutWithConfig,
   "SearchBar.element": InvitationsSearchBarElement,
   "SearchApp.results": InvitationsResults,

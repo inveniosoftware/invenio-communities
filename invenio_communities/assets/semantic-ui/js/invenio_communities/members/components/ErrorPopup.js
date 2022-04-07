@@ -7,14 +7,10 @@
  */
 
 import React from "react";
-import { Label, Popup } from "semantic-ui-react";
+import { Icon, Label, Popup } from 'semantic-ui-react';
 import PropTypes from "prop-types";
 
-export const ErrorPopup = ({ trigger, error, onClose }) => {
-  if (!error) {
-    return null;
-  }
-
+export const ErrorPopup = ({ trigger, error }) => {
   return (
     <Popup
       basic
@@ -28,7 +24,6 @@ export const ErrorPopup = ({ trigger, error, onClose }) => {
           className="mb-5 error"
           pointing="below"
           removeIcon="close"
-          onRemove={onClose}
         />
       }
       trigger={trigger}
@@ -39,9 +34,9 @@ export const ErrorPopup = ({ trigger, error, onClose }) => {
 ErrorPopup.propTypes = {
   trigger: PropTypes.node.isRequired,
   error: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
 };
 
 ErrorPopup.defaultProps = {
   error: "",
+  trigger: <Icon name="exclamation circle" className="error" />
 };

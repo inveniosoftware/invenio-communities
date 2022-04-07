@@ -28,4 +28,8 @@ export class CommunityMembersApi {
   updateMember = async (payload) => {
     return await http.put(this.endpoint, payload);
   };
+
+  updateRole = async (role, member) =>{
+
+  }
 }
