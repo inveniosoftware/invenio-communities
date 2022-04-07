@@ -14,10 +14,9 @@ from flask_menu import current_menu
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
-from .communities import communities_detail, communities_frontpage, \
-    communities_new, communities_requests, communities_search, \
-    communities_settings, communities_settings_privileges, invitations, \
-    members, invitation_details
+from .communities import communities_frontpage, communities_new, \
+    communities_requests, communities_search, communities_settings, \
+    communities_settings_privileges, invitations, members, invitation_details
 from ..searchapp import search_app_context
 
 
@@ -70,11 +69,6 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["new"],
         view_func=communities_new,
-    )
-
-    blueprint.add_url_rule(
-        routes["details"],
-        view_func=communities_detail,
     )
 
     # Settings tab routes

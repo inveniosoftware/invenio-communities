@@ -78,8 +78,9 @@
         </div>
       </div> -->
     </div>
+    <!--TODO: Delete this menu to avoid using invenio_app_rdm-->
     {% set header_menu_items = {
-      'search': (_('Search'), url_for('invenio_communities.communities_detail', pid_value=community.id), 'search icon', True),
+      'search': (_('Search'), "/communities/" + community.id, 'search icon', True), 
       'requests': (_('Requests'), url_for('invenio_communities.communities_requests', pid_value=community.id), 'comments icon', permissions.can_search_requests),
       'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), 'users icon', permissions.can_read),
       'settings': (_('Settings'), url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
