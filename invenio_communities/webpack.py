@@ -79,6 +79,7 @@ communities = WebpackThemeBundle(
                 # Invenio-Theme in order to build Semantic UI (in theme.js
                 # entry point). theme.config itself is provided by
                 # cookiecutter-invenio-rdm.
+                '@js/invenio_communities': 'js/invenio_communities',
                 '@translations/invenio_communities': 'translations/invenio_communities'
             }
         ),

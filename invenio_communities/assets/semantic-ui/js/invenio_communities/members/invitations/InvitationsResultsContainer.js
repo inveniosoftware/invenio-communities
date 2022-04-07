@@ -15,10 +15,10 @@ export const InvitationsResultsContainer = ({ results }) => {
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell width={5}>{i18next.t("Name")}</Table.HeaderCell>
+          <Table.HeaderCell width={4}>{i18next.t("Name")}</Table.HeaderCell>
           <Table.HeaderCell width={2}>{i18next.t("Status")}</Table.HeaderCell>
-          <Table.HeaderCell width={4}>{i18next.t("Expires")}</Table.HeaderCell>
-          <Table.HeaderCell width={1}>{i18next.t("Role")}</Table.HeaderCell>
+          <Table.HeaderCell width={2}>{i18next.t("Expires")}</Table.HeaderCell>
+          <Table.HeaderCell width={4}>{i18next.t("Role")}</Table.HeaderCell>
           <Table.HeaderCell width={4} />
         </Table.Row>
       </Table.Header>
