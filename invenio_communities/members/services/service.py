@@ -12,12 +12,11 @@ from elasticsearch_dsl.query import Q
 from flask_babelex import gettext as _
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import Role
-from invenio_db import db
 from invenio_records_resources.services import LinksTemplate
 from invenio_records_resources.services.records import RecordService, \
     ServiceSchemaWrapper
-from invenio_records_resources.services.uow import RecordCommitOp, \
-    RecordDeleteOp, unit_of_work
+from invenio_records_resources.services.uow import IndexRefreshOp, \
+    RecordCommitOp, RecordDeleteOp, unit_of_work
 from invenio_requests import current_requests_service
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
@@ -101,7 +100,7 @@ class MemberService(RecordService):
         The default permission policy only allow groups to be added. Users must
         be invited.
         """
-        return self._create(
+        ret = self._create(
             identity,
             community_id,
             data,
@@ -110,6 +109,10 @@ class MemberService(RecordService):
             self._add_factory,
             uow
         )
+
+        # ensure index is refreshed to search for newly added members
+        uow.register(IndexRefreshOp(index=self.record_cls.index))
+        return ret
 
     @unit_of_work()
     def invite(self, identity, community_id, data, uow=None):
@@ -120,7 +123,7 @@ class MemberService(RecordService):
 
         Email member type is not yet supported.
         """
-        return self._create(
+        ret = self._create(
             identity,
             community_id,
             data,
@@ -129,6 +132,10 @@ class MemberService(RecordService):
             self._invite_factory,
             uow
         )
+
+        # ensure index is refreshed to search for newly added members
+        uow.register(IndexRefreshOp(index=self.record_cls.index))
+        return ret
 
     def _create(self, identity, community_id, data, schema, action, factory,
                 uow):
@@ -508,6 +515,7 @@ class MemberService(RecordService):
         uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
         uow.register(
             RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
+        uow.register(IndexRefreshOp(index=ArchivedInvitation.index))
 
     def read_many(self, *args, **kwargs):
         """Not implemented."""
