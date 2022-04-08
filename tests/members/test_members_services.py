@@ -157,7 +157,7 @@ def test_add_invalid_data(member_service, community, owner, group, db):
     }
     assert pytest.raises(
         ValidationError,
-        # using system_identity because owner get's a permission denied before
+        # using system_identity because owner gets a permission denied before
         # validation kicks in.
         member_service.add, system_identity, community._record.id, data
     )
@@ -174,6 +174,10 @@ def test_invite(
         "role": "reader",
     }
     member_service.invite(owner.identity, community._record.id, data)
+    # ensure that the invited user request has been indexed
+    res = member_service.search_invitations(
+        owner.identity, community._record.id).to_dict()
+    assert res['hits']['total'] == 1
     # Cannot invite twice.
     pytest.raises(
         AlreadyMemberError,
@@ -215,11 +219,18 @@ def test_invite_group_denied(
 def test_invite_already_member(
         member_service, community, owner, new_user, db):
     """Invite a user."""
+    res = member_service.search(
+        owner.identity, community._record.id).to_dict()
+    current = res['hits']['total']
+
     data = {
         "members": [{"type": "user", "id": str(new_user.id)}],
         "role": "reader",
     }
     member_service.add(system_identity, community._record.id, data)
+    res = member_service.search(
+        owner.identity, community._record.id).to_dict()
+    assert res['hits']['total'] == current + 1
     # Cannot invite if already a member.
     pytest.raises(
         AlreadyMemberError,
@@ -304,8 +315,6 @@ def test_search_invitations(
     member_service.invite(owner.identity, community._record.id, data)
 
     # See invitations in list
-    Member.index.refresh()
-    ArchivedInvitation.index.refresh()
     res = member_service.search_invitations(
         owner.identity, community._record.id)
     assert res.to_dict()['hits']['total'] == 2
@@ -393,7 +402,6 @@ def test_invite_actions_permissions(
         )
 
 
-
 #
 # Leave community
 #
@@ -440,6 +448,7 @@ def test_leave_denied(member_service, community, any_user, invite_user):
         data
     )
 
+
 def test_leave_owner_allowed(member_service, community, owner, group, db):
     """If multiple owners exists, an owner can leave"""
     # Add an owner
@@ -479,7 +488,6 @@ def test_delete_denied(
         "role": role,
     }
     member_service.add(system_identity, community._record.id, data)
-    Member.index.refresh()
     # Delete the user
     data = {
         "members": [{"type": "user", "id": str(new_user.id)}],
@@ -511,7 +519,6 @@ def test_delete_allowed(
         "role": role,
     }
     member_service.add(system_identity, community._record.id, data)
-    Member.index.refresh()
     # Delete the member again as the actor
     data = {
         "members": [{"type": "user", "id": str(new_user.id)}],
@@ -532,7 +539,6 @@ def test_delete_member_type_group(
         "role": "reader",
     }
     member_service.add(system_identity, community._record.id, data)
-    Member.index.refresh()
     # Delete the member again
     data = {
         "members": [{"type": "group", "id": group.name}],
@@ -685,7 +691,6 @@ def test_update_hidden_visibility_allowed(
     member_service.update(members[actor].identity, community._record.id, data)
 
 
-
 @pytest.mark.parametrize("actor,initial_role,new_role", [
     ('owner', 'owner', 'reader'),
     ('owner', 'manager', 'reader'),
@@ -766,6 +771,7 @@ def test_update_role_must_have_owner(
         member_service.update,
         system_identity, community._record.id, data
     )
+
 
 def test_update_invalid_data(member_service, community, group):
     # No role or visibility
