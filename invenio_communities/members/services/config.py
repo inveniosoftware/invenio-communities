@@ -38,6 +38,34 @@ class PublicSearchOptions(SearchOptions):
     }
 
 
+class InvitationsSearchOptions(SearchOptions):
+    # TODO: should restrict fields that's being searched on.
+    # query_parser_cls = QueryParser
+    sort_default = 'bestmatch'
+    # TODO: sort options should be by username and not expose e.g. creation
+    # date
+    sort_default_no_query = 'newest'
+    sort_options = {
+        "bestmatch": dict(
+            title=_('Best match'),
+            fields=['_score'],  # ES defaults to desc on `_score` field
+        ),
+        "newest": dict(
+            title=_('Newest'),
+            fields=['-created'],
+        ),
+        "oldest": dict(
+            title=_('Oldest'),
+            fields=['created'],
+        ),
+    }
+
+    facets = {
+        'role': facets.role,
+        'status': facets.status,
+    }
+
+
 class MemberSearchOptions(PublicSearchOptions):
     """Search options."""
     sort_default = 'bestmatch'
@@ -75,6 +103,7 @@ class MemberServiceConfig(RecordServiceConfig):
 
     search = MemberSearchOptions
     search_public = PublicSearchOptions
+    search_invitations = InvitationsSearchOptions
 
     # No links
     links_item = {}

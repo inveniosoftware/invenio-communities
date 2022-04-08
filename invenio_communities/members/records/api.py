@@ -16,28 +16,11 @@ from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
 from sqlalchemy import or_
 
-from .models import MemberModel
+from .models import MemberModel, ArchivedInvitationModel
 
 
-class Member(Record):
-    """A member record.
-
-    We are using a record without using the actual JSON document and
-    schema validation normally used in a record. The reason for using a record
-    is to facilitate the indexing which we need to have an effective search
-    over the list of members.
-    """
-
-    model_cls = MemberModel
-
-    # Systemfields
-
-    metadata = None
-
-    index = IndexField(
-        "communitymembers-members-v1.0.0", search_alias="communitymembers"
-    )
-    """The ES index used."""
+class MemberMixin:
+    """Fields defined on both member/invitation models."""
 
     community_id = ModelField("community_id")
     """The data-layer UUID of the community."""
@@ -115,8 +98,62 @@ class Member(Record):
 
         return [cls(obj.data, model=obj) for obj in q.all()]
 
-
     @classmethod
     def has_members(cls, community_id, role=None):
         """Get members of a community."""
         return cls.model_cls.count_members(community_id, role=role)
+
+
+class Member(Record, MemberMixin):
+    """A member/invitation record.
+
+    We are using a record without using the actual JSON document and
+    schema validation normally used in a record. The reason for using a record
+    is to facilitate the indexing which we need to have an effective search
+    over the list of members.
+    """
+
+    model_cls = MemberModel
+
+    # Systemfields
+
+    metadata = None
+
+    index = IndexField(
+        "communitymembers-members-member-v1.0.0",
+        search_alias="communitymembers-members"
+    )
+    """The ES index used."""
+
+
+class ArchivedInvitation(Record, MemberMixin):
+    """An archived invitation record.
+
+    We are using a record without using the actual JSON document and
+    schema validation normally used in a record. The reason for using a record
+    is to facilitate the indexing which we need to have an effective search
+    over the list of members.
+    """
+
+    model_cls = ArchivedInvitationModel
+
+    # Systemfields
+
+    metadata = None
+
+    index = IndexField(
+        "communitymembers-archivedinvitations-archivedinvitation-v1.0.0",
+        search_alias="communitymembers"
+    )
+    """The ES index used."""
+
+    @classmethod
+    def create_from_member(cls, member):
+        """Create an archived invitation record from a member."""
+        with db.session.begin_nested():
+            record = cls(
+               {},
+               model=cls.model_cls.from_member_model(member.model)
+            )
+            db.session.add(record.model)
+        return record

@@ -41,6 +41,11 @@ class MembersSchema(Schema):
     )
 
 
+class RequestSchema(Schema):
+    status = fields.String()
+    expires_at = TZDateTime(timezone=timezone.utc, format='iso')
+
+
 #
 # Schemas used for validation
 #
@@ -109,6 +114,8 @@ class PublicDumpSchema(Schema):
 
 
 class MemberDumpSchema(PublicDumpSchema):
+    """Schema for dumping members."""
+
     role = fields.String()
     visible = fields.Boolean()
 
@@ -120,6 +127,7 @@ class MemberDumpSchema(PublicDumpSchema):
     revision_id = fields.Integer()
 
     def is_self(self, obj):
+        """Get permission"""
         if 'is_self' not in self.context:
             current_identity = self.context['identity']
             self.context['is_self'] = (
@@ -130,9 +138,11 @@ class MemberDumpSchema(PublicDumpSchema):
         return self.context['is_self']
 
     def get_current_user(self, obj):
+        """Get permission"""
         return self.is_self(obj)
 
     def get_permissions(self, obj):
+        """Get permission"""
         return {
             # TODO: is_self and not the last owner
             'can_leave': self.is_self(obj),
@@ -140,4 +150,29 @@ class MemberDumpSchema(PublicDumpSchema):
             'can_update_role': False,
             # owners/managers, prior value of visibility, self, prior
             'can_update_visible': self.is_self(obj),
+        }
+
+
+class InvitationDumpSchema(MemberDumpSchema):
+    """Schema for dumping invitations."""
+
+    # request = fields.Nested(RequestSchema)
+    request = fields.Method('get_mocked_request')
+    permissions = fields.Method('get_permissions')
+
+    def get_mocked_request(self, obj):
+        # Temporary method for mocking the results.
+        return {
+            "id": obj.request_id,
+            "status": "submitted",
+            "expires_at": "2023-04-08T15:24:05.688992+00:00",
+        }
+
+    def get_permissions(self, obj):
+        """Get permission"""
+        # TODO: should take request status into account - if you can view an
+        # invitation you can operate on it as long as it's not closed.
+        return {
+            'can_cancel': True,
+            'can_update_role': True,
         }

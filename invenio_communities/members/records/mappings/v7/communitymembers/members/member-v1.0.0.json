@@ -1,0 +1,37 @@
+{
+  "mappings": {
+    "numeric_detection": false,
+    "properties": {
+      "created": {
+        "type": "date"
+      },
+      "updated": {
+        "type": "date"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "community_id": {
+        "type": "keyword"
+      },
+      "user_id": {
+        "type": "keyword"
+      },
+      "group_id": {
+        "type": "keyword"
+      },
+      "request_id": {
+        "type": "keyword"
+      },
+      "role": {
+        "type": "keyword"
+      },
+      "visible": {
+        "type": "boolean"
+      },
+      "active": {
+        "type": "boolean"
+      }
+    }
+  }
+}

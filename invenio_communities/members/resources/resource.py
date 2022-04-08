@@ -31,6 +31,7 @@ class MemberResource(RecordResource):
             route("GET", routes["members"], self.search),
             route("POST", routes["invitations"], self.invite),
             route("GET", routes["publicmembers"], self.search_public),
+            route("GET", routes["invitations"], self.search_invitations),
         ]
 
     @request_view_args
@@ -52,6 +53,19 @@ class MemberResource(RecordResource):
     def search_public(self):
         """Perform a search over the items."""
         hits = self.service.search_public(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            params=resource_requestctx.args,
+            es_preference=es_preference()
+        )
+        return hits.to_dict(), 200
+
+    @request_view_args
+    @request_search_args
+    @response_handler(many=True)
+    def search_invitations(self):
+        """Perform a search over the invitations."""
+        hits = self.service.search_invitations(
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
