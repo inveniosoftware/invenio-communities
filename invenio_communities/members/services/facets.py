@@ -18,6 +18,18 @@ role = TermsFacet(
     value_labels=lambda keys: {k: current_roles[k].title for k in keys},
 )
 
+status = TermsFacet(
+    field='request.status',
+    label=_("Status"),
+    value_labels={
+        "submitted": _("Pending"),
+        "expired": _("Expired"),
+        "accepted": _("Accepted"),
+        "declined": _("Declined"),
+        "cancelled": _("Cancelled"),
+    },
+)
+
 visibility = TermsFacet(
     field='visible',
     label=_('Visibility'),

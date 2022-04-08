@@ -17,7 +17,7 @@ from invenio_access.permissions import system_identity
 from invenio_requests.records.api import Request
 from invenio_search import current_search
 
-from invenio_communities.members.records.api import Member
+from invenio_communities.members.records.api import ArchivedInvitation, Member
 
 
 #
@@ -48,15 +48,18 @@ def clean_index(member_service, requests_service):
     list(current_search.delete(index_list=[
         Request.index._name,
         Member.index._name,
+        ArchivedInvitation.index._name,
     ]))
     list(current_search.create(index_list=[
         Request.index._name,
         Member.index._name,
+        ArchivedInvitation.index._name,
     ]))
     member_service.rebuild_index(system_identity)
     requests_service.rebuild_index(system_identity)
     Member.index.refresh()
     Request.index.refresh()
+    ArchivedInvitation.index.refresh()
     return True
 
 

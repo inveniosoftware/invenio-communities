@@ -219,6 +219,32 @@ def test_search_public(
     assert 'name' in hit['member']
     assert 'description' in hit['member']
 
+
+def test_search_invitation(
+    client, headers, community_id, owner, invite_user, db, clean_index):
+    """Search invitations."""
+    client = owner.login(client)
+    r = client.get(
+        f'/communities/{community_id}/invitations',
+        headers=headers,
+    )
+    assert r.status_code == 200
+    data = r.json
+    assert data['hits']['total'] == 1
+    assert 'role' in data['aggregations']
+    assert 'status' in data['aggregations']
+    hit = data['hits']['hits'][0]
+    assert 'role' in hit
+    assert 'visible' in hit
+    assert 'created' in hit
+    assert 'updated' in hit
+    assert 'revision_id' in hit
+    assert 'request' in hit
+    assert 'id' in hit['request']
+    assert 'status' in hit['request']
+    assert 'expires_at' in hit['request']
+
+
 # TODO: member serialization/links
 # TODO: request serialization/links
 # TODO: community member can see info

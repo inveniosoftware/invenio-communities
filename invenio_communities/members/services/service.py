@@ -23,11 +23,13 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
+from invenio_communities.members.records.api import ArchivedInvitation
+
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from .request import CommunityInvitation
-from .schemas import AddBulkSchema, DeleteBulkSchema, InviteBulkSchema, \
-    MemberDumpSchema, PublicDumpSchema, UpdateBulkSchema
+from .schemas import AddBulkSchema, DeleteBulkSchema, InvitationDumpSchema, \
+    InviteBulkSchema, MemberDumpSchema, PublicDumpSchema, UpdateBulkSchema
 
 
 class MemberService(RecordService):
@@ -56,6 +58,11 @@ class MemberService(RecordService):
         return ServiceSchemaWrapper(self, schema=PublicDumpSchema)
 
     @property
+    def invitation_dump_schema(self):
+        """Schema for creation."""
+        return ServiceSchemaWrapper(self, schema=InvitationDumpSchema)
+
+    @property
     def add_schema(self):
         """Schema for creation."""
         return ServiceSchemaWrapper(self, schema=AddBulkSchema)
@@ -74,6 +81,15 @@ class MemberService(RecordService):
     def delete_schema(self):
         """Schema for bulk delete."""
         return ServiceSchemaWrapper(self, schema=DeleteBulkSchema)
+
+    @property
+    def archive_indexer(self):
+        """Factory for creating an indexer instance."""
+        return self.config.indexer_cls(
+            record_cls=ArchivedInvitation,
+            record_to_index=self.record_to_index,
+            record_dumper=self.config.index_dumper,
+        )
 
     #
     # Add and invite
@@ -281,6 +297,27 @@ class MemberService(RecordService):
             **kwargs
         )
 
+    def search_invitations(
+            self, identity, community_id, params=None, es_preference=None,
+            **kwargs
+        ):
+        """Search invitations."""
+        # The search for invitations used the ArchivedInvitation record class
+        # which will search over the "communitymembers" alias which include
+        # both current invitations and archived invitations.
+        return self._members_search(
+            identity,
+            community_id,
+            'search_invites',
+            self.invitation_dump_schema,
+            self.config.search_invitations,
+            record_cls=ArchivedInvitation,
+            extra_filter=Q('term', **{'active': False}),
+            params=None,
+            es_preference=None,
+            **kwargs
+        )
+
     def _members_search(
             self, identity, community_id, permission_action, schema,
             search_opts, extra_filter=None, params=None, es_preference=None,
@@ -320,6 +357,7 @@ class MemberService(RecordService):
             }),
             links_item_tpl=self.links_item_tpl(community.id),
             schema=schema,
+
         )
 
     @unit_of_work()
@@ -466,7 +504,10 @@ class MemberService(RecordService):
         assert identity == system_identity
         member = self.record_cls.get_member_by_request(request_id)
         assert member.active is False
+        archived_invitation = ArchivedInvitation.create_from_member(member)
         uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+        uow.register(
+            RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
 
     def read_many(self, *args, **kwargs):
         """Not implemented."""

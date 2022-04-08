@@ -15,7 +15,7 @@ from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, \
     InvalidMemberError
-from invenio_communities.members.records.api import Member
+from invenio_communities.members.records.api import ArchivedInvitation, Member
 
 
 #
@@ -285,6 +285,30 @@ def test_search_members_restricted(
         PermissionDeniedError,
         member_service.search_public, anon_identity, c._record.id
     )
+
+
+#
+# Search invitations
+#
+def test_search_invitations(
+        member_service, requests_service, community, owner, invite_user,
+        invite_request_id, db, clean_index):
+    """Search invitations should include archived invitations."""
+    # Decline the invitation and reinvite
+    requests_service.execute_action(
+        invite_user.identity, invite_request_id, 'decline').to_dict()
+    data = {
+        "members": [{"type": "user", "id": str(invite_user.id)}],
+        "role": "reader",
+    }
+    member_service.invite(owner.identity, community._record.id, data)
+
+    # See invitations in list
+    Member.index.refresh()
+    ArchivedInvitation.index.refresh()
+    res = member_service.search_invitations(
+        owner.identity, community._record.id)
+    assert res.to_dict()['hits']['total'] == 2
 
 
 #
