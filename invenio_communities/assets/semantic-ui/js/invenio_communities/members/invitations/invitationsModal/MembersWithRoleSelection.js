@@ -6,20 +6,23 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { SelectedMembers } from "@js/invenio_communities/members/components/bulk_actions/SelectedMembers";
-import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
+import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
+import { SelectedMembers } from "../../components/bulk_actions/SelectedMembers";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Modal, Form, Button } from "semantic-ui-react";
+import { Button, Form, Modal } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { MembersSearchBar } from "./MemberSearchBar";
-import { GroupsApi } from "../../../api/GroupsApi";
 import { Trans } from "react-i18next";
+import { MembersSearchBar } from "./MemberSearchBar";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import { UsersApi } from "../../../api/UsersApi";
 
-export class GroupTabPane extends Component {
+export class MembersWithRoleSelection extends Component {
   constructor(props) {
     super(props);
+    this.usersApi = new UsersApi();
     this.state = {
       role: undefined,
       selectedMembers: {},
@@ -42,6 +45,10 @@ export class GroupTabPane extends Component {
     this.setState({ role: role });
   };
 
+  updateMessage = (message) => {
+    this.setState(message);
+  };
+
   handleActionClick = () => {
     const { action, onSuccessCallback } = this.props;
     const { selectedMembers, role, message } = this.state;
@@ -58,9 +65,6 @@ export class GroupTabPane extends Component {
     const { roleOptions, modalClose } = this.props;
     const { selectedMembers, loading, error } = this.state;
     const selectedCount = Object.keys(selectedMembers).length;
-
-    const client = new GroupsApi();
-
     return (
       <>
         <div className="rel-pl-2 rel-pr-2 rel-pb-2 rel-pt-2">
@@ -71,21 +75,32 @@ export class GroupTabPane extends Component {
           />
           <Form>
             <Form.Field>
-              <label>{i18next.t("Group")}</label>
+              <label>{i18next.t("Member")}</label>
               <MembersSearchBar
-                fetchMembers={client.getGroups}
+                fetchMembers={this.usersApi.getUsers}
                 selectedMembers={selectedMembers}
                 handleChange={this.addMemberToSelected}
-                searchType="group"
-                placeholder={i18next.t("Search for groups")}
+                searchType="user"
+                placeholder={i18next.t(
+                  "Search by email, full name or username"
+                )}
               />
             </Form.Field>
-            <Form.Field required>
-              <RadioSelection
-                options={roleOptions}
-                label={i18next.t("Role")}
-                onOptionChangeCallback={this.handleRoleUpdate}
-              />
+            <RadioSelection
+              options={roleOptions}
+              label={i18next.t("Role")}
+              onOptionChangeCallback={this.handleRoleUpdate}
+            />
+            <Form.Field>
+              <>
+                <label>{i18next.t("Message")}</label>
+                <CKEditor
+                  editor={ClassicEditor}
+                  onBlur={(event, editor) => {
+                    this.updateMessage(editor.getData());
+                  }}
+                />
+              </>
             </Form.Field>
           </Form>
         </div>
@@ -100,7 +115,7 @@ export class GroupTabPane extends Component {
             onClick={modalClose}
           />
           <Trans key="communityInviteMembersSelected" count={selectedCount}>
-            You are about to invite {{ selectedCount }} groups
+            You are about to invite {{ selectedCount }} users
           </Trans>
           <Button
             content={i18next.t("Invite")}
@@ -117,7 +132,9 @@ export class GroupTabPane extends Component {
   }
 }
 
-GroupTabPane.propTypes = {
+MembersWithRoleSelection.propTypes = {
   roleOptions: PropTypes.object.isRequired,
   modalClose: PropTypes.func.isRequired,
 };
+
+MembersWithRoleSelection.defaultProps = {};

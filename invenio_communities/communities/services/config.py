@@ -69,7 +69,8 @@ class CommunityServiceConfig(RecordServiceConfig):
         "logo": RecordLink("{+api}/communities/{id}/logo"),
         "rename": RecordLink("{+api}/communities/{id}/rename"),
         "members": CommunityMembersLink("{+api}/communities/{community_uuid}/members"),
-        "public_members": CommunityMembersLink("{+api}/communities/{community_uuid}/members/public")
+        "public_members": CommunityMembersLink("{+api}/communities/{community_uuid}/members/public"),
+        "invitations": CommunityMembersLink("{+api}/communities/{community_uuid}/invitations")
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")

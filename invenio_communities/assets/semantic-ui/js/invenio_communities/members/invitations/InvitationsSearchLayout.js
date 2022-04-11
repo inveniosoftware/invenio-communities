@@ -6,18 +6,24 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { SearchBarWithFiltersWithState } from "../components/SearchBarWithFilters";
-import { InvitationsMembersModalWithState } from "./invitationsModal/InvitationsMembersModal";
+import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
+import {
+  RolePermissionPolicy,
+  serializeOptionsByPermissions,
+} from "../components/bulk_actions/permissions";
 
 export class InvitationsSearchLayout extends Component {
   render() {
     const {
       config,
       roles,
-      communityID,
+      community,
+      permissions,
       communityAllowGroupInvites,
     } = this.props;
     const sortOptions = config.sortOptions;
@@ -26,11 +32,16 @@ export class InvitationsSearchLayout extends Component {
         <SearchBarWithFiltersWithState
           sortOptions={sortOptions}
           customCmp={
-            <InvitationsMembersModalWithState
-              roles={roles}
-              communityID={communityID}
-              allowGroups={communityAllowGroupInvites}
-            />
+            <InvitationsContextProvider community={community}>
+              <InvitationsMembersModalWithSearchKit
+                roles={serializeOptionsByPermissions(
+                  roles,
+                  RolePermissionPolicy,
+                  permissions
+                )}
+                allowGroups={communityAllowGroupInvites}
+              />
+            </InvitationsContextProvider>
           }
         />
         <SearchAppResultsPane layoutOptions={config.layoutOptions} />
@@ -42,6 +53,6 @@ export class InvitationsSearchLayout extends Component {
 InvitationsSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
   roles: PropTypes.object.isRequired,
-  communityID: PropTypes.string.isRequired,
+  community: PropTypes.object.isRequired,
   communityAllowGroupInvites: PropTypes.bool.isRequired,
 };

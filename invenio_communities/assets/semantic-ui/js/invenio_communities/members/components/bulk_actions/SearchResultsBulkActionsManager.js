@@ -11,41 +11,40 @@ class SearchResultsBulkActionsManager extends Component {
     this.state = { allSelected: false, selectedCount: 0 };
   }
 
-  addToSelected = (rowId) => {
+  addToSelected = (rowId, data) => {
     const { selectedCount } = this.state;
-
     if (_hasIn(this.selected, `${rowId}`)) {
-      this.selected[rowId] = !this.selected[rowId];
+      this.selected[rowId].selected = !this.selected[rowId].selected;
     } else {
-      this.selected[rowId] = true;
+      this.selected[rowId].selected = true;
+      this.selected[rowId].data = data;
     }
 
-    if (!this.selected[rowId]) {
+    if (!this.selected[rowId].selected) {
       this.setAllSelected(false);
-      this.setSelectedCount(selectedCount-1);
+      this.setSelectedCount(selectedCount - 1);
     } else {
-      const updatedCount = selectedCount+1;
+      const updatedCount = selectedCount + 1;
       this.setSelectedCount(updatedCount);
-      if(Object.keys(this.selected).length === updatedCount){
+      if (Object.keys(this.selected).length === updatedCount) {
         this.setAllSelected(true);
       }
     }
   };
 
-  setSelectedCount = (count) =>{
-    this.setState({selectedCount: count})
-  }
+  setSelectedCount = (count) => {
+    this.setState({ selectedCount: count });
+  };
 
   setAllSelected = (val, global = false) => {
     this.setState({ allSelected: val });
     if (global) {
       for (const [key, value] of Object.entries(this.selected)) {
-        this.selected[key] = val;
+        this.selected[key].selected = val;
       }
-      if(val){
-        this.setSelectedCount(Object.keys(this.selected).length)
-      }
-      else{
+      if (val) {
+        this.setSelectedCount(Object.keys(this.selected).length);
+      } else {
         this.setSelectedCount(0);
       }
     }

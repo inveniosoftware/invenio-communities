@@ -7,7 +7,6 @@
  */
 
 import React from "react";
-import { generateInvitations, names } from "../mock";
 import { Grid } from "semantic-ui-react";
 import { ResultsPerPage, Pagination, ResultsList } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";

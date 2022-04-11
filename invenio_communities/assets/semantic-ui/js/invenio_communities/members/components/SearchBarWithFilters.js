@@ -12,7 +12,10 @@ import { SearchBar, withState } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
 import _upperFirst from "lodash/upperFirst";
-import { DropdownFilter, DropdownSort } from "./Dropdowns";
+import {
+  DropdownFilter,
+  DropdownSort,
+} from "@js/invenio_communities/members/components/SearchDropdowns";
 import FilterLabel from "./FilterLabel";
 
 export class SearchBarWithFilters extends Component {
@@ -31,6 +34,7 @@ export class SearchBarWithFilters extends Component {
     const filters = currentResultsState.data.aggregations; // TODO: filters come from the backend
     return (
       <>
+        {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
         <div className="auto-column-grid">
           <div>
             <SearchBar fluid placeholder={searchBarPlaceholder} />

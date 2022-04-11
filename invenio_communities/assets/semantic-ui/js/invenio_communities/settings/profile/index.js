@@ -126,7 +126,7 @@ const LogoUploader = (props) => {
     },
     onDropRejected: (rejectedFiles) => {
       // TODO: show error message when files are rejected e.g size limit
-      console.log(rejectedFiles[0].errors);
+      console.error(rejectedFiles[0].errors);
     },
     multiple: false,
     noClick: true,

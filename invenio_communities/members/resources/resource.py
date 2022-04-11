@@ -104,7 +104,6 @@ class MemberResource(RecordResource):
         )
         return "", 204
 
-
     @request_view_args
     @request_data
     def delete(self):

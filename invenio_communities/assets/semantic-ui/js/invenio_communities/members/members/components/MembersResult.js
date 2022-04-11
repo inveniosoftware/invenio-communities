@@ -8,7 +8,12 @@
 
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import { ResultsList, Pagination, ResultsPerPage, Count } from "react-searchkit";
+import {
+  ResultsList,
+  Pagination,
+  ResultsPerPage,
+  Count,
+} from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 
 export const MembersResults = ({ paginationOptions, currentResultsState }) => {
@@ -29,7 +34,13 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
         </Grid.Row>
         <Grid.Row verticalAlign="middle">
           <Grid.Column width={4}>
-            <Count label={() => <>{total} {i18next.t("result(s) found")}</>} />
+            <Count
+              label={() => (
+                <>
+                  {total} {i18next.t("result(s) found")}
+                </>
+              )}
+            />
           </Grid.Column>
           <Grid.Column width={8} textAlign="center">
             <Pagination

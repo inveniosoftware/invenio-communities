@@ -23,25 +23,25 @@ export class SearchResultsRowCheckbox extends Component {
   isChecked = (bulkActionContext, allSelected) => {
     const { rowId } = this.props;
     if (_hasIn(bulkActionContext, `${rowId}`) || allSelected) {
-      return bulkActionContext[rowId];
+      return bulkActionContext[rowId].selected;
     }
     return false;
   };
 
   subscribeToContext = () => {
-    const { rowId } = this.props;
+    const { rowId, data } = this.props;
     const { allSelected, bulkActionContext } = this.context;
     if (!_hasIn(bulkActionContext, `${rowId}`)) {
-      bulkActionContext[rowId] = allSelected;
+      bulkActionContext[rowId] = { selected: allSelected, data: data };
     }
   };
 
   handleOnChange = () => {
     const { addToSelected } = this.context;
-    const { rowId } = this.props;
+    const { rowId, data } = this.props;
     const { isChecked } = this.state;
     this.setState({ isChecked: !isChecked });
-    addToSelected(rowId);
+    addToSelected(rowId, data);
   };
 
   render() {
@@ -50,7 +50,9 @@ export class SearchResultsRowCheckbox extends Component {
       <>
         <Checkbox
           className="mr-10 mt-10"
-          checked={this.isChecked(bulkActionContext, allSelected) || allSelected}
+          checked={
+            this.isChecked(bulkActionContext, allSelected) || allSelected
+          }
           onChange={this.handleOnChange}
         />
       </>

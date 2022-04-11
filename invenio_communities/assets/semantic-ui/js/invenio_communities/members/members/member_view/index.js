@@ -7,25 +7,41 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
+import { MembersSearchAppContext as MembersSearchAppContextCmp } from "../manager_view/MembersSearchAppContext";
 
-import { MembersResultsItem } from "./MembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersResultsContainer } from "../components/MembersResultContainer";
 import { MembersSearchLayout } from "../components/MembersSearchLayout";
-import { parametrize } from 'react-overridable';
-
+import { parametrize } from "react-overridable";
+import { ManagerMembersResultItem } from "../manager_view/ManagerMembersResultItem";
 
 const domContainer = document.getElementById("community-members-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
+const communitiesVisibility = JSON.parse(
+  domContainer.dataset.communitiesMembersVisibility
+);
+const permissions = JSON.parse(domContainer.dataset.permissions);
+const community = JSON.parse(domContainer.dataset.community);
 
-const MembersResultItemWithConfig = parametrize(MembersResultsItem, {
-  config: { roles: communitiesRoles },
+const ManagerMembersResultItemWithConfig = parametrize(
+  ManagerMembersResultItem,
+  {
+    config: {
+      roles: communitiesRoles,
+      visibility: communitiesVisibility,
+      permissions: permissions,
+    },
+  }
+);
+
+const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
+  community: community,
 });
 
 const defaultComponents = {
-  "ResultsList.item": MembersResultItemWithConfig,
+  "ResultsList.item": ManagerMembersResultItemWithConfig,
   "ResultsGrid.item": MembersResultsGridItem,
   "SearchApp.layout": MembersSearchLayout,
   "SearchBar.element": MembersSearchBarElement,
@@ -34,4 +50,10 @@ const defaultComponents = {
 };
 
 // Auto-initialize search app
-createSearchAppInit(defaultComponents);
+createSearchAppInit(
+  defaultComponents,
+  true,
+  "invenio-search-config",
+  false,
+  MembersSearchAppContext
+);

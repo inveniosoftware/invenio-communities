@@ -6,7 +6,7 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { CommunityInvitationsApi } from "@js/invenio_communities/api/InvitationsApi";
+import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import ActionDropdown from "../components/ActionDropdown";
 import React, { Component } from "react";
 import { DateTime } from "luxon";
@@ -15,20 +15,18 @@ import { Image } from "react-invenio-forms";
 import { ActionButtons } from "./request_actions/InvitationActionButtons";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
-import {
-  RequestActionController,
-} from "@js/invenio_requests";
-
+import { RequestActionController } from "@js/invenio_requests";
 
 const formattedTime = (expires_at) =>
   DateTime.fromISO(expires_at).setLocale(i18next.language).toRelative();
 
 export class InvitationResultItem extends Component {
+  static contextType = InvitationsContext;
+
   constructor(props) {
     super(props);
     const { result } = this.props;
     this.state = { invitation: result };
-    this.invitationsApi = new CommunityInvitationsApi(result.links);
   }
 
   updateInvitation = (data) => {
@@ -44,11 +42,12 @@ export class InvitationResultItem extends Component {
       invitation,
       invitation: { receiver, status, expires_at, role },
     } = this.state;
+    const { api: invitationsApi } = this.context;
 
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
-          <Image src={"/abc"} avatar circular className="rel-mr-1" />
+          <Image src="/abc" avatar circular className="rel-mr-1" />
           <Header size="small" as="a">
             {receiver.name || receiver.user}
           </Header>
@@ -59,9 +58,11 @@ export class InvitationResultItem extends Component {
           <ActionDropdown
             options={roles}
             successCallback={this.updateInvitation}
-            action={this.invitationsApi.updateRole}
+            action={invitationsApi.updateRole}
             // TODO attribute missing in the invitation payload
+            disabled={true}
             currentValue={role ? role : "curator"}
+            resource={invitation}
           />
         </Table.Cell>
         <Table.Cell>
@@ -70,9 +71,7 @@ export class InvitationResultItem extends Component {
               request={invitation}
               actionSuccessCallback={this.updateInvitation}
             >
-              <ActionButtons
-                request={invitation}
-              />
+              <ActionButtons request={invitation} />
             </RequestActionController>
           </Container>
         </Table.Cell>

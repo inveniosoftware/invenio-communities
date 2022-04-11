@@ -5,29 +5,27 @@
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
-
-import SearchResultsBulkActions from "../../components/bulk_actions/SearchResultsBulkActions";
 import React from "react";
+import { ManagerMemberBulkActions } from "./ManagerMemberBulkActions";
 import { Table } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 
-export const ManagerMembersResultsContainer = ({ results, totalResults }) => {
-  const options = [
-    { key: 1, value: "change_role", text: i18next.t("Change role") },
-    { key: 2, value: "change_visibility", text: i18next.t("Change role") },
-    {
-      key: 3,
-      value: "remove_from_community",
-      text: i18next.t("Remove from community"),
-    },
-  ];
-  console.log(totalResults);
+export const ManagerMembersResultsContainer = ({
+  results,
+  community,
+  config,
+}) => {
   return (
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell width={7}>
-            <SearchResultsBulkActions bulkDropdownOptions={options} />
+          <Table.HeaderCell width={6}>
+            <ManagerMemberBulkActions
+              community={community}
+              roles={config.roles}
+              visibilities={config.visibility}
+              permissions={config.permissions}
+            />
           </Table.HeaderCell>
           <Table.HeaderCell width={2}>
             {i18next.t("Member since")}
@@ -35,7 +33,7 @@ export const ManagerMembersResultsContainer = ({ results, totalResults }) => {
           <Table.HeaderCell width={2}>
             {i18next.t("Visibility")}
           </Table.HeaderCell>
-          <Table.HeaderCell width={2}>{i18next.t("Role")}</Table.HeaderCell>
+          <Table.HeaderCell width={4}>{i18next.t("Role")}</Table.HeaderCell>
           <Table.HeaderCell width={2} />
         </Table.Row>
       </Table.Header>

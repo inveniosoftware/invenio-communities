@@ -6,9 +6,10 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
 import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from 'react-overridable';
+import { parametrize } from "react-overridable";
 import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
@@ -19,8 +20,8 @@ const domContainer = document.getElementById(
   "community-invitations-search-root"
 );
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
-const communityUUID = JSON.parse(domContainer.dataset.communityUuid);
-
+const community = JSON.parse(domContainer.dataset.community);
+const permissions = JSON.parse(domContainer.dataset.permissions);
 
 const communityAllowGroupInvites = JSON.parse(
   domContainer.dataset.communityAllowGroupInvites
@@ -28,13 +29,18 @@ const communityAllowGroupInvites = JSON.parse(
 
 const InvitationResultItemWithConfig = parametrize(InvitationResultItem, {
   config: { roles: communitiesRoles },
+  community: community,
 });
-
 
 const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   roles: communitiesRoles,
-  communityID: communityUUID,
+  community: community,
+  permissions: permissions,
   communityAllowGroupInvites: communityAllowGroupInvites,
+});
+
+const InvitationsContextProvider = parametrize(ContextProvider, {
+  community: community,
 });
 
 const defaultComponents = {
@@ -46,4 +52,10 @@ const defaultComponents = {
 };
 
 // Auto-initialize search app
-createSearchAppInit(defaultComponents);
+createSearchAppInit(
+  defaultComponents,
+  true,
+  "invenio-search-config",
+  false,
+  InvitationsContextProvider
+);

@@ -199,7 +199,8 @@ def members(community=None, pid_value=None, endpoint=None):
             "members_manage",
             "read",
             "search_requests",
-            "search_invites"
+            "search_invites",
+            "invite_owners"
         ]
     )
     if not permissions['can_read']:
@@ -220,13 +221,11 @@ def members(community=None, pid_value=None, endpoint=None):
 @pass_community
 def invitations(community=None, pid_value=None):
     permissions = community.has_permissions_to(
-        ['update', 'read', 'search_requests', 'search_invites', 'invite_owners']
+        ['update', 'read', 'search_requests', 'search_invites',
+         'invite_owners']
     )
     if not permissions['can_search_invites']:
         raise PermissionDeniedError()
-    roles = deepcopy(current_app.config["COMMUNITIES_ROLES"])
-    if not permissions['can_invite_owners']:
-        del roles["owner"]
     return render_template(
         "invenio_communities/details/members/invitations.html",
         community=community.to_dict(),
@@ -237,7 +236,6 @@ def invitations(community=None, pid_value=None):
             "project": "Project"
         },
         permissions=permissions,
-        roles=roles,
     )
 
 
