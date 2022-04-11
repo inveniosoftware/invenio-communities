@@ -332,9 +332,14 @@ def test_invite_accept_flow(
         invite_user.identity, invite_request_id, 'accept').to_dict()
 
     # See new member in list
-    Member.index.refresh()
     res = member_service.search(owner.identity, community._record.id)
     assert res.to_dict()['hits']['total'] == 2
+
+    # See invitation in archived list
+    ArchivedInvitation.index.refresh()
+    res = member_service.search_invitations(
+        owner.identity, community._record.id)
+    assert res.to_dict()['hits']['total'] == 1
 
 
 def test_invite_decline_flow(
