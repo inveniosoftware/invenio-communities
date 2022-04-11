@@ -24,6 +24,7 @@ import {
   withState,
 } from "react-searchkit";
 import {
+  Accordion,
   Button,
   Card,
   Checkbox,
@@ -36,7 +37,7 @@ import {
   Label,
   List,
   Segment,
-} from "semantic-ui-react";
+} from 'semantic-ui-react';
 
 export const RecordSearchBarElement = withState(
   ({
@@ -77,51 +78,94 @@ export const RecordSearchBarElement = withState(
   }
 );
 
+export const ParentFacetValue = ({
+  bucket,
+  keyField,
+  isSelected,
+  childAggCmps,
+  onFilterClicked,
+}) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <Accordion className="rdm-multi-facet">
+      <Accordion.Title
+        onClick={() => {}}
+        key={`panel-${bucket.label}`}
+        active={isActive}
+        className="facet-wrapper parent"
+      >
+        <List.Content className="facet-wrapper">
+          <Icon name="angle right" onClick={() => setIsActive(!isActive)} />
+          <Checkbox
+            label={bucket.label || keyField}
+            id={`${keyField}-facet-checkbox`}
+            aria-describedby={`${keyField}-count`}
+            value={keyField}
+            checked={isSelected}
+            onClick={() => onFilterClicked(keyField)}
+          />
+          <Label circular id={`${keyField}-count`} className="facet-count">
+            {bucket.doc_count}
+          </Label>
+        </List.Content>
+      </Accordion.Title>
+      <Accordion.Content active={isActive}>{childAggCmps}</Accordion.Content>
+    </Accordion>
+  );
+};
+
+export const FacetValue = ({
+  bucket,
+  keyField,
+  isSelected,
+  onFilterClicked,
+}) => {
+  return (
+    <>
+      <List.Content className="facet-wrapper">
+        <Checkbox
+          onClick={() => onFilterClicked(keyField)}
+          label={bucket.label || keyField}
+          id={`${keyField}-facet-checkbox`}
+          aria-describedby={`${keyField}-count`}
+          value={keyField}
+          checked={isSelected}
+        />
+        <Label circular id={`${keyField}-count`} className="facet-count">
+          {bucket.doc_count}
+        </Label>
+      </List.Content>
+    </>
+  );
+};
+
 export const RecordFacetsValues = ({
   bucket,
   isSelected,
   onFilterClicked,
   childAggCmps,
 }) => {
-  const [isActive, setisActive] = useState(false);
   const hasChildren = childAggCmps && childAggCmps.props.buckets.length > 0;
   const keyField = bucket.key_as_string ? bucket.key_as_string : bucket.key;
   return (
     <List.Item key={bucket.key}>
-      <div
-        className={`facet-wrapper title ${
-          hasChildren ? "" : "facet-subtitle"
-        } ${isActive ? "active" : ""}`}
-      >
-        <List.Content className="facet-count">
-          <Label circular id={`${keyField}-count`}>
-            {bucket.doc_count}
-          </Label>
-        </List.Content>
-        {hasChildren ? (
-          <Button
-            className="iconhold"
-            icon={`angle ${isActive ? "down" : "right"} icon`}
-            onClick={() => setisActive(!isActive)}
-            aria-label={`${
-              isActive
-                ? i18next.t("hide subfacets")
-                : i18next.t("show subfacets")
-            }`}
-          />
-        ) : null}
-        <Checkbox
-          label={bucket.label || keyField}
-          id={`${keyField}-facet-checkbox`}
-          aria-describedby={`${keyField}-count`}
-          value={keyField}
-          onClick={() => onFilterClicked(keyField)}
-          checked={isSelected}
+      {hasChildren ? (
+        <ParentFacetValue
+          bucket={bucket}
+          keyField={keyField}
+          isSelected={isSelected}
+          childAggCmps={childAggCmps}
+          onFilterClicked={onFilterClicked}
         />
-      </div>
-      <div className={`content facet-content ${isActive ? "active" : ""}`}>
-        {childAggCmps}
-      </div>
+      ) : (
+        <FacetValue
+          bucket={bucket}
+          keyField={keyField}
+          isSelected={isSelected}
+          onFilterClicked={onFilterClicked}
+        />
+      )}
     </List.Item>
   );
 };
