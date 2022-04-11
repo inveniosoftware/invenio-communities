@@ -10,7 +10,6 @@ import React, { Component } from "react";
 import { Dropdown } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
-
 export class DropdownSort extends Component {
   onChangeSort = (e, data) => {
     const { updateQueryState, currentQueryState } = this.props;

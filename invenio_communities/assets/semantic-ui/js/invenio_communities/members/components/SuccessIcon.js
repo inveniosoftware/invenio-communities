@@ -5,17 +5,17 @@ import { Icon } from "semantic-ui-react";
 export class SuccessIcon extends Component {
   constructor(props) {
     super(props);
-    const { success } = props;
-    this.state = { "success": success };
+    const { show } = props;
+    this.state = { show: show };
   }
 
   componentDidMount() {
-    const { timeOutDelay, success } = this.props;
-    this.setState({ success: success });
+    const { timeOutDelay, show } = this.props;
+    this.setState({ show: show });
 
     const timerAlreadySet = !!this.successTimer;
 
-    if (success) {
+    if (show) {
       if (timerAlreadySet) {
         clearTimeout(this.successTimer);
       }
@@ -29,20 +29,20 @@ export class SuccessIcon extends Component {
   }
 
   handleOnTimeOut = () => {
-    this.setState({ success: false });
+    this.setState({ show: false });
   };
 
   render() {
-    const { success } = this.state;
-    return success && <Icon color="green" name="checkmark" />;
+    const { show } = this.state;
+    return show && <Icon color="green" name="checkmark" />;
   }
 }
 
 SuccessIcon.propTypes = {
   timeOutDelay: PropTypes.number.isRequired,
-  success: PropTypes.bool,
+  show: PropTypes.bool,
 };
 
 SuccessIcon.defaultProps = {
-  success: false,
+  show: false,
 };

@@ -4,6 +4,6 @@
 // Invenio-communities is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { CommunityInvitationsApi } from "./InvitationsApi";
+export { CommunityInvitationsApi } from "./invitations/api";
 export { CommunityApi } from "./CommunityApi";
-export { CommunityMembersApi } from "./MembersApi";
+export { CommunityMembersApi } from "./members/api";

@@ -48,26 +48,3 @@ def pass_community_logo(f):
 
         return f(**kwargs)
     return view
-
-
-def pass_community_endpoint(f):
-    """Decorate a view to calculate community endpoint."""
-    @wraps(f)
-    def view(**kwargs):
-        """."""
-        community = kwargs['community']
-        base_endpoint = f'/api/communities/{community.to_dict()["uuid"]}/members'  # TODO: change to community.id (once backend ready)
-        if community.has_permissions_to(["members_search"])[
-            "can_members_search"
-        ]:
-            endpoint = base_endpoint
-        elif community.has_permissions_to(["members_search_public"])[
-            "can_members_search_public"
-        ]:
-            endpoint = base_endpoint + "/public"
-        else:
-            raise PermissionDeniedError()
-        kwargs['endpoint'] = endpoint
-        return f(**kwargs)
-
-    return view

@@ -22,8 +22,9 @@
   <div class="thirteen wide column">
     <div
       id="community-invitations-search-root"
-      data-communities-roles='{{ roles | tojson }}'
-      data-community-uuid='{{ community['uuid'] | tojson }}'
+      data-communities-roles='{{ config.COMMUNITIES_ROLES | tojson }}'
+      data-permissions='{{ permissions | tojson }}'
+      data-community='{{ community | tojson }}'
       data-community-allow-group-invites='{{ config.COMMUNITIES_ALLOW_GROUP_INVITES | tojson }}'
       data-invenio-search-config='{{
         search_app_communities_invitations_config(app_id="communities-invitations-search",

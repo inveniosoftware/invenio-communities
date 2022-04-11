@@ -19,3 +19,6 @@ export const communityErrorSerializer = (error) => ({
   errors: error.response.data?.errors,
   status: error.response.data.status,
 });
+
+export const bulkMembersSerializer = (members) =>
+  members.map((member) => ({ id: member.member.id, type: member.member.type }));

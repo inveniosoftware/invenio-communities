@@ -9,10 +9,7 @@
 import React, { Component } from "react";
 import { Button } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
-import PropTypes from "prop-types";
-import {
-  RequestActionContext,
-} from "@js/invenio_requests";
+import { RequestActionContext } from "@js/invenio_requests";
 
 export class ActionButtons extends Component {
   static contextType = RequestActionContext;
@@ -30,5 +27,4 @@ export class ActionButtons extends Component {
   }
 }
 
-ActionButtons.propTypes = {
-};
+ActionButtons.propTypes = {};

@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 import { List, Dropdown } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image, withCancel } from "react-invenio-forms";
-import _isEmpty from "lodash/isEmpty";
 
 export class MembersSearchBar extends Component {
   constructor(props) {
@@ -20,16 +19,16 @@ export class MembersSearchBar extends Component {
     this.state = {
       isFetching: false,
       error: false,
+      suggestions: [],
     };
   }
 
   serializeUsersForDropdown = (users) => {
     return users.map((person) => {
-      const name = person.profile.full_name
-        ? person.profile.full_name
-        : person.id;
+      const name = person.profile.full_name || person.id;
+
       return {
-        text: person.profile.full_name,
+        text: name,
         value: person.id,
         key: person.id,
         content: (
@@ -71,37 +70,40 @@ export class MembersSearchBar extends Component {
 
   optionsGenerator = (suggestions) => {
     const { searchType } = this.props;
-    if (searchType === "user") {
-      return this.serializeUsersForDropdown(suggestions);
-    } else if (searchType === "group") {
-      return this.serializeGroupsForDropdown(suggestions);
-    }
+    const serializer = {
+      user: this.serializeUsersForDropdown,
+      group: this.serializeGroupsForDropdown,
+    };
+    return serializer[searchType](suggestions);
   };
 
   onChange = (event, data) => {
-    const { handleChange, selectedMembers, suggestions, searchType } =
-      this.props;
-    if (
-      !selectedMembers.some(
-        (member) => member.id === data.value && member.type === searchType
-      )
-    ) {
+    const {
+      handleChange,
+      selectedMembers,
+      suggestions,
+      searchType,
+    } = this.props;
+
+    const memberAlreadySelected = data.value in selectedMembers;
+
+    if (!memberAlreadySelected) {
       const newSelectedMember = suggestions.find(
         (item) => item.id === data.value
       );
+
       const serializedSelectedMember = {
         id: newSelectedMember.id,
         type: searchType,
         avatar: newSelectedMember.links.avatar,
       };
-      if (searchType === "user") {
-        serializedSelectedMember["name"] = newSelectedMember.profile.full_name
-          ? newSelectedMember.profile.full_name
-          : newSelectedMember.id;
-      } else if (searchType === "group") {
-        serializedSelectedMember["name"] = newSelectedMember.name;
-      }
-      selectedMembers.push(serializedSelectedMember);
+
+      serializedSelectedMember["name"] =
+        newSelectedMember.profile.full_name ||
+        newSelectedMember.name ||
+        newSelectedMember.id;
+
+      selectedMembers[serializedSelectedMember.id] = serializedSelectedMember;
       handleChange(selectedMembers);
     }
   };
@@ -110,12 +112,14 @@ export class MembersSearchBar extends Component {
     const { handleSearchChange, fetchMembers } = this.props;
     try {
       this.setState({ isFetching: true });
+
       const cancellableSuggestions = withCancel(fetchMembers(data.searchQuery));
       const suggestions = await cancellableSuggestions.promise;
+
       this.setState({
         isFetching: false,
       });
-      handleSearchChange(suggestions.data.hits.hits);
+      this.setState({ suggestions: suggestions.data.hits.hits });
     } catch (e) {
       console.error(e);
       this.setState({
@@ -126,8 +130,8 @@ export class MembersSearchBar extends Component {
   };
 
   render() {
-    const { isFetching, error } = this.state;
-    const { suggestions, placeholder } = this.props;
+    const { isFetching, error, suggestions } = this.state;
+    const { placeholder } = this.props;
     return (
       <Dropdown
         selectOnBlur={false}
@@ -148,10 +152,8 @@ export class MembersSearchBar extends Component {
 }
 
 MembersSearchBar.propTypes = {
-  handleSearchChange: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  selectedMembers: PropTypes.array.isRequired,
-  suggestions: PropTypes.array.isRequired,
+  selectedMembers: PropTypes.object.isRequired,
   fetchMembers: PropTypes.func.isRequired,
   searchType: PropTypes.oneOf(["group", "user"]),
   placeholder: PropTypes.string,

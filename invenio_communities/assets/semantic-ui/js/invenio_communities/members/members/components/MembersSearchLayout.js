@@ -7,10 +7,8 @@
  */
 
 import React, { Component } from "react";
-import _truncate from "lodash/truncate";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
 import { SearchBarWithFiltersWithState } from "../../components/SearchBarWithFilters";
 
 export class MembersSearchLayout extends Component {

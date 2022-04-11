@@ -16,35 +16,31 @@ import _isEmpty from "lodash/isEmpty";
 export class SelectedMembers extends Component {
   removeMember = (id) => {
     const { selectedMembers, updateSelectedMembers } = this.props;
-    const newSelectedMembers = selectedMembers.filter(
-      (element) => element.id != id
-    );
-    updateSelectedMembers(newSelectedMembers);
+    delete selectedMembers[id];
+    updateSelectedMembers(selectedMembers);
   };
 
   render() {
     const { selectedMembers } = this.props;
+
     return !_isEmpty(selectedMembers) ? (
       <>
         <Header as="h4" className="ml-20">
           {i18next.t("Selected members and groups:")}
         </Header>
         <Segment className="selected-members-header mb-20 mr-20 ml-20">
-          {selectedMembers.map((element, index) => (
-            <Label className="mb-5 ml-5" image>
-              <Image src={element.avatar} />
-              {element.name}
-              <Icon
-                onClick={() => this.removeMember(element.id)}
-                name="delete"
-              />
+          {Object.entries(selectedMembers).map(([memberId, member]) => (
+            <Label className="mb-5 ml-5" image key={memberId}>
+              <Image src={member.member.links.avatar} />
+              {member.member.name}
+              <Icon onClick={() => this.removeMember(memberId)} name="delete" />
             </Label>
           ))}
         </Segment>
       </>
     ) : (
       <div className="selected-members-header mb-20">
-        <Segment className="mr-20 ml-20 empty-members" placeholder>
+        <Segment placeholder>
           <Header icon>
             <Icon name="users" />
             {i18next.t("No people or groups selected.")}
@@ -56,6 +52,6 @@ export class SelectedMembers extends Component {
 }
 
 SelectedMembers.propTypes = {
-  selectedMembers: PropTypes.array.isRequired,
+  selectedMembers: PropTypes.object.isRequired,
   updateSelectedMembers: PropTypes.func.isRequired,
 };

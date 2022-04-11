@@ -7,25 +7,49 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { ManagerMemberViewResultItem } from "./ManagerMembersResultItem";
+import { ManagerMembersResultItem } from "./ManagerMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersSearchLayout } from "../components/MembersSearchLayout";
 import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
 import { parametrize } from "react-overridable";
-import SearchResultsBulkActionsManager from "../../components/bulk_actions/SearchResultsBulkActionsManager"
+import { MembersSearchAppContext as MembersSearchAppContextCmp } from "./MembersSearchAppContext";
 
 const domContainer = document.getElementById("community-members-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
+const communitiesVisibility = JSON.parse(
+  domContainer.dataset.communitiesMembersVisibility
+);
+const community = JSON.parse(domContainer.dataset.community);
+const permissions = JSON.parse(domContainer.dataset.permissions);
 
 const ManagerMembersResultItemWithConfig = parametrize(
-  ManagerMemberViewResultItem,
+  ManagerMembersResultItem,
   {
-    config: { roles: communitiesRoles },
+    config: {
+      roles: communitiesRoles,
+      visibility: communitiesVisibility,
+      permissions: permissions,
+    },
   }
 );
 
+const ManagerMembersResultContainerWithCommunity = parametrize(
+  ManagerMembersResultsContainer,
+  {
+    community: community,
+    config: {
+      roles: communitiesRoles,
+      visibility: communitiesVisibility,
+      permissions: permissions,
+    },
+  }
+);
+
+const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
+  community: community,
+});
 
 const defaultComponents = {
   "ResultsList.item": ManagerMembersResultItemWithConfig,
@@ -33,11 +57,14 @@ const defaultComponents = {
   "SearchApp.layout": MembersSearchLayout,
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
-  "ResultsList.container": ManagerMembersResultsContainer,
+  "ResultsList.container": ManagerMembersResultContainerWithCommunity,
 };
 
 // Auto-initialize search app
-createSearchAppInit(defaultComponents,
+createSearchAppInit(
+  defaultComponents,
   true,
   "invenio-search-config",
-  false, SearchResultsBulkActionsManager);
+  false,
+  MembersSearchAppContext
+);

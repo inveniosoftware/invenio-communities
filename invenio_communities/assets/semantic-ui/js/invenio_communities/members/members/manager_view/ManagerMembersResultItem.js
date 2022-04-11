@@ -1,41 +1,31 @@
 import ActionDropdown from "@js/invenio_communities/members/components/ActionDropdown";
-import {
-  CommunityMembersApi
-} from '@js/invenio_communities/api';
+import { MembersContext } from "../../../api/members/MembersContextProvider";
 import { SearchResultsRowCheckbox } from "../../components/bulk_actions/SearchResultsRowCheckbox";
 import React, { Component } from "react";
-import {
-  Grid,
-  Item,
-  Button,
-  Label,
-  Table,
-  Dropdown,
-} from "semantic-ui-react";
+import { Grid, Item, Button, Label, Table } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
 import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
-import { config as mockedConfig } from "../../mockedData";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
 
-const dropdownVisibilityOptionsGenerator = (value) => {
-  return value.map((element) => {
+const dropdownVisibilityOptionsGenerator = (options) => {
+  return Object.entries(options).map(([key, settings]) => {
     return {
-      key: element.value,
-      text: element.title,
-      value: element.value,
+      key: key,
+      text: settings.title,
+      value: settings.visible,
       content: (
         <Item.Group>
           <Item className="members-dropdown-option">
             <Item.Content>
               <Item.Description>
-                <strong>{element.title}</strong>
+                <strong>{settings.title}</strong>
               </Item.Description>
-              <Item.Meta>{element.description}</Item.Meta>
+              <Item.Meta>{settings.description}</Item.Meta>
             </Item.Content>
           </Item>
         </Item.Group>
@@ -44,26 +34,30 @@ const dropdownVisibilityOptionsGenerator = (value) => {
   });
 };
 
-export class ManagerMemberViewResultItem extends Component {
+export class ManagerMembersResultItem extends Component {
+  static contextType = MembersContext;
+
   constructor(props) {
     super(props);
-    const {result} = props;
-    this.membersApi = new CommunityMembersApi(result.links);
-    this.state = {"result": result};
+    const { result } = props;
+    this.state = { result: result };
   }
 
-  updateVisibility = (value) => {
-    const visible = value === "public";
-    // TODO: membersApi.edit(result); + NOTIFICATIONS
+  updateMemberRole = (data, value) => {
+    const { result } = this.state;
+    this.setState({ result: { ...result, ...{ role: value } } });
   };
 
-  updateMember = (data) =>{
-    const {result} = this.state;
-    this.setState({result: { ...result, ...data }})
-  }
+  updateMemberVisibility = (data, value) => {
+    const { result } = this.state;
+    this.setState({ result: { ...result, ...{ visible: value } } });
+  };
 
   render() {
-    const { result, config } = this.props;
+    const { config } = this.props;
+    const { result } = this.state;
+    const { api } = this.context;
+
     const avatar = result.member.links.avatar;
     return (
       <Table.Row>
@@ -71,7 +65,7 @@ export class ManagerMemberViewResultItem extends Component {
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item className="flex" key={result.id}>
-                <SearchResultsRowCheckbox rowId={result.id} />
+                <SearchResultsRowCheckbox rowId={result.id} data={result} />
                 <Image src={avatar} avatar />
                 <Item.Content className="ml-10">
                   <Item.Header
@@ -110,13 +104,13 @@ export class ManagerMemberViewResultItem extends Component {
         <Table.Cell>{timestampToRelativeTime(result.created)}</Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_visible ? (
-            <Dropdown
-              selection
-              value={result.visible ? "public" : "hidden"} //TODO: Improve this
-              options={dropdownVisibilityOptionsGenerator(
-                mockedConfig.visibility.options
-              )}
-              onChange={this.updateVisibility}
+            <ActionDropdown
+              options={config.visibility}
+              successCallback={this.updateMemberVisibility}
+              action={api.updateVisibility}
+              currentValue={result.visible}
+              resource={result}
+              optionsSerializer={dropdownVisibilityOptionsGenerator}
             />
           ) : result.visible ? (
             "Public"
@@ -128,9 +122,10 @@ export class ManagerMemberViewResultItem extends Component {
           {result.permissions.can_update_role ? (
             <ActionDropdown
               options={config.roles}
-              successCallback={this.updateMember}
-              action={this.invitationsApi.updateRole}
+              successCallback={this.updateMemberRole}
+              action={api.updateRole}
               currentValue={result.role}
+              resource={result}
             />
           ) : (
             _upperFirst(result.role)
@@ -164,7 +159,7 @@ export class ManagerMemberViewResultItem extends Component {
   }
 }
 
-ManagerMemberViewResultItem.propTypes = {
+ManagerMembersResultItem.propTypes = {
   result: PropTypes.object.isRequired,
   config: PropTypes.object.isRequired,
 };

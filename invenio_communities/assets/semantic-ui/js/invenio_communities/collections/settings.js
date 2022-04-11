@@ -98,7 +98,7 @@ const CollectionItem = ({
         setEditing(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -112,7 +112,7 @@ const CollectionItem = ({
         setShowConfirm(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
   if (!editing && isNewCollection) {
@@ -193,7 +193,7 @@ const CollectionsList = () => {
         setcollectionAddition(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
