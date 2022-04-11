@@ -500,9 +500,13 @@ class MemberService(RecordService):
         assert identity == system_identity
         member = self.record_cls.get_member_by_request(request_id)
         assert member.active is False
+        archived_invitation = ArchivedInvitation.create_from_member(member)
         member.active = True
         # TODO: recompute permissions for member.
         uow.register(RecordCommitOp(member, indexer=self.indexer))
+        uow.register(
+            RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
+        uow.register(IndexRefreshOp(index=self.record_cls.index))
 
     @unit_of_work()
     def decline_invite(self, identity, request_id, uow=None):
