@@ -28,7 +28,7 @@
       data-community-allow-group-invites='{{ config.COMMUNITIES_ALLOW_GROUP_INVITES | tojson }}'
       data-invenio-search-config='{{
         search_app_communities_invitations_config(app_id="communities-invitations-search",
-        hidden_params=[["created_by", "community:"+community['uuid'] ]]) | tojson }}'>
+        endpoint=community["links"]["invitations"]) | tojson }}'>
     </div>
   </div>
 

@@ -174,5 +174,5 @@ class InvitationDumpSchema(MemberDumpSchema):
         # invitation you can operate on it as long as it's not closed.
         return {
             'can_cancel': True,
-            'can_update_role': True,
+            'can_update_role': False,
         }

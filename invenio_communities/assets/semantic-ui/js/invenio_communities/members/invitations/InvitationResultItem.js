@@ -40,7 +40,7 @@ export class InvitationResultItem extends Component {
     } = this.props;
     const {
       invitation,
-      invitation: { receiver, status, expires_at, role },
+      invitation: { member, status, expires_at, role, permissions },
     } = this.state;
     const { api: invitationsApi } = this.context;
 
@@ -49,7 +49,7 @@ export class InvitationResultItem extends Component {
         <Table.Cell>
           <Image src="/abc" avatar circular className="rel-mr-1" />
           <Header size="small" as="a">
-            {receiver.name || receiver.user}
+            {member.name}
           </Header>
         </Table.Cell>
         <Table.Cell>{status}</Table.Cell>
@@ -59,20 +59,20 @@ export class InvitationResultItem extends Component {
             options={roles}
             successCallback={this.updateInvitation}
             action={invitationsApi.updateRole}
-            // TODO attribute missing in the invitation payload
-            disabled={true}
-            currentValue={role ? role : "curator"}
+            disabled={!permissions.can_update_role}
+            currentValue={role}
             resource={invitation}
           />
         </Table.Cell>
         <Table.Cell>
           <Container fluid textAlign="right">
-            <RequestActionController
-              request={invitation}
-              actionSuccessCallback={this.updateInvitation}
-            >
-              <ActionButtons request={invitation} />
-            </RequestActionController>
+            {/* TODO uncomment when links available in the request resource subschema */}
+            {/*<RequestActionController*/}
+            {/*  request={invitation.request }*/}
+            {/*  actionSuccessCallback={this.updateInvitation}*/}
+            {/*>*/}
+            {/*<ActionButtons request={invitation} />*/}
+            {/*</RequestActionController>*/}
           </Container>
         </Table.Cell>
       </Table.Row>
