@@ -12,6 +12,7 @@ from elasticsearch_dsl.query import Q
 from flask_babelex import gettext as _
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import Role
+from invenio_communities.members.records.models import ArchivedInvitationModel
 from invenio_records_resources.services import LinksTemplate
 from invenio_records_resources.services.records import RecordService, \
     ServiceSchemaWrapper
@@ -540,3 +541,22 @@ class MemberService(RecordService):
     def create(self, *args, **kwargs):
         """Not implemented."""
         raise NotImplementedError("Use add() or invite()")
+
+    def rebuild_index(self, identity, uow=None):
+        """Reindex all records managed by this service.
+
+        Note: Skips (soft) deleted records.
+        """
+        for rec_meta in self.record_cls.model_cls.query.all():
+            rec = self.record_cls(rec_meta.data, model=rec_meta)
+
+            if not rec.is_deleted:
+                self.indexer.index(rec)
+
+        for rec_meta in ArchivedInvitation.model_cls.query.all():
+            rec = ArchivedInvitation(rec_meta.data, model=rec_meta)
+
+            if not rec.is_deleted:
+                self.indexer.index(rec)
+
+        return True

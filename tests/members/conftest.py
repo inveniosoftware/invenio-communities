@@ -38,7 +38,7 @@ def new_user(UserFixture, app, database):
 # Function scope
 #
 @pytest.fixture(scope="function")
-def clean_index(member_service, requests_service):
+def clean_index(member_service, requests_service, db):
     """Clean the member and request index to match database state.
 
     Use this function when your tests depends on having a clean index
