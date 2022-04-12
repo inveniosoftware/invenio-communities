@@ -209,6 +209,20 @@ def test_search(
     assert 'updated' in hit
     assert 'revision_id' in hit
     assert 'is_current_user' in hit
+    assert 'permissions' in hit
+    assert hit['permissions']['can_leave'] is False
+    assert hit['permissions']['can_delete'] is True
+    assert hit['permissions']['can_update_role'] is True
+    assert hit['permissions']['can_update_visible'] is True
+    assert hit['visible'] is True
+
+    hit = data['hits']['hits'][1]
+    assert hit['is_current_user'] is True
+    assert hit['permissions']['can_leave'] is True
+    assert hit['permissions']['can_delete'] is False
+    assert hit['permissions']['can_update_role'] is False
+    assert hit['permissions']['can_update_visible'] is True
+    assert hit['visible'] is False
 
 
 def test_search_public(
@@ -233,6 +247,7 @@ def test_search_public(
     assert 'updated' not in hit
     assert 'revision_id' not in hit
     assert 'is_current_user' not in hit
+    assert 'permissions' not in hit
     # A member do have:
     assert 'member' in hit
     assert 'id' in hit['member']
@@ -264,6 +279,9 @@ def test_search_invitation(
     assert 'id' in hit['request']
     assert 'status' in hit['request']
     assert 'expires_at' in hit['request']
+    assert 'permissions' in hit
+    assert hit['permissions']['can_update_role'] is True
+    assert hit['permissions']['can_cancel'] is True
 
 
 # TODO: member serialization/links
