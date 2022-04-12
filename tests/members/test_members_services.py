@@ -753,6 +753,87 @@ def test_update_role_denied(
     )
 
 
+@pytest.mark.parametrize("actor,initial_role,new_role", [
+    ('owner', 'owner', 'reader'),
+    ('owner', 'manager', 'reader'),
+    ('owner', 'curator', 'manager'),
+    ('owner', 'reader', 'curator'),
+    ('manager', 'manager', 'curator'),
+    ('manager', 'curator', 'manager'),
+    ('manager', 'reader', 'curator'),
+])
+def test_update_invitation_role_allowed(
+        member_service, community, members, actor, initial_role, new_role,
+        new_user, db):
+    """Owners can change role of all, managers all but owners."""
+    # Invite a new user with role
+    data = {
+        "members": [{"type": "user", "id": str(new_user.id)}],
+        "role": initial_role,
+    }
+    member_service.invite(members[actor].identity, community._record.id, data)
+
+    # Update the invitation with new role
+    data = {
+        "members": [{"type": "user", "id": str(new_user.id)}],
+        "role": new_role,
+    }
+    member_service.update(members[actor].identity, community._record.id, data)
+
+
+@pytest.mark.parametrize("actor,initial_role,new_role", [
+    ('manager', 'owner', 'reader'),
+    ('curator', 'owner', 'reader'),
+    ('curator', 'manager', 'curator'),
+    ('curator', 'curator', 'manager'),
+    ('curator', 'reader', 'owner'),
+    ('reader', 'owner', 'owner'),
+    ('reader', 'manager', 'manager'),
+    ('reader', 'curator', 'curator'),
+    ('reader', 'reader', 'manager'),
+])
+def test_update_invitation_role_denied(
+        member_service, community, members, actor, initial_role, new_role,
+        new_user, db):
+    """Managers cannot change owner roles, curators/readers cannot change."""
+    # Invite a new user with role
+    data = {
+        "members": [{"type": "user", "id": str(new_user.id)}],
+        "role": initial_role,
+    }
+    member_service.invite(
+        members['owner'].identity, community._record.id, data)
+
+    # Update the invitation with new role
+    data["role"] = new_role
+    pytest.raises(
+        PermissionDeniedError,
+        member_service.update,
+        members[actor].identity, community._record.id, data
+    )
+
+
+@pytest.mark.parametrize("action", [
+    'decline', 'cancel', 'expire'])
+def test_update_declined_invitation(
+        member_service, requests_service, community, owner, invite_user,
+        invite_request_id, db, action):
+    """A declined/cancelled invitation cannot be updated."""
+    requests_service.execute_action(
+        system_identity, invite_request_id, action).to_dict()
+
+    # Update the invitation with new role
+    data = {
+        "members": [{"type": "user", "id": str(invite_user.id)}],
+        "role": "reader",
+    }
+    assert pytest.raises(
+        InvalidMemberError,
+        member_service.update,
+        owner.identity, community._record.id, data
+    )
+
+
 def test_update_role_must_have_owner(
         member_service, community, owner, group, db):
     """There must always be at least one owner."""

@@ -29,6 +29,7 @@ class MemberResource(RecordResource):
             route("GET", routes["members"], self.search),
             route("POST", routes["invitations"], self.invite),
             route("GET", routes["publicmembers"], self.search_public),
+            route("PUT", routes["invitations"], self.update_invitations),
             route("GET", routes["invitations"], self.search_invitations),
         ]
 
@@ -97,6 +98,17 @@ class MemberResource(RecordResource):
     @request_data
     def update(self):
         """Update member."""
+        self.service.update(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            data=resource_requestctx.data
+        )
+        return "", 204
+
+    @request_view_args
+    @request_data
+    def update_invitations(self):
+        """Update invitations."""
         self.service.update(
             g.identity,
             resource_requestctx.view_args["pid_value"],
