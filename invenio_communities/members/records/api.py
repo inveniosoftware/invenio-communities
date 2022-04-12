@@ -9,14 +9,25 @@
 "Members data layer API."
 
 from invenio_accounts.models import Role
-from invenio_communities.members.errors import InvalidMemberError
 from invenio_db import db
-from invenio_records.systemfields import ModelField
+from invenio_records.dumpers import ElasticsearchDumper
+from invenio_records.dumpers.relations import RelationDumperExt
+from invenio_records.systemfields import ModelField, ModelRelation, \
+    RelationsField
 from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
+from invenio_requests.records.api import Request
+from invenio_users_resources.records.api import GroupAggregate, UserAggregate
 from sqlalchemy import or_
 
-from .models import MemberModel, ArchivedInvitationModel
+from ..errors import InvalidMemberError
+from .models import ArchivedInvitationModel, MemberModel
+
+
+relations_dumper = ElasticsearchDumper(extensions=[
+    RelationDumperExt('relations'),
+])
+"""Relations dumper for members and archived invitations."""
 
 
 class MemberMixin:
@@ -46,6 +57,30 @@ class MemberMixin:
     This is used for e.g. invitations where a memberships is created but not
     yet activated.
     """
+
+    relations = RelationsField(
+        user=ModelRelation(
+            UserAggregate,
+            'user_id',
+            'user',
+            attrs=[
+                'email', 'username', 'profile', 'preferences', 'active',
+                'confirmed',
+            ],
+        ),
+        group=ModelRelation(
+            GroupAggregate,
+            'group_id',
+            'group',
+            attrs=['name', 'title', 'description'],
+        ),
+        request=ModelRelation(
+            Request,
+            'request_id',
+            'request',
+            attrs=['status', 'expires_at'],
+        ),
+    )
 
     @classmethod
     def get_memberships(cls, identity):
@@ -115,6 +150,9 @@ class Member(Record, MemberMixin):
 
     model_cls = MemberModel
 
+    # Needs to be here instead of on MemberMixin to overwrite Record.dumper
+    dumper = relations_dumper
+
     # Systemfields
 
     metadata = None
@@ -136,6 +174,9 @@ class ArchivedInvitation(Record, MemberMixin):
     """
 
     model_cls = ArchivedInvitationModel
+
+    # Needs to be here instead of on MemberMixin to overwrite Record.dumper
+    dumper = relations_dumper
 
     # Systemfields
 
