@@ -87,30 +87,40 @@ class PublicDumpSchema(Schema):
     member = fields.Method('get_member')
 
     def get_member(self, obj):
+        """Get a member"""
         if obj.user_id:
-            return {
-                "type": "user",
-                "id": str(obj.user_id),
-                # TODO: fix all below once indexing is fixed
-                # TODO: what about email visibility and public visibility
-                "name": f"{obj.user_id}-user-name",
-                "description": f"{obj.user_id}-user-description",
-                "links": {
-                    "avatar": "..."
-                }
-            }
+            return self.get_user_member(obj['user'])
         elif obj.group_id:
-            return {
-                "type": "group",
-                # TODO: fix me, should be group name
-                "id": str(obj.group_id),
-                # TODO: fix all below once indexing is fixed
-                "name": f"{obj.user_id}-group-name",
-                "description": f"{obj.user_id}-group-description",
-                "links": {
-                    "avatar": "..."
-                }
+            return self.get_group_member(obj['group'])
+
+    def get_user_member(self, user):
+        """Get a user member."""
+        profile = user.get('profile', {})
+        name = profile.get('full_name') or user.get('username') \
+            or _('Untitled')
+        description = profile.get('affiliations') or ""
+
+        return {
+            "type": "user",
+            "id": user["id"],
+            "name": name,
+            "description": description,
+            "links": {
+                "avatar": "..."
             }
+        }
+
+    def get_group_member(self, group):
+        """Get a group member."""
+        return {
+            "type": "group",
+            "id": group["id"],
+            "name": group["title"] or group["name"] or "",
+            "description": group["description"] or "",
+            "links": {
+                "avatar": "..."
+            }
+        }
 
 
 class MemberDumpSchema(PublicDumpSchema):
@@ -143,36 +153,45 @@ class MemberDumpSchema(PublicDumpSchema):
 
     def get_permissions(self, obj):
         """Get permission"""
+        permission_check = self.context['field_permission_check']
+
+        # Does not take CommunitySelfMember into account because no "member" is
+        # passed to the permission check.
+        can_update = permission_check(
+            'members_update',
+            community_id=obj.community_id,
+            role=obj.role,
+        )
+        is_self = self.is_self(obj)
+
+        # The rules below are defined by the update()/delete() methods in the
+        # service.
         return {
-            # TODO: is_self and not the last owner
-            'can_leave': self.is_self(obj),
-            'can_delete': False,
-            'can_update_role': False,
-            # owners/managers, prior value of visibility, self, prior
-            'can_update_visible': self.is_self(obj),
+            'can_leave': is_self,
+            'can_delete': can_update and not is_self,
+            'can_update_role': can_update and not is_self,
+            'can_update_visible': (obj.visible and can_update) or is_self,
         }
 
 
 class InvitationDumpSchema(MemberDumpSchema):
     """Schema for dumping invitations."""
 
-    # request = fields.Nested(RequestSchema)
-    request = fields.Method('get_mocked_request')
+    request = fields.Nested(RequestSchema)
     permissions = fields.Method('get_permissions')
-
-    def get_mocked_request(self, obj):
-        # Temporary method for mocking the results.
-        return {
-            "id": obj.request_id,
-            "status": "submitted",
-            "expires_at": "2023-04-08T15:24:05.688992+00:00",
-        }
 
     def get_permissions(self, obj):
         """Get permission"""
-        # TODO: should take request status into account - if you can view an
-        # invitation you can operate on it as long as it's not closed.
+        # Only owners and managers can list invitations, and thus only the
+        # request status is necessary to determine if the identity can cancel.
+        is_open = obj['request']['status'] == 'submitted'
+        permission_check = self.context['field_permission_check']
+
         return {
-            'can_cancel': True,
-            'can_update_role': False,
+            'can_cancel': is_open,
+            'can_update_role': is_open and permission_check(
+                'members_update',
+                community_id=obj.community_id,
+                member=obj,
+            )
         }

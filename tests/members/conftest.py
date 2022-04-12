@@ -29,6 +29,16 @@ def new_user(UserFixture, app, database):
     u = UserFixture(
         email=f'newuser@newuser.org',
         password='newuser',
+        user_profile={
+            'full_name': 'New User',
+            'affiliations': 'CERN',
+        },
+        preferences={
+            'visibility': 'public',
+            'email_visibility': 'restricted',
+        },
+        active=True,
+        confirmed=True
     )
     u.create(app, database)
     return u

@@ -154,14 +154,21 @@ class CommunityRoles(Generator):
     def communities(self, identity):
         raise NotImplementedError
 
-    def needs(self, record=None, **kwargs):
+    def needs(self, record=None, community_id=None, **kwargs):
         """Enabling Needs."""
+        if community_id is None:
+            community_id = record.id
+
+        assert community_id, "No community id provided."
+        community_id = str(community_id)
+
         roles = self.roles(**kwargs)
         if roles:
-            return [
-                CommunityRoleNeed(str(record.id), role)
+            needs = [
+                CommunityRoleNeed(community_id, role)
                 for role in roles
             ]
+            return needs
         return []
 
     def query_filter(self, identity=None, **kwargs):
@@ -197,7 +204,7 @@ class CommunityManagersForRole(CommunityRoles):
     def roles(self, role=None, member=None, **kwargs):
         allowed_roles = []
         if role is not None and member is not None:
-            # Update from an old role to a new role. The must restrictive set
+            # Update from an old role to a new role. The most restrictive set
             # applies.
             new_allowed_roles = set(current_roles.manager_roles(role))
             old_allowed_roles = set(current_roles.manager_roles(member.role))
@@ -235,7 +242,7 @@ class CommunitySelfMember(Generator):
 
     def needs(self, member=None, **kwargs):
         """Enabling needs."""
-        if member.user_id is not None:
+        if member is not None and member.user_id is not None:
             return [UserNeed(member.user_id)]
         return []
 
