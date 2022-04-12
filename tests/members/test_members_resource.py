@@ -146,6 +146,27 @@ def test_update(
     assert r.status_code == 204
 
 
+def test_update_invite(
+    client, headers, community_id, owner, new_user_data, db):
+    """Test update of members."""
+    client = owner.login(client)
+    r = client.post(
+        f'/communities/{community_id}/invitations',
+        headers=headers,
+        json=new_user_data,
+    )
+    assert r.status_code == 204
+
+    # Update the invite
+    new_user_data["role"] = "curator"
+    r = client.put(
+        f'/communities/{community_id}/invitations',
+        headers=headers,
+        json=new_user_data,
+    )
+    assert r.status_code == 204
+
+
 #
 # Delete
 #

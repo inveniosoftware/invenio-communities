@@ -369,7 +369,11 @@ class MemberService(RecordService):
 
     @unit_of_work()
     def update(self, identity, community_id, data, uow=None):
-        """Bulk update."""
+        """Bulk update.
+
+        Used to update both active members and active invitations. Archived
+        invitations cannot be updated.
+        """
         community = self.community_cls.get_record(community_id)
 
         # Permission check - validates that:
