@@ -12,7 +12,7 @@
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import \
-    MetadataComponent
+    MetadataComponent, RelationsComponent
 from invenio_records_resources.services.records.config import \
     RecordServiceConfig
 from invenio_records_resources.services.records.config import \
@@ -96,6 +96,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     components = [
         MetadataComponent,
         PIDComponent,
+        RelationsComponent,
         CommunityAccessComponent,
         OwnershipComponent,
         FeaturedCommunityComponent,

@@ -351,10 +351,14 @@ def test_post_self_links(
 
 
 def test_simple_search_response(
-    client, location, minimal_community, owner, headers, es_clear, fake_communities,
+    client, location, minimal_community, owner, headers, es_clear,
+    fake_communities, community_types
 ):
     """Test get/list and search functionality"""
     client = owner.login(client)
+
+    community_copy = copy.deepcopy(minimal_community)
+    community_copy['metadata']['type'] = community_types[-1]
 
     # Create many communities,
     id_oldest, id_newest, num_each, total = fake_communities
@@ -366,34 +370,41 @@ def test_simple_search_response(
     _assert_single_item_search(res)
     assert res.json['hits']['total'] == total
     assert res.json['hits']['hits'][0]['id'] == id_newest
-    assert res.json['hits']['hits'][0]['metadata'] == minimal_community['metadata']
+    assert res.json['hits']['hits'][0]['metadata'] == community_copy['metadata']
 
     # Search filter for the second commmunity
     res = client.get(
-        f'/communities', query_string={'type':'project'}, headers=headers)
+        f'/communities', query_string={'q': 'metadata.type.id:project'},
+        headers=headers)
     assert res.status_code == 200
     _assert_single_item_search(res)
     assert res.json['hits']['total'] == num_each
 
     # Sort results by oldest
     res = client.get(
-    f'/communities', query_string={'q':'', 'sort':'oldest'}, headers=headers)
+        f'/communities', query_string={'q': '', 'sort': 'oldest'},
+        headers=headers)
     assert res.status_code == 200
     assert res.json['hits']['hits'][0]['id'] == id_oldest
 
     # Test for page and size
     res = client.get(
-    f'/communities', query_string={'q':'', 'size':'5', 'page':'2'}, headers=headers)
+        f'/communities', query_string={'q': '', 'size': '5', 'page': '2'},
+        headers=headers)
     assert res.status_code == 200
     assert res.json['hits']['total'] == total
     assert len(res.json['hits']['hits']) == 5
 
 
 def test_simple_get_response(
-    client, location, full_community, headers, db, es_clear, owner
+    client, location, full_community, headers, db, es_clear, owner,
+    community_type_record
 ):
     """Test get response json schema"""
     client = owner.login(client)
+    community_copy = copy.deepcopy(full_community)
+    # Dereferenced community has attribute 'title' in 'type'
+    community_copy['metadata']['type'].update({'title': {'en': 'Event'}})
 
     # Create a community
     res = client.post(
@@ -407,7 +418,8 @@ def test_simple_get_response(
     created_community = res.json
 
     # assert full_community['access'] == created_community['access']
-    assert full_community['metadata'] == created_community['metadata']
+
+    assert community_copy['metadata'] == created_community['metadata']
     id_ = created_community["id"]
 
     # Read the community
@@ -417,7 +429,7 @@ def test_simple_get_response(
     _assert_optional_medatada_items_response(res)
     # _assert_optional_access_items_response(res)
     # assert full_community['access'] == res.json['access']
-    assert full_community['metadata'] == res.json['metadata']
+    assert community_copy['metadata'] == res.json['metadata']
 
     # Read a non-existed community
     res = client.get(f'/communities/{id_[:-1]}', headers=headers)
@@ -426,7 +438,8 @@ def test_simple_get_response(
 
 
 def test_simple_put_response(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, es_clear, owner,
+    community_type_record
 ):
     """Test put response basic functionality"""
     client = owner.login(client)
@@ -445,7 +458,9 @@ def test_simple_put_response(
     {
         "title": "New Community",
         "description": "This is an example Community.",
-        "type": "event",
+        "type": {
+            "id": "event",
+        },
         "curation_policy": "This is the kind of records we accept.",
         "page": "Information for my community.",
         "website": "https://inveniosoftware.org/",
@@ -459,6 +474,8 @@ def test_simple_put_response(
     }
 
     res = client.put(f'/communities/{id_}', headers=headers, json=data)
+    # Dereferenced community has attribute 'title' in 'type'
+    data["metadata"]["type"].update({"title": {"en": "Event"}})
     assert res.status_code == 200
     assert res.json['id'] == id_
     assert res.json['metadata'] == data["metadata"]

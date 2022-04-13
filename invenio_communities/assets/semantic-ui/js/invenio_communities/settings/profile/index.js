@@ -11,6 +11,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Formik, getIn } from "formik";
 import * as Yup from "yup";
+import _unset from "lodash/unset";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
 import _map from "lodash/map";
@@ -50,14 +51,6 @@ import { CommunityApi } from "../../api";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { communityErrorSerializer } from "../../api/serializers";
 
-// TODO: remove when type becomes a vocabulary
-const COMMUNITY_TYPES = [
-  { value: "organization", text: i18next.t("Institution/Organization") },
-  { value: "event", text: i18next.t("Event") },
-  { value: "topic", text: i18next.t("Topic") },
-  { value: "project", text: i18next.t("Project") },
-];
-
 const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
     title: Yup.string().max(
@@ -69,6 +62,9 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
       i18next.t("Maximum number of characters is 2000")
     ),
     website: Yup.string().url(i18next.t("Must be a valid URL")),
+    type: Yup.object().shape({
+      id: Yup.string(),
+    }),
     // TODO: Re-enable once properly integrated to be displayed
     // page: Yup.string().max(2000, "Maximum number of characters is 2000"),
     // curation_policy: Yup.string().max(
@@ -235,6 +231,11 @@ class CommunityProfileForm extends Component {
     error: "",
   };
 
+  /**
+   * Object stores known organizations, so that an organization's name can be mapped to it's ID (if known).
+   */
+  knownOrganizations = {};
+
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
       id: "",
@@ -244,7 +245,7 @@ class CommunityProfileForm extends Component {
         // TODO: Re-enable once properly integrated to be displayed
         // curation_policy: "",
         // page: "",
-        type: "",
+        type: {},
         website: "",
         organizations: [],
       },
@@ -256,11 +257,17 @@ class CommunityProfileForm extends Component {
       },
     });
 
-    // Deserialize organizations
-    let organizations = _map(
-      _get(initialValues, "metadata.organizations"),
-      "name"
-    );
+    // Deserialise organisations. Store known communities.
+    const organizations = [];
+    initialValues.metadata.organizations.map((org) => {
+      if (org.id) {
+        this.knownOrganizations[org.name] = org.id;
+      }
+      organizations.push(org.name);
+    })
+
+    _unset(initialValues, "metadata.type.title");
+
     return {
       ...initialValues,
       metadata: { ...initialValues.metadata, organizations },
@@ -269,22 +276,15 @@ class CommunityProfileForm extends Component {
 
   serializeValues = (values) => {
     let submittedCommunity = _cloneDeep(values);
-    const findField = (arrayField, key, value) => {
-      const knownField = _find(arrayField, {
-        [key]: value,
-      });
-      return knownField ? knownField : { [key]: value };
-    };
 
-    const organizationsFieldPath = "metadata.organizations";
-    const initialOrganizations = _get(
-      this.props.community,
-      organizationsFieldPath,
-      []
-    );
+    // Serialize organisations. If it is known and has an id, serialize a pair 'id/name'. Otherwise use 'name' only
     const organizations = submittedCommunity.metadata.organizations.map(
       (organization) => {
-        return findField(initialOrganizations, "name", organization);
+        const orgID = this.knownOrganizations[organization];
+        return {
+          ...(orgID && {id: orgID}),
+          name: organization
+        };
       }
     );
 
@@ -372,15 +372,20 @@ class CommunityProfileForm extends Component {
                   <SelectField
                     search
                     clearable
-                    fieldPath="metadata.type"
+                    fieldPath="metadata.type.id"
                     label={
                       <FieldLabel
-                        htmlFor="metadata.type"
+                        htmlFor="metadata.type.id"
                         icon="tag"
                         label={i18next.t("Type")}
                       />
                     }
-                    options={COMMUNITY_TYPES}
+                    options={this.props.commTypes.map((ct) => {
+                      return {
+                        value: ct.id,
+                        text: ct?.title?.en ?? ct.id
+                      }
+                    })}
                   />
                   <TextField
                     fieldPath="metadata.website"
@@ -421,11 +426,21 @@ class CommunityProfileForm extends Component {
                       []
                     )}
                     serializeSuggestions={(organizations) =>
-                      _map(organizations, (organization) => ({
-                        text: organization.name,
-                        value: organization.name,
-                        key: organization.name,
-                      }))
+                      _map(organizations, (organization) =>
+                      {
+                        const isKnownOrg = this.knownOrganizations.hasOwnProperty(organization.name);
+                        if (!isKnownOrg) {
+                          this.knownOrganizations = {
+                            ...this.knownOrganizations,
+                            [organization.name]: organization.id
+                          };
+                        }
+                        return {
+                          text: organization.name,
+                          value: organization.name,
+                          key: organization.name
+                        }
+                      })
                     }
                     label={i18next.t("Organizations")}
                     noQueryMessage={i18next.t("Search for organizations...")}
@@ -498,12 +513,14 @@ class CommunityProfileForm extends Component {
 const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);
 const logo = JSON.parse(domContainer.dataset.logo);
+const commTypes = JSON.parse(domContainer.dataset.comtypes);
 
 ReactDOM.render(
   <CommunityProfileForm
     community={community}
     logo={logo}
     defaultLogo="/static/images/square-placeholder.png"
+    commTypes={commTypes}
   />,
   domContainer
 );

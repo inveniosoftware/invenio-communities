@@ -55,15 +55,17 @@ class CommunityAccessSchema(Schema):
     ]))
 
 
+# TODO this schema is duplicated from invenio-rdm-records, can't be imported
+# TODO in this module. Might need to be moved to invenio-vocabularies.
+class VocabularySchema(Schema):
+    """Invenio Vocabulary schema."""
+
+    id = SanitizedUnicode(required=True)
+    title = fields.Dict(dump_only=True)
+
+
 class CommunityMetadataSchema(Schema):
     """Community metadata schema."""
-
-    COMMUNITY_TYPES = [
-        'organization',
-        'event',
-        'topic',
-        'project',
-    ]
 
     title = SanitizedUnicode(required=True, validate=_not_blank(max=250))
     description = SanitizedUnicode(validate=_not_blank(max=2000))
@@ -71,10 +73,7 @@ class CommunityMetadataSchema(Schema):
     curation_policy = SanitizedHTML(validate=_not_blank(max=2000))
     page = SanitizedHTML(validate=_not_blank(max=2000))
 
-    # TODO: Use general small vocabularies
-    type = SanitizedUnicode(
-        validate=validate.OneOf(COMMUNITY_TYPES)
-    )
+    type = fields.Nested(VocabularySchema)
     website = fields.Url(validate=_not_blank())
     funding = fields.List(fields.Nested(FundingRelationSchema))
     organizations = fields.List(fields.Nested(AffiliationRelationSchema))

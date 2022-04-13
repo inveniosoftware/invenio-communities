@@ -67,12 +67,13 @@
         },
         "type": {
           "description": "Community type.",
-          "enum": [
-            "organization",
-            "event",
-            "topic",
-            "project"
-          ]
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "$ref": "local://definitions-v1.0.0.json#/identifier"
+            }
+          }
         },
         "curation_policy": {
           "description": "Community curation policy.",
@@ -96,19 +97,33 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "name": {"type": "string"},
-                  "identifier": {"$ref": "local://definitions-v1.0.0.json#/identifier"},
-                  "scheme": {"$ref": "local://definitions-v1.0.0.json#/scheme"}
+                  "name": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "$ref": "local://definitions-v1.0.0.json#/identifier"
+                  }
                 }
               },
               "award": {
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "title": {"type": "string"},
-                  "number": {"type": "string"},
-                  "identifier": {"$ref": "local://definitions-v1.0.0.json#/identifier"},
-                  "scheme": {"$ref": "local://definitions-v1.0.0.json#/scheme"}
+                  "title": {
+                    "type": "object"
+                  },
+                  "number": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "$ref": "local://definitions-v1.0.0.json#/identifier"
+                  },
+                  "identifiers": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "local://definitions-v1.0.0.json#/identifiers_with_scheme"
+                    }
+                  }
                 }
               }
             }
