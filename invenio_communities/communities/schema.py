@@ -94,3 +94,8 @@ class CommunitySchema(BaseRecordSchema):
     def get_uuid(self, obj):
         """Get the internal UUID."""
         return str(obj.id)
+
+
+class CommunityFeaturedSchema(Schema):
+    id = fields.Int(metadata={'read_only': True})
+    start_date = fields.DateTime(required=True)

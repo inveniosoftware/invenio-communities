@@ -9,6 +9,8 @@
 
 import re
 
+from flask_babelex import lazy_gettext as _
+
 from invenio_access.permissions import system_identity, system_process
 from invenio_pidstore.errors import PIDAlreadyExists
 from invenio_records_resources.services.records.components import \
@@ -169,3 +171,14 @@ class OwnershipComponent(ServiceComponent):
 
         # Invalidate the membership cache
         on_membership_change(identity=identity)
+
+
+class FeaturedCommunityComponent(ServiceComponent):
+    """Service component for featured community integration."""
+    
+    def featured_create(self, identity, data=None, record=None, **kwargs):
+        if(record.access.visibility != "public"):
+            raise ValidationError(
+                _("The community is not public"),
+                field_name="community_id"
+            )

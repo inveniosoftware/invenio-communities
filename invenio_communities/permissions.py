@@ -112,3 +112,10 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_members_delete = can_members_update
 
     can_invite_owners = [CommunityOwners(), SystemProcess()]
+
+    # Abilities for featured communities
+    can_featured_search = [AnyUser(), SystemProcess()]
+    can_featured_list = [SystemProcess()]
+    can_featured_create = [SystemProcess()]
+    can_featured_update = [SystemProcess()]
+    can_featured_delete = [SystemProcess()]

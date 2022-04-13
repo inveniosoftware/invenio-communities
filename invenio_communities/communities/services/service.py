@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
 # Copyright (C) 2021-2022 Northwestern University.
+# Copyright (C)      2022 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,10 +11,18 @@
 """Invenio Communities Service API."""
 
 from elasticsearch_dsl import Q
+from elasticsearch_dsl.query import Bool
 from invenio_records_resources.services.base import LinksTemplate
-from invenio_records_resources.services.records import RecordService
-from invenio_records_resources.services.uow import RecordCommitOp, unit_of_work
+from invenio_records_resources.services.records import RecordService, ServiceSchemaWrapper
+
+from invenio_records_resources.services.uow import RecordCommitOp, RecordIndexOp, unit_of_work
 from marshmallow.exceptions import ValidationError
+from sqlalchemy.orm.exc import NoResultFound
+
+
+from invenio_communities.communities.records.models import CommunityFeatured
+from invenio_communities.communities.services.uow import CommunityFeaturedCommitOp, CommunityFeaturedDeleteOp
+from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
 
 
 class CommunityService(RecordService):
@@ -42,6 +51,12 @@ class CommunityService(RecordService):
     def members(self):
         """Community members service."""
         return self._members
+
+    @property
+    def schema_featured(self):
+        """Returns the featured data schema instance."""
+        return ServiceSchemaWrapper(self, schema=self.config.schema_featured)
+
 
     def search_user_communities(
             self, identity, params=None, es_preference=None, **kwargs):
@@ -159,3 +174,154 @@ class CommunityService(RecordService):
             record,
             links_tpl=self.files.file_links_item_tpl(id_),
         )
+
+
+    def _get_one(self, raise_error=True, **kwargs):
+        """Retrieve featured entry based on provided arguments."""
+        set = None
+        errors = []
+        try:
+            featured_entry = CommunityFeatured.query.filter_by(**kwargs).one()
+        except NoResultFound as e:
+            if raise_error:
+                raise CommunityFeaturedEntryDoesNotExistError(kwargs)
+
+            errors.append(str(e))
+        return featured_entry, errors
+
+
+    @unit_of_work()
+    def featured_search(self, identity, params=None, es_preference=None, **kwargs):
+        """Search featured communities."""        
+        # Prepare and execute the search
+        params = params or {}
+
+        # TODO: sort by featured.past
+        #       specfic filtering
+        #       - no restricted communities
+        #       - no communities that is not featured
+        #       - no start_date in the future
+        search_results = self._search(
+            'search',
+            identity,
+            params,
+            es_preference,
+            extra_filter=Bool("must", must=[
+                Q("match", **{"access.visibility": "public"}),
+                # TODO: field does not exist, as the FeaturedDumperExt will pop it on load
+                #       do the extra_filters run after the search has loaded the documents?
+                Q("exists", **{"field": "featured"}),
+            ]),
+            permission_action='featured_search',
+            **kwargs).execute()
+
+        return self.result_list(
+            self,
+            identity,
+            search_results,
+            links_tpl=self.links_item_tpl,
+        )
+
+
+    def featured_list(self, identity, community_id):
+        """List featured entries for a community."""
+        record = self.record_cls.pid.resolve(community_id)
+
+        # Permissions
+        self.require_permission(identity, "featured_list", record=record)
+        
+        featured_entries = CommunityFeatured.query.filter(
+            CommunityFeatured.community_id == record.id,
+        ).paginate(
+            per_page=1000,
+        )
+
+        return self.config.result_list_cls_featured(
+            self,
+            identity,
+            featured_entries,
+            schema=self.schema_featured,
+        )
+
+
+    @unit_of_work()
+    def featured_create(self, identity, community_id, data, raise_errors=True,
+               uow=None):
+        """Create a featured entry for a community."""
+        record = self.record_cls.pid.resolve(community_id)
+
+        # Permissions
+        self.require_permission(identity, "featured_create", record=record)
+        
+        data, errors = self.schema_featured.load(
+            data,
+            context={"identity": identity},
+            raise_errors=raise_errors,
+        )
+
+        featured_entry = CommunityFeatured(**data)
+        featured_entry.community_id = record.id
+
+        # Run components
+        self.run_components(
+            'featured_create', identity, data=data, record=record, uow=uow)
+
+        uow.register(CommunityFeaturedCommitOp(featured_entry))
+        uow.register(RecordIndexOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            featured_entry,
+            schema=self.schema_featured,
+        )
+
+    @unit_of_work()
+    def featured_update(self, identity, community_id, data, featured_id,
+                        raise_errors=True, uow=None):
+        """Update a featured entry for a community."""
+        record = self.record_cls.pid.resolve(community_id)
+        featured_entry, _ = self._get_one(id=featured_id, community_id=record.id,)
+
+        self.require_permission(identity, "featured_update", record=record)
+
+        valid_data, errors = self.schema_featured.load(
+            data,
+            context={"identity": identity},
+            raise_errors=raise_errors,
+        )
+
+        # Run components
+        self.run_components(
+            'featured_update', identity, data=valid_data, record=record, uow=uow)
+
+        for key, value in valid_data.items():
+            setattr(featured_entry, key, value)
+
+        uow.register(CommunityFeaturedCommitOp(featured_entry))
+        uow.register(RecordIndexOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            featured_entry,
+            schema=self.schema_featured,
+        )
+
+    @unit_of_work()
+    def featured_delete(self, identity, community_id, featured_id,
+                        raise_errors=True, uow=None):
+        """Delete a featured entry for a community."""
+        record = self.record_cls.pid.resolve(community_id)
+        featured_entry, _  = self._get_one(id=featured_id, community_id=record.id,)
+
+        self.require_permission(identity, "featured_delete", record=record)
+
+        # Run components
+        self.run_components(
+            'featured_delete', identity, data=None, record=record, uow=uow)
+
+        uow.register(CommunityFeaturedDeleteOp(featured_entry))
+        uow.register(RecordIndexOp(record, indexer=self.indexer))
+
+        return

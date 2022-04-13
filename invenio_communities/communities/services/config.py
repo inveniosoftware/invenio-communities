@@ -22,10 +22,11 @@ from invenio_records_resources.services.records.links import RecordLink, \
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
+from invenio_communities.communities.services.results import CommunityFeaturedList
 
 from ...permissions import CommunityPermissionPolicy
-from ..schema import CommunitySchema
-from .components import CommunityAccessComponent, OwnershipComponent, \
+from ..schema import CommunityFeaturedSchema, CommunitySchema
+from .components import CommunityAccessComponent, FeaturedCommunityComponent, OwnershipComponent, \
     PIDComponent
 
 
@@ -61,6 +62,9 @@ class CommunityServiceConfig(RecordServiceConfig):
 
     # Service schema
     schema = CommunitySchema
+    schema_featured = CommunityFeaturedSchema
+
+    result_list_cls_featured = CommunityFeaturedList
 
     links_item = {
         "self": RecordLink("{+api}/communities/{id}"),
@@ -81,7 +85,8 @@ class CommunityServiceConfig(RecordServiceConfig):
         MetadataComponent,
         PIDComponent,
         CommunityAccessComponent,
-        OwnershipComponent
+        OwnershipComponent,
+        FeaturedCommunityComponent,
     ]
 
 
