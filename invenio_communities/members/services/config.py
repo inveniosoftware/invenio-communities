@@ -9,7 +9,7 @@
 """Members Service Config."""
 
 from flask_babelex import lazy_gettext as _
-from invenio_records_resources.services import Link, RecordServiceConfig, \
+from invenio_records_resources.services import RecordServiceConfig, \
     SearchOptions, pagination_links
 
 from ...communities.records.api import Community

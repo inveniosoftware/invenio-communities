@@ -39,13 +39,6 @@ class MemberService(RecordService):
         """Return community class."""
         return self.config.community_cls
 
-    def links_item_tpl(self, community_id):
-        """Item links template."""
-        return LinksTemplate(
-            self.config.links_item,
-            context={"community_id": community_id}
-        )
-
     @property
     def member_dump_schema(self):
         """Schema for creation."""
@@ -360,9 +353,9 @@ class MemberService(RecordService):
             search_result,
             params,
             links_tpl=LinksTemplate(self.config.links_search, context={
-                "args": params
+                "args": params,
+                "community_id": community_id,
             }),
-            links_item_tpl=self.links_item_tpl(community.id),
             schema=schema,
 
         )
