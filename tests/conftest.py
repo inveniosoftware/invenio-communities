@@ -8,6 +8,7 @@
 
 """Pytest configuration."""
 
+import itertools
 from copy import deepcopy
 
 import pytest
@@ -17,6 +18,7 @@ from invenio_accounts.models import Role
 from invenio_app.factory import create_api
 from invenio_requests.proxies import current_requests_service
 
+from invenio_communities.communities.records.api import Community
 from invenio_communities.proxies import current_communities
 
 pytest_plugins = ("celery.contrib.pytest", )
@@ -141,6 +143,28 @@ def minimal_community():
         }
     }
 
+@pytest.fixture(scope="module")
+def full_community():
+    """Full community data as dict coming from the external world."""
+    return  {
+        "access": {
+            "visibility": "public",
+            "record_policy": "open",
+        },
+        "id": "my_community_id",
+        "metadata": {
+            "title": "My Community",
+            "description": "This is an example Community.",
+            "type": "event",
+            "curation_policy": "This is the kind of records we accept.",
+            "page": "Information for my community.",
+            "website": "https://inveniosoftware.org/",
+            "organizations": [{
+                    "name": "CERN",
+            }]
+        }
+    }
+
 
 @pytest.fixture(scope="module")
 def community(community_service, owner, minimal_community, location):
@@ -159,3 +183,19 @@ def restricted_community(community_service, owner, minimal_community, location):
     c =  community_service.create(owner.identity, data)
     owner.refresh()
     return c
+
+
+@pytest.fixture(scope="function")
+def fake_communities(community_service, owner, minimal_community, location, db):
+    """Multiple community created and posted to test search functionality."""
+    community_types = ['organization', 'event', 'topic', 'project']
+
+    N = 4
+    for (type_,ind) in itertools.product(community_types, list(range(N))):
+        minimal_community['id'] = f'comm_{type_}_{ind}'
+        minimal_community['metadata']['type'] = type_
+        c =  community_service.create(owner.identity, minimal_community)
+    Community.index.refresh()
+
+    # Return ids of first and last created communities
+    return 'comm_organization_0', 'comm_project_3', N, N*len(community_types)
