@@ -8,8 +8,11 @@
 
 """Default configuration."""
 
-from invenio_communities.communities.services import facets
+from datetime import timedelta
+
 from flask_babelex import lazy_gettext as _
+
+from invenio_communities.communities.services import facets
 
 COMMUNITIES_ROUTES = {
     'frontpage': '/communities',
@@ -154,3 +157,6 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 }
 """Definitions of available record sort options."""
 
+
+COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
+""""Default amount of time before an invitation expires."""

@@ -8,11 +8,13 @@
 
 """Members service."""
 
+from datetime import datetime, timezone
+
 from elasticsearch_dsl.query import Q
+from flask import current_app
 from flask_babelex import gettext as _
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import Role
-from invenio_communities.members.records.models import ArchivedInvitationModel
 from invenio_records_resources.services import LinksTemplate
 from invenio_records_resources.services.records import RecordService, \
     ServiceSchemaWrapper
@@ -30,6 +32,14 @@ from ..errors import AlreadyMemberError, InvalidMemberError
 from .request import CommunityInvitation
 from .schemas import AddBulkSchema, DeleteBulkSchema, InvitationDumpSchema, \
     InviteBulkSchema, MemberDumpSchema, PublicDumpSchema, UpdateBulkSchema
+
+
+def invite_expires_at():
+    """Get the invitation expiration date."""
+    return (
+        datetime.utcnow().replace(tzinfo=timezone.utc) +
+        current_app.config['COMMUNITIES_INVITATIONS_EXPIRES_IN']
+    )
 
 
 class MemberService(RecordService):
@@ -228,6 +238,7 @@ class MemberService(RecordService):
                 community=community.metadata["title"],
                 role=role.title,
             )
+
             request_item = current_requests_service.create(
                 identity,
                 {'title': title},
@@ -237,10 +248,9 @@ class MemberService(RecordService):
                 # TODO: perhaps topic should be the actual membership record
                 # instead
                 topic=community,
+                expires_at=invite_expires_at(),
                 uow=uow,
-                # TODO: set expire date (7 days - should be configurable)
-                # TODO: have a regular celery task for running the expire
-                # actions
+
             )
             # TODO: create request comment instead of description in case a
             # message was provided.
