@@ -33,17 +33,15 @@
               {{community.metadata.website}}
             </a>
           {% endif %}
-          {% if community.metadata.type %}
+          {% if community.metadata.type is defined %}
             <i class="tag icon community-tags"></i>
             <div class="ui label small grey type-label">
-              {{ types[community.metadata.type] }}
+              {{ community.metadata.type.title.en }}
             </div>
           {% endif %}
           {% if community.metadata.organizations %}
             <i class="building outline icon community-tags"></i>
-            {%- for organization in community.metadata.organizations %}
-              <span class="label label-keyword">{{ organization.name }}</span>
-            {%- endfor %}
+            <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
           {% endif %}
       </div>
 

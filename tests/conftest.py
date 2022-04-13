@@ -13,13 +13,20 @@ from copy import deepcopy
 
 import pytest
 from flask_principal import AnonymousIdentity
-from invenio_access.permissions import any_user as any_user_need
+from invenio_access.permissions import any_user as any_user_need,\
+     superuser_access
+from invenio_access.models import ActionRoles
 from invenio_accounts.models import Role
+from invenio_admin.permissions import action_admin_access
 from invenio_app.factory import create_api
 from invenio_requests.proxies import current_events_service, current_requests_service
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.proxies import current_communities
+from invenio_vocabularies.contrib.affiliations.services import \
+     AffiliationsService, AffiliationsServiceConfig
+from invenio_vocabularies.proxies import current_service as vocabulary_service
+from invenio_vocabularies.records.api import Vocabulary
 
 pytest_plugins = ("celery.contrib.pytest", )
 
@@ -82,6 +89,12 @@ def events_service(app):
     return current_events_service
 
 
+@pytest.fixture(scope="module")
+def vocabularies_service(app):
+    """Vocabularies service."""
+    return vocabulary_service
+
+
 #
 # Users and groups
 #
@@ -128,8 +141,72 @@ def any_user(UserFixture, app, database):
         password='anyuser',
     )
     u.create(app, database)
-    u.identity # compute identity
+    u.identity  # compute identity
     return u
+
+
+@pytest.fixture()
+def admin(UserFixture, app, db, admin_role_need):
+    """Admin user for requests."""
+    u = UserFixture(
+        email="admin@inveniosoftware.org",
+        password="admin",
+    )
+    u.create(app, db)
+
+    datastore = app.extensions["security"].datastore
+    _, role = datastore._prepare_role_modify_args(u.user, "admin-access")
+
+    datastore.add_role_to_user(u.user, role)
+    datastore.commit()
+    return u
+
+
+@pytest.fixture()
+def superuser_identity(admin, superuser_role_need):
+    """Superuser identity fixture."""
+    identity = admin.identity
+    identity.provides.add(superuser_role_need)
+    return identity
+
+
+@pytest.fixture()
+def admin_role_need(db):
+    """Store 1 role with 'superuser-access' ActionNeed.
+
+    WHY: This is needed because expansion of ActionNeed is
+         done on the basis of a User/Role being associated with that Need.
+         If no User/Role is associated with that Need (in the DB), the
+         permission is expanded to an empty list.
+    """
+    role = Role(name="admin-access")
+    db.session.add(role)
+
+    action_role = ActionRoles.create(action=action_admin_access, role=role)
+    db.session.add(action_role)
+
+    db.session.commit()
+
+    return action_role.need
+
+
+@pytest.fixture()
+def superuser_role_need(db):
+    """Store 1 role with 'superuser-access' ActionNeed.
+    WHY: This is needed because expansion of ActionNeed is
+         done on the basis of a User/Role being associated with that Need.
+         If no User/Role is associated with that Need (in the DB), the
+         permission is expanded to an empty list.
+    """
+    role = Role(name="superuser-access")
+    db.session.add(role)
+
+    action_role = ActionRoles.create(action=superuser_access, role=role)
+    db.session.add(action_role)
+
+    db.session.commit()
+
+    return action_role.need
 
 
 #
@@ -138,7 +215,7 @@ def any_user(UserFixture, app, database):
 @pytest.fixture(scope="module")
 def minimal_community():
     """Minimal community metadata."""
-    return  {
+    return {
         "access": {
             "visibility": "public",
             "record_policy": "open",
@@ -149,24 +226,28 @@ def minimal_community():
         }
     }
 
+
 @pytest.fixture(scope="module")
 def full_community():
     """Full community data as dict coming from the external world."""
-    return  {
+    return {
         "access": {
             "visibility": "public",
+            "member_policy": "open",
             "record_policy": "open",
         },
         "id": "my_community_id",
         "metadata": {
             "title": "My Community",
             "description": "This is an example Community.",
-            "type": "event",
+            "type": {
+                "id": "event"
+            },
             "curation_policy": "This is the kind of records we accept.",
             "page": "Information for my community.",
             "website": "https://inveniosoftware.org/",
             "organizations": [{
-                    "name": "CERN",
+                    "name": "My Org",
             }]
         }
     }
@@ -175,7 +256,7 @@ def full_community():
 @pytest.fixture(scope="module")
 def community(community_service, owner, minimal_community, location):
     """A community."""
-    c =  community_service.create(owner.identity, minimal_community)
+    c = community_service.create(owner.identity, minimal_community)
     owner.refresh()
     return c
 
@@ -186,22 +267,76 @@ def restricted_community(community_service, owner, minimal_community, location):
     data = deepcopy(minimal_community)
     data['access']['visibility'] = 'restricted'
     data['id'] = 'restricted'
-    c =  community_service.create(owner.identity, data)
+    c = community_service.create(owner.identity, data)
     owner.refresh()
     return c
 
 
 @pytest.fixture(scope="function")
-def fake_communities(community_service, owner, minimal_community, location, db):
+def fake_communities(
+    community_service, owner, minimal_community, location, db,
+    community_type_record, community_types
+):
+    data = deepcopy(minimal_community)
     """Multiple community created and posted to test search functionality."""
-    community_types = ['organization', 'event', 'topic', 'project']
-
     N = 4
-    for (type_,ind) in itertools.product(community_types, list(range(N))):
-        minimal_community['id'] = f'comm_{type_}_{ind}'
-        minimal_community['metadata']['type'] = type_
-        c =  community_service.create(owner.identity, minimal_community)
+    for (type_, ind) in itertools.product(community_types, list(range(N))):
+        data['id'] = f'comm_{type_["id"]}_{ind}'
+        data['metadata']['type'] = {
+            'id': type_['id']
+        }
+        c = community_service.create(owner.identity, data)
     Community.index.refresh()
 
     # Return ids of first and last created communities
     return 'comm_organization_0', 'comm_project_3', N, N*len(community_types)
+
+
+#
+# Community types
+#
+@pytest.fixture(scope="module")
+def community_types():
+    return [
+        {"id": 'organization', "title": {"en": "Organization"}},
+        {"id": 'event', "title": {"en": "Event"}},
+        {"id": 'topic', "title": {"en": "Topic"}},
+        {"id": 'project', "title": {"en": "Project"}}
+    ]
+
+
+@pytest.fixture()
+def community_type_type(superuser_identity, vocabularies_service):
+    """Creates and retrieves a language vocabulary type."""
+    v = vocabularies_service.create_type(
+        superuser_identity, "communitytypes", "comtyp")
+    return v
+
+
+@pytest.fixture(scope='module')
+def community_types_data(community_types):
+    """Example data."""
+    return [
+        {
+            **ct,
+            'type': 'communitytypes',
+        } for ct in community_types
+    ]
+
+
+@pytest.fixture()
+def community_type_record(
+    superuser_identity, community_types_data, community_type_type,
+    vocabularies_service
+):
+    """Creates a d retrieves community type records."""
+    records_list = []
+    for community_type_data in community_types_data:
+        record = vocabularies_service.create(
+            identity=superuser_identity,
+            data=community_type_data
+        )
+        records_list.append(record)
+
+    Vocabulary.index.refresh()  # Refresh the index
+    return records_list

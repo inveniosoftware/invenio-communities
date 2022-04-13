@@ -24,8 +24,9 @@ def create_fake_community(faker):
         "metadata": {
             "title": faker.sentence(nb_words=5, variable_nb_words=True),
             "description": faker.text(max_nb_chars=2000),
-            "type": random.choice(
-                ["organization", "event", "topic", "project"]),
+            "type": {
+                "id": random.choice(["organization", "event", "topic", "project"])
+            },
             "curation_policy": faker.text(max_nb_chars=2000),
             "page": faker.text(max_nb_chars=2000),
             "website": "https://" + faker.domain_name(),  # fake.url()

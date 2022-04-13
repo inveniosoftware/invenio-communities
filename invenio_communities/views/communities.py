@@ -11,7 +11,10 @@
 from flask import current_app, g, render_template
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
+from invenio_access.permissions import system_identity
 from invenio_records_resources.services.errors import PermissionDeniedError
+from invenio_requests.proxies import current_requests_service
+from invenio_vocabularies.proxies import current_service as vocabulary_service
 
 from .decorators import pass_community, pass_community_logo
 
@@ -70,21 +73,22 @@ def communities_settings(community=None, logo=None, pid_value=None):
     permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites']
     )
+    types = vocabulary_service.read_all(
+        system_identity,
+        fields=["id", "title"],
+        type="communitytypes",
+        max_records=10
+    )
+    comtypes = [{'id': i["id"], 'title': i["title"]} for i in list(types.hits)]
     if not permissions['can_update']:
         raise PermissionDeniedError()
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(),  # TODO: use serializer,
         logo=logo.to_dict() if logo else None,
-        # TODO: inject this from a vocabulary in the community
-        types={
-            "organization": _("Organization"),
-            "event": _("Event"),
-            "topic": _("Topic"),
-            "project": _("Project")
-        },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
+        comtypes=comtypes,
         permissions=permissions,
         active_menu_tab="settings"
     )
@@ -99,17 +103,11 @@ def communities_requests(community=None, logo=None, pid_value=None):
     )
     if not permissions['can_search_requests']:
         raise PermissionDeniedError()
+
     return render_template(
         "invenio_communities/details/requests/index.html",
         community=community.to_dict(),  # TODO: use serializer,
         logo=logo.to_dict() if logo else None,
-        # TODO: inject this from a vocabulary in the community
-        types={
-            "organization": _("Organization"),
-            "event": _("Event"),
-            "topic": _("Topic"),
-            "project": _("Project")
-        },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
         permissions=permissions,
@@ -148,13 +146,6 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
                 ]
             ),
         ),
-        # TODO: inject this from a vocabulary in the community
-        types={
-            "organization": _("Organization"),
-            "event": _("Event"),
-            "topic": _("Topic"),
-            "project": _("Project")
-        },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
         permissions=permissions,
@@ -204,11 +195,5 @@ def invitations(community=None, pid_value=None):
     return render_template(
         "invenio_communities/details/members/invitations.html",
         community=community.to_dict(),
-        types={
-            "organization": _("Organization"),
-            "event": _("Event"),
-            "topic": _("Topic"),
-            "project": _("Project")
-        },
         permissions=permissions,
     )

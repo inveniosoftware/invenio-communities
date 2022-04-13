@@ -51,7 +51,24 @@
             "type": "text"
           },
           "type": {
-            "type": "keyword"
+            "type": "object",
+            "properties": {
+              "@v": {
+                "type": "keyword"
+              },
+              "id": {
+                "type": "keyword"
+              },
+              "title": {
+                "type": "object",
+                "dynamic": true,
+                "properties": {
+                  "en": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
           },
           "curation_policy": {
             "type": "text"
@@ -60,50 +77,60 @@
             "type": "text"
           },
           "organizations" : {
-            "properties" : {
-              "identifiers" : {
-                "properties": {
-                  "identifier" : {
-                    "type" : "keyword"
-                  },
-                  "scheme" : {
-                    "type" : "keyword"
-                  }
-                }
+            "type": "object",
+            "properties": {
+              "@v": {
+                "type": "keyword"
               },
-              "name" : {
-                "type" : "text"
+              "id": {
+                "type": "keyword"
+              },
+              "name": {
+                "type": "text"
               }
             }
           },
           "funding": {
             "properties": {
-              "funder": {
+              "award": {
+                "type": "object",
                 "properties": {
-                  "name": {
+                  "@v": {
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "type": "keyword"
+                  },
+                  "title": {
+                    "type": "object",
+                    "dynamic": true
+                  },
+                  "number": {
                     "type": "text"
                   },
-                  "identifier": {
-                    "type": "keyword"
-                  },
-                  "scheme": {
-                    "type": "keyword"
+                  "identifiers": {
+                    "properties": {
+                      "identifier" : {
+                        "type" : "text"
+                      },
+                      "scheme" : {
+                        "type" : "keyword"
+                      }
+                    }
                   }
                 }
               },
-              "award": {
+              "funder": {
+                "type": "object",
                 "properties": {
-                  "title": {
+                  "@v": {
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "type": "keyword"
+                  },
+                  "name": {
                     "type": "text"
-                  },
-                  "number": {
-                    "type": "keyword"
-                  },
-                  "identifier": {
-                    "type": "keyword"
-                  },
-                  "scheme": {
-                    "type": "keyword"
                   }
                 }
               }

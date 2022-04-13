@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -9,10 +9,16 @@
 """Records API."""
 
 from invenio_records.dumpers import ElasticsearchDumper
-from invenio_records.systemfields import ConstantField, ModelField
+from invenio_records.dumpers.relations import RelationDumperExt
+from invenio_records.systemfields import ConstantField, ModelField, \
+    RelationsField
 from invenio_records_resources.records.api import FileRecord, Record
 from invenio_records_resources.records.systemfields import FilesField, \
-    IndexField, PIDField
+    IndexField, PIDField, PIDListRelation, PIDRelation
+from invenio_vocabularies.contrib.affiliations.api import Affiliation
+from invenio_vocabularies.contrib.awards.api import Award
+from invenio_vocabularies.contrib.funders.api import Funder
+from invenio_vocabularies.records.api import Vocabulary
 
 from . import models
 from ..dumpers.featured import FeaturedDumperExt
@@ -39,6 +45,7 @@ class Community(Record):
     dumper = ElasticsearchDumper(
         extensions=[
             FeaturedDumperExt("featured"),
+            RelationDumperExt('relations'),
         ]
     )
 
@@ -56,6 +63,38 @@ class Community(Record):
         file_cls=CommunityFile,
         # Don't delete, we'll manage in the service
         delete=False,
+    )
+
+    relations = RelationsField(
+        funding_award=PIDListRelation(
+            'metadata.funding',
+            relation_field='award',
+            keys=['number', 'title'],
+            pid_field=Award.pid,
+            cache_key='awards',
+        ),
+
+        funding_funder=PIDListRelation(
+            'metadata.funding',
+            relation_field='funder',
+            keys=['name'],
+            pid_field=Funder.pid,
+            cache_key='funders',
+        ),
+
+        organizations=PIDListRelation(
+            'metadata.organizations',
+            keys=['name'],
+            pid_field=Affiliation.pid,
+            cache_key='affiliations',
+        ),
+
+        type=PIDRelation(
+            'metadata.type',
+            keys=['title'],
+            pid_field=Vocabulary.pid.with_type_ctx('communitytypes'),
+            cache_key='communitytypes',
+        ),
     )
 
 
