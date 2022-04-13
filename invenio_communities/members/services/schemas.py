@@ -8,14 +8,15 @@
 
 """Member schema."""
 
-from flask_babelex import lazy_gettext as _
-from marshmallow import Schema, ValidationError, fields, pre_dump, validate, \
-    validates_schema
-from marshmallow_utils.fields import SanitizedUnicode
-from marshmallow_utils.fields import TZDateTime
 from datetime import timezone
 
+from flask_babelex import lazy_gettext as _
+from marshmallow import Schema, ValidationError, fields, validate, \
+    validates_schema
+from marshmallow_utils.fields import SanitizedUnicode, TZDateTime
+
 from .fields import RoleField
+
 
 #
 # Utility schemas
@@ -42,8 +43,12 @@ class MembersSchema(Schema):
 
 
 class RequestSchema(Schema):
+    id = fields.String()
     status = fields.String()
-    expires_at = TZDateTime(timezone=timezone.utc, format='iso')
+    # TODO: expires_at is dumped in the index and thus a string. This is
+    # because the relations field doesn't properly load data from the index
+    # (it should have converted expires_at into a datetime object).
+    expires_at = fields.String()
 
 
 #
@@ -105,9 +110,6 @@ class PublicDumpSchema(Schema):
             "id": user["id"],
             "name": name,
             "description": description,
-            "links": {
-                "avatar": "..."
-            }
         }
 
     def get_group_member(self, group):
@@ -117,9 +119,6 @@ class PublicDumpSchema(Schema):
             "id": group["id"],
             "name": group["title"] or group["name"] or "",
             "description": group["description"] or "",
-            "links": {
-                "avatar": "..."
-            }
         }
 
 

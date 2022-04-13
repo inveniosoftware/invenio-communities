@@ -279,6 +279,7 @@ def test_search_invitation(
     assert 'id' in hit['request']
     assert 'status' in hit['request']
     assert 'expires_at' in hit['request']
+    assert hit['request']['expires_at'] is not None
     assert 'permissions' in hit
     assert hit['permissions']['can_update_role'] is True
     assert hit['permissions']['can_cancel'] is True
