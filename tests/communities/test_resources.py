@@ -82,11 +82,11 @@ def _assert_error_messages_response(expected, response):
 
 
 def test_simple_flow(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear, db
+    client, location, minimal_community, headers, owner, db, es_clear
 ):
     """Test a simple REST API flow."""
-    client = client_with_login
+    client = owner.login(client)
+
     # Create a community
     res = client.post(
         '/communities', headers=headers,
@@ -106,7 +106,6 @@ def test_simple_flow(
         created_community['metadata']
 
     read_community = res.json
-
     Community.index.refresh()
 
     # Search for created community
@@ -126,7 +125,6 @@ def test_simple_flow(
     assert res.json['metadata']["title"] == 'New title'
 
     updated_community = res.json
-
     Community.index.refresh()
 
     # Search for updated commmunity
@@ -150,11 +148,10 @@ def test_simple_flow(
 
 
 def test_post_schema_validation(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear, db
+    client, location, minimal_community, headers, owner, es_clear, db
 ):
     """Test the validity of community json schema"""
-    client = client_with_login
+    client = owner.login(client)
 
     # Create a community
     res = client.post('/communities', headers=headers, json=minimal_community)
@@ -166,7 +163,7 @@ def test_post_schema_validation(
     assert minimal_community['metadata'] == created_community['metadata']
 
     # Assert required fields
-    assert created_community['metadata'] == {"title": "Title", "type": "topic"}
+    assert created_community['metadata'] == {"title": "My Community"}
     assert created_community['access']['visibility'] == "public"
 
     # Assert required enums
@@ -189,10 +186,10 @@ def test_post_schema_validation(
 
 
 def test_post_metadata_schema_validation(
-    app, client_with_login, location, minimal_community, headers, db
+    client, location, minimal_community, headers, db, owner, es_clear
 ):
     """Test the validity of community metadata schema"""
-    client = client_with_login
+    client = owner.login(client)
 
     # Alter paypload for each field for test
     data = copy.deepcopy(minimal_community)
@@ -267,12 +264,12 @@ def test_post_metadata_schema_validation(
 
 
 def test_post_community_with_existing_id(
-    app, client_with_login, location, minimal_community, headers
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test create two communities with the same id"""
-    client = client_with_login
+    client = owner.login(client)
 
-    #Create a community
+    # Create a community
     res = client.post(
         '/communities', headers=headers,
         json=minimal_community)
@@ -298,10 +295,10 @@ def test_post_community_with_existing_id(
 
 
 def test_post_community_with_deleted_id(
-    app, client_with_login, location, minimal_community, headers
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test create a community with a deleted id"""
-    client = client_with_login
+    client = owner.login(client)
 
     #Create a community
     res = client.post(
@@ -318,7 +315,7 @@ def test_post_community_with_deleted_id(
     res = client.delete(f'/communities/{id_}', headers=headers)
     assert res.status_code == 204
 
-    #Creta another community with the same id
+    # Create another community with the same id
     minimal_community['id'] = id_
     res = client.post(
         '/communities', headers=headers,
@@ -329,10 +326,10 @@ def test_post_community_with_deleted_id(
 
 
 def test_post_self_links(
-    app, client_with_login, location, minimal_community, headers
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test self links generated after post"""
-    client = client_with_login
+    client = owner.login(client)
 
     #Create a community
     res = client.post(
@@ -354,14 +351,13 @@ def test_post_self_links(
 
 
 def test_simple_search_response(
-    app, client_with_login, location, minimal_community, create_many_records, headers,
-    es_clear
+    client, location, minimal_community, owner, headers, es_clear, fake_communities,
 ):
     """Test get/list and search functionality"""
-    client = client_with_login
+    client = owner.login(client)
 
     # Create many communities,
-    id_oldest, id_newest, num_each, total = create_many_records
+    id_oldest, id_newest, num_each, total = fake_communities
 
     # Search for any commmunity, default order newest
     res = client.get(
@@ -394,10 +390,11 @@ def test_simple_search_response(
 
 
 def test_simple_get_response(
-    app, client_with_login, location, full_community, headers
+    client, location, full_community, headers, db, es_clear, owner
 ):
     """Test get response json schema"""
-    client = client_with_login
+    client = owner.login(client)
+
     # Create a community
     res = client.post(
         '/communities', headers=headers, json=full_community
@@ -429,11 +426,10 @@ def test_simple_get_response(
 
 
 def test_simple_put_response(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test put response basic functionality"""
-    client = client_with_login
+    client = owner.login(client)
     # Create a community
     res = client.post(
         '/communities', headers=headers,
@@ -486,11 +482,10 @@ def test_simple_put_response(
 
 
 def test_update_renamed_record(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test to update renamed entity."""
-    client = client_with_login
+    client = owner.login(client)
     # Create a community
     res = client.post('/communities', headers=headers, json=minimal_community)
     Member.index.refresh()
@@ -522,11 +517,10 @@ def test_update_renamed_record(
 
 
 def test_simple_delete_response(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test delete and request deleted community."""
-    client = client_with_login
+    client = owner.login(client)
 
     # Create a community
     res = client.post(
@@ -555,10 +549,10 @@ def test_simple_delete_response(
 
 
 def test_logo_flow(
-    app, client_with_login, location, minimal_community, headers, es_clear
+    app, client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test logo workflow."""
-    client = client_with_login
+    client = owner.login(client)
 
     # Create a community
     res = client.post('/communities', headers=headers, json=minimal_community)
@@ -631,10 +625,9 @@ def test_logo_flow(
 
 
 def test_invalid_community_ids_create(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
-    client = client_with_login
+    client = owner.login(client)
     # Create a community with invalid ID
     minimal_community['id'] = 'comm id'
     res = client.post('/communities', headers=headers, json=minimal_community)
@@ -643,13 +636,11 @@ def test_invalid_community_ids_create(
         'The ID should contain only letters with numbers or dashes.'
 
 
-
 def test_invalid_community_ids(
-    app, client_with_login, location, minimal_community, headers,
-    es_clear
+    client, location, minimal_community, headers, db, es_clear, owner
 ):
     """Test for invalid community IDs handling."""
-    client = client_with_login
+    client = owner.login(client)
 
     minimal_community['id'] = 'comm_id'
     res = client.post('/communities', headers=headers, json=minimal_community)
