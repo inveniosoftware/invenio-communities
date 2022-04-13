@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
 # Copyright (C) 2021 Northwestern University.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -80,6 +81,31 @@ class CommunityResource(RecordResource):
                 p(routes["communities-prefix"], routes["item"]) + '/logo',
                 self.delete_logo
             ),
+            route(
+                "GET",
+                p(routes["communities-prefix"], routes["featured-prefix"]),
+                self.featured_communities_search
+            ),
+            route(
+                "GET",
+                p(routes["communities-prefix"], routes["item"]) + routes["featured-prefix"],
+                self.featured_list
+            ),
+            route(
+                "POST",
+                p(routes["communities-prefix"], routes["item"]) + routes["featured-prefix"],
+                self.featured_create
+            ),
+            route(
+                "PUT",
+                p(routes["communities-prefix"], routes["item"]) + p(routes["featured-prefix"], routes["featured-id"]),
+                self.featured_update
+            ),
+            route(
+                "DELETE",
+                p(routes["communities-prefix"], routes["item"]) + p(routes["featured-prefix"], routes["featured-id"]),
+                self.featured_delete
+            ),
         ]
 
     @request_search_args
@@ -138,5 +164,64 @@ class CommunityResource(RecordResource):
         self.service.delete_logo(
             g.identity,
             resource_requestctx.view_args["pid_value"],
+        )
+        return "", 204
+
+    @request_search_args
+    @response_handler(many=True)
+    def featured_communities_search(self):
+        hits = self.service.featured_search(
+            identiy=g.identity,
+            params=resource_requestctx.args,
+            es_preference=es_preference(),
+        )
+        return hits.to_dict(), 200
+
+    @request_headers
+    @request_view_args
+    @response_handler()
+    def featured_list(self):
+        """List featured entries for a community."""
+        items = self.service.featured_list(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+        )
+        return items.to_dict(), 200
+
+
+    @request_headers
+    @request_view_args
+    @request_data
+    @response_handler()
+    def featured_create(self):
+        """Create a featured community entry."""
+        item = self.service.featured_create(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            resource_requestctx.data,
+        )
+        return item.to_dict(), 201
+
+    @request_headers
+    @request_view_args
+    @request_data
+    @response_handler()
+    def featured_update(self):
+        """Update a featured community entry."""
+        item = self.service.featured_update(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            resource_requestctx.data,
+            featured_id=resource_requestctx.view_args["featured_id"],
+        )
+        return item.to_dict(), 200
+
+    @request_view_args
+    def featured_delete(self):
+        """Delete a featured community entry."""
+        self.service.featured_delete(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            featured_id=resource_requestctx.view_args["featured_id"],
         )
         return "", 204

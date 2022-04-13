@@ -8,12 +8,14 @@
 
 """Records API."""
 
+from invenio_records.dumpers import ElasticsearchDumper
 from invenio_records.systemfields import ConstantField, ModelField
 from invenio_records_resources.records.api import FileRecord, Record
 from invenio_records_resources.records.systemfields import FilesField, \
     IndexField, PIDField
 
 from . import models
+from ..dumpers.featured import FeaturedDumperExt
 from .providers import CommunitiesIdProvider
 from .systemfields.access import CommunityAccessField
 
@@ -33,6 +35,12 @@ class Community(Record):
         '$schema', 'local://communities/communities-v1.0.0.json')
 
     model_cls = models.CommunityMetadata
+
+    dumper = ElasticsearchDumper(
+        extensions=[
+            FeaturedDumperExt("featured"),
+        ]
+    )
 
     index = IndexField(
         "communities-communities-v1.0.0",

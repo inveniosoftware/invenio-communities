@@ -76,6 +76,21 @@
       }
     }
   },
+  "featured": {
+    "type": "object",
+    "description": "Start dates of featured entries.",
+    "additionalProperties": false,
+    "properties": {
+      "future": {
+        "description": "Upcoming featured dates.",
+        "type": "array"
+      },
+      "past": {
+        "description": "Past featured dates.",
+        "type": "array"
+      }
+    }
+  },
   "file": {
     "type": "object",
     "additionalProperties": false,

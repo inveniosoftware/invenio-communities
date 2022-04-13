@@ -33,6 +33,9 @@ class CommunityResourceConfig(RecordResourceConfig):
         "user-prefix": "/user/communities",
         "list": "",
         "item": "/<pid_value>",
+        "featured-prefix": "/featured",
+        "featured-id": "/<featured_id>",
+        
     }
 
     error_handlers = community_error_handlers
