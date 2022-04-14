@@ -47,25 +47,32 @@ class RoleRegistry:
 
     def __init__(self, roles_definitions):
         """Initialize the role registry."""
-        self._roles = {
-            name: Role(name=name, **data)
-            for (name, data) in roles_definitions.items()
-        }
+        self._roles = [
+            Role(**role) for role in roles_definitions
+        ]
+
         self._owner = None
-        for r in self._roles.values():
+
+        for r in self._roles:
             if r.is_owner:
                 assert self._owner is None, \
-                        "Only one role be defined as owner."
+                    "Only one role be defined as owner."
                 self._owner = r
         assert self._owner is not None, "One role must be defined as owner."
 
     def __contains__(self, key):
         """Determine if key is a valid role id."""
-        return key in self._roles
+        for role in self._roles:
+            if key == role.name:
+                return True
+        return False
 
     def __getitem__(self, key):
         """Get a role for a specific key."""
-        return self._roles[key]
+        for role in self._roles:
+            if key == role.name:
+                return role
+        raise KeyError(key)
 
     def __iter__(self):
         """Iterate list of roles."""
@@ -74,7 +81,7 @@ class RoleRegistry:
     @property
     def roles(self):
         """Get a list of roles"""
-        return self._roles.values()
+        return self._roles
 
     @property
     def owner_role(self):

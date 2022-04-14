@@ -10,12 +10,11 @@ import { InvitationsContext } from "../../api/invitations/InvitationsContextProv
 import ActionDropdown from "../components/ActionDropdown";
 import React, { Component } from "react";
 import { DateTime } from "luxon";
-import { Table, Container, Header } from "semantic-ui-react";
+import { Container, Header, Table } from "semantic-ui-react";
 import { Image } from "react-invenio-forms";
-import { ActionButtons } from "./request_actions/InvitationActionButtons";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { RequestActionController } from "@js/invenio_requests";
+import { RoleDropdown } from "../components/dropdowns";
 
 const formattedTime = (expires_at) =>
   DateTime.fromISO(expires_at).setLocale(i18next.language).toRelative();
@@ -55,8 +54,8 @@ export class InvitationResultItem extends Component {
         <Table.Cell>{status}</Table.Cell>
         <Table.Cell>{formattedTime(expires_at)}</Table.Cell>
         <Table.Cell>
-          <ActionDropdown
-            options={roles}
+          <RoleDropdown
+            roles={roles}
             successCallback={this.updateInvitation}
             action={invitationsApi.updateRole}
             disabled={!permissions.can_update_role}

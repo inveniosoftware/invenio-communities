@@ -1,8 +1,7 @@
-import ActionDropdown from "@js/invenio_communities/members/components/ActionDropdown";
 import { MembersContext } from "../../../api/members/MembersContextProvider";
 import { SearchResultsRowCheckbox } from "../../components/bulk_actions/SearchResultsRowCheckbox";
 import React, { Component } from "react";
-import { Grid, Item, Button, Label, Table } from "semantic-ui-react";
+import { Button, Grid, Item, Label, Table } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
@@ -10,31 +9,10 @@ import { DateTime } from "luxon";
 import _upperFirst from "lodash/upperFirst";
 import { ModalContext } from "../../components/modal_manager";
 import { modalModeEnum } from "../../components/RemoveMemberModal";
+import { RoleDropdown, VisibilityDropdown } from "../../components/dropdowns";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
-
-const dropdownVisibilityOptionsGenerator = (options) => {
-  return Object.entries(options).map(([key, settings]) => {
-    return {
-      key: key,
-      text: settings.title,
-      value: settings.visible,
-      content: (
-        <Item.Group>
-          <Item className="members-dropdown-option">
-            <Item.Content>
-              <Item.Description>
-                <strong>{settings.title}</strong>
-              </Item.Description>
-              <Item.Meta>{settings.description}</Item.Meta>
-            </Item.Content>
-          </Item>
-        </Item.Group>
-      ),
-    };
-  });
-};
 
 export class ManagerMembersResultItem extends Component {
   static contextType = MembersContext;
@@ -72,7 +50,7 @@ export class ManagerMembersResultItem extends Component {
     const { result } = this.state;
     const { api } = this.context;
 
-    const avatar = result.member.links.avatar;
+    const avatar = result.member?.links?.avatar;
     return (
       <Table.Row>
         <Table.Cell>
@@ -114,13 +92,12 @@ export class ManagerMembersResultItem extends Component {
         <Table.Cell>{timestampToRelativeTime(result.created)}</Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_visible ? (
-            <ActionDropdown
-              options={config.visibility}
+            <VisibilityDropdown
+              visibilityTypes={config.visibility}
               successCallback={this.updateMemberVisibility}
               action={api.updateVisibility}
               currentValue={result.visible}
               resource={result}
-              optionsSerializer={dropdownVisibilityOptionsGenerator}
             />
           ) : result.visible ? (
             "Public"
@@ -130,8 +107,8 @@ export class ManagerMembersResultItem extends Component {
         </Table.Cell>
         <Table.Cell>
           {result.permissions.can_update_role ? (
-            <ActionDropdown
-              options={config.roles}
+            <RoleDropdown
+              roles={config.roles}
               successCallback={this.updateMemberRole}
               action={api.updateRole}
               currentValue={result.role}

@@ -78,38 +78,34 @@ export class MembersSearchBar extends Component {
   };
 
   onChange = (event, data) => {
-    const {
-      handleChange,
-      selectedMembers,
-      suggestions,
-      searchType,
-    } = this.props;
+    const { handleChange, selectedMembers, searchType } = this.props;
+    const { suggestions } = this.state;
 
     const memberAlreadySelected = data.value in selectedMembers;
 
-    if (!memberAlreadySelected) {
-      const newSelectedMember = suggestions.find(
-        (item) => item.id === data.value
-      );
+    if (memberAlreadySelected) return;
 
-      const serializedSelectedMember = {
-        id: newSelectedMember.id,
-        type: searchType,
-        avatar: newSelectedMember.links.avatar,
-      };
+    const newSelectedMember = suggestions.find(
+      (item) => item.id === data.value
+    );
 
-      serializedSelectedMember["name"] =
-        newSelectedMember.profile.full_name ||
-        newSelectedMember.name ||
-        newSelectedMember.id;
+    const serializedSelectedMember = {
+      id: newSelectedMember.id,
+      type: searchType,
+      avatar: newSelectedMember?.links?.avatar,
+    };
 
-      selectedMembers[serializedSelectedMember.id] = serializedSelectedMember;
-      handleChange(selectedMembers);
-    }
+    serializedSelectedMember["name"] =
+      newSelectedMember.profile.full_name ||
+      newSelectedMember.name ||
+      newSelectedMember.id;
+
+    selectedMembers[serializedSelectedMember.id] = serializedSelectedMember;
+    handleChange(selectedMembers);
   };
 
   onSearchChange = async (event, data) => {
-    const { handleSearchChange, fetchMembers } = this.props;
+    const { fetchMembers } = this.props;
     try {
       this.setState({ isFetching: true });
 
@@ -118,8 +114,8 @@ export class MembersSearchBar extends Component {
 
       this.setState({
         isFetching: false,
+        suggestions: suggestions.data.hits.hits,
       });
-      this.setState({ suggestions: suggestions.data.hits.hits });
     } catch (e) {
       console.error(e);
       this.setState({

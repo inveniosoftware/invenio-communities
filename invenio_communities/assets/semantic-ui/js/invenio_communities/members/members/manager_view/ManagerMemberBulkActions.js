@@ -2,7 +2,7 @@ import { SearchResultsBulkActions } from "@js/invenio_communities/members/compon
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
 import {
   RolePermissionPolicy,
-  serializeOptionsByPermissions,
+  filterOptionsByPermissions,
   VisibilityPermissionPolicy,
 } from "../../components/bulk_actions/permissions";
 import { CommunityMembersApi } from "../../../api/members/api";
@@ -49,7 +49,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         renderOnActive: () => (
           <Form>
             <RadioSelection
-              options={serializeOptionsByPermissions(
+              options={filterOptionsByPermissions(
                 roles,
                 RolePermissionPolicy,
                 permissions
@@ -72,7 +72,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         renderOnActive: () => (
           <Form>
             <RadioSelection
-              options={serializeOptionsByPermissions(
+              options={filterOptionsByPermissions(
                 visibilities,
                 VisibilityPermissionPolicy,
                 permissions

@@ -8,10 +8,8 @@ export const VisibilityPermissionPolicy = {
   public: "can_update_visible",
 };
 
-export const serializeOptionsByPermissions = (options, policy, permissions) => {
-  const permittedOptions = _pickBy(options, (value, key) => {
-    return (key in policy && policy[key] in permissions) || !(key in policy);
+export const filterOptionsByPermissions = (options, policy, permissions) => {
+  return options.filter(({ name }) => {
+    return (name in policy && policy[name] in permissions) || !(name in policy);
   });
-
-  return permittedOptions;
 };

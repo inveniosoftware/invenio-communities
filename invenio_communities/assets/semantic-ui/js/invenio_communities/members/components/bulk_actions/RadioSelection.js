@@ -22,23 +22,23 @@ export class RadioSelection extends Component {
       <Form.Field required>
         <label>{label}</label>
         <Item.Group className="mt-10">
-          {Object.entries(options).map(([key, value]) => (
-            <Item key={key}>
+          {options.map((option) => (
+            <Item key={option.name}>
               <Item.Content>
                 <Item.Header>
                   <Form.Field>
                     <Radio
                       onClick={this.handleOnChange}
-                      label={value.title}
-                      value={key}
-                      checked={selected === key}
+                      label={option.title}
+                      value={option.name}
+                      checked={selected === option.name}
                       name="membersRoles"
-                      key={key}
+                      key={option.name}
                     />
                   </Form.Field>
                 </Item.Header>
                 <Item.Meta className="ml-25 mt-0">
-                  {value.description}
+                  {option.description}
                 </Item.Meta>
               </Item.Content>
             </Item>

@@ -14,7 +14,7 @@ import { SearchBarWithFiltersWithState } from "../components/SearchBarWithFilter
 import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
 import {
   RolePermissionPolicy,
-  serializeOptionsByPermissions,
+  filterOptionsByPermissions,
 } from "../components/bulk_actions/permissions";
 
 export class InvitationsSearchLayout extends Component {
@@ -34,7 +34,7 @@ export class InvitationsSearchLayout extends Component {
           customCmp={
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
-                roles={serializeOptionsByPermissions(
+                roles={filterOptionsByPermissions(
                   roles,
                   RolePermissionPolicy,
                   permissions
