@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2021-2022 Northwestern University.
 # Copyright (C)      2022 Graz University of Technology.
 #
@@ -192,7 +192,7 @@ class CommunityService(RecordService):
 
     @unit_of_work()
     def featured_search(self, identity, params=None, es_preference=None, **kwargs):
-        """Search featured communities."""        
+        """Search featured communities."""
         # Prepare and execute the search
         params = params or {}
         params["sort"] = "featured"
@@ -223,7 +223,7 @@ class CommunityService(RecordService):
 
         # Permissions
         self.require_permission(identity, "featured_list", record=record)
-        
+
         featured_entries = CommunityFeatured.query.filter(
             CommunityFeatured.community_id == record.id,
         ).paginate(
@@ -246,7 +246,7 @@ class CommunityService(RecordService):
 
         # Permissions
         self.require_permission(identity, "featured_create", record=record)
-        
+
         data, errors = self.schema_featured.load(
             data,
             context={"identity": identity},
@@ -319,3 +319,21 @@ class CommunityService(RecordService):
         uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
 
         return
+
+    #
+    # notification handlers
+    #
+    def on_relation_update(
+        self, identity, record_type, records_info, notif_time
+    ):
+        """Relation updates notification handler."""
+        if self.members:
+            self.members.on_relation_update(
+                identity, record_type, records_info, notif_time
+            )
+        if self.invitations:
+            self.invitations.on_relation_update(
+                identity, record_type, records_info, notif_time
+            )
+
+        return True
