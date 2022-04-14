@@ -26,15 +26,13 @@ export class SelectedMembers extends Component {
     return !_isEmpty(selectedMembers) ? (
       <>
         <Header as="h4" className="ml-20">
-          {i18next.t(
-            displayingGroups ? "Selected groups" : "Selected members"
-          )}
+          {i18next.t(displayingGroups ? "Selected groups" : "Selected members")}
         </Header>
         <Segment className="selected-members-header mb-20 mr-20 ml-20">
           {Object.entries(selectedMembers).map(([memberId, member]) => (
             <Label className="mb-5 ml-5" image key={memberId}>
-              <Image src={member.member.links.avatar} />
-              {member.member.name}
+              <Image src={member?.avatar} />
+              {member?.name}
               <Icon onClick={() => this.removeMember(memberId)} name="delete" />
             </Label>
           ))}

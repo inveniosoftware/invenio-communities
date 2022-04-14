@@ -79,30 +79,35 @@ COMMUNITIES_SORT_OPTIONS = {
 }
 """Definitions of available record sort options."""
 
-COMMUNITIES_ROLES = {
-    'reader': dict(
+
+COMMUNITIES_ROLES = [
+    dict(
+        name="reader",
         title=_('Reader'),
         description=_('Can view restricted records'),
     ),
-    'curator': dict(
+    dict(
+        name="curator",
         title=_('Curator'),
         description=_('Can edit and view restricted records'),
     ),
-    'manager': dict(
+    dict(
+        name="manager",
         title=_('Manager'),
         description=_('Can manage members, curate records '
                       'and view restricted records'),
         can_manage_roles=['manager', 'curator', 'reader'],
         can_manage=True
     ),
-    'owner': dict(
+    dict(
+        name="owner",
         title=_('Owner'),
         description=_('Full administrative access to the entire community.'),
         can_manage_roles=['owner', 'manager', 'curator', 'reader'],
         is_owner=True,
         can_manage=True
     ),
-}
+]
 """Community roles."""
 
 

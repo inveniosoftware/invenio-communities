@@ -65,6 +65,7 @@ export class MembersWithRoleSelection extends Component {
     const { roleOptions, modalClose } = this.props;
     const { selectedMembers, loading, error } = this.state;
     const selectedCount = Object.keys(selectedMembers).length;
+
     return (
       <>
         <div className="rel-pl-2 rel-pr-2 rel-pb-2 rel-pt-2">

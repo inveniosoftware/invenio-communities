@@ -1,4 +1,4 @@
-import { errorSerializer } from "@js/invenio_communities/api/config";
+import { errorSerializer } from "../../api/serializers";
 import { ErrorPopup } from "./ErrorPopup";
 import { SuccessIcon } from "./SuccessIcon";
 import React, { Component } from "react";
@@ -8,11 +8,11 @@ import { Dropdown, List } from "semantic-ui-react";
 import { withCancel } from "react-invenio-forms";
 
 const dropdownOptionsGenerator = (value) => {
-  return Object.entries(value).map(([key, settings]) => {
+  return value.map((settings) => {
     return {
-      key: key,
+      key: settings.key,
       text: settings.title,
-      value: key,
+      value: settings.key,
       content: (
         <List>
           <List.Item>
@@ -55,6 +55,7 @@ class ActionDropdown extends Component {
   render() {
     const { loading, actionSuccess, error } = this.state;
     const { options, currentValue, optionsSerializer, disabled } = this.props;
+
     return (
       <Overridable
         id="InvenioCommunities.ActionDropdown.layout"
