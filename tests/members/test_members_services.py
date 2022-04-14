@@ -9,7 +9,9 @@
 """Test community member service."""
 
 import pytest
+
 from invenio_access.permissions import system_identity
+from invenio_accounts.proxies import current_datastore
 from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
 
@@ -908,3 +910,36 @@ def test_update_invalid_data(member_service, community, group):
         member_service.update,
         system_identity, community._record.id, data
     )
+
+
+#
+# Change notifications
+#
+def test_relation_update_propagation(
+    app, db, clean_index, public_reader, community, member_service
+):
+    comm_uuid = community._record.id
+    # there is no .read() implementation
+    comm_members = member_service.search_public(system_identity, comm_uuid)
+    assert comm_members.total == 1
+
+    member = list(comm_members.hits)[0]
+    assert member.get("member").get("name") == "New User"
+
+    # update user
+    user_id = member["member"]["id"]
+    user = current_datastore.get_user(user_id)
+    user.user_profile = {
+        "full_name" : "Update test",
+        "affiliations" : "CERN"
+    }
+    current_datastore.commit()
+
+    # check community has been updated
+    assert member_service.indexer.process_bulk_queue() == (1, 0)
+    Member.index.refresh()
+    comm_members = member_service.search_public(system_identity, comm_uuid)
+    assert comm_members.total == 1
+
+    member = list(comm_members.hits)[0]
+    assert member.get("member").get("name") == "Update test"

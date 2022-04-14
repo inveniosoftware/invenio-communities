@@ -11,6 +11,7 @@
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_records.dumpers import ElasticsearchDumper
+from invenio_records.dumpers.indexedat import IndexedAtDumperExt
 from invenio_records.dumpers.relations import RelationDumperExt
 from invenio_records.systemfields import ModelField, ModelRelation, \
     RelationsField
@@ -26,6 +27,7 @@ from .models import ArchivedInvitationModel, MemberModel
 
 relations_dumper = ElasticsearchDumper(extensions=[
     RelationDumperExt('relations'),
+    IndexedAtDumperExt(),
 ])
 """Relations dumper for members and archived invitations."""
 

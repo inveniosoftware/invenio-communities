@@ -8,14 +8,17 @@
       "updated": {
         "type": "date"
       },
+      "indexed_at": {
+        "type": "date"
+      },
       "id": {
         "type": "keyword"
       },
-      "uuid" : {
-        "type" : "keyword"
+      "uuid": {
+        "type": "keyword"
       },
-      "version_id" : {
-        "type" : "integer"
+      "version_id": {
+        "type": "integer"
       },
       "community_id": {
         "type": "keyword"

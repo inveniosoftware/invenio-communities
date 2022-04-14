@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2022 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -60,6 +60,7 @@ class CommunityMembersLink(RecordLink):
 
 class CommunityServiceConfig(RecordServiceConfig):
     """Communities service configuration."""
+    service_id="communities"
 
     # Common configuration
     permission_policy_cls = CommunityPermissionPolicy
