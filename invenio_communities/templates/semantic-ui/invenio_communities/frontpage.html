@@ -24,28 +24,27 @@
         {{_('Communities')}}
       </h1>
     </div>
-    <div class="centered two column row">
-      <div class="one wide column"></div>
-      <div class="six wide column">
+    <div class="one column row">
+      <div class="thirteen wide mobile ten wide tablet eight wide computer center aligned column">
         <p>
           {{_('Organize, curate and collaborate on records for your institution, project, topic or event.')}}
         </p>
       </div>
-      <div class="three wide column center">
+    </div>
+    <div class="two column stackable row">
+      <div class="eight wide tablet five wide computer column">
+        <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
+          <div class="ui fluid action input">
+            <input type="text" name="q" class="form-control" placeholder="{{ _('Search communities') }}">
+            <button type="submit" class="ui icon search button"><i class="search icon"></i></button>
+          </div>
+        </form>
+      </div>
+      <div class="three wide mobile five wide tablet three wide computer stretched column">
         <a href="{{ config.COMMUNITIES_ROUTES['new'] }}" class="ui icon left labeled positive button" role="button">
           <i class="icon plus"></i>
           {{_('New community')}}
         </a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="eight wide column p-0">
-        <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
-          <div class="ui fluid action input">
-            <input type="text" name="q" class="form-control" placeholder="{{ _("Search communities") }}">
-            <button type="submit" class="ui icon search button"><i class="search icon"></i></button>
-          </div>
-        </form>
       </div>
     </div>
     <div class="ui divider hidden"></div>
