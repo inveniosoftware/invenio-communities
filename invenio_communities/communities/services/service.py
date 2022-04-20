@@ -176,7 +176,7 @@ class CommunityService(RecordService):
         )
 
 
-    def _get_one(self, raise_error=True, **kwargs):
+    def _get_featured_entry(self, raise_error=True, **kwargs):
         """Retrieve featured entry based on provided arguments."""
         set = None
         errors = []
@@ -195,12 +195,8 @@ class CommunityService(RecordService):
         """Search featured communities."""        
         # Prepare and execute the search
         params = params or {}
+        params["sort"] = "featured"
 
-        # TODO: sort by featured.past
-        #       specfic filtering
-        #       - no restricted communities
-        #       - no communities that is not featured
-        #       - no start_date in the future
         search_results = self._search(
             'search',
             identity,
@@ -208,9 +204,7 @@ class CommunityService(RecordService):
             es_preference,
             extra_filter=Bool("must", must=[
                 Q("match", **{"access.visibility": "public"}),
-                # TODO: field does not exist, as the FeaturedDumperExt will pop it on load
-                #       do the extra_filters run after the search has loaded the documents?
-                Q("exists", **{"field": "featured"}),
+                Q("exists", **{"field": "featured.past"}),
             ]),
             permission_action='featured_search',
             **kwargs).execute()
@@ -267,7 +261,7 @@ class CommunityService(RecordService):
             'featured_create', identity, data=data, record=record, uow=uow)
 
         uow.register(CommunityFeaturedCommitOp(featured_entry))
-        uow.register(RecordIndexOp(record, indexer=self.indexer))
+        uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
 
         return self.result_item(
             self,
@@ -281,7 +275,7 @@ class CommunityService(RecordService):
                         raise_errors=True, uow=None):
         """Update a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
-        featured_entry, _ = self._get_one(id=featured_id, community_id=record.id,)
+        featured_entry, _ = self._get_featured_entry(id=featured_id, community_id=record.id,)
 
         self.require_permission(identity, "featured_update", record=record)
 
@@ -299,7 +293,7 @@ class CommunityService(RecordService):
             setattr(featured_entry, key, value)
 
         uow.register(CommunityFeaturedCommitOp(featured_entry))
-        uow.register(RecordIndexOp(record, indexer=self.indexer))
+        uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
 
         return self.result_item(
             self,
@@ -313,7 +307,7 @@ class CommunityService(RecordService):
                         raise_errors=True, uow=None):
         """Delete a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
-        featured_entry, _  = self._get_one(id=featured_id, community_id=record.id,)
+        featured_entry, _  = self._get_featured_entry(id=featured_id, community_id=record.id,)
 
         self.require_permission(identity, "featured_delete", record=record)
 
@@ -322,6 +316,6 @@ class CommunityService(RecordService):
             'featured_delete', identity, data=None, record=record, uow=uow)
 
         uow.register(CommunityFeaturedDeleteOp(featured_entry))
-        uow.register(RecordIndexOp(record, indexer=self.indexer))
+        uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
 
         return

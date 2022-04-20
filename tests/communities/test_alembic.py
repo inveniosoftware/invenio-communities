@@ -35,13 +35,14 @@ def test_alembic(base_app, database):
     assert 'communities_files' in tables
     assert 'communities_metadata_version' in tables
     assert 'communities_members' in tables
+    assert 'communities_featured' in tables
 
     # Check that Alembic agrees that there's no further tables to create.
     assert not ext.alembic.compare_metadata()
 
     # Hack to not having to deal with mock_metadata depending on which order
     # tests are run in.
-    cmp_len = 2 if 'mock_metadata' in tables else 0
+    cmp_len = 3 if 'mock_metadata' in tables else 0
 
     # Drop everything and recreate tables all with Alembic
     db.drop_all()
