@@ -24,7 +24,6 @@ COMMUNITIES_ROUTES = {
     'settings_privileges': '/communities/<pid_value>/settings/privileges',
     'members': '/communities/<pid_value>/members',
     'invitations': '/communities/<pid_value>/invitations',
-    'invitation_details': '/communities/<pid_value>/invitations/<invitation_pid_value>'
 }
 
 """Communities ui endpoints."""
