@@ -42,7 +42,7 @@ def test_alembic(base_app, database):
 
     # Hack to not having to deal with mock_metadata depending on which order
     # tests are run in.
-    cmp_len = 3 if 'mock_metadata' in tables else 0
+    cmp_len = 2 if 'mock_metadata' in tables else 0
 
     # Drop everything and recreate tables all with Alembic
     db.drop_all()
