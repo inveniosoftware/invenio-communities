@@ -32,7 +32,16 @@
           }
         }
       },
-
+      "featured": {
+        "properties": {
+          "past": {
+            "type": "date"
+          },
+          "future": {
+            "type": "date"
+          }
+        }
+      },
       "metadata": {
         "properties": {
           "title": {

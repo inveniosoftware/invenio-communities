@@ -29,9 +29,19 @@ from ..schema import CommunityFeaturedSchema, CommunitySchema
 from .components import CommunityAccessComponent, FeaturedCommunityComponent, OwnershipComponent, \
     PIDComponent
 
+from flask_babelex import lazy_gettext as _
+
 
 class SearchOptions(SearchOptionsBase):
     """Search options."""
+
+    sort_options = {
+        **SearchOptionsBase.sort_options,
+        "featured": dict(
+            title=_('Featured'), 
+            fields=[{"featured.past" : {"order" : "desc",}}],  
+        ),
+    }
 
     facets = {
         'type': facets.type,
