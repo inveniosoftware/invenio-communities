@@ -8,11 +8,10 @@
 
 """Routes for community-related pages provided by Invenio-Communities."""
 
-from flask import current_app, render_template, g
+from flask import current_app, g, render_template
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 from invenio_records_resources.services.errors import PermissionDeniedError
-from invenio_requests.proxies import current_requests_service
 
 from .decorators import pass_community, pass_community_logo
 
@@ -165,6 +164,7 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
 
 @pass_community
 def members(community=None, pid_value=None, endpoint=None):
+    """Community members page."""
     permissions = community.has_permissions_to(
         [
             "update",
@@ -194,6 +194,7 @@ def members(community=None, pid_value=None, endpoint=None):
 
 @pass_community
 def invitations(community=None, pid_value=None):
+    """Community invitations page."""
     permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites',
          'invite_owners']
@@ -210,34 +211,4 @@ def invitations(community=None, pid_value=None):
             "project": "Project"
         },
         permissions=permissions,
-    )
-
-
-@pass_community
-def invitation_details(community=None, pid_value=None, invitation_pid_value=None):
-    invitation = current_requests_service.read(
-        id_=invitation_pid_value, identity=g.identity
-    )
-    query_config = dict(
-        size=current_app.config['REQUESTS_TIMELINE_PAGE_SIZE']
-    )
-
-    permissions = community.has_permissions_to(
-        ['update', 'read', 'search_requests', 'search_invites']
-    )
-    if not permissions['can_search_invites']:
-        raise PermissionDeniedError()
-
-    return render_template(
-        "invenio_communities/details/members/invitation_details.html",
-        community=community.to_dict(),
-        types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project"
-        },
-        permissions=permissions,
-        request=invitation.to_dict(),
-        default_query_config=query_config,
     )

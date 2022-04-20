@@ -37,7 +37,7 @@ import {
   Label,
   List,
   Segment,
-} from 'semantic-ui-react';
+} from "semantic-ui-react";
 
 export const RecordSearchBarElement = withState(
   ({
