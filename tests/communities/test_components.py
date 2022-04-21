@@ -8,6 +8,7 @@
 """Test components."""
 
 from copy import deepcopy
+from datetime import datetime
 import pytest
 from invenio_access.permissions import system_identity
 
@@ -24,14 +25,17 @@ def _retrieve_oaiset(service, community):
 @pytest.fixture()
 def comm(community_service, minimal_community, location):
     """Create minimal public community."""
-    return community_service.create(data=minimal_community, identity=system_identity)
+    c = deepcopy(minimal_community)
+    c["id"] = "public-{id}".format(id=str(datetime.utcnow().timestamp()).replace(".","-"))
+    return community_service.create(data=c, identity=system_identity)
 
 @pytest.fixture()
 def comm_restricted(community_service, minimal_community, location):
     """Create minimal restricted community."""
-    minimal_community["access"]["visibility"] = "restricted"
-    minimal_community["id"] = "restricted"
-    return community_service.create(data=minimal_community, identity=system_identity)
+    c = deepcopy(minimal_community)
+    c["access"]["visibility"] = "restricted"
+    c["id"] = "restricted-{id}".format(id=str(datetime.utcnow().timestamp()).replace(".","-"))
+    return community_service.create(data=c, identity=system_identity)
 
 
 def test_oai_set_create_community(community_service, comm, comm_restricted):
