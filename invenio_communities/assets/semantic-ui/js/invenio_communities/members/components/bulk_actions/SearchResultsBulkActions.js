@@ -43,13 +43,16 @@ export class SearchResultsBulkActions extends Component {
 
   render() {
     const { bulkDropdownOptions } = this.props;
-    const { allSelectedChecked, action } = this.state;
+    const { allSelectedChecked } = this.state;
     const { allSelected, selectedCount } = this.context;
+
+    const noneSelected = selectedCount === 0;
 
     const dropdownOptions = bulkDropdownOptions.map(({ key, value, text }) => ({
       key: key,
       value: value,
       text: text,
+      disabled: noneSelected,
     }));
 
     return (
@@ -64,11 +67,13 @@ export class SearchResultsBulkActions extends Component {
             className="align-self-center"
             text={`${selectedCount} ${i18next.t("members selected")}`}
             options={dropdownOptions}
+            aria-label="bulk actions"
             item
             selection
-            value={action}
-            defaultValue={undefined}
+            value={null}
+            selectOnBlur={false}
             onChange={this.handleActionOnChange}
+            selectOnNavigation={false}
           />
         </div>
       </Overridable>
