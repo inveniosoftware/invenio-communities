@@ -8,7 +8,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Segment, Label, Icon, Header } from "semantic-ui-react";
+import { Segment, Label, Icon, Header, Button } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import _isEmpty from "lodash/isEmpty";
@@ -25,16 +25,28 @@ export class SelectedMembers extends Component {
 
     return !_isEmpty(selectedMembers) ? (
       <>
-        <Header as="h4" className="ml-20">
+        <Header as="h3" size="small">
           {i18next.t(displayingGroups ? "Selected groups" : "Selected members")}
         </Header>
-        <Segment className="selected-members-header mb-20 mr-20 ml-20">
+        <Segment
+          className="selected-members-header mb-20 mr-20"
+          role="list"
+        >
           {Object.entries(selectedMembers).map(([memberId, member]) => (
-            <Label className="mb-5 ml-5" image key={memberId}>
-              <Image src={member?.avatar} />
-              {member?.name}
-              <Icon onClick={() => this.removeMember(memberId)} name="delete" />
-            </Label>
+            <div role="listitem">
+              <Button
+                className="p-0 mr-10"
+                onClick={() => this.removeMember(memberId)}
+                type="button"
+                aria-label={`remove ${member?.name}`}
+              >
+                <Label image key={memberId}>
+                  <Image src="/static/images/square-placeholder.png" aria-hidden={true} />
+                  {member?.name}
+                  <Icon name="delete" />
+                </Label>
+              </Button>
+            </div>
           ))}
         </Segment>
       </>

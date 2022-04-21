@@ -185,8 +185,10 @@ class ManagerMemberBulkActionsCmp extends Component {
           onOpen={this.handleModalOpen}
           closeOnDimmerClick={false}
           open={modalOpen}
+          role="dialog"
+          aria-labelledBy="bulk-actions-modal-header"
         >
-          <Modal.Header>{currentActionText}</Modal.Header>
+          <Modal.Header as="h2" id="bulk-actions-modal-header">{currentActionText}</Modal.Header>
           <Modal.Content>
             {error && <ErrorMessage error={error} />}
             <SelectedMembers
