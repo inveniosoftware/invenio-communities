@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022 Northwestern University.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -10,11 +11,16 @@
 from copy import deepcopy
 from datetime import datetime, timedelta
 import time
+
 import pytest
 from invenio_access.permissions import system_identity
+from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
+
 from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
 from invenio_communities.fixtures.tasks import reindex_featured_entries
+from invenio_communities.members.records.api import ArchivedInvitation, Member
+from invenio_communities.communities.records.api import Community
 
 
 @pytest.fixture()
@@ -71,7 +77,7 @@ def test_search_featured(community_service, comm, db, es_clear):
     assert len(hits) == featured_comms["hits"]["total"] == 2
     assert hits[0]["id"] == comm.data["id"]
     assert hits[1]["id"] == c2.data["id"]
-    
+
     # adding more current past featured entry to new community. new community should show up first
     data["start_date"] = datetime.utcnow().isoformat()
     community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=data).to_dict()
@@ -145,7 +151,7 @@ def test_get_featured(community_service, comm):
 
 
 def test_delete_featured(community_service, comm):
-    """Test that featured entries are indexed and returned correctly."""
+    """Test that featured entries are deleted correctly."""
     data = {
         "start_date": datetime.utcnow().isoformat(),
     }
@@ -192,8 +198,8 @@ def test_update_featured(community_service, comm):
     # Error when trying to update entry which does not exist
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
         community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=9999, data=future_data).to_dict()
-    
-    # Error when trying to update entry with invalid data 
+
+    # Error when trying to update entry with invalid data
     with pytest.raises(ValidationError):
         x = community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"], data={}).to_dict()
         print(x)
@@ -206,8 +212,40 @@ def test_update_featured(community_service, comm):
 
 def test_cleanup_pre_search(db, es_clear):
     """Cleanup database and elasticsearch for following tests.
-    
+
     Tests before do not depend on a clean db or es. Cleanup is also an
     expensive task so te tests will run faster without them.
     """
     pass
+
+
+def test_search_user(
+        app, db, es_clear, location,
+        anon_identity, community_service, community,
+        members, new_user
+    ):
+    owner = members["owner"]
+    reader = members["reader"]
+
+    # Community members see them
+    hits = community_service.search_user_communities(
+        identity=owner.identity
+    ).to_dict()["hits"]["hits"]
+
+    assert 1 == len(hits)
+    assert {h["id"] for h in hits } & {community["id"]}
+
+    hits = community_service.search_user_communities(
+        identity=reader.identity
+    ).to_dict()["hits"]["hits"]
+    assert 1 == len(hits)
+    assert {h["id"] for h in hits } & {community["id"]}
+
+    # Non-community members don't see them
+    hits = community_service.search_user_communities(
+        identity=new_user.identity
+    ).to_dict()["hits"]["hits"]
+    assert 0 == len(hits)
+
+    with pytest.raises(PermissionDeniedError):
+        community_service.search_user_communities(identity=anon_identity)

@@ -22,6 +22,7 @@ from invenio_app.factory import create_api
 from invenio_requests.proxies import current_events_service, current_requests_service
 
 from invenio_communities.communities.records.api import Community
+from invenio_communities.members.records.api import Member
 from invenio_communities.proxies import current_communities
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 from invenio_vocabularies.records.api import Vocabulary
@@ -149,6 +150,7 @@ def any_user(UserFixture, app, database):
     return u
 
 
+
 @pytest.fixture()
 def admin(UserFixture, app, db, admin_role_need):
     """Admin user for requests."""
@@ -213,6 +215,30 @@ def superuser_role_need(db):
     return action_role.need
 
 
+@pytest.fixture(scope="module")
+def new_user(UserFixture, app, database):
+    """A new user."""
+    u = UserFixture(
+        email=f'newuser@newuser.org',
+        password='newuser',
+        user_profile={
+            'full_name': 'New User',
+            'affiliations': 'CERN',
+        },
+        preferences={
+            'visibility': 'public',
+            'email_visibility': 'restricted',
+        },
+        active=True,
+        confirmed=True
+    )
+    u.create(app, database)
+    # when using `database` fixture (and not `db`), commit the creation of the
+    # user because its implementation uses a nested session instead
+    database.session.commit()
+    return u
+
+
 #
 # Communities
 #
@@ -260,7 +286,8 @@ def full_community():
 @pytest.fixture(scope="module")
 def community(community_service, owner, minimal_community, location):
     """A community."""
-    c = community_service.create(owner.identity, minimal_community)
+    c =  community_service.create(owner.identity, minimal_community)
+    Community.index.refresh()
     owner.refresh()
     return c
 
@@ -344,3 +371,22 @@ def community_type_record(
 
     Vocabulary.index.refresh()  # Refresh the index
     return records_list
+
+
+@pytest.fixture(scope="function")
+def members(member_service, community, users, db):
+    for name, user in users.items():
+        if name == 'owner':
+            continue
+        m = Member.create(
+            {},
+            community_id=community._record.id,
+            user_id=user.id,
+            role=name,
+            visible=False,
+            active=True,
+        )
+        member_service.indexer.index(m)
+        Member.index.refresh()
+    db.session.commit()
+    return users

@@ -21,33 +21,6 @@ from invenio_communities.members.records.api import ArchivedInvitation, Member
 
 
 #
-# Module scoped
-#
-@pytest.fixture(scope="module")
-def new_user(UserFixture, app, database):
-    """A new user."""
-    u = UserFixture(
-        email=f'newuser@newuser.org',
-        password='newuser',
-        user_profile={
-            'full_name': 'New User',
-            'affiliations': 'CERN',
-        },
-        preferences={
-            'visibility': 'public',
-            'email_visibility': 'restricted',
-        },
-        active=True,
-        confirmed=True
-    )
-    u.create(app, database)
-    # when using `database` fixture (and not `db`), commit the creation of the
-    # user because its implementation uses a nested session instead
-    database.session.commit()
-    return u
-
-
-#
 # Function scope
 #
 @pytest.fixture(scope="function")
@@ -74,25 +47,6 @@ def clean_index(member_service, requests_service, db):
     Request.index.refresh()
     ArchivedInvitation.index.refresh()
     return True
-
-
-@pytest.fixture(scope="function")
-def members(member_service, community, users, db):
-    for name, user in users.items():
-        if name == 'owner':
-            continue
-        m = Member.create(
-            {},
-            community_id=community._record.id,
-            user_id=user.id,
-            role=name,
-            visible=False,
-            active=True,
-        )
-        member_service.indexer.index(m)
-        Member.index.refresh()
-    db.session.commit()
-    return users
 
 
 @pytest.fixture(scope="function")
