@@ -79,15 +79,9 @@
       </div> -->
     </div>
     <!--TODO: Delete this menu to avoid using invenio_app_rdm-->
-    {% set header_menu_items = {
-      'search': (_('Search'), "/communities/" + community.id, 'search icon', True), 
-      'requests': (_('Requests'), url_for('invenio_communities.communities_requests', pid_value=community.id), 'comments icon', permissions.can_search_requests),
-      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), 'users icon', permissions.can_read),
-      'settings': (_('Settings'), url_for('invenio_communities.communities_settings', pid_value=community.id), 'settings icon', permissions.can_update),
-    } %}
     <div class="ui container secondary pointing menu page-subheader pl-0">
-      {% for header_menu_key, (header_menu_item, header_menu_link, menu_icon, permission_to_show ) in header_menu_items.items() if permission_to_show %}
-        <a class="item {{ 'active' if active_header_menu_item == header_menu_key }} {{ 'disabled' if not header_menu_link }}" href="{{ header_menu_link }}"><i aria-hidden="true" class="{{menu_icon}}"></i>{{ header_menu_item }}</a>
+      {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions]  %}
+        <a class="item {{ 'active' if active_header_menu_item == item.name }} {{ 'disabled' if not item.url }}" href="{{ item.url }}"><i aria-hidden="true" class="{{item.icon}} icon"></i>{{ item.text }}</a>
       {% endfor %}
     </div>
   </div>

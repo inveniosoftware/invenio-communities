@@ -9,6 +9,7 @@
 """Communities UI views."""
 
 from flask import Blueprint, current_app, render_template
+from flask_babelex import lazy_gettext as _
 from flask_login import current_user
 from flask_menu import current_menu
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
@@ -111,6 +112,29 @@ def create_ui_blueprint(app):
             'invenio_communities.communities_new',
             'New community',
             order=3,
+        )
+
+        communities = current_menu.submenu('communities')
+        communities.submenu('requests').register(
+            'invenio_communities.communities_requests',
+            text=_('Requests'),
+            order=2,
+            expected_args=["pid_value"],
+            **dict(icon='comments', permissions='can_search_requests')
+        )
+        communities.submenu('members').register(
+            'invenio_communities.members',
+            text=_('Members'),
+            order=3,
+            expected_args=["pid_value"],
+            **dict(icon='users', permissions='can_read')
+        ) 
+        communities.submenu('settings').register(
+            'invenio_communities.communities_settings',
+            text=_('Settings'),
+            order=4,
+            expected_args=["pid_value"],
+            **dict(icon='settings', permissions='can_update')
         )
 
     # Register error handlers
