@@ -176,7 +176,7 @@ class CommunityRoles(Generator):
         # Gives access to all community members.
         return Q(
             "terms",
-            **{"id": self.communities(identity)}
+            **{"_id": self.communities(identity)}
         )
 
 
@@ -188,7 +188,8 @@ class CommunityMembers(CommunityRoles):
 
     def communities(self, identity):
         return [
-            n.value for n in identity.provides if n.method == 'community']
+            n.value for n in identity.provides if n.method == 'community'
+        ]
 
 
 class CommunityManagers(CommunityRoles):

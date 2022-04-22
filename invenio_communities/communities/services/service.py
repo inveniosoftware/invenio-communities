@@ -23,6 +23,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from invenio_communities.communities.records.models import CommunityFeatured
 from invenio_communities.communities.services.uow import CommunityFeaturedCommitOp, CommunityFeaturedDeleteOp
 from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
+from invenio_communities.generators import CommunityMembers
 
 
 class CommunityService(RecordService):
@@ -81,8 +82,10 @@ class CommunityService(RecordService):
             identity,
             params,
             es_preference,
-            permission_action='read',
-            **kwargs).execute()
+            permission_action=None,
+            extra_filter=CommunityMembers().query_filter(identity),
+            **kwargs
+        ).execute()
 
         return self.result_list(
             self,
