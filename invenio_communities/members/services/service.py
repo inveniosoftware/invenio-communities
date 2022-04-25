@@ -281,8 +281,8 @@ class MemberService(RecordService):
             'members_search',
             self.member_dump_schema,
             self.config.search,
-            params=None,
-            es_preference=None,
+            params=params,
+            es_preference=es_preference,
             **kwargs
         )
 
@@ -303,8 +303,8 @@ class MemberService(RecordService):
             self.public_dump_schema,
             self.config.search_public,
             extra_filter=Q('term', **{'visible': True}),
-            params=None,
-            es_preference=None,
+            params=params,
+            es_preference=es_preference,
             **kwargs
         )
 
@@ -324,8 +324,8 @@ class MemberService(RecordService):
             self.config.search_invitations,
             record_cls=ArchivedInvitation,
             extra_filter=Q('term', **{'active': False}),
-            params=None,
-            es_preference=None,
+            params=params,
+            es_preference=es_preference,
             **kwargs
         )
 
