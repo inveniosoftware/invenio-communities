@@ -109,6 +109,11 @@ COMMUNITIES_ROLES = [
 ]
 """Community roles."""
 
+COMMUNITIES_SEARCH = {
+    'facets': ['type'],
+    'sort': ['bestmatch', 'newest', 'oldest'],
+}
+"""Community search configuration (i.e list of communities)"""
 
 COMMUNITIES_REQUESTS_SEARCH = {
     'facets': ['type', 'status'],
