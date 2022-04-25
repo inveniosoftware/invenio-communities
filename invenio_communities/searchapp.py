@@ -17,6 +17,14 @@ def search_app_context():
     """Search app context processor."""
 
     return {
+        'search_app_communities_config': partial(
+            search_app_config,
+            config_name='COMMUNITIES_SEARCH',
+            available_facets=current_app.config['COMMUNITIES_FACETS'],
+            sort_options=current_app.config['COMMUNITIES_SORT_OPTIONS'],
+            headers={"Accept": "application/json"},
+            endpoint="/api/communities",
+        ),
         'search_app_communities_requests_config': partial(
             search_app_config,
             config_name='COMMUNITIES_REQUESTS_SEARCH',
