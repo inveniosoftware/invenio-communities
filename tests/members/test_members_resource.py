@@ -224,6 +224,25 @@ def test_search(
     assert hit['permissions']['can_update_visible'] is True
     assert hit['visible'] is False
 
+    # Pagination params should be passed correctly as well.
+    # see https://github.com/inveniosoftware/invenio-communities/issues/495
+    r1 = client.get(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        query_string={"page": 1, "size": 1},
+    ).json
+    assert r1['hits']['total'] == 2
+    assert len(r1['hits']['hits']) == 1
+
+    r2 = client.get(
+        f'/communities/{community_id}/members',
+        headers=headers,
+        query_string={"page": 2, "size": 1},
+    ).json
+    assert r2['hits']['total'] == 2
+    assert len(r2['hits']['hits']) == 1
+    assert r1['hits']['hits'][0]["id"] != r2['hits']['hits'][0]
+
 
 def test_search_public(
     client, headers, community_id, new_user, public_reader, clean_index):
