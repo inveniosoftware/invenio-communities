@@ -78,10 +78,10 @@ def communities_settings(community=None, logo=None, pid_value=None):
         logo=logo.to_dict() if logo else None,
         # TODO: inject this from a vocabulary in the community
         types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project"
+            "organization": _("Organization"),
+            "event": _("Event"),
+            "topic": _("Topic"),
+            "project": _("Project")
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
@@ -105,10 +105,10 @@ def communities_requests(community=None, logo=None, pid_value=None):
         logo=logo.to_dict() if logo else None,
         # TODO: inject this from a vocabulary in the community
         types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project"
+            "organization": _("Organization"),
+            "event": _("Event"),
+            "topic": _("Topic"),
+            "project": _("Project")
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
@@ -150,10 +150,10 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
         ),
         # TODO: inject this from a vocabulary in the community
         types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project"
+            "organization": _("Organization"),
+            "event": _("Event"),
+            "topic": _("Topic"),
+            "project": _("Project")
         },
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
@@ -183,10 +183,10 @@ def members(community=None, pid_value=None, endpoint=None):
         "invenio_communities/details/members/members.html",
         community=community.to_dict(),
         types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project",
+            "organization": _("Organization"),
+            "event": _("Event"),
+            "topic": _("Topic"),
+            "project": _("Project")
         },
         permissions=permissions,
     )
@@ -205,10 +205,10 @@ def invitations(community=None, pid_value=None):
         "invenio_communities/details/members/invitations.html",
         community=community.to_dict(),
         types={
-            "organization": "Organization",
-            "event": "Event",
-            "topic": "Topic",
-            "project": "Project"
+            "organization": _("Organization"),
+            "event": _("Event"),
+            "topic": _("Topic"),
+            "project": _("Project")
         },
         permissions=permissions,
     )
