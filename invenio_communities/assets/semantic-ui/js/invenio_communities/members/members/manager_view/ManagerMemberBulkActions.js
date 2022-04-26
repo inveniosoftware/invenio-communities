@@ -88,7 +88,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         key: 3,
         value: "remove_from_community",
         text: i18next.t("Remove from community"),
-        // TODO when remove user feature ready
+        action: this.membersApi.bulkRemoveMembers
       },
     ];
   }
