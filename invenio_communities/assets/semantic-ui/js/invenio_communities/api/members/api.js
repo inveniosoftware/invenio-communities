@@ -37,6 +37,12 @@ export class CommunityMembersApi {
     return this.removeMemberBase(payload);
   };
 
+  bulkRemoveMembers = async (members) => {
+    const memberSerialized = bulkMembersSerializer(members);
+
+    return this.removeMemberBase({ members: memberSerialized });
+  };
+
   updateMembers = async (payload) => {
     return await http.put(this.endpoint, payload);
   };
