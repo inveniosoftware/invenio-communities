@@ -38,8 +38,8 @@ class SearchOptions(SearchOptionsBase):
     sort_options = {
         **SearchOptionsBase.sort_options,
         "featured": dict(
-            title=_('Featured'), 
-            fields=[{"featured.past" : {"order" : "desc",}}],  
+            title=_('Featured'),
+            fields=[{"featured.past" : {"order" : "desc",}}],
         ),
     }
 
@@ -67,6 +67,7 @@ class CommunityServiceConfig(RecordServiceConfig):
 
     # Record specific configuration
     record_cls = Community
+    indexer_queue_name = "communities"
 
     # Search configuration
     search = SearchOptions

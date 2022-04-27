@@ -99,6 +99,7 @@ class MemberServiceConfig(RecordServiceConfig):
     community_cls = Community
     record_cls = Member
     schema = MemberEntitySchema
+    indexer_queue_name = "members"
     relations = {
         "users": ["user"]
     }
