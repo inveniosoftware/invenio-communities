@@ -21,4 +21,8 @@ export const communityErrorSerializer = (error) => ({
 });
 
 export const bulkMembersSerializer = (members) =>
-  members.map((member) => ({ id: member.member.id, type: member.member.type }));
+  Object.entries(members).map(([memberId, memberData]) => ({
+    id: memberData.id,
+    type: memberData.type,
+  }));
+

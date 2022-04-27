@@ -22,7 +22,6 @@ export class CommunityInvitationsApi {
       members: bulkMembersSerializer(members),
       role: role,
     };
-
     if (message) {
       payload.message = message;
     }
