@@ -20,9 +20,17 @@ def init(state):
     # Register services - cannot be done in extension because
     # Invenio-Records-Resources might not have been initialized.
     rr_ext = app.extensions['invenio-records-resources']
+    idx_ext = app.extensions['invenio-indexer']
     ext = app.extensions['invenio-communities']
 
+    # services
     rr_ext.registry.register(ext.service)
+    # indexers
+    idx_ext.registry.register(ext.service.indexer, indexer_id='communities')
+    idx_ext.registry.register(
+        ext.service.members.indexer, indexer_id='members'
+    )
+    # change notification handlers
     rr_ext.notification_registry.register(
         "users", ext.service.on_relation_update
     )
