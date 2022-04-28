@@ -13,47 +13,69 @@
 
 <div class="ui container fluid page-subheader-outer with-submenu rel-pt-2">
   <div class="ui container relaxed grid page-subheader">
-    <div class="row">
-      <div class="two wide column">
+    <div class="row pb-0">
+      <div class="sixteen wide mobile five wide tablet four wide computer column">
         {% if logo %}
-        <div class="ui rounded image medium community-image">
-          <img src="{{logo.links.self}}" alt="No image found"/>
+        <div class="ui rounded fluid image community-image rel-mb-2">
+          <img src="{{logo.links.self}}" alt=""/>
         </div>
         {% else %}
-        <div class="ui rounded image">
-          <img src="/static/images/square-placeholder.png" alt="No image found"/>
+        <div class="ui rounded fluid image rel-mb-2">
+          <img src="/static/images/square-placeholder.png" alt=""/>
         </div>
         {% endif %}
       </div>
-      <div class="ten wide column">
-          <h2 class="ui header">{{ community.metadata.title }}</h2>
+
+      <div class="sixteen wide mobile eleven wide tablet twelve wide computer column rel-mb-2">
+        <h2 class="ui header">{{ community.metadata.title }}</h2>
+        <div class="rel-mb-2">
           {{ truncate_text(community.metadata.description) }}
-          {% if community.metadata.website %}
-            <a href="{{community.metadata.website}}"> <i class="linkify icon"></i>
-              {{community.metadata.website}}
-            </a>
-          {% endif %}
-          {% if community.metadata.type is defined %}
-            <i class="tag icon community-tags"></i>
-            <div class="ui label small grey type-label">
-              {{ community.metadata.type.title.en }}
+        </div>
+
+        <div class="ui grid">
+          <div class="row pb-0">
+            <div class="sixteen wide mobile ten wide tablet ten wide computer column">
+              {% if community.metadata.type is defined %}
+              <div class="mt-5">
+                <i class="tag icon" aria-hidden="true"></i>
+                <div class="ui label small grey type-label">
+                  {{ community.metadata.type.title.en }}
+                </div>
+              </div>
+              {% endif %}
+
+              {% if community.metadata.website %}
+              <div class="mt-5">
+                <i class="linkify icon" aria-hidden="true"></i>
+                <a href="{{community.metadata.website}}">
+                  {{community.metadata.website}}
+                </a>
+              </div>
+              {% endif %}
+
+              {% if community.metadata.organizations %}
+              <div class="mt-5">
+                <i class="building outline icon" aria-hidden="true"></i>
+                <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
+              </div>
+              {% endif %}
             </div>
-          {% endif %}
-          {% if community.metadata.organizations %}
-            <i class="building outline icon community-tags"></i>
-            <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
-          {% endif %}
+
+            <div id="community-upload-button"
+                class="sixteen wide mobile six wide tablet six wide computer right aligned bottom aligned column rel-mt-2"
+            >
+              <a href="/uploads/new?community={{ community.id }}"
+                  class="ui positive button labeled icon">
+                <i class="plus icon" aria-hidden="true"></i>
+
+                {{ _("New upload") }}
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div id="community-upload-button"
-           class="four wide right aligned column">
-        <a href="/uploads/new?community={{ community.id }}"
-           class="ui positive button labeled icon">
-          <i class="plus icon"></i>
 
-          {{ _("New upload") }}
-        </a>
-      </div>
       {# TODO: Add proper statistics #}
       <!-- <div class="two wide floated right column">
         <div class="ui mini statistic">
@@ -77,9 +99,12 @@
       </div> -->
     </div>
     <!--TODO: Delete this menu to avoid using invenio_app_rdm-->
-    <div class="ui container secondary pointing menu page-subheader pl-0">
+    <div class="ui divider mobile only"></div>
+    <div class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
       {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions]  %}
-        <a class="item {{ 'active' if active_header_menu_item == item.name }} {{ 'disabled' if not item.url }}" href="{{ item.url }}"><i aria-hidden="true" class="{{item.icon}} icon"></i>{{ item.text }}</a>
+        <a class="item {{ 'active' if active_header_menu_item == item.name }} {{ 'disabled' if not item.url }}" href="{{ item.url }}">
+          <i aria-hidden="true" class="{{item.icon}} icon"></i>{{ item.text }}
+        </a>
       {% endfor %}
     </div>
   </div>
