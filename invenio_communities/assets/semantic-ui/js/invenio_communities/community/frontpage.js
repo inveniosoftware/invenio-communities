@@ -123,7 +123,7 @@ class CommunitiesCardGroup extends Component {
         {this.state.data.hits.length === 0 ? (
           <EmptyMessage message={this.props.emptyMessage} />
         ) : (
-          <Card.Group itemsPerRow={5} className="community-frontpage-cards">
+          <Card.Group doubling stackable itemsPerRow={5} className="community-frontpage-cards">
             {this.renderCards()}
           </Card.Group>
         )}
