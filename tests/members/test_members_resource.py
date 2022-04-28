@@ -10,6 +10,7 @@
 
 import pytest
 
+from invenio_requests.records.api import RequestEvent
 
 #
 # Fixtures
@@ -32,6 +33,7 @@ def new_user_data(new_user):
     return {
         "members": [{"type": "user", "id": str(new_user.id)}],
         "role": "reader",
+        "message": "Welcome to the club!",
     }
 
 
@@ -113,6 +115,19 @@ def test_invite(client, headers, community_id, owner, new_user_data, db):
     )
     assert r.status_code == 204
 
+    # check the comment in the timeline
+    RequestEvent.index.refresh()
+    r = client.get(
+        f"/communities/{community_id}/invitations",
+        headers=headers
+    )
+    r.status_code == 200
+    request_id=r.json["hits"]["hits"][0]["request"]["id"]
+    r = client.get(f"/requests/{request_id}/timeline", headers=headers)
+    r.status_code == 200
+    assert r.json["hits"]["hits"][0]["payload"]["content"] == \
+        new_user_data["message"]
+
 
 def test_invite_deny(
     client, headers, community_id, new_user, new_user_data, db):
@@ -150,6 +165,7 @@ def test_update_invite(
     client, headers, community_id, owner, new_user_data, db):
     """Test update of members."""
     client = owner.login(client)
+    new_user_data.pop("message")  # not accepted by update
     r = client.post(
         f'/communities/{community_id}/invitations',
         headers=headers,

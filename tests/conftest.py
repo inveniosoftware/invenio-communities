@@ -16,7 +16,7 @@ from flask_principal import AnonymousIdentity
 from invenio_access.permissions import any_user as any_user_need
 from invenio_accounts.models import Role
 from invenio_app.factory import create_api
-from invenio_requests.proxies import current_requests_service
+from invenio_requests.proxies import current_events_service, current_requests_service
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.proxies import current_communities
@@ -74,6 +74,12 @@ def member_service(community_service):
 def requests_service(app):
     """Requests service."""
     return current_requests_service
+
+
+@pytest.fixture(scope="module")
+def events_service(app):
+    """Requests service."""
+    return current_events_service
 
 
 #

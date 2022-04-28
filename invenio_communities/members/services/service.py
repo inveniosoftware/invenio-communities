@@ -20,7 +20,8 @@ from invenio_records_resources.services.records import RecordService, \
     ServiceSchemaWrapper
 from invenio_records_resources.services.uow import IndexRefreshOp, \
     RecordCommitOp, RecordDeleteOp, unit_of_work
-from invenio_requests import current_requests_service
+from invenio_requests import current_events_service, current_requests_service
+from invenio_requests.customizations.event_types import CommentEventType
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
@@ -250,12 +251,15 @@ class MemberService(RecordService):
                 topic=community,
                 expires_at=invite_expires_at(),
                 uow=uow,
-
             )
-            # TODO: create request comment instead of description in case a
+
             # message was provided.
             if message:
-                pass
+                data = {"payload": {"content": message}}
+                current_events_service.create(
+                    identity, request_item.id, data, CommentEventType, uow=uow
+                )
+
             # Create an inactive member entry linked to the request.
             self._add_factory(
                 identity,
@@ -273,8 +277,6 @@ class MemberService(RecordService):
             self, identity, community_id, params=None, es_preference=None,
             **kwargs
         ):
-        # TODO: 1) users/groups must be indexed extra into members so search
-        # ranking works properly
         return self._members_search(
             identity,
             community_id,

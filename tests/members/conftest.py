@@ -98,6 +98,7 @@ def invite_user(member_service, community, owner, new_user, db):
     data = {
         "members": [{"type": "user", "id": str(new_user.id)}],
         "role": "reader",
+        "message": "Welcome to the club!",
     }
     member_service.invite(owner.identity, community._record.id, data)
     return new_user
