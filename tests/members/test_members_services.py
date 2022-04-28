@@ -13,6 +13,7 @@ import pytest
 from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
 from invenio_records_resources.services.errors import PermissionDeniedError
+from invenio_requests.records.api import RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, \
@@ -248,7 +249,7 @@ def test_invite_with_message(
         "role": "reader",
         "message": "Welcome to the club!"
     }
-    member_service.invite(owner.identity, community._record.id, data)
+    assert member_service.invite(owner.identity, community._record.id, data)
     # Invalid message
     data["message"] = 1
     pytest.raises(
@@ -257,7 +258,9 @@ def test_invite_with_message(
     )
 
 
-def test_invite_view_request(requests_service, invite_user, db, clean_index):
+def test_invite_view_request(
+    events_service, requests_service, invite_user, db, clean_index
+):
     """A request should have been created."""
     res = requests_service.search(
         invite_user.identity,
@@ -265,6 +268,16 @@ def test_invite_view_request(requests_service, invite_user, db, clean_index):
         type='community-invitation',
     ).to_dict()
     assert res['hits']['total'] == 1
+
+    # check request comment since invite user has a message
+    RequestEvent.index.refresh()
+    res = events_service.search(
+        invite_user.identity,
+        request_id=res["hits"]["hits"][0]["id"],
+    ).to_dict()
+    hits = res['hits']
+    assert hits['total'] == 1
+    assert hits["hits"][0]["payload"]["content"] == "Welcome to the club!"
 
 
 #
