@@ -22,6 +22,7 @@ import {
   SearchBar,
   Sort,
 } from "react-searchkit";
+import { GridResponsiveSidebarColumn } from "react-invenio-forms";
 import {
   Button,
   Card,
@@ -217,36 +218,58 @@ const RDMBucketAggregationElement = ({ title, containerCmp }) => {
     </Card>
   );
 };
-export const CommunitiesSearchLayout = (props) => (
-  <Container>
-    <Grid>
-      <Grid.Row columns={3}>
-        <Grid.Column width={4} />
-        <Grid.Column width={8}>
-          <SearchBar placeholder={i18next.t("Search communities...")} />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Button
-            color="green"
-            icon="upload"
-            labelPosition="left"
-            href="/communities/new"
-            content={i18next.t("New community")}
-            floated="right"
-          />
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width={4}>
-          <SearchAppFacets aggs={props.config.aggs} />
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <SearchAppResultsPane layoutOptions={props.config.layoutOptions} />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  </Container>
-);
+export const CommunitiesSearchLayout = (props) => {
+  const [sidebarVisible, setSidebarVisible] = React.useState(false);
+
+  return (
+    <Container>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column
+            only="mobile tablet"
+            mobile={2}
+            tablet={1}
+            verticalAlign="middle"
+            className="mt-10"
+          >
+            <Button
+              basic
+              icon="sliders"
+              onClick={() => setSidebarVisible(true)}
+              aria-label={i18next.t("Filter results")}
+            />
+          </Grid.Column>
+          <Grid.Column mobile={14} tablet={9} computer={8} floated="right" className="mt-10">
+            <SearchBar placeholder={i18next.t("Search communities...")} />
+          </Grid.Column>
+          <Grid.Column mobile={16} tablet={6} computer={4} className="mt-10">
+            <Button
+              color="green"
+              icon="upload"
+              labelPosition="left"
+              href="/communities/new"
+              content={i18next.t("New community")}
+              floated="right"
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+        <GridResponsiveSidebarColumn
+          width={4}
+          open={sidebarVisible}
+          onHideClick={() => setSidebarVisible(false)}
+          children={
+            <SearchAppFacets aggs={props.config.aggs} />
+          }
+        />
+        <Grid.Column mobile={16} tablet={16} computer={12}>
+            <SearchAppResultsPane layoutOptions={props.config.layoutOptions} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container>
+  )
+}
 
 const defaultComponents = {
   "BucketAggregation.element": RDMBucketAggregationElement,
