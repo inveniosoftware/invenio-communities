@@ -271,16 +271,54 @@ def test_invite_view_request(requests_service, invite_user, db, clean_index):
 # Search and read members
 #
 def test_search_members(
-        member_service, community, owner, public_reader, anon_identity,
-        clean_index):
+    member_service, community, owner, public_reader, anon_identity, clean_index
+):
     """Members can see all members, anyone can only see public."""
     # Members can see all other members.
     res = member_service.search(owner.identity, community._record.id)
     assert res.to_dict()['hits']['total'] == 2
+    # search on the affiliation (tests query expansion)
+    res = member_service.search(
+        owner.identity, community._record.id, q=f"affiliation:CERN"
+    )
+    assert res.to_dict()['hits']['total'] == 1
+    res = member_service.search(
+        owner.identity, community._record.id, q=f"name:New"
+    )
+    assert res.to_dict()['hits']['total'] == 1
+    res = member_service.search(
+        owner.identity, community._record.id, q=f"email:newuser@newuser.org"
+    )
+    assert res.to_dict()['hits']['total'] == 1
 
+
+def test_search_public_members(
+    member_service, community, owner, public_reader, anon_identity, clean_index
+):
+    """Members can see all members, anyone can only see public."""
     # Anyone else can only see public members.
     res = member_service.search_public(anon_identity, community._record.id)
     assert res.to_dict()['hits']['total'] == 1
+    # search on the affiliation (tests query expansion)
+    res = member_service.search_public(
+        owner.identity, community._record.id, q=f"affiliation:CERN"
+    )
+    assert res.to_dict()['hits']['total'] == 1
+    res = member_service.search_public(
+        owner.identity, community._record.id, q=f"name:New"
+    )
+    assert res.to_dict()['hits']['total'] == 1
+    # search on private fields should not get hits
+    res = member_service.search_public(
+        owner.identity, community._record.id, q=f"newuser@newuser.org"
+    )
+    assert res.to_dict()['hits']['total'] == 0
+    # should get hits if using private search
+    res = member_service.search(
+        owner.identity, community._record.id, q=f"newuser@newuser.org"
+    )
+    assert res.to_dict()['hits']['total'] == 1
+
 
 
 def test_search_members_restricted(
