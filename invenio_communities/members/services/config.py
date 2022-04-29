@@ -23,17 +23,15 @@ class PublicSearchOptions(SearchOptions):
     # TODO: should restrict fields that's being searched on.
     # query_parser_cls = QueryParser
     sort_default = 'bestmatch'
-    # TODO: sort options should be by username and not expose e.g. creation
-    # date
-    sort_default_no_query = 'newest'
+    sort_default_no_query = 'name'
     sort_options = {
         "bestmatch": dict(
             title=_('Best match'),
             fields=['_score'],  # ES defaults to desc on `_score` field
         ),
-        "newest": dict(
-            title=_('Newest'),
-            fields=['-created'],
+        "name": dict(
+            title=_('Name'),
+            fields=['user.profile.full_name.keyword'],
         ),
     }
 
@@ -42,13 +40,15 @@ class InvitationsSearchOptions(SearchOptions):
     # TODO: should restrict fields that's being searched on.
     # query_parser_cls = QueryParser
     sort_default = 'bestmatch'
-    # TODO: sort options should be by username and not expose e.g. creation
-    # date
-    sort_default_no_query = 'newest'
+    sort_default_no_query = 'name'
     sort_options = {
         "bestmatch": dict(
             title=_('Best match'),
             fields=['_score'],  # ES defaults to desc on `_score` field
+        ),
+        "name": dict(
+            title=_('Name'),
+            fields=['user.profile.full_name.keyword'],
         ),
         "newest": dict(
             title=_('Newest'),
@@ -69,13 +69,16 @@ class InvitationsSearchOptions(SearchOptions):
 class MemberSearchOptions(PublicSearchOptions):
     """Search options."""
     sort_default = 'bestmatch'
-    sort_default_no_query = 'newest'
+    sort_default_no_query = 'name'
     sort_options = {
         "bestmatch": dict(
             title=_('Best match'),
             fields=['_score'],  # ES defaults to desc on `_score` field
         ),
-        # TODO add user name
+        "name": dict(
+            title=_('Name'),
+            fields=['user.profile.full_name.keyword'],
+        ),
         "newest": dict(
             title=_('Newest'),
             fields=['-created'],

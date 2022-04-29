@@ -10,7 +10,9 @@
 
 import pytest
 
+from invenio_access.permissions import system_identity
 from invenio_requests.records.api import RequestEvent
+
 
 #
 # Fixtures
@@ -201,11 +203,40 @@ def test_delete(
     assert r.status_code == 204
 
 
+@pytest.fixture(scope="function")
+def extra_user(app, db, UserFixture, member_service, community):
+    """Add a reader member with public visibility."""
+    u = UserFixture(
+        email=f'extra@newuser.org',
+        password='newuser',
+        user_profile={
+            'full_name': 'Should be last',
+        },
+        preferences={
+            'visibility': 'public',
+            'email_visibility': 'restricted',
+        },
+        active=True,
+        confirmed=True
+    )
+    u.create(app, db)
+    data = {
+        "members": [{"type": "user", "id": str(u.id)}],
+        "role": "reader",
+        "visible": True,
+    }
+
+    member_service.add(system_identity, community._record.id, data)
+    return u
+
+
 #
 # Search and serialization
 #
 def test_search(
-    client, headers, community_id, owner, public_reader, db, clean_index):
+    db, clean_index, client, headers,
+    extra_user,  community_id, owner, public_reader,
+):
     """Search."""
     client = owner.login(client)
     r = client.get(
@@ -214,7 +245,8 @@ def test_search(
     )
     assert r.status_code == 200
     data = r.json
-    assert data['hits']['total'] == 2
+    assert  data["sortBy"] == "name"
+    assert data['hits']['total'] == 3
     assert 'role' in data['aggregations']
     assert 'visibility' in data['aggregations']
 
@@ -232,13 +264,19 @@ def test_search(
     assert hit['permissions']['can_update_visible'] is True
     assert hit['visible'] is True
 
-    hit = data['hits']['hits'][1]
+    hit = data['hits']['hits'][1]  # should be last, test sorting
+    assert hit['member']["name"] == "Should be last"
+
+    # third because of no name
+    hit = data['hits']['hits'][2]
     assert hit['is_current_user'] is True
     assert hit['permissions']['can_leave'] is True
     assert hit['permissions']['can_delete'] is False
     assert hit['permissions']['can_update_role'] is False
     assert hit['permissions']['can_update_visible'] is True
     assert hit['visible'] is False
+
+
 
     # Pagination params should be passed correctly as well.
     # see https://github.com/inveniosoftware/invenio-communities/issues/495
@@ -247,15 +285,15 @@ def test_search(
         headers=headers,
         query_string={"page": 1, "size": 1},
     ).json
-    assert r1['hits']['total'] == 2
+    assert r1['hits']['total'] == 3
     assert len(r1['hits']['hits']) == 1
 
     r2 = client.get(
         f'/communities/{community_id}/members',
         headers=headers,
-        query_string={"page": 2, "size": 1},
+        query_string={"page": 3, "size": 1},
     ).json
-    assert r2['hits']['total'] == 2
+    assert r2['hits']['total'] == 3
     assert len(r2['hits']['hits']) == 1
     assert r1['hits']['hits'][0]["id"] != r2['hits']['hits'][0]
 
@@ -270,6 +308,7 @@ def test_search_public(
     )
     assert r.status_code == 200
     data = r.json
+    assert  data["sortBy"] == "name"
     assert data['hits']['total'] == 1
     hit = data['hits']['hits'][0]
     # Public view has no facets (because that would leak information on
