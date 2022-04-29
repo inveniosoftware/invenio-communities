@@ -9,6 +9,8 @@
 """Members Service Config."""
 
 from flask_babelex import lazy_gettext as _
+from invenio_records_resources.services.records.queryparser import \
+    QueryParser, SearchFieldTransformer
 from invenio_records_resources.services import RecordServiceConfig, \
     SearchOptions, pagination_links
 
@@ -20,8 +22,6 @@ from .schemas import MemberEntitySchema
 
 
 class PublicSearchOptions(SearchOptions):
-    # TODO: should restrict fields that's being searched on.
-    # query_parser_cls = QueryParser
     sort_default = 'bestmatch'
     # TODO: sort options should be by username and not expose e.g. creation
     # date
@@ -36,6 +36,26 @@ class PublicSearchOptions(SearchOptions):
             fields=['-created'],
         ),
     }
+
+    query_parser_cls = QueryParser.factory(
+        # fields serves also as a filter, since only the ones mentioned there
+        # will be queried by ES, using multi_match query.
+        fields=[
+            "user.username^2",
+            "user.profile.full_name^3",
+            "user.profile.affiliations"
+        ],
+        tree_transformer_factory=SearchFieldTransformer.factory(
+            mapping={
+                "affiliation": "user.profile.affiliations",
+                "affiliations": "user.profile.affiliations",
+                "full_name": "user.profile.full_name",
+                "fullname": "user.profile.full_name",
+                "name": "user.profile.full_name",
+                "username": "user.username",
+            }
+        ),
+    )
 
 
 class InvitationsSearchOptions(SearchOptions):
@@ -90,6 +110,26 @@ class MemberSearchOptions(PublicSearchOptions):
         'role': facets.role,
         'visibility': facets.visibility,
     }
+
+    query_parser_cls = QueryParser.factory(
+        fields=[
+            "user.username^2",
+            "user.email^2",
+            "user.profile.full_name^3",
+            "user.profile.affiliations"
+        ],
+        tree_transformer_factory=SearchFieldTransformer.factory(
+            mapping={
+                "affiliation": "user.profile.affiliations",
+                "affiliations": "user.profile.affiliations",
+                "email": "user.email",
+                "full_name": "user.profile.full_name",
+                "fullname": "user.profile.full_name",
+                "name": "user.profile.full_name",
+                "username": "user.username",
+            }
+        ),
+    )
 
 
 class MemberServiceConfig(RecordServiceConfig):
