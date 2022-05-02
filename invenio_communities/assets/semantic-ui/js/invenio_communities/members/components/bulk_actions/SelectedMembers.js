@@ -25,28 +25,27 @@ export class SelectedMembers extends Component {
 
     return !_isEmpty(selectedMembers) ? (
       <>
-        <Header as="h3" size="small">
+        <Header as="h2" size="small">
           {i18next.t(displayingGroups ? "Selected groups" : "Selected members")}
         </Header>
-        <Segment
-          className="selected-members-header mb-20 mr-20"
-          role="list"
-        >
+        <Segment className="selected-members-header mb-20 mr-20">
           {Object.entries(selectedMembers).map(([memberId, member]) => (
-            <div role="listitem">
-              <Button
-                className="p-0 mr-10"
-                onClick={() => this.removeMember(memberId)}
-                type="button"
-                aria-label={`remove ${member?.name}`}
-              >
-                <Label image key={memberId}>
-                  <Image src="/static/images/square-placeholder.png" aria-hidden={true} />
-                  {member?.name}
-                  <Icon name="delete" />
-                </Label>
-              </Button>
-            </div>
+            <Button
+              class="mb-5 ml-5"
+              key={memberId}
+              className="p-0 mr-10"
+              onClick={() => this.removeMember(memberId)}
+              type="button"
+              aria-label={i18next.t("remove {{name}}", {
+                name: member.name
+              })}
+            >
+              <Label image>
+                <Image src={member.avatar_url} alt="" aria-hidden={true} />
+                {member.name}
+                <Icon name="delete" />
+              </Label>
+            </Button>
           ))}
         </Segment>
       </>

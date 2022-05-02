@@ -54,7 +54,6 @@ export class MembersWithRoleSelection extends Component {
     const { selectedMembers, role, message } = this.state;
     this.setState({ loading: true });
     try {
-
       await action(selectedMembers, role, message);
       onSuccessCallback();
     } catch (error) {

@@ -7,7 +7,6 @@
  */
 
 import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
-import ActionDropdown from "../components/ActionDropdown";
 import React, { Component } from "react";
 import { DateTime } from "luxon";
 import { Container, Header, Table } from "semantic-ui-react";
@@ -46,7 +45,7 @@ export class InvitationResultItem extends Component {
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
-          <Image src="/abc" avatar circular className="rel-mr-1" />
+          <Image src={member.avatar_url} avatar circular className="rel-mr-1" />
           <Header size="small" as="b">
             {member.name}
           </Header>

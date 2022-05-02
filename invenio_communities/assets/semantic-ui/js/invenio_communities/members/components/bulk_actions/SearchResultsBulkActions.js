@@ -1,3 +1,12 @@
+/*
+ * This file is part of Invenio.
+ * Copyright (C) 2022 CERN.
+ *
+ * Invenio is free software; you can redistribute it and/or modify it
+ * under the terms of the MIT License; see LICENSE file for more details.
+ */
+
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
@@ -67,7 +76,7 @@ export class SearchResultsBulkActions extends Component {
             className="align-self-center"
             text={`${selectedCount} ${i18next.t("members selected")}`}
             options={dropdownOptions}
-            aria-label="bulk actions"
+            aria-label={i18next.t("bulk actions")}
             item
             selection
             value={null}

@@ -157,7 +157,7 @@ export const CommunityRecordSearchBarElement = withState(
           icon: "search",
           onClick: onBtnSearchClick,
           className: "search",
-          "aria-label": "Search",
+          "aria-label": i18next.t("Search"),
         }}
         fluid
         placeholder={placeholder}

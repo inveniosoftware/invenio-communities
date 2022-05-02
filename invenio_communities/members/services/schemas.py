@@ -11,9 +11,11 @@
 from datetime import timezone
 
 from flask_babelex import lazy_gettext as _
+from invenio_users_resources.proxies import current_users_service
 from marshmallow import Schema, ValidationError, fields, validate, \
     validates_schema
 from marshmallow_utils.fields import SanitizedUnicode, TZDateTime
+from types import SimpleNamespace
 
 from .fields import RoleField
 
@@ -100,16 +102,22 @@ class PublicDumpSchema(Schema):
 
     def get_user_member(self, user):
         """Get a user member."""
+
         profile = user.get('profile', {})
         name = profile.get('full_name') or user.get('username') \
             or _('Untitled')
         description = profile.get('affiliations') or ""
+        fake_user_obj = SimpleNamespace(id=user["id"])
+        avatar = current_users_service.links_item_tpl.expand(
+            fake_user_obj
+        )['avatar']
 
         return {
             "type": "user",
             "id": user["id"],
             "name": name,
             "description": description,
+            "avatar_url": avatar
         }
 
     def get_group_member(self, group):
