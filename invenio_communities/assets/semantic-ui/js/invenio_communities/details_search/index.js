@@ -14,7 +14,7 @@ import {
   CommunityRecordFacets,
   CommunityRecordResultsGridItem,
   CommunityRecordResultsListItem,
-  CommunityRecordSearchBarContainer,
+  CommunityRecordSearchAppLayout,
   CommunityRecordSearchBarElement,
   CommunityToggleComponent,
 } from "./components";
@@ -26,7 +26,7 @@ createSearchAppInit({
   "EmptyResults.element": CommunityEmptyResults,
   "ResultsList.item": CommunityRecordResultsListItem,
   "SearchApp.facets": CommunityRecordFacets,
-  "SearchApp.searchbarContainer": CommunityRecordSearchBarContainer,
+  "SearchApp.layout": CommunityRecordSearchAppLayout,
   "SearchBar.element": CommunityRecordSearchBarElement,
   "Count.element": CommunityCountComponent,
   "Error.element": CommunityErrorComponent,

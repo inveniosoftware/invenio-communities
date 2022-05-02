@@ -4,18 +4,27 @@
 // Invenio is free software; you can redistribute it and/or modify it under the
 // terms of the MIT License; see LICENSE file for more details.
 
-import { SearchBar } from "@js/invenio_search_ui/components";
+import {
+  SearchAppFacets,
+  SearchAppResultsPane,
+} from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
 import _get from "lodash/get";
 import _truncate from "lodash/truncate";
 import React, { useState } from "react";
 import Overridable from "react-overridable";
-import { BucketAggregation, Toggle, withState } from "react-searchkit";
+import {
+  BucketAggregation,
+  SearchBar,
+  Toggle,
+  withState,
+} from "react-searchkit";
 import {
   Accordion,
   Button,
   Card,
   Checkbox,
+  Container,
   Grid,
   Header,
   Icon,
@@ -26,6 +35,7 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
+import { GridResponsiveSidebarColumn } from "react-invenio-forms";
 
 export const CommunityRecordResultsListItem = ({ result }) => {
   const access_status_id = _get(result, "ui.access_status.id", "open");
@@ -124,11 +134,40 @@ export const CommunityRecordResultsGridItem = ({ result }) => {
   );
 };
 
-export const CommunityRecordSearchBarContainer = () => {
+export const CommunityRecordSearchAppLayout = ({ config }) => {
+  const [sidebarVisible, setSidebarVisible] = React.useState(false);
+
   return (
-    <Overridable id={"SearchApp.searchbar"}>
-      <SearchBar />
-    </Overridable>
+    <Container className="rel-pt-2">
+      <Grid>
+        <Grid.Column only="mobile tablet" mobile={2} tablet={1}>
+          <Button
+            basic
+            icon="sliders"
+            onClick={() => setSidebarVisible(true)}
+            aria-label={i18next.t("Filter results")}
+          />
+        </Grid.Column>
+
+        <Grid.Column mobile={14} tablet={14} computer={12} floated="right">
+          <SearchBar
+            placeholder={i18next.t("Search records in community...")}
+          />
+        </Grid.Column>
+
+        <Grid.Row>
+          <GridResponsiveSidebarColumn
+            width={4}
+            open={sidebarVisible}
+            onHideClick={() => setSidebarVisible(false)}
+            children={<SearchAppFacets aggs={config.aggs} />}
+          />
+          <Grid.Column mobile={16} tablet={16} computer={12}>
+            <SearchAppResultsPane layoutOptions={config.layoutOptions} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container>
   );
 };
 
@@ -137,18 +176,15 @@ export const CommunityRecordSearchBarElement = withState(
     placeholder: passedPlaceholder,
     queryString,
     onInputChange,
-    executeSearch,
     updateQueryState,
   }) => {
     const placeholder = passedPlaceholder || i18next.t("Search");
     const onBtnSearchClick = () => {
-      updateQueryState({ filters: [] });
-      executeSearch();
+      updateQueryState({ queryString, filters: [] });
     };
     const onKeyPress = (event) => {
       if (event.key === "Enter") {
-        updateQueryState({ filters: [] });
-        executeSearch();
+        updateQueryState({ queryString, filters: [] });
       }
     };
     return (
