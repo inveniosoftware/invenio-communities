@@ -75,11 +75,10 @@ class ActionDropdown extends Component {
             openOnFocus={false}
             selectOnBlur={false}
             onChange={this.handleOnChange}
-            className="mr-10"
             disabled={disabled}
           />
           {actionSuccess && (
-            <SuccessIcon timeOutDelay={4000} show={actionSuccess} />
+            <SuccessIcon timeOutDelay={4000} show={actionSuccess} className="ml-10"/>
           )}
           {error && <ErrorPopup error={error} />}
         </>

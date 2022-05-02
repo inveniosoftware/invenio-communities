@@ -36,7 +36,7 @@
 {% set active_menu_tab = 'members' %}
 
 {% block settings_body %}
-<div class="thirteen wide column">
+<div class="thirteen wide computer sixteen wide tablet sixteen wide mobile column">
     <div id="community-members-search-root"
       data-invenio-search-config='{{ search_app_communities_members_config(app_id="community-members-search", endpoint=search_endpoint) | tojson }}'
       data-communities-roles='{{ config.COMMUNITIES_ROLES | tojson }}'

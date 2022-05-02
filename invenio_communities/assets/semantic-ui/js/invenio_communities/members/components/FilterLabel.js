@@ -19,7 +19,7 @@ class FilterLabel extends Component {
     const filterType = _upperFirst(filter[0]);
     const filterValue = _upperFirst(filter[1]);
     return (
-      <Label className="ml-15 mt-15">
+      <Label className="rel-mr-1 rel-mt-1">
         {`${filterType}: ${filterValue}`}
         <Icon
           onClick={() => {

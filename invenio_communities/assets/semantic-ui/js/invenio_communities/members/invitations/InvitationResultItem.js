@@ -44,15 +44,19 @@ export class InvitationResultItem extends Component {
 
     return (
       <Table.Row className="community-member-item">
-        <Table.Cell>
+        <Table.Cell data-label={i18next.t("Name")}>
           <Image src={member.avatar_url} avatar circular className="rel-mr-1" />
           <Header size="small" as="b">
             {member.name}
           </Header>
         </Table.Cell>
-        <Table.Cell>{status}</Table.Cell>
-        <Table.Cell>{formattedTime(expires_at)}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell data-label={i18next.t("Status")}>
+          {status}
+        </Table.Cell>
+        <Table.Cell data-label={i18next.t("Expires")}>
+          {formattedTime(expires_at)}
+        </Table.Cell>
+        <Table.Cell data-label={i18next.t("Role")}>
           <RoleDropdown
             roles={roles}
             successCallback={this.updateInvitation}

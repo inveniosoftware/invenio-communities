@@ -81,10 +81,10 @@ export class InvitationsMembersModal extends Component {
         open={open}
         trigger={
           <Button
+            className="fluid-mobile"
             content={i18next.t("Invite members")}
             positive
             size="medium"
-            className="ml-5"
           />
         }
       >

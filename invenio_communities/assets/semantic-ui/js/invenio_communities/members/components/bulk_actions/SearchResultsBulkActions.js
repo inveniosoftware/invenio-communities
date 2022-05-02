@@ -73,7 +73,7 @@ export class SearchResultsBulkActions extends Component {
             checked={allSelectedChecked && allSelected}
           />
           <Dropdown
-            className="align-self-center"
+            className="align-self-center fluid-mobile"
             text={`${selectedCount} ${i18next.t("members selected")}`}
             options={dropdownOptions}
             aria-label={i18next.t("bulk actions")}
