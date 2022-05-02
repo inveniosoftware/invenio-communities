@@ -40,7 +40,7 @@ class ActionDropdown extends Component {
   handleOnChange = async (e, { value }) => {
     const { successCallback, action, resource } = this.props;
     this.setState({ loading: true, actionSuccess: false });
-    this.cancellableAction = withCancel(action(resource, value));
+    this.cancellableAction = withCancel(action(resource.member, value));
 
     try {
       const response = await this.cancellableAction.promise;

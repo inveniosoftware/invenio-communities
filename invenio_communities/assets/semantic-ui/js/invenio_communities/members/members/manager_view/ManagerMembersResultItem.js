@@ -50,7 +50,6 @@ export class ManagerMembersResultItem extends Component {
     const { result } = this.state;
     const { api } = this.context;
 
-    const avatar = result.member?.links?.avatar;
     return (
       <Table.Row>
         <Table.Cell>
@@ -58,7 +57,7 @@ export class ManagerMembersResultItem extends Component {
             <Grid.Column>
               <Item className="flex" key={result.id}>
                 <SearchResultsRowCheckbox rowId={result.id} data={result} />
-                <Image src={avatar} avatar />
+                <Image src={result.member.avatar_url} avatar />
                 <Item.Content className="ml-10">
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}

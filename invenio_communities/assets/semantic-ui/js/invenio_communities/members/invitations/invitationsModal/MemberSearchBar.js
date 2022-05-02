@@ -92,7 +92,7 @@ export class MembersSearchBar extends Component {
     const serializedSelectedMember = {
       id: newSelectedMember.id,
       type: searchType,
-      avatar: newSelectedMember?.links?.avatar,
+      avatar_url: newSelectedMember?.links?.avatar,
     };
 
     serializedSelectedMember["name"] =

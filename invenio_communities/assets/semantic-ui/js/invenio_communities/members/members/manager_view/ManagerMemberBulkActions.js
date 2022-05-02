@@ -39,6 +39,10 @@ class ManagerMemberBulkActionsCmp extends Component {
     this.cancellableAction && this.cancellableAction.cancel();
   }
 
+  bulkAction = (action) => {
+    action();
+  };
+
   get bulkActions() {
     const { roles, visibilities, permissions } = this.props;
     return [
@@ -88,7 +92,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         key: 3,
         value: "remove_from_community",
         text: i18next.t("Remove from community"),
-        action: this.membersApi.bulkRemoveMembers
+        action: this.membersApi.bulkRemoveMembers,
       },
     ];
   }
@@ -107,7 +111,7 @@ class ManagerMemberBulkActionsCmp extends Component {
 
   handleChooseCurrentAction = (value, selectedMembers, selectedCount) => {
     const serializeSelected = _mapValues(selectedMembers, ({ data }) => ({
-      ...data,
+      ...data.member,
     }));
 
     this.updateSelectedMembers(serializeSelected);
@@ -186,9 +190,11 @@ class ManagerMemberBulkActionsCmp extends Component {
           closeOnDimmerClick={false}
           open={modalOpen}
           role="dialog"
-          aria-labelledBy="bulk-actions-modal-header"
+          aria-labelledby="bulk-actions-modal-header"
         >
-          <Modal.Header as="h2" id="bulk-actions-modal-header">{currentActionText}</Modal.Header>
+          <Modal.Header as="h2" id="bulk-actions-modal-header">
+            {currentActionText}
+          </Modal.Header>
           <Modal.Content>
             {error && <ErrorMessage error={error} />}
             <SelectedMembers
