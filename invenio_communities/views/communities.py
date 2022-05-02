@@ -130,7 +130,7 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
         community=community.to_dict(),  # TODO: use serializer,
         form_config=dict(
             access=dict(
-                visibilty=[
+                visibility=[
                     {
                         'text': 'Public',
                         'value': 'public',

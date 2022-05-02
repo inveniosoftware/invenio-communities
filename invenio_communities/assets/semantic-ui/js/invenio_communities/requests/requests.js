@@ -237,7 +237,7 @@ export const RequestsResults = ({
               <Grid>
                 <Grid.Row
                   verticalAlign="middle"
-                  className="small padding-tb-5 highlight-background"
+                  className="small highlight-background"
                 >
                   <Grid.Column width={4}>
                     <Count
@@ -253,7 +253,6 @@ export const RequestsResults = ({
                   <Grid.Column
                     width={12}
                     textAlign="right"
-                    className="padding-r-5"
                   >
                     {sortOptions && (
                       <Sort
@@ -323,6 +322,7 @@ export const RequestsResultsItemTemplate = ({ result }) => {
   const timestampToRelativeTime = (timestamp) =>
     DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
   const differenceInDays = timestampToRelativeTime(createdDate.toISOString());
+
   return (
     <Item>
       <Item.Content>
@@ -344,16 +344,6 @@ export const RequestsResultsItemTemplate = ({ result }) => {
             })} */}
             {`opened ${differenceInDays} by you`}
           </span>
-          {result.receiver.community && (
-            <>
-              <Icon className="default-margin" name="users" />
-              <span className="ml-5">
-                {/* TODO: Replace by resolved receiver */}
-                {/* {result.receiver.community} */}
-                Biodiversity Literature Repository
-              </span>
-            </>
-          )}
         </Item.Meta>
       </Item.Content>
     </Item>
