@@ -83,6 +83,7 @@ class CommunityPrivilegesForm extends Component {
 
   render() {
     const { isSaved, error } = this.state;
+    const { formConfig } = this.props;
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
@@ -108,7 +109,7 @@ class CommunityPrivilegesForm extends Component {
               </Grid.Column>
               <Grid.Column width={8}>
                 <Header as="h3">{i18next.t("Community visibility")}</Header>
-                {this.props.formConfig.access.visibilty.map((item) => (
+                {formConfig.access.visibility.map((item) => (
                   <React.Fragment key={item.value}>
                     <RadioField
                       key={item.value}
@@ -138,7 +139,7 @@ class CommunityPrivilegesForm extends Component {
                   active={isSaved}
                   type="submit"
                 >
-                  <Icon name="save"></Icon>
+                  <Icon name="save"/>
                   {isSaved ? i18next.t("Saved") : i18next.t("Save")}
                 </Button>
               </Grid.Column>
