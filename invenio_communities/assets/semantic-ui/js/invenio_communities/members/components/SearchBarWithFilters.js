@@ -39,32 +39,34 @@ export class SearchBarWithFilters extends Component {
           <div>
             <SearchBar fluid placeholder={searchBarPlaceholder} />
           </div>
-          <div className="rel-ml-2">
-            <>
-              {Object.entries(filters).map((filter) => (
-                <DropdownFilter
-                  key={filter[0]}
-                  filterKey={filter[0]}
-                  filterLabel={filter[1].label}
-                  filterValues={filter[1].buckets}
-                  currentQueryState={currentQueryState}
-                  updateQueryState={updateQueryState}
-                  size="large"
-                  {...uiProps}
-                />
-              ))}
-              {sortOptions && (
-                <DropdownSort
-                  filterKey="sort"
-                  filterLabel={_upperFirst(currentSort)}
-                  filterValues={sortOptions}
-                  currentQueryState={currentQueryState}
-                  updateQueryState={updateQueryState}
-                  size="large"
-                  {...uiProps}
-                />
-              )}
-            </>
+          <div>
+            {Object.entries(filters).map((filter) => (
+              <DropdownFilter
+                key={filter[0]}
+                filterKey={filter[0]}
+                filterLabel={filter[1].label}
+                filterValues={filter[1].buckets}
+                currentQueryState={currentQueryState}
+                updateQueryState={updateQueryState}
+                size="large"
+                className="fluid-mobile"
+                {...uiProps}
+              />
+            ))}
+
+            {sortOptions && (
+              <DropdownSort
+                filterKey="sort"
+                filterLabel={_upperFirst(currentSort)}
+                filterValues={sortOptions}
+                currentQueryState={currentQueryState}
+                updateQueryState={updateQueryState}
+                size="large"
+                className="fluid-mobile"
+                {...uiProps}
+              />
+            )}
+
             {customCmp && customCmp}
           </div>
         </div>
@@ -84,13 +86,13 @@ export class SearchBarWithFilters extends Component {
           <div>
             {currentFilters.length > 0 && (
               <Label
-                as="a"
+                as="button"
                 onClick={() => {
                   currentQueryState.filters = [];
                   updateQueryState(currentQueryState);
                 }}
                 color="blue"
-                className="ml-15 mt-15"
+                className="rel-mr-1 rel-mt-1"
               >
                 {i18next.t("Clear all filters")}
               </Label>

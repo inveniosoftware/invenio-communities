@@ -52,7 +52,7 @@ export class ManagerMembersResultItem extends Component {
 
     return (
       <Table.Row>
-        <Table.Cell>
+        <Table.Cell className="selected-member">
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item className="flex" key={result.id}>
@@ -88,8 +88,10 @@ export class ManagerMembersResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell>{timestampToRelativeTime(result.created)}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell data-label={i18next.t("Member since")}>
+          {timestampToRelativeTime(result.created)}
+        </Table.Cell>
+        <Table.Cell data-label={i18next.t("Visibility")}>
           {result.permissions.can_update_visible ? (
             <VisibilityDropdown
               visibilityTypes={config.visibility}
@@ -104,7 +106,7 @@ export class ManagerMembersResultItem extends Component {
             "Hidden"
           )}
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell data-label={i18next.t("Role")}>
           {result.permissions.can_update_role ? (
             <RoleDropdown
               roles={config.roles}
@@ -120,10 +122,9 @@ export class ManagerMembersResultItem extends Component {
 
         <ModalContext.Consumer>
           {({ openModal }) => (
-            <Table.Cell>
+            <Table.Cell data-label={i18next.t("Actions")}>
               {result.permissions.can_leave && (
                 <Button
-                  fluid
                   negative
                   onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
                 >

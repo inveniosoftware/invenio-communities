@@ -19,7 +19,7 @@ export const ManagerMembersResultsContainer = ({
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell width={6}>
+          <Table.HeaderCell width={6} className="selected-member">
             <ManagerMemberBulkActions
               community={community}
               roles={config.roles}
@@ -33,7 +33,9 @@ export const ManagerMembersResultsContainer = ({
           <Table.HeaderCell width={2}>
             {i18next.t("Visibility")}
           </Table.HeaderCell>
-          <Table.HeaderCell width={4}>{i18next.t("Role")}</Table.HeaderCell>
+          <Table.HeaderCell width={4}>
+            {i18next.t("Role")}
+          </Table.HeaderCell>
           <Table.HeaderCell width={2} />
         </Table.Row>
       </Table.Header>
