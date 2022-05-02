@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-03-01T08:18:33.908Z\n"
-"PO-Revision-Date: 2022-03-01T08:18:33.908Z\n"
+"POT-Creation-Date: 2022-05-02T08:04:00.672Z\n"
+"PO-Revision-Date: 2022-05-02T08:04:00.672Z\n"
 "Language: en\n"
 
 msgid "Required"
@@ -132,74 +132,14 @@ msgstr "Community permissions"
 msgid "Saved"
 msgstr "Saved"
 
-msgid "Accept"
-msgstr "Accept"
-
-msgid "Reject"
-msgstr "Reject"
-
-msgid "Comment"
-msgstr "Comment"
-
-msgid "Record was successfully {{status}}ed"
-msgstr "Record was successfully {{status}}ed"
-
-msgid "Administrator"
-msgstr "Administrator"
-
-msgid "Curator"
-msgstr "Curator"
-
 msgid "Member"
 msgstr "Member"
-
-msgid "You have succesfully requested to join the community"
-msgstr "You have succesfully requested to join the community"
-
-msgid "Join this community"
-msgstr "Join this community"
 
 msgid "Members"
 msgstr "Members"
 
-msgid "Pending Memberships"
-msgstr "Pending Memberships"
-
-msgid "Rejected Memberships"
-msgstr "Rejected Memberships"
-
-msgid "Invite Member"
-msgstr "Invite Member"
-
-msgid "Community members"
-msgstr "Community members"
-
-msgid "Username"
-msgstr "Username"
-
 msgid "Role"
 msgstr "Role"
-
-msgid "Remove Member"
-msgstr "Remove Member"
-
-msgid "Community member requests"
-msgstr "Community member requests"
-
-msgid "Username or Email"
-msgstr "Username or Email"
-
-msgid "Request Type"
-msgstr "Request Type"
-
-msgid "Comments"
-msgstr "Comments"
-
-msgid "Remove request"
-msgstr "Remove request"
-
-msgid "Email"
-msgstr "Email"
 
 msgid "Setup your new community"
 msgstr "Setup your new community"
@@ -207,8 +147,12 @@ msgstr "Setup your new community"
 msgid "Identifier"
 msgstr "Identifier"
 
-msgid "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}"
-msgstr "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}"
+msgid ""
+"This is your community's unique identifier. You will be able to access your "
+"community through the URL: {{url}}"
+msgstr ""
+"This is your community's unique identifier. You will be able to access your "
+"community through the URL: {{url}}"
 
 msgid "Community visibility"
 msgstr "Community visibility"
@@ -216,44 +160,8 @@ msgstr "Community visibility"
 msgid "Create community"
 msgstr "Create community"
 
-msgid "Request to {{title}} submitted"
-msgstr "Request to {{title}} submitted"
-
-msgid "Add community"
-msgstr "Add community"
-
-msgid "Request for this record to be added to {{title}}"
-msgstr "Request for this record to be added to {{title}}"
-
 msgid "Message"
 msgstr "Message"
-
-msgid "Write a message for the community curator..."
-msgstr "Write a message for the community curator..."
-
-msgid "Send a message to the other party."
-msgstr "Send a message to the other party."
-
-msgid "Pending requests ({{length}})"
-msgstr "Pending requests ({{length}})"
-
-msgid "The collections for this record have been updated."
-msgstr "The collections for this record have been updated."
-
-msgid "collections"
-msgstr "collections"
-
-msgid "Done"
-msgstr "Done"
-
-msgid "You have been invited to join the Community: {{title}} as a (n) {{role}}"
-msgstr "You have been invited to join the Community: {{title}} as a (n) {{role}}"
-
-msgid "You have succesfully declined the invitation."
-msgstr "You have succesfully declined the invitation."
-
-msgid "Decline"
-msgstr "Decline"
 
 msgid "View"
 msgstr "View"
@@ -278,12 +186,6 @@ msgstr "New community"
 
 msgid "Uploaded on"
 msgstr "Uploaded on"
-
-msgid "hide subfacets"
-msgstr "hide subfacets"
-
-msgid "show subfacets"
-msgstr "show subfacets"
 
 msgid "Search guide"
 msgstr "Search guide"
@@ -330,6 +232,138 @@ msgstr "ORCID profile"
 msgid "ROR profile"
 msgstr "ROR profile"
 
+msgid "Filter results"
+msgstr "Filter results"
+
+msgid "filters"
+msgstr "filters"
+
+msgid "search guide"
+msgstr "search guide"
+
+msgid "members selected"
+msgstr "members selected"
+
+msgid "Leave community"
+msgstr "Leave community"
+
+msgid "You're about to leave this community."
+msgstr "You're about to leave this community."
+
+msgid "Leave"
+msgstr "Leave"
+
+msgid "Remove user"
+msgstr "Remove user"
+
+msgid "You're about to remove this user from this community"
+msgstr "You're about to remove this user from this community"
+
+msgid "This action cannot be undone."
+msgstr "This action cannot be undone."
+
+msgid "Clear all filters"
+msgstr "Clear all filters"
+
+msgid "Search ..."
+msgstr "Search ..."
+
+msgid "Group"
+msgstr "Group"
+
+msgid "Search for groups"
+msgstr "Search for groups"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "You are about to add <1>{{selectedCount}}</1> groups"
+msgid_plural "You are about to add <1>{{selectedCount}}</1> groups"
+msgstr[0] "You are about to add <1>{{selectedCount}}</1> groups"
+msgstr[1] "You are about to add <1>{{selectedCount}}</1> groups"
+
+msgid "People"
+msgstr "People"
+
+msgid "Groups"
+msgstr "Groups"
+
+msgid "Invite groups"
+msgstr "Invite groups"
+
+msgid "Invite members"
+msgstr "Invite members"
+
+msgid "Search by email, full name or username"
+msgstr "Search by email, full name or username"
+
+msgid "Invite"
+msgstr "Invite"
+
+msgid "You are about to invite <1>{{selectedCount}}</1> users"
+msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
+msgstr[0] "You are about to invite <1>{{selectedCount}}</1> users"
+msgstr[1] "You are about to invite <1>{{selectedCount}}</1> users"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Expires"
+msgstr "Expires"
+
+msgid "result(s) found"
+msgstr "result(s) found"
+
+msgid "Member since"
+msgstr "Member since"
+
+msgid "Visibility"
+msgstr "Visibility"
+
+msgid "Search members..."
+msgstr "Search members..."
+
+msgid "Public"
+msgstr "Public"
+
+msgid "Member publicly visible in the community members list"
+msgstr "Member publicly visible in the community members list"
+
+msgid "Hidden"
+msgstr "Hidden"
+
+msgid "Member hidden in the community members list"
+msgstr "Member hidden in the community members list"
+
+msgid "Change roles"
+msgstr "Change roles"
+
+msgid "Change visibilities"
+msgstr "Change visibilities"
+
+msgid "Remove from community"
+msgstr "Remove from community"
+
+msgid "You have selected <1>{{selectedCount}}</1> users"
+msgid_plural "You have selected <1>{{selectedCount}}</1> users"
+msgstr[0] "You have selected <1>{{selectedCount}}</1> users"
+msgstr[1] "You have selected <1>{{selectedCount}}</1> users"
+
+msgid "You"
+msgstr "You"
+
+msgid "Leave..."
+msgstr "Leave..."
+
+msgid "Remove..."
+msgstr "Remove..."
+
+msgid "opened {{difference}} by {{user}}"
+msgstr "opened {{difference}} by {{user}}"
+
 msgid "Open"
 msgstr "Open"
 
@@ -338,9 +372,6 @@ msgstr "Closed"
 
 msgid "Search requests..."
 msgstr "Search requests..."
-
-msgid "filters"
-msgstr "filters"
 
 msgid "All done!"
 msgstr "All done!"
@@ -353,3 +384,6 @@ msgstr "No requests found!"
 
 msgid "Reset search"
 msgstr "Reset search"
+
+msgid "Search records in community..."
+msgstr "Search records in community..."
