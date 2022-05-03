@@ -302,9 +302,9 @@ export const RequestsResults = ({
   );
 };
 
-export const RequestsResultsGridItemTemplate = ({ result }) => {
+export const RequestsResultsGridItemTemplate = ({ result, community }) => {
   return (
-    <Card fluid href={`/me/requests/${result.metadata.id}`}>
+    <Card fluid href={`/communities/${community.id}/requests/${result.metadata.id}`}>
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
@@ -317,7 +317,7 @@ export const RequestsResultsGridItemTemplate = ({ result }) => {
   );
 };
 
-export const RequestsResultsItemTemplate = ({ result }) => {
+export const RequestsResultsItemTemplate = ({ result, community }) => {
   const createdDate = new Date(result.created);
   const timestampToRelativeTime = (timestamp) =>
     DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
@@ -332,7 +332,7 @@ export const RequestsResultsItemTemplate = ({ result }) => {
               <Label size="large">{result.type}</Label>
             </span>
           )}
-          <a href={`/me/requests/${result.id}`}>{result.title}</a>
+          <a href={`/communities/${community.id}/requests/${result.id}`}>{result.title}</a>
         </Item.Header>
 
         <Item.Meta className="mt-10">
