@@ -11,10 +11,12 @@
       "id": {
         "type": "keyword"
       },
-
+      "uuid": {
+        "type": "keyword"
+      },
       "access": {
         "properties": {
-          "owned_by" : {
+          "owned_by": {
             "properties": {
               "user": {
                 "type": "keyword"
@@ -76,7 +78,7 @@
           "page": {
             "type": "text"
           },
-          "organizations" : {
+          "organizations": {
             "type": "object",
             "properties": {
               "@v": {
@@ -110,11 +112,11 @@
                   },
                   "identifiers": {
                     "properties": {
-                      "identifier" : {
-                        "type" : "text"
+                      "identifier": {
+                        "type": "text"
                       },
-                      "scheme" : {
-                        "type" : "keyword"
+                      "scheme": {
+                        "type": "keyword"
                       }
                     }
                   }
