@@ -35,19 +35,19 @@ export class InvitationResultItem extends Component {
   render() {
     const {
       config: { roles },
+      community
     } = this.props;
     const {
       invitation,
-      invitation: { member, status, expires_at, role, permissions },
+      invitation: { member, status, expires_at, role, permissions, request },
     } = this.state;
     const { api: invitationsApi } = this.context;
-
     return (
       <Table.Row className="community-member-item">
         <Table.Cell data-label={i18next.t("Name")}>
           <Image src={member.avatar_url} avatar circular className="rel-mr-1" />
           <Header size="small" as="b">
-            {member.name}
+            <a href={`/communities/${community.id}/requests/${request.id}`}>{member.name}</a>
           </Header>
         </Table.Cell>
         <Table.Cell data-label={i18next.t("Status")}>

@@ -10,7 +10,7 @@
 {% extends "invenio_communities/details/base.html" %}
 
 {%- set title = community.metadata.title + _(" requests") -%}
-{% set active_menu_tab = 'requests' %}
+{% set active_community_header_menu_item = 'requests' %}
 
 {%- block javascript %}
 {{ super() }}
