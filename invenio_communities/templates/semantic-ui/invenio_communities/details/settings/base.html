@@ -21,7 +21,7 @@
     <div class="sixteen wide mobile sixteen wide tablet three wide computer column">
       <div class="ui vertical computer horizontal tablet horizontal mobile menu">
         {% for menu_key, (menu_item, menu_link, ) in menu_items.items() %}
-          <a href="{{ menu_link }}" class="{{ 'brand item active' if active_menu_item and menu_key == active_menu_item }} {{ 'disabled' if not menu_link }} item">{{ menu_item }}</a>
+          <a href="{{ menu_link }}" class="{{ 'brand item active' if active_settings_menu_item and menu_key == active_settings__menu_item }} {{ 'disabled' if not menu_link }} item">{{ menu_item }}</a>
         {% endfor %}
       </div>
     </div>

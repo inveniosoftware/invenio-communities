@@ -14,7 +14,7 @@
 <div class="ui container fluid page-subheader-outer with-submenu rel-pt-2">
   <div class="ui container relaxed grid page-subheader">
     <div class="row pb-0">
-      <div class="sixteen wide mobile five wide tablet four wide computer column">
+      <div class="sixteen wide mobile five wide tablet two wide computer column">
         {% if logo %}
         <div class="ui rounded fluid image community-image rel-mb-2">
           <img src="{{logo.links.self}}" alt=""/>
@@ -26,7 +26,7 @@
         {% endif %}
       </div>
 
-      <div class="sixteen wide mobile eleven wide tablet twelve wide computer column rel-mb-2">
+      <div class="sixteen wide mobile eleven wide tablet fourteen wide computer column rel-mb-2">
         <h2 class="ui header">{{ community.metadata.title }}</h2>
         <div class="rel-mb-2">
           {{ truncate_text(community.metadata.description) }}
@@ -102,9 +102,7 @@
     <div class="ui divider mobile only"></div>
     <div class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
       {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions]  %}
-        <a class="item {{ 'active' if active_header_menu_item == item.name }} {{ 'disabled' if not item.url }}" href="{{ item.url }}">
-          <i aria-hidden="true" class="{{item.icon}} icon"></i>{{ item.text }}
-        </a>
+        <a class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}" href="{{ item.url }}"><i aria-hidden="true" class="{{item.icon}} icon"></i>{{ item.text }}</a>
       {% endfor %}
     </div>
   </div>

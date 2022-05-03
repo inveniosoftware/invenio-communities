@@ -251,10 +251,7 @@ export const RequestsResults = ({
                       )}
                     />
                   </Grid.Column>
-                  <Grid.Column
-                    width={12}
-                    textAlign="right"
-                  >
+                  <Grid.Column width={12} textAlign="right">
                     {sortOptions && (
                       <Sort
                         values={sortOptions}
@@ -303,9 +300,12 @@ export const RequestsResults = ({
   );
 };
 
-export const RequestsResultsGridItemTemplate = ({ result }) => {
+export const RequestsResultsGridItemTemplate = ({ result, community }) => {
   return (
-    <Card fluid href={`/me/requests/${result.metadata.id}`}>
+    <Card
+      fluid
+      href={`/communities/${community.id}/requests/${result.metadata.id}`}
+    >
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
@@ -318,7 +318,7 @@ export const RequestsResultsGridItemTemplate = ({ result }) => {
   );
 };
 
-export const RequestsResultsItemTemplate = ({ result }) => {
+export const RequestsResultsItemTemplate = ({ result, community }) => {
   const createdDate = new Date(result.created);
   const timestampToRelativeTime = (timestamp) =>
     DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
@@ -329,9 +329,16 @@ export const RequestsResultsItemTemplate = ({ result }) => {
       <Item.Content>
         <Item.Header>
           {result.type && (
-            <Label size="large" className="rel-mr-1">{result.type}</Label>
+            <Label size="large" className="rel-mr-1">
+              {result.type}
+            </Label>
           )}
-          <a className="header-link" href={`/me/requests/${result.id}`}>{result.title}</a>
+          <a
+            className="header-link"
+            href={`/communities/${community.id}/requests/${result.id}`}
+          >
+            {result.title}
+          </a>
         </Item.Header>
 
         <Item.Meta>
@@ -341,7 +348,7 @@ export const RequestsResultsItemTemplate = ({ result }) => {
               difference: differenceInDays,
               user: result.created_by.user,
             })} */}
-            {i18next.t('Opened ') + differenceInDays + i18next.t(' by you')}
+            {i18next.t("Opened ") + differenceInDays + i18next.t(" by you")}
           </span>
         </Item.Meta>
       </Item.Content>
@@ -449,8 +456,14 @@ export const RequestsSearchLayout = (props) => {
               aria-label={i18next.t("Filter results")}
             />
           </Grid.Column>
-          <Grid.Column mobile={14} tablet={6} computer={3} floated="right" className="text-align-right-mobile">
-            <RequestStatusFilter/>
+          <Grid.Column
+            mobile={14}
+            tablet={6}
+            computer={3}
+            floated="right"
+            className="text-align-right-mobile"
+          >
+            <RequestStatusFilter />
           </Grid.Column>
           <Grid.Column mobile={16} tablet={9} computer={9} className="rel-mb-1">
             <SearchBar placeholder={i18next.t("Search requests...")} />
@@ -461,9 +474,7 @@ export const RequestsSearchLayout = (props) => {
             width={4}
             open={sidebarVisible}
             onHideClick={() => setSidebarVisible(false)}
-            children={
-              <SearchAppFacets aggs={props.config.aggs} />
-            }
+            children={<SearchAppFacets aggs={props.config.aggs} />}
           />
           <Grid.Column mobile={16} tablet={16} computer={12}>
             <SearchAppResultsPane layoutOptions={props.config.layoutOptions} />
