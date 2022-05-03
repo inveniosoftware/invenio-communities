@@ -9,7 +9,6 @@
 """Community access system field."""
 
 from invenio_records.systemfields import SystemField
-from .owners import Owners
 
 
 class CommunityAccess:
@@ -17,33 +16,21 @@ class CommunityAccess:
 
     VISIBILITY_LEVELS = ('public', 'restricted')
     MEMBER_POLICY_LEVELS = ('open', 'closed')
-    RECORD_POLICY_LEVELS = ('open', 'closed', 'restricted')
-
-    owners_cls = Owners
+    RECORD_POLICY_LEVELS = ('open', 'closed')
 
     def __init__(
         self,
         visibility=None,
         member_policy=None,
         record_policy=None,
-        owned_by=None,
-        owners_cls=None,
     ):
         """Create a new CommunityAccess object.
 
-        If ``owned_by`` is not specified, a new instance of ``owners_cls``
-        will be used.
-
         :param visibility: The visibility level.
-        :param owned_by: The set of community owners
         """
         self.visibility = visibility or 'public'
         self.member_policy = member_policy or 'open'
         self.record_policy = record_policy or 'open'
-
-        owners_cls = owners_cls or self.owners_cls
-        self.owned_by = owned_by if owned_by else owners_cls()
-
         self.errors = []
 
     def _validate_visibility_level(self, level):
@@ -97,7 +84,6 @@ class CommunityAccess:
             "visibility": self.visibility,
             "member_policy": self.member_policy,
             "record_policy": self.record_policy,
-            "owned_by": self.owned_by.dump(),
         }
 
     def refresh_from_dict(self, access_dict):
@@ -106,40 +92,23 @@ class CommunityAccess:
         self.visibility = new_access.visibility
         self.member_policy = new_access.member_policy
         self.record_policy = new_access.record_policy
-        self.owned_by = new_access.owned_by
 
     @classmethod
     def from_dict(
         cls,
         access_dict,
-        owners_cls=None,
     ):
         """Create a new Access object from the specified 'access' property.
 
         The new ``CommunityAccess`` object will be populated with new instances
         from the configured classes.
-        If ``access_dict`` is empty, the ``Access`` object will be populated
-        with new instance ``owners_cls``.
         """
-        owners_cls = owners_cls or cls.owners_cls
-
         errors = []
-
-        # provide defaults in case there is no 'access' property
-        owned_by = owners_cls()
-
-        if access_dict:
-            for owner_dict in access_dict.get("owned_by", []):
-                try:
-                    owned_by.add(owned_by.owner_cls(owner_dict))
-                except Exception as e:
-                    errors.append(e)
 
         access = cls(
             visibility=access_dict.get("visibility"),
             member_policy=access_dict.get("member_policy"),
             record_policy=access_dict.get("record_policy"),
-            owned_by=owned_by
         )
         access.errors = errors
         return access
@@ -149,14 +118,12 @@ class CommunityAccess:
         return (
             "<{} (visibility: {}, "
             "member_policy: {}, "
-            "record_policy: {}, "
-            "owners: {})>"
+            "record_policy: {})>"
         ).format(
             type(self).__name__,
             self.visibility,
             self.member_policy,
             self.record_policy,
-            self.owned_by,
         )
 
 
