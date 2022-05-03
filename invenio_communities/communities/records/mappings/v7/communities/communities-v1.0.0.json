@@ -16,13 +16,6 @@
       },
       "access": {
         "properties": {
-          "owned_by": {
-            "properties": {
-              "user": {
-                "type": "keyword"
-              }
-            }
-          },
           "visibility": {
             "type": "keyword"
           },

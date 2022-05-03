@@ -28,17 +28,7 @@ def _not_blank(**kwargs):
     )
 
 
-# TODO: Move to Invenio-Records-Resources and make reusable (duplicated from
-# Invenio-RDM-Records).
-class Agent(Schema):
-    """An agent schema."""
-
-    user = fields.Integer(required=True)
-
-
 class CommunityAccessSchema(Schema):
-
-    owned_by = fields.List(fields.Nested(Agent))
 
     visibility = fields.Str(validate=validate.OneOf([
         'public',
