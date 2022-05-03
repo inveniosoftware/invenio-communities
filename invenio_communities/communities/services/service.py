@@ -57,6 +57,17 @@ class CommunityService(RecordService):
         """Returns the featured data schema instance."""
         return ServiceSchemaWrapper(self, schema=self.config.schema_featured)
 
+    def read_many(self, identity, uuids, fields=None, **kwargs):
+        """Search for records matching the uuids."""
+        clauses = []
+        for uuid in uuids:
+            clauses.append(Q('term', **{"uuid": uuid}))
+        query = Q('bool', minimum_should_match=1, should=clauses)
+
+        results = self._read_many(
+            identity, query, fields, len(uuids), **kwargs)
+
+        return self.result_list(self, identity, results)
 
     def search_user_communities(
             self, identity, params=None, es_preference=None, **kwargs):

@@ -18,7 +18,9 @@ from invenio_records_resources.references.resolvers.records import \
     RecordPKProxy, RecordResolver
 
 from ..generators import CommunityRoleNeed
+from ..proxies import current_roles
 from .records.api import Community
+from .services.config import CommunityServiceConfig
 
 
 class CommunityPKProxy(RecordPKProxy):
@@ -28,11 +30,21 @@ class CommunityPKProxy(RecordPKProxy):
         """Return community member need."""
         ctx = ctx or {}
         roles = ctx.get(
-            # TODO: replace with COMMUNITIES_ROLES
-            'community_roles', ['owner', 'manager', 'curator', 'reader']
+            'community_roles', [role.name for role in current_roles]
         )
-        comid = str(self._parse_ref_dict_id(self._ref_dict))
+        comid = str(self._parse_ref_dict_id())
         return [CommunityRoleNeed(comid, role) for role in roles]
+
+    def pick_resolved_fields(self, resolved_dict):
+        """Select which fields to return when resolving the reference."""
+        metadata = resolved_dict["metadata"]
+        return {
+            "id": resolved_dict["id"],
+            "uuid": resolved_dict["uuid"],
+            "title": metadata["title"],
+            "description": metadata.get("description"),
+            "type": metadata.get("type"),
+        }
 
 
 class CommunityResolver(RecordResolver):
@@ -47,8 +59,8 @@ class CommunityResolver(RecordResolver):
 
     def __init__(self):
         """Initialize the default record resolver."""
-        super().__init__(
-            Community, type_key=self.type_id, proxy_cls=CommunityPKProxy)
+        super().__init__(Community, CommunityServiceConfig.service_id,
+                         type_key=self.type_id, proxy_cls=CommunityPKProxy)
 
     def _reference_entity(self, entity):
         """Create a reference dict for the given record."""
