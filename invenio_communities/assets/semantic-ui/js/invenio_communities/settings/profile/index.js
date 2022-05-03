@@ -29,6 +29,7 @@ import Dropzone from "react-dropzone";
 
 import { DeleteButton } from "./DeleteButton";
 import { RenameCommunityButton } from "./RenameCommunityButton";
+import { FundingField } from "react-invenio-deposit";
 
 import {
   Divider,
@@ -253,6 +254,7 @@ class CommunityProfileForm extends Component {
         type: {},
         website: "",
         organizations: [],
+        funding: []
       },
       // TODO: should this come from the backend?
       access: {
@@ -272,14 +274,118 @@ class CommunityProfileForm extends Component {
     })
 
     _unset(initialValues, "metadata.type.title");
+    /**
+     * Deserializes a funding record (e.g. funder or award)
+     *
+     * @param {object} fund
+     *
+     * @returns {object} an object containing the deserialized record
+     */
+     const deserializeFunding = ((fund) => {
+      const _deserialize = ((value) => {
+        const deserializedValue = _cloneDeep(value);
+
+        if (value?.title?.en) {
+          deserializedValue.title = value.title.en;
+        }
+
+        if (value.identifiers) {
+          const allowedIdentifiers = ['url'];
+
+          allowedIdentifiers.forEach((identifier) => {
+            let identifierValue = null;
+            value.identifiers.forEach((v) => {
+              if (v.scheme === identifier) {
+                identifierValue = v.identifier;
+              }
+            });
+
+            if (identifierValue) {
+              deserializedValue[identifier] = identifierValue;
+            }
+          })
+
+          delete deserializedValue['identifiers'];
+        }
+        return deserializedValue;
+      });
+
+      let deserializedValue = {};
+      if (fund !== null) {
+        deserializedValue = Array.isArray(fund)
+          ? fund.map(_deserialize)
+          : _deserialize(fund);
+      }
+
+      return deserializedValue;
+    });
+
+    // Deerialize each funding record, award being optional.
+    const funding = initialValues.metadata.funding.map((fund) => {
+      return {
+        ...(fund.award && {award: deserializeFunding(fund.award)}),
+        funder: deserializeFunding(fund.funder)
+      }
+    });
 
     return {
       ...initialValues,
-      metadata: { ...initialValues.metadata, organizations },
+      metadata: { ...initialValues.metadata, organizations, funding },
     };
   };
 
+  /**
+   * Serializes community values
+   *
+   * @param {object} values
+   *
+   * @returns
+   */
   serializeValues = (values) => {
+    /**
+     * Serializes a funding record (e.g. funder or award)
+     *
+     * @param {object} fund
+     *
+     * @returns {object} an object containing the serialized record
+     */
+     const serializeFunding = ((fund) => {
+      const _serialize = (value) => {
+        if (value.id) {
+          return { id: value.id };
+        }
+
+        // Record is a custom record, without explicit 'id'
+        const clonedValue = _cloneDeep(value);
+        if (value.title) {
+          clonedValue.title = {
+            "en": value.title
+          };
+        }
+
+        if (value.url) {
+          clonedValue.identifiers = [
+            {
+              "identifier": value.url,
+              "scheme": "url"
+            }
+          ]
+          delete clonedValue["url"];
+        }
+
+        return clonedValue;
+      }
+
+      let serializedValue = {};
+      if (fund !== null) {
+        serializedValue = Array.isArray(fund)
+          ? fund.map(_serialize)
+          : _serialize(fund);
+      }
+
+      return serializedValue;
+     });
+
     let submittedCommunity = _cloneDeep(values);
 
     // Serialize organisations. If it is known and has an id, serialize a pair 'id/name'. Otherwise use 'name' only
@@ -293,9 +399,19 @@ class CommunityProfileForm extends Component {
       }
     );
 
+    // Serialize each funding record, award being optional.
+    const funding = submittedCommunity.metadata?.funding.map(
+      (fund) => {
+        return {
+          ...(fund.award && {award: serializeFunding(fund.award)}),
+          funder: serializeFunding(fund.funder)
+        }
+      }
+    );
+
     submittedCommunity = {
       ...submittedCommunity,
-      metadata: { ...values.metadata, organizations },
+      metadata: { ...values.metadata, organizations, funding },
     };
 
     // Clean values
@@ -451,6 +567,71 @@ class CommunityProfileForm extends Component {
                     noQueryMessage={i18next.t("Search for organizations...")}
                     allowAdditions
                     search={(filteredOptions, searchQuery) => filteredOptions}
+                  />
+                  <FundingField
+                    fieldPath="metadata.funding"
+                    searchConfig={{
+                      searchApi: {
+                        axios: {
+                          headers: {
+                            //  FIXME use for internationalisation
+                            //  Accept: "application/vnd.inveniordm.v1+json"
+                            Accept: "application/json",
+                          },
+                          url: "/api/awards",
+                          withCredentials: false,
+                        },
+                      },
+                      initialQueryState: {
+                        sortBy: "bestmatch",
+                        sortOrder: "asc",
+                        layout: "list",
+                        page: 1,
+                        size: 5,
+                      },
+                    }}
+                    label="Awards"
+                    labelIcon="money bill alternate outline"
+                    deserializeAward={(award) => {
+                      return {
+                        title: award.title.en ?? award.title,
+                        pid: award.pid,
+                        number: award.number,
+                        funder: award.funder ?? '',
+                        id: award.id,
+                        ...(award.identifiers && { identifiers: award.identifiers }),
+                        ...(award.acronym && { acronym: award.acronym })
+                      }
+                    }}
+                    deserializeFunder={(funder) => {
+                      return {
+                        id: funder.id,
+                        name: funder.name,
+                        ...(funder.pid && { pid: funder.pid }),
+                        ...(funder.country && { country: funder.country }),
+                        ...(funder.identifiers && { identifiers: funder.identifiers })
+                      }
+                    }
+                    }
+                    computeFundingContents={(funding) => {
+                      let headerContent, descriptionContent = '';
+                      let awardOrFunder = 'award';
+                      if (funding.award) {
+                        headerContent = funding.award.title;
+                      }
+
+                      if (funding.funder) {
+                        const funderName = funding.funder?.name ?? funding.funder?.title?.en ?? funding.funder?.id ?? '';
+                        descriptionContent = funderName;
+                        if (!headerContent) {
+                          awardOrFunder = 'funder';
+                          headerContent = funderName;
+                          descriptionContent = '';
+                        }
+                      }
+
+                      return { headerContent, descriptionContent, awardOrFunder };
+                    }}
                   />
                   {/* TODO: Re-enable once properly integrated to be displayed */}
                   {/* <RichInputField
