@@ -15,10 +15,9 @@ import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Button, Form, Modal } from "semantic-ui-react";
 import { Trans } from "react-i18next";
-import { withState } from "react-searchkit";
 import { withCancel } from "react-invenio-forms";
 
-class ManagerMemberBulkActionsCmp extends Component {
+export class ManagerMemberBulkActions extends Component {
   static contextType = BulkActionsContext;
 
   constructor(props) {
@@ -38,10 +37,6 @@ class ManagerMemberBulkActionsCmp extends Component {
   componentWillUnmount() {
     this.cancellableAction && this.cancellableAction.cancel();
   }
-
-  bulkAction = (action) => {
-    action();
-  };
 
   get bulkActions() {
     const { roles, visibilities, permissions } = this.props;
@@ -125,12 +120,11 @@ class ManagerMemberBulkActionsCmp extends Component {
 
   handleActionClick = async () => {
     const { selectedMembers } = this.state;
-    const { updateQueryState, currentQueryState } = this.props;
+    const { updateResultsCallback} = this.props;
     const { setAllSelected } = this.context;
 
     const actionToPerform = this.currentAction.action;
     const actionParameter = this.state[this.currentAction.actionParam];
-
     const members = Object.entries(selectedMembers).map(
       ([memberId, member]) => member
     );
@@ -146,8 +140,7 @@ class ManagerMemberBulkActionsCmp extends Component {
       this.setState({ loading: false });
       this.handleModalClose();
       this.setState({ role: undefined, visible: undefined });
-
-      updateQueryState(currentQueryState);
+      updateResultsCallback(selectedMembers, actionParameter);
       setAllSelected(false, true);
     } catch (error) {
       if (error === "UNMOUNTED") return;
@@ -232,8 +225,7 @@ class ManagerMemberBulkActionsCmp extends Component {
   }
 }
 
-ManagerMemberBulkActionsCmp.propTypes = {
+ManagerMemberBulkActions.propTypes = {
   community: PropTypes.object.isRequired,
+  updateResultsCallback: PropTypes.func.isRequired,
 };
-
-export const ManagerMemberBulkActions = withState(ManagerMemberBulkActionsCmp);
