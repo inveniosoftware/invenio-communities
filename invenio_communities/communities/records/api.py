@@ -14,16 +14,16 @@ from invenio_records.systemfields import ConstantField, ModelField, \
     RelationsField
 from invenio_records_resources.records.api import FileRecord, Record
 from invenio_records_resources.records.systemfields import FilesField, \
-    IndexField, PIDField, PIDListRelation, PIDRelation
+    IndexField, PIDListRelation, PIDRelation
 from invenio_vocabularies.contrib.affiliations.api import Affiliation
 from invenio_vocabularies.contrib.awards.api import Award
 from invenio_vocabularies.contrib.funders.api import Funder
 from invenio_vocabularies.records.api import Vocabulary
 
-from . import models
 from ..dumpers.featured import FeaturedDumperExt
-from .providers import CommunitiesIdProvider
+from . import models
 from .systemfields.access import CommunityAccessField
+from .systemfields.pidslug import PIDSlugField
 
 
 class CommunityFile(FileRecord):
@@ -36,7 +36,10 @@ class CommunityFile(FileRecord):
 class Community(Record):
     """Community API."""
 
-    pid = PIDField('id', provider=CommunitiesIdProvider, create=False)
+    id = ModelField()
+    slug = ModelField()
+    pid = PIDSlugField("id", "slug")
+
     schema = ConstantField(
         '$schema', 'local://communities/communities-v1.0.0.json')
 

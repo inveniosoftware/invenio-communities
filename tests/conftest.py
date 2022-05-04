@@ -250,7 +250,7 @@ def minimal_community():
             "visibility": "public",
             "record_policy": "open",
         },
-        "id": "public",
+        "slug": "public",
         "metadata": {
             "title": "My Community",
         }
@@ -266,7 +266,7 @@ def full_community():
             "member_policy": "open",
             "record_policy": "open",
         },
-        "id": "my_community_id",
+        "slug": "my_community_id",
         "metadata": {
             "title": "My Community",
             "description": "This is an example Community.",
@@ -297,8 +297,8 @@ def restricted_community(community_service, owner, minimal_community, location):
     """A restricted community."""
     data = deepcopy(minimal_community)
     data['access']['visibility'] = 'restricted'
-    data['id'] = 'restricted'
-    c = community_service.create(owner.identity, data)
+    data['slug'] = 'restricted'
+    c =  community_service.create(owner.identity, data)
     owner.refresh()
     return c
 
@@ -312,7 +312,7 @@ def fake_communities(
     """Multiple community created and posted to test search functionality."""
     N = 4
     for (type_, ind) in itertools.product(community_types, list(range(N))):
-        data['id'] = f'comm_{type_["id"]}_{ind}'
+        data['slug'] = f'comm_{type_["id"]}_{ind}'
         data['metadata']['type'] = {
             'id': type_['id']
         }

@@ -58,18 +58,6 @@ class CommunityService(RecordService):
         """Returns the featured data schema instance."""
         return ServiceSchemaWrapper(self, schema=self.config.schema_featured)
 
-    def read_many(self, identity, uuids, fields=None, **kwargs):
-        """Search for records matching the uuids."""
-        clauses = []
-        for uuid in uuids:
-            clauses.append(Q('term', **{"uuid": uuid}))
-        query = Q('bool', minimum_should_match=1, should=clauses)
-
-        results = self._read_many(
-            identity, query, fields, len(uuids), **kwargs)
-
-        return self.result_list(self, identity, results)
-
     def search_user_communities(
             self, identity, params=None, es_preference=None, **kwargs):
         """Search for records matching the querystring."""
@@ -103,16 +91,17 @@ class CommunityService(RecordService):
                uow=None):
         """Rename a community."""
         record = self.record_cls.pid.resolve(id_)
+        old_slug = record.slug
 
         self.check_revision_id(record, revision_id)
 
         # Permissions
         self.require_permission(identity, "rename", record=record)
 
-        if 'id' not in data:
+        if 'slug' not in data:
             raise ValidationError(
                 'Missing data for required field.',
-                field_name='id',
+                field_name='slug',
             )
 
         data, errors = self.schema.load(
@@ -125,7 +114,13 @@ class CommunityService(RecordService):
 
         # Run components
         self.run_components(
-            'rename', identity, data=data, record=record, uow=uow)
+            'rename',
+            identity,
+            data=data,
+            record=record,
+            old_slug=old_slug,
+            uow=uow
+        )
 
         uow.register(RecordCommitOp(record, indexer=self.indexer))
 
@@ -199,14 +194,15 @@ class CommunityService(RecordService):
         except NoResultFound as e:
             if raise_error:
                 raise CommunityFeaturedEntryDoesNotExistError(kwargs)
-
+            featured_entry = None
             errors.append(str(e))
+
         return featured_entry, errors
 
-
-    @unit_of_work()
     def featured_search(self, identity, params=None, es_preference=None, **kwargs):
         """Search featured communities."""
+        self.require_permission(identity, 'search')
+
         # Prepare and execute the search
         params = params or {}
         params["sort"] = "featured"

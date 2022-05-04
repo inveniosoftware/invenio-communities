@@ -15,6 +15,9 @@ from invenio_db.utils import alembic_test_context, drop_alembic_version_table
 # default. This means that when alembic creates the database vs when SQLAlchemy
 # creates the database there's a discrepancy. Importing the subjects model
 # here, ensures the model get's registered, and we avoid the discrepancy.
+from invenio_vocabularies.contrib.affiliations import models
+from invenio_vocabularies.contrib.awards import models
+from invenio_vocabularies.contrib.funders import models
 from invenio_vocabularies.contrib.names import models
 from invenio_vocabularies.contrib.subjects import models
 
@@ -33,7 +36,6 @@ def test_alembic(base_app, database):
     tables = [x.name for x in db.get_tables_for_bind()]
     assert 'communities_metadata' in tables
     assert 'communities_files' in tables
-    assert 'communities_metadata_version' in tables
     assert 'communities_members' in tables
     assert 'communities_featured' in tables
 

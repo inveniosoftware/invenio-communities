@@ -11,7 +11,7 @@
       "id": {
         "type": "keyword"
       },
-      "uuid": {
+      "slug": {
         "type": "keyword"
       },
       "access": {

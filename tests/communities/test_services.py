@@ -27,14 +27,14 @@ from invenio_communities.communities.records.api import Community
 def comm(community_service, minimal_community, location):
     """Create minimal public community."""
     c = deepcopy(minimal_community)
-    c["id"] = "{id}".format(id=str(datetime.utcnow().timestamp()).replace(".","-"))
+    c["slug"] = "{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
     return community_service.create(data=c, identity=system_identity)
 
 @pytest.fixture()
 def comm_restricted(community_service, minimal_community, location):
     """Create minimal restricted community."""
     c = deepcopy(minimal_community)
-    c["id"] = "{id}".format(id=str(datetime.utcnow().timestamp()).replace(".","-"))
+    c["slug"] = "{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
     c["access"]["visibility"] = "restricted"
     return community_service.create(data=c, identity=system_identity)
 
@@ -62,7 +62,7 @@ def test_search_featured(community_service, comm, db, es_clear):
     assert "featured" not in hits[0]
 
     # new community with only future entry should not show up in search
-    c2 = community_service.create(identity=system_identity, data={**comm.data, "id":"c2-id"})
+    c2 = community_service.create(identity=system_identity, data={**comm.data, "slug":"c2-id"})
     community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=future_data).to_dict()
     featured_comms = community_service.featured_search(identity=system_identity).to_dict()
     hits = featured_comms["hits"]["hits"]
@@ -93,7 +93,7 @@ def test_reindex_featured_entries_task(community_service, comm, db, es_clear):
     tomorrow = {
         "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
     }
-    c2 = community_service.create(identity=system_identity, data={**comm.data, "id":"c2-id"})
+    c2 = community_service.create(identity=system_identity, data={**comm.data, "slug": "c2-id"})
     community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=tomorrow).to_dict()
 
     near_future_difference=2

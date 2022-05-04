@@ -9,7 +9,9 @@
 
 """Invenio Communities Service API config."""
 
+from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
+from invenio_records_resources.services.base import Link
 from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import \
     MetadataComponent, RelationsComponent
@@ -17,19 +19,17 @@ from invenio_records_resources.services.records.config import \
     RecordServiceConfig
 from invenio_records_resources.services.records.config import \
     SearchOptions as SearchOptionsBase
-from invenio_records_resources.services.records.links import RecordLink, \
-    pagination_links
+from invenio_records_resources.services.records.links import pagination_links
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
-from invenio_communities.communities.services.results import CommunityFeaturedList
+from invenio_communities.communities.services.results import \
+    CommunityFeaturedList
 
 from ...permissions import CommunityPermissionPolicy
 from ..schema import CommunityFeaturedSchema, CommunitySchema
-from .components import CommunityAccessComponent, FeaturedCommunityComponent, OAISetComponent, \
-    OwnershipComponent, PIDComponent
-
-from flask_babelex import lazy_gettext as _
+from .components import CommunityAccessComponent, FeaturedCommunityComponent, \
+    OAISetComponent, OwnershipComponent, PIDComponent
 
 
 class SearchOptions(SearchOptionsBase):
@@ -49,13 +49,16 @@ class SearchOptions(SearchOptionsBase):
     }
 
 
-class CommunityMembersLink(RecordLink):
+class CommunityLink(Link):
     """Link variables setter for Community Members links."""
 
     @staticmethod
     def vars(record, vars):
         """Variables for the URI template."""
-        vars.update({"community_uuid": record.id})
+        vars.update({
+            "id": record.id,
+            "slug": record.slug,
+        })
 
 
 class CommunityServiceConfig(RecordServiceConfig):
@@ -79,14 +82,14 @@ class CommunityServiceConfig(RecordServiceConfig):
     result_list_cls_featured = CommunityFeaturedList
 
     links_item = {
-        "self": RecordLink("{+api}/communities/{id}"),
-        "self_html": RecordLink("{+ui}/communities/{id}"),
-        "settings_html": RecordLink("{+ui}/communities/{id}/settings"),
-        "logo": RecordLink("{+api}/communities/{id}/logo"),
-        "rename": RecordLink("{+api}/communities/{id}/rename"),
-        "members": CommunityMembersLink("{+api}/communities/{community_uuid}/members"),
-        "public_members": CommunityMembersLink("{+api}/communities/{community_uuid}/members/public"),
-        "invitations": CommunityMembersLink("{+api}/communities/{community_uuid}/invitations")
+        "self": CommunityLink("{+api}/communities/{id}"),
+        "self_html": CommunityLink("{+ui}/communities/{slug}"),
+        "settings_html": CommunityLink("{+ui}/communities/{slug}/settings"),
+        "logo": CommunityLink("{+api}/communities/{id}/logo"),
+        "rename": CommunityLink("{+api}/communities/{id}/rename"),
+        "members": CommunityLink("{+api}/communities/{id}/members"),
+        "public_members": CommunityLink("{+api}/communities/{id}/members/public"),
+        "invitations": CommunityLink("{+api}/communities/{id}/invitations")
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")

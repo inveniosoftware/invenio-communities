@@ -10,6 +10,7 @@
 
 import copy
 from io import BytesIO
+from uuid import uuid4
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.members import Member
@@ -19,7 +20,7 @@ def _assert_single_item_response(response):
     """Assert the fields present on a single item response."""
     response_fields = response.json.keys()
     fields_to_check = [
-        'created', 'id', 'links', 'metadata', 'updated'
+        'created', 'id', 'links', 'metadata', 'slug', 'updated',
     ]
 
     for field in fields_to_check:
@@ -98,6 +99,7 @@ def test_simple_flow(
 
     created_community = res.json
     id_ = created_community["id"]
+    slug = created_community["slug"]
 
     # Read the community
     res = client.get(f'/communities/{id_}', headers=headers)
@@ -107,6 +109,11 @@ def test_simple_flow(
 
     read_community = res.json
     Community.index.refresh()
+
+    # Read the community via slug
+    res = client.get(f'/communities/{slug}', headers=headers)
+    assert res.status_code == 200
+    assert res.json['id'] == id_
 
     # Search for created community
     res = client.get(
@@ -196,17 +203,17 @@ def test_post_metadata_schema_validation(
 
     # Assert field size constraints  (id, title, description, curation policy, page)
     # ID max 100
-    data["id"] = "x" * 101
+    data["slug"] = "x" * 101
     res = client.post(
         '/communities', headers=headers, json=data
     )
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."
-    assert res.json["errors"][0]['field'] == 'id'
+    assert res.json["errors"][0]['field'] == 'slug'
     #assert res.json["errors"][0]['messages'] == ['Not a valid string.']
 
     # Title max 250
-    data["id"] = "my_comm"
+    data["slug"] = "my_comm"
     data['metadata']['title'] =  "x" * 251
     res = client.post(
         '/communities', headers=headers, json=data
@@ -259,7 +266,7 @@ def test_post_metadata_schema_validation(
     _assert_single_item_response(res)
 
     # Delete the community
-    res = client.delete(f'/communities/{data["id"]}', headers=headers)
+    res = client.delete(f'/communities/{data["slug"]}', headers=headers)
     assert res.status_code == 204
 
 
@@ -341,9 +348,10 @@ def test_post_self_links(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
+    slug  = created_community['slug']
     # assert '/'.join(created_community['links']['self'].split('/')[-2:]) == f'communities/{id_}'
     assert created_community['links']['self'] == f'https://127.0.0.1:5000/api/communities/{id_}'
-    assert created_community['links']['self_html'] == f'https://127.0.0.1:5000/communities/{id_}'
+    assert created_community['links']['self_html'] == f'https://127.0.0.1:5000/communities/{slug}'
 
     # Delete the community
     res = client.delete(f'/communities/{id_}', headers=headers)
@@ -361,7 +369,7 @@ def test_simple_search_response(
     community_copy['metadata']['type'] = community_types[-1]
 
     # Create many communities,
-    id_oldest, id_newest, num_each, total = fake_communities
+    slug_oldest, slug_newest, num_each, total = fake_communities
 
     # Search for any commmunity, default order newest
     res = client.get(
@@ -369,7 +377,7 @@ def test_simple_search_response(
     assert res.status_code == 200
     _assert_single_item_search(res)
     assert res.json['hits']['total'] == total
-    assert res.json['hits']['hits'][0]['id'] == id_newest
+    assert res.json['hits']['hits'][0]['slug'] == slug_newest
     assert res.json['hits']['hits'][0]['metadata'] == community_copy['metadata']
 
     # Search filter for the second commmunity
@@ -385,7 +393,7 @@ def test_simple_search_response(
         f'/communities', query_string={'q': '', 'sort': 'oldest'},
         headers=headers)
     assert res.status_code == 200
-    assert res.json['hits']['hits'][0]['id'] == id_oldest
+    assert res.json['hits']['hits'][0]['slug'] == slug_oldest
 
     # Test for page and size
     res = client.get(
@@ -511,10 +519,11 @@ def test_update_renamed_record(
     _assert_single_item_response(res)
     created_community = res.json
     id_ = created_community['id']
+    slug = created_community['slug']
 
     # Rename the community
     data = copy.deepcopy(minimal_community)
-    data['id'] = "renamed_comm"
+    data['slug'] = "renamed_comm"
     res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
     assert res.status_code == 200
     renamed_community = res.json
@@ -529,7 +538,6 @@ def test_update_renamed_record(
     assert res.status_code == 200
     assert res.json['id'] == renamed_id_
     assert res.json['metadata'] == data["metadata"]
-    # assert access_== data["access"]
     assert res.json["revision_id"] == int(renamed_community["revision_id"])+1
 
 
@@ -646,7 +654,7 @@ def test_invalid_community_ids_create(
 ):
     client = owner.login(client)
     # Create a community with invalid ID
-    minimal_community['id'] = 'comm id'
+    minimal_community['slug'] = 'comm id'
     res = client.post('/communities', headers=headers, json=minimal_community)
     assert res.status_code == 400
     assert res.json['errors'][0]['messages'][0] == \
@@ -659,7 +667,7 @@ def test_invalid_community_ids(
     """Test for invalid community IDs handling."""
     client = owner.login(client)
 
-    minimal_community['id'] = 'comm_id'
+    minimal_community['slug'] = 'comm_id'
     res = client.post('/communities', headers=headers, json=minimal_community)
     assert res.status_code == 201
     _assert_single_item_response(res)
@@ -667,9 +675,9 @@ def test_invalid_community_ids(
     id_ = created_community['id']
     Member.index.refresh()
 
-    # Rename the communnity
+    # Rename the community
     data = copy.deepcopy(minimal_community)
-    data['id'] = "Renamed comm"
+    data['slug'] = "Renamed comm"
     res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
     assert res.status_code == 400
     assert res.json['errors'][0]['messages'][0] == \
@@ -683,7 +691,12 @@ def test_invalid_community_ids(
         'Missing data for required field.'
 
     new_id = "Renamed_comm"
-    data['id'] = new_id
+    data['slug'] = new_id
     res = client.post(f'/communities/{id_}/rename', headers=headers, json=data)
     assert res.status_code == 200
-    assert res.json['id'] == new_id.lower()
+    assert res.json['slug'] == new_id.lower()
+
+    # UUID is invalid
+    minimal_community['slug'] = str(uuid4())
+    res = client.post('/communities', headers=headers, json=minimal_community)
+    assert res.status_code == 400
