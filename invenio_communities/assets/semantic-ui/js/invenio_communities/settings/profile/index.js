@@ -142,39 +142,44 @@ const LogoUploader = (props) => {
   return (
     <Dropzone {...dropzoneParams}>
       {({ getRootProps, getInputProps, open: openFileDialog }) => (
-        <span {...getRootProps()}>
-          <input {...getInputProps()} />
-          <Header className="mt-0">{i18next.t("Profile picture")}</Header>
-          {props.logo ? (
-            <Image src={props.logo.links.self} fluid wrapped rounded />
-          ) : (
-            <Image src={props.defaultLogo} fluid wrapped rounded />
-          )}
-          <Divider hidden />
+        <>
+          <span {...getRootProps()}>
+            <input {...getInputProps()} />
+            <Header className="mt-0">{i18next.t("Profile picture")}</Header>
+            {props.logo ? (
+              <Image src={props.logo.links.self} fluid wrapped rounded />
+            ) : (
+              <Image src={props.defaultLogo} fluid wrapped rounded />
+            )}
+            <Divider hidden />
+          </span>
+
           <Button
             fluid
             icon
             labelPosition="left"
             type="button"
             onClick={openFileDialog}
+            className="rel-mt-1 rel-mb-1"
           >
             <Icon name="upload" />
             {i18next.t("Upload new picture")}
           </Button>
+
           {props.logo && (
             <DeleteButton
               label={i18next.t("Delete picture")}
               redirectURL={`${props.community.links.self_html}/settings`}
               confirmationMessage={
-                <h3>
+                <Header as="h2" size="medium" textAlign="center">
                   {i18next.t("Are you sure you want to delete this picture?")}
-                </h3>
+                </Header>
               }
               onDelete={deleteLogo}
               onError={props.onError}
             />
           )}
-        </span>
+        </>
       )}
     </Dropzone>
   );
@@ -186,26 +191,26 @@ const DangerZone = ({ community, onError }) => (
       {i18next.t("Danger zone")}
     </Header>
     <Grid>
-      <Grid.Column width="12">
-        <Header as="h4">{i18next.t("Rename community")}</Header>
+      <Grid.Column mobile={16} tablet={10} computer={12}>
+        <Header as="h3" size="small">{i18next.t("Rename community")}</Header>
         <p>
           {i18next.t(
             "Renaming your community can have unintended side effects."
           )}
         </p>
       </Grid.Column>
-      <Grid.Column floated="right" width="4">
+      <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
         <RenameCommunityButton community={community} />
       </Grid.Column>
-      <Grid.Column floated="left" width="12">
-        <Header as="h4">{i18next.t("Delete community")}</Header>
+      <Grid.Column mobile={16} tablet={10} computer={12} floated="left">
+        <Header as="h3" size="small">{i18next.t("Delete community")}</Header>
         <p>
           {i18next.t(
             "Once deleted, it will be gone forever. Please be certain."
           )}
         </p>
       </Grid.Column>
-      <Grid.Column floated="right" width="4">
+      <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
         <DeleteButton
           community={community}
           label={i18next.t("Delete community")}
@@ -357,7 +362,7 @@ class CommunityProfileForm extends Component {
               </Grid.Row>
 
               <Grid.Row className="pt-0 pb-0">
-                <Grid.Column width={9}>
+                <Grid.Column mobile={16} tablet={9} computer={9} className="rel-pb-2">
                   <TextField
                     fluid
                     fieldPath="metadata.title"
@@ -485,7 +490,7 @@ class CommunityProfileForm extends Component {
                     {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
-                <Grid.Column width={4} floated="right">
+                <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
                   <LogoUploader
                     community={this.props.community}
                     logo={this.props.logo}

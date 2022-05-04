@@ -107,7 +107,7 @@ class CommunityPrivilegesForm extends Component {
                 <Header as="h2">{i18next.t("Community permissions")}</Header>
                 <Divider />
               </Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column mobile={16} tablet={12} computer={8}>
                 <Header as="h3">{i18next.t("Community visibility")}</Header>
                 {formConfig.access.visibility.map((item) => (
                   <React.Fragment key={item.value}>
@@ -143,7 +143,6 @@ class CommunityPrivilegesForm extends Component {
                   {isSaved ? i18next.t("Saved") : i18next.t("Save")}
                 </Button>
               </Grid.Column>
-              <Grid.Column width={8} />
               {/* TODO: Re-enable once properly integrated to be displayed */}
               {/*
               <Grid.Column width={6}>

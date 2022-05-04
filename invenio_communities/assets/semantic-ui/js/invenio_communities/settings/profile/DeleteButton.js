@@ -7,16 +7,21 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Icon, Modal } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 
 export const DeleteButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const cancelBtnRef = React.createRef();
+  const openModalBtnRef = React.createRef();
 
   const handleOpen = () => setModalOpen(true);
 
-  const handleClose = () => setModalOpen(false);
+  const handleClose = () => {
+    setModalOpen(false);
+    openModalBtnRef?.current?.focus();
+  }
 
   const handleDelete = async () => {
     try {
@@ -30,9 +35,14 @@ export const DeleteButton = (props) => {
     handleClose();
   };
 
+  useEffect(() => {
+    if(modalOpen) cancelBtnRef?.current?.focus();
+  }, [modalOpen])
+
   return (
     <>
       <Button
+        ref={openModalBtnRef}
         compact
         negative
         onClick={handleOpen}
@@ -40,15 +50,26 @@ export const DeleteButton = (props) => {
         icon
         labelPosition="left"
         type="button"
+        aria-haspopup="dialog"
+        aria-controls="warning-modal"
+        aria-expanded={modalOpen}
+        id="delete-button"
       >
         <Icon name="trash"></Icon>
         {props.label}
       </Button>
 
-      <Modal open={modalOpen} onClose={handleClose} size="tiny">
+      <Modal
+        id="warning-modal"
+        role="dialog"
+        aria-labelledby="delete-button"
+        open={modalOpen}
+        onClose={handleClose}
+        size="tiny"
+      >
         <Modal.Content>{props.confirmationMessage}</Modal.Content>
         <Modal.Actions>
-          <Button onClick={handleClose} floated="left">
+          <Button ref={cancelBtnRef} onClick={handleClose} floated="left">
             {i18next.t("Cancel")}
           </Button>
           <Button color="red" onClick={handleDelete}>
