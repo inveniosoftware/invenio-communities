@@ -15,6 +15,12 @@ from jsonschema.exceptions import ValidationError
 from invenio_communities.communities.records.api import Community
 
 
+@pytest.fixture(scope="module")
+def full_community(full_community):
+    full_community.pop('slug')
+    return full_community
+
+
 #
 # Tests
 #
@@ -27,7 +33,7 @@ def test_organizations_field(app):
 def test_community_organizations_validation(
     app, db, location, full_community, community_type_record
 ):
-    comm = Community.create(full_community)
+    comm = Community.create(full_community, slug='test')
     comm.commit()
     db.session.commit()
 
@@ -43,7 +49,7 @@ def test_community_organizations_with_multiple_organizations(
     community_copy["metadata"]["organizations"].append(
         {"name": "Another organization"}
     )
-    comm = Community.create(community_copy)
+    comm = Community.create(community_copy, slug='test')
     comm.commit()
     db.session.commit()
 
@@ -57,11 +63,12 @@ def test_community_organizations_with_name_cleanup_validation(
     app, db, location, affiliation, minimal_community
 ):
     """Creates a community with an existing affiliation."""
+    slug = minimal_community.pop('slug')
     community_copy = deepcopy(minimal_community)
     community_copy["metadata"]["organizations"] = [
         {"id": "cern", "name": "CERN"}
     ]
-    comm = Community.create(community_copy)
+    comm = Community.create(community_copy, slug=slug)
     comm.commit()
     db.session.commit()
 
@@ -79,7 +86,7 @@ def test_community_organizations_indexing(
     community_copy["metadata"]["organizations"].append(
         {"id": "cern", "name": "CERN"}
     )
-    comm = Community.create(community_copy).commit()
+    comm = Community.create(community_copy, slug='test').commit()
     db.session.commit()
 
     # Dump community - dumps will dereference relations.
@@ -119,24 +126,28 @@ def test_community_organizations_invalid(
         [{"id": "invalid"}]
     )
     pytest.raises(InvalidRelationValue,
-                  Community.create(comunity_copy).commit)
+                  Community.create(comunity_copy, slug='test').commit)
 
     # Not a list of objects
     comunity_copy["metadata"]["organizations"] = {"id": "cern"}
-    pytest.raises(ValidationError, Community.create, comunity_copy)
+    pytest.raises(
+        ValidationError, Community.create, comunity_copy, slug='test')
 
     # no additional keys are allowed
     comunity_copy["metadata"]["organizations"] = (
         [{"test": "cern"}]
     )
-    pytest.raises(ValidationError, Community.create, comunity_copy)
+    pytest.raises(
+        ValidationError, Community.create, comunity_copy, slug='test')
 
     # non-string types are not allowed as id values
     comunity_copy["metadata"]["organizations"] = [{"id": 1}]
-    pytest.raises(ValidationError, Community.create, comunity_copy)
+    pytest.raises(
+        ValidationError, Community.create, comunity_copy, slug='test')
 
     # No duplicates
     comunity_copy["metadata"]["organizations"] = (
         [{"id": "cern"}, {"id": "cern"}]
     )
-    pytest.raises(ValidationError, Community.create, comunity_copy)
+    pytest.raises(
+        ValidationError, Community.create, comunity_copy, slug='test')

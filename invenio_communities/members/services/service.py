@@ -283,6 +283,7 @@ class MemberService(RecordService):
             'members_search',
             self.member_dump_schema,
             self.config.search,
+            extra_filter=Q('term', **{'active': True}),
             params=params,
             es_preference=es_preference,
             **kwargs
@@ -304,7 +305,9 @@ class MemberService(RecordService):
             'members_search_public',
             self.public_dump_schema,
             self.config.search_public,
-            extra_filter=Q('term', **{'visible': True}),
+            extra_filter=(
+                Q('term', **{'visible': True}) & Q('term', **{'active': True})
+            ),
             params=params,
             es_preference=es_preference,
             **kwargs

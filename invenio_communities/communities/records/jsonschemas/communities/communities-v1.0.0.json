@@ -9,12 +9,6 @@
       "description": "JSONSchema declaration.",
       "type": "string"
     },
-    "id": {
-      "description": "Community identifier.",
-      "type": "string"
-    },
-    "pid": {"$ref": "local://definitions-v1.0.0.json#/internal-pid"},
-
     "access": {
       "type": "object",
       "description": "Resource metadata.",

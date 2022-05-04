@@ -10,11 +10,13 @@
 """Community database models."""
 
 from datetime import datetime
+
 from invenio_db import db
 from invenio_files_rest.models import Bucket
 from invenio_records.models import RecordMetadataBase, Timestamp
 from invenio_records_resources.records import FileRecordModelMixin
 from sqlalchemy.dialects import mysql
+from sqlalchemy.types import String
 from sqlalchemy_utils.types import UUIDType
 
 
@@ -23,8 +25,7 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
 
     __tablename__ = 'communities_metadata'
 
-    # Enables SQLAlchemy-Continuum versioning
-    __versioned__ = {}
+    slug = db.Column(String(255), unique=True, nullable=True)
 
     bucket_id = db.Column(UUIDType, db.ForeignKey(Bucket.id))
     bucket = db.relationship(Bucket)

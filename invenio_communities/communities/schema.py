@@ -8,12 +8,15 @@
 
 """Community schema."""
 
+import re
+from uuid import UUID
+
 from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services.records.schema import BaseRecordSchema
 from invenio_vocabularies.contrib.affiliations.schema import \
     AffiliationRelationSchema
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, post_load, validate, ValidationError
 from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, \
     SanitizedUnicode
 
@@ -26,6 +29,17 @@ def _not_blank(**kwargs):
         min=1,
         **kwargs
     )
+
+
+def is_not_uuid(value):
+    """Make sure value is not a UUID"""
+    try:
+        UUID(value)
+        raise ValidationError(
+            _("The ID must not be an Universally Unique IDentifier (UUID).")
+        )
+    except (ValueError, TypeError):
+        pass
 
 
 class CommunityAccessSchema(Schema):
@@ -75,14 +89,25 @@ class CommunityMetadataSchema(Schema):
 class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
-    id = SanitizedUnicode(required=True, validate=_not_blank(max=100))
-    uuid = fields.Method(serialize='get_uuid')
+    id = fields.String(dump_only=True)
+    slug = SanitizedUnicode(required=True, validate=[
+        _not_blank(max=100),
+        validate.Regexp(
+            r'^[-\w]+$',
+            flags=re.ASCII,
+            error=_(
+                'The ID should contain only letters with numbers or dashes.')
+        ),
+        is_not_uuid,
+    ])
     metadata = NestedAttribute(CommunityMetadataSchema, required=True)
     access = NestedAttribute(CommunityAccessSchema, required=True)
 
-    def get_uuid(self, obj):
-        """Get the internal UUID."""
-        return str(obj.id)
+    @post_load
+    def lowercase(self, in_data, **kwargs):
+        """Ensure slug is lowercase."""
+        in_data["slug"] = in_data["slug"].lower()
+        return in_data
 
 
 class CommunityFeaturedSchema(Schema):

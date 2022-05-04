@@ -19,6 +19,12 @@ from invenio_communities.communities.records.api import Community
 from invenio_records.systemfields.relations.errors import InvalidRelationValue
 
 
+@pytest.fixture(scope="module")
+def minimal_community(minimal_community):
+    minimal_community.pop('slug')
+    return minimal_community
+
+
 @pytest.mark.parametrize(
     "community_type, expected",
     [
@@ -39,7 +45,7 @@ def test_valid_community_types(
         }
     })
 
-    comm = Community.create(community_copy)
+    comm = Community.create(community_copy, slug='test')
     comm.commit()
     db.session.commit()
 
@@ -56,7 +62,7 @@ def test_invalid_community_type(
         }
     })
     with pytest.raises(InvalidRelationValue):
-        comm = Community.create(community_copy)
+        comm = Community.create(community_copy, slug='test')
         comm.commit()
         db.session.commit()
 
