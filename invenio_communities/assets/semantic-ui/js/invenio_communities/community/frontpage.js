@@ -53,6 +53,7 @@ class CommunityCard extends Component {
         <Image
           src={this.props.community.links.logo}
           fallbackSrc={this.props.defaultLogo}
+          loadFallbackFirst={true}
         />
         <Card.Content>
           <Card.Header>
