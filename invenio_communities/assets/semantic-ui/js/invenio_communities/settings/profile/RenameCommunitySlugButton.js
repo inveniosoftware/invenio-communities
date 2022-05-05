@@ -7,21 +7,20 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { useState, Component } from "react";
-import { Button, Form, Modal, Icon } from "semantic-ui-react";
-
-import { CommunityApi } from "../../api";
 import { i18next } from "@translations/invenio_communities/i18next";
+import React, { Component } from "react";
 import { withCancel } from "react-invenio-forms";
+import { Button, Form, Icon, Modal } from "semantic-ui-react";
+import { CommunityApi } from "../../api";
 import { communityErrorSerializer } from "../../api/serializers";
 
-// WARNING: This DOES NOT RENAME a community! It changes its id.
-export class RenameCommunityButton extends Component {
+export class RenameCommunitySlugButton extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       modalOpen: false,
+      loading: false,
       error: "",
     };
 
@@ -37,19 +36,22 @@ export class RenameCommunityButton extends Component {
   handleClose = () => this.setState({ modalOpen: false });
 
   handleRename = async (event) => {
-    // stop event propagation so the submit event is restricted in the modal
+    // stop event propagation so the submit event is restricted to the modal
     // form
     event.stopPropagation();
     const { community } = this.props;
-    const newId = this.formInputRef.current.value;
+    const newSlug = this.formInputRef.current.value;
     const client = new CommunityApi();
 
-    this.cancellableRename = withCancel(client.updateId(community.id, newId));
+    this.cancellableRename = withCancel(
+      client.renameSlug(community.id, newSlug)
+    );
+    this.setState({ loading: true });
 
     try {
       await this.cancellableRename.promise;
 
-      window.location.href = `/communities/${newId}/settings`;
+      window.location.href = `/communities/${newSlug}/settings`;
       this.handleClose();
     } catch (error) {
       if (error === "UNMOUNTED") return;
@@ -58,7 +60,7 @@ export class RenameCommunityButton extends Component {
 
       if (errors) {
         const invalidIdError = errors
-          .filter((error) => error.field === "id")
+          .filter((error) => error.field === "slug")
           .map((error) => error.messages[0]);
         this.setState({ error: invalidIdError });
       }
@@ -66,7 +68,7 @@ export class RenameCommunityButton extends Component {
   };
 
   render() {
-    const { modalOpen, error } = this.state;
+    const { modalOpen, loading, error } = this.state;
 
     return (
       <>
@@ -102,10 +104,10 @@ export class RenameCommunityButton extends Component {
             </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={this.handleClose} floated="left">
+            <Button onClick={this.handleClose} loading={loading} floated="left">
               {i18next.t("Cancel")}
             </Button>
-            <Button color="red" onClick={this.handleRename}>
+            <Button negative onClick={this.handleRename} loading={loading}>
               {i18next.t("Rename")}
             </Button>
           </Modal.Actions>

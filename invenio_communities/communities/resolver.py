@@ -40,7 +40,7 @@ class CommunityPKProxy(RecordPKProxy):
         metadata = resolved_dict["metadata"]
         return {
             "id": resolved_dict["id"],
-            "uuid": resolved_dict["uuid"],
+            "slug": resolved_dict["slug"],
             "title": metadata["title"],
             "description": metadata.get("description"),
             "type": metadata.get("type"),

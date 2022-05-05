@@ -1,56 +1,53 @@
 /*
  * This file is part of Invenio.
- * Copyright (C) 2016-2021 CERN.
- * Copyright (C) 2021 Northwestern University.
+ * Copyright (C) 2016-2022 CERN.
+ * Copyright (C) 2021-2022 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import { Formik, getIn } from "formik";
-import * as Yup from "yup";
-import _unset from "lodash/unset";
+import { i18next } from "@translations/invenio_communities/i18next";
+import { Formik } from "formik";
+import _cloneDeep from "lodash/cloneDeep";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
-import _map from "lodash/map";
-import _mapValues from "lodash/mapValues";
-import _find from "lodash/find";
-import _cloneDeep from "lodash/cloneDeep";
-import _isNumber from "lodash/isNumber";
+import _isArray from "lodash/isArray";
 import _isBoolean from "lodash/isBoolean";
 import _isEmpty from "lodash/isEmpty";
-import _isObject from "lodash/isObject";
-import _isArray from "lodash/isArray";
 import _isNull from "lodash/isNull";
+import _isNumber from "lodash/isNumber";
+import _isObject from "lodash/isObject";
+import _map from "lodash/map";
+import _mapValues from "lodash/mapValues";
 import _pickBy from "lodash/pickBy";
+import _unset from "lodash/unset";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
-
-import { DeleteButton } from "./DeleteButton";
-import { RenameCommunityButton } from "./RenameCommunityButton";
 import { FundingField } from "react-invenio-deposit";
-
-import {
-  Divider,
-  Icon,
-  Image,
-  Grid,
-  Button,
-  Header,
-  Form,
-  Message,
-  Segment,
-} from "semantic-ui-react";
 import {
   FieldLabel,
   RemoteSelectField,
   SelectField,
   TextField,
 } from "react-invenio-forms";
+import {
+  Button,
+  Divider,
+  Form,
+  Grid,
+  Header,
+  Icon,
+  Image,
+  Message,
+  Segment,
+} from "semantic-ui-react";
+import * as Yup from "yup";
 import { CommunityApi } from "../../api";
-import { i18next } from "@translations/invenio_communities/i18next";
 import { communityErrorSerializer } from "../../api/serializers";
+import { DeleteButton } from "./DeleteButton";
+import { RenameCommunitySlugButton } from "./RenameCommunitySlugButton";
 
 const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
@@ -135,7 +132,7 @@ const LogoUploader = (props) => {
     accept: ".jpeg,.jpg,.png",
   };
 
-  let deleteLogo = async () => {
+  const deleteLogo = async () => {
     const client = new CommunityApi();
     await client.deleteLogo(props.community.id);
   };
@@ -172,7 +169,7 @@ const LogoUploader = (props) => {
               label={i18next.t("Delete picture")}
               redirectURL={`${props.community.links.self_html}/settings`}
               confirmationMessage={
-                <Header as="h2" size="medium" textAlign="center">
+                <Header as="h2" size="medium">
                   {i18next.t("Are you sure you want to delete this picture?")}
                 </Header>
               }
@@ -193,7 +190,9 @@ const DangerZone = ({ community, onError }) => (
     </Header>
     <Grid>
       <Grid.Column mobile={16} tablet={10} computer={12}>
-        <Header as="h3" size="small">{i18next.t("Rename community")}</Header>
+        <Header as="h3" size="small">
+          {i18next.t("Rename community")}
+        </Header>
         <p>
           {i18next.t(
             "Renaming your community can have unintended side effects."
@@ -201,10 +200,12 @@ const DangerZone = ({ community, onError }) => (
         </p>
       </Grid.Column>
       <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
-        <RenameCommunityButton community={community} />
+        <RenameCommunitySlugButton community={community} />
       </Grid.Column>
       <Grid.Column mobile={16} tablet={10} computer={12} floated="left">
-        <Header as="h3" size="small">{i18next.t("Delete community")}</Header>
+        <Header as="h3" size="small">
+          {i18next.t("Delete community")}
+        </Header>
         <p>
           {i18next.t(
             "Once deleted, it will be gone forever. Please be certain."
@@ -236,15 +237,12 @@ class CommunityProfileForm extends Component {
   state = {
     error: "",
   };
-
-  /**
-   * Object stores known organizations, so that an organization's name can be mapped to it's ID (if known).
-   */
   knownOrganizations = {};
 
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
       id: "",
+      slug: "",
       metadata: {
         description: "",
         title: "",
@@ -254,7 +252,7 @@ class CommunityProfileForm extends Component {
         type: {},
         website: "",
         organizations: [],
-        funding: []
+        funding: [],
       },
       // TODO: should this come from the backend?
       access: {
@@ -264,14 +262,17 @@ class CommunityProfileForm extends Component {
       },
     });
 
-    // Deserialise organisations. Store known communities.
-    const organizations = [];
+    // create a map with all organizations that are not custom (part of the
+    // vocabulary), so that on form submission, newly custom organization input
+    // by the user can be identified and correctly sent to the backend.
+    const organizationsNames = [];
     initialValues.metadata.organizations.map((org) => {
-      if (org.id) {
+      const isNonCustomOrganization = org.id;
+      if (isNonCustomOrganization) {
         this.knownOrganizations[org.name] = org.id;
       }
-      organizations.push(org.name);
-    })
+      organizationsNames.push(org.name);
+    });
 
     _unset(initialValues, "metadata.type.title");
     /**
@@ -281,8 +282,8 @@ class CommunityProfileForm extends Component {
      *
      * @returns {object} an object containing the deserialized record
      */
-     const deserializeFunding = ((fund) => {
-      const _deserialize = ((value) => {
+    const deserializeFunding = (fund) => {
+      const _deserialize = (value) => {
         const deserializedValue = _cloneDeep(value);
 
         if (value?.title?.en) {
@@ -290,7 +291,7 @@ class CommunityProfileForm extends Component {
         }
 
         if (value.identifiers) {
-          const allowedIdentifiers = ['url'];
+          const allowedIdentifiers = ["url"];
 
           allowedIdentifiers.forEach((identifier) => {
             let identifierValue = null;
@@ -303,12 +304,12 @@ class CommunityProfileForm extends Component {
             if (identifierValue) {
               deserializedValue[identifier] = identifierValue;
             }
-          })
+          });
 
-          delete deserializedValue['identifiers'];
+          delete deserializedValue["identifiers"];
         }
         return deserializedValue;
-      });
+      };
 
       let deserializedValue = {};
       if (fund !== null) {
@@ -318,19 +319,11 @@ class CommunityProfileForm extends Component {
       }
 
       return deserializedValue;
-    });
-
-    // Deerialize each funding record, award being optional.
-    const funding = initialValues.metadata.funding.map((fund) => {
-      return {
-        ...(fund.award && {award: deserializeFunding(fund.award)}),
-        funder: deserializeFunding(fund.funder)
-      }
-    });
+    };
 
     return {
       ...initialValues,
-      metadata: { ...initialValues.metadata, organizations, funding },
+      metadata: { ...initialValues.metadata, organizationsNames },
     };
   };
 
@@ -349,7 +342,7 @@ class CommunityProfileForm extends Component {
      *
      * @returns {object} an object containing the serialized record
      */
-     const serializeFunding = ((fund) => {
+    const serializeFunding = (fund) => {
       const _serialize = (value) => {
         if (value.id) {
           return { id: value.id };
@@ -359,22 +352,22 @@ class CommunityProfileForm extends Component {
         const clonedValue = _cloneDeep(value);
         if (value.title) {
           clonedValue.title = {
-            "en": value.title
+            en: value.title,
           };
         }
 
         if (value.url) {
           clonedValue.identifiers = [
             {
-              "identifier": value.url,
-              "scheme": "url"
-            }
-          ]
+              identifier: value.url,
+              scheme: "url",
+            },
+          ];
           delete clonedValue["url"];
         }
 
         return clonedValue;
-      }
+      };
 
       let serializedValue = {};
       if (fund !== null) {
@@ -384,7 +377,7 @@ class CommunityProfileForm extends Component {
       }
 
       return serializedValue;
-     });
+    };
 
     let submittedCommunity = _cloneDeep(values);
 
@@ -393,21 +386,19 @@ class CommunityProfileForm extends Component {
       (organization) => {
         const orgID = this.knownOrganizations[organization];
         return {
-          ...(orgID && {id: orgID}),
-          name: organization
+          ...(orgID && { id: orgID }),
+          name: organization,
         };
       }
     );
 
     // Serialize each funding record, award being optional.
-    const funding = submittedCommunity.metadata?.funding.map(
-      (fund) => {
-        return {
-          ...(fund.award && {award: serializeFunding(fund.award)}),
-          funder: serializeFunding(fund.funder)
-        }
-      }
-    );
+    const funding = submittedCommunity.metadata?.funding.map((fund) => {
+      return {
+        ...(fund.award && { award: serializeFunding(fund.award) }),
+        funder: serializeFunding(fund.funder),
+      };
+    });
 
     submittedCommunity = {
       ...submittedCommunity,
@@ -470,15 +461,13 @@ class CommunityProfileForm extends Component {
               </Grid>
             </Message>
             <Grid>
-              <Grid.Row>
-                <Grid.Column width={16}>
-                  <Header as="h2">{community.id}</Header>
-                  <Divider />
-                </Grid.Column>
-              </Grid.Row>
-
-              <Grid.Row className="pt-0 pb-0">
-                <Grid.Column mobile={16} tablet={9} computer={9} className="rel-pb-2">
+              <Grid.Row className="pt-10 pb-0">
+                <Grid.Column
+                  mobile={16}
+                  tablet={9}
+                  computer={9}
+                  className="rel-pb-2"
+                >
                   <TextField
                     fluid
                     fieldPath="metadata.title"
@@ -504,8 +493,8 @@ class CommunityProfileForm extends Component {
                     options={this.props.commTypes.map((ct) => {
                       return {
                         value: ct.id,
-                        text: ct?.title?.en ?? ct.id
-                      }
+                        text: ct?.title?.en ?? ct.id,
+                      };
                     })}
                   />
                   <TextField
@@ -547,20 +536,22 @@ class CommunityProfileForm extends Component {
                       []
                     )}
                     serializeSuggestions={(organizations) =>
-                      _map(organizations, (organization) =>
-                      {
-                        const isKnownOrg = this.knownOrganizations.hasOwnProperty(organization.name);
+                      _map(organizations, (organization) => {
+                        const isKnownOrg =
+                          this.knownOrganizations.hasOwnProperty(
+                            organization.name
+                          );
                         if (!isKnownOrg) {
                           this.knownOrganizations = {
                             ...this.knownOrganizations,
-                            [organization.name]: organization.id
+                            [organization.name]: organization.id,
                           };
                         }
                         return {
                           text: organization.name,
                           value: organization.name,
-                          key: organization.name
-                        }
+                          key: organization.name,
+                        };
                       })
                     }
                     label={i18next.t("Organizations")}
@@ -597,11 +588,13 @@ class CommunityProfileForm extends Component {
                         title: award.title.en ?? award.title,
                         pid: award.pid,
                         number: award.number,
-                        funder: award.funder ?? '',
+                        funder: award.funder ?? "",
                         id: award.id,
-                        ...(award.identifiers && { identifiers: award.identifiers }),
-                        ...(award.acronym && { acronym: award.acronym })
-                      }
+                        ...(award.identifiers && {
+                          identifiers: award.identifiers,
+                        }),
+                        ...(award.acronym && { acronym: award.acronym }),
+                      };
                     }}
                     deserializeFunder={(funder) => {
                       return {
@@ -609,28 +602,38 @@ class CommunityProfileForm extends Component {
                         name: funder.name,
                         ...(funder.pid && { pid: funder.pid }),
                         ...(funder.country && { country: funder.country }),
-                        ...(funder.identifiers && { identifiers: funder.identifiers })
-                      }
-                    }
-                    }
+                        ...(funder.identifiers && {
+                          identifiers: funder.identifiers,
+                        }),
+                      };
+                    }}
                     computeFundingContents={(funding) => {
-                      let headerContent, descriptionContent = '';
-                      let awardOrFunder = 'award';
+                      let headerContent,
+                        descriptionContent = "";
+                      let awardOrFunder = "award";
                       if (funding.award) {
                         headerContent = funding.award.title;
                       }
 
                       if (funding.funder) {
-                        const funderName = funding.funder?.name ?? funding.funder?.title?.en ?? funding.funder?.id ?? '';
+                        const funderName =
+                          funding.funder?.name ??
+                          funding.funder?.title?.en ??
+                          funding.funder?.id ??
+                          "";
                         descriptionContent = funderName;
                         if (!headerContent) {
-                          awardOrFunder = 'funder';
+                          awardOrFunder = "funder";
                           headerContent = funderName;
-                          descriptionContent = '';
+                          descriptionContent = "";
                         }
                       }
 
-                      return { headerContent, descriptionContent, awardOrFunder };
+                      return {
+                        headerContent,
+                        descriptionContent,
+                        awardOrFunder,
+                      };
                     }}
                   />
                   {/* TODO: Re-enable once properly integrated to be displayed */}
@@ -671,7 +674,12 @@ class CommunityProfileForm extends Component {
                     {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
-                <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
+                <Grid.Column
+                  mobile={16}
+                  tablet={6}
+                  computer={4}
+                  floated="right"
+                >
                   <LogoUploader
                     community={this.props.community}
                     logo={this.props.logo}

@@ -16,8 +16,8 @@
 <div class="ui container grid rel-mt-2">
   {%- block settings_menu %}
     {%- set menu_items = {
-      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.id), permissions.can_read),
-      'invitations': (_('Invitations'), url_for('invenio_communities.invitations', pid_value=community.id), permissions.can_search_invites),
+      'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.slug), permissions.can_read),
+      'invitations': (_('Invitations'), url_for('invenio_communities.invitations', pid_value=community.slug), permissions.can_search_invites),
     } %}
     <div class="three wide computer sixteen wide tablet sixteen wide mobile column">
       <div class="ui vertical computer horizontal tablet horizontal mobile menu">
