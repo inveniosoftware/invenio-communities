@@ -6,12 +6,12 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
 import { i18next } from "@translations/invenio_communities/i18next";
+import React, { Component } from "react";
+import Overridable from "react-overridable";
 import { Button, Modal } from "semantic-ui-react";
 import { ErrorMessage } from "./ErrorMessage";
 import { ModalContext } from "./modal_manager";
-import Overridable from "react-overridable";
 
 export const modalModeEnum = {
   leave: 1,
@@ -90,7 +90,9 @@ class RemoveMemberModal extends Component {
           <Modal.Actions>
             <Button
               content={i18next.t("Cancel")}
+              loading={loading}
               onClick={this.onCloseHandler}
+              floated="left"
             />
             <Button
               negative

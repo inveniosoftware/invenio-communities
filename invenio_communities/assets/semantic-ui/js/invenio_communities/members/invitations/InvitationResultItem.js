@@ -6,13 +6,13 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
-import React, { Component } from "react";
-import { DateTime } from "luxon";
-import { Container, Grid, Table, Item } from "semantic-ui-react";
-import { Image } from "react-invenio-forms";
-import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
+import { DateTime } from "luxon";
+import PropTypes from "prop-types";
+import { Component, default as React, default as React } from "react";
+import { Image } from "react-invenio-forms";
+import { Container, Grid, Item, Table } from "semantic-ui-react";
+import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
 
 const formattedTime = (expires_at) =>
@@ -39,7 +39,7 @@ export class InvitationResultItem extends Component {
     } = this.props;
     const { invitation } = this.state;
     const { api: invitationsApi } = this.context;
-    
+
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
@@ -55,7 +55,7 @@ export class InvitationResultItem extends Component {
                 <Item.Content className="ml-10">
                   <Item.Header size="small" as="b">
                     <a
-                      href={`/communities/${community.id}/requests/${invitation.request.id}`}
+                      href={`/communities/${community.slug}/requests/${invitation.request.id}`}
                     >
                       {invitation.member.name}
                     </a>

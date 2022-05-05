@@ -84,9 +84,9 @@ def communities_settings(community=None, logo=None, pid_value=None):
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(),  # TODO: use serializer,
         logo=logo.to_dict() if logo else None,
+        comtypes=comtypes,
         # Pass permissions so we can disable partially UI components
         # e.g Settings tab
-        comtypes=comtypes,
         permissions=permissions,
         active_menu_tab="settings"
     )

@@ -7,8 +7,6 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
-{# TODO: Use url_for instead #}
-
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
 
 <div class="ui container fluid page-subheader-outer with-submenu rel-pt-2">
@@ -62,7 +60,6 @@
         <a href="/uploads/new?community={{ community.id }}"
             class="ui positive button labeled icon">
           <i class="plus icon" aria-hidden="true"></i>
-
           {{ _("New upload") }}
         </a>
       </div>

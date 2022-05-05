@@ -1,36 +1,61 @@
 /*
  * This file is part of Invenio.
- * Copyright (C) 2016-2021 CERN.
- * Copyright (C) 2021 Northwestern University.
+ * Copyright (C) 2016-2022 CERN.
+ * Copyright (C) 2021-2022 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import _get from "lodash/get";
-
-import {
-  Divider,
-  Icon,
-  Grid,
-  Button,
-  Header,
-  Form,
-  Message,
-} from "semantic-ui-react";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import {
   FieldLabel,
   RadioField,
   TextField,
   withCancel,
 } from "react-invenio-forms";
-
+import {
+  Button,
+  Divider,
+  Form,
+  Grid,
+  Header,
+  Icon,
+  Message,
+} from "semantic-ui-react";
 import { CommunityApi } from "../api";
-import { i18next } from "@translations/invenio_communities/i18next";
 import { communityErrorSerializer } from "../api/serializers";
+
+const IdentifierField = ({ formConfig, slug = "" }) => {
+  const helpText = (
+    <>
+      {i18next.t(
+        "This is your community's unique identifier. You will be able to access your community through the URL:"
+      )}
+      <br />
+      {`${formConfig.SITE_UI_URL}/communities/${slug}`}
+    </>
+  );
+  return (
+    <TextField
+      label={
+        <FieldLabel
+          htmlFor="slug"
+          icon="barcode"
+          label={i18next.t("Identifier")}
+        />
+      }
+      fieldPath="slug"
+      helpText={helpText}
+      fluid
+      className="text-muted"
+    />
+  );
+};
 
 class CommunityCreateForm extends Component {
   state = {
@@ -83,7 +108,7 @@ class CommunityCreateForm extends Component {
           access: {
             visibility: "public",
           },
-          id: "",
+          slug: "",
         }}
         onSubmit={this.onSubmit}
       >
@@ -122,24 +147,9 @@ class CommunityCreateForm extends Component {
                       />
                     }
                   />
-                  <TextField
-                    label={
-                      <FieldLabel
-                        htmlFor="id"
-                        icon="barcode"
-                        label={i18next.t("Identifier")}
-                      />
-                    }
-                    fieldPath="id"
-                    helpText={i18next.t(
-                      "This is your community's unique identifier. You will be able to access your community through the URL: {{url}}",
-                      {
-                        url: `${formConfig.SITE_UI_URL}/communities/${values["id"]}`,
-                        interpolation: { escapeValue: false },
-                      }
-                    )}
-                    fluid
-                    className="text-muted"
+                  <IdentifierField
+                    formConfig={formConfig}
+                    slug={values["slug"]}
                   />
                   <Header as="h3">{i18next.t("Community visibility")}</Header>
                   {formConfig.access.visibility.map((item) => (

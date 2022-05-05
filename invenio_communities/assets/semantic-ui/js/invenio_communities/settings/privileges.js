@@ -7,25 +7,15 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
-
-import {
-  Divider,
-  Icon,
-  Grid,
-  Button,
-  Header,
-  Form,
-  Message,
-} from "semantic-ui-react";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { RadioField } from "react-invenio-forms";
-
+import { Button, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../api";
-import { i18next } from "@translations/invenio_communities/i18next";
 import { communityErrorSerializer } from "../api/serializers";
 
 class CommunityPrivilegesForm extends Component {
@@ -103,48 +93,49 @@ class CommunityPrivilegesForm extends Component {
               </Grid>
             </Message>
             <Grid>
-              <Grid.Column width={16}>
-                <Header as="h2">{i18next.t("Community permissions")}</Header>
-                <Divider />
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={12} computer={8}>
-                <Header as="h3">{i18next.t("Community visibility")}</Header>
-                {formConfig.access.visibility.map((item) => (
-                  <React.Fragment key={item.value}>
-                    <RadioField
-                      key={item.value}
-                      fieldPath="access.visibility"
-                      label={item.text}
-                      labelIcon={item.icon}
-                      checked={_get(values, "access.visibility") === item.value}
-                      value={item.value}
-                      onChange={({ event, data, formikProps }) => {
-                        formikProps.form.setFieldValue(
-                          "access.visibility",
-                          item.value
-                        );
-                        this.setIsSavedState(false);
-                      }}
-                    />
-                    <label className="helptext">{item.helpText}</label>
-                  </React.Fragment>
-                ))}
-                <Button
-                  compact
-                  primary
-                  icon
-                  labelPosition="left"
-                  loading={isSubmitting}
-                  toggle
-                  active={isSaved}
-                  type="submit"
-                >
-                  <Icon name="save"/>
-                  {isSaved ? i18next.t("Saved") : i18next.t("Save")}
-                </Button>
-              </Grid.Column>
-              {/* TODO: Re-enable once properly integrated to be displayed */}
-              {/*
+              <Grid.Row className="pt-10 pb-0">
+                <Grid.Column mobile={16} tablet={12} computer={8}>
+                  <Header as="h2" size="tiny">
+                    {i18next.t("Community visibility")}
+                  </Header>
+                  {formConfig.access.visibility.map((item) => (
+                    <React.Fragment key={item.value}>
+                      <RadioField
+                        key={item.value}
+                        fieldPath="access.visibility"
+                        label={item.text}
+                        labelIcon={item.icon}
+                        checked={
+                          _get(values, "access.visibility") === item.value
+                        }
+                        value={item.value}
+                        onChange={({ event, data, formikProps }) => {
+                          formikProps.form.setFieldValue(
+                            "access.visibility",
+                            item.value
+                          );
+                          this.setIsSavedState(false);
+                        }}
+                      />
+                      <label className="helptext">{item.helpText}</label>
+                    </React.Fragment>
+                  ))}
+                  <Button
+                    compact
+                    primary
+                    icon
+                    labelPosition="left"
+                    loading={isSubmitting}
+                    toggle
+                    active={isSaved}
+                    type="submit"
+                  >
+                    <Icon name="save" />
+                    {isSaved ? i18next.t("Saved") : i18next.t("Save")}
+                  </Button>
+                </Grid.Column>
+                {/* TODO: Re-enable once properly integrated to be displayed */}
+                {/*
               <Grid.Column width={6}>
                 <Header as="h3">Records permissions</Header>
                 <p>This is a text explaining about the permission</p>
@@ -169,6 +160,7 @@ class CommunityPrivilegesForm extends Component {
                 </Button>
               </Grid.Column>
               <Grid.Column width={10} /> */}
+              </Grid.Row>
             </Grid>
           </Form>
         )}

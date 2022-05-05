@@ -59,15 +59,15 @@ export class CommunityApi {
   /**
    * Change the identifier of a community.
    *
-   * @param {string} communityId - identifier
-   * @param {object} newId - Serialized community
+   * @param {string} communityId - the community identifier
+   * @param {object} newSlug - the new slug
    * @param {object} options - Custom options
    */
-  async updateId(communityId, newId, options) {
+  async renameSlug(communityId, newSlug, options) {
     options = options || {};
     return http.post(
       `${this.baseUrl}/${communityId}/rename`,
-      { id: newId },
+      { slug: newSlug },
       {
         ...options,
       }

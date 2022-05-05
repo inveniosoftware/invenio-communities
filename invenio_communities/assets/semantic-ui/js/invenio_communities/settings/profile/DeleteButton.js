@@ -7,12 +7,13 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import { i18next } from "@translations/invenio_communities/i18next";
 import React, { useEffect, useState } from "react";
 import { Button, Icon, Modal } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_communities/i18next";
 
 export const DeleteButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const cancelBtnRef = React.createRef();
   const openModalBtnRef = React.createRef();
 
@@ -21,9 +22,10 @@ export const DeleteButton = (props) => {
   const handleClose = () => {
     setModalOpen(false);
     openModalBtnRef?.current?.focus();
-  }
+  };
 
   const handleDelete = async () => {
+    setLoading(true);
     try {
       await props.onDelete();
       if (props.redirectURL) {
@@ -36,8 +38,8 @@ export const DeleteButton = (props) => {
   };
 
   useEffect(() => {
-    if(modalOpen) cancelBtnRef?.current?.focus();
-  }, [modalOpen])
+    if (modalOpen) cancelBtnRef?.current?.focus();
+  }, [modalOpen]);
 
   return (
     <>
@@ -69,10 +71,15 @@ export const DeleteButton = (props) => {
       >
         <Modal.Content>{props.confirmationMessage}</Modal.Content>
         <Modal.Actions>
-          <Button ref={cancelBtnRef} onClick={handleClose} floated="left">
+          <Button
+            ref={cancelBtnRef}
+            onClick={handleClose}
+            loading={loading}
+            floated="left"
+          >
             {i18next.t("Cancel")}
           </Button>
-          <Button color="red" onClick={handleDelete}>
+          <Button negative onClick={handleDelete} loading={loading}>
             {i18next.t("Delete")}
           </Button>
         </Modal.Actions>

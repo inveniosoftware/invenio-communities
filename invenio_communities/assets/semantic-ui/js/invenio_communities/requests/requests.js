@@ -12,8 +12,8 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import { DateTime } from "luxon";
 import PropTypes from "prop-types";
 import React, { Component, useState } from "react";
-import Overridable from "react-overridable";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
+import Overridable from "react-overridable";
 import {
   BucketAggregation,
   Count,
@@ -302,10 +302,7 @@ export const RequestsResults = ({
 
 export const RequestsResultsGridItemTemplate = ({ result, community }) => {
   return (
-    <Card
-      fluid
-      href={`/communities/${community.id}/requests/${result.metadata.id}`}
-    >
+    <Card fluid href={`/communities/${community.slug}/requests/${result.id}`}>
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
@@ -335,7 +332,7 @@ export const RequestsResultsItemTemplate = ({ result, community }) => {
           )}
           <a
             className="header-link"
-            href={`/communities/${community.id}/requests/${result.id}`}
+            href={`/communities/${community.slug}/requests/${result.id}`}
           >
             {result.title}
           </a>

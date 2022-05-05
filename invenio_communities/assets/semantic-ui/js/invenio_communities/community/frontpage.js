@@ -6,11 +6,11 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import _truncate from "lodash/truncate";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { Image, withCancel } from "react-invenio-forms";
+import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import { http } from "../api/config";
 
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
@@ -49,7 +49,7 @@ const EmptyMessage = ({ message }) => {
 class CommunityCard extends Component {
   render() {
     return (
-      <Card fluid href={`/communities/${this.props.community.id}`}>
+      <Card fluid href={`/communities/${this.props.community.slug}`}>
         <Image
           src={this.props.community.links.logo}
           fallbackSrc={this.props.defaultLogo}
@@ -124,7 +124,12 @@ class CommunitiesCardGroup extends Component {
         {this.state.data.hits.length === 0 ? (
           <EmptyMessage message={this.props.emptyMessage} />
         ) : (
-          <Card.Group doubling stackable itemsPerRow={5} className="community-frontpage-cards">
+          <Card.Group
+            doubling
+            stackable
+            itemsPerRow={5}
+            className="community-frontpage-cards"
+          >
             {this.renderCards()}
           </Card.Group>
         )}
