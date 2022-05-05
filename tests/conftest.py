@@ -23,8 +23,6 @@ from invenio_requests.proxies import current_events_service, current_requests_se
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.proxies import current_communities
-from invenio_vocabularies.contrib.affiliations.services import \
-     AffiliationsService, AffiliationsServiceConfig
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 from invenio_vocabularies.records.api import Vocabulary
 
@@ -116,6 +114,9 @@ def users(UserFixture, app, database):
         )
         u.create(app, database)
         users[r] = u
+    # when using `database` fixture (and not `db`), commit the creation of the
+    # user because its implementation uses a nested session instead
+    database.session.commit()
     return users
 
 
@@ -141,6 +142,9 @@ def any_user(UserFixture, app, database):
         password='anyuser',
     )
     u.create(app, database)
+    # when using `database` fixture (and not `db`), commit the creation of the
+    # user because its implementation uses a nested session instead
+    database.session.commit()
     u.identity  # compute identity
     return u
 
