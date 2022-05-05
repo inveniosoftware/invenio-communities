@@ -43,32 +43,35 @@ export class CommunityMembersApi {
     return this.removeMemberBase({ members: memberSerialized });
   };
 
-  updateMembers = async (payload) => {
-    return await http.put(this.endpoint, payload);
+  updateMembers = async ({ payload, refresh = false } = {}) => {
+    const url = new URL(this.endpoint);
+    const params = new URLSearchParams();
+    refresh && params.append("refresh", refresh);
+    return await http.put(`${url}?${params.toString()}`, payload);
   };
 
   updateRole = async (member, role) => {
     const memberSerialized = bulkMembersSerializer([member]);
     const payload = { members: memberSerialized, role: role };
-    return await this.updateMembers(payload);
+    return await this.updateMembers({ payload: payload });
   };
 
   updateVisibility = async (member, visibility) => {
     const memberSerialized = bulkMembersSerializer([member]);
     const payload = { members: memberSerialized, visible: visibility };
-    return await this.updateMembers(payload);
+    return await this.updateMembers({ payload: payload });
   };
 
   bulkUpdateRoles = (members, role) => {
     const membersSerialized = bulkMembersSerializer(members);
     const payload = { members: membersSerialized, role: role };
-    return this.updateMembers(payload);
+    return this.updateMembers({ payload: payload, refresh: true });
   };
 
   bulkUpdateVisibilities = (members, visibility) => {
     const membersSerialized = bulkMembersSerializer(members);
 
     const payload = { members: membersSerialized, visible: visibility };
-    return this.updateMembers(payload);
+    return this.updateMembers({ payload: payload, refresh: true });
   };
 }

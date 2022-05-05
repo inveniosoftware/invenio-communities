@@ -374,7 +374,14 @@ class MemberService(RecordService):
         )
 
     @unit_of_work()
-    def update(self, identity, community_id, data, uow=None):
+    def update(
+        self, 
+        identity, 
+        community_id, 
+        data, 
+        uow=None, 
+        refresh=False
+    ):
         """Bulk update.
 
         Used to update both active members and active invitations. Archived
@@ -414,6 +421,9 @@ class MemberService(RecordService):
                 raise ValidationError(
                     _("A community must have at least one owner.")
                 )
+
+        if refresh:
+            uow.register(IndexRefreshOp(index=self.record_cls.index))
 
         return True
 

@@ -11,7 +11,7 @@
 from flask import g
 from flask_resources import resource_requestctx, response_handler, route
 from invenio_records_resources.resources.records.resource import \
-    RecordResource, request_data, request_search_args, \
+    RecordResource, request_data, request_extra_args, request_search_args, \
     request_view_args
 from invenio_records_resources.resources.records.utils import es_preference
 
@@ -95,13 +95,15 @@ class MemberResource(RecordResource):
         return "", 204
 
     @request_view_args
+    @request_extra_args
     @request_data
     def update(self):
         """Update member."""
         self.service.update(
             g.identity,
             resource_requestctx.view_args["pid_value"],
-            data=resource_requestctx.data
+            data=resource_requestctx.data,
+            refresh=resource_requestctx.args["refresh"],
         )
         return "", 204
 
