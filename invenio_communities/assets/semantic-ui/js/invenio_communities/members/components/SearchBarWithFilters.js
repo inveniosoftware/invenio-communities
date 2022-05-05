@@ -27,11 +27,24 @@ export class SearchBarWithFilters extends Component {
       currentResultsState,
       searchBarPlaceholder,
       customCmp,
+      searchbarFilters,
       ...uiProps
     } = this.props;
     const currentFilters = currentQueryState.filters;
     const currentSort = currentQueryState.sortBy;
-    const filters = currentResultsState.data.aggregations; // TODO: filters come from the backend
+    const labelledCurrentFilters = [];
+    currentFilters.forEach((filter) => {
+      const filterType = searchbarFilters[filter[0]];
+      filterType.filterValues.forEach((filterValue) => {
+        if (filterValue.value === filter[1]) {
+          labelledCurrentFilters.push({
+            labelledFilterType: filterType.label,
+            labelledFilterValue: filterValue.label,
+            filter: filter,
+          });
+        }
+      });
+    });
     return (
       <>
         {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
@@ -41,12 +54,11 @@ export class SearchBarWithFilters extends Component {
           </div>
           <div className="rel-ml-2">
             <>
-              {Object.entries(filters).map((filter) => (
+              {Object.entries(searchbarFilters).map((filter) => (
                 <DropdownFilter
-                  key={filter[0]}
                   filterKey={filter[0]}
                   filterLabel={filter[1].label}
-                  filterValues={filter[1].buckets}
+                  filterValues={filter[1].filterValues}
                   currentQueryState={currentQueryState}
                   updateQueryState={updateQueryState}
                   size="large"
@@ -71,7 +83,7 @@ export class SearchBarWithFilters extends Component {
 
         <div className="rel-mb-1">
           <div>
-            {currentFilters.map((filter) => {
+            {labelledCurrentFilters.map((filter) => {
               return (
                 <FilterLabel
                   filter={filter}
@@ -80,8 +92,6 @@ export class SearchBarWithFilters extends Component {
                 />
               );
             })}
-          </div>
-          <div>
             {currentFilters.length > 0 && (
               <Label
                 as="a"
@@ -106,6 +116,7 @@ SearchBarWithFilters.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
   sortOptions: PropTypes.array.isRequired,
+  searchbarFilters: PropTypes.object.isRequired,
   searchBarPlaceholder: PropTypes.string,
   customCmp: PropTypes.node,
 };

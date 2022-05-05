@@ -23,6 +23,7 @@
     <div
       id="community-invitations-search-root"
       data-communities-roles='{{ config.COMMUNITIES_ROLES | tojson }}'
+      data-communities-searchbar-filters='{{ config.COMMUNITIES_INVITATIONS_FILTERS_UI | tojson }}'
       data-permissions='{{ permissions | tojson }}'
       data-community='{{ community | tojson }}'
       data-community-allow-group-invites='{{ config.COMMUNITIES_ALLOW_GROUP_INVITES | tojson }}'

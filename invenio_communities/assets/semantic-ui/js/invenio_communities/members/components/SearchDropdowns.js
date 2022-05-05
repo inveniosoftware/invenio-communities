@@ -79,12 +79,12 @@ export class DropdownFilter extends Component {
       ...uiProps
     } = this.props;
     const options = filterValues.map((filterValue) => {
-      const value = [filterKey, filterValue.key];
+      const value = [filterKey, filterValue.value];
       const disabled = currentQueryState.filters.some(
         (filter) => JSON.stringify(value) === JSON.stringify(filter)
       );
       return {
-        key: filterValue.key,
+        key: filterValue.label,
         text: filterValue.label,
         value: JSON.stringify(value),
         disabled: disabled,

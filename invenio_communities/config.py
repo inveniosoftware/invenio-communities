@@ -169,3 +169,46 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 
 COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
 """"Default amount of time before an invitation expires."""
+
+COMMUNITIES_INVITATIONS_FILTERS_UI = {
+    "role": {
+        "label": "Role",
+        "filterValues": [
+            {"label": "Owner", "value": "owner"},
+            {"label": "Manager", "value": "manager"},
+            {"label": "Reader", "value": "reader"},
+            {"label": "Curator", "value": "curator"},
+        ]
+    },
+    "status": {
+        "label": "Status",
+        "filterValues": [
+            {"label": "Pending", "value": "pending"},
+            {"label": "Expired", "value": "expired"},
+            {"label": "Declined", "value": "declined"},
+            {"label": "Accepted", "value": "accepted"},
+            {"label": "Cancelled", "value": "cancelled"},
+        ]
+    }
+}
+""""Community invitations filters to display in the UI."""
+
+COMMUNITIES_MEMBERS_FILTERS_UI = {
+    "role": {
+        "label": "Role",
+        "filterValues": [
+            {"label": "Owner", "value": "owner"},
+            {"label": "Manager", "value": "manager"},
+            {"label": "Reader", "value": "reader"},
+            {"label": "Curator", "value": "curator"},
+        ]
+    },
+    "visibility": {
+        "label": "Visibility",
+        "filterValues": [
+            {"label": "Hidden", "value": "false"},
+            {"label": "Public", "value": "true"},
+        ]
+    }
+}
+""""Community members filters to display in the UI."""

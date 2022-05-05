@@ -24,21 +24,24 @@ export class InvitationsSearchLayout extends Component {
       roles,
       community,
       permissions,
+      searchbarFilters,
       communityAllowGroupInvites,
     } = this.props;
     const sortOptions = config.sortOptions;
+    const filteredRoles = filterOptionsByPermissions(
+      roles,
+      RolePermissionPolicy,
+      permissions
+    );
     return (
       <>
         <SearchBarWithFiltersWithState
           sortOptions={sortOptions}
+          searchbarFilters={searchbarFilters}
           customCmp={
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
-                roles={filterOptionsByPermissions(
-                  roles,
-                  RolePermissionPolicy,
-                  permissions
-                )}
+                roles={filteredRoles}
                 allowGroups={communityAllowGroupInvites}
               />
             </InvitationsContextProvider>
@@ -55,4 +58,5 @@ InvitationsSearchLayout.propTypes = {
   roles: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
   communityAllowGroupInvites: PropTypes.bool.isRequired,
+  searchbarFilters: PropTypes.object.isRequired,
 };

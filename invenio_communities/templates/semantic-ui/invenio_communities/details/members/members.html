@@ -40,6 +40,7 @@
     <div id="community-members-search-root"
       data-invenio-search-config='{{ search_app_communities_members_config(app_id="community-members-search", endpoint=search_endpoint) | tojson }}'
       data-communities-roles='{{ config.COMMUNITIES_ROLES | tojson }}'
+      data-communities-searchbar-filters='{{ config.COMMUNITIES_MEMBERS_FILTERS_UI | tojson }}'
       data-community='{{ community | tojson }}'
       data-permissions='{{ permissions | tojson }}'
     ></div>

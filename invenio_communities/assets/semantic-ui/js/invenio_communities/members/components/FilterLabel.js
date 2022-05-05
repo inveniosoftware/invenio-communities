@@ -16,14 +16,14 @@ class FilterLabel extends Component {
   render() {
     const { filter, currentQueryState, updateQueryState } = this.props;
     const currentFilters = currentQueryState.filters;
-    const filterType = _upperFirst(filter[0]);
-    const filterValue = _upperFirst(filter[1]);
+    const filterType = filter.labelledFilterType;
+    const filterValue = filter.labelledFilterValue;
     return (
       <Label className="ml-15 mt-15">
         {`${filterType}: ${filterValue}`}
         <Icon
           onClick={() => {
-            const start = currentFilters.indexOf(filter);
+            const start = currentFilters.indexOf(filter.filter);
             currentFilters.splice(start, 1);
             updateQueryState(currentQueryState);
           }}
@@ -37,7 +37,7 @@ class FilterLabel extends Component {
 FilterLabel.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
-  filter: PropTypes.array.isRequired,
+  filter: PropTypes.object.isRequired,
 };
 
 export default FilterLabel;

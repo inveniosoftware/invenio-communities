@@ -20,6 +20,9 @@ import { memberVisibilityTypes } from "../";
 
 const domContainer = document.getElementById("community-members-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
+const searchbarFilters = JSON.parse(
+  domContainer.dataset.communitiesSearchbarFilters
+);
 const permissions = JSON.parse(domContainer.dataset.permissions);
 const community = JSON.parse(domContainer.dataset.community);
 
@@ -38,10 +41,15 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
   community: community,
 });
 
+
+const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
+  searchbarFilters: searchbarFilters,
+});
+
 const defaultComponents = {
   "ResultsList.item": ManagerMembersResultItemWithConfig,
   "ResultsGrid.item": MembersResultsGridItem,
-  "SearchApp.layout": MembersSearchLayout,
+  "SearchApp.layout": MembersSearchLayoutWithConfig,
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
   "ResultsList.container": MembersResultsContainer,

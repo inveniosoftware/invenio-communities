@@ -76,11 +76,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         renderOnActive: () => (
           <Form>
             <RadioSelection
-              options={filterOptionsByPermissions(
-                visibilities,
-                VisibilityPermissionPolicy,
-                permissions
-              )}
+              options={visibilities}
               label={i18next.t("Visibility")}
               onOptionChangeCallback={this.handleChangeVisibility}
               permissions={permissions}

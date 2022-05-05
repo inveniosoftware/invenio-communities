@@ -21,6 +21,7 @@ const domContainer = document.getElementById(
 );
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
 const community = JSON.parse(domContainer.dataset.community);
+const searchbarFilters = JSON.parse(domContainer.dataset.communitiesSearchbarFilters);
 const permissions = JSON.parse(domContainer.dataset.permissions);
 
 const communityAllowGroupInvites = JSON.parse(
@@ -36,6 +37,7 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   roles: communitiesRoles,
   community: community,
   permissions: permissions,
+  searchbarFilters: searchbarFilters,
   communityAllowGroupInvites: communityAllowGroupInvites,
 });
 

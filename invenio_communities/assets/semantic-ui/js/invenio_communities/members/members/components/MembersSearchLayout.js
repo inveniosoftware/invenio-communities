@@ -13,7 +13,7 @@ import { SearchBarWithFiltersWithState } from "../../components/SearchBarWithFil
 
 export class MembersSearchLayout extends Component {
   render() {
-    const { config, updateQueryState } = this.props;
+    const { config, updateQueryState, searchbarFilters } = this.props;
     const sortOptions = config.sortOptions;
     return (
       <>
@@ -21,6 +21,7 @@ export class MembersSearchLayout extends Component {
           searchBarPlaceholder={i18next.t("Search members...")}
           sortOptions={sortOptions}
           updateQueryState={updateQueryState}
+          searchbarFilters={searchbarFilters}
         />
         <SearchAppResultsPane layoutOptions={config.layoutOptions} />
       </>
