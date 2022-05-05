@@ -41,6 +41,9 @@ def new_user(UserFixture, app, database):
         confirmed=True
     )
     u.create(app, database)
+    # when using `database` fixture (and not `db`), commit the creation of the
+    # user because its implementation uses a nested session instead
+    database.session.commit()
     return u
 
 
