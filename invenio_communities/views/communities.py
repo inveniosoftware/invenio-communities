@@ -11,9 +11,7 @@
 from flask import current_app, g, render_template
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
-from invenio_access.permissions import system_identity
 from invenio_records_resources.services.errors import PermissionDeniedError
-from invenio_requests.proxies import current_requests_service
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 
 from .decorators import pass_community, pass_community_logo
@@ -74,7 +72,7 @@ def communities_settings(community=None, logo=None, pid_value=None):
         ['update', 'read', 'search_requests', 'search_invites']
     )
     types = vocabulary_service.read_all(
-        system_identity,
+        g.identity,
         fields=["id", "title"],
         type="communitytypes",
         max_records=10

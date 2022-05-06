@@ -20,7 +20,7 @@ from invenio_records_resources.services.records.components import \
     ServiceComponent
 from marshmallow.exceptions import ValidationError
 
-from ...proxies import current_communities, current_roles
+from ...proxies import current_roles
 from ...utils import on_membership_change
 
 
@@ -166,6 +166,8 @@ class OwnershipComponent(ServiceComponent):
             "id": str(identity.id),
         }
         self.service.members.add(
+            # the user is not yet owner of the community (is being added)
+            # therefore we cannot use `identity`
             system_identity,
             record.id,
             {"members": [member], "role": current_roles.owner_role.name},
@@ -178,7 +180,7 @@ class OwnershipComponent(ServiceComponent):
 
 class FeaturedCommunityComponent(ServiceComponent):
     """Service component for featured community integration."""
-    
+
     def featured_create(self, identity, data=None, record=None, **kwargs):
         if(record.access.visibility != "public"):
             raise ValidationError(

@@ -21,6 +21,11 @@ def service():
 #
 # Actions
 #
+# All actions use `system_identity` and not the `identity` param, because
+# the permission check happens at the request service (`execute_action`) level
+# before reaching these components and therefore the check is not needed.
+# These actions will assert the identity is `system identity`, which cannot
+# be obtained as a user.
 class AcceptAction(actions.AcceptAction):
     """Accept action."""
 
