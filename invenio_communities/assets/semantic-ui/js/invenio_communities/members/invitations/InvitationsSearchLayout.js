@@ -52,7 +52,7 @@ export class InvitationsSearchLayout extends Component {
 
 InvitationsSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
-  roles: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired,
   community: PropTypes.object.isRequired,
   communityAllowGroupInvites: PropTypes.bool.isRequired,
 };

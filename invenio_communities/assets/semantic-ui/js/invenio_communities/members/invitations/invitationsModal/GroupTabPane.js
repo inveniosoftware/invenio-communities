@@ -122,6 +122,6 @@ export class GroupTabPane extends Component {
 }
 
 GroupTabPane.propTypes = {
-  roleOptions: PropTypes.object.isRequired,
+  roleOptions: PropTypes.array.isRequired,
   modalClose: PropTypes.func.isRequired,
 };
