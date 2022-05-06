@@ -39,7 +39,7 @@ export class InvitationResultItem extends Component {
     } = this.props;
     const { invitation } = this.state;
     const { api: invitationsApi } = this.context;
-
+    const rolesByType = roles[member.type];
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
@@ -79,7 +79,7 @@ export class InvitationResultItem extends Component {
         <Table.Cell>{formattedTime(invitation.request.expires_at)}</Table.Cell>
         <Table.Cell>
           <RoleDropdown
-            roles={roles}
+            roles={rolesByType}
             successCallback={this.updateInvitation}
             action={invitationsApi.updateRole}
             disabled={!invitation.permissions.can_update_role}

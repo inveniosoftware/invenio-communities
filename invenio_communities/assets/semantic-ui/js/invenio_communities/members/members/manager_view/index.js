@@ -19,6 +19,7 @@ import { memberVisibilityTypes } from "../";
 
 const domContainer = document.getElementById("community-members-search-root");
 const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
+const communitiesAllRoles = JSON.parse(domContainer.dataset.communitiesAllRoles);
 const community = JSON.parse(domContainer.dataset.community);
 const permissions = JSON.parse(domContainer.dataset.permissions);
 
@@ -38,7 +39,7 @@ const ManagerMembersResultContainerWithCommunity = parametrize(
   {
     community: community,
     config: {
-      roles: communitiesRoles,
+      roles: communitiesAllRoles,
       visibility: memberVisibilityTypes,
       permissions: permissions,
     },
