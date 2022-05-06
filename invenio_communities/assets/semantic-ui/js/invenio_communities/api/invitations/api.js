@@ -17,6 +17,14 @@ export class CommunityInvitationsApi {
     this.community = community;
   }
 
+  get endpoint() {
+    return this.#urls.invitations;
+  }
+
+  getInvitations = async () => {
+    return await http.get(this.endpoint);
+  };
+
   createInvite = async (members, role, message = undefined) => {
     const payload = {
       members: bulkMembersSerializer(members),
@@ -29,32 +37,13 @@ export class CommunityInvitationsApi {
     return await http.post(this.#urls.invitations, payload);
   };
 
-  updateInvite = async (request_id, payload) => {
-    // TODO invitation service missing
-    const endpoint = `/api/requests/${request_id}`;
-    return await http.put(endpoint, payload);
+  updateInvites = async (payload) => {
+    return await http.put(this.endpoint, payload);
   };
 
-  updateRole = async (role, request) => {
-    // TODO invitation service missing
-    const updatedItem = { ...request, role };
-
-    function mockedRole() {
-      return { role: "manager" };
-    }
-
-    function mockedError() {
-      return { message: "Unknown error. Could not change role." };
-    }
-
-    const mockCall = new Promise(function (resolve, reject) {
-      if (_sample([true, false])) {
-        return resolve(mockedRole());
-      } else {
-        return reject(mockedError());
-      }
-    });
-
-    return await mockCall;
+  updateRole = async (invitation, role) => {
+    const memberSerialized = bulkMembersSerializer([invitation]);
+    const payload = { members: memberSerialized, role: role };
+    return await this.updateInvites(payload);
   };
 }
