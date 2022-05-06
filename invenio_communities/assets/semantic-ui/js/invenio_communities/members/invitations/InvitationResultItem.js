@@ -9,7 +9,7 @@
 import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import React, { Component } from "react";
 import { DateTime } from "luxon";
-import { Container, Header, Table } from "semantic-ui-react";
+import { Container, Grid, Table, Item } from "semantic-ui-react";
 import { Image } from "react-invenio-forms";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
@@ -27,42 +27,63 @@ export class InvitationResultItem extends Component {
     this.state = { invitation: result };
   }
 
-  updateInvitation = (data) => {
+  updateInvitation = (data, value) => {
     const { invitation } = this.state;
-    this.setState({ invitation: { ...invitation, ...data } });
+    this.setState({ invitation: { ...invitation, ...{ role: value } } });
   };
 
   render() {
     const {
       config: { roles },
-      community
+      community,
     } = this.props;
-    const {
-      invitation,
-      invitation: { member, status, expires_at, role, permissions, request },
-    } = this.state;
+    const { invitation } = this.state;
     const { api: invitationsApi } = this.context;
+    
     return (
       <Table.Row className="community-member-item">
-        <Table.Cell data-label={i18next.t("Name")}>
-          <Image src={member.avatar_url} avatar circular className="rel-mr-1" />
-          <Header size="small" as="b">
-            <a href={`/communities/${community.id}/requests/${request.id}`}>{member.name}</a>
-          </Header>
+        <Table.Cell>
+          <Grid textAlign="left" verticalAlign="middle">
+            <Grid.Column>
+              <Item className="flex" key={invitation.id}>
+                <Image
+                  src={invitation.member.avatar_url}
+                  avatar
+                  circular
+                  className="rel-mr-1"
+                />
+                <Item.Content className="ml-10">
+                  <Item.Header size="small" as="b">
+                    <a
+                      href={`/communities/${community.id}/requests/${invitation.request.id}`}
+                    >
+                      {invitation.member.name}
+                    </a>
+                  </Item.Header>
+                  {invitation.member.description && (
+                    <Item.Meta>
+                      <div
+                        className="truncate-lines-1"
+                        dangerouslySetInnerHTML={{
+                          __html: invitation.member.description,
+                        }}
+                      />
+                    </Item.Meta>
+                  )}
+                </Item.Content>
+              </Item>
+            </Grid.Column>
+          </Grid>
         </Table.Cell>
-        <Table.Cell data-label={i18next.t("Status")}>
-          {status}
-        </Table.Cell>
-        <Table.Cell data-label={i18next.t("Expires")}>
-          {formattedTime(expires_at)}
-        </Table.Cell>
-        <Table.Cell data-label={i18next.t("Role")}>
+        <Table.Cell>{invitation.request.status}</Table.Cell>
+        <Table.Cell>{formattedTime(invitation.request.expires_at)}</Table.Cell>
+        <Table.Cell>
           <RoleDropdown
             roles={roles}
             successCallback={this.updateInvitation}
             action={invitationsApi.updateRole}
-            disabled={!permissions.can_update_role}
-            currentValue={role}
+            disabled={!invitation.permissions.can_update_role}
+            currentValue={invitation.role}
             resource={invitation}
           />
         </Table.Cell>
