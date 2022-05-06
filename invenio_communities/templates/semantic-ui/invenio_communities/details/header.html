@@ -26,53 +26,45 @@
         {% endif %}
       </div>
 
-      <div class="sixteen wide mobile eleven wide tablet fourteen wide computer column rel-mb-2">
+      <div class="sixteen wide mobile eleven wide tablet twelve wide computer column rel-mb-2">
         <h2 class="ui header">{{ community.metadata.title }}</h2>
         <div class="rel-mb-2">
           {{ truncate_text(community.metadata.description) }}
         </div>
 
-        <div class="ui grid">
-          <div class="row pb-0">
-            <div class="sixteen wide mobile ten wide tablet ten wide computer column">
-              {% if community.metadata.type is defined %}
-              <div class="mt-5">
-                <i class="tag icon" aria-hidden="true"></i>
-                <div class="ui label small grey type-label">
-                  {{ community.metadata.type.title.en }}
-                </div>
-              </div>
-              {% endif %}
-
-              {% if community.metadata.website %}
-              <div class="mt-5">
-                <i class="linkify icon" aria-hidden="true"></i>
-                <a href="{{community.metadata.website}}">
-                  {{community.metadata.website}}
-                </a>
-              </div>
-              {% endif %}
-
-              {% if community.metadata.organizations %}
-              <div class="mt-5">
-                <i class="building outline icon" aria-hidden="true"></i>
-                <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
-              </div>
-              {% endif %}
-            </div>
-
-            <div id="community-upload-button"
-                class="sixteen wide mobile six wide tablet six wide computer right aligned bottom aligned column rel-mt-2"
-            >
-              <a href="/uploads/new?community={{ community.id }}"
-                  class="ui positive button labeled icon">
-                <i class="plus icon" aria-hidden="true"></i>
-
-                {{ _("New upload") }}
-              </a>
-            </div>
+        {% if community.metadata.type is defined %}
+        <div class="mt-5">
+          <i class="tag icon" aria-hidden="true"></i>
+          <div class="ui label small grey type-label">
+            {{ community.metadata.type.title.en }}
           </div>
         </div>
+        {% endif %}
+
+        {% if community.metadata.website %}
+        <div class="mt-5">
+          <i class="linkify icon" aria-hidden="true"></i>
+          <a href="{{community.metadata.website}}">
+            {{community.metadata.website}}
+          </a>
+        </div>
+        {% endif %}
+
+        {% if community.metadata.organizations %}
+        <div class="mt-5">
+          <i class="building outline icon" aria-hidden="true"></i>
+          <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="sixteen wide mobile sixteen wide tablet two wide computer right aligned bottom aligned column">
+        <a href="/uploads/new?community={{ community.id }}"
+            class="ui positive button labeled icon">
+          <i class="plus icon" aria-hidden="true"></i>
+
+          {{ _("New upload") }}
+        </a>
       </div>
 
 
