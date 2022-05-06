@@ -88,7 +88,7 @@ class ActionDropdown extends Component {
 }
 
 ActionDropdown.propTypes = {
-  options: PropTypes.object.isRequired,
+  options: PropTypes.array.isRequired,
   successCallback: PropTypes.func.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   action: PropTypes.func.isRequired,

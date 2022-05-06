@@ -50,7 +50,7 @@ export class RadioSelection extends Component {
 }
 
 RadioSelection.propTypes = {
-  options: PropTypes.object.isRequired,
+  options: PropTypes.array.isRequired,
   label: PropTypes.string.isRequired,
   onOptionChangeCallback: PropTypes.func.isRequired,
   permissions: PropTypes.object,

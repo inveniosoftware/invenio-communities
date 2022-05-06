@@ -105,7 +105,7 @@ export class InvitationsMembersModal extends Component {
 InvitationsMembersModal.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
-  roles: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired,
   allowGroups: PropTypes.bool.isRequired,
 };
 
