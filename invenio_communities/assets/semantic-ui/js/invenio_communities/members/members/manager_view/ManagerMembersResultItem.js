@@ -49,7 +49,7 @@ export class ManagerMembersResultItem extends Component {
     const { config } = this.props;
     const { result } = this.state;
     const { api } = this.context;
-
+    const rolesByType = config.roles[result.member.type];
     return (
       <Table.Row>
         <Table.Cell className="selected-member">
@@ -109,7 +109,7 @@ export class ManagerMembersResultItem extends Component {
         <Table.Cell data-label={i18next.t("Role")}>
           {result.permissions.can_update_role ? (
             <RoleDropdown
-              roles={config.roles}
+              roles={rolesByType}
               successCallback={this.updateMemberRole}
               action={api.updateRole}
               currentValue={result.role}

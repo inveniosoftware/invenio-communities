@@ -1,10 +1,5 @@
 import { SearchResultsBulkActions } from "@js/invenio_communities/members/components/bulk_actions/SearchResultsBulkActions";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
-import {
-  RolePermissionPolicy,
-  filterOptionsByPermissions,
-  VisibilityPermissionPolicy,
-} from "../../components/bulk_actions/permissions";
 import { CommunityMembersApi } from "../../../api/members/api";
 import { BulkActionsContext } from "@js/invenio_communities/members/components/bulk_actions/context";
 import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
@@ -53,11 +48,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         renderOnActive: () => (
           <Form>
             <RadioSelection
-              options={filterOptionsByPermissions(
-                roles,
-                RolePermissionPolicy,
-                permissions
-              )}
+              options={roles}
               label={i18next.t("Role")}
               onOptionChangeCallback={this.handleChangeRole}
               permissions={permissions}
@@ -76,11 +67,7 @@ class ManagerMemberBulkActionsCmp extends Component {
         renderOnActive: () => (
           <Form>
             <RadioSelection
-              options={filterOptionsByPermissions(
-                visibilities,
-                VisibilityPermissionPolicy,
-                permissions
-              )}
+              options={visibilities}
               label={i18next.t("Visibility")}
               onOptionChangeCallback={this.handleChangeVisibility}
               permissions={permissions}

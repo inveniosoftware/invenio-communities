@@ -13,8 +13,9 @@ from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_vocabularies.proxies import current_service as vocabulary_service
+from invenio_records_resources.proxies import current_service_registry
 
-from .decorators import pass_community, pass_community_logo
+from .decorators import pass_community, pass_community_logo, pass_roles
 
 
 #
@@ -152,7 +153,8 @@ def communities_settings_privileges(community=None, logo=None, pid_value=None):
 
 
 @pass_community
-def members(community=None, pid_value=None, endpoint=None):
+@pass_roles
+def members(community=None, pid_value=None, endpoint=None, roles=None):
     """Community members page."""
     permissions = community.has_permissions_to(
         [
@@ -178,11 +180,13 @@ def members(community=None, pid_value=None, endpoint=None):
             "project": _("Project")
         },
         permissions=permissions,
+        roles=roles,
     )
 
 
 @pass_community
-def invitations(community=None, pid_value=None):
+@pass_roles
+def invitations(community=None, pid_value=None, roles=None):
     """Community invitations page."""
     permissions = community.has_permissions_to(
         ['update', 'read', 'search_requests', 'search_invites',
@@ -194,4 +198,5 @@ def invitations(community=None, pid_value=None):
         "invenio_communities/details/members/invitations.html",
         community=community.to_dict(),
         permissions=permissions,
+        roles=roles,
     )

@@ -35,13 +35,14 @@ export class InvitationsMembersModal extends Component {
   getPanes = () => {
     const { allowGroups, roles } = this.props;
     const { api } = this.context;
+    const userRoles = roles["user"]
     const peopleTab = {
       menuItem: i18next.t("People"),
       pane: (
         <Tab.Pane key="members-users" as={Container}>
           <MembersWithRoleSelection
             key="members-users"
-            roleOptions={roles}
+            roleOptions={userRoles}
             modalClose={this.handleCloseModal}
             action={api.createInvite}
             onSuccessCallback={this.onSuccess}
@@ -50,13 +51,14 @@ export class InvitationsMembersModal extends Component {
       ),
     };
 
+    const groupRoles = roles["group"]
     const groupsTab = {
       menuItem: i18next.t("Groups"),
       pane: (
         <Tab.Pane key="members-groups" as={Container}>
           <GroupTabPane
             modalClose={this.handleCloseModal}
-            roleOptions={roles}
+            roleOptions={groupRoles}
             action={api.createInvite}
             onSuccessCallback={this.onSuccess}
           />

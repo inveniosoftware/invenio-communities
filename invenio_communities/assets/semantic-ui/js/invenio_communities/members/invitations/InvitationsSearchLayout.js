@@ -6,27 +6,17 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
 import { SearchBarWithFiltersWithState } from "../components/SearchBarWithFilters";
-import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
-import {
-  RolePermissionPolicy,
-  filterOptionsByPermissions,
-} from "../components/bulk_actions/permissions";
 import { Filters } from "../Filters";
+import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
 
 export class InvitationsSearchLayout extends Component {
   render() {
-    const {
-      config,
-      roles,
-      community,
-      permissions,
-      communityAllowGroupInvites,
-    } = this.props;
+    const { config, roles, community, communityAllowGroupInvites } = this.props;
     const sortOptions = config.sortOptions;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getInvitationFilters();
@@ -38,11 +28,7 @@ export class InvitationsSearchLayout extends Component {
           customCmp={
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
-                roles={filterOptionsByPermissions(
-                  roles,
-                  RolePermissionPolicy,
-                  permissions
-                )}
+                roles={roles}
                 allowGroups={communityAllowGroupInvites}
               />
             </InvitationsContextProvider>
