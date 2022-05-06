@@ -27,11 +27,15 @@ export class SearchBarWithFilters extends Component {
       currentResultsState,
       searchBarPlaceholder,
       customCmp,
+      customFilters,
       ...uiProps
     } = this.props;
     const currentFilters = currentQueryState.filters;
     const currentSort = currentQueryState.sortBy;
-    const filters = currentResultsState.data.aggregations; // TODO: filters come from the backend
+    const filters = customFilters
+      ? customFilters
+      : currentResultsState.data.aggregations;
+
     return (
       <>
         {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
@@ -82,8 +86,6 @@ export class SearchBarWithFilters extends Component {
                 />
               );
             })}
-          </div>
-          <div>
             {currentFilters.length > 0 && (
               <Label
                 as="button"
@@ -110,11 +112,13 @@ SearchBarWithFilters.propTypes = {
   sortOptions: PropTypes.array.isRequired,
   searchBarPlaceholder: PropTypes.string,
   customCmp: PropTypes.node,
+  customFilters: PropTypes.object,
 };
 
 SearchBarWithFilters.defaultProps = {
   searchBarPlaceholder: i18next.t("Search ..."),
   customCmp: null,
+  customFilters: undefined,
 };
 
 export const SearchBarWithFiltersWithState = withState(SearchBarWithFilters);

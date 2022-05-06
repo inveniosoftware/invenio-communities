@@ -49,10 +49,14 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
   community: community,
 });
 
+const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
+  roles: communitiesRoles,
+});
+
 const defaultComponents = {
   "ResultsList.item": ManagerMembersResultItemWithConfig,
   "ResultsGrid.item": MembersResultsGridItem,
-  "SearchApp.layout": MembersSearchLayout,
+  "SearchApp.layout": MembersSearchLayoutWithConfig,
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
   "ResultsList.container": ManagerMembersResultContainerWithCommunity,
