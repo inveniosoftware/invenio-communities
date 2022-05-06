@@ -6,21 +6,20 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import { Label, Icon } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import PropTypes from "prop-types";
-import _upperFirst from "lodash/upperFirst";
+import React, { Component } from "react";
+import { Icon, Label } from "semantic-ui-react";
+import { Filters } from "../Filters";
 
 class FilterLabel extends Component {
   render() {
     const { filter, currentQueryState, updateQueryState } = this.props;
     const currentFilters = currentQueryState.filters;
-    const filterType = _upperFirst(filter[0]);
-    const filterValue = _upperFirst(filter[1]);
+    const filtersClass = new Filters();
+    const displayValue = filtersClass.getDisplayValue(filter);
     return (
       <Label className="rel-mr-1 rel-mt-1">
-        {`${filterType}: ${filterValue}`}
+        {displayValue}
         <Icon
           onClick={() => {
             const start = currentFilters.indexOf(filter);

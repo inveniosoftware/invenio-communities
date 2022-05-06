@@ -10,15 +10,19 @@ import React, { Component } from "react";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { SearchBarWithFiltersWithState } from "../../components/SearchBarWithFilters";
+import { Filters } from "../../Filters";
 
 export class MembersSearchLayout extends Component {
   render() {
-    const { config, updateQueryState } = this.props;
+    const { config, updateQueryState, roles } = this.props;
     const sortOptions = config.sortOptions;
+    const filtersClass = new Filters(roles);
+    const customFilters = filtersClass.getMembersFilters();
     return (
       <>
         <SearchBarWithFiltersWithState
           searchBarPlaceholder={i18next.t("Search members...")}
+          customFilters={customFilters}
           sortOptions={sortOptions}
           updateQueryState={updateQueryState}
         />

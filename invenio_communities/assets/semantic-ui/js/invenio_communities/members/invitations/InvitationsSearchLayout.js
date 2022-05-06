@@ -16,6 +16,7 @@ import {
   RolePermissionPolicy,
   filterOptionsByPermissions,
 } from "../components/bulk_actions/permissions";
+import { Filters } from "../Filters";
 
 export class InvitationsSearchLayout extends Component {
   render() {
@@ -27,10 +28,13 @@ export class InvitationsSearchLayout extends Component {
       communityAllowGroupInvites,
     } = this.props;
     const sortOptions = config.sortOptions;
+    const filtersClass = new Filters(roles);
+    const customFilters = filtersClass.getInvitationFilters();
     return (
       <>
         <SearchBarWithFiltersWithState
           sortOptions={sortOptions}
+          customFilters={customFilters}
           customCmp={
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
