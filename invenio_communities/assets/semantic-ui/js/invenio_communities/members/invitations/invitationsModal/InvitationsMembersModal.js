@@ -6,15 +6,14 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { InvitationsContext } from "../../../api/invitations/InvitationsContextProvider";
-import { MembersWithRoleSelection } from "./MembersWithRoleSelection";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button, Container, Modal, Tab } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { withState } from "react-searchkit";
-
+import { Button, Container, Modal, Tab } from "semantic-ui-react";
+import { InvitationsContext } from "../../../api/invitations/InvitationsContextProvider";
 import { GroupTabPane } from "./GroupTabPane";
+import { MembersWithRoleSelection } from "./MembersWithRoleSelection";
 
 export class InvitationsMembersModal extends Component {
   static contextType = InvitationsContext;
@@ -33,9 +32,9 @@ export class InvitationsMembersModal extends Component {
   };
 
   getPanes = () => {
-    const { allowGroups, roles } = this.props;
+    const { allowGroups, rolesCanInvite } = this.props;
     const { api } = this.context;
-    const userRoles = roles["user"]
+    const userRoles = rolesCanInvite["user"];
     const peopleTab = {
       menuItem: i18next.t("People"),
       pane: (
@@ -51,7 +50,7 @@ export class InvitationsMembersModal extends Component {
       ),
     };
 
-    const groupRoles = roles["group"]
+    const groupRoles = rolesCanInvite["group"];
     const groupsTab = {
       menuItem: i18next.t("Groups"),
       pane: (
@@ -107,7 +106,7 @@ export class InvitationsMembersModal extends Component {
 InvitationsMembersModal.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
-  roles: PropTypes.array.isRequired,
+  rolesCanInvite: PropTypes.object.isRequired,
   allowGroups: PropTypes.bool.isRequired,
 };
 

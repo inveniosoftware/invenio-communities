@@ -137,7 +137,7 @@ class MemberSearchOptions(PublicSearchOptions):
 
 class MemberServiceConfig(RecordServiceConfig):
     """Member Service Config."""
-    service_id="members"
+    service_id = "members"
 
     community_cls = Community
     record_cls = Member

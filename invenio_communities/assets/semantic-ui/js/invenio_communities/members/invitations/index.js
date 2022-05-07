@@ -6,34 +6,37 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
-import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
+import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
+import { InvitationResultItem } from "./InvitationResultItem";
 import { InvitationsResults } from "./InvitationsResults";
+import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
-import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
-import { InvitationResultItem } from "./InvitationResultItem";
 
-const domContainer = document.getElementById(
+const dataAttr = document.getElementById(
   "community-invitations-search-root"
+).dataset;
+const community = JSON.parse(dataAttr.community);
+const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
+const communitiesRolesCanInvite = JSON.parse(
+  dataAttr.communitiesRolesCanInvite
 );
-const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
-const community = JSON.parse(domContainer.dataset.community);
-const permissions = JSON.parse(domContainer.dataset.permissions);
+const permissions = JSON.parse(dataAttr.permissions);
 
 const communityAllowGroupInvites = JSON.parse(
-  domContainer.dataset.communityAllowGroupInvites
+  dataAttr.communityAllowGroupInvites
 );
 
 const InvitationResultItemWithConfig = parametrize(InvitationResultItem, {
-  config: { roles: communitiesRoles },
+  config: { rolesCanInvite: communitiesRolesCanInvite },
   community: community,
 });
 
 const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
-  roles: communitiesRoles,
+  roles: communitiesAllRoles,
+  rolesCanInvite: communitiesRolesCanInvite,
   community: community,
   permissions: permissions,
   communityAllowGroupInvites: communityAllowGroupInvites,

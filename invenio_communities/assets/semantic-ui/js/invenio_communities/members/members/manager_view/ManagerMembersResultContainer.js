@@ -5,10 +5,10 @@
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
-import React from "react";
-import { ManagerMemberBulkActions } from "./ManagerMemberBulkActions";
-import { Table } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
+import React from "react";
+import { Table } from "semantic-ui-react";
+import { ManagerMemberBulkActions } from "./ManagerMemberBulkActions";
 
 export const ManagerMembersResultsContainer = ({
   results,
@@ -33,9 +33,7 @@ export const ManagerMembersResultsContainer = ({
           <Table.HeaderCell width={2}>
             {i18next.t("Visibility")}
           </Table.HeaderCell>
-          <Table.HeaderCell width={4}>
-            {i18next.t("Role")}
-          </Table.HeaderCell>
+          <Table.HeaderCell width={4}>{i18next.t("Role")}</Table.HeaderCell>
           <Table.HeaderCell width={2} />
         </Table.Row>
       </Table.Header>

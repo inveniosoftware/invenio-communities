@@ -6,18 +6,18 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
-import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
-import { SelectedMembers } from "../../components/bulk_actions/SelectedMembers";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button, Form, Modal } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_communities/i18next";
-import { Trans } from "react-i18next";
-import { MembersSearchBar } from "./MemberSearchBar";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-react";
+import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
+import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
+import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Trans } from "react-i18next";
+import { Button, Form, Modal } from "semantic-ui-react";
 import { UsersApi } from "../../../api/UsersApi";
+import { SelectedMembers } from "../../components/bulk_actions/SelectedMembers";
+import { MembersSearchBar } from "./MemberSearchBar";
 
 export class MembersWithRoleSelection extends Component {
   constructor(props) {
@@ -46,7 +46,7 @@ export class MembersWithRoleSelection extends Component {
   };
 
   updateMessage = (message) => {
-    this.setState(message);
+    this.setState({ message: message });
   };
 
   handleActionClick = async () => {

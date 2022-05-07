@@ -7,27 +7,31 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { MembersSearchAppContext as MembersSearchAppContextCmp } from "../manager_view/MembersSearchAppContext";
-
+import { parametrize } from "react-overridable";
+import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
-import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersResultsContainer } from "../components/MembersResultContainer";
+import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersSearchLayout } from "../components/MembersSearchLayout";
-import { parametrize } from "react-overridable";
 import { ManagerMembersResultItem } from "../manager_view/ManagerMembersResultItem";
-import { memberVisibilityTypes } from "../";
+import { MembersSearchAppContext as MembersSearchAppContextCmp } from "../manager_view/MembersSearchAppContext";
 
-const domContainer = document.getElementById("community-members-search-root");
-const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
-const permissions = JSON.parse(domContainer.dataset.permissions);
-const community = JSON.parse(domContainer.dataset.community);
+const dataAttr = document.getElementById(
+  "community-members-search-root"
+).dataset;
+const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
+const communitiesRolesCanUpdate = JSON.parse(
+  dataAttr.communitiesRolesCanUpdate
+);
+const permissions = JSON.parse(dataAttr.permissions);
+const community = JSON.parse(dataAttr.community);
 
 const ManagerMembersResultItemWithConfig = parametrize(
   ManagerMembersResultItem,
   {
     config: {
-      roles: communitiesRoles,
+      rolesCanUpdate: communitiesRolesCanUpdate,
       visibility: memberVisibilityTypes,
       permissions: permissions,
     },
@@ -38,10 +42,14 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
   community: community,
 });
 
+const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
+  roles: communitiesAllRoles,
+});
+
 const defaultComponents = {
   "ResultsList.item": ManagerMembersResultItemWithConfig,
   "ResultsGrid.item": MembersResultsGridItem,
-  "SearchApp.layout": MembersSearchLayout,
+  "SearchApp.layout": MembersSearchLayoutWithConfig,
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
   "ResultsList.container": MembersResultsContainer,

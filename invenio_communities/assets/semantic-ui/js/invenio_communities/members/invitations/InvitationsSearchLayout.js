@@ -16,7 +16,13 @@ import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/Invitat
 
 export class InvitationsSearchLayout extends Component {
   render() {
-    const { config, roles, community, communityAllowGroupInvites } = this.props;
+    const {
+      config,
+      roles,
+      rolesCanInvite,
+      community,
+      communityAllowGroupInvites,
+    } = this.props;
     const sortOptions = config.sortOptions;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getInvitationFilters();
@@ -28,7 +34,7 @@ export class InvitationsSearchLayout extends Component {
           customCmp={
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
-                roles={roles}
+                rolesCanInvite={rolesCanInvite}
                 allowGroups={communityAllowGroupInvites}
               />
             </InvitationsContextProvider>
@@ -43,6 +49,7 @@ export class InvitationsSearchLayout extends Component {
 InvitationsSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
+  rolesCanInvite: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
   communityAllowGroupInvites: PropTypes.bool.isRequired,
 };

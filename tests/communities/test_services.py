@@ -19,8 +19,6 @@ from marshmallow import ValidationError
 
 from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
 from invenio_communities.fixtures.tasks import reindex_featured_entries
-from invenio_communities.members.records.api import ArchivedInvitation, Member
-from invenio_communities.communities.records.api import Community
 
 
 @pytest.fixture()
@@ -29,6 +27,7 @@ def comm(community_service, minimal_community, location):
     c = deepcopy(minimal_community)
     c["slug"] = "{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
     return community_service.create(data=c, identity=system_identity)
+
 
 @pytest.fixture()
 def comm_restricted(community_service, minimal_community, location):
@@ -133,6 +132,7 @@ def test_create_featured(community_service, comm, comm_restricted):
     with pytest.raises(ValidationError):
         community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data={})
 
+
 def test_get_featured(community_service, comm):
     """Test that featured entries are indexed and returned correctly."""
     data = {
@@ -177,6 +177,7 @@ def test_delete_featured(community_service, comm):
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
         community_service.featured_delete(identity=system_identity, community_id=comm.data["id"], featured_id=9999)
 
+
 def test_update_featured(community_service, comm):
     """Test that featured entries are indexed and returned correctly."""
     data = {
@@ -209,6 +210,7 @@ def test_update_featured(community_service, comm):
     # Error when trying to update entry which is already deleted
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
         community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"], data=future_data).to_dict()
+
 
 def test_cleanup_pre_search(db, es_clear):
     """Cleanup database and elasticsearch for following tests.

@@ -34,12 +34,15 @@ export class InvitationResultItem extends Component {
 
   render() {
     const {
-      config: { roles },
+      config: { rolesCanInvite },
       community,
     } = this.props;
-    const { invitation } = this.state;
+    const {
+      invitation: { member, request },
+      invitation,
+    } = this.state;
     const { api: invitationsApi } = this.context;
-    const rolesByType = roles[member.type];
+    const rolesCanInviteByType = rolesCanInvite[member.type];
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
@@ -47,7 +50,7 @@ export class InvitationResultItem extends Component {
             <Grid.Column>
               <Item className="flex" key={invitation.id}>
                 <Image
-                  src={invitation.member.avatar_url}
+                  src={member.avatar_url}
                   avatar
                   circular
                   className="rel-mr-1"
@@ -55,17 +58,17 @@ export class InvitationResultItem extends Component {
                 <Item.Content className="ml-10">
                   <Item.Header size="small" as="b">
                     <a
-                      href={`/communities/${community.slug}/requests/${invitation.request.id}`}
+                      href={`/communities/${community.slug}/requests/${request.id}`}
                     >
-                      {invitation.member.name}
+                      {member.name}
                     </a>
                   </Item.Header>
-                  {invitation.member.description && (
+                  {member.description && (
                     <Item.Meta>
                       <div
                         className="truncate-lines-1"
                         dangerouslySetInnerHTML={{
-                          __html: invitation.member.description,
+                          __html: member.description,
                         }}
                       />
                     </Item.Meta>
@@ -75,11 +78,11 @@ export class InvitationResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell>{invitation.request.status}</Table.Cell>
-        <Table.Cell>{formattedTime(invitation.request.expires_at)}</Table.Cell>
+        <Table.Cell>{request.status}</Table.Cell>
+        <Table.Cell>{formattedTime(request.expires_at)}</Table.Cell>
         <Table.Cell>
           <RoleDropdown
-            roles={rolesByType}
+            roles={rolesCanInviteByType}
             successCallback={this.updateInvitation}
             action={invitationsApi.updateRole}
             disabled={!invitation.permissions.can_update_role}
@@ -91,7 +94,7 @@ export class InvitationResultItem extends Component {
           <Container fluid textAlign="right">
             {/* TODO uncomment when links available in the request resource subschema */}
             {/*<RequestActionController*/}
-            {/*  request={invitation.request }*/}
+            {/*  request={request }*/}
             {/*  actionSuccessCallback={this.updateInvitation}*/}
             {/*>*/}
             {/*<ActionButtons request={invitation} />*/}
