@@ -1,5 +1,5 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { Icon } from "semantic-ui-react";
 
 export class SuccessIcon extends Component {
@@ -33,16 +33,21 @@ export class SuccessIcon extends Component {
   };
 
   render() {
+    const { className } = this.props;
     const { show } = this.state;
-    return show && <Icon color="green" name="checkmark" />;
+    return (
+      show && <Icon color="green" name="checkmark" className={className} />
+    );
   }
 }
 
 SuccessIcon.propTypes = {
   timeOutDelay: PropTypes.number.isRequired,
   show: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 SuccessIcon.defaultProps = {
   show: false,
+  className: null,
 };

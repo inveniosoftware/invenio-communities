@@ -1,11 +1,11 @@
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { withCancel } from "react-invenio-forms";
+import Overridable from "react-overridable";
+import { Dropdown, List } from "semantic-ui-react";
 import { errorSerializer } from "../../api/serializers";
 import { ErrorPopup } from "./ErrorPopup";
 import { SuccessIcon } from "./SuccessIcon";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Overridable from "react-overridable";
-import { Dropdown, List } from "semantic-ui-react";
-import { withCancel } from "react-invenio-forms";
 
 const dropdownOptionsGenerator = (value) => {
   return value.map((settings) => {
@@ -78,7 +78,11 @@ class ActionDropdown extends Component {
             disabled={disabled}
           />
           {actionSuccess && (
-            <SuccessIcon timeOutDelay={4000} show={actionSuccess} className="ml-10"/>
+            <SuccessIcon
+              timeOutDelay={4000}
+              show={actionSuccess}
+              className="ml-10"
+            />
           )}
           {error && <ErrorPopup error={error} />}
         </>

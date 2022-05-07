@@ -6,16 +6,16 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import { Grid, Label } from "semantic-ui-react";
-import { SearchBar, withState } from "react-searchkit";
-import { i18next } from "@translations/invenio_communities/i18next";
-import PropTypes from "prop-types";
-import _upperFirst from "lodash/upperFirst";
 import {
   DropdownFilter,
   DropdownSort,
 } from "@js/invenio_communities/members/components/SearchDropdowns";
+import { i18next } from "@translations/invenio_communities/i18next";
+import _upperFirst from "lodash/upperFirst";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { SearchBar, withState } from "react-searchkit";
+import { Button } from "semantic-ui-react";
 import FilterLabel from "./FilterLabel";
 
 export class SearchBarWithFilters extends Component {
@@ -80,6 +80,7 @@ export class SearchBarWithFilters extends Component {
             {currentFilters.map((filter) => {
               return (
                 <FilterLabel
+                  key={filter[0]}
                   filter={filter}
                   currentQueryState={currentQueryState}
                   updateQueryState={updateQueryState}
@@ -87,17 +88,18 @@ export class SearchBarWithFilters extends Component {
               );
             })}
             {currentFilters.length > 0 && (
-              <Label
-                as="button"
+              <Button
+                primary
+                compact
+                size="mini"
                 onClick={() => {
                   currentQueryState.filters = [];
                   updateQueryState(currentQueryState);
                 }}
-                color="blue"
                 className="rel-mr-1 rel-mt-1"
               >
                 {i18next.t("Clear all filters")}
-              </Label>
+              </Button>
             )}
           </div>
         </div>

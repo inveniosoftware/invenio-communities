@@ -7,27 +7,31 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { ManagerMembersResultItem } from "./ManagerMembersResultItem";
+import { parametrize } from "react-overridable";
+import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { MembersSearchLayout } from "../components/MembersSearchLayout";
 import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
-import { parametrize } from "react-overridable";
+import { ManagerMembersResultItem } from "./ManagerMembersResultItem";
 import { MembersSearchAppContext as MembersSearchAppContextCmp } from "./MembersSearchAppContext";
-import { memberVisibilityTypes } from "../";
 
-const domContainer = document.getElementById("community-members-search-root");
-const communitiesRoles = JSON.parse(domContainer.dataset.communitiesRoles);
-const communitiesAllRoles = JSON.parse(domContainer.dataset.communitiesAllRoles);
-const community = JSON.parse(domContainer.dataset.community);
-const permissions = JSON.parse(domContainer.dataset.permissions);
+const dataAttr = document.getElementById(
+  "community-members-search-root"
+).dataset;
+const communitiesRolesCanUpdate = JSON.parse(
+  dataAttr.communitiesRolesCanUpdate
+);
+const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
+const community = JSON.parse(dataAttr.community);
+const permissions = JSON.parse(dataAttr.permissions);
 
 const ManagerMembersResultItemWithConfig = parametrize(
   ManagerMembersResultItem,
   {
     config: {
-      roles: communitiesRoles,
+      rolesCanUpdate: communitiesRolesCanUpdate,
       visibility: memberVisibilityTypes,
       permissions: permissions,
     },
@@ -51,7 +55,7 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
 });
 
 const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
-  roles: communitiesRoles,
+  roles: communitiesAllRoles,
 });
 
 const defaultComponents = {

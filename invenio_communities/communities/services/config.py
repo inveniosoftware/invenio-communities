@@ -63,7 +63,7 @@ class CommunityLink(Link):
 
 class CommunityServiceConfig(RecordServiceConfig):
     """Communities service configuration."""
-    service_id="communities"
+    service_id = "communities"
 
     # Common configuration
     permission_policy_cls = CommunityPermissionPolicy

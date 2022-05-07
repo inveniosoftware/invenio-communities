@@ -286,7 +286,7 @@ def full_community():
 @pytest.fixture(scope="module")
 def community(community_service, owner, minimal_community, location):
     """A community."""
-    c =  community_service.create(owner.identity, minimal_community)
+    c = community_service.create(owner.identity, minimal_community)
     Community.index.refresh()
     owner.refresh()
     return c
@@ -298,7 +298,7 @@ def restricted_community(community_service, owner, minimal_community, location):
     data = deepcopy(minimal_community)
     data['access']['visibility'] = 'restricted'
     data['slug'] = 'restricted'
-    c =  community_service.create(owner.identity, data)
+    c = community_service.create(owner.identity, data)
     owner.refresh()
     return c
 

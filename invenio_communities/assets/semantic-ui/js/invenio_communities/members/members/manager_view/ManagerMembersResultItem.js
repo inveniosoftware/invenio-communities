@@ -1,15 +1,15 @@
+import { i18next } from "@translations/invenio_communities/i18next";
+import _upperFirst from "lodash/upperFirst";
+import { DateTime } from "luxon";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Image } from "react-invenio-forms";
+import { Button, Grid, Item, Label, Table } from "semantic-ui-react";
 import { MembersContext } from "../../../api/members/MembersContextProvider";
 import { SearchResultsRowCheckbox } from "../../components/bulk_actions/SearchResultsRowCheckbox";
-import React, { Component } from "react";
-import { Button, Grid, Item, Label, Table } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_communities/i18next";
-import { Image } from "react-invenio-forms";
-import PropTypes from "prop-types";
-import { DateTime } from "luxon";
-import _upperFirst from "lodash/upperFirst";
+import { RoleDropdown, VisibilityDropdown } from "../../components/dropdowns";
 import { ModalContext } from "../../components/modal_manager";
 import { modalModeEnum } from "../../components/RemoveMemberModal";
-import { RoleDropdown, VisibilityDropdown } from "../../components/dropdowns";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
@@ -49,7 +49,6 @@ export class ManagerMembersResultItem extends Component {
     const { config } = this.props;
     const { result } = this.state;
     const { api } = this.context;
-    const rolesByType = config.roles[result.member.type];
     return (
       <Table.Row>
         <Table.Cell className="selected-member">
@@ -109,7 +108,7 @@ export class ManagerMembersResultItem extends Component {
         <Table.Cell data-label={i18next.t("Role")}>
           {result.permissions.can_update_role ? (
             <RoleDropdown
-              roles={rolesByType}
+              roles={config.rolesCanUpdate}
               successCallback={this.updateMemberRole}
               action={api.updateRole}
               currentValue={result.role}

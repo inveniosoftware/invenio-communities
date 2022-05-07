@@ -6,13 +6,11 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import { Grid } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
-import { SearchBar } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
+import React, { Component } from "react";
+import { SearchBar } from "react-searchkit";
+import { Grid } from "semantic-ui-react";
 
 const PublicViewSearchBar = () => {
   return (
@@ -28,8 +26,7 @@ const PublicViewSearchBar = () => {
 
 export class PublicMembersSearchLayout extends Component {
   render() {
-    const { config, updateQueryState } = this.props;
-    const sortOptions = config.sortOptions;
+    const { config } = this.props;
     return (
       <>
         <PublicViewSearchBar />
