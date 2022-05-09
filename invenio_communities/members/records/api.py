@@ -74,7 +74,7 @@ class MemberMixin:
             GroupAggregate,
             'group_id',
             'group',
-            attrs=['name', 'title', 'description'],
+            attrs=['id', 'name'],
         ),
         request=ModelRelation(
             Request,

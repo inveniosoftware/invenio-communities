@@ -51,7 +51,7 @@ export class MembersSearchBar extends Component {
   serializeGroupsForDropdown = (groups) => {
     return groups.map((group) => {
       return {
-        text: group.name,
+        text: group.id,
         value: group.id,
         key: group.id,
         content: (
@@ -59,7 +59,8 @@ export class MembersSearchBar extends Component {
             <List.Item>
               <Image size="mini" src={group.links.avatar} avatar />
               <List.Content>
-                <List.Header as="a">{group.name}</List.Header>
+                <List.Header as="a">{group.id}</List.Header>
+
               </List.Content>
             </List.Item>
           </List>
@@ -95,11 +96,15 @@ export class MembersSearchBar extends Component {
       avatar: newSelectedMember?.links?.avatar,
     };
 
-    serializedSelectedMember["name"] =
-      newSelectedMember.profile.full_name ||
-      newSelectedMember.name ||
-      newSelectedMember.id;
-
+    if(searchType === "group") {
+      serializedSelectedMember["name"] = newSelectedMember.id;
+    }
+    else {
+      serializedSelectedMember["name"] =
+        newSelectedMember.profile?.full_name ||
+        newSelectedMember.name ||
+        newSelectedMember.id;
+    }
     selectedMembers[serializedSelectedMember.id] = serializedSelectedMember;
     handleChange(selectedMembers);
   };

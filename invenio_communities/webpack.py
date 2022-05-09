@@ -53,6 +53,7 @@ communities = WebpackThemeBundle(
                 '@ckeditor/ckeditor5-build-classic': '^16.0.0',
                 '@ckeditor/ckeditor5-react': '^2.1.0',
                 '@semantic-ui-react/css-patch': '^1.0.0',
+                'react-router-dom': '^6.3.0',
                 'react-invenio-forms': '^0.10.0',
                 'react-invenio-deposit': '^0.19.0',
                 'axios': '^0.21.0',

@@ -52,9 +52,10 @@ export class MembersWithRoleSelection extends Component {
   handleActionClick = async () => {
     const { action, onSuccessCallback } = this.props;
     const { selectedMembers, role, message } = this.state;
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: undefined });
     try {
       await action(selectedMembers, role, message);
+      this.setState({ loading: false });
       onSuccessCallback();
     } catch (error) {
       this.setState({ loading: false, error: error });

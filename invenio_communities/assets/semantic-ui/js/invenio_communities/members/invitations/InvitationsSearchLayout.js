@@ -37,6 +37,7 @@ export class InvitationsSearchLayout extends Component {
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
                 allowGroups={communityAllowGroupInvites}
+                community={community}
               />
             </InvitationsContextProvider>
           }
