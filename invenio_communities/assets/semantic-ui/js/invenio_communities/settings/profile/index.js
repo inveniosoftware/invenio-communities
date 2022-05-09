@@ -27,6 +27,7 @@ import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { FundingField } from "react-invenio-deposit";
 import {
+  Image,
   FieldLabel,
   RemoteSelectField,
   SelectField,
@@ -39,7 +40,6 @@ import {
   Grid,
   Header,
   Icon,
-  Image,
   Message,
   Segment,
 } from "semantic-ui-react";
@@ -102,7 +102,7 @@ const removeEmptyValues = (obj) => {
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
 
-const LogoUploader = (props) => {
+const LogoUploader = ({ community, defaultLogo, hasLogo, onError }) => {
   let dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
@@ -112,10 +112,10 @@ const LogoUploader = (props) => {
 
       try {
         const client = new CommunityApi();
-        await client.updateLogo(props.community.id, file);
+        await client.updateLogo(community.id, file);
         window.location.reload();
       } catch (error) {
-        props.onError(error);
+        onError(error);
       }
     },
     onDropRejected: (rejectedFiles) => {
@@ -134,7 +134,7 @@ const LogoUploader = (props) => {
 
   const deleteLogo = async () => {
     const client = new CommunityApi();
-    await client.deleteLogo(props.community.id);
+    await client.deleteLogo(community.id);
   };
 
   return (
@@ -144,11 +144,15 @@ const LogoUploader = (props) => {
           <span {...getRootProps()}>
             <input {...getInputProps()} />
             <Header className="mt-0">{i18next.t("Profile picture")}</Header>
-            {props.logo ? (
-              <Image src={props.logo.links.self} fluid wrapped rounded />
-            ) : (
-              <Image src={props.defaultLogo} fluid wrapped rounded />
-            )}
+            <Image
+              src={community.links.logo}
+              fallbackSrc={defaultLogo}
+              loadFallbackFirst={true}
+              fluid
+              wrapped
+              rounded
+            />
+
             <Divider hidden />
           </span>
 
@@ -164,17 +168,17 @@ const LogoUploader = (props) => {
             {i18next.t("Upload new picture")}
           </Button>
 
-          {props.logo && (
+          {hasLogo && (
             <DeleteButton
               label={i18next.t("Delete picture")}
-              redirectURL={`${props.community.links.self_html}/settings`}
+              redirectURL={`${community.links.self_html}/settings`}
               confirmationMessage={
                 <Header as="h2" size="medium">
                   {i18next.t("Are you sure you want to delete this picture?")}
                 </Header>
               }
               onDelete={deleteLogo}
-              onError={props.onError}
+              onError={onError}
             />
           )}
         </>
@@ -682,7 +686,7 @@ class CommunityProfileForm extends Component {
                 >
                   <LogoUploader
                     community={this.props.community}
-                    logo={this.props.logo}
+                    hasLogo={this.props.hasLogo}
                     defaultLogo={this.props.defaultLogo}
                     onError={this.setGlobalError}
                   />
@@ -706,13 +710,13 @@ class CommunityProfileForm extends Component {
 
 const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);
-const logo = JSON.parse(domContainer.dataset.logo);
+const hasLogo = JSON.parse(domContainer.dataset.hasLogo);
 const commTypes = JSON.parse(domContainer.dataset.comtypes);
 
 ReactDOM.render(
   <CommunityProfileForm
     community={community}
-    logo={logo}
+    hasLogo={hasLogo}
     defaultLogo="/static/images/square-placeholder.png"
     commTypes={commTypes}
   />,

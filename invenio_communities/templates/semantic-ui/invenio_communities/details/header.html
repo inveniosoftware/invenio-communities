@@ -13,15 +13,9 @@
   <div class="ui container relaxed grid page-subheader">
     <div class="row pb-0">
       <div class="sixteen wide mobile five wide tablet two wide computer column">
-        {% if logo %}
         <div class="ui rounded fluid image community-image rel-mb-2">
-          <img src="{{logo.links.self}}" alt=""/>
+          <img src="{{community.links.logo}}" alt="" onerror="this.onerror=null;this.src='/static/images/square-placeholder.png';"/>
         </div>
-        {% else %}
-        <div class="ui rounded fluid image rel-mb-2">
-          <img src="/static/images/square-placeholder.png" alt=""/>
-        </div>
-        {% endif %}
       </div>
 
       <div class="sixteen wide mobile eleven wide tablet twelve wide computer column rel-mb-2">
