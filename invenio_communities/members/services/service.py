@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -201,6 +202,14 @@ class MemberService(RecordService):
                 raise ValidationError(_("Invalid member type: email"))
 
             factory(identity, community, role, visible, m, message, uow)
+            # Run components
+            self.run_components(
+                action,
+                identity,
+                record=m,
+                errors=None,
+                uow=uow,
+            )
 
         return True
 
@@ -513,6 +522,15 @@ class MemberService(RecordService):
         if visible is not None:
             member.visible = visible
 
+        # Run components
+        self.run_components(
+            'members_update',
+            identity,
+            record=member,
+            errors=None,
+            uow=uow,
+        )
+
         uow.register(RecordCommitOp(member, self.indexer))
 
         return True
@@ -547,6 +565,14 @@ class MemberService(RecordService):
                 record=community,
                 member=m,
             )
+            # Run components
+            self.run_components(
+                'members_delete',
+                identity,
+                record=m,
+                errors=None,
+                uow=uow,
+            )
             uow.register(RecordDeleteOp(m, self.indexer, force=True))
 
         # Make sure we're not left owner-less
@@ -569,6 +595,15 @@ class MemberService(RecordService):
         archived_invitation = ArchivedInvitation.create_from_member(member)
         member.active = True
         # TODO: recompute permissions for member.
+        # Run components
+        self.run_components(
+            'accept_invite',
+            identity,
+            record=member,
+            errors=None,
+            uow=uow,
+        )
+
         uow.register(RecordCommitOp(member, indexer=self.indexer))
         uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
         uow.register(IndexRefreshOp(indexer=self.indexer))
