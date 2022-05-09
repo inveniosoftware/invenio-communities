@@ -40,7 +40,7 @@ export class SelectedMembers extends Component {
               })}
             >
               <Label image>
-                <Image src={member.avatar_url} alt="" aria-hidden={true} />
+                <Image src={member.avatar} alt="" aria-hidden={true} />
                 {member.name}
                 <Icon name="delete" />
               </Label>

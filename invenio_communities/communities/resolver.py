@@ -14,11 +14,13 @@ is registered in Invenio-Requests via the "invenio_requests.entity_resolvers"
 entry point.
 """
 
+from types import SimpleNamespace
+
 from invenio_records_resources.references.resolvers.records import \
     RecordPKProxy, RecordResolver
 
 from ..generators import CommunityRoleNeed
-from ..proxies import current_roles
+from ..proxies import current_communities, current_roles
 from .records.api import Community
 from .services.config import CommunityServiceConfig
 
@@ -37,6 +39,10 @@ class CommunityPKProxy(RecordPKProxy):
 
     def pick_resolved_fields(self, resolved_dict):
         """Select which fields to return when resolving the reference."""
+        fake_community_obj = SimpleNamespace(
+            id=resolved_dict["id"],
+            slug=resolved_dict["slug"],
+        )
         metadata = resolved_dict["metadata"]
         return {
             "id": resolved_dict["id"],
@@ -44,6 +50,9 @@ class CommunityPKProxy(RecordPKProxy):
             "title": metadata["title"],
             "description": metadata.get("description"),
             "type": metadata.get("type"),
+            "logo": current_communities.service.links_item_tpl.expand(
+                fake_community_obj
+            )["logo"]
         }
 
 

@@ -16,7 +16,7 @@ from invenio_vocabularies.proxies import current_service as vocabulary_service
 
 from invenio_communities.proxies import current_communities
 
-from .decorators import pass_community, pass_community_logo
+from .decorators import pass_community
 
 VISIBILITY_FIELDS = [
     {
@@ -94,8 +94,7 @@ def communities_new():
 
 
 @pass_community
-@pass_community_logo
-def communities_settings(pid_value, community, logo):
+def communities_settings(pid_value, community):
     """Community settings/profile page."""
     permissions = community.has_permissions_to(
         ["update", "read", "search_requests", "search_invites"]
@@ -103,19 +102,25 @@ def communities_settings(pid_value, community, logo):
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
-    types = vocabulary_service.read_all(
+    _types = vocabulary_service.read_all(
         g.identity,
         fields=["id", "title"],
         type="communitytypes",
         max_records=10,
     )
-    comtypes = [{"id": i["id"], "title": i["title"]} for i in list(types.hits)]
+    types = [{"id": i["id"], "title": i["title"]} for i in list(_types.hits)]
+
+    try:
+        current_communities.service.read_logo(g.identity, pid_value)
+        logo = True
+    except FileNotFoundError:
+        logo = False
 
     return render_template(
         "invenio_communities/details/settings/profile.html",
-        community=community.to_dict(),  # TODO: use serializer,
+        community=community.to_dict(),
         has_logo=True if logo else False,
-        comtypes=comtypes,
+        types=types,
         permissions=permissions,  # hide/show UI components
         active_menu_tab="settings",
     )
@@ -132,7 +137,7 @@ def communities_requests(pid_value, community):
 
     return render_template(
         "invenio_communities/details/requests/index.html",
-        community=community.to_dict(),  # TODO: use serializer,
+        community=community.to_dict(),
         permissions=permissions,
     )
 
@@ -148,7 +153,7 @@ def communities_settings_privileges(pid_value, community):
 
     return render_template(
         "invenio_communities/details/settings/privileges.html",
-        community=community.to_dict(),  # TODO: use serializer,
+        community=community.to_dict(),
         form_config=dict(
             access=dict(visibility=VISIBILITY_FIELDS),
         ),

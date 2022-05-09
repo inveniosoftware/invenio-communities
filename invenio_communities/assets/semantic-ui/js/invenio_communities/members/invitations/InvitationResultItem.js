@@ -50,7 +50,7 @@ export class InvitationResultItem extends Component {
             <Grid.Column>
               <Item className="flex" key={invitation.id}>
                 <Image
-                  src={member.avatar_url}
+                  src={member.avatar}
                   avatar
                   circular
                   className="rel-mr-1"

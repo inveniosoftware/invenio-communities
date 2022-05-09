@@ -6,11 +6,11 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { List, Dropdown } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { Image, withCancel } from "react-invenio-forms";
+import { Dropdown, List } from "semantic-ui-react";
 
 export class MembersSearchBar extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ export class MembersSearchBar extends Component {
     const serializedSelectedMember = {
       id: newSelectedMember.id,
       type: searchType,
-      avatar_url: newSelectedMember?.links?.avatar,
+      avatar: newSelectedMember?.links?.avatar,
     };
 
     serializedSelectedMember["name"] =
