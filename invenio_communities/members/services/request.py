@@ -18,6 +18,7 @@ from ...proxies import current_communities
 def service():
     return current_communities.service.members
 
+
 #
 # Actions
 #

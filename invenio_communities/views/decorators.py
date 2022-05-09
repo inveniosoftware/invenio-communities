@@ -25,21 +25,3 @@ def pass_community(f):
         return f(**kwargs)
 
     return view
-
-
-def pass_community_logo(f):
-    """Fetch the community logo."""
-    @wraps(f)
-    def view(**kwargs):
-        pid_value = kwargs["pid_value"]
-        try:
-            files = current_communities.service.read_logo(
-                id_=pid_value, identity=g.identity
-            )
-            kwargs["logo"] = files
-        except FileNotFoundError:
-            kwargs["logo"] = None
-
-        return f(**kwargs)
-
-    return view

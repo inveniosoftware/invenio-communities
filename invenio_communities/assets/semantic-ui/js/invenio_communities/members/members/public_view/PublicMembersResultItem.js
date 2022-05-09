@@ -7,7 +7,7 @@ import { Grid, Item, Label, Table } from "semantic-ui-react";
 class PublicMemberPublicViewResultItem extends Component {
   render() {
     const { result } = this.props;
-    const avatar = result.member.avatar_url;
+    const avatar = result.member.avatar;
     return (
       <Table.Row>
         <Table.Cell>

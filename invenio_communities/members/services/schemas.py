@@ -117,7 +117,7 @@ class PublicDumpSchema(Schema):
             "id": user["id"],
             "name": name,
             "description": description,
-            "avatar_url": avatar
+            "avatar": avatar
         }
 
     def get_group_member(self, group):

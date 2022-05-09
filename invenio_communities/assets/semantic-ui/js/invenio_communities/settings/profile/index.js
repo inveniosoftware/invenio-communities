@@ -27,8 +27,8 @@ import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { FundingField } from "react-invenio-deposit";
 import {
-  Image,
   FieldLabel,
+  Image,
   RemoteSelectField,
   SelectField,
   TextField,
@@ -494,7 +494,7 @@ class CommunityProfileForm extends Component {
                         label={i18next.t("Type")}
                       />
                     }
-                    options={this.props.commTypes.map((ct) => {
+                    options={this.props.types.map((ct) => {
                       return {
                         value: ct.id,
                         text: ct?.title?.en ?? ct.id,
@@ -711,14 +711,14 @@ class CommunityProfileForm extends Component {
 const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);
 const hasLogo = JSON.parse(domContainer.dataset.hasLogo);
-const commTypes = JSON.parse(domContainer.dataset.comtypes);
+const types = JSON.parse(domContainer.dataset.types);
 
 ReactDOM.render(
   <CommunityProfileForm
     community={community}
     hasLogo={hasLogo}
     defaultLogo="/static/images/square-placeholder.png"
-    commTypes={commTypes}
+    types={types}
   />,
   domContainer
 );

@@ -56,7 +56,7 @@ export class ManagerMembersResultItem extends Component {
             <Grid.Column>
               <Item className="flex" key={result.id}>
                 <SearchResultsRowCheckbox rowId={result.id} data={result} />
-                <Image src={result.member.avatar_url} avatar />
+                <Image src={result.member.avatar} avatar />
                 <Item.Content className="ml-10">
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
