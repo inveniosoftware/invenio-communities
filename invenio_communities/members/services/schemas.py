@@ -11,7 +11,7 @@
 from datetime import timezone
 
 from flask_babelex import lazy_gettext as _
-from invenio_users_resources.proxies import current_users_service
+from invenio_users_resources.proxies import current_users_service, current_groups_service
 from marshmallow import Schema, ValidationError, fields, validate, \
     validates_schema
 from marshmallow_utils.fields import SanitizedUnicode, TZDateTime
@@ -122,11 +122,15 @@ class PublicDumpSchema(Schema):
 
     def get_group_member(self, group):
         """Get a group member."""
+        fake_group_obj = SimpleNamespace(id=group["id"])
+        avatar = current_groups_service.links_item_tpl.expand(
+            fake_group_obj
+        )['avatar']
         return {
             "type": "group",
             "id": group["id"],
-            "name": group["title"] or group["name"] or "",
-            "description": group["description"] or "",
+            "name": group["id"] or "",
+            "avatar": avatar
         }
 
 

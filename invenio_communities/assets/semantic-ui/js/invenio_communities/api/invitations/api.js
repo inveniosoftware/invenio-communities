@@ -17,14 +17,6 @@ export class CommunityInvitationsApi {
     this.community = community;
   }
 
-  get endpoint() {
-    return this.#urls.invitations;
-  }
-
-  getInvitations = async () => {
-    return await http.get(this.endpoint);
-  };
-
   createInvite = async (members, role, message = undefined) => {
     const payload = {
       members: bulkMembersSerializer(members),
@@ -37,8 +29,20 @@ export class CommunityInvitationsApi {
     return await http.post(this.#urls.invitations, payload);
   };
 
+  addGroupToMembers = async (members, role, message = undefined) => {
+    const payload = {
+      members: bulkMembersSerializer(members),
+      role: role,
+    };
+    if (message) {
+      payload.message = message;
+    }
+
+    return await http.post(this.#urls.membersUrl, payload);
+  };
+
   updateInvites = async (payload) => {
-    return await http.put(this.endpoint, payload);
+    return await http.put(this.#urls.invitations, payload);
   };
 
   updateRole = async (invitation, role) => {

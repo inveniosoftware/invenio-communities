@@ -86,12 +86,6 @@
           },
           "name": {
             "type": "keyword"
-          },
-          "title": {
-            "type": "date"
-          },
-          "description": {
-            "type": "date"
           }
         }
       },

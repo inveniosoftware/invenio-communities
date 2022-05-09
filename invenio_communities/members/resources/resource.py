@@ -103,7 +103,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             data=resource_requestctx.data,
-            refresh=resource_requestctx.args["refresh"],
+            refresh=resource_requestctx.args.get("refresh", False),
         )
         return "", 204
 

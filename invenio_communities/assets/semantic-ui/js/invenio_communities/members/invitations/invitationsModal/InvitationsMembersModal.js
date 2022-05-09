@@ -7,6 +7,7 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
+import { InvenioCommunitiesRoutesGenerator } from "../../../routes/appUrls";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { withState } from "react-searchkit";
@@ -25,10 +26,17 @@ export class InvitationsMembersModal extends Component {
     };
   }
 
-  onSuccess = () => {
+  onMemberSuccess = () => {
     const { updateQueryState, currentQueryState } = this.props;
     updateQueryState(currentQueryState);
     this.handleCloseModal();
+  };
+
+  onGroupSuccess = () => {
+    const { community } = this.props;
+    window.location = InvenioCommunitiesRoutesGenerator.membersList(
+      community.slug
+    );
   };
 
   getPanes = () => {
@@ -44,7 +52,7 @@ export class InvitationsMembersModal extends Component {
             roleOptions={userRoles}
             modalClose={this.handleCloseModal}
             action={api.createInvite}
-            onSuccessCallback={this.onSuccess}
+            onSuccessCallback={this.onMemberSuccess}
           />
         </Tab.Pane>
       ),
@@ -58,8 +66,8 @@ export class InvitationsMembersModal extends Component {
           <GroupTabPane
             modalClose={this.handleCloseModal}
             roleOptions={groupRoles}
-            action={api.createInvite}
-            onSuccessCallback={this.onSuccess}
+            action={api.addGroupToMembers}
+            onSuccessCallback={this.onGroupSuccess}
           />
         </Tab.Pane>
       ),

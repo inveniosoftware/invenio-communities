@@ -114,7 +114,6 @@ class MemberService(RecordService):
             self._add_factory,
             uow
         )
-
         # ensure index is refreshed to search for newly added members
         uow.register(IndexRefreshOp(index=self.record_cls.index))
         return ret
@@ -150,7 +149,6 @@ class MemberService(RecordService):
         the most of the same permission and integrity checks.
         """
         community = self.community_cls.get_record(community_id)
-
         # Validate data (if there are errors, .load() raises)
         data, errors = schema.load(
             data,
@@ -198,7 +196,10 @@ class MemberService(RecordService):
         # TODO: inefficient to do here, should be done in bulk instead.
         if member['type'] == 'group':
             try:
-                member['id'] = Role.query.filter_by(name=member['id']).one().id
+                # member['id'] is mapped from role.name
+                # (check invenio-users-resources)
+                member['id'] = \
+                    Role.query.filter_by(name=member['id']).one().id
             except NoResultFound as e:
                 raise InvalidMemberError(member) from e
 
