@@ -321,9 +321,20 @@ class CommunityProfileForm extends Component {
       return deserializedValue;
     };
 
+    const funding = initialValues.metadata.funding.map((fund) => {
+      return {
+        ...(fund.award && { award: deserializeFunding(fund.award) }),
+        funder: deserializeFunding(fund.funder),
+      };
+    });
+
     return {
       ...initialValues,
-      metadata: { ...initialValues.metadata, organizationsNames },
+      metadata: {
+        ...initialValues.metadata,
+        organizations: organizationsNames,
+        funding,
+      },
     };
   };
 
@@ -612,7 +623,8 @@ class CommunityProfileForm extends Component {
                         descriptionContent = "";
                       let awardOrFunder = "award";
                       if (funding.award) {
-                        headerContent = funding.award.title;
+                        headerContent =
+                          funding.award.title.en ?? funding.award.title;
                       }
 
                       if (funding.funder) {
