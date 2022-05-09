@@ -11,7 +11,7 @@
 from invenio_cache import current_cache
 
 from .generators import CommunityRoleNeed
-from .members.records.api import Member
+from .proxies import current_communities
 
 
 def load_community_needs(identity):
@@ -42,16 +42,15 @@ def load_community_needs(identity):
     # entities and combine it into a single list.
 
     # Currently, only users are supported (no roles or system roles)
-    # cache_key = identity_cache_key(identity)
-    # community_roles = current_cache.get(cache_key)
-    # if community_roles is None:
-    #         community_roles = Member.get_memberships(identity)
-    #         current_cache.set(cache_key, community_roles, timeout=24*3600)
-
-    # TODO: Fix caching issues
+    cache_key = identity_cache_key(identity)
+    community_roles = current_cache.get(cache_key)
+    if community_roles is None:
+            # aka Member.get_memberships(identity)
+            community_roles = current_communities.service.members.config.record_cls.get_memberships(identity)
+            current_cache.set(cache_key, community_roles, timeout=24*3600)
 
     # Add community needs to identity
-    for c_id, role in Member.get_memberships(identity):
+    for c_id, role in community_roles:
         identity.provides.add(CommunityRoleNeed(c_id, role))
 
 
