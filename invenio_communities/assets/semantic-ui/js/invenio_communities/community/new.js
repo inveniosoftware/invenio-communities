@@ -53,6 +53,8 @@ const IdentifierField = ({ formConfig, slug = "" }) => {
       helpText={helpText}
       fluid
       className="text-muted"
+      // Prevent submitting before the value is updated:
+      onKeyDown={(e) => { e.key === "Enter" && e.preventDefault()}}
     />
   );
 };
@@ -139,6 +141,8 @@ class CommunityCreateForm extends Component {
                   <TextField
                     fluid
                     fieldPath="metadata.title"
+                    // Prevent submitting before the value is updated:
+                    onKeyDown={(e) => { e.key === "Enter" && e.preventDefault()}}
                     label={
                       <FieldLabel
                         htmlFor="metadata.title"
