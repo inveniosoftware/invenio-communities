@@ -8,29 +8,36 @@
 
 import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from 'react-overridable';
+import { parametrize } from "react-overridable";
 import {
   BucketAggregationElement,
-  RecordFacetsValues, RecordSearchBarElement, RequestsEmptyResultsWithState,
-  RequestsFacets, RequestsResults,
+  RecordFacetsValues,
+  RecordSearchBarElement,
+  RequestsEmptyResultsWithState,
+  RequestsFacets,
+  RequestsResults,
   RequestsResultsGridItemTemplate,
   RequestsResultsItemTemplate,
   RequestsSearchLayout,
-} from './requests';
+} from "./requests";
 
 const domContainer = document.getElementById("communities-request-search-root");
 
 const community = JSON.parse(domContainer.dataset.community);
 
+const RequestsResultsGridItemTemplateWithCommunity = parametrize(
+  RequestsResultsGridItemTemplate,
+  {
+    community: community,
+  }
+);
 
-const RequestsResultsGridItemTemplateWithCommunity = parametrize(RequestsResultsGridItemTemplate, {
-  community: community,
-});
-
-const RequestsResultsItemTemplateWithCommunity = parametrize(RequestsResultsItemTemplate, {
-  community: community,
-});
-
+const RequestsResultsItemTemplateWithCommunity = parametrize(
+  RequestsResultsItemTemplate,
+  {
+    community: community,
+  }
+);
 
 const defaultComponents = {
   "BucketAggregation.element": BucketAggregationElement,

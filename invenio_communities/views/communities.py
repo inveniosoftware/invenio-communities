@@ -114,7 +114,7 @@ def communities_settings(pid_value, community, logo):
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community.to_dict(),  # TODO: use serializer,
-        logo=logo.to_dict() if logo else None,
+        has_logo=True if logo else False,
         comtypes=comtypes,
         permissions=permissions,  # hide/show UI components
         active_menu_tab="settings",
@@ -122,8 +122,7 @@ def communities_settings(pid_value, community, logo):
 
 
 @pass_community
-@pass_community_logo
-def communities_requests(pid_value, community, logo):
+def communities_requests(pid_value, community):
     """Community requests page."""
     permissions = community.has_permissions_to(
         ["update", "read", "search_requests", "search_invites"]
@@ -134,14 +133,12 @@ def communities_requests(pid_value, community, logo):
     return render_template(
         "invenio_communities/details/requests/index.html",
         community=community.to_dict(),  # TODO: use serializer,
-        logo=logo.to_dict() if logo else None,
         permissions=permissions,
     )
 
 
 @pass_community
-@pass_community_logo
-def communities_settings_privileges(pid_value, community, logo):
+def communities_settings_privileges(pid_value, community):
     """Community settings/privileges page."""
     permissions = community.has_permissions_to(
         ["update", "read", "search_requests", "search_invites"]
@@ -152,7 +149,6 @@ def communities_settings_privileges(pid_value, community, logo):
     return render_template(
         "invenio_communities/details/settings/privileges.html",
         community=community.to_dict(),  # TODO: use serializer,
-        logo=logo.to_dict() if logo else None,
         form_config=dict(
             access=dict(visibility=VISIBILITY_FIELDS),
         ),
