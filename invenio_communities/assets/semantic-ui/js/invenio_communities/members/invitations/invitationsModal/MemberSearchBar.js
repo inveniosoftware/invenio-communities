@@ -115,6 +115,7 @@ export class MembersSearchBar extends Component {
       this.setState({
         isFetching: false,
         suggestions: suggestions.data.hits.hits,
+        error: false,
       });
     } catch (e) {
       console.error(e);
