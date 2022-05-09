@@ -8,41 +8,42 @@
 
 import React from "react";
 import { Input } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
+import { withState } from "react-searchkit";
 
-export const MembersSearchBarElement = ({
-  placeholder: passedPlaceholder,
-  queryString,
-  onInputChange,
-  executeSearch,
-  uiProps,
-}) => {
-  const placeholder = passedPlaceholder || i18next.t("Search");
-  const onBtnSearchClick = () => {
-    executeSearch();
-  };
-  const onKeyPress = (event) => {
-    if (event.key === "Enter") {
-      executeSearch();
-    }
-  };
-  return (
-    <Input
-      action={{
-        icon: "search",
-        onClick: onBtnSearchClick,
-        className: "search",
-      }}
-      fluid
-      placeholder={placeholder}
-      onChange={(event, { value }) => {
-        onInputChange(value);
-      }}
-      value={queryString}
-      onKeyPress={onKeyPress}
-      {...uiProps}
-    />
-  );
-};
+export const MembersSearchBarElement = withState(
+  ({
+    placeholder: passedPlaceholder,
+    queryString,
+    onInputChange,
+    updateQueryState,
+    uiProps,
+  }) => {
+    const placeholder = passedPlaceholder || i18next.t("Search");
+    const onBtnSearchClick = () => {
+      updateQueryState({ queryString });
+    };
+    const onKeyPress = (event) => {
+      if (event.key === "Enter") {
+        updateQueryState({ queryString });
+      }
+    };
+    return (
+      <Input
+        action={{
+          icon: "search",
+          onClick: onBtnSearchClick,
+          className: "search",
+        }}
+        fluid
+        placeholder={placeholder}
+        onChange={(event, { value }) => {
+          onInputChange(value);
+        }}
+        value={queryString}
+        onKeyPress={onKeyPress}
+        {...uiProps}
+      />
+    );
+  }
+);
