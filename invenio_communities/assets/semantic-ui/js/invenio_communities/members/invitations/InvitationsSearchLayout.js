@@ -21,7 +21,7 @@ export class InvitationsSearchLayout extends Component {
       roles,
       rolesCanInvite,
       community,
-      communityAllowGroupInvites,
+      communityGroupsEnabled,
     } = this.props;
 
     const sortOptions = config.sortOptions;
@@ -36,7 +36,7 @@ export class InvitationsSearchLayout extends Component {
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
-                allowGroups={communityAllowGroupInvites}
+                groupsEnabled={communityGroupsEnabled}
                 community={community}
               />
             </InvitationsContextProvider>
@@ -53,5 +53,5 @@ InvitationsSearchLayout.propTypes = {
   roles: PropTypes.array.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
-  communityAllowGroupInvites: PropTypes.bool.isRequired,
+  communityGroupsEnabled: PropTypes.bool.isRequired,
 };

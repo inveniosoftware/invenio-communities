@@ -17,7 +17,7 @@ from invenio_records_permissions.policies import BasePermissionPolicy
 
 from .generators import AllowedMemberTypes, CommunityManagers, \
     CommunityManagersForRole, CommunityMembers, CommunityOwners, \
-    CommunitySelfMember, IfPolicyClosed, IfRestricted
+    CommunitySelfMember, GroupsEnabled, IfPolicyClosed, IfRestricted
 
 
 # Permission Policy
@@ -65,6 +65,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_members_add = [
         CommunityManagersForRole(),
         AllowedMemberTypes('group'),
+        GroupsEnabled('group'),
         SystemProcess(),
     ]
 

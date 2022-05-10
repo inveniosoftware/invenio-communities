@@ -28,7 +28,7 @@ COMMUNITIES_ROUTES = {
 
 """Communities ui endpoints."""
 
-COMMUNITIES_ALLOW_GROUP_INVITES = True
+COMMUNITIES_GROUPS_ENABLED = True
 """Config to allow invitation of groups."""
 
 COMMUNITIES_FACETS = {

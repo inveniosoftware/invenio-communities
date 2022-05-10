@@ -40,7 +40,7 @@ export class InvitationsMembersModal extends Component {
   };
 
   getPanes = () => {
-    const { allowGroups, rolesCanInvite } = this.props;
+    const { groupsEnabled, rolesCanInvite } = this.props;
     const { api } = this.context;
     const userRoles = rolesCanInvite["user"];
     const peopleTab = {
@@ -73,7 +73,7 @@ export class InvitationsMembersModal extends Component {
       ),
       action: { label: i18next.t("Invite groups") },
     };
-    return allowGroups ? [peopleTab, groupsTab] : [peopleTab];
+    return groupsEnabled ? [peopleTab, groupsTab] : [peopleTab];
   };
 
   handleCloseModal = () => this.setState({ open: false });
@@ -115,7 +115,7 @@ InvitationsMembersModal.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
-  allowGroups: PropTypes.bool.isRequired,
+  groupsEnabled: PropTypes.bool.isRequired,
 };
 
 export const InvitationsMembersModalWithSearchKit = withState(
