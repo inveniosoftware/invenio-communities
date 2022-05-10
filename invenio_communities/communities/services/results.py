@@ -8,8 +8,7 @@
 """Result items for OAI-PMH services."""
 
 from invenio_records_resources.pagination import Pagination
-from invenio_records_resources.services.base.results import \
-    ServiceItemResult, ServiceListResult
+from invenio_records_resources.services.base.results import ServiceListResult
 
 
 # TODO: Move to invenio-records-resources together with OAISetList in
@@ -101,3 +100,4 @@ class BaseServiceListResult(ServiceListResult):
 
 class CommunityFeaturedList(BaseServiceListResult):
     """List of featured community entry result items."""
+
