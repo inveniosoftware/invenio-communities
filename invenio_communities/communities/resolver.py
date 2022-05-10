@@ -25,6 +25,30 @@ from .records.api import Community
 from .services.config import CommunityServiceConfig
 
 
+def pick_fields(community_dict):
+    """Pick fields to return when expanding the community obj."""
+    fake_community_obj = SimpleNamespace(
+        id=community_dict["id"],
+        slug=community_dict["slug"],
+    )
+    logo = current_communities.service.links_item_tpl.expand(
+        fake_community_obj
+    )["logo"]
+    metadata = community_dict["metadata"]
+    return {
+        "id": community_dict["id"],
+        "slug": community_dict["slug"],
+        "links": {
+            "logo": logo
+        },
+        "metadata": {
+            "title": metadata["title"],
+            "description": metadata.get("description"),
+            "type": metadata.get("type"),
+        },
+    }
+
+
 class CommunityPKProxy(RecordPKProxy):
     """Resolver proxy for a Record entity using the UUID."""
 
@@ -39,21 +63,7 @@ class CommunityPKProxy(RecordPKProxy):
 
     def pick_resolved_fields(self, resolved_dict):
         """Select which fields to return when resolving the reference."""
-        fake_community_obj = SimpleNamespace(
-            id=resolved_dict["id"],
-            slug=resolved_dict["slug"],
-        )
-        metadata = resolved_dict["metadata"]
-        return {
-            "id": resolved_dict["id"],
-            "slug": resolved_dict["slug"],
-            "title": metadata["title"],
-            "description": metadata.get("description"),
-            "type": metadata.get("type"),
-            "logo": current_communities.service.links_item_tpl.expand(
-                fake_community_obj
-            )["logo"]
-        }
+        return pick_fields(resolved_dict)
 
 
 class CommunityResolver(RecordResolver):
