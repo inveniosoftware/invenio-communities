@@ -31,17 +31,21 @@ import { CommunityApi } from "../api";
 import { communityErrorSerializer } from "../api/serializers";
 
 const IdentifierField = ({ formConfig, slug = "" }) => {
+  const [newSlug, setNewSlug] = React.useState(slug);
+
   const helpText = (
     <>
       {i18next.t(
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${slug}`}
+      {`${formConfig.SITE_UI_URL}/communities/${newSlug}`}
     </>
   );
+
   return (
     <TextField
+      onChange={setNewSlug}
       label={
         <FieldLabel
           htmlFor="slug"
