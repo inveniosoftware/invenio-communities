@@ -87,11 +87,11 @@ msgstr "Are you sure you want to delete this picture?"
 msgid "Danger zone"
 msgstr "Danger zone"
 
-msgid "Rename community"
-msgstr "Rename community"
+msgid "Change identifier"
+msgstr "Change identifier"
 
-msgid "Renaming your community can have unintended side effects."
-msgstr "Renaming your community can have unintended side effects."
+msgid "Changing your community's unique identifier can have unintended side effects."
+msgstr "Changing your community's unique identifier can have unintended side effects."
 
 msgid "Delete community"
 msgstr "Delete community"
@@ -120,11 +120,11 @@ msgstr "Organizations"
 msgid "Save"
 msgstr "Save"
 
-msgid "Enter the new name of the community"
-msgstr "Enter the new name of the community"
+msgid "Enter the new unique identifier of the community"
+msgstr "Enter the new unique identifier of the community"
 
-msgid "Rename"
-msgstr "Rename"
+msgid "Change"
+msgstr "Change"
 
 msgid "Community permissions"
 msgstr "Community permissions"

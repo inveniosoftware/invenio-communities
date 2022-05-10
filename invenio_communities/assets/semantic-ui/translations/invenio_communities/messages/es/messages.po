@@ -93,11 +93,11 @@ msgstr "¿Está seguro de que desea eliminar esta imagen?"
 msgid "Danger zone"
 msgstr "Zona de peligro"
 
-msgid "Rename community"
-msgstr "Renombrar comunidad"
+msgid "Change identifier"
+msgstr "Cambiar identificador"
 
-msgid "Renaming your community can have unintended side effects."
-msgstr "Renombrar su comunidad puede tener efectos secundarios inesperados."
+msgid "Changing your community's unique identifier can have unintended side effects."
+msgstr "Cambiar el identificador único de su comunidad puede tener efectos secundarios inesperados."
 
 msgid "Delete community"
 msgstr "Eliminar comunidad"
@@ -126,11 +126,11 @@ msgstr "Organizaciones"
 msgid "Save"
 msgstr "Guardar"
 
-msgid "Enter the new name of the community"
-msgstr "Introduzca el nuevo nombre de la comunidad"
+msgid "Enter the new unique identifier of the community"
+msgstr "Introduzca el nuevo identificador único de la comunidad"
 
-msgid "Rename"
-msgstr "Renombrar"
+msgid "Change"
+msgstr "Cambiar"
 
 msgid "Community permissions"
 msgstr "Permisos de la comunidad"
