@@ -28,8 +28,8 @@ const communitiesRolesCanInvite = JSON.parse(
 );
 const permissions = JSON.parse(dataAttr.permissions);
 
-const communityAllowGroupInvites = JSON.parse(
-  dataAttr.communityAllowGroupInvites
+const communityGroupsEnabled = JSON.parse(
+  dataAttr.communityGroupsEnabled
 );
 
 const InvitationResultItemWithConfig = parametrize(InvitationResultItem, {
@@ -42,7 +42,7 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   rolesCanInvite: communitiesRolesCanInvite,
   community: community,
   permissions: permissions,
-  communityAllowGroupInvites: communityAllowGroupInvites,
+  communityGroupsEnabled: communityGroupsEnabled,
 });
 
 const InvitationsContextProvider = parametrize(ContextProvider, {
