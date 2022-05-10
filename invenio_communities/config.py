@@ -123,9 +123,29 @@ COMMUNITIES_REQUESTS_SEARCH = {
 
 COMMUNITIES_MEMBERS_SEARCH = {
     'facets': ['role', 'visibility'],
-    'sort': ['bestmatch', 'newest', 'oldest'],
+    'sort': ['bestmatch', 'name', 'newest', 'oldest'],
 }
 """Community requests search configuration (i.e list of community requests)"""
+
+COMMUNITIES_MEMBERS_SORT_OPTIONS = {
+    "bestmatch": dict(
+        title=_('Best match'),
+        fields=['_score'],  # ES defaults to desc on `_score` field
+    ),
+    "name": dict(
+        title=_('Name'),
+        fields=['user.profile.full_name.keyword'],
+    ),
+    "newest": dict(
+        title=_('Newest'),
+        fields=['-created'],
+    ),
+    "oldest": dict(
+        title=_('Oldest'),
+        fields=['created'],
+    ),
+}
+"""Definitions of available record sort options."""
 
 COMMUNITIES_MEMBERS_FACETS = {
     'role': {
@@ -145,7 +165,7 @@ COMMUNITIES_MEMBERS_FACETS = {
 
 COMMUNITIES_INVITATIONS_SEARCH = {
     'facets': ['type', 'status'],
-    'sort': ['bestmatch', 'newest', 'oldest'],
+    'sort': ['bestmatch', 'name', 'newest', 'oldest'],
 }
 """Community invitations search configuration (i.e list of community invitations)"""
 
@@ -153,6 +173,10 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
     "bestmatch": dict(
         title=_('Best match'),
         fields=['_score'],  # ES defaults to desc on `_score` field
+    ),
+    "name": dict(
+        title=_('Name'),
+        fields=['user.profile.full_name.keyword'],
     ),
     "newest": dict(
         title=_('Newest'),
@@ -162,7 +186,6 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
         title=_('Oldest'),
         fields=['created'],
     ),
-
 }
 """Definitions of available record sort options."""
 
