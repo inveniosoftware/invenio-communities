@@ -45,18 +45,16 @@ export const RecordSearchBarElement = withState(
     placeholder: passedPlaceholder,
     queryString,
     onInputChange,
-    executeSearch,
     updateQueryState,
+    currentQueryState,
   }) => {
     const placeholder = passedPlaceholder || i18next.t("Search");
     const onBtnSearchClick = () => {
-      updateQueryState({ filters: [] });
-      executeSearch();
+      updateQueryState({ ...currentQueryState, filters: [] });
     };
     const onKeyPress = (event) => {
       if (event.key === "Enter") {
-        updateQueryState({ filters: [] });
-        executeSearch();
+        updateQueryState({ ...currentQueryState, filters: [] });
       }
     };
     return (
