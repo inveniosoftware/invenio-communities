@@ -30,6 +30,7 @@ from invenio_communities.members.records.api import ArchivedInvitation
 
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
+from .operations import ChangeNotificationOp
 from .request import CommunityInvitation
 from .schemas import AddBulkSchema, DeleteBulkSchema, InvitationDumpSchema, \
     InviteBulkSchema, MemberDumpSchema, PublicDumpSchema, UpdateBulkSchema
@@ -428,6 +429,10 @@ class MemberService(RecordService):
 
         if refresh:
             uow.register(IndexRefreshOp(index=self.record_cls.index))
+
+        uow.register(
+            ChangeNotificationOp(record_type=self.id, records=members)
+        )
 
         return True
 
