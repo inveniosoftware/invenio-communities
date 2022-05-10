@@ -11,6 +11,7 @@
 import time
 from copy import deepcopy
 from datetime import datetime, timedelta
+from invenio_cache import current_cache
 
 import pytest
 from invenio_access.permissions import system_identity
@@ -289,7 +290,6 @@ def test_update_featured(community_service, comm):
             featured_id=past_entry["id"],
             data={},
         ).to_dict()
-        print(x)
 
     community_service.featured_delete(
         identity=system_identity,
