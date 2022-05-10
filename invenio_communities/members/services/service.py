@@ -378,11 +378,11 @@ class MemberService(RecordService):
 
     @unit_of_work()
     def update(
-        self, 
-        identity, 
-        community_id, 
-        data, 
-        uow=None, 
+        self,
+        identity,
+        community_id,
+        data,
+        uow=None,
         refresh=False
     ):
         """Bulk update.
@@ -422,7 +422,8 @@ class MemberService(RecordService):
             if not self.record_cls.has_members(
                     community_id, role=current_roles.owner_role.name):
                 raise ValidationError(
-                    _("A community must have at least one owner.")
+                    _("A community must have at least one owner."),
+                    field_name="members",
                 )
 
         if refresh:
@@ -511,7 +512,8 @@ class MemberService(RecordService):
         if not self.record_cls.has_members(
                 community_id, role=current_roles.owner_role.name):
             raise ValidationError(
-                _("A community must have at least one owner.")
+                _("A community must have at least one owner."),
+                field_name="members",
             )
 
         return True
