@@ -14,6 +14,7 @@ import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
 import { PublicMembersResultsContainer } from "./PublicMembersResultContainer";
 import { PublicMembersSearchLayout } from "./PublicMembersSearchLayout";
+import MembersEmptyResults from "../components/MembersEmptyResults";
 
 const defaultComponents = {
   "ResultsList.item": PublicMembersResultsItem,
@@ -22,6 +23,7 @@ const defaultComponents = {
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
   "ResultsList.container": PublicMembersResultsContainer,
+  "EmptyResults.element": MembersEmptyResults,
 };
 
 // Auto-initialize search app
