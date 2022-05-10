@@ -35,7 +35,7 @@ export class RenameCommunitySlugButton extends Component {
 
   handleClose = () => this.setState({ modalOpen: false });
 
-  handleRename = async (event) => {
+  handleChange = async (event) => {
     // stop event propagation so the submit event is restricted to the modal
     // form
     event.stopPropagation();
@@ -82,14 +82,14 @@ export class RenameCommunitySlugButton extends Component {
           type="button"
         >
           <Icon name="pencil" />
-          {i18next.t("Rename community")}
+          {i18next.t("Change identifier")}
         </Button>
 
         <Modal open={modalOpen} onClose={this.handleClose} size="tiny">
           <Modal.Content>
-            <Form onSubmit={this.handleRename}>
+            <Form onSubmit={this.handleChange}>
               <Form.Input
-                label={i18next.t("Enter the new name of the community")}
+                label={i18next.t("Enter the new unique identifier of the community")}
                 fluid
                 input={{ ref: this.formInputRef }}
                 {...(error
@@ -107,8 +107,8 @@ export class RenameCommunitySlugButton extends Component {
             <Button onClick={this.handleClose} loading={loading} floated="left">
               {i18next.t("Cancel")}
             </Button>
-            <Button negative onClick={this.handleRename} loading={loading}>
-              {i18next.t("Rename")}
+            <Button negative onClick={this.handleChange} loading={loading}>
+              {i18next.t("Change")}
             </Button>
           </Modal.Actions>
         </Modal>

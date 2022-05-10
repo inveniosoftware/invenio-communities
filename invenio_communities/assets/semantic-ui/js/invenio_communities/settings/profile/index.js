@@ -195,11 +195,11 @@ const DangerZone = ({ community, onError }) => (
     <Grid>
       <Grid.Column mobile={16} tablet={10} computer={12}>
         <Header as="h3" size="small">
-          {i18next.t("Rename community")}
+          {i18next.t("Change identifier")}
         </Header>
         <p>
           {i18next.t(
-            "Renaming your community can have unintended side effects."
+            "Changing your community's unique identifier can have unintended side effects."
           )}
         </p>
       </Grid.Column>
