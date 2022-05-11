@@ -25,9 +25,7 @@
     id="communities-request-search-root"
     class="rel-mt-2"
     data-community='{{ community | tojson }}'
-    data-invenio-search-config='{{ search_app_communities_requests_config(app_id="communities-requests-search", hidden_params=[["receiver", "community:"+community['id'] ]] ) | tojson }}'>
+    data-invenio-search-config='{{ search_app_communities_requests_config(app_id="communities-requests-search", endpoint=community.links.requests) | tojson }}'>
   </div>
   {%- endblock requests_body %}
 {%- endblock page_body %}
-
-

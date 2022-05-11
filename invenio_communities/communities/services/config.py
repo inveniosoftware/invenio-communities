@@ -89,11 +89,15 @@ class CommunityServiceConfig(RecordServiceConfig):
         "rename": CommunityLink("{+api}/communities/{id}/rename"),
         "members": CommunityLink("{+api}/communities/{id}/members"),
         "public_members": CommunityLink("{+api}/communities/{id}/members/public"),
-        "invitations": CommunityLink("{+api}/communities/{id}/invitations")
+        "invitations": CommunityLink("{+api}/communities/{id}/invitations"),
+        "requests": CommunityLink("{+api}/communities/{id}/requests")
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")
     links_user_search = pagination_links("{+api}/user/communities{?args*}")
+    links_community_requests_search = pagination_links(
+       "{+api}/communities/{community_id}/requests{?args*}"
+    )
 
     # Service components
     components = [

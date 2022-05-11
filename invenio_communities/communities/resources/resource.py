@@ -106,6 +106,11 @@ class CommunityResource(RecordResource):
                 p(routes["communities-prefix"], routes["item"]) + p(routes["featured-prefix"], routes["featured-id"]),
                 self.featured_delete
             ),
+            route(
+                "GET",
+                p(routes["communities-prefix"], routes["item"] + routes["community-requests"]),
+                self.search_community_requests
+            ),
         ]
 
     @request_search_args
@@ -117,6 +122,22 @@ class CommunityResource(RecordResource):
         """
         hits = self.service.search_user_communities(
             identity=g.identity,
+            params=resource_requestctx.args,
+            es_preference=es_preference()
+        )
+        return hits.to_dict(), 200
+
+    @request_view_args
+    @request_search_args
+    @response_handler(many=True)
+    def search_community_requests(self):
+        """Perform a search over the community's requests.
+
+        GET /communities/<pid_value>/requests
+        """
+        hits = self.service.search_community_requests(
+            identity=g.identity,
+            community_id=resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
             es_preference=es_preference()
         )

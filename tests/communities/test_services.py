@@ -251,3 +251,37 @@ def test_search_user(
 
     with pytest.raises(PermissionDeniedError):
         community_service.search_user_communities(identity=anon_identity)
+
+
+def test_search_community_requests(
+        app, db, es_clear, location,
+        anon_identity, community_service, community,
+        members, new_user
+    ):
+    """Test who cannot see community requests.
+
+    Community managers should be the one able to see the community requests
+    This test should happen in invenio-rdm-records where the review service is defined.
+    """
+    reader = members["reader"]
+
+    # Community members don't see them
+    with pytest.raises(PermissionDeniedError):
+        community_service.search_community_requests(
+            identity=reader.identity,
+            community_id=community.id
+        )
+
+    # Non-community members don't see them
+    with pytest.raises(PermissionDeniedError):
+        community_service.search_community_requests(
+            identity=new_user.identity,
+            community_id=community.id
+        )
+
+    # Anonymous users don't see them
+    with pytest.raises(PermissionDeniedError):
+        community_service.search_community_requests(
+            identity=anon_identity,
+            community_id=community.id
+        )
