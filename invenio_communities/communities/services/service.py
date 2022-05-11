@@ -16,6 +16,7 @@ from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import RecordService, ServiceSchemaWrapper
 
 from invenio_records_resources.services.uow import RecordCommitOp, RecordIndexOp, unit_of_work
+from invenio_requests import current_requests_service
 from marshmallow.exceptions import ValidationError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -84,6 +85,37 @@ class CommunityService(RecordService):
                 "args": params
             }),
             links_item_tpl=self.links_item_tpl,
+        )
+
+    def search_community_requests(
+            self, identity, community_id, params=None, es_preference=None, **kwargs):
+        """Search for requests of a specific community."""
+        self.require_permission(
+            identity, 'search_requests', community_id=community_id)
+
+        # Prepare and execute the search
+        params = params or {}
+        search_result = current_requests_service._search(
+            'search',
+            identity,
+            params,
+            es_preference,
+            permission_action=None,
+            extra_filter=Q("term", **{'receiver.community': community_id}),
+            **kwargs
+        ).execute()
+
+        return current_requests_service.result_list(
+            current_requests_service,
+            identity,
+            search_result,
+            params,
+            links_tpl=LinksTemplate(
+                self.config.links_community_requests_search, context={
+                    "args": params, "community_id": community_id
+                }
+            ),
+            links_item_tpl=current_requests_service.links_item_tpl,
         )
 
     @unit_of_work()
