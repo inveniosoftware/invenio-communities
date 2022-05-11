@@ -8,13 +8,15 @@
 
 import {
   DropdownFilter,
-  DropdownSort,
 } from "@js/invenio_communities/members/components/SearchDropdowns";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { SearchBar, withState } from "react-searchkit";
+import {
+  SearchBar,
+  withState,
+  Sort,
+} from 'react-searchkit';
 import { Button } from "semantic-ui-react";
 import FilterLabel from "./FilterLabel";
 
@@ -28,14 +30,11 @@ export class SearchBarWithFilters extends Component {
       searchBarPlaceholder,
       customCmp,
       customFilters,
-      ...uiProps
     } = this.props;
     const currentFilters = currentQueryState.filters;
-    const currentSort = currentQueryState.sortBy;
     const filters = customFilters
       ? customFilters
       : currentResultsState.data.aggregations;
-
     return (
       <>
         {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
@@ -52,25 +51,15 @@ export class SearchBarWithFilters extends Component {
                 filterValues={filter[1].buckets}
                 currentQueryState={currentQueryState}
                 updateQueryState={updateQueryState}
+                loading={currentResultsState.loading}
                 size="large"
                 className="fluid-mobile"
-                {...uiProps}
               />
             ))}
 
             {sortOptions && (
-              <DropdownSort
-                filterKey="sort"
-                filterLabel={_upperFirst(currentSort)}
-                filterValues={sortOptions}
-                currentQueryState={currentQueryState}
-                updateQueryState={updateQueryState}
-                size="large"
-                className="fluid-mobile"
-                {...uiProps}
-              />
+              <Sort values={sortOptions} />
             )}
-
             {customCmp && customCmp}
           </div>
         </div>

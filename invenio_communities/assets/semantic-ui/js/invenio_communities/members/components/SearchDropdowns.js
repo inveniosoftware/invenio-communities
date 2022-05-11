@@ -11,54 +11,49 @@ import { Dropdown } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export class DropdownSort extends Component {
-  onChangeSort = (e, data) => {
-    const { updateQueryState, currentQueryState } = this.props;
-    currentQueryState.sortBy = data.value;
-    updateQueryState(currentQueryState);
-  };
-
   render() {
     const {
-      filterKey,
-      filterValues,
-      filterLabel,
-      updateQueryState,
-      currentQueryState,
+      options,
+      currentSortBy,
+      onValueChange,
+      ariaLabel,
+      selectOnNavigation,
       ...uiProps
     } = this.props;
-    const options = filterValues.map((filterValue) => {
-      const disabled = currentQueryState.sortBy === filterValue.sortBy;
+
+    const optionsWithDisabled = options.map((option) => {
+      const disabled = currentSortBy === option.sortBy;
       return {
-        key: filterValue.sortBy,
-        text: filterValue.text,
-        value: filterValue.sortBy,
+        key: option.key,
+        text: option.text,
+        value: option.value,
         disabled: disabled,
       };
     });
-
     return (
       <Dropdown
         button
-        text={filterLabel}
-        options={options}
-        onChange={this.onChangeSort}
+        item
+        options={optionsWithDisabled}
+        value={currentSortBy}
+        onChange={(_, { value }) => onValueChange(value)}
+        aria-label={ariaLabel}
+        selectOnNavigation={selectOnNavigation}
         selectOnBlur={false}
-        {...uiProps}
+        size="large"
+        className="fluid-mobile"
       />
     );
   }
 }
 
 DropdownSort.propTypes = {
-  updateQueryState: PropTypes.func.isRequired,
-  currentQueryState: PropTypes.object.isRequired,
-  filterKey: PropTypes.string.isRequired,
-  filterValues: PropTypes.array.isRequired,
-  filterLabel: PropTypes.string.isRequired,
-};
-
-DropdownSort.defaultProps = {
-  filterLabel: "",
+  options: PropTypes.array.isRequired,
+  currentSortBy: PropTypes.string,
+  overridableId: PropTypes.string,
+  ariaLabel: PropTypes.string,
+  selectOnNavigation: PropTypes.bool,
+  onValueChange: PropTypes.func.isRequired,
 };
 
 export class DropdownFilter extends Component {
@@ -92,16 +87,20 @@ export class DropdownFilter extends Component {
     });
 
     return (
-      <Dropdown
-        item
-        button
-        text={filterLabel}
-        options={options}
-        onChange={this.onChangeFilter}
-        selectOnBlur={false}
-        value={null}
-        {...uiProps}
-      />
+      <>
+        {!loading ? (
+          <Dropdown
+            item
+            button
+            text={filterLabel}
+            options={options}
+            onChange={this.onChangeFilter}
+            selectOnBlur={false}
+            value={null}
+            {...uiProps}
+          />
+        ) : null}
+      </>
     );
   }
 }
