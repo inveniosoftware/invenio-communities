@@ -326,7 +326,7 @@ export const CommunityRecordFacets = ({ aggs, currentResultsState }) => {
           </div>
         );
       })}
-      <Card className="borderless facet">
+      <Card className="borderless facet mt-0">
         <Card.Content>
           <Card.Header as="h2">{i18next.t("Help")}</Card.Header>
           <SearchHelpLinks />
@@ -357,21 +357,22 @@ export const CommunityBucketAggregationElement = ({
       <Card.Content>
         <Card.Header as="h2">
           {title}
-          <Button
-            basic
-            icon
-            size="mini"
-            floated="right"
-            onClick={clearFacets}
-            aria-label={i18next.t("Clear selection")}
-            title={i18next.t("Clear selection")}
-            disabled={!hasSelections()}
-          >
-            {i18next.t("Clear")}
-          </Button>
+          { hasSelections() &&
+            <Button
+              basic
+              icon
+              size="mini"
+              floated="right"
+              onClick={clearFacets}
+              aria-label={i18next.t("Clear selection")}
+              title={i18next.t("Clear selection")}
+            >
+              {i18next.t("Clear")}
+            </Button>
+          }
         </Card.Header>
+        {containerCmp}
       </Card.Content>
-      <Card.Content>{containerCmp}</Card.Content>
     </Card>
   );
 };
