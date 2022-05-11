@@ -54,8 +54,15 @@ export class ManagerMembersResultItem extends Component {
         <Table.Cell className="selected-member">
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
-              <Item className="flex" key={result.id}>
-                <SearchResultsRowCheckbox rowId={result.id} data={result} />
+              <Item
+                className={
+                  result.is_current_user ? "flex align-no-checkbox" : "flex"
+                }
+                key={result.id}
+              >
+                {!result.is_current_user && (
+                  <SearchResultsRowCheckbox crowId={result.id} data={result} />
+                )}
                 <Image src={result.member.avatar} avatar />
                 <Item.Content className="ml-10">
                   <Item.Header
