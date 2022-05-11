@@ -213,8 +213,8 @@ const RDMBucketAggregationElement = ({ title, containerCmp }) => {
     <Card className="borderless facet">
       <Card.Content>
         <Card.Header>{title}</Card.Header>
+        {containerCmp}
       </Card.Content>
-      <Card.Content>{containerCmp}</Card.Content>
     </Card>
   );
 };
