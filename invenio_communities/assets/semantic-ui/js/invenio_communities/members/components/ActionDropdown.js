@@ -66,7 +66,7 @@ class ActionDropdown extends Component {
         disabled={disabled}
         optionsSerializer={optionsSerializer}
       >
-        <>
+        <div className="flex align-items-center">
           <Dropdown
             options={optionsSerializer(options)}
             selection
@@ -77,15 +77,13 @@ class ActionDropdown extends Component {
             onChange={this.handleOnChange}
             disabled={disabled}
           />
-          {actionSuccess && (
-            <SuccessIcon
-              timeOutDelay={4000}
-              show={actionSuccess}
-              className="ml-10"
-            />
-          )}
-          {error && <ErrorPopup error={error} />}
-        </>
+          <div className="ml-5">
+              {actionSuccess && (
+                <SuccessIcon timeOutDelay={3000} show={actionSuccess} />
+              )}
+              {error && <ErrorPopup error={error} />}
+            </div>
+        </div>
       </Overridable>
     );
   }

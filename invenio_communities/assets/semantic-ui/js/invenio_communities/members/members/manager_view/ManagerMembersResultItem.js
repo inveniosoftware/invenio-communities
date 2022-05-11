@@ -30,7 +30,20 @@ export class ManagerMembersResultItem extends Component {
 
   updateMemberVisibility = (data, value) => {
     const { result } = this.state;
-    this.setState({ result: { ...result, ...{ visible: value } } });
+    // visibility can not be changed from hidden to public by other members
+    const newValueIsPublic = !!value;
+    const isEditingSelf = result.is_current_user;
+    const memberCanChangeVisibilityAfterUpdate =
+      newValueIsPublic || isEditingSelf;
+
+    const updatedPermissions = {
+      ...result.permissions,
+      can_update_visible: memberCanChangeVisibilityAfterUpdate,
+    };
+
+    this.setState({
+      result: { ...result, visible: value, permissions: updatedPermissions },
+    });
   };
 
   openLeaveOrRemoveModal = (openModalCallback, isRemoving = true) => {
@@ -49,6 +62,7 @@ export class ManagerMembersResultItem extends Component {
     const { config } = this.props;
     const { result } = this.state;
     const { api } = this.context;
+
     return (
       <Table.Row>
         <Table.Cell className="selected-member">
@@ -100,9 +114,9 @@ export class ManagerMembersResultItem extends Component {
               resource={result}
             />
           ) : result.visible ? (
-            "Public"
+            i18next.t("Public")
           ) : (
-            "Hidden"
+            i18next.t("Hidden")
           )}
         </Table.Cell>
         <Table.Cell data-label={i18next.t("Role")}>
