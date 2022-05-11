@@ -234,10 +234,8 @@ class MemberService(RecordService):
         # Add member entry
         if member['type'] == 'user':
             # Create request
-            # TODO: Fix me with a nicer role title.
-            title = _('Invitation to join "{community}" as {role}.').format(
+            title = _('Invitation to join "{community}"').format(
                 community=community.metadata["title"],
-                role=role.title,
             )
 
             request_item = current_requests_service.create(
@@ -253,6 +251,15 @@ class MemberService(RecordService):
                 uow=uow,
             )
 
+            # add role as message
+            data = {"payload": {
+                "content": _('You will join as "{role}"').format(
+                    role=role.title
+                ),
+            }}
+            current_events_service.create(
+                identity, request_item.id, data, CommentEventType, uow=uow
+            )
             # message was provided.
             if message:
                 data = {"payload": {"content": message}}
@@ -468,6 +475,19 @@ class MemberService(RecordService):
 
         # Update membership
         if role is not None:
+            if not member.active:  # still an invitation
+                data = {"payload": {
+                    "content": _(
+                        'You will join as "{role}" (changed from: "{previous}")').format(
+                        role=role.title,
+                        previous=member.role,
+                    ),
+                }}
+                current_events_service.create(
+                    identity, member.request_id, data, CommentEventType, uow=uow
+                )
+
+            # update role
             member.role = role.name
         if visible is not None:
             member.visible = visible
