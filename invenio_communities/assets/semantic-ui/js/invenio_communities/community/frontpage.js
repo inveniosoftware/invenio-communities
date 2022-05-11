@@ -51,6 +51,9 @@ class CommunityCard extends Component {
     return (
       <Card fluid href={`/communities/${this.props.community.slug}`}>
         <Image
+          wrapped
+          centered
+          ui={false}
           src={this.props.community.links.logo}
           fallbackSrc={this.props.defaultLogo}
           loadFallbackFirst={true}
