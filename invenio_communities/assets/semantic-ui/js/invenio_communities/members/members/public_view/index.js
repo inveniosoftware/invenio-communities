@@ -7,6 +7,9 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
+import {
+  DropdownSort
+} from '@js/invenio_communities/members/components/SearchDropdowns';
 
 import { PublicMembersResultsItem } from "./PublicMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
@@ -24,6 +27,7 @@ const defaultComponents = {
   "SearchApp.results": MembersResults,
   "ResultsList.container": PublicMembersResultsContainer,
   "EmptyResults.element": MembersEmptyResults,
+  "Sort.element": DropdownSort,
 };
 
 // Auto-initialize search app

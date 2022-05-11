@@ -8,6 +8,9 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
+import {
+  DropdownSort
+} from '@js/invenio_communities/members/components/SearchDropdowns';
 import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
@@ -53,6 +56,7 @@ const defaultComponents = {
   "SearchBar.element": MembersSearchBarElement,
   "SearchApp.results": MembersResults,
   "ResultsList.container": MembersResultsContainer,
+  "Sort.element": DropdownSort,
 };
 
 // Auto-initialize search app
