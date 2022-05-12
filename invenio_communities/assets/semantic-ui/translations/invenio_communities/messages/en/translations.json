@@ -116,7 +116,7 @@
   "You": "You",
   "Leave...": "Leave...",
   "Remove...": "Remove...",
-  "opened {{difference}} by {{user}}": "opened {{difference}} by {{user}}",
+  "opened {{difference}} by {{creator}}": "opened {{difference}} by {{creator}}",
   "Open": "Open",
   "Closed": "Closed",
   "Search requests...": "Search requests...",

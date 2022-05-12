@@ -190,7 +190,7 @@ export const BucketAggregationElement = ({
       <Card.Content>
         <Card.Header as="h2">
           {title}
-          { hasSelections() &&
+          {hasSelections() && (
             <Button
               basic
               icon
@@ -202,7 +202,7 @@ export const BucketAggregationElement = ({
             >
               {i18next.t("Clear")}
             </Button>
-          }
+          )}
         </Card.Header>
         {containerCmp}
       </Card.Content>
@@ -320,6 +320,20 @@ export const RequestsResultsItemTemplate = ({ result, community }) => {
     DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
   const differenceInDays = timestampToRelativeTime(createdDate.toISOString());
 
+  const createdBy = result.created_by;
+  const isCreatorUser = "user" in createdBy;
+  const isCreatorCommunity = "community" in createdBy;
+  let creatorName = "";
+  if (isCreatorUser) {
+    creatorName =
+      result.expanded?.created_by.profile?.full_name ||
+      result.expanded?.created_by.username ||
+      createdBy.user;
+  } else if (isCreatorCommunity) {
+    creatorName =
+      result.expanded?.created_by.metadata?.title || createdBy.community;
+  }
+
   return (
     <Item className="community-item">
       <Item.Content>
@@ -339,12 +353,10 @@ export const RequestsResultsItemTemplate = ({ result, community }) => {
 
         <Item.Meta>
           <span className="inline-computer rel-mr-1 rel-mt-1 rel-mb-1">
-            {/* TODO: Replace by resolved user */}
-            {/* {i18next.t(`opened {{difference}} by {{user}}`, {
+            {i18next.t(`opened {{difference}} by {{creator}}`, {
               difference: differenceInDays,
-              user: result.created_by.user,
-            })} */}
-            {i18next.t("Opened ") + differenceInDays + i18next.t(" by you")}
+              creator: creatorName,
+            })}
           </span>
         </Item.Meta>
       </Item.Content>
