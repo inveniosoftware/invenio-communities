@@ -23,20 +23,30 @@ export class MembersSearchBar extends Component {
     };
   }
 
+  serializeMemberName = (person) => {
+    const name = person.profile?.full_name;
+
+    const displayName = name
+      ? `${name} <${person.email || person.username}>`
+      : person.email
+      ? `${person.email} <${person.username}>`
+      : `<${person.username}>`;
+
+    return displayName;
+  };
+
   serializeUsersForDropdown = (users) => {
     return users.map((person) => {
-      const name = person.profile.full_name || person.id;
-
       return {
-        text: name,
+        text: person.id,
         value: person.id,
         key: person.id,
         content: (
-          <List divided relaxed>
-            <List.Item>
+          <List divided relaxed key={person.id}>
+            <List.Item key={person.id}>
               <Image size="mini" src={person.links.avatar} avatar />
               <List.Content>
-                <List.Header as="a">{name}</List.Header>
+                <List.Header as="a">{this.serializeMemberName(person)}</List.Header>
                 <List.Description>
                   {person.profile.affiliations}
                 </List.Description>
@@ -60,7 +70,6 @@ export class MembersSearchBar extends Component {
               <Image size="mini" src={group.links.avatar} avatar />
               <List.Content>
                 <List.Header as="a">{group.id}</List.Header>
-
               </List.Content>
             </List.Item>
           </List>
@@ -96,27 +105,23 @@ export class MembersSearchBar extends Component {
       avatar: newSelectedMember?.links?.avatar,
     };
 
-    if(searchType === "group") {
+    if (searchType === "group") {
       serializedSelectedMember["name"] = newSelectedMember.id;
-    }
-    else {
+    } else {
       serializedSelectedMember["name"] =
-        newSelectedMember.profile?.full_name ||
-        newSelectedMember.name ||
-        newSelectedMember.id;
+        this.serializeMemberName(newSelectedMember);
     }
     selectedMembers[serializedSelectedMember.id] = serializedSelectedMember;
     handleChange(selectedMembers);
   };
 
-  onSearchChange = async (event, data) => {
+  onSearchChange = async (event, { searchQuery }) => {
     const { fetchMembers } = this.props;
     try {
       this.setState({ isFetching: true });
 
-      const cancellableSuggestions = withCancel(fetchMembers(data.searchQuery));
+      const cancellableSuggestions = withCancel(fetchMembers(searchQuery));
       const suggestions = await cancellableSuggestions.promise;
-
       this.setState({
         isFetching: false,
         suggestions: suggestions.data.hits.hits,
@@ -131,6 +136,12 @@ export class MembersSearchBar extends Component {
     }
   };
 
+  // the "search" was already done in the backend,
+  // so we just return all options
+  handleSearch = (options, query) => {
+    return options;
+  };
+
   render() {
     const { isFetching, error, suggestions } = this.state;
     const { placeholder } = this.props;
@@ -142,7 +153,7 @@ export class MembersSearchBar extends Component {
         loading={isFetching}
         onSearchChange={this.onSearchChange}
         onChange={this.onChange}
-        search
+        search={this.handleSearch}
         options={this.optionsGenerator(suggestions)}
         selection
         value=""
