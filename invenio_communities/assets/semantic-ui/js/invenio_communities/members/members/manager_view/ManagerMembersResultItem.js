@@ -82,15 +82,13 @@ export class ManagerMembersResultItem extends Component {
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
                   >
-                    <b>{result.member.name}</b>
+                    <b className="mr-10">{result.member.name}</b>
 
                     {result.member.is_group && (
-                      <Label className="ml-10">{i18next.t("Group")}</Label>
+                      <Label className="mr-10">{i18next.t("Group")}</Label>
                     )}
                     {result.is_current_user && (
-                      <Label color="blue" className="ml-10">
-                        {i18next.t("You")}
-                      </Label>
+                      <Label color="blue">{i18next.t("You")}</Label>
                     )}
                   </Item.Header>
                   {result.member.description && (
@@ -111,7 +109,10 @@ export class ManagerMembersResultItem extends Component {
         <Table.Cell data-label={i18next.t("Member since")}>
           {timestampToRelativeTime(result.created)}
         </Table.Cell>
-        <Table.Cell data-label={i18next.t("Visibility")}>
+        <Table.Cell
+          className="mobile-table-cell"
+          data-label={i18next.t("Visibility")}
+        >
           {result.permissions.can_update_visible ? (
             <VisibilityDropdown
               visibilityTypes={config.visibility}
@@ -126,7 +127,10 @@ export class ManagerMembersResultItem extends Component {
             i18next.t("Hidden")
           )}
         </Table.Cell>
-        <Table.Cell data-label={i18next.t("Role")}>
+        <Table.Cell
+          className="mobile-table-cell"
+          data-label={i18next.t("Role")}
+        >
           {result.permissions.can_update_role ? (
             <RoleDropdown
               roles={config.rolesCanUpdate}
@@ -147,6 +151,7 @@ export class ManagerMembersResultItem extends Component {
                 <Button
                   negative
                   fluid
+                  className="non-fluid-mobile"
                   onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
                 >
                   {i18next.t("Leave...")}
@@ -155,6 +160,7 @@ export class ManagerMembersResultItem extends Component {
               {result.permissions.can_delete && (
                 <Button
                   fluid
+                  className="non-fluid-mobile"
                   onClick={() => this.openLeaveOrRemoveModal(openModal, true)}
                 >
                   {i18next.t("Remove...")}
