@@ -10,6 +10,7 @@
 
 from flask_resources import HTTPJSONException, create_error_handler
 from invenio_records_resources.resources import RecordResourceConfig
+from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
 
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update({
@@ -39,3 +40,4 @@ class CommunityResourceConfig(RecordResourceConfig):
     }
 
     error_handlers = community_error_handlers
+    request_community_requests_search_args = RequestSearchRequestArgsSchema
