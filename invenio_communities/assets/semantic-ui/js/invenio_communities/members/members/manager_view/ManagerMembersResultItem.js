@@ -75,7 +75,7 @@ export class ManagerMembersResultItem extends Component {
                 key={result.id}
               >
                 {!result.is_current_user && (
-                  <SearchResultsRowCheckbox crowId={result.id} data={result} />
+                  <SearchResultsRowCheckbox rowId={result.id} data={result} />
                 )}
                 <Image src={result.member.avatar} avatar />
                 <Item.Content className="ml-10">
@@ -146,6 +146,7 @@ export class ManagerMembersResultItem extends Component {
               {result.permissions.can_leave && (
                 <Button
                   negative
+                  fluid
                   onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
                 >
                   {i18next.t("Leave...")}
