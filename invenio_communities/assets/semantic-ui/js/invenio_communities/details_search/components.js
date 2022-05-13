@@ -225,7 +225,12 @@ export const CommunityParentFacetValue = ({
         className="facet-wrapper parent"
       >
         <List.Content className="facet-wrapper">
-          <Icon name="angle right" onClick={() => setIsActive(!isActive)} />
+          <Button
+            icon="angle right"
+            className="transparent"
+            onClick={() => setIsActive(!isActive)}
+            aria-label={i18next.t("Show all sub facets of ") + bucket.label || keyField}
+          />
           <Checkbox
             label={bucket.label || keyField}
             id={`${keyField}-facet-checkbox`}
