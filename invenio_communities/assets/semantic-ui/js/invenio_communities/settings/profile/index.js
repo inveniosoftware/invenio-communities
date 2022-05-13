@@ -467,7 +467,7 @@ class CommunityProfileForm extends Component {
             <Message
               hidden={this.state.error === ""}
               negative
-              className="flashed top attached"
+              className="flashed"
             >
               <Grid container>
                 <Grid.Column width={15} textAlign="left">
