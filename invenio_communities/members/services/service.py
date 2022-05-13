@@ -115,7 +115,7 @@ class MemberService(RecordService):
             uow
         )
         # ensure index is refreshed to search for newly added members
-        uow.register(IndexRefreshOp(index=self.record_cls.index))
+        uow.register(IndexRefreshOp(indexer=self.indexer))
         return ret
 
     @unit_of_work()
@@ -138,7 +138,7 @@ class MemberService(RecordService):
         )
 
         # ensure index is refreshed to search for newly added members
-        uow.register(IndexRefreshOp(index=self.record_cls.index))
+        uow.register(IndexRefreshOp(indexer=self.indexer))
         return ret
 
     def _create(self, identity, community_id, data, schema, action, factory,
@@ -435,7 +435,7 @@ class MemberService(RecordService):
                 )
 
         if refresh:
-            uow.register(IndexRefreshOp(index=self.record_cls.index))
+            uow.register(IndexRefreshOp(indexer=self.indexer))
 
         return True
 
@@ -552,7 +552,7 @@ class MemberService(RecordService):
         uow.register(RecordCommitOp(member, indexer=self.indexer))
         uow.register(
             RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
-        uow.register(IndexRefreshOp(index=self.record_cls.index))
+        uow.register(IndexRefreshOp(indexer=self.indexer))
 
     @unit_of_work()
     def decline_invite(self, identity, request_id, uow=None):
@@ -565,7 +565,11 @@ class MemberService(RecordService):
         uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
         uow.register(
             RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
-        uow.register(IndexRefreshOp(index=ArchivedInvitation.index))
+        uow.register(IndexRefreshOp(
+            # need to use an indexer with a diff index
+            # no access to invitations indexer
+            indexer=self.indexer, index=ArchivedInvitation.index
+        ))
 
     def read_many(self, *args, **kwargs):
         """Not implemented."""
