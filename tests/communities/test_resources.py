@@ -175,7 +175,7 @@ def test_post_schema_validation(
 
     # Assert required enums
     data = copy.deepcopy(minimal_community)
-    data['metadata']['type'] = 'foobar'
+    data['metadata']['type'] = {'id': 'foobar', 'title': 'foobar'}
     res = client.post('/communities', headers=headers, json=data)
     assert res.status_code == 400
 
