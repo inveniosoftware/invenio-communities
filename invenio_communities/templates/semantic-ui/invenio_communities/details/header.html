@@ -12,47 +12,68 @@
 <div class="ui container fluid page-subheader-outer with-submenu rel-pt-2">
   <div class="ui container relaxed grid page-subheader">
     <div class="row pb-0">
-      <div class="sixteen wide mobile five wide tablet two wide computer column">
-        <div class="ui rounded fluid image community-image rel-mb-2">
+      <div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
+
+        <div class="ui rounded image community-image mt-5 rel-mr-2 left-floated">
           <img src="{{ community.links.logo }}" alt="Community logo" onerror="this.onerror=null;this.src='/static/images/square-placeholder.png';"/>
         </div>
-      </div>
 
-      <div class="sixteen wide mobile eleven wide tablet eleven wide computer column rel-mb-2">
-        <h2 class="ui header">{{ community.metadata.title }}</h2>
-        <div class="rel-mb-2">
-          {{ truncate_text(community.metadata.description) }}
-        </div>
+        <div>
+          <h2 class="ui header">{{ community.metadata.title }}</h2>
 
-        {% if community.metadata.type is defined %}
-        <div class="mt-5">
-          <i class="tag icon" aria-hidden="true"></i>
-          <div class="ui label small grey type-label">
-            {{ community.metadata.type.title.en }}
+          <div>
+            {% if community.metadata.website %}
+            <div class="inline-computer mt-5 rel-mr-1">
+              <i class="linkify icon" aria-hidden="true"></i>
+              <a href="{{community.metadata.website}}">
+                {{community.metadata.website}}
+              </a>
+            </div>
+            {% endif %}
+
+            {% if community.metadata.type is defined %}
+            <div class="inline-computer mt-5 rel-mr-1">
+              <i class="tag icon" aria-hidden="true"></i>
+              <span class="label label-keyword">
+                {{ community.metadata.type.title.en }}
+              </span>
+            </div>
+            {% endif %}
+
+            {% if community.metadata.organizations %}
+            <div class="inline-computer mt-5 rel-mr-1">
+              <i class="building outline icon" aria-hidden="true"></i>
+              <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
+            </div>
+            {% endif %}
           </div>
-        </div>
-        {% endif %}
 
-        {% if community.metadata.website %}
-        <div class="mt-5">
-          <i class="linkify icon" aria-hidden="true"></i>
-          <a href="{{community.metadata.website}}">
-            {{community.metadata.website}}
-          </a>
+          {% if community.metadata.description %}
+            <div class="ui accordion mt-5">
+              <div id="description-accordion"
+                   role="button"
+                   aria-controls="community-description"
+                   aria-expanded="false"
+                   tabindex="0"
+                   class="title"
+              >
+                {{ _("About this community") }}
+                <i class="icon right chevron pl-5"></i>
+              </div>
+              <div id="community-description"
+                   aria-labelledby="description-accordion"
+                   class="content rel-mb-2"
+              >
+                {{ community.metadata.description }}
+              </div>
+            </div>
+          {% endif %}
         </div>
-        {% endif %}
-
-        {% if community.metadata.organizations %}
-        <div class="mt-5">
-          <i class="building outline icon" aria-hidden="true"></i>
-          <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
-        </div>
-        {% endif %}
       </div>
 
-      <div class="sixteen wide mobile sixteen wide tablet three wide computer right aligned bottom aligned column">
+      <div class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
         <a href="/uploads/new?community={{ community.id }}"
-            class="ui positive button labeled icon">
+            class="ui positive button labeled icon rel-mt-1">
           <i class="plus icon" aria-hidden="true"></i>
           {{ _("New upload") }}
         </a>
