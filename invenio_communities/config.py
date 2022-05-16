@@ -81,11 +81,14 @@ COMMUNITIES_ROLES = [
         name="reader",
         title=_('Reader'),
         description=_('Can view restricted records'),
+        can_view=True,
     ),
     dict(
         name="curator",
         title=_('Curator'),
         description=_('Can edit and view restricted records'),
+        can_curate=True,
+        can_view=True,
     ),
     dict(
         name="manager",
@@ -93,7 +96,9 @@ COMMUNITIES_ROLES = [
         description=_('Can manage members, curate records '
                       'and view restricted records'),
         can_manage_roles=['manager', 'curator', 'reader'],
-        can_manage=True
+        can_manage=True,
+        can_curate=True,
+        can_view=True,
     ),
     dict(
         name="owner",
@@ -101,7 +106,9 @@ COMMUNITIES_ROLES = [
         description=_('Full administrative access to the entire community.'),
         can_manage_roles=['owner', 'manager', 'curator', 'reader'],
         is_owner=True,
-        can_manage=True
+        can_manage=True,
+        can_curate=True,
+        can_view=True,
     ),
 ]
 """Community roles."""
