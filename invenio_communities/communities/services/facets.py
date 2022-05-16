@@ -11,7 +11,7 @@ from flask_babelex import gettext as _
 from invenio_records_resources.services.records.facets import TermsFacet
 
 type = TermsFacet(
-    field='metadata.type',
+    field='metadata.type.id',
     label=_('Type'),
     value_labels={
         'organization': _('Organization'),

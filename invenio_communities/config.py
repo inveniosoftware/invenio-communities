@@ -43,7 +43,7 @@ COMMUNITIES_FACETS = {
         'ui': {
             'field': 'visibility',
         }
-    }
+    },
 }
 """Available facets defined for this module."""
 
@@ -114,7 +114,7 @@ COMMUNITIES_ROLES = [
 """Community roles."""
 
 COMMUNITIES_SEARCH = {
-    'facets': ['type'],
+    'facets': ['type', 'visibility'],
     'sort': ['bestmatch', 'newest', 'oldest'],
 }
 """Community search configuration (i.e list of communities)"""
