@@ -9,7 +9,7 @@ import axios from "axios";
 const apiConfig = {
   withCredentials: true,
   xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X_CSRFToken",
+  xsrfHeaderName: "X-CSRFToken",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
