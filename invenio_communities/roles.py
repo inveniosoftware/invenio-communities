@@ -33,6 +33,12 @@ class Role:
     can_manage: bool = False
     """This role has manage permissions."""
 
+    can_curate: bool = False
+    """This role has record manage permissions."""
+
+    can_view: bool = False
+    """This role has view restricted record permissions."""
+
     def can_manage_role(self, role_name):
         """Determine if this role can manage the role name."""
         return role_name in self.can_manage_roles
