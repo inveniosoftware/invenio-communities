@@ -23,12 +23,7 @@ class PublicMemberPublicViewResultItem extends Component {
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
                   >
-                    <a
-                      className={result.member.is_group && "mt-10"}
-                      href={`/members/${result.id}`}
-                    >
-                      {result.member.name}
-                    </a>
+                    <b>{result.member.name}</b>
                     {result.member.is_group && (
                       <Label className="ml-10">{i18next.t("Group")}</Label>
                     )}
