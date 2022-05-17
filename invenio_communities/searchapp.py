@@ -50,6 +50,7 @@ def search_app_context():
             sort_options=
             current_app.config['COMMUNITIES_INVITATIONS_SORT_OPTIONS'],
             headers={"Accept": "application/json"},
+            initial_filters=[["is_open", "true"]],
             endpoint="/api/requests",
         )
     }

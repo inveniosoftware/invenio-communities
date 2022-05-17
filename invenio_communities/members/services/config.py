@@ -83,6 +83,7 @@ class InvitationsSearchOptions(SearchOptions):
     facets = {
         'role': facets.role,
         'status': facets.status,
+        'is_open': facets.is_open,
     }
 
 

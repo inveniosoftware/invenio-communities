@@ -99,7 +99,9 @@ export const ParentFacetValue = ({
             icon="angle right"
             className="transparent"
             onClick={() => setIsActive(!isActive)}
-            aria-label={i18next.t("Show all sub facets of ") + bucket.label || keyField}
+            aria-label={
+              i18next.t("Show all sub facets of ") + bucket.label || keyField
+            }
           />
           <Checkbox
             label={bucket.label || keyField}
@@ -396,7 +398,7 @@ class RequestStatusFilterComponent extends Component {
    * @param {string} OpenStatus true if open requests and false if closed requests
    */
   retrieveRequests = (OpenStatus) => {
-    const { currentQueryState, updateQueryState } = this.props;
+    const { currentQueryState, updateQueryState, keepFiltersOnUpdate } = this.props;
     const { open } = this.state;
 
     if (open === OpenStatus) {
@@ -405,7 +407,9 @@ class RequestStatusFilterComponent extends Component {
     this.setState({
       open: OpenStatus,
     });
-    currentQueryState.filters = [];
+    currentQueryState.filters = keepFiltersOnUpdate
+      ? currentQueryState.filters.filter((element) => element[0] != "is_open")
+      : [];
     currentQueryState.filters.push(["is_open", OpenStatus]);
     updateQueryState(currentQueryState);
   };
@@ -444,6 +448,11 @@ class RequestStatusFilterComponent extends Component {
 RequestStatusFilterComponent.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
+  keepFiltersOnUpdate: PropTypes.bool,
+};
+
+RequestStatusFilterComponent.defaultProps = {
+  keepFiltersOnUpdate: false,
 };
 
 export const RequestStatusFilter = withState(RequestStatusFilterComponent);

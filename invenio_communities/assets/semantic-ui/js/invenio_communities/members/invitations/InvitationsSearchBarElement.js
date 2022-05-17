@@ -11,26 +11,21 @@ import { Input } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 
 export const InvitationsSearchBarElement = ({
-  actionProps,
   onBtnSearchClick,
   onInputChange,
   onKeyPress,
-  overridableId,
-  placeholder,
   queryString,
-  uiProps
+  uiProps,
 }) => {
-
-
   return (
     <Input
+      className="invitation-searchbar rel-ml-2"
       action={{
         icon: "search",
         onClick: onBtnSearchClick,
         className: "search",
       }}
       fluid
-      {...uiProps}
       placeholder={i18next.t("Search in invitations...")}
       onChange={(_, { value }) => {
         onInputChange(value);

@@ -8,24 +8,33 @@
 
 import React, { Component } from "react";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
-import { i18next } from "@translations/invenio_communities/i18next";
-import { SearchBarWithFiltersWithState } from "../../components/SearchBarWithFilters";
 import { Filters } from "../../Filters";
+import { FilterLabels } from "../../components/FilterLabels";
+import { SearchFilters } from "../../components/SearchFilters";
+import { SearchBar, Sort } from "react-searchkit";
 
 export class MembersSearchLayout extends Component {
   render() {
-    const { config, updateQueryState, roles } = this.props;
-    const sortOptions = config.sortOptions;
+    const { config, roles } = this.props;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getMembersFilters();
     return (
       <>
-        <SearchBarWithFiltersWithState
-          searchBarPlaceholder={i18next.t("Search members...")}
-          customFilters={customFilters}
-          sortOptions={sortOptions}
-          updateQueryState={updateQueryState}
-        />
+        {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
+        <div className="auto-column-grid">
+          <div>
+            <SearchBar fluid />
+          </div>
+          <div>
+            <SearchFilters customFilters={customFilters} />
+            <Sort values={config.sortOptions} />
+          </div>
+        </div>
+
+        <div className="rel-mb-1">
+          <FilterLabels />
+        </div>
+
         <SearchAppResultsPane layoutOptions={config.layoutOptions} />
       </>
     );

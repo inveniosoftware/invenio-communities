@@ -105,6 +105,9 @@
           },
           "expires_at": {
             "type": "date"
+          },
+          "is_open": {
+            "type": "boolean"
           }
         }
       },
