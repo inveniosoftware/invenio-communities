@@ -700,3 +700,38 @@ def test_invalid_community_ids(
     minimal_community['slug'] = str(uuid4())
     res = client.post('/communities', headers=headers, json=minimal_community)
     assert res.status_code == 400
+
+
+def test_featured_communities(
+    client, location, minimal_community, headers, db, es_clear, admin
+):
+    """Test featured communities endpoints."""
+    client = admin.login(client)
+
+    minimal_community['slug'] = 'comm_id'
+    res = client.post('/communities', headers=headers, json=minimal_community)
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+    created_community = res.json
+    c_id_ = created_community['id']
+    Member.index.refresh()
+
+    # Fetch featured communities
+    res = client.get('/communities/featured', headers=headers, json=minimal_community)
+    assert res.status_code == 200
+    assert res.json["hits"]["total"] == 0
+
+    # Other endpoints are currently only accessible with superuser-access
+    # At least we know if the endpoints are accessible and params are provided
+    res = client.get(f'/communities/{c_id_}/featured', headers=headers)
+    assert res.status_code == 403
+
+    res = client.post(f'/communities/{c_id_}/featured', headers=headers, json={})
+    assert res.status_code == 403
+
+    # featured entry does not exist
+    res = client.put(f'/communities/{c_id_}/featured/0', headers=headers, json={})
+    assert res.status_code == 404
+
+    res = client.delete(f'/communities/{c_id_}/featured/0', headers=headers)
+    assert res.status_code == 404
