@@ -106,7 +106,10 @@ export class ManagerMembersResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell data-label={i18next.t("Member since")}>
+        <Table.Cell
+          data-label={i18next.t("Member since")}
+          className="mobile-table-cell"
+        >
           {timestampToRelativeTime(result.created)}
         </Table.Cell>
         <Table.Cell
@@ -146,12 +149,14 @@ export class ManagerMembersResultItem extends Component {
 
         <ModalContext.Consumer>
           {({ openModal }) => (
-            <Table.Cell data-label={i18next.t("Actions")}>
+            <Table.Cell
+              className="mobile-table-cell"
+              data-label={i18next.t("Actions")}
+            >
               {result.permissions.can_leave && (
                 <Button
                   negative
                   fluid
-                  className="non-fluid-mobile"
                   onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
                 >
                   {i18next.t("Leave...")}
@@ -160,7 +165,6 @@ export class ManagerMembersResultItem extends Component {
               {result.permissions.can_delete && (
                 <Button
                   fluid
-                  className="non-fluid-mobile"
                   onClick={() => this.openLeaveOrRemoveModal(openModal, true)}
                 >
                   {i18next.t("Remove...")}

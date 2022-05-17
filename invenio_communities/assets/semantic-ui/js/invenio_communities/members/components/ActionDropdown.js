@@ -54,7 +54,8 @@ class ActionDropdown extends Component {
 
   render() {
     const { loading, actionSuccess, error } = this.state;
-    const { options, currentValue, optionsSerializer, disabled } = this.props;
+    const { options, currentValue, optionsSerializer, disabled, direction } =
+      this.props;
 
     return (
       <Overridable
@@ -76,13 +77,14 @@ class ActionDropdown extends Component {
             selectOnBlur={false}
             onChange={this.handleOnChange}
             disabled={disabled}
+            direction={direction}
           />
           <div className="ml-5">
-              {actionSuccess && (
-                <SuccessIcon timeOutDelay={3000} show={actionSuccess} />
-              )}
-              {error && <ErrorPopup error={error} />}
-            </div>
+            {actionSuccess && (
+              <SuccessIcon timeOutDelay={3000} show={actionSuccess} />
+            )}
+            {error && <ErrorPopup error={error} />}
+          </div>
         </div>
       </Overridable>
     );
@@ -96,12 +98,14 @@ ActionDropdown.propTypes = {
   action: PropTypes.func.isRequired,
   optionsSerializer: PropTypes.func,
   disabled: PropTypes.bool,
+  direction: PropTypes.string,
   resource: PropTypes.object.isRequired,
 };
 
 ActionDropdown.defaultProps = {
   currentValue: "",
   disabled: false,
+  direction: "right",
   optionsSerializer: dropdownOptionsGenerator,
 };
 

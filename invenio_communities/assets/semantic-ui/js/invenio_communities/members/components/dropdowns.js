@@ -37,6 +37,7 @@ export const RoleDropdown = ({
       disabled={disabled}
       currentValue={currentValue}
       resource={resource}
+      direction='left'
     />
   );
 };
@@ -85,6 +86,7 @@ export const VisibilityDropdown = ({
       disabled={disabled}
       currentValue={currentValue}
       resource={resource}
+      direction='left'
     />
   );
 };
