@@ -80,7 +80,7 @@ class MemberMixin:
             Request,
             'request_id',
             'request',
-            attrs=['status', 'expires_at'],
+            attrs=['status', 'expires_at', 'is_open'],
         ),
     )
 

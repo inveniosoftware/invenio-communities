@@ -22,7 +22,7 @@ status = TermsFacet(
     field='request.status',
     label=_("Status"),
     value_labels={
-        "submitted": _("Pending"),
+        "submitted": _("Submitted"),
         "expired": _("Expired"),
         "accepted": _("Accepted"),
         "declined": _("Declined"),
@@ -34,4 +34,10 @@ visibility = TermsFacet(
     field='visible',
     label=_('Visibility'),
     value_labels={"true": _("Public"), "false": _("Hidden")}
+)
+
+is_open = TermsFacet(
+    field='request.is_open',
+    label=_('Status'),
+    value_labels={"true": _("Open"), "false": _("Closed")}
 )

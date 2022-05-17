@@ -10,29 +10,33 @@ import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
-import { SearchBarWithFiltersWithState } from "../components/SearchBarWithFilters";
+import { RequestStatusFilter } from "../../requests/requests";
 import { Filters } from "../Filters";
 import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
+import { SearchBar, Sort } from "react-searchkit";
+import { FilterLabels } from "../components/FilterLabels";
+import { SearchFilters } from "../components/SearchFilters";
 
 export class InvitationsSearchLayout extends Component {
   render() {
-    const {
-      config,
-      roles,
-      rolesCanInvite,
-      community,
-      communityGroupsEnabled,
-    } = this.props;
+    const { config, roles, rolesCanInvite, community, communityGroupsEnabled } =
+      this.props;
 
     const sortOptions = config.sortOptions;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getInvitationFilters();
+
     return (
       <>
-        <SearchBarWithFiltersWithState
-          sortOptions={sortOptions}
-          customFilters={customFilters}
-          customCmp={
+        {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
+        <div className="auto-column-grid">
+          <div className="flex">
+            <RequestStatusFilter keepFiltersOnUpdate />
+            <SearchBar fluid />
+          </div>
+          <div>
+            <SearchFilters customFilters={customFilters} />
+            <Sort values={config.sortOptions} />
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
@@ -40,8 +44,13 @@ export class InvitationsSearchLayout extends Component {
                 community={community}
               />
             </InvitationsContextProvider>
-          }
-        />
+          </div>
+        </div>
+
+        <div className="rel-mb-1">
+          <FilterLabels ignoreFilters={["is_open"]} />
+        </div>
+
         <SearchAppResultsPane layoutOptions={config.layoutOptions} />
       </>
     );

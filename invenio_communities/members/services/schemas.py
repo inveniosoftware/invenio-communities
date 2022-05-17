@@ -47,6 +47,7 @@ class MembersSchema(Schema):
 class RequestSchema(Schema):
     id = fields.String()
     status = fields.String()
+    is_open = fields.Boolean()
     # TODO: expires_at is dumped in the index and thus a string. This is
     # because the relations field doesn't properly load data from the index
     # (it should have converted expires_at into a datetime object).

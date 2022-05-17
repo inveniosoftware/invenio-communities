@@ -24,7 +24,7 @@ export class DropdownSort extends Component {
     const optionsWithDisabled = options.map((option) => {
       const disabled = currentSortBy === option.sortBy;
       return {
-        key: option.key,
+        key: option.value,
         text: option.text,
         value: option.value,
         disabled: disabled,
@@ -87,20 +87,17 @@ export class DropdownFilter extends Component {
     });
 
     return (
-      <>
-        {!loading ? (
-          <Dropdown
-            item
-            button
-            text={filterLabel}
-            options={options}
-            onChange={this.onChangeFilter}
-            selectOnBlur={false}
-            value={null}
-            {...uiProps}
-          />
-        ) : null}
-      </>
+      <Dropdown
+        item
+        button
+        text={filterLabel}
+        options={options}
+        onChange={this.onChangeFilter}
+        selectOnBlur={false}
+        value={null}
+        laoding={loading}
+        {...uiProps}
+      />
     );
   }
 }

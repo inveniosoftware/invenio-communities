@@ -1,4 +1,5 @@
 import _upperFirst from "lodash/upperFirst";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 export class Filters {
   constructor(configRoles) {
@@ -33,10 +34,11 @@ export class Filters {
   getStatus() {
     // This are the values that allow to filter for archived invitations
     const values = [
-      { key: "accepted", label: "Accepted" },
-      { key: "declined", label: "Declined" },
-      { key: "cancel", label: "Cancel" },
-      { key: "expired", label: "Expired" },
+      { key: "submitted", label: i18next.t("Submitted") },
+      { key: "accepted", label: i18next.t("Accepted") },
+      { key: "declined", label: i18next.t("Declined") },
+      { key: "cancel", label: i18next.t("Cancel") },
+      { key: "expired", label: i18next.t("Expired") },
     ];
     return this.serializeFilter("status", "Status", values);
   }
@@ -54,7 +56,7 @@ export class Filters {
   }
 
   getHumanReadableVisibility(value) {
-    return value ? "Public" : "Hidden";
+    return value === "true" ? "Public" : "Hidden";
   }
 
   getDisplayValue(filter) {
