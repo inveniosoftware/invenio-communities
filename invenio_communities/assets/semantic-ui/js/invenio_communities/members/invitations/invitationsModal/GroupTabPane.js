@@ -6,6 +6,8 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from "@ckeditor/ckeditor5-react";
 import { SelectedMembers } from "@js/invenio_communities/members/components/bulk_actions/SelectedMembers";
 import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
@@ -88,6 +90,14 @@ export class GroupTabPane extends Component {
                 label={i18next.t("Role")}
                 onOptionChangeCallback={this.handleRoleUpdate}
               />
+            </Form.Field>
+            <Form.Field disabled>
+              <>
+                <label>{i18next.t("Message")}</label>
+                <CKEditor
+                  editor={ClassicEditor}
+                />
+              </>
             </Form.Field>
           </Form>
         </div>

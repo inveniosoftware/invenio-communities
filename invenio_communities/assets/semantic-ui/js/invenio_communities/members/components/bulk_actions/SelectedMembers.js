@@ -25,14 +25,11 @@ export class SelectedMembers extends Component {
 
     return !_isEmpty(selectedMembers) ? (
       <>
-        <Header as="h2" size="small">
-          {i18next.t(displayingGroups ? "Selected groups" : "Selected members")}
-        </Header>
         <Segment className="selected-members-header mb-20 mr-20">
           {Object.entries(selectedMembers).map(([memberId, member]) => (
             <Button
               key={memberId}
-              className="p-0 mr-10"
+              className="p-0 mr-10 mb-5 mt-5"
               onClick={() => this.removeMember(memberId)}
               type="button"
               aria-label={i18next.t("remove {{name}}", {
@@ -49,17 +46,17 @@ export class SelectedMembers extends Component {
         </Segment>
       </>
     ) : (
-      <div className="selected-members-header mb-20">
-        <Segment placeholder>
-          <Header icon>
-            <Icon name="users" />
+      <Segment className="selected-members-header mb-20" placeholder>
+        <Header icon>
+          <Icon name="users" />
 
-            {i18next.t(
-              displayingGroups ? "No groups selected." : "No people selected."
-            )}
-          </Header>
-        </Segment>
-      </div>
+          {i18next.t(
+            displayingGroups
+              ? i18next.t("No groups selected.")
+              : i18next.t("No people selected.")
+          )}
+        </Header>
+      </Segment>
     );
   }
 }
