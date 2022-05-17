@@ -164,7 +164,7 @@ class MemberService(RecordService):
         # migration use cases.
         visible = data.get('visible', False)
         if visible and identity != system_identity:
-            raise ValidationError("Visible must be false")
+            raise ValidationError(_("Must be false"))
 
         # Permission checks - validates that:
         # - identity has permission to manage members
@@ -185,7 +185,8 @@ class MemberService(RecordService):
         for m in members:
             # TODO: Add support for inviting an email
             if m['type'] == 'email':
-                raise ValidationError('Invalid member type: email')
+                raise ValidationError(_('Invalid member type: email'))
+
             factory(identity, community, role, visible, m, message, uow)
 
         return True
@@ -431,7 +432,6 @@ class MemberService(RecordService):
                     community_id, role=current_roles.owner_role.name):
                 raise ValidationError(
                     _("A community must have at least one owner."),
-                    field_name="members",
                 )
 
         if refresh:
@@ -470,9 +470,10 @@ class MemberService(RecordService):
         # visibility. System identity can can always change for all.
         if visible is not None and member.user_id is not None:
             if visible and not (is_self or system_identity == identity):
-                raise ValidationError(_(
-                    "You can only set public visibility on your own "
-                    "membership."))
+                raise ValidationError(
+                    _("You can only set public visibility on your own "
+                    "membership."),
+                )
 
         # Update membership
         if role is not None:
@@ -534,7 +535,6 @@ class MemberService(RecordService):
                 community_id, role=current_roles.owner_role.name):
             raise ValidationError(
                 _("A community must have at least one owner."),
-                field_name="members",
             )
 
         return True
