@@ -11,7 +11,6 @@ export class ErrorMessage extends Component {
     if (!message) {
       message = error.message;
     }
- 
     return (
       <Message className="ml-20 mr-20" negative>
         <Message.Header>{message}</Message.Header>
@@ -20,7 +19,10 @@ export class ErrorMessage extends Component {
             {errors.map((error) => {
               return (
                 <Message.Item>
-                  <strong>{error.field}: </strong>
+                  {/* when there is no field Marshmallow returns _schema */}
+                  {error.field !== "_schema" && (
+                    <strong>{error.field}: </strong>
+                  )}
                   {error.messages.length === 1 ? (
                     error.messages[0]
                   ) : (
