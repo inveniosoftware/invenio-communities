@@ -7,10 +7,13 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Invenio Communities Resource API config."""
+import marshmallow as ma
 
 from flask_resources import HTTPJSONException, create_error_handler
 from invenio_records_resources.resources import RecordResourceConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
+
+from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
 
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update({
@@ -20,6 +23,12 @@ community_error_handlers.update({
             description="No logo exists for this community.",
         )
     ),
+    CommunityFeaturedEntryDoesNotExistError: create_error_handler(
+        lambda e: HTTPJSONException(
+            code=404,
+            description=str(e),
+        )
+    )
 })
 
 
@@ -39,5 +48,9 @@ class CommunityResourceConfig(RecordResourceConfig):
         "community-requests": "/requests"
     }
 
+    request_view_args = {
+        **RecordResourceConfig.request_view_args,
+        "featured_id": ma.fields.Int()
+    }
     error_handlers = community_error_handlers
     request_community_requests_search_args = RequestSearchRequestArgsSchema
