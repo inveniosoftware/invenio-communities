@@ -20,4 +20,10 @@ class CommunityFeaturedEntryDoesNotExistError(CommunityError):
 
     def __init__(self, query_arguments):
         """Initialise error."""
-        super().__init__(_(f"A featured community entry with {query_arguments} does not exist."))
+        super().__init__(
+            _(
+                "A featured community entry with {q} does not exist.".format(
+                    q=query_arguments
+                )
+            )
+        )
