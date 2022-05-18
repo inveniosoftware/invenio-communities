@@ -329,14 +329,14 @@ msgstr "Search members..."
 msgid "Public"
 msgstr "Public"
 
-msgid "Member publicly visible in the community members list"
-msgstr "Member publicly visible in the community members list"
+msgid "Your community membership is visible to everyone"
+msgstr "Your community membership is visible to everyone"
 
 msgid "Hidden"
 msgstr "Hidden"
 
-msgid "Member hidden in the community members list"
-msgstr "Member hidden in the community members list"
+msgid "Your community membership is only visible to other members of the community"
+msgstr "Your community membership is only visible to other members of the community"
 
 msgid "Change roles"
 msgstr "Change roles"
