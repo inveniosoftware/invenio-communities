@@ -35,6 +35,7 @@ def pick_fields(community_dict):
         fake_community_obj
     )["logo"]
     metadata = community_dict["metadata"]
+    access = community_dict['access']
     return {
         "id": community_dict["id"],
         "slug": community_dict["slug"],
@@ -46,6 +47,9 @@ def pick_fields(community_dict):
             "description": metadata.get("description"),
             "type": metadata.get("type"),
         },
+        "access": {
+            "visibility": access["visibility"]
+        }
     }
 
 
