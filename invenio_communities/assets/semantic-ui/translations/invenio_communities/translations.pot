@@ -5,27 +5,9 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-05-02T08:04:00.672Z\n"
-"PO-Revision-Date: 2022-05-02T08:04:00.672Z\n"
+"POT-Creation-Date: 2022-05-19T15:21:00.144Z\n"
+"PO-Revision-Date: 2022-05-19T15:21:00.144Z\n"
 "Language: en\n"
-
-msgid "Required"
-msgstr "Required"
-
-msgid "Must be 32 characters or less"
-msgstr "Must be 32 characters or less"
-
-msgid "Must be 120 characters or less"
-msgstr "Must be 120 characters or less"
-
-msgid "Must be 250 characters or less"
-msgstr "Must be 250 characters or less"
-
-msgid "ID"
-msgstr "ID"
-
-msgid "Title"
-msgstr "Title"
 
 msgid "Description"
 msgstr "Description"
@@ -33,38 +15,14 @@ msgstr "Description"
 msgid "Search for organizations..."
 msgstr "Search for organizations..."
 
-msgid "Submit"
-msgstr "Submit"
-
-msgid "Are you sure you want to delete the collection:"
-msgstr "Are you sure you want to delete the collection:"
-
-msgid "Edit"
-msgstr "Edit"
-
 msgid "Delete"
 msgstr "Delete"
 
 msgid "Remove"
 msgstr "Remove"
 
-msgid "New collection"
-msgstr "New collection"
-
 msgid "Cancel"
 msgstr "Cancel"
-
-msgid "Institution/Organization"
-msgstr "Institution/Organization"
-
-msgid "Event"
-msgstr "Event"
-
-msgid "Topic"
-msgstr "Topic"
-
-msgid "Project"
-msgstr "Project"
 
 msgid "Maximum number of characters is 2000"
 msgstr "Maximum number of characters is 2000"
@@ -90,8 +48,12 @@ msgstr "Danger zone"
 msgid "Change identifier"
 msgstr "Change identifier"
 
-msgid "Changing your community's unique identifier can have unintended side effects."
-msgstr "Changing your community's unique identifier can have unintended side effects."
+msgid ""
+"Changing your community's unique identifier can have unintended side "
+"effects."
+msgstr ""
+"Changing your community's unique identifier can have unintended side "
+"effects."
 
 msgid "Delete community"
 msgstr "Delete community"
@@ -126,9 +88,6 @@ msgstr "Enter the new unique identifier of the community"
 msgid "Change"
 msgstr "Change"
 
-msgid "Community permissions"
-msgstr "Community permissions"
-
 msgid "Saved"
 msgstr "Saved"
 
@@ -146,13 +105,6 @@ msgstr "Setup your new community"
 
 msgid "Identifier"
 msgstr "Identifier"
-
-msgid ""
-"This is your community's unique identifier. You will be able to access your "
-"community through the URL: {{url}}"
-msgstr ""
-"This is your community's unique identifier. You will be able to access your "
-"community through the URL: {{url}}"
 
 msgid "Community visibility"
 msgstr "Community visibility"
@@ -335,9 +287,6 @@ msgstr "Your community membership is visible to everyone"
 msgid "Hidden"
 msgstr "Hidden"
 
-msgid "Your community membership is only visible to other members of the community"
-msgstr "Your community membership is only visible to other members of the community"
-
 msgid "Change roles"
 msgstr "Change roles"
 
@@ -361,8 +310,8 @@ msgstr "Leave..."
 msgid "Remove..."
 msgstr "Remove..."
 
-msgid "opened {{difference}} by {{user}}"
-msgstr "opened {{difference}} by {{user}}"
+msgid "opened {{difference}} by {{creator}}"
+msgstr "opened {{difference}} by {{creator}}"
 
 msgid "Open"
 msgstr "Open"
@@ -387,3 +336,46 @@ msgstr "Reset search"
 
 msgid "Search records in community..."
 msgstr "Search records in community..."
+
+msgid ""
+"This is your community's unique identifier. You will be able to access your "
+"community through the URL:"
+msgstr ""
+"This is your community's unique identifier. You will be able to access your "
+"community through the URL:"
+
+msgid "Show all sub facets of "
+msgstr "Show all sub facets of "
+
+msgid "bulk actions"
+msgstr "bulk actions"
+
+msgid "remove {{name}}"
+msgstr "remove {{name}}"
+
+msgid "Submitted"
+msgstr "Submitted"
+
+msgid "Accepted"
+msgstr "Accepted"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Declined"
+msgstr "Declined"
+
+msgid "Expired"
+msgstr "Expired"
+
+msgid "Search in invitations..."
+msgstr "Search in invitations..."
+
+msgid "This community has no public members."
+msgstr "This community has no public members."
+
+msgid "No matching members found."
+msgstr "No matching members found."
+
+msgid "Actions"
+msgstr "Actions"

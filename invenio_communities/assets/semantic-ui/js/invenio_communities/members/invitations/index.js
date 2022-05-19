@@ -8,15 +8,14 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
-import {
-  DropdownSort,
-} from '@js/invenio_communities/members/components/SearchDropdowns';
+import { DropdownSort } from "@js/invenio_communities/members/components/SearchDropdowns";
 import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
 import { InvitationResultItem } from "./InvitationResultItem";
 import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
+import {i18next} from "@translations/invenio_communities/i18next";
 
 const dataAttr = document.getElementById(
   "community-invitations-search-root"
@@ -28,9 +27,7 @@ const communitiesRolesCanInvite = JSON.parse(
 );
 const permissions = JSON.parse(dataAttr.permissions);
 
-const communityGroupsEnabled = JSON.parse(
-  dataAttr.communityGroupsEnabled
-);
+const communityGroupsEnabled = JSON.parse(dataAttr.communityGroupsEnabled);
 
 const InvitationResultItemWithConfig = parametrize(InvitationResultItem, {
   config: { rolesCanInvite: communitiesRolesCanInvite },
@@ -56,6 +53,11 @@ const defaultComponents = {
   "SearchApp.results": InvitationsResults,
   "ResultsList.container": InvitationsResultsContainer,
   "Sort.element": DropdownSort,
+  "RequestStatus.submitted": () => i18next.t("Submitted"),
+  "RequestStatus.accepted": () => i18next.t("Accepted"),
+  "RequestStatus.cancelled": () => i18next.t("Cancelled"),
+  "RequestStatus.declined": () => i18next.t("Declined"),
+  "RequestStatus.expired": () => i18next.t("Expired"),
 };
 
 // Auto-initialize search app
