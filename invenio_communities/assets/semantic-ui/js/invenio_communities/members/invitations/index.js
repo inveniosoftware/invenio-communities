@@ -15,7 +15,15 @@ import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
-import {i18next} from "@translations/invenio_communities/i18next";
+import {
+  SubmitStatus,
+  DeleteStatus,
+  AcceptStatus,
+  DeclineStatus,
+  CancelStatus,
+  ExpireStatus,
+} from "@js/invenio_requests/request";
+
 
 const dataAttr = document.getElementById(
   "community-invitations-search-root"
@@ -53,11 +61,12 @@ const defaultComponents = {
   "SearchApp.results": InvitationsResults,
   "ResultsList.container": InvitationsResultsContainer,
   "Sort.element": DropdownSort,
-  "RequestStatus.submitted": () => i18next.t("Submitted"),
-  "RequestStatus.accepted": () => i18next.t("Accepted"),
-  "RequestStatus.cancelled": () => i18next.t("Cancelled"),
-  "RequestStatus.declined": () => i18next.t("Declined"),
-  "RequestStatus.expired": () => i18next.t("Expired"),
+  "RequestStatus.layout.submitted": SubmitStatus,
+  "RequestStatus.layout.deleted": DeleteStatus,
+  "RequestStatus.layout.accepted": AcceptStatus,
+  "RequestStatus.layout.declined": DeclineStatus,
+  "RequestStatus.layout.cancelled": CancelStatus,
+  "RequestStatus.layout.expired": ExpireStatus,
 };
 
 // Auto-initialize search app
