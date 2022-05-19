@@ -99,6 +99,22 @@ export class MembersWithRoleSelection extends Component {
                 <label>{i18next.t("Message")}</label>
                 <CKEditor
                   editor={ClassicEditor}
+                  config={{
+                    toolbar: [
+                      "heading",
+                      "|",
+                      "bold",
+                      "italic",
+                      "link",
+                      "bulletedList",
+                      "numberedList",
+                      "Indent",
+                      "Outdent",
+                      "blockQuote",
+                      "Undo",
+                      "Redo",
+                    ],
+                  }}
                   onBlur={(event, editor) => {
                     this.updateMessage(editor.getData());
                   }}
