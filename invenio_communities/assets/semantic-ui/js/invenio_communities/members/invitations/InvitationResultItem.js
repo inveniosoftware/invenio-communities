@@ -14,6 +14,8 @@ import { Image } from "react-invenio-forms";
 import { Container, Grid, Item, Table } from "semantic-ui-react";
 import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
+import _capitalize from "lodash/capitalize";
+import Overridable from "react-overridable";
 
 const formattedTime = (expires_at) =>
   DateTime.fromISO(expires_at).setLocale(i18next.language).toRelative();
@@ -78,7 +80,11 @@ export class InvitationResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell>{request.status}</Table.Cell>
+        <Table.Cell>
+          <Overridable id={`RequestStatus.${request.status}`}>
+            <span>{request.status}</span>
+          </Overridable>
+        </Table.Cell>
         <Table.Cell>{formattedTime(request.expires_at)}</Table.Cell>
         <Table.Cell>
           <RoleDropdown
