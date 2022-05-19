@@ -41,7 +41,7 @@ export class DropdownSort extends Component {
         selectOnNavigation={selectOnNavigation}
         selectOnBlur={false}
         size="large"
-        className="fluid-mobile"
+        className="fluid-responsive"
       />
     );
   }

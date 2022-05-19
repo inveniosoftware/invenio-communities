@@ -14,8 +14,8 @@ import { Image } from "react-invenio-forms";
 import { Container, Grid, Item, Table } from "semantic-ui-react";
 import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
-import _capitalize from "lodash/capitalize";
 import Overridable from "react-overridable";
+import RequestStatus from "@js/invenio_requests/request/RequestStatus";
 
 const formattedTime = (expires_at) =>
   DateTime.fromISO(expires_at).setLocale(i18next.language).toRelative();
@@ -80,13 +80,22 @@ export class InvitationResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell>
-          <Overridable id={`RequestStatus.${request.status}`}>
-            <span>{request.status}</span>
-          </Overridable>
+        <Table.Cell
+          className="mobile-table-cell"
+          data-label={i18next.t("Status")}
+        >
+          <RequestStatus status={request.status} />
         </Table.Cell>
-        <Table.Cell>{formattedTime(request.expires_at)}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell
+          className="mobile-table-cell"
+          data-label={i18next.t("Expires")}
+        >
+          {formattedTime(request.expires_at)}
+        </Table.Cell>
+        <Table.Cell
+          className="mobile-table-cell"
+          data-label={i18next.t("Role")}
+        >
           <RoleDropdown
             roles={rolesCanInviteByType}
             successCallback={this.updateInvitation}
@@ -96,7 +105,7 @@ export class InvitationResultItem extends Component {
             resource={invitation}
           />
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell className="mobile-table-cell">
           <Container fluid textAlign="right">
             {/* TODO uncomment when links available in the request resource subschema */}
             {/*<RequestActionController*/}
