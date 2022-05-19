@@ -23,6 +23,7 @@ export class InvitationsMembersModal extends Component {
     super(props);
     this.state = {
       open: false,
+      activeIndex: 0, // by default members is the active pane
     };
   }
 
@@ -80,10 +81,13 @@ export class InvitationsMembersModal extends Component {
 
   handleOpenModal = () => this.setState({ open: true });
 
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
   render() {
-    const { open } = this.state;
+    const { open, activeIndex } = this.state;
     return (
       <Modal
+        role="dialog"
         onClose={this.handleCloseModal}
         onOpen={this.handleOpenModal}
         closeOnDimmerClick={false}
@@ -94,17 +98,25 @@ export class InvitationsMembersModal extends Component {
             content={i18next.t("Invite members")}
             positive
             size="medium"
+            aria-expanded={open}
+            aria-haspopup="dialog"
           />
         }
       >
-        <Modal.Header>{i18next.t("Invite members")}</Modal.Header>
+        <Modal.Header as="h2">
+          {activeIndex == 0
+            ? i18next.t("Invite members")
+            : i18next.t("Add groups")}
+        </Modal.Header>
         <Tab
           menu={{
             className: "rel-pl-2 rel-pt-2",
             tabular: true,
           }}
+          activeIndex={activeIndex}
           panes={this.getPanes()}
           renderActiveOnly={false}
+          onTabChange={this.handleTabChange}
         />
       </Modal>
     );
