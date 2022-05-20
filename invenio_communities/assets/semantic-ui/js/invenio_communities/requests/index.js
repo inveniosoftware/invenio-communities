@@ -10,6 +10,10 @@ import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
 import {
+  LabelTypeInvitation,
+  LabelTypeSubmission,
+} from "@js/invenio_requests/request";
+import {
   BucketAggregationElement,
   RecordFacetsValues,
   RecordSearchBarElement,
@@ -49,6 +53,12 @@ const defaultComponents = {
   "SearchApp.results": RequestsResults,
   "SearchBar.element": RecordSearchBarElement,
   "EmptyResults.element": RequestsEmptyResultsWithState,
+  "RequestTypeLabel.layout.community-submission": () => (
+    <LabelTypeSubmission className="rel-mr-1" size="large" />
+  ),
+  "RequestTypeLabel.layout.community-invitation": () => (
+    <LabelTypeInvitation className="rel-mr-1" size="large" />
+  ),
 };
 
 // Auto-initialize search app

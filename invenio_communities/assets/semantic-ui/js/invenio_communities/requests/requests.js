@@ -39,6 +39,7 @@ import {
   List,
   Segment,
 } from "semantic-ui-react";
+import RequestTypeLabel from "@js/invenio_requests/request/RequestTypeLabel";
 
 export const RecordSearchBarElement = withState(
   ({
@@ -345,11 +346,7 @@ export const RequestsResultsItemTemplate = ({ result, community }) => {
     <Item className="community-item">
       <Item.Content>
         <Item.Header>
-          {result.type && (
-            <Label size="large" className="rel-mr-1">
-              {result.type}
-            </Label>
-          )}
+          {result.type && <RequestTypeLabel type={result.type} />}
           <a
             className="header-link"
             href={`/communities/${community.slug}/requests/${result.id}`}
@@ -398,7 +395,8 @@ class RequestStatusFilterComponent extends Component {
    * @param {string} OpenStatus true if open requests and false if closed requests
    */
   retrieveRequests = (OpenStatus) => {
-    const { currentQueryState, updateQueryState, keepFiltersOnUpdate } = this.props;
+    const { currentQueryState, updateQueryState, keepFiltersOnUpdate } =
+      this.props;
     const { open } = this.state;
 
     if (open === OpenStatus) {
