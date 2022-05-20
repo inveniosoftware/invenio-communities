@@ -120,5 +120,8 @@
   "Search in invitations...": "Search in invitations...",
   "This community has no public members.": "This community has no public members.",
   "No matching members found.": "No matching members found.",
-  "Actions": "Actions"
+  "Actions": "Actions",
+  "Selected groups.": "Selected groups.",
+  "Selected members.": "Selected members.",
+  "Add groups": "Add groups"
 }

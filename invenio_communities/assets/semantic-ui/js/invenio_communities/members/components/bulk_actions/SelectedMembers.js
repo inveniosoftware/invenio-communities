@@ -46,14 +46,16 @@ export class SelectedMembers extends Component {
         </Segment>
       </>
     ) : (
-      <Segment className="selected-members-header mb-20" placeholder>
-        <Header icon>
-          <Icon name="users" />
-
+      <Segment
+        textAlign="center"
+        className="selected-members-header mb-20"
+        placeholder
+      >
+        <Header disabled>
           {i18next.t(
             displayingGroups
-              ? i18next.t("No groups selected.")
-              : i18next.t("No people selected.")
+              ? i18next.t("Selected groups.")
+              : i18next.t("Selected members.")
           )}
         </Header>
       </Segment>
