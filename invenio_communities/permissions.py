@@ -17,7 +17,8 @@ from invenio_records_permissions.policies import BasePermissionPolicy
 
 from .generators import AllowedMemberTypes, CommunityManagers, \
     CommunityManagersForRole, CommunityMembers, CommunityOwners, \
-    CommunitySelfMember, GroupsEnabled, IfPolicyClosed, IfRestricted
+    CommunitySelfMember, GroupsEnabled, IfPolicyClosed, IfRestricted, \
+    CommunityCurators
 
 
 # Permission Policy
@@ -46,7 +47,9 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_search_invites = [CommunityManagers(), SystemProcess()]
 
-    can_search_requests = [CommunityManagers(), SystemProcess()]
+    can_search_requests = [
+        CommunityManagers(), CommunityCurators(), SystemProcess()
+    ]
 
     can_rename = [CommunityOwners(), SystemProcess()]
 
