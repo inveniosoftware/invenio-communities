@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 2.8.1 (released 2022-05-24)
+
+- rename featured communities section
+
 Version 2.8.0 (released 2022-05-23)
 
 
