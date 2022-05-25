@@ -33,7 +33,7 @@ source_lang = en
 type = PO
 
 # Translate JavaScript strings
-# 1) Navigate to the invenio_communities/theme/assets/semantic-ui/translations/invenio_communities folder
+# 1) Navigate to the invenio_communities/assets/semantic-ui/translations/invenio_communities/ folder
 # 2) Install i18n dev dependencies
 #    npm install
 # 3) Add a new language
