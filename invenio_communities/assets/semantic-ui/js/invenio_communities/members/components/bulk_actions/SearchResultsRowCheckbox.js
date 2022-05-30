@@ -46,6 +46,7 @@ export class SearchResultsRowCheckbox extends Component {
 
   render() {
     const { bulkActionContext, allSelected } = this.context;
+    const { className } = this.props;
     return (
       <>
         <Checkbox
@@ -53,6 +54,7 @@ export class SearchResultsRowCheckbox extends Component {
             this.isChecked(bulkActionContext, allSelected) || allSelected
           }
           onChange={this.handleOnChange}
+          className={className}
         />
       </>
     );
@@ -61,4 +63,9 @@ export class SearchResultsRowCheckbox extends Component {
 
 SearchResultsRowCheckbox.propTypes = {
   rowId: PropTypes.string.isRequired,
+  className: PropTypes.string,
+};
+
+SearchResultsRowCheckbox.defaultProps = {
+  className: '',
 };

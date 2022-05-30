@@ -75,9 +75,9 @@ export class ManagerMembersResultItem extends Component {
                 key={result.id}
               >
                 {!result.is_current_user && (
-                  <SearchResultsRowCheckbox rowId={result.id} data={result} />
+                  <SearchResultsRowCheckbox className="mt-10" rowId={result.id} data={result} />
                 )}
-                <Image src={result.member.avatar} avatar />
+                <Image className="mt-5" src={result.member.avatar} avatar />
                 <Item.Content className="ml-10">
                   <Item.Header
                     className={!result.member.description ? "mt-5" : ""}
