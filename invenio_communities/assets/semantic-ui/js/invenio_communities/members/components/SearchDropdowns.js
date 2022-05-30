@@ -95,7 +95,7 @@ export class DropdownFilter extends Component {
         onChange={this.onChangeFilter}
         selectOnBlur={false}
         value={null}
-        laoding={loading}
+        loading={loading}
         {...uiProps}
       />
     );
