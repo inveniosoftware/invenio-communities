@@ -1,22 +1,41 @@
 import React from "react";
 import ActionDropdown from "./ActionDropdown";
-import { Item, List } from "semantic-ui-react";
+import { Grid, Icon, Item } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
-const rolesToDropdownOptions = (roles) =>
+const DropdownContent = ({ title, description, selected }) => (
+  <Grid>
+    <Grid.Row>
+      <Grid.Column width={1}>
+        {selected && <Icon name="checkmark" />}
+      </Grid.Column>
+      <Grid.Column width={14}>
+        <Item.Group unstackable>
+          <Item>
+            <Item.Content>
+              <Item.Description>
+                <strong>{title}</strong>
+              </Item.Description>
+              <Item.Meta>{description}</Item.Meta>
+            </Item.Content>
+          </Item>
+        </Item.Group>
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+);
+
+const rolesToDropdownOptions = (roles, currentValue) =>
   roles.map((role) => ({
     key: role.name,
     text: role.title,
     value: role.name,
     content: (
-      <List>
-        <List.Item>
-          <List.Content>
-            <List.Header>{role.title}</List.Header>
-            <List.Description>{role.description}</List.Description>
-          </List.Content>
-        </List.Item>
-      </List>
+      <DropdownContent
+        title={role.title}
+        description={role.description}
+        selected={currentValue === role.name}
+      />
     ),
   }));
 
@@ -30,14 +49,17 @@ export const RoleDropdown = ({
 }) => {
   return (
     <ActionDropdown
-      optionsSerializer={rolesToDropdownOptions}
+      optionsSerializer={(options) =>
+        rolesToDropdownOptions(options, currentValue)
+      }
       options={roles}
       successCallback={successCallback}
       action={action}
       disabled={disabled}
       currentValue={currentValue}
       resource={resource}
-      direction='left'
+      direction="left"
+      fluid
     />
   );
 };
@@ -47,23 +69,18 @@ RoleDropdown.propTypes = {
   roles: PropTypes.array.isRequired,
 };
 
-const visibilityTypesToDropdownOptions = (options) => {
+const visibilityTypesToDropdownOptions = (options, currentValue) => {
   return options.map((settings) => {
     return {
       key: settings.name,
       text: settings.title,
       value: settings.visible,
       content: (
-        <Item.Group>
-          <Item className="members-dropdown-option">
-            <Item.Content>
-              <Item.Description>
-                <strong>{settings.title}</strong>
-              </Item.Description>
-              <Item.Meta>{settings.description}</Item.Meta>
-            </Item.Content>
-          </Item>
-        </Item.Group>
+        <DropdownContent
+          title={settings.title}
+          description={settings.description}
+          selected={currentValue === settings.visible}
+        />
       ),
     };
   });
@@ -79,14 +96,17 @@ export const VisibilityDropdown = ({
 }) => {
   return (
     <ActionDropdown
-      optionsSerializer={visibilityTypesToDropdownOptions}
+      optionsSerializer={(options) =>
+        visibilityTypesToDropdownOptions(options, currentValue)
+      }
       options={visibilityTypes}
       successCallback={successCallback}
       action={action}
       disabled={disabled}
       currentValue={currentValue}
       resource={resource}
-      direction='left'
+      direction="left"
+      fluid
     />
   );
 };

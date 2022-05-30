@@ -54,7 +54,7 @@ class ActionDropdown extends Component {
 
   render() {
     const { loading, actionSuccess, error } = this.state;
-    const { options, currentValue, optionsSerializer, disabled, direction } =
+    const { options, currentValue, optionsSerializer, disabled, direction, fluid } =
       this.props;
 
     return (
@@ -67,10 +67,9 @@ class ActionDropdown extends Component {
         disabled={disabled}
         optionsSerializer={optionsSerializer}
       >
-        <div className="flex align-items-center">
+        <div className="flex align-items-center members-dropdown-container">
           <Dropdown
             options={optionsSerializer(options)}
-            selection
             loading={loading}
             value={currentValue}
             openOnFocus={false}
@@ -78,6 +77,8 @@ class ActionDropdown extends Component {
             onChange={this.handleOnChange}
             disabled={disabled}
             direction={direction}
+            fluid={fluid}
+            floating
           />
           <div className="ml-5">
             {actionSuccess && (
@@ -100,6 +101,7 @@ ActionDropdown.propTypes = {
   disabled: PropTypes.bool,
   direction: PropTypes.string,
   resource: PropTypes.object.isRequired,
+  fluid: PropTypes.bool
 };
 
 ActionDropdown.defaultProps = {
@@ -107,6 +109,7 @@ ActionDropdown.defaultProps = {
   disabled: false,
   direction: "right",
   optionsSerializer: dropdownOptionsGenerator,
+  fluid: false
 };
 
 export default Overridable.component("ActionDropdown", ActionDropdown);
