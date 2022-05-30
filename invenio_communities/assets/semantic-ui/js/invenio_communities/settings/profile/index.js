@@ -532,7 +532,6 @@ class CommunityProfileForm extends Component {
                         label={i18next.t("Description")}
                       />
                     }
-                    optimized
                   />
                   <RemoteSelectField
                     fieldPath={"metadata.organizations"}
