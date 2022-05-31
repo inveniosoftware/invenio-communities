@@ -65,6 +65,8 @@ export class RenameCommunitySlugButton extends Component {
         this.setState({ error: invalidIdError });
       }
     }
+
+    this.setState({ loading: false });
   };
 
   render() {
