@@ -123,10 +123,10 @@ def test_invite(client, headers, community_id, owner, new_user_data, db):
         f"/communities/{community_id}/invitations",
         headers=headers
     )
-    r.status_code == 200
-    request_id=r.json["hits"]["hits"][0]["request"]["id"]
+    assert r.status_code == 200
+    request_id = r.json["hits"]["hits"][0]["request"]["id"]
     r = client.get(f"/requests/{request_id}/timeline", headers=headers)
-    r.status_code == 200
+    assert r.status_code == 200
     assert r.json["hits"]["total"] == 2  # role message + invite message
     assert r.json["hits"]["hits"][0]["payload"]["content"] == \
         "You will join as \"Reader\""
