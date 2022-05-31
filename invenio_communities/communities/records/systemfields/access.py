@@ -14,6 +14,8 @@ from invenio_records.systemfields import SystemField
 class CommunityAccess:
     """Access management per community."""
 
+    # important: the order in tuple matters
+    # TODO move to ENUM to improve code readability when using
     VISIBILITY_LEVELS = ('public', 'restricted')
     MEMBER_POLICY_LEVELS = ('open', 'closed')
     RECORD_POLICY_LEVELS = ('open', 'closed')
