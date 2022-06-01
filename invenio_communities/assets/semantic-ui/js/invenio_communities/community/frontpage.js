@@ -12,6 +12,7 @@ import ReactDOM from "react-dom";
 import { Image, withCancel } from "react-invenio-forms";
 import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import { http } from "../api/config";
+import PropTypes from "prop-types";
 
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   const PlaceholderItem = () => (
@@ -48,33 +49,41 @@ const EmptyMessage = ({ message }) => {
 
 class CommunityCard extends Component {
   render() {
+    const { community, defaultLogo } = this.props;
     return (
-      <Card fluid href={`/communities/${this.props.community.slug}`}>
+      <Card fluid href={`/communities/${community.slug}`}>
         <Image
           wrapped
           centered
           ui={false}
-          src={this.props.community.links.logo}
-          fallbackSrc={this.props.defaultLogo}
+          src={community.links.logo}
+          fallbackSrc={defaultLogo}
           loadFallbackFirst={true}
         />
         <Card.Content>
           <Card.Header>
-            {_truncate(this.props.community.metadata.title, { length: 50 })}
+            {_truncate(community.metadata.title, { length: 50 })}
           </Card.Header>
-          <Card.Description>
-            <div
-              className="truncate-lines-2"
-              dangerouslySetInnerHTML={{
-                __html: this.props.community.metadata.description,
-              }}
-            />
-          </Card.Description>
+          {community.metadata.description && (
+            <Card.Description>
+              <div
+                className="truncate-lines-2"
+                dangerouslySetInnerHTML={{
+                  __html: community.metadata.description,
+                }}
+              />
+            </Card.Description>
+          )}
         </Card.Content>
       </Card>
     );
   }
 }
+
+CommunityCard.propTypes = {
+  community: PropTypes.object.isRequired,
+  defaultLogo: PropTypes.string.isRequired,
+};
 
 class CommunitiesCardGroup extends Component {
   constructor(props) {
