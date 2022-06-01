@@ -22,6 +22,7 @@ import {
   ResultsPerPage,
   SearchBar,
   Sort,
+  withState,
 } from "react-searchkit";
 import {
   Button,
@@ -161,38 +162,46 @@ export const CommunitiesResults = ({
   );
 };
 
-export const CommunitiesSearchBarElement = ({
-  placeholder: passedPlaceholder,
-  queryString,
-  onInputChange,
-  executeSearch,
-}) => {
-  const placeholder = passedPlaceholder || i18next.t("Search");
-  const onBtnSearchClick = () => {
-    executeSearch();
-  };
-  const onKeyPress = (event) => {
-    if (event.key === "Enter") {
-      executeSearch();
-    }
-  };
-  return (
-    <Input
-      action={{
-        icon: "search",
-        onClick: onBtnSearchClick,
-        className: "search",
-      }}
-      fluid
-      placeholder={placeholder}
-      onChange={(event, { value }) => {
-        onInputChange(value);
-      }}
-      value={queryString}
-      onKeyPress={onKeyPress}
-    />
-  );
-};
+export const CommunitiesSearchBarElement = withState(
+  ({
+    placeholder: passedPlaceholder,
+    queryString,
+    onInputChange,
+    updateQueryState,
+    currentQueryState,
+  }) => {
+    const placeholder = passedPlaceholder || i18next.t("Search");
+
+    const onSearch = () => {
+      updateQueryState({ ...currentQueryState, queryString });
+    };
+    const onBtnSearchClick = () => {
+      onSearch();
+    };
+    const onKeyPress = (event) => {
+      if (event.key === "Enter") {
+        onSearch();
+      }
+    };
+
+    return (
+      <Input
+        action={{
+          icon: "search",
+          onClick: onBtnSearchClick,
+          className: "search",
+        }}
+        fluid
+        placeholder={placeholder}
+        onChange={(event, { value }) => {
+          onInputChange(value);
+        }}
+        value={queryString}
+        onKeyPress={onKeyPress}
+      />
+    );
+  }
+);
 
 const CommunitiesFacets = ({ aggs, currentResultsState }) => {
   return (
