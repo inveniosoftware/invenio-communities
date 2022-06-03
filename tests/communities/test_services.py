@@ -67,6 +67,7 @@ def test_search_featured(community_service, comm, db, es_clear):
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 1
     assert hits[0]["id"] == comm.data["id"]
+    assert "links" in hits[0]
     # featured entries should not show up in search results
     assert "featured" not in hits[0]
 

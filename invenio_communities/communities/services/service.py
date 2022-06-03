@@ -290,9 +290,9 @@ class CommunityService(RecordService):
             identity,
             search_results,
             params=params,
-            links_tpl=LinksTemplate(self.config.links_featured_search, context={
-                "args": params
-            }),
+            links_tpl=LinksTemplate(
+                self.config.links_featured_search, context={"args": params}
+            ),
             links_item_tpl=self.links_item_tpl,
         )
 

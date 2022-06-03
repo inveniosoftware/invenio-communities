@@ -767,6 +767,7 @@ def test_featured_communities(
     res = client.get("/communities/featured", headers=headers, json=minimal_community)
     assert res.status_code == 200
     assert res.json["hits"]["total"] == 0
+    _assert_single_item_search(res)
 
     # Other endpoints are currently only accessible with superuser-access
     # At least we know if the endpoints are accessible and params are provided
