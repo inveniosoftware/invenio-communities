@@ -106,6 +106,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")
+    links_featured_search = pagination_links("{+api}/communities/featured{?args*}")
     links_user_search = pagination_links("{+api}/user/communities{?args*}")
     links_community_requests_search = pagination_links(
         "{+api}/communities/{community_id}/requests{?args*}"

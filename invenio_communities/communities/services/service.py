@@ -250,7 +250,6 @@ class CommunityService(RecordService):
 
     def _get_featured_entry(self, raise_error=True, **kwargs):
         """Retrieve featured entry based on provided arguments."""
-        set = None
         errors = []
         try:
             featured_entry = CommunityFeatured.query.filter_by(**kwargs).one()
@@ -290,7 +289,11 @@ class CommunityService(RecordService):
             self,
             identity,
             search_results,
-            links_tpl=self.links_item_tpl,
+            params=params,
+            links_tpl=LinksTemplate(self.config.links_featured_search, context={
+                "args": params
+            }),
+            links_item_tpl=self.links_item_tpl,
         )
 
     def featured_list(self, identity, community_id):
