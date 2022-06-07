@@ -8,10 +8,18 @@
 
 """Invenio Communities Resource API config."""
 import marshmallow as ma
-from flask_resources import HTTPJSONException, create_error_handler
+from flask_resources import (
+    HTTPJSONException,
+    JSONSerializer,
+    ResponseHandler,
+    create_error_handler,
+)
 from invenio_records_resources.resources import RecordResourceConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
 
+from invenio_communities.communities.resources.serializer import (
+    UICommunityJSONSerializer,
+)
 from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
 
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
@@ -55,3 +63,10 @@ class CommunityResourceConfig(RecordResourceConfig):
     }
     error_handlers = community_error_handlers
     request_community_requests_search_args = RequestSearchRequestArgsSchema
+
+    response_handlers = {
+        "application/json": ResponseHandler(JSONSerializer()),
+        "application/vnd.inveniordm.v1+json": ResponseHandler(
+            UICommunityJSONSerializer()
+        ),
+    }

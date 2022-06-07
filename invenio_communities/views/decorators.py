@@ -12,17 +12,29 @@ from functools import wraps
 
 from flask import g
 
+from invenio_communities.communities.resources.serializer import (
+    UICommunityJSONSerializer,
+)
 from invenio_communities.proxies import current_communities
 
 
-def pass_community(f):
+def pass_community(serialize):
     """Fetch the community record."""
 
-    @wraps(f)
-    def view(**kwargs):
-        pid_value = kwargs["pid_value"]
-        community = current_communities.service.read(id_=pid_value, identity=g.identity)
-        kwargs["community"] = community
-        return f(**kwargs)
+    def decorator(f):
+        @wraps(f)
+        def view(**kwargs):
+            pid_value = kwargs["pid_value"]
+            community = current_communities.service.read(
+                id_=pid_value, identity=g.identity
+            )
+            kwargs["community"] = community
+            if serialize:
+                community_ui = UICommunityJSONSerializer().dump_obj(community.to_dict())
+                kwargs["community_ui"] = community_ui
 
-    return view
+            return f(**kwargs)
+
+        return view
+
+    return decorator
