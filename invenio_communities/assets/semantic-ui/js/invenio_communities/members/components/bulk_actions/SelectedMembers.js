@@ -52,11 +52,9 @@ export class SelectedMembers extends Component {
         placeholder
       >
         <Header disabled>
-          {i18next.t(
-            displayingGroups
-              ? i18next.t("Selected groups.")
-              : i18next.t("Selected members.")
-          )}
+          {displayingGroups
+            ? i18next.t("Selected groups.")
+            : i18next.t("Selected members.")}
         </Header>
       </Segment>
     );
