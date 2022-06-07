@@ -7,6 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Featured timestamp dumper.
+
 Dumper used to dump/load the featured times of a record to/from an
 ElasticSearch body.
 """
@@ -27,7 +28,6 @@ class FeaturedDumperExt(ElasticsearchDumperExt):
 
     def dump(self, record, data):
         """Dump featured entries."""
-
         now_ = datetime.utcnow()
         future_entries = (
             CommunityFeatured.query.filter(

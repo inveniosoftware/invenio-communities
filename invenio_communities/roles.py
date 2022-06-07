@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 @dataclass(frozen=True)
 class Role:
-    """Role class"""
+    """Role class."""
 
     name: str = ""
     """Name of the role."""
@@ -44,7 +44,7 @@ class Role:
         return role_name in self.can_manage_roles
 
     def __hash__(self):
-        """Compute a hash for use with e.g. sets"""
+        """Compute a hash for use with e.g. sets."""
         return self.name.__hash__()
 
 
@@ -83,12 +83,12 @@ class RoleRegistry:
 
     @property
     def roles(self):
-        """Get a list of roles"""
+        """Get a list of roles."""
         return self._roles
 
     @property
     def owner_role(self):
-        """Get the owner role"""
+        """Get the owner role."""
         return self._owner
 
     def can(self, action):

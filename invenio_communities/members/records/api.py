@@ -6,7 +6,7 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-"Members data layer API."
+"""Members data layer API."""
 
 from invenio_accounts.models import Role
 from invenio_db import db

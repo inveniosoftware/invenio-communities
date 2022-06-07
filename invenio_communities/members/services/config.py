@@ -27,6 +27,8 @@ from .schemas import MemberEntitySchema
 
 
 class PublicSearchOptions(SearchOptions):
+    """Public Search Options."""
+
     sort_default = "bestmatch"
     sort_default_no_query = "name"
     sort_options = {
@@ -62,6 +64,8 @@ class PublicSearchOptions(SearchOptions):
 
 
 class InvitationsSearchOptions(SearchOptions):
+    """Invitations Search Options."""
+
     # TODO: should restrict fields that's being searched on.
     # query_parser_cls = QueryParser
     sort_default = "bestmatch"

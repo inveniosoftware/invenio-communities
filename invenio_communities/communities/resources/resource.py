@@ -194,6 +194,7 @@ class CommunityResource(RecordResource):
     @request_search_args
     @response_handler(many=True)
     def featured_communities_search(self):
+        """Features communities search."""
         hits = self.service.featured_search(
             identity=g.identity,
             params=resource_requestctx.args,

@@ -109,6 +109,7 @@ def anon_identity():
 
 @pytest.fixture(scope="module")
 def users(UserFixture, app, database):
+    """Users."""
     users = {}
     for r in ["owner", "manager", "curator", "reader"]:
         u = UserFixture(
@@ -125,6 +126,7 @@ def users(UserFixture, app, database):
 
 @pytest.fixture(scope="module")
 def group(database):
+    """Group."""
     r = Role(name="it-dep")
     database.session.add(r)
     database.session.commit()
@@ -200,6 +202,7 @@ def admin_role_need(db):
 @pytest.fixture()
 def superuser_role_need(db):
     """Store 1 role with 'superuser-access' ActionNeed.
+
     WHY: This is needed because expansion of ActionNeed is
          done on the basis of a User/Role being associated with that Need.
          If no User/Role is associated with that Need (in the DB), the
@@ -314,6 +317,7 @@ def fake_communities(
     community_type_record,
     community_types,
 ):
+    """Fake Communities."""
     data = deepcopy(minimal_community)
     """Multiple community created and posted to test search functionality."""
     N = 4
@@ -332,6 +336,7 @@ def fake_communities(
 #
 @pytest.fixture(scope="module")
 def community_types():
+    """Community types."""
     return [
         {"id": "organization", "title": {"en": "Organization"}},
         {"id": "event", "title": {"en": "Event"}},
@@ -377,6 +382,7 @@ def community_type_record(
 
 @pytest.fixture(scope="function")
 def members(member_service, community, users, db):
+    """Members."""
     for name, user in users.items():
         if name == "owner":
             continue

@@ -20,6 +20,7 @@ class CommunitiesField(SystemField):
     def __init__(
         self, m2m_model_cls, key="communities", context_cls=None, manager_cls=None
     ):
+        """Constructor."""
         self._m2m_model_cls = m2m_model_cls
         self._context_cls = context_cls or CommunitiesFieldContext
         self._manager_cls = manager_cls or CommunitiesRelationManager

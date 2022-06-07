@@ -40,6 +40,7 @@ def demo():
 @communities.command("rebuild-index")
 @with_appcontext
 def rebuild_index():
+    """Rebuild index."""
     click.secho("Reindexing communities...", fg="green")
 
     communities_service = current_communities.service

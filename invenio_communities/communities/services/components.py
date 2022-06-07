@@ -8,6 +8,8 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
+"""Components."""
+
 from flask_babelex import lazy_gettext as _
 from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
@@ -24,6 +26,7 @@ class PIDComponent(ServiceComponent):
     """Service component for Community PIDs."""
 
     def set_slug(self, record, slug):
+        """Set slug."""
         error = ValidationError(
             _("A community with this identifier already exists."), field_name="slug"
         )
@@ -107,6 +110,7 @@ class FeaturedCommunityComponent(ServiceComponent):
     """Service component for featured community integration."""
 
     def featured_create(self, identity, data=None, record=None, **kwargs):
+        """Featured create."""
         if record.access.visibility != "public":
             raise ValidationError(
                 _("The community is not public"), field_name="community_id"
@@ -183,7 +187,7 @@ class OAISetComponent(ServiceComponent):
         db.session.add(community_set)
 
     def rename(self, identity, record=None, data=None, old_slug=None, **kwargs):
-        """Delete old set and create new set on ID change"""
+        """Delete old set and create new set on ID change."""
         if record.access.visibility != "public":
             return
 

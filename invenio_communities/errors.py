@@ -5,9 +5,9 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
-from flask_babelex import gettext as _
-
 """Community base error."""
+
+from flask_babelex import gettext as _
 
 
 class CommunityError(Exception):

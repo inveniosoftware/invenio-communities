@@ -16,6 +16,7 @@ from ...proxies import current_communities
 
 
 def service():
+    """Service."""
     return current_communities.service.members
 
 

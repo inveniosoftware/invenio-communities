@@ -32,7 +32,7 @@ def _not_blank(**kwargs):
 
 
 def is_not_uuid(value):
-    """Make sure value is not a UUID"""
+    """Make sure value is not a UUID."""
     try:
         UUID(value)
         raise ValidationError(
@@ -43,6 +43,7 @@ def is_not_uuid(value):
 
 
 class CommunityAccessSchema(Schema):
+    """Community Access Schema."""
 
     visibility = fields.Str(
         validate=validate.OneOf(
@@ -83,6 +84,7 @@ class VocabularySchema(Schema):
     @pre_load
     def clean(self, data, **kwargs):
         """Removes dump_only fields.
+
         Why: We want to allow the output of a Schema dump, to be a valid input
              to a Schema load without causing strange issues.
         """
@@ -137,5 +139,7 @@ class CommunitySchema(BaseRecordSchema):
 
 
 class CommunityFeaturedSchema(Schema):
+    """Community Featured Schema."""
+
     id = fields.Int(metadata={"read_only": True})
     start_date = fields.DateTime(required=True)
