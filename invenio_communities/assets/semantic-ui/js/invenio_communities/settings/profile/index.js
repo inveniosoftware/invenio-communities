@@ -290,8 +290,8 @@ class CommunityProfileForm extends Component {
       const _deserialize = (value) => {
         const deserializedValue = _cloneDeep(value);
 
-        if (value?.title?.en) {
-          deserializedValue.title = value.title.en;
+        if (value?.title_l10n) {
+          deserializedValue.title = value.title_l10n;
         }
 
         if (value.identifiers) {
@@ -325,7 +325,7 @@ class CommunityProfileForm extends Component {
       return deserializedValue;
     };
 
-    const funding = initialValues.metadata.funding.map((fund) => {
+    const funding = initialValues.ui.funding?.map((fund) => {
       return {
         ...(fund.award && { award: deserializeFunding(fund.award) }),
         funder: deserializeFunding(fund.funder),
@@ -390,7 +390,6 @@ class CommunityProfileForm extends Component {
           ? fund.map(_serialize)
           : _serialize(fund);
       }
-
       return serializedValue;
     };
 
@@ -406,9 +405,8 @@ class CommunityProfileForm extends Component {
         };
       }
     );
-
     // Serialize each funding record, award being optional.
-    const funding = submittedCommunity.metadata?.funding.map((fund) => {
+    const funding = submittedCommunity.metadata?.funding?.map((fund) => {
       return {
         ...(fund.award && { award: serializeFunding(fund.award) }),
         funder: serializeFunding(fund.funder),
@@ -454,8 +452,8 @@ class CommunityProfileForm extends Component {
       }
     }
   };
-
   render() {
+    const { types } = this.props;
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
@@ -505,10 +503,10 @@ class CommunityProfileForm extends Component {
                         label={i18next.t("Type")}
                       />
                     }
-                    options={this.props.types.map((ct) => {
+                    options={types.map((ct) => {
                       return {
                         value: ct.id,
-                        text: ct?.title?.en ?? ct.id,
+                        text: ct?.title_l10n ?? ct.id,
                       };
                     })}
                   />
@@ -579,9 +577,7 @@ class CommunityProfileForm extends Component {
                       searchApi: {
                         axios: {
                           headers: {
-                            //  FIXME use for internationalisation
-                            //  Accept: "application/vnd.inveniordm.v1+json"
-                            Accept: "application/json",
+                            Accept: "application/vnd.inveniordm.v1+json",
                           },
                           url: "/api/awards",
                           withCredentials: false,
@@ -599,7 +595,7 @@ class CommunityProfileForm extends Component {
                     labelIcon="money bill alternate outline"
                     deserializeAward={(award) => {
                       return {
-                        title: award.title.en ?? award.title,
+                        title: award.title_l10n,
                         pid: award.pid,
                         number: award.number,
                         funder: award.funder ?? "",
@@ -614,6 +610,7 @@ class CommunityProfileForm extends Component {
                       return {
                         id: funder.id,
                         name: funder.name,
+                        ...(funder.title_l10n && { title: funder.title_l10n }),
                         ...(funder.pid && { pid: funder.pid }),
                         ...(funder.country && { country: funder.country }),
                         ...(funder.identifiers && {
@@ -626,14 +623,13 @@ class CommunityProfileForm extends Component {
                         descriptionContent = "";
                       let awardOrFunder = "award";
                       if (funding.award) {
-                        headerContent =
-                          funding.award.title.en ?? funding.award.title;
+                        headerContent = funding.award.title;
                       }
 
                       if (funding.funder) {
                         const funderName =
                           funding.funder?.name ??
-                          funding.funder?.title?.en ??
+                          funding.funder?.title ??
                           funding.funder?.id ??
                           "";
                         descriptionContent = funderName;

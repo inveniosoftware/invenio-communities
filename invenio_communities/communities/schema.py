@@ -15,7 +15,15 @@ from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services.records.schema import BaseRecordSchema
 from invenio_vocabularies.contrib.affiliations.schema import AffiliationRelationSchema
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
-from marshmallow import Schema, ValidationError, fields, post_load, pre_load, validate
+from marshmallow import (
+    EXCLUDE,
+    Schema,
+    ValidationError,
+    fields,
+    post_load,
+    pre_load,
+    validate,
+)
 from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, SanitizedUnicode
 
 
@@ -116,6 +124,11 @@ class CommunityMetadataSchema(Schema):
 
 class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
+
+    class Meta:
+        """Meta attributes for the schema."""
+
+        unknown = EXCLUDE
 
     id = fields.String(dump_only=True)
     slug = SanitizedUnicode(
