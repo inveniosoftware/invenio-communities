@@ -6,7 +6,7 @@ from invenio_records_resources.records.systemfields import IndexField
 
 from invenio_communities.records.records.systemfields import CommunitiesField
 
-from .models import MockRecordMetadata, MockRecordCommunity
+from .models import MockRecordCommunity, MockRecordMetadata
 
 
 class MockRecord(RecordBase):
@@ -16,9 +16,9 @@ class MockRecord(RecordBase):
     model_cls = MockRecordMetadata
 
     # System fields
-    schema = ConstantField('$schema', 'local://mocks/mock-v1.0.0.json')
+    schema = ConstantField("$schema", "local://mocks/mock-v1.0.0.json")
 
-    index = IndexField('mocks-mock-v1.0.0', search_alias='mocks')
+    index = IndexField("mocks-mock-v1.0.0", search_alias="mocks")
 
     communities = CommunitiesField(MockRecordCommunity)
 

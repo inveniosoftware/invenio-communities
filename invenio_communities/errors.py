@@ -7,7 +7,6 @@
 
 from flask_babelex import gettext as _
 
-
 """Community base error."""
 
 

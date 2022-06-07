@@ -16,9 +16,9 @@ class CommunityAccess:
 
     # important: the order in tuple matters
     # TODO move to ENUM to improve code readability when using
-    VISIBILITY_LEVELS = ('public', 'restricted')
-    MEMBER_POLICY_LEVELS = ('open', 'closed')
-    RECORD_POLICY_LEVELS = ('open', 'closed')
+    VISIBILITY_LEVELS = ("public", "restricted")
+    MEMBER_POLICY_LEVELS = ("open", "closed")
+    RECORD_POLICY_LEVELS = ("open", "closed")
 
     def __init__(
         self,
@@ -30,9 +30,9 @@ class CommunityAccess:
 
         :param visibility: The visibility level.
         """
-        self.visibility = visibility or 'public'
-        self.member_policy = member_policy or 'open'
-        self.record_policy = record_policy or 'open'
+        self.visibility = visibility or "public"
+        self.member_policy = member_policy or "open"
+        self.record_policy = record_policy or "open"
         self.errors = []
 
     def _validate_visibility_level(self, level):
@@ -118,9 +118,7 @@ class CommunityAccess:
     def __repr__(self):
         """Return repr(self)."""
         return (
-            "<{} (visibility: {}, "
-            "member_policy: {}, "
-            "record_policy: {})>"
+            "<{} (visibility: {}, " "member_policy: {}, " "record_policy: {})>"
         ).format(
             type(self).__name__,
             self.visibility,

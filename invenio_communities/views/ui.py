@@ -15,10 +15,17 @@ from flask_menu import current_menu
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
-from .communities import communities_frontpage, communities_new, \
-    communities_requests, communities_search, communities_settings, \
-    communities_settings_privileges, invitations, members
 from ..searchapp import search_app_context
+from .communities import (
+    communities_frontpage,
+    communities_new,
+    communities_requests,
+    communities_search,
+    communities_settings,
+    communities_settings_privileges,
+    invitations,
+    members,
+)
 
 
 #
@@ -26,7 +33,7 @@ from ..searchapp import search_app_context
 #
 def not_found_error(error):
     """Handler for 'Not Found' errors."""
-    return render_template(current_app.config['THEME_404_TEMPLATE']), 404
+    return render_template(current_app.config["THEME_404_TEMPLATE"]), 404
 
 
 def record_tombstone_error(error):
@@ -39,7 +46,7 @@ def record_permission_denied_error(error):
     if not current_user.is_authenticated:
         # trigger the flask-login unauthorized handler
         return current_app.login_manager.unauthorized()
-    return render_template(current_app.config['THEME_403_TEMPLATE']), 403
+    return render_template(current_app.config["THEME_403_TEMPLATE"]), 403
 
 
 #
@@ -53,7 +60,7 @@ def create_ui_blueprint(app):
         "invenio_communities",
         __name__,
         template_folder="../templates",
-        static_folder='../static'
+        static_folder="../static",
     )
 
     # Communities URL rules
@@ -88,58 +95,53 @@ def create_ui_blueprint(app):
         view_func=communities_settings_privileges,
     )
 
-    blueprint.add_url_rule(
-        routes['members'],
-        view_func=members
-    )
+    blueprint.add_url_rule(routes["members"], view_func=members)
 
-    blueprint.add_url_rule(
-        routes['invitations'],
-        view_func=invitations
-    )
+    blueprint.add_url_rule(routes["invitations"], view_func=invitations)
 
     @blueprint.before_app_first_request
     def register_menus():
         """Register community menu items."""
-        item = current_menu.submenu('main.communities')
+        item = current_menu.submenu("main.communities")
         item.register(
-            'invenio_communities.communities_frontpage',
-            'Communities',
+            "invenio_communities.communities_frontpage",
+            "Communities",
             order=3,
         )
 
-        item = current_menu.submenu('plus.community').register(
-            'invenio_communities.communities_new',
-            'New community',
+        item = current_menu.submenu("plus.community").register(
+            "invenio_communities.communities_new",
+            "New community",
             order=3,
         )
 
-        communities = current_menu.submenu('communities')
-        communities.submenu('requests').register(
-            'invenio_communities.communities_requests',
-            text=_('Requests'),
+        communities = current_menu.submenu("communities")
+        communities.submenu("requests").register(
+            "invenio_communities.communities_requests",
+            text=_("Requests"),
             order=2,
             expected_args=["pid_value"],
-            **dict(icon='comments', permissions='can_search_requests')
+            **dict(icon="comments", permissions="can_search_requests")
         )
-        communities.submenu('members').register(
-            'invenio_communities.members',
-            text=_('Members'),
+        communities.submenu("members").register(
+            "invenio_communities.members",
+            text=_("Members"),
             order=3,
             expected_args=["pid_value"],
-            **dict(icon='users', permissions='can_read')
-        ) 
-        communities.submenu('settings').register(
-            'invenio_communities.communities_settings',
-            text=_('Settings'),
+            **dict(icon="users", permissions="can_read")
+        )
+        communities.submenu("settings").register(
+            "invenio_communities.communities_settings",
+            text=_("Settings"),
             order=4,
             expected_args=["pid_value"],
-            **dict(icon='settings', permissions='can_update')
+            **dict(icon="settings", permissions="can_update")
         )
 
     # Register error handlers
     blueprint.register_error_handler(
-        PermissionDeniedError, record_permission_denied_error)
+        PermissionDeniedError, record_permission_denied_error
+    )
     blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
     blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
 

@@ -13,15 +13,16 @@
 #
 
 from copy import deepcopy
+
 import pytest
+from invenio_records.systemfields.relations.errors import InvalidRelationValue
 
 from invenio_communities.communities.records.api import Community
-from invenio_records.systemfields.relations.errors import InvalidRelationValue
 
 
 @pytest.fixture(scope="module")
 def minimal_community(minimal_community):
-    minimal_community.pop('slug')
+    minimal_community.pop("slug")
     return minimal_community
 
 
@@ -35,34 +36,23 @@ def minimal_community(minimal_community):
     ],
 )
 def test_valid_community_types(
-    db, location, minimal_community, community_type, expected,
-    community_type_record
+    db, location, minimal_community, community_type, expected, community_type_record
 ):
     community_copy = deepcopy(minimal_community)
-    community_copy["metadata"].update({
-        "type": {
-            "id": community_type
-        }
-    })
+    community_copy["metadata"].update({"type": {"id": community_type}})
 
-    comm = Community.create(community_copy, slug='test')
+    comm = Community.create(community_copy, slug="test")
     comm.commit()
     db.session.commit()
 
     assert comm.metadata["type"]["id"] == expected
 
 
-def test_invalid_community_type(
-    db, minimal_community, community_type_record
-):
+def test_invalid_community_type(db, minimal_community, community_type_record):
     community_copy = deepcopy(minimal_community)
-    community_copy["metadata"].update({
-        "type": {
-            "id": "invalid_type"
-        }
-    })
+    community_copy["metadata"].update({"type": {"id": "invalid_type"}})
     with pytest.raises(InvalidRelationValue):
-        comm = Community.create(community_copy, slug='test')
+        comm = Community.create(community_copy, slug="test")
         comm.commit()
         db.session.commit()
 

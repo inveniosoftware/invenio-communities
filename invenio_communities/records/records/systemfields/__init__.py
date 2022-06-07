@@ -8,6 +8,4 @@
 
 from .communities.field import CommunitiesField
 
-__all__ = (
-    'CommunitiesField',
-)
+__all__ = ("CommunitiesField",)

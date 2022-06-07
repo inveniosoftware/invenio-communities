@@ -23,6 +23,7 @@ def c(app, db, location):
     db.session.commit()
     return Community.get_record(_c.id)
 
+
 @pytest.fixture()
 def c2(app, db, location):
     """Another community fixture."""
@@ -48,11 +49,8 @@ def test_record_create_empty(app, db):
     assert record.schema
 
     # JSONSchema validation works.
-    pytest.raises(
-        ValidationError,
-        MockRecord.create,
-        {'metadata': {'title': 1}}
-    )
+    pytest.raises(ValidationError, MockRecord.create, {"metadata": {"title": 1}})
+
 
 def test_get(db, record, c):
     """Loading a record should load communties and default."""
@@ -68,9 +66,9 @@ def test_add(db, c):
     record.communities.add(c, default=True)
     assert record.communities.default == c
     record.commit()
-    assert record['communities'] == {
-        'default': str(c.id),
-        'ids': [str(c.id)],
+    assert record["communities"] == {
+        "default": str(c.id),
+        "ids": [str(c.id)],
     }
     db.session.commit()
 
@@ -79,7 +77,7 @@ def test_add(db, c):
     record.communities.add(c)
     assert record.communities.default is None
     record.commit()
-    assert record['communities'] == {'ids': [str(c.id)]}
+    assert record["communities"] == {"ids": [str(c.id)]}
     db.session.commit()
 
 
@@ -107,7 +105,7 @@ def test_remove(db, c, record):
     record.communities.remove(c)
     assert len(record.communities) == 0
     record.commit()
-    assert record['communities'] == {}
+    assert record["communities"] == {}
     db.session.commit()
 
     # Removing non-existing raises an error
@@ -145,7 +143,7 @@ def test_clear(db, record):
     record.communities.clear()
     assert len(record.communities) == 0
     record.commit()
-    assert record['communities'] == {}
+    assert record["communities"] == {}
 
 
 def test_refresh(db, record, c2):

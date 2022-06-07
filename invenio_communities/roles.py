@@ -15,13 +15,13 @@ from dataclasses import dataclass, field
 class Role:
     """Role class"""
 
-    name: str = ''
+    name: str = ""
     """Name of the role."""
 
-    title: str = ''
+    title: str = ""
     """Title of the role."""
 
-    description: str = ''
+    description: str = ""
     """Brief description of capabilities of the role."""
 
     can_manage_roles: list = field(default_factory=list)
@@ -53,16 +53,13 @@ class RoleRegistry:
 
     def __init__(self, roles_definitions):
         """Initialize the role registry."""
-        self._roles = [
-            Role(**role) for role in roles_definitions
-        ]
+        self._roles = [Role(**role) for role in roles_definitions]
 
         self._owner = None
 
         for r in self._roles:
             if r.is_owner:
-                assert self._owner is None, \
-                    "Only one role be defined as owner."
+                assert self._owner is None, "Only one role be defined as owner."
                 self._owner = r
         assert self._owner is not None, "One role must be defined as owner."
 

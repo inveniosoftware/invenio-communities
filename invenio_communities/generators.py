@@ -24,9 +24,9 @@ from invenio_records_permissions.generators import Generator
 
 from .proxies import current_roles
 
-_Need = namedtuple('Need', ['method', 'value', 'role'])
+_Need = namedtuple("Need", ["method", "value", "role"])
 
-CommunityRoleNeed = partial(_Need, 'community')
+CommunityRoleNeed = partial(_Need, "community")
 """Defines a need for a community role.
 
 You can create a community role need like below:
@@ -54,8 +54,7 @@ class IfRestrictedBase(Generator):
     )
     """
 
-    def __init__(self, field_getter,
-                 field_name, then_value, else_value, then_, else_):
+    def __init__(self, field_getter, field_name, then_value, else_value, then_, else_):
         """Constructor."""
         self.field_getter = field_getter
         self.field_name = field_name
@@ -76,15 +75,12 @@ class IfRestrictedBase(Generator):
 
     def needs(self, record=None, **kwargs):
         """Set of Needs granting permission."""
-        needs = [
-            g.needs(record=record, **kwargs) for g in self.generators(record)]
+        needs = [g.needs(record=record, **kwargs) for g in self.generators(record)]
         return set(chain.from_iterable(needs))
 
     def excludes(self, record=None, **kwargs):
         """Set of Needs denying permission."""
-        needs = [
-            g.excludes(record=record, **kwargs) for g in self.generators(
-                record)]
+        needs = [g.excludes(record=record, **kwargs) for g in self.generators(record)]
         return set(chain.from_iterable(needs))
 
     def make_query(self, generators, **kwargs):
@@ -165,20 +161,14 @@ class CommunityRoles(Generator):
 
         roles = self.roles(**kwargs)
         if roles:
-            needs = [
-                CommunityRoleNeed(community_id, role)
-                for role in roles
-            ]
+            needs = [CommunityRoleNeed(community_id, role) for role in roles]
             return needs
         return []
 
     def query_filter(self, identity=None, **kwargs):
         """Filters for current identity as owner."""
         # Gives access to all community members.
-        return Q(
-            "terms",
-            **{"_id": self.communities(identity)}
-        )
+        return Q("terms", **{"_id": self.communities(identity)})
 
 
 class CommunityMembers(CommunityRoles):
@@ -188,9 +178,7 @@ class CommunityMembers(CommunityRoles):
         return [r.name for r in current_roles]
 
     def communities(self, identity):
-        return [
-            n.value for n in identity.provides if n.method == 'community'
-        ]
+        return [n.value for n in identity.provides if n.method == "community"]
 
 
 class CommunityCurators(CommunityRoles):
@@ -226,8 +214,7 @@ class CommunityManagersForRole(CommunityRoles):
             # role)
             allowed_roles = current_roles.manager_roles(member.role)
         else:
-            raise NotImplementedError(
-                "You must provide a role and/or a member.")
+            raise NotImplementedError("You must provide a role and/or a member.")
 
         return [r.name for r in allowed_roles]
 
@@ -240,9 +227,9 @@ class CommunityOwners(CommunityRoles):
 
     def communities(self, identity):
         return [
-            n.value for n in identity.provides
-            if n.method == 'community'
-            and n.role == current_roles.owner_role.name
+            n.value
+            for n in identity.provides
+            if n.method == "community" and n.role == current_roles.owner_role.name
         ]
 
 
@@ -258,6 +245,7 @@ class CommunitySelfMember(Generator):
     def query_filter(self, identity=None, **kwargs):
         """Not implemented."""
         raise NotImplementedError("Search permission not supported.")
+
 
 #
 # Business-level rules.
@@ -287,6 +275,7 @@ class AllowedMemberTypes(Generator):
                     return [any_user]
         return []
 
+
 class GroupsEnabled(Generator):
     """Generator to restrict if the groups are not enabled.
 
@@ -304,7 +293,9 @@ class GroupsEnabled(Generator):
         """Preventing needs."""
         if member_types:
             for m in member_types:
-                if m in self.need_groups_enabled_types and \
-                    not current_app.config["COMMUNITIES_GROUPS_ENABLED"]:
+                if (
+                    m in self.need_groups_enabled_types
+                    and not current_app.config["COMMUNITIES_GROUPS_ENABLED"]
+                ):
                     return [any_user]
         return []

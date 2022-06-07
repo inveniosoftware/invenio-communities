@@ -9,32 +9,39 @@
 
 from copy import deepcopy
 from datetime import datetime
+
 import pytest
 from invenio_access.permissions import system_identity
-
+from invenio_oaiserver.models import OAISet
 
 from invenio_communities.communities.services.components import OAISetComponent
-from invenio_oaiserver.models import OAISet
 
 
 def _retrieve_oaiset(service, community):
     comp = OAISetComponent(service)
-    return OAISet.query.filter(OAISet.spec == comp._create_set_spec(community.get("slug"))).first()
+    return OAISet.query.filter(
+        OAISet.spec == comp._create_set_spec(community.get("slug"))
+    ).first()
 
 
 @pytest.fixture()
 def comm(community_service, minimal_community, location):
     """Create minimal public community."""
     c = deepcopy(minimal_community)
-    c["slug"] = "public-{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
+    c["slug"] = "public-{slug}".format(
+        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+    )
     return community_service.create(data=c, identity=system_identity)
+
 
 @pytest.fixture()
 def comm_restricted(community_service, minimal_community, location):
     """Create minimal restricted community."""
     c = deepcopy(minimal_community)
     c["access"]["visibility"] = "restricted"
-    c["slug"] = "restricted-{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
+    c["slug"] = "restricted-{slug}".format(
+        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+    )
     return community_service.create(data=c, identity=system_identity)
 
 
@@ -61,14 +68,18 @@ def test_oai_set_delete_community(community_service, comm, comm_restricted):
     assert oaiset == None
 
     # nothing should happen for restricted communities
-    community_service.delete(identity=system_identity, id_=comm_restricted.data.get("id"))
+    community_service.delete(
+        identity=system_identity, id_=comm_restricted.data.get("id")
+    )
 
 
 def test_oai_set_renamed(community_service, comm, comm_restricted):
     """Set should be deleted and new one created if public community is renamed."""
     new_data = deepcopy(comm.data)
     new_data["slug"] = "new-id-who-dis"
-    r = community_service.rename(identity=system_identity, id_=comm.data.get("id"), data=new_data)
+    r = community_service.rename(
+        identity=system_identity, id_=comm.data.get("id"), data=new_data
+    )
 
     # set with old id should not be there anymore
     old_oaiset = _retrieve_oaiset(service=community_service, community=comm.data)
@@ -84,7 +95,9 @@ def test_oai_set_renamed(community_service, comm, comm_restricted):
     # nothing should happen for restricted communities
     new_data = deepcopy(comm_restricted.data)
     new_data["slug"] = "new-id-restricted-who-dis"
-    r = community_service.rename(identity=system_identity, id_=comm_restricted.data.get("id"), data=new_data)
+    r = community_service.rename(
+        identity=system_identity, id_=comm_restricted.data.get("id"), data=new_data
+    )
     old_oaiset = _retrieve_oaiset(service=community_service, community=r.data)
     assert old_oaiset == None
 

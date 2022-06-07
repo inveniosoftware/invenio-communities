@@ -13,12 +13,11 @@ from .records import Member, MemberModel
 from .resources import MemberResource, MemberResourceConfig
 from .services import MemberService, MemberServiceConfig
 
-
 __all__ = (
-    'Member',
-    'MemberModel',
-    'MemberService',
-    'MemberServiceConfig',
-    'MemberResource',
-    'MemberResourceConfig',
+    "Member",
+    "MemberModel",
+    "MemberService",
+    "MemberServiceConfig",
+    "MemberResource",
+    "MemberResourceConfig",
 )

@@ -8,11 +8,10 @@
 
 """Members Records."""
 
-from .models import MemberModel
 from .api import Member
-
+from .models import MemberModel
 
 __all__ = (
-    'Member',
-    'MemberModel',
+    "Member",
+    "MemberModel",
 )

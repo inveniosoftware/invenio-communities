@@ -17,40 +17,39 @@ def search_app_context():
     """Search app context processor."""
 
     return {
-        'search_app_communities_config': partial(
+        "search_app_communities_config": partial(
             search_app_config,
-            config_name='COMMUNITIES_SEARCH',
-            available_facets=current_app.config['COMMUNITIES_FACETS'],
-            sort_options=current_app.config['COMMUNITIES_SORT_OPTIONS'],
+            config_name="COMMUNITIES_SEARCH",
+            available_facets=current_app.config["COMMUNITIES_FACETS"],
+            sort_options=current_app.config["COMMUNITIES_SORT_OPTIONS"],
             headers={"Accept": "application/json"},
             endpoint="/api/communities",
         ),
-        'search_app_communities_requests_config': partial(
+        "search_app_communities_requests_config": partial(
             search_app_config,
-            config_name='COMMUNITIES_REQUESTS_SEARCH',
-            available_facets=current_app.config['REQUESTS_FACETS'],
-            sort_options=current_app.config['COMMUNITIES_SORT_OPTIONS'],
+            config_name="COMMUNITIES_REQUESTS_SEARCH",
+            available_facets=current_app.config["REQUESTS_FACETS"],
+            sort_options=current_app.config["COMMUNITIES_SORT_OPTIONS"],
             headers={"Accept": "application/json"},
             initial_filters=[["is_open", "true"]],
             endpoint="/api/requests",
         ),
-        'search_app_communities_members_config': partial(
+        "search_app_communities_members_config": partial(
             search_app_config,
-            config_name='COMMUNITIES_MEMBERS_SEARCH',
-            available_facets=current_app.config['COMMUNITIES_MEMBERS_FACETS'],
-            sort_options=current_app.config['COMMUNITIES_MEMBERS_SORT_OPTIONS'],
+            config_name="COMMUNITIES_MEMBERS_SEARCH",
+            available_facets=current_app.config["COMMUNITIES_MEMBERS_FACETS"],
+            sort_options=current_app.config["COMMUNITIES_MEMBERS_SORT_OPTIONS"],
             headers={"Accept": "application/json"},
             default_size=25,
             pagination_options=(25, 50, 75),
         ),
-        'search_app_communities_invitations_config': partial(
+        "search_app_communities_invitations_config": partial(
             search_app_config,
-            config_name='COMMUNITIES_INVITATIONS_SEARCH',
-            available_facets=current_app.config['REQUESTS_FACETS'],
-            sort_options=
-            current_app.config['COMMUNITIES_INVITATIONS_SORT_OPTIONS'],
+            config_name="COMMUNITIES_INVITATIONS_SEARCH",
+            available_facets=current_app.config["REQUESTS_FACETS"],
+            sort_options=current_app.config["COMMUNITIES_INVITATIONS_SORT_OPTIONS"],
             headers={"Accept": "application/json"},
             initial_filters=[["is_open", "true"]],
             endpoint="/api/requests",
-        )
+        ),
     }

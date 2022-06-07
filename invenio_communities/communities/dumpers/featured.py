@@ -27,21 +27,25 @@ class FeaturedDumperExt(ElasticsearchDumperExt):
 
     def dump(self, record, data):
         """Dump featured entries."""
-        
+
         now_ = datetime.utcnow()
-        future_entries = CommunityFeatured.query \
-            .filter(
+        future_entries = (
+            CommunityFeatured.query.filter(
                 CommunityFeatured.community_id == record.id,
                 CommunityFeatured.start_date > now_,
-            ) \
-            .order_by(CommunityFeatured.start_date.desc()).all()
-        
-        past_entries = CommunityFeatured.query \
-            .filter(
+            )
+            .order_by(CommunityFeatured.start_date.desc())
+            .all()
+        )
+
+        past_entries = (
+            CommunityFeatured.query.filter(
                 CommunityFeatured.community_id == record.id,
                 CommunityFeatured.start_date <= now_,
-            ) \
-            .order_by(CommunityFeatured.start_date.desc()).all()
+            )
+            .order_by(CommunityFeatured.start_date.desc())
+            .all()
+        )
 
         dumped_field = {}
         dumped_field["future"] = [e.start_date.isoformat() for e in future_entries]

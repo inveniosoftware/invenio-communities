@@ -31,16 +31,24 @@ def clean_index(member_service, requests_service, db):
     state. This is an "expensive" fixture to run, thus only use it if your
     tests really doesn't work without.
     """
-    list(current_search.delete(index_list=[
-        Request.index._name,
-        Member.index._name,
-        ArchivedInvitation.index._name,
-    ]))
-    list(current_search.create(index_list=[
-        Request.index._name,
-        Member.index._name,
-        ArchivedInvitation.index._name,
-    ]))
+    list(
+        current_search.delete(
+            index_list=[
+                Request.index._name,
+                Member.index._name,
+                ArchivedInvitation.index._name,
+            ]
+        )
+    )
+    list(
+        current_search.create(
+            index_list=[
+                Request.index._name,
+                Member.index._name,
+                ArchivedInvitation.index._name,
+            ]
+        )
+    )
     member_service.rebuild_index(system_identity)
     requests_service.rebuild_index(system_identity)
     Member.index.refresh()
@@ -79,7 +87,7 @@ def invite_request_id(requests_service, invite_user):
     Request.index.refresh()
     res = requests_service.search(
         invite_user.identity,
-        receiver={'user': invite_user.id},
-        type='community-invitation',
+        receiver={"user": invite_user.id},
+        type="community-invitation",
     ).to_dict()
-    return res['hits']['hits'][0]['id']
+    return res["hits"]["hits"][0]["id"]

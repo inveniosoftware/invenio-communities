@@ -12,11 +12,19 @@
 from flask_principal import identity_loaded
 from invenio_records_resources.services import FileService
 
-from invenio_communities.communities import CommunityFileServiceConfig, \
-    CommunityResource, CommunityResourceConfig, CommunityService, \
-    CommunityServiceConfig
-from invenio_communities.members import MemberResource, MemberResourceConfig, \
-    MemberService, MemberServiceConfig
+from invenio_communities.communities import (
+    CommunityFileServiceConfig,
+    CommunityResource,
+    CommunityResourceConfig,
+    CommunityService,
+    CommunityServiceConfig,
+)
+from invenio_communities.members import (
+    MemberResource,
+    MemberResourceConfig,
+    MemberService,
+    MemberServiceConfig,
+)
 
 from . import config
 from .roles import RoleRegistry
@@ -34,7 +42,7 @@ class InvenioCommunities(object):
     def init_app(self, app):
         """Flask application initialization."""
         self.init_config(app)
-        app.extensions['invenio-communities'] = self
+        app.extensions["invenio-communities"] = self
 
         self.init_services(app)
         self.init_resource(app)
@@ -46,11 +54,10 @@ class InvenioCommunities(object):
         Override configuration variables with the values in this package.
         """
         for k in dir(config):
-            if k.startswith('COMMUNITIES_'):
+            if k.startswith("COMMUNITIES_"):
                 app.config.setdefault(k, getattr(config, k))
 
-        self.roles_registry = RoleRegistry(app.config['COMMUNITIES_ROLES'])
-
+        self.roles_registry = RoleRegistry(app.config["COMMUNITIES_ROLES"])
 
     def init_services(self, app):
         """Initialize communities service."""
@@ -58,7 +65,7 @@ class InvenioCommunities(object):
         self.service = CommunityService(
             CommunityServiceConfig,
             files_service=FileService(CommunityFileServiceConfig),
-            members_service=MemberService(MemberServiceConfig())
+            members_service=MemberService(MemberServiceConfig()),
         )
 
     def init_resource(self, app):
@@ -75,6 +82,7 @@ class InvenioCommunities(object):
 
     def init_hooks(self, app):
         """Initialize hooks."""
+
         @identity_loaded.connect_via(app)
         def on_identity_loaded(_, identity):
             load_community_needs(identity)

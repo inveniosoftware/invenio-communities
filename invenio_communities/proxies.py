@@ -11,11 +11,11 @@
 from flask import current_app
 from werkzeug.local import LocalProxy
 
-current_communities = LocalProxy(
-    lambda: current_app.extensions['invenio-communities'])
+current_communities = LocalProxy(lambda: current_app.extensions["invenio-communities"])
 """Proxy to the extension."""
 
 
 current_roles = LocalProxy(
-    lambda: current_app.extensions['invenio-communities'].roles_registry)
+    lambda: current_app.extensions["invenio-communities"].roles_registry
+)
 """Proxy to the extension."""

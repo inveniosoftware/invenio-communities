@@ -11,41 +11,41 @@ from flask_babelex import gettext as _
 from invenio_records_resources.services.records.facets import TermsFacet
 
 type = TermsFacet(
-    field='metadata.type.id',
-    label=_('Type'),
+    field="metadata.type.id",
+    label=_("Type"),
     value_labels={
-        'organization': _('Organization'),
-        'event': _('Event'),
-        'topic': _('Topic'),
-        'project': _('Project'),
-    }
+        "organization": _("Organization"),
+        "event": _("Event"),
+        "topic": _("Topic"),
+        "project": _("Project"),
+    },
 )
 
 visibility = TermsFacet(
-    field='access.visibility',
-    label=_('Visibility'),
+    field="access.visibility",
+    label=_("Visibility"),
     value_labels={
-        'public': _('Public'),
-        'restricted': _('Restricted'),
-    }
+        "public": _("Public"),
+        "restricted": _("Restricted"),
+    },
 )
 
 role = TermsFacet(
-    field='role',
-    label=_('Visibility'),
+    field="role",
+    label=_("Visibility"),
     value_labels={
-        'owner': _('Owner'),
-        'reader': _('Reader'),
-        'manager': _('Manager'),
-        'curator': _('Curator'),
-    }
+        "owner": _("Owner"),
+        "reader": _("Reader"),
+        "manager": _("Manager"),
+        "curator": _("Curator"),
+    },
 )
 
 visible = TermsFacet(
-    field='visible',
-    label=_('Visibility'),
+    field="visible",
+    label=_("Visibility"),
     value_labels={
-        'hidden': _('Hidden'),
-        'restricted': _('Restricted'),
-    }
+        "hidden": _("Hidden"),
+        "restricted": _("Restricted"),
+    },
 )

@@ -16,10 +16,16 @@ from flask_babelex import gettext as _
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import Role
 from invenio_records_resources.services import LinksTemplate
-from invenio_records_resources.services.records import RecordService, \
-    ServiceSchemaWrapper
-from invenio_records_resources.services.uow import IndexRefreshOp, \
-    RecordCommitOp, RecordDeleteOp, unit_of_work
+from invenio_records_resources.services.records import (
+    RecordService,
+    ServiceSchemaWrapper,
+)
+from invenio_records_resources.services.uow import (
+    IndexRefreshOp,
+    RecordCommitOp,
+    RecordDeleteOp,
+    unit_of_work,
+)
 from invenio_requests import current_events_service, current_requests_service
 from invenio_requests.customizations.event_types import CommentEventType
 from marshmallow import ValidationError
@@ -31,15 +37,22 @@ from invenio_communities.members.records.api import ArchivedInvitation
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from .request import CommunityInvitation
-from .schemas import AddBulkSchema, DeleteBulkSchema, InvitationDumpSchema, \
-    InviteBulkSchema, MemberDumpSchema, PublicDumpSchema, UpdateBulkSchema
+from .schemas import (
+    AddBulkSchema,
+    DeleteBulkSchema,
+    InvitationDumpSchema,
+    InviteBulkSchema,
+    MemberDumpSchema,
+    PublicDumpSchema,
+    UpdateBulkSchema,
+)
 
 
 def invite_expires_at():
     """Get the invitation expiration date."""
     return (
-        datetime.utcnow().replace(tzinfo=timezone.utc) +
-        current_app.config['COMMUNITIES_INVITATIONS_EXPIRES_IN']
+        datetime.utcnow().replace(tzinfo=timezone.utc)
+        + current_app.config["COMMUNITIES_INVITATIONS_EXPIRES_IN"]
     )
 
 
@@ -112,7 +125,7 @@ class MemberService(RecordService):
             self.add_schema,
             "members_add",
             self._add_factory,
-            uow
+            uow,
         )
         # ensure index is refreshed to search for newly added members
         uow.register(IndexRefreshOp(indexer=self.indexer))
@@ -134,15 +147,14 @@ class MemberService(RecordService):
             self.invite_schema,
             "members_invite",
             self._invite_factory,
-            uow
+            uow,
         )
 
         # ensure index is refreshed to search for newly added members
         uow.register(IndexRefreshOp(indexer=self.indexer))
         return ret
 
-    def _create(self, identity, community_id, data, schema, action, factory,
-                uow):
+    def _create(self, identity, community_id, data, schema, action, factory, uow):
         """Internal method used for both adding and inviting users/groups.
 
         The methods are shared because adding and inviting users/groups share
@@ -154,15 +166,15 @@ class MemberService(RecordService):
             data,
             context={"identity": identity},
         )
-        role = data['role']
-        members = data['members']
-        member_types = {m['type'] for m in data['members']}
-        message = data.get('message')
+        role = data["role"]
+        members = data["members"]
+        member_types = {m["type"] for m in data["members"]}
+        message = data.get("message")
         # Users are expected to explicitly change their visibility themselves
         # due to data privacy concerns.
         # The system identity can set the visible property to support data
         # migration use cases.
-        visible = data.get('visible', False)
+        visible = data.get("visible", False)
         if visible and identity != system_identity:
             raise ValidationError(_("Must be false"))
 
@@ -175,36 +187,46 @@ class MemberService(RecordService):
         #   we only allow adding groups, and inviting users/emails however in
         #   a migration use case we may want to allow adding users directly).
         self.require_permission(
-            identity, action,
+            identity,
+            action,
             record=community,
             role=role.name,
-            member_types=member_types
+            member_types=member_types,
         )
 
         # Add/invite members via the factory function.
         for m in members:
             # TODO: Add support for inviting an email
-            if m['type'] == 'email':
-                raise ValidationError(_('Invalid member type: email'))
+            if m["type"] == "email":
+                raise ValidationError(_("Invalid member type: email"))
 
             factory(identity, community, role, visible, m, message, uow)
 
         return True
 
-    def _add_factory(self, identity, community, role, visible, member, message,
-                     uow, active=True, request_id=None):
+    def _add_factory(
+        self,
+        identity,
+        community,
+        role,
+        visible,
+        member,
+        message,
+        uow,
+        active=True,
+        request_id=None,
+    ):
         """Add a member to the community."""
         # TODO: inefficient to do here, should be done in bulk instead.
-        if member['type'] == 'group':
+        if member["type"] == "group":
             try:
                 # member['id'] is mapped from role.name
                 # (check invenio-users-resources)
-                member['id'] = \
-                    Role.query.filter_by(name=member['id']).one().id
+                member["id"] = Role.query.filter_by(name=member["id"]).one().id
             except NoResultFound as e:
                 raise InvalidMemberError(member) from e
 
-        member_arg = {member['type'] + '_id': member['id']}
+        member_arg = {member["type"] + "_id": member["id"]}
         try:
             # Integrity checks happens here which will validate:
             # - if a user/group is already a member
@@ -225,16 +247,15 @@ class MemberService(RecordService):
         # instead of N single indexing requests.
         uow.register(RecordCommitOp(member, indexer=self.indexer))
 
-    def _invite_factory(self, identity, community, role, visible, member,
-                        message, uow):
+    def _invite_factory(self, identity, community, role, visible, member, message, uow):
         """Invite a member to the community."""
-        if member['type'] == 'group':
+        if member["type"] == "group":
             # Groups cannot be invited, because groups have no one who can
             # accept an invitation.
             raise InvalidMemberError(member)
 
         # Add member entry
-        if member['type'] == 'user':
+        if member["type"] == "user":
             # Create request
             title = _('Invitation to join "{community}"').format(
                 community=community.metadata["title"],
@@ -242,9 +263,9 @@ class MemberService(RecordService):
 
             request_item = current_requests_service.create(
                 identity,
-                {'title': title},
+                {"title": title},
                 CommunityInvitation,
-                {'user': member['id']},
+                {"user": member["id"]},
                 creator=community,
                 # TODO: perhaps topic should be the actual membership record
                 # instead
@@ -254,11 +275,11 @@ class MemberService(RecordService):
             )
 
             # add role as message
-            data = {"payload": {
-                "content": _('You will join as "{role}"').format(
-                    role=role.title
-                ),
-            }}
+            data = {
+                "payload": {
+                    "content": _('You will join as "{role}"').format(role=role.title),
+                }
+            }
             current_events_service.create(
                 identity, request_item.id, data, CommentEventType, uow=uow
             )
@@ -279,29 +300,25 @@ class MemberService(RecordService):
                 message,
                 uow,
                 active=False,
-                request_id=request_item.id
+                request_id=request_item.id,
             )
 
-    def search(
-            self, identity, community_id, params=None, es_preference=None,
-            **kwargs
-        ):
+    def search(self, identity, community_id, params=None, es_preference=None, **kwargs):
         return self._members_search(
             identity,
             community_id,
-            'members_search',
+            "members_search",
             self.member_dump_schema,
             self.config.search,
-            extra_filter=Q('term', **{'active': True}),
+            extra_filter=Q("term", **{"active": True}),
             params=params,
             es_preference=es_preference,
             **kwargs
         )
 
     def search_public(
-            self, identity, community_id, params=None, es_preference=None,
-            **kwargs
-        ):
+        self, identity, community_id, params=None, es_preference=None, **kwargs
+    ):
         """Search public members matching the querystring."""
         # The search for members is split two methods (public, members) to
         # prevent leaking of information. E.g. the public serialization
@@ -311,11 +328,11 @@ class MemberService(RecordService):
         return self._members_search(
             identity,
             community_id,
-            'members_search_public',
+            "members_search_public",
             self.public_dump_schema,
             self.config.search_public,
             extra_filter=(
-                Q('term', **{'visible': True}) & Q('term', **{'active': True})
+                Q("term", **{"visible": True}) & Q("term", **{"active": True})
             ),
             params=params,
             es_preference=es_preference,
@@ -323,9 +340,8 @@ class MemberService(RecordService):
         )
 
     def search_invitations(
-            self, identity, community_id, params=None, es_preference=None,
-            **kwargs
-        ):
+        self, identity, community_id, params=None, es_preference=None, **kwargs
+    ):
         """Search invitations."""
         # The search for invitations used the ArchivedInvitation record class
         # which will search over the "communitymembers" alias which include
@@ -333,27 +349,34 @@ class MemberService(RecordService):
         return self._members_search(
             identity,
             community_id,
-            'search_invites',
+            "search_invites",
             self.invitation_dump_schema,
             self.config.search_invitations,
             record_cls=ArchivedInvitation,
-            extra_filter=Q('term', **{'active': False}),
+            extra_filter=Q("term", **{"active": False}),
             params=params,
             es_preference=es_preference,
             **kwargs
         )
 
     def _members_search(
-            self, identity, community_id, permission_action, schema,
-            search_opts, extra_filter=None, params=None, es_preference=None,
-            **kwargs
-        ):
+        self,
+        identity,
+        community_id,
+        permission_action,
+        schema,
+        search_opts,
+        extra_filter=None,
+        params=None,
+        es_preference=None,
+        **kwargs
+    ):
         """Members search."""
         community = self.community_cls.get_record(community_id)
         self.require_permission(identity, permission_action, record=community)
 
         # Apply extra filters
-        filter = Q('term', **{'community_id': community.id})
+        filter = Q("term", **{"community_id": community.id})
         if extra_filter:
             filter &= extra_filter
 
@@ -361,7 +384,7 @@ class MemberService(RecordService):
         params = params or {}
 
         search = self._search(
-            'search_members',
+            "search_members",
             identity,
             params,
             es_preference,
@@ -377,23 +400,18 @@ class MemberService(RecordService):
             identity,
             search_result,
             params,
-            links_tpl=LinksTemplate(self.config.links_search, context={
-                "args": params,
-                "community_id": community_id,
-            }),
+            links_tpl=LinksTemplate(
+                self.config.links_search,
+                context={
+                    "args": params,
+                    "community_id": community_id,
+                },
+            ),
             schema=schema,
-
         )
 
     @unit_of_work()
-    def update(
-        self,
-        identity,
-        community_id,
-        data,
-        uow=None,
-        refresh=False
-    ):
+    def update(self, identity, community_id, data, uow=None, refresh=False):
         """Bulk update.
 
         Used to update both active members and active invitations. Archived
@@ -404,7 +422,8 @@ class MemberService(RecordService):
         # Permission check - validates that:
         # - identity has permission to change any member at all (incl self)
         self.require_permission(
-            identity, "members_bulk_update",
+            identity,
+            "members_bulk_update",
             record=community,
         )
 
@@ -415,12 +434,11 @@ class MemberService(RecordService):
         )
 
         # Schema validates that role and/or visibility are defined.
-        members = self.record_cls.get_members(
-            community.id, members=data['members'])
-        if len(members) != len(data['members']):
+        members = self.record_cls.get_members(community.id, members=data["members"])
+        if len(members) != len(data["members"]):
             raise InvalidMemberError()
-        role = data.get('role')
-        visible = data.get('visible')
+        role = data.get("role")
+        visible = data.get("visible")
 
         # Perform updates (and check permissions)
         for m in members:
@@ -429,7 +447,8 @@ class MemberService(RecordService):
         # Make sure we're not left owner-less if a role was changed.
         if role is not None:
             if not self.record_cls.has_members(
-                    community_id, role=current_roles.owner_role.name):
+                community_id, role=current_roles.owner_role.name
+            ):
                 raise ValidationError(
                     _("A community must have at least one owner."),
                 )
@@ -450,10 +469,7 @@ class MemberService(RecordService):
             member=member,
             role=role.name if role is not None else None,
         )
-        is_self = (
-            identity.id is not None and
-            str(member.user_id) == str(identity.id)
-        )
+        is_self = identity.id is not None and str(member.user_id) == str(identity.id)
 
         # Pre-conditions:
         # You cannot change your own role (owners, managers, members = all)
@@ -471,20 +487,22 @@ class MemberService(RecordService):
         if visible is not None and member.user_id is not None:
             if visible and not (is_self or system_identity == identity):
                 raise ValidationError(
-                    _("You can only set public visibility on your own "
-                    "membership."),
+                    _("You can only set public visibility on your own " "membership."),
                 )
 
         # Update membership
         if role is not None:
             if not member.active:  # still an invitation
-                data = {"payload": {
-                    "content": _(
-                        'You will join as "{role}" (changed from: "{previous}")').format(
-                        role=role.title,
-                        previous=member.role,
-                    ),
-                }}
+                data = {
+                    "payload": {
+                        "content": _(
+                            'You will join as "{role}" (changed from: "{previous}")'
+                        ).format(
+                            role=role.title,
+                            previous=member.role,
+                        ),
+                    }
+                }
                 current_events_service.create(
                     identity, member.request_id, data, CommentEventType, uow=uow
                 )
@@ -506,7 +524,8 @@ class MemberService(RecordService):
         # Permission check - validates that:
         # - identity has permission to delete any member at all (incl self)
         self.require_permission(
-            identity, "members_bulk_delete",
+            identity,
+            "members_bulk_delete",
             record=community,
         )
 
@@ -515,9 +534,8 @@ class MemberService(RecordService):
             data,
             context={"identity": identity},
         )
-        members = self.record_cls.get_members(
-            community.id, members=data['members'])
-        if len(members) != len(data['members']):
+        members = self.record_cls.get_members(community.id, members=data["members"])
+        if len(members) != len(data["members"]):
             raise InvalidMemberError()
 
         # Perform deletes (and check permissions)
@@ -532,7 +550,8 @@ class MemberService(RecordService):
 
         # Make sure we're not left owner-less
         if not self.record_cls.has_members(
-                community_id, role=current_roles.owner_role.name):
+            community_id, role=current_roles.owner_role.name
+        ):
             raise ValidationError(
                 _("A community must have at least one owner."),
             )
@@ -550,8 +569,7 @@ class MemberService(RecordService):
         member.active = True
         # TODO: recompute permissions for member.
         uow.register(RecordCommitOp(member, indexer=self.indexer))
-        uow.register(
-            RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
+        uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
         uow.register(IndexRefreshOp(indexer=self.indexer))
 
     @unit_of_work()
@@ -563,13 +581,15 @@ class MemberService(RecordService):
         assert member.active is False
         archived_invitation = ArchivedInvitation.create_from_member(member)
         uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+        uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
         uow.register(
-            RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
-        uow.register(IndexRefreshOp(
-            # need to use an indexer with a diff index
-            # no access to invitations indexer
-            indexer=self.indexer, index=ArchivedInvitation.index
-        ))
+            IndexRefreshOp(
+                # need to use an indexer with a diff index
+                # no access to invitations indexer
+                indexer=self.indexer,
+                index=ArchivedInvitation.index,
+            )
+        )
 
     def read_many(self, *args, **kwargs):
         """Not implemented."""

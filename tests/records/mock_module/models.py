@@ -9,13 +9,13 @@ from invenio_communities.records.records.models import CommunityRelationMixin
 class MockRecordMetadata(db.Model, RecordMetadataBase):
     """A baisc record."""
 
-    __tablename__ = 'mock_metadata'
+    __tablename__ = "mock_metadata"
 
 
 class MockRecordCommunity(db.Model, CommunityRelationMixin):
     """Relationship between record and community."""
 
-    __tablename__ = 'mock_community'
+    __tablename__ = "mock_community"
     __record_model__ = MockRecordMetadata
     # __request_model__ = RequestMetadata
 

@@ -17,7 +17,6 @@ from invenio_records_resources.records.api import PersistentIdentifierWrapper
 
 
 class PIDSlugFieldContext(SystemFieldContext):
-
     def parse_pid(self, value):
         if isinstance(value, UUID):
             return value
@@ -36,18 +35,17 @@ class PIDSlugFieldContext(SystemFieldContext):
             field_name = self.field._slug_field
             # Edge case since we allow nullable slug in the database table.
             if not pid_value:
-                raise PIDDoesNotExistError('comid', '')
+                raise PIDDoesNotExistError("comid", "")
 
         with db.session.no_autoflush:  # avoid flushing the current session
             model = self.record_cls.model_cls.query.filter_by(
                 **{field_name: pid_value}
             ).one_or_none()
             if model is None:
-                raise PIDDoesNotExistError('comid', str(pid_value))
+                raise PIDDoesNotExistError("comid", str(pid_value))
             record = self.record_cls(model.data, model=model)
             if record.is_deleted:
-                raise PIDDeletedError(
-                    PersistentIdentifierWrapper(pid_value), record)
+                raise PIDDeletedError(PersistentIdentifierWrapper(pid_value), record)
             return record
 
 

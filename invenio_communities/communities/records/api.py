@@ -10,11 +10,14 @@
 
 from invenio_records.dumpers import ElasticsearchDumper
 from invenio_records.dumpers.relations import RelationDumperExt
-from invenio_records.systemfields import ConstantField, ModelField, \
-    RelationsField
+from invenio_records.systemfields import ConstantField, ModelField, RelationsField
 from invenio_records_resources.records.api import FileRecord, Record
-from invenio_records_resources.records.systemfields import FilesField, \
-    IndexField, PIDListRelation, PIDRelation
+from invenio_records_resources.records.systemfields import (
+    FilesField,
+    IndexField,
+    PIDListRelation,
+    PIDRelation,
+)
 from invenio_vocabularies.contrib.affiliations.api import Affiliation
 from invenio_vocabularies.contrib.awards.api import Award
 from invenio_vocabularies.contrib.funders.api import Funder
@@ -40,22 +43,18 @@ class Community(Record):
     slug = ModelField()
     pid = PIDSlugField("id", "slug")
 
-    schema = ConstantField(
-        '$schema', 'local://communities/communities-v1.0.0.json')
+    schema = ConstantField("$schema", "local://communities/communities-v1.0.0.json")
 
     model_cls = models.CommunityMetadata
 
     dumper = ElasticsearchDumper(
         extensions=[
             FeaturedDumperExt("featured"),
-            RelationDumperExt('relations'),
+            RelationDumperExt("relations"),
         ]
     )
 
-    index = IndexField(
-        "communities-communities-v1.0.0",
-        search_alias="communities"
-    )
+    index = IndexField("communities-communities-v1.0.0", search_alias="communities")
 
     access = CommunityAccessField()
 
@@ -70,33 +69,30 @@ class Community(Record):
 
     relations = RelationsField(
         funding_award=PIDListRelation(
-            'metadata.funding',
-            relation_field='award',
-            keys=['number', 'title'],
+            "metadata.funding",
+            relation_field="award",
+            keys=["number", "title"],
             pid_field=Award.pid,
-            cache_key='awards',
+            cache_key="awards",
         ),
-
         funding_funder=PIDListRelation(
-            'metadata.funding',
-            relation_field='funder',
-            keys=['name'],
+            "metadata.funding",
+            relation_field="funder",
+            keys=["name"],
             pid_field=Funder.pid,
-            cache_key='funders',
+            cache_key="funders",
         ),
-
         organizations=PIDListRelation(
-            'metadata.organizations',
-            keys=['name'],
+            "metadata.organizations",
+            keys=["name"],
             pid_field=Affiliation.pid,
-            cache_key='affiliations',
+            cache_key="affiliations",
         ),
-
         type=PIDRelation(
-            'metadata.type',
-            keys=['title'],
-            pid_field=Vocabulary.pid.with_type_ctx('communitytypes'),
-            cache_key='communitytypes',
+            "metadata.type",
+            keys=["title"],
+            pid_field=Vocabulary.pid.with_type_ctx("communitytypes"),
+            cache_key="communitytypes",
         ),
     )
 

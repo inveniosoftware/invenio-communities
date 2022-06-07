@@ -9,7 +9,6 @@
 """Test community members resources."""
 
 import pytest
-
 from invenio_access.permissions import system_identity
 from invenio_requests.records.api import RequestEvent
 
@@ -46,9 +45,7 @@ def test_add(client, headers, community_id, owner, group_data, db):
     """Test add REST API."""
     client = owner.login(client)
     r = client.post(
-        f'/communities/{community_id}/members',
-        headers=headers,
-        json=group_data
+        f"/communities/{community_id}/members", headers=headers, json=group_data
     )
     assert r.status_code == 204
 
@@ -57,9 +54,7 @@ def test_add_denied(client, headers, community_id, group_data, new_user):
     """Test add REST API."""
     client = new_user.login(client)
     r = client.post(
-        f'/communities/{community_id}/members',
-        headers=headers,
-        json=group_data
+        f"/communities/{community_id}/members", headers=headers, json=group_data
     )
     assert r.status_code == 403
 
@@ -68,9 +63,7 @@ def test_add_bad_data(client, headers, community_id, owner):
     """Test add REST API."""
     client = owner.login(client)
     r = client.post(
-        f'/communities/{community_id}/members',
-        headers=headers,
-        json={"members": []}
+        f"/communities/{community_id}/members", headers=headers, json={"members": []}
     )
     assert r.status_code == 400
 
@@ -78,11 +71,9 @@ def test_add_bad_data(client, headers, community_id, owner):
 def test_add_invalid_member(client, headers, community_id, owner, group_data):
     """Test add REST API."""
     client = owner.login(client)
-    group_data['members'][0]['id'] = 'invalid'
+    group_data["members"][0]["id"] = "invalid"
     r = client.post(
-        f'/communities/{community_id}/members',
-        headers=headers,
-        json=group_data
+        f"/communities/{community_id}/members", headers=headers, json=group_data
     )
     assert r.status_code == 400
 
@@ -91,15 +82,11 @@ def test_add_duplicate(client, headers, community_id, owner, group_data, db):
     """Test add REST API."""
     client = owner.login(client)
     r = client.post(
-        f'/communities/{community_id}/members',
-        headers=headers,
-        json=group_data
+        f"/communities/{community_id}/members", headers=headers, json=group_data
     )
     assert r.status_code == 204
     r = client.post(
-        f'/communities/{community_id}/members',
-        headers=headers,
-        json=group_data
+        f"/communities/{community_id}/members", headers=headers, json=group_data
     )
     assert r.status_code == 400
 
@@ -111,7 +98,7 @@ def test_invite(client, headers, community_id, owner, new_user_data, db):
     """Test invite REST API."""
     client = owner.login(client)
     r = client.post(
-        f'/communities/{community_id}/invitations',
+        f"/communities/{community_id}/invitations",
         headers=headers,
         json=new_user_data,
     )
@@ -119,29 +106,23 @@ def test_invite(client, headers, community_id, owner, new_user_data, db):
 
     # check the comment in the timeline
     RequestEvent.index.refresh()
-    r = client.get(
-        f"/communities/{community_id}/invitations",
-        headers=headers
-    )
+    r = client.get(f"/communities/{community_id}/invitations", headers=headers)
     assert r.status_code == 200
     request_id = r.json["hits"]["hits"][0]["request"]["id"]
     r = client.get(f"/requests/{request_id}/timeline", headers=headers)
     assert r.status_code == 200
     assert r.json["hits"]["total"] == 2  # role message + invite message
-    assert r.json["hits"]["hits"][0]["payload"]["content"] == \
-        "You will join as \"Reader\""
-    assert r.json["hits"]["hits"][1]["payload"]["content"] == \
-        new_user_data["message"]
+    assert (
+        r.json["hits"]["hits"][0]["payload"]["content"] == 'You will join as "Reader"'
+    )
+    assert r.json["hits"]["hits"][1]["payload"]["content"] == new_user_data["message"]
 
 
-def test_invite_deny(
-    client, headers, community_id, new_user, new_user_data, db):
+def test_invite_deny(client, headers, community_id, new_user, new_user_data, db):
     """Test invite REST API."""
     client = new_user.login(client)
     r = client.post(
-        f'/communities/{community_id}/invitations',
-        headers=headers,
-        json=new_user_data
+        f"/communities/{community_id}/invitations", headers=headers, json=new_user_data
     )
     assert r.status_code == 403
 
@@ -149,8 +130,7 @@ def test_invite_deny(
 #
 # Update
 #
-def test_update(
-    client, headers, community_id, owner, public_reader):
+def test_update(client, headers, community_id, owner, public_reader):
     """Test update of members."""
     client = owner.login(client)
     data = {
@@ -159,20 +139,19 @@ def test_update(
         "role": "curator",
     }
     r = client.put(
-        f'/communities/{community_id}/members',
+        f"/communities/{community_id}/members",
         headers=headers,
         json=data,
     )
     assert r.status_code == 204
 
 
-def test_update_invite(
-    client, headers, community_id, owner, new_user_data, db):
+def test_update_invite(client, headers, community_id, owner, new_user_data, db):
     """Test update of members."""
     client = owner.login(client)
     new_user_data.pop("message")  # not accepted by update
     r = client.post(
-        f'/communities/{community_id}/invitations',
+        f"/communities/{community_id}/invitations",
         headers=headers,
         json=new_user_data,
     )
@@ -181,7 +160,7 @@ def test_update_invite(
     # Update the invite
     new_user_data["role"] = "curator"
     r = client.put(
-        f'/communities/{community_id}/invitations',
+        f"/communities/{community_id}/invitations",
         headers=headers,
         json=new_user_data,
     )
@@ -191,15 +170,14 @@ def test_update_invite(
 #
 # Delete
 #
-def test_delete(
-    client, headers, community_id, owner, public_reader):
+def test_delete(client, headers, community_id, owner, public_reader):
     """Test delete of members."""
     client = public_reader.login(client)
     data = {
         "members": [{"type": "user", "id": str(public_reader.id)}],
     }
     r = client.delete(
-        f'/communities/{community_id}/members',
+        f"/communities/{community_id}/members",
         headers=headers,
         json=data,
     )
@@ -210,17 +188,17 @@ def test_delete(
 def extra_user(app, db, UserFixture, member_service, community):
     """Add a reader member with public visibility."""
     u = UserFixture(
-        email=f'extra@newuser.org',
-        password='newuser',
+        email=f"extra@newuser.org",
+        password="newuser",
         user_profile={
-            'full_name': 'Should be last',
+            "full_name": "Should be last",
         },
         preferences={
-            'visibility': 'public',
-            'email_visibility': 'restricted',
+            "visibility": "public",
+            "email_visibility": "restricted",
         },
         active=True,
-        confirmed=True
+        confirmed=True,
     )
     u.create(app, db)
     data = {
@@ -237,129 +215,135 @@ def extra_user(app, db, UserFixture, member_service, community):
 # Search and serialization
 #
 def test_search(
-    db, clean_index, client, headers,
-    extra_user,  community_id, owner, public_reader,
+    db,
+    clean_index,
+    client,
+    headers,
+    extra_user,
+    community_id,
+    owner,
+    public_reader,
 ):
     """Search."""
     client = owner.login(client)
     r = client.get(
-        f'/communities/{community_id}/members',
+        f"/communities/{community_id}/members",
         headers=headers,
     )
     assert r.status_code == 200
     data = r.json
-    assert  data["sortBy"] == "name"
-    assert data['hits']['total'] == 3
-    assert 'role' in data['aggregations']
-    assert 'visibility' in data['aggregations']
+    assert data["sortBy"] == "name"
+    assert data["hits"]["total"] == 3
+    assert "role" in data["aggregations"]
+    assert "visibility" in data["aggregations"]
 
-    hit = data['hits']['hits'][0]
-    assert 'role' in hit
-    assert 'visible' in hit
-    assert 'created' in hit
-    assert 'updated' in hit
-    assert 'revision_id' in hit
-    assert 'is_current_user' in hit
-    assert 'permissions' in hit
-    assert hit['permissions']['can_leave'] is False
-    assert hit['permissions']['can_delete'] is True
-    assert hit['permissions']['can_update_role'] is True
-    assert hit['permissions']['can_update_visible'] is True
-    assert hit['visible'] is True
+    hit = data["hits"]["hits"][0]
+    assert "role" in hit
+    assert "visible" in hit
+    assert "created" in hit
+    assert "updated" in hit
+    assert "revision_id" in hit
+    assert "is_current_user" in hit
+    assert "permissions" in hit
+    assert hit["permissions"]["can_leave"] is False
+    assert hit["permissions"]["can_delete"] is True
+    assert hit["permissions"]["can_update_role"] is True
+    assert hit["permissions"]["can_update_visible"] is True
+    assert hit["visible"] is True
 
-    hit = data['hits']['hits'][1]  # should be last, test sorting
-    assert hit['member']["name"] == "Should be last"
+    hit = data["hits"]["hits"][1]  # should be last, test sorting
+    assert hit["member"]["name"] == "Should be last"
 
     # third because of no name
-    hit = data['hits']['hits'][2]
-    assert hit['is_current_user'] is True
-    assert hit['permissions']['can_leave'] is True
-    assert hit['permissions']['can_delete'] is False
-    assert hit['permissions']['can_update_role'] is False
-    assert hit['permissions']['can_update_visible'] is True
-    assert hit['visible'] is False
-
-
+    hit = data["hits"]["hits"][2]
+    assert hit["is_current_user"] is True
+    assert hit["permissions"]["can_leave"] is True
+    assert hit["permissions"]["can_delete"] is False
+    assert hit["permissions"]["can_update_role"] is False
+    assert hit["permissions"]["can_update_visible"] is True
+    assert hit["visible"] is False
 
     # Pagination params should be passed correctly as well.
     # see https://github.com/inveniosoftware/invenio-communities/issues/495
     r1 = client.get(
-        f'/communities/{community_id}/members',
+        f"/communities/{community_id}/members",
         headers=headers,
         query_string={"page": 1, "size": 1},
     ).json
-    assert r1['hits']['total'] == 3
-    assert len(r1['hits']['hits']) == 1
+    assert r1["hits"]["total"] == 3
+    assert len(r1["hits"]["hits"]) == 1
 
     r2 = client.get(
-        f'/communities/{community_id}/members',
+        f"/communities/{community_id}/members",
         headers=headers,
         query_string={"page": 3, "size": 1},
     ).json
-    assert r2['hits']['total'] == 3
-    assert len(r2['hits']['hits']) == 1
-    assert r1['hits']['hits'][0]["id"] != r2['hits']['hits'][0]
+    assert r2["hits"]["total"] == 3
+    assert len(r2["hits"]["hits"]) == 1
+    assert r1["hits"]["hits"][0]["id"] != r2["hits"]["hits"][0]
 
 
 def test_search_public(
-    client, headers, community_id, new_user, public_reader, clean_index):
+    client, headers, community_id, new_user, public_reader, clean_index
+):
     """Search public members."""
     client = new_user.login(client)
     r = client.get(
-        f'/communities/{community_id}/members/public',
+        f"/communities/{community_id}/members/public",
         headers=headers,
     )
     assert r.status_code == 200
     data = r.json
-    assert  data["sortBy"] == "name"
-    assert data['hits']['total'] == 1
-    hit = data['hits']['hits'][0]
+    assert data["sortBy"] == "name"
+    assert data["hits"]["total"] == 1
+    hit = data["hits"]["hits"][0]
     # Public view has no facets (because that would leak information on
     # roles/visible)
-    assert 'aggregations' not in data
+    assert "aggregations" not in data
     # A member in the public view should not leak below attributes:
-    assert 'role' not in hit
-    assert 'visible' not in hit
-    assert 'created' not in hit
-    assert 'updated' not in hit
-    assert 'revision_id' not in hit
-    assert 'is_current_user' not in hit
-    assert 'permissions' not in hit
+    assert "role" not in hit
+    assert "visible" not in hit
+    assert "created" not in hit
+    assert "updated" not in hit
+    assert "revision_id" not in hit
+    assert "is_current_user" not in hit
+    assert "permissions" not in hit
     # A member do have:
-    assert 'member' in hit
-    assert 'id' in hit['member']
-    assert 'type' in hit['member']
-    assert 'name' in hit['member']
-    assert 'description' in hit['member']
+    assert "member" in hit
+    assert "id" in hit["member"]
+    assert "type" in hit["member"]
+    assert "name" in hit["member"]
+    assert "description" in hit["member"]
 
 
 def test_search_invitation(
-    client, headers, community_id, owner, invite_user, db, clean_index):
+    client, headers, community_id, owner, invite_user, db, clean_index
+):
     """Search invitations."""
     client = owner.login(client)
     r = client.get(
-        f'/communities/{community_id}/invitations',
+        f"/communities/{community_id}/invitations",
         headers=headers,
     )
     assert r.status_code == 200
     data = r.json
-    assert data['hits']['total'] == 1
-    assert 'role' in data['aggregations']
-    assert 'status' in data['aggregations']
-    hit = data['hits']['hits'][0]
-    assert 'role' in hit
-    assert 'visible' in hit
-    assert 'created' in hit
-    assert 'updated' in hit
-    assert 'revision_id' in hit
-    assert 'request' in hit
-    assert 'id' in hit['request']
-    assert 'status' in hit['request']
-    assert 'expires_at' in hit['request']
-    assert hit['request']['expires_at'] is not None
-    assert 'permissions' in hit
-    assert hit['permissions']['can_update_role'] is True
-    assert hit['permissions']['can_cancel'] is True
+    assert data["hits"]["total"] == 1
+    assert "role" in data["aggregations"]
+    assert "status" in data["aggregations"]
+    hit = data["hits"]["hits"][0]
+    assert "role" in hit
+    assert "visible" in hit
+    assert "created" in hit
+    assert "updated" in hit
+    assert "revision_id" in hit
+    assert "request" in hit
+    assert "id" in hit["request"]
+    assert "status" in hit["request"]
+    assert "expires_at" in hit["request"]
+    assert hit["request"]["expires_at"] is not None
+    assert "permissions" in hit
+    assert hit["permissions"]["can_update_role"] is True
+    assert hit["permissions"]["can_cancel"] is True
 
 
 # TODO: member serialization/links

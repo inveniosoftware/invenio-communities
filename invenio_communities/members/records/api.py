@@ -13,8 +13,7 @@ from invenio_db import db
 from invenio_records.dumpers import ElasticsearchDumper
 from invenio_records.dumpers.indexedat import IndexedAtDumperExt
 from invenio_records.dumpers.relations import RelationDumperExt
-from invenio_records.systemfields import ModelField, ModelRelation, \
-    RelationsField
+from invenio_records.systemfields import ModelField, ModelRelation, RelationsField
 from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
 from invenio_requests.records.api import Request
@@ -24,11 +23,12 @@ from sqlalchemy import or_
 from ..errors import InvalidMemberError
 from .models import ArchivedInvitationModel, MemberModel
 
-
-relations_dumper = ElasticsearchDumper(extensions=[
-    RelationDumperExt('relations'),
-    IndexedAtDumperExt(),
-])
+relations_dumper = ElasticsearchDumper(
+    extensions=[
+        RelationDumperExt("relations"),
+        IndexedAtDumperExt(),
+    ]
+)
 """Relations dumper for members and archived invitations."""
 
 
@@ -63,24 +63,28 @@ class MemberMixin:
     relations = RelationsField(
         user=ModelRelation(
             UserAggregate,
-            'user_id',
-            'user',
+            "user_id",
+            "user",
             attrs=[
-                'email', 'username', 'profile', 'preferences', 'active',
-                'confirmed',
+                "email",
+                "username",
+                "profile",
+                "preferences",
+                "active",
+                "confirmed",
             ],
         ),
         group=ModelRelation(
             GroupAggregate,
-            'group_id',
-            'group',
-            attrs=['id', 'name'],
+            "group_id",
+            "group",
+            attrs=["id", "name"],
         ),
         request=ModelRelation(
             Request,
-            'request_id',
-            'request',
-            attrs=['status', 'expires_at', 'is_open'],
+            "request_id",
+            "request",
+            attrs=["status", "expires_at", "is_open"],
         ),
     )
 
@@ -88,18 +92,14 @@ class MemberMixin:
     def get_memberships(cls, identity):
         """Get community memberships for a given identity."""
         # TODO: extract group/role ids from identity
-        query = cls.model_cls.query_memberships(
-            user_id=identity.id, group_ids=[]
-        )
+        query = cls.model_cls.query_memberships(user_id=identity.id, group_ids=[])
         return [(str(comm_id), role) for comm_id, role in query]
 
     @classmethod
     def get_member_by_request(cls, request_id):
         """Get a membership by request id."""
         assert request_id is not None
-        obj = cls.model_cls.query.filter(
-            cls.model_cls.request_id==request_id
-        ).one()
+        obj = cls.model_cls.query.filter(cls.model_cls.request_id == request_id).one()
         return cls(obj.data, model=obj)
 
     @classmethod
@@ -108,18 +108,16 @@ class MemberMixin:
         # Collect users and groups we are interested in
         user_ids = []
         group_names = []
-        for m in (members or []):
-            if m['type'] == 'group':
-                group_names.append(m['id'])
-            elif m['type'] == 'user':
-                user_ids.append(m['id'])
+        for m in members or []:
+            if m["type"] == "group":
+                group_names.append(m["id"])
+            elif m["type"] == "user":
+                user_ids.append(m["id"])
             else:
                 raise InvalidMemberError(m)
 
         # Query
-        q = cls.model_cls.query.filter(
-            cls.model_cls.community_id == community_id
-        )
+        q = cls.model_cls.query.filter(cls.model_cls.community_id == community_id)
 
         # Apply user and group query if applicable
         user_q = cls.model_cls.user_id.in_(user_ids)
@@ -161,7 +159,7 @@ class Member(Record, MemberMixin):
 
     index = IndexField(
         "communitymembers-members-member-v1.0.0",
-        search_alias="communitymembers-members"
+        search_alias="communitymembers-members",
     )
     """The ES index used."""
 
@@ -186,7 +184,7 @@ class ArchivedInvitation(Record, MemberMixin):
 
     index = IndexField(
         "communitymembers-archivedinvitations-archivedinvitation-v1.0.0",
-        search_alias="communitymembers"
+        search_alias="communitymembers",
     )
     """The ES index used."""
 
@@ -194,9 +192,6 @@ class ArchivedInvitation(Record, MemberMixin):
     def create_from_member(cls, member):
         """Create an archived invitation record from a member."""
         with db.session.begin_nested():
-            record = cls(
-               {},
-               model=cls.model_cls.from_member_model(member.model)
-            )
+            record = cls({}, model=cls.model_cls.from_member_model(member.model))
             db.session.add(record.model)
         return record

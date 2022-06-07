@@ -13,11 +13,13 @@ from invenio_records.systemfields import SystemField
 from .context import CommunitiesFieldContext
 from .manager import CommunitiesRelationManager
 
+
 class CommunitiesField(SystemField):
     """Communites system field for managing relations to communities."""
 
-    def __init__(self, m2m_model_cls, key='communities', context_cls=None,
-                 manager_cls=None):
+    def __init__(
+        self, m2m_model_cls, key="communities", context_cls=None, manager_cls=None
+    ):
         self._m2m_model_cls = m2m_model_cls
         self._context_cls = context_cls or CommunitiesFieldContext
         self._manager_cls = manager_cls or CommunitiesRelationManager
