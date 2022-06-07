@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -30,10 +31,10 @@ jobs:
       matrix:
           python-version: [3.7, 3.8, 3.9]
           requirements-level: [pypi]
-          db-service: [postgresql12]
+          db-service: [postgresql13]
           search-service: [elasticsearch7]
           include:
-          - db-service: postgresql12
+          - db-service: postgresql13
             DB_EXTRAS: "postgresql"
     env:
       DB: ${{ matrix.db-service }}

@@ -304,6 +304,7 @@ class MemberService(RecordService):
             )
 
     def search(self, identity, community_id, params=None, es_preference=None, **kwargs):
+        """Search."""
         return self._members_search(
             identity,
             community_id,

@@ -17,7 +17,10 @@ from invenio_records_resources.records.api import PersistentIdentifierWrapper
 
 
 class PIDSlugFieldContext(SystemFieldContext):
+    """PID Slug Field Context."""
+
     def parse_pid(self, value):
+        """Parse pid."""
         if isinstance(value, UUID):
             return value
         try:

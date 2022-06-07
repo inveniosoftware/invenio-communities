@@ -22,6 +22,7 @@ class CommunitiesRelationManager:
     """Manager for a record's community relations."""
 
     def __init__(self, m2m_model_cls, record_id, data):
+        """Constructor."""
         self._m2m_model_cls = m2m_model_cls
         self._record_id = record_id
         self._default_id = None
@@ -33,7 +34,7 @@ class CommunitiesRelationManager:
     # Helpers
     #
     def _to_id(self, val):
-        """Get the community id"""
+        """Get the community id."""
         if isinstance(val, str):
             return val
         elif isinstance(val, Record):
@@ -123,7 +124,7 @@ class CommunitiesRelationManager:
             self._default_id = None
 
     def __len__(self):
-        """Get number of communities"""
+        """Get number of communities."""
         return len(self._communities_ids)
 
     def __contains__(self, community_or_id):

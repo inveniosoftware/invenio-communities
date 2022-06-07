@@ -15,7 +15,6 @@ from invenio_search_ui.searchconfig import search_app_config
 
 def search_app_context():
     """Search app context processor."""
-
     return {
         "search_app_communities_config": partial(
             search_app_config,

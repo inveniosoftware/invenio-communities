@@ -149,6 +149,7 @@ class CommunityRoles(Generator):
         raise NotImplementedError
 
     def communities(self, identity):
+        """Communities."""
         raise NotImplementedError
 
     def needs(self, record=None, community_id=None, **kwargs):
@@ -175,9 +176,11 @@ class CommunityMembers(CommunityRoles):
     """Roles representing all members of a community."""
 
     def roles(self, **kwargs):
+        """Roles."""
         return [r.name for r in current_roles]
 
     def communities(self, identity):
+        """Communities."""
         return [n.value for n in identity.provides if n.method == "community"]
 
 
@@ -185,6 +188,7 @@ class CommunityCurators(CommunityRoles):
     """Roles representing all curators of a community."""
 
     def roles(self, **kwargs):
+        """Roles."""
         return [r.name for r in current_roles.can("curate")]
 
 
@@ -192,6 +196,7 @@ class CommunityManagers(CommunityRoles):
     """Roles representing all managers of a community."""
 
     def roles(self, **kwargs):
+        """Roles."""
         return [r.name for r in current_roles.can("manage")]
 
 
@@ -199,6 +204,7 @@ class CommunityManagersForRole(CommunityRoles):
     """Roles representing all managers of a community for a role update."""
 
     def roles(self, role=None, member=None, **kwargs):
+        """Roles."""
         allowed_roles = []
         if role is not None and member is not None:
             # Update from an old role to a new role. The most restrictive set
@@ -223,9 +229,11 @@ class CommunityOwners(CommunityRoles):
     """Roles representing the owners of a community."""
 
     def roles(self, **kwargs):
+        """Roles."""
         return [current_roles.owner_role.name]
 
     def communities(self, identity):
+        """Communities."""
         return [
             n.value
             for n in identity.provides

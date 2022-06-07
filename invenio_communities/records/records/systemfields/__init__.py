@@ -6,6 +6,8 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
+"""Init."""
+
 from .communities.field import CommunitiesField
 
 __all__ = ("CommunitiesField",)

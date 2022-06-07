@@ -36,6 +36,8 @@ class MemberEntitySchema(Schema):
 
 
 class MembersSchema(Schema):
+    """Members Schema."""
+
     members = fields.List(
         fields.Nested(MemberEntitySchema),
         # max is on purpose to limit the max number of additions/changes/
@@ -46,6 +48,8 @@ class MembersSchema(Schema):
 
 
 class RequestSchema(Schema):
+    """Request Schema."""
+
     id = fields.String()
     status = fields.String()
     is_open = fields.Boolean()
@@ -94,11 +98,13 @@ class DeleteBulkSchema(MembersSchema):
 
 
 class PublicDumpSchema(Schema):
+    """Public Dump Schema."""
+
     id = fields.String(required=True)
     member = fields.Method("get_member")
 
     def get_member(self, obj):
-        """Get a member"""
+        """Get a member."""
         if obj.user_id:
             return self.get_user_member(obj["user"])
         elif obj.group_id:
@@ -106,7 +112,6 @@ class PublicDumpSchema(Schema):
 
     def get_user_member(self, user):
         """Get a user member."""
-
         profile = user.get("profile", {})
         name = profile.get("full_name") or user.get("username") or _("Untitled")
         description = profile.get("affiliations") or ""
@@ -147,7 +152,7 @@ class MemberDumpSchema(PublicDumpSchema):
     revision_id = fields.Integer()
 
     def is_self(self, obj):
-        """Get permission"""
+        """Get permission."""
         if "is_self" not in self.context:
             current_identity = self.context["identity"]
             self.context["is_self"] = (
@@ -158,11 +163,11 @@ class MemberDumpSchema(PublicDumpSchema):
         return self.context["is_self"]
 
     def get_current_user(self, obj):
-        """Get permission"""
+        """Get permission."""
         return self.is_self(obj)
 
     def get_permissions(self, obj):
-        """Get permission"""
+        """Get permission."""
         permission_check = self.context["field_permission_check"]
 
         # Does not take CommunitySelfMember into account because no "member" is
@@ -191,7 +196,7 @@ class InvitationDumpSchema(MemberDumpSchema):
     permissions = fields.Method("get_permissions")
 
     def get_permissions(self, obj):
-        """Get permission"""
+        """Get permission."""
         # Only owners and managers can list invitations, and thus only the
         # request status is necessary to determine if the identity can cancel.
         is_open = obj["request"]["status"] == "submitted"
