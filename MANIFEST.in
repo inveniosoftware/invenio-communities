@@ -30,3 +30,4 @@ recursive-include invenio_communities *.py
 recursive-include invenio_communities *.tpl
 recursive-include tests *.json
 recursive-include tests *.py
+include .git-blame-ignore-revs
