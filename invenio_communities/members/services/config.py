@@ -9,10 +9,15 @@
 """Members Service Config."""
 
 from flask_babelex import lazy_gettext as _
-from invenio_records_resources.services.records.queryparser import \
-    QueryParser, SearchFieldTransformer
-from invenio_records_resources.services import RecordServiceConfig, \
-    SearchOptions, pagination_links
+from invenio_records_resources.services import (
+    RecordServiceConfig,
+    SearchOptions,
+    pagination_links,
+)
+from invenio_records_resources.services.records.queryparser import (
+    QueryParser,
+    SearchFieldTransformer,
+)
 
 from ...communities.records.api import Community
 from ...permissions import CommunityPermissionPolicy
@@ -22,16 +27,16 @@ from .schemas import MemberEntitySchema
 
 
 class PublicSearchOptions(SearchOptions):
-    sort_default = 'bestmatch'
-    sort_default_no_query = 'name'
+    sort_default = "bestmatch"
+    sort_default_no_query = "name"
     sort_options = {
         "bestmatch": dict(
-            title=_('Best match'),
-            fields=['_score'],  # ES defaults to desc on `_score` field
+            title=_("Best match"),
+            fields=["_score"],  # ES defaults to desc on `_score` field
         ),
         "name": dict(
-            title=_('Name'),
-            fields=['user.profile.full_name.keyword'],
+            title=_("Name"),
+            fields=["user.profile.full_name.keyword"],
         ),
     }
 
@@ -41,7 +46,7 @@ class PublicSearchOptions(SearchOptions):
         fields=[
             "user.username^2",
             "user.profile.full_name^3",
-            "user.profile.affiliations"
+            "user.profile.affiliations",
         ],
         tree_transformer_factory=SearchFieldTransformer.factory(
             mapping={
@@ -59,60 +64,61 @@ class PublicSearchOptions(SearchOptions):
 class InvitationsSearchOptions(SearchOptions):
     # TODO: should restrict fields that's being searched on.
     # query_parser_cls = QueryParser
-    sort_default = 'bestmatch'
-    sort_default_no_query = 'name'
+    sort_default = "bestmatch"
+    sort_default_no_query = "name"
     sort_options = {
         "bestmatch": dict(
-            title=_('Best match'),
-            fields=['_score'],  # ES defaults to desc on `_score` field
+            title=_("Best match"),
+            fields=["_score"],  # ES defaults to desc on `_score` field
         ),
         "name": dict(
-            title=_('Name'),
-            fields=['user.profile.full_name.keyword'],
+            title=_("Name"),
+            fields=["user.profile.full_name.keyword"],
         ),
         "newest": dict(
-            title=_('Newest'),
-            fields=['-created'],
+            title=_("Newest"),
+            fields=["-created"],
         ),
         "oldest": dict(
-            title=_('Oldest'),
-            fields=['created'],
+            title=_("Oldest"),
+            fields=["created"],
         ),
     }
 
     facets = {
-        'role': facets.role,
-        'status': facets.status,
-        'is_open': facets.is_open,
+        "role": facets.role,
+        "status": facets.status,
+        "is_open": facets.is_open,
     }
 
 
 class MemberSearchOptions(PublicSearchOptions):
     """Search options."""
-    sort_default = 'bestmatch'
-    sort_default_no_query = 'name'
+
+    sort_default = "bestmatch"
+    sort_default_no_query = "name"
     sort_options = {
         "bestmatch": dict(
-            title=_('Best match'),
-            fields=['_score'],  # ES defaults to desc on `_score` field
+            title=_("Best match"),
+            fields=["_score"],  # ES defaults to desc on `_score` field
         ),
         "name": dict(
-            title=_('Name'),
-            fields=['user.profile.full_name.keyword'],
+            title=_("Name"),
+            fields=["user.profile.full_name.keyword"],
         ),
         "newest": dict(
-            title=_('Newest'),
-            fields=['-created'],
+            title=_("Newest"),
+            fields=["-created"],
         ),
         "oldest": dict(
-            title=_('Oldest'),
-            fields=['created'],
+            title=_("Oldest"),
+            fields=["created"],
         ),
     }
 
     facets = {
-        'role': facets.role,
-        'visibility': facets.visibility,
+        "role": facets.role,
+        "visibility": facets.visibility,
     }
 
     query_parser_cls = QueryParser.factory(
@@ -120,7 +126,7 @@ class MemberSearchOptions(PublicSearchOptions):
             "user.username^2",
             "user.email^2",
             "user.profile.full_name^3",
-            "user.profile.affiliations"
+            "user.profile.affiliations",
         ],
         tree_transformer_factory=SearchFieldTransformer.factory(
             mapping={
@@ -138,15 +144,14 @@ class MemberSearchOptions(PublicSearchOptions):
 
 class MemberServiceConfig(RecordServiceConfig):
     """Member Service Config."""
+
     service_id = "members"
 
     community_cls = Community
     record_cls = Member
     schema = MemberEntitySchema
     indexer_queue_name = "members"
-    relations = {
-        "users": ["user"]
-    }
+    relations = {"users": ["user"]}
 
     permission_policy_cls = CommunityPermissionPolicy
 
@@ -158,6 +163,4 @@ class MemberServiceConfig(RecordServiceConfig):
     links_item = {}
 
     # ResultList configurations
-    links_search = pagination_links(
-        "{+api}/communities/{community_id}/members{?args*}"
-    )
+    links_search = pagination_links("{+api}/communities/{community_id}/members{?args*}")

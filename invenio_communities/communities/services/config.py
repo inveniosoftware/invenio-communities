@@ -13,23 +13,29 @@ from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.base import Link
 from invenio_records_resources.services.files.links import FileLink
-from invenio_records_resources.services.records.components import \
-    MetadataComponent, RelationsComponent
-from invenio_records_resources.services.records.config import \
-    RecordServiceConfig
-from invenio_records_resources.services.records.config import \
-    SearchOptions as SearchOptionsBase
+from invenio_records_resources.services.records.components import (
+    MetadataComponent,
+    RelationsComponent,
+)
+from invenio_records_resources.services.records.config import RecordServiceConfig
+from invenio_records_resources.services.records.config import (
+    SearchOptions as SearchOptionsBase,
+)
 from invenio_records_resources.services.records.links import pagination_links
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
-from invenio_communities.communities.services.results import \
-    CommunityFeaturedList
+from invenio_communities.communities.services.results import CommunityFeaturedList
 
 from ...permissions import CommunityPermissionPolicy
 from ..schema import CommunityFeaturedSchema, CommunitySchema
-from .components import CommunityAccessComponent, FeaturedCommunityComponent, \
-    OAISetComponent, OwnershipComponent, PIDComponent
+from .components import (
+    CommunityAccessComponent,
+    FeaturedCommunityComponent,
+    OAISetComponent,
+    OwnershipComponent,
+    PIDComponent,
+)
 
 
 class SearchOptions(SearchOptionsBase):
@@ -38,15 +44,18 @@ class SearchOptions(SearchOptionsBase):
     sort_options = {
         **SearchOptionsBase.sort_options,
         "featured": dict(
-            title=_('Featured'),
-            fields=[{"featured.past" : {"order" : "desc",}}],
+            title=_("Featured"),
+            fields=[
+                {
+                    "featured.past": {
+                        "order": "desc",
+                    }
+                }
+            ],
         ),
     }
 
-    facets = {
-        'type': facets.type,
-        'visibility': facets.visibility
-    }
+    facets = {"type": facets.type, "visibility": facets.visibility}
 
 
 class CommunityLink(Link):
@@ -55,14 +64,17 @@ class CommunityLink(Link):
     @staticmethod
     def vars(record, vars):
         """Variables for the URI template."""
-        vars.update({
-            "id": record.id,
-            "slug": record.slug,
-        })
+        vars.update(
+            {
+                "id": record.id,
+                "slug": record.slug,
+            }
+        )
 
 
 class CommunityServiceConfig(RecordServiceConfig):
     """Communities service configuration."""
+
     service_id = "communities"
 
     # Common configuration
@@ -90,13 +102,13 @@ class CommunityServiceConfig(RecordServiceConfig):
         "members": CommunityLink("{+api}/communities/{id}/members"),
         "public_members": CommunityLink("{+api}/communities/{id}/members/public"),
         "invitations": CommunityLink("{+api}/communities/{id}/invitations"),
-        "requests": CommunityLink("{+api}/communities/{id}/requests")
+        "requests": CommunityLink("{+api}/communities/{id}/requests"),
     }
 
     links_search = pagination_links("{+api}/communities{?args*}")
     links_user_search = pagination_links("{+api}/user/communities{?args*}")
     links_community_requests_search = pagination_links(
-       "{+api}/communities/{community_id}/requests{?args*}"
+        "{+api}/communities/{community_id}/requests{?args*}"
     )
 
     # Service components

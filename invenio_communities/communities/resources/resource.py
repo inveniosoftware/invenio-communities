@@ -11,18 +11,27 @@
 """Invenio Communities Resource API."""
 
 from flask import g
-from flask_resources import from_conf, request_parser, resource_requestctx, \
-    response_handler, route
+from flask_resources import (
+    from_conf,
+    request_parser,
+    resource_requestctx,
+    response_handler,
+    route,
+)
 from invenio_records_resources.resources.files.resource import request_stream
-from invenio_records_resources.resources.records.resource import \
-    RecordResource, request_data, request_headers, request_search_args, \
-    request_view_args
+from invenio_records_resources.resources.records.resource import (
+    RecordResource,
+    request_data,
+    request_headers,
+    request_search_args,
+    request_view_args,
+)
 from invenio_records_resources.resources.records.utils import es_preference
 
-
 request_community_requests_search_args = request_parser(
-    from_conf('request_community_requests_search_args'), location='args'
+    from_conf("request_community_requests_search_args"), location="args"
 )
+
 
 class CommunityResource(RecordResource):
     """Communities resource."""
@@ -36,85 +45,74 @@ class CommunityResource(RecordResource):
 
         routes = self.config.routes
         return [
+            route("GET", p(routes["communities-prefix"], routes["list"]), self.search),
+            route("POST", p(routes["communities-prefix"], routes["list"]), self.create),
+            route("GET", p(routes["communities-prefix"], routes["item"]), self.read),
+            route("PUT", p(routes["communities-prefix"], routes["item"]), self.update),
             route(
-                "GET",
-                p(routes["communities-prefix"], routes["list"]),
-                self.search
-            ),
-            route(
-                "POST",
-                p(routes["communities-prefix"], routes["list"]),
-                self.create
-            ),
-            route(
-                "GET",
-                p(routes["communities-prefix"], routes["item"]),
-                self.read
-            ),
-            route(
-                "PUT",
-                p(routes["communities-prefix"], routes["item"]),
-                self.update
-            ),
-            route(
-                "DELETE",
-                p(routes["communities-prefix"], routes["item"]),
-                self.delete
+                "DELETE", p(routes["communities-prefix"], routes["item"]), self.delete
             ),
             route(
                 "GET",
                 p(routes["user-prefix"], routes["list"]),
-                self.search_user_communities
+                self.search_user_communities,
             ),
             route(
                 "POST",
-                p(routes["communities-prefix"], routes["item"]) + '/rename',
-                self.rename
+                p(routes["communities-prefix"], routes["item"]) + "/rename",
+                self.rename,
             ),
             route(
                 "GET",
-                p(routes["communities-prefix"], routes["item"]) + '/logo',
-                self.read_logo
+                p(routes["communities-prefix"], routes["item"]) + "/logo",
+                self.read_logo,
             ),
             route(
                 "PUT",
-                p(routes["communities-prefix"], routes["item"]) + '/logo',
-                self.update_logo
+                p(routes["communities-prefix"], routes["item"]) + "/logo",
+                self.update_logo,
             ),
             route(
                 "DELETE",
-                p(routes["communities-prefix"], routes["item"]) + '/logo',
-                self.delete_logo
+                p(routes["communities-prefix"], routes["item"]) + "/logo",
+                self.delete_logo,
             ),
             route(
                 "GET",
                 p(routes["communities-prefix"], routes["featured-prefix"]),
-                self.featured_communities_search
+                self.featured_communities_search,
             ),
             route(
                 "GET",
-                p(routes["communities-prefix"], routes["item"]) + routes["featured-prefix"],
-                self.featured_list
+                p(routes["communities-prefix"], routes["item"])
+                + routes["featured-prefix"],
+                self.featured_list,
             ),
             route(
                 "POST",
-                p(routes["communities-prefix"], routes["item"]) + routes["featured-prefix"],
-                self.featured_create
+                p(routes["communities-prefix"], routes["item"])
+                + routes["featured-prefix"],
+                self.featured_create,
             ),
             route(
                 "PUT",
-                p(routes["communities-prefix"], routes["item"]) + p(routes["featured-prefix"], routes["featured-id"]),
-                self.featured_update
+                p(routes["communities-prefix"], routes["item"])
+                + p(routes["featured-prefix"], routes["featured-id"]),
+                self.featured_update,
             ),
             route(
                 "DELETE",
-                p(routes["communities-prefix"], routes["item"]) + p(routes["featured-prefix"], routes["featured-id"]),
-                self.featured_delete
+                p(routes["communities-prefix"], routes["item"])
+                + p(routes["featured-prefix"], routes["featured-id"]),
+                self.featured_delete,
             ),
             route(
                 "GET",
-                p(routes["communities-prefix"], routes["item"] + routes["community-requests"]),
-                self.search_community_requests
+                p(
+                    routes["communities-prefix"],
+                    routes["item"] + routes["community-requests"],
+                ),
+                self.search_community_requests,
             ),
         ]
 
@@ -128,7 +126,7 @@ class CommunityResource(RecordResource):
         hits = self.service.search_user_communities(
             identity=g.identity,
             params=resource_requestctx.args,
-            es_preference=es_preference()
+            es_preference=es_preference(),
         )
         return hits.to_dict(), 200
 
@@ -144,7 +142,7 @@ class CommunityResource(RecordResource):
             identity=g.identity,
             community_id=resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference()
+            es_preference=es_preference(),
         )
         return hits.to_dict(), 200
 
@@ -213,7 +211,6 @@ class CommunityResource(RecordResource):
             resource_requestctx.view_args["pid_value"],
         )
         return items.to_dict(), 200
-
 
     @request_headers
     @request_view_args

@@ -19,7 +19,7 @@ from invenio_vocabularies.contrib.affiliations.api import Affiliation
 @pytest.fixture()
 def affiliation(app, db, superuser_identity):
     """Affiliation vocabulary record."""
-    aff = current_service_registry.get('affiliations').create(
+    aff = current_service_registry.get("affiliations").create(
         superuser_identity,
         {
             "name": "CERN",
@@ -33,9 +33,9 @@ def affiliation(app, db, superuser_identity):
                 {
                     "scheme": "isni",
                     "identifier": "000000012156142X",
-                }
-            ]
-        }
+                },
+            ],
+        },
     )
 
     Affiliation.index.refresh()

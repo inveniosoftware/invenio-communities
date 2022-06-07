@@ -23,7 +23,7 @@ from sqlalchemy_utils.types import UUIDType
 class CommunityMetadata(db.Model, RecordMetadataBase):
     """Represent a community."""
 
-    __tablename__ = 'communities_metadata'
+    __tablename__ = "communities_metadata"
 
     slug = db.Column(String(255), unique=True, nullable=True)
 
@@ -36,19 +36,17 @@ class CommunityFileMetadata(db.Model, RecordMetadataBase, FileRecordModelMixin):
 
     __record_model_cls__ = CommunityMetadata
 
-    __tablename__ = 'communities_files'
+    __tablename__ = "communities_files"
 
 
 class CommunityFeatured(db.Model, Timestamp):
     """Featured community entry."""
 
-    __tablename__ = 'communities_featured'
+    __tablename__ = "communities_featured"
 
     id = db.Column(db.Integer, primary_key=True)
     community_id = db.Column(
-        UUIDType,
-        db.ForeignKey(CommunityMetadata.id),
-        nullable=False
+        UUIDType, db.ForeignKey(CommunityMetadata.id), nullable=False
     )
     start_date = db.Column(
         db.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),

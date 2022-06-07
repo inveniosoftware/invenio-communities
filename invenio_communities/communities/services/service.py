@@ -13,16 +13,24 @@
 from elasticsearch_dsl import Q
 from elasticsearch_dsl.query import Bool
 from invenio_records_resources.services.base import LinksTemplate
-from invenio_records_resources.services.records import RecordService, ServiceSchemaWrapper
-
-from invenio_records_resources.services.uow import RecordCommitOp, RecordIndexOp, unit_of_work
+from invenio_records_resources.services.records import (
+    RecordService,
+    ServiceSchemaWrapper,
+)
+from invenio_records_resources.services.uow import (
+    RecordCommitOp,
+    RecordIndexOp,
+    unit_of_work,
+)
 from invenio_requests import current_requests_service
 from marshmallow.exceptions import ValidationError
 from sqlalchemy.orm.exc import NoResultFound
 
-
 from invenio_communities.communities.records.models import CommunityFeatured
-from invenio_communities.communities.services.uow import CommunityFeaturedCommitOp, CommunityFeaturedDeleteOp
+from invenio_communities.communities.services.uow import (
+    CommunityFeaturedCommitOp,
+    CommunityFeaturedDeleteOp,
+)
 from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
 from invenio_communities.generators import CommunityMembers
 
@@ -31,8 +39,8 @@ class CommunityService(RecordService):
     """community Service."""
 
     def __init__(
-            self, config, files_service=None, invitations_service=None,
-            members_service=None):
+        self, config, files_service=None, invitations_service=None, members_service=None
+    ):
         """Constructor for CommunityService."""
         super().__init__(config)
         self._files = files_service
@@ -60,14 +68,15 @@ class CommunityService(RecordService):
         return ServiceSchemaWrapper(self, schema=self.config.schema_featured)
 
     def search_user_communities(
-            self, identity, params=None, es_preference=None, **kwargs):
+        self, identity, params=None, es_preference=None, **kwargs
+    ):
         """Search for records matching the querystring."""
-        self.require_permission(identity, 'search_user_communities')
+        self.require_permission(identity, "search_user_communities")
 
         # Prepare and execute the search
         params = params or {}
         search_result = self._search(
-            'search',
+            "search",
             identity,
             params,
             es_preference,
@@ -81,27 +90,27 @@ class CommunityService(RecordService):
             identity,
             search_result,
             params,
-            links_tpl=LinksTemplate(self.config.links_user_search, context={
-                "args": params
-            }),
+            links_tpl=LinksTemplate(
+                self.config.links_user_search, context={"args": params}
+            ),
             links_item_tpl=self.links_item_tpl,
         )
 
     def search_community_requests(
-            self, identity, community_id, params=None, es_preference=None, **kwargs):
+        self, identity, community_id, params=None, es_preference=None, **kwargs
+    ):
         """Search for requests of a specific community."""
-        self.require_permission(
-            identity, 'search_requests', community_id=community_id)
+        self.require_permission(identity, "search_requests", community_id=community_id)
 
         # Prepare and execute the search
         params = params or {}
         search_result = current_requests_service._search(
-            'search',
+            "search",
             identity,
             params,
             es_preference,
             permission_action=None,
-            extra_filter=Q("term", **{'receiver.community': community_id}),
+            extra_filter=Q("term", **{"receiver.community": community_id}),
             **kwargs
         ).execute()
 
@@ -111,16 +120,16 @@ class CommunityService(RecordService):
             search_result,
             params,
             links_tpl=LinksTemplate(
-                self.config.links_community_requests_search, context={
-                    "args": params, "community_id": community_id
-                }
+                self.config.links_community_requests_search,
+                context={"args": params, "community_id": community_id},
             ),
             links_item_tpl=current_requests_service.links_item_tpl,
         )
 
     @unit_of_work()
-    def rename(self, identity, id_, data, revision_id=None, raise_errors=True,
-               uow=None):
+    def rename(
+        self, identity, id_, data, revision_id=None, raise_errors=True, uow=None
+    ):
         """Rename a community."""
         record = self.record_cls.pid.resolve(id_)
         old_slug = record.slug
@@ -130,28 +139,23 @@ class CommunityService(RecordService):
         # Permissions
         self.require_permission(identity, "rename", record=record)
 
-        if 'slug' not in data:
+        if "slug" not in data:
             raise ValidationError(
-                'Missing data for required field.',
-                field_name='slug',
+                "Missing data for required field.",
+                field_name="slug",
             )
 
         data, errors = self.schema.load(
             data,
             context={"identity": identity},
-            raise_errors=raise_errors,     # if False, flow is continued with
-            schema_args={'partial': True}  # data only containing valid data,
-                                           # but errors are reported
-        )                                  # (as warnings)
+            raise_errors=raise_errors,  # if False, flow is continued with
+            schema_args={"partial": True}  # data only containing valid data,
+            # but errors are reported
+        )  # (as warnings)
 
         # Run components
         self.run_components(
-            'rename',
-            identity,
-            data=data,
-            record=record,
-            old_slug=old_slug,
-            uow=uow
+            "rename", identity, data=data, record=record, old_slug=old_slug, uow=uow
         )
 
         uow.register(RecordCommitOp(record, indexer=self.indexer))
@@ -166,8 +170,8 @@ class CommunityService(RecordService):
     def read_logo(self, identity, id_):
         """Read the community's logo."""
         record = self.record_cls.pid.resolve(id_)
-        self.require_permission(identity, 'read', record=record)
-        logo_file = record.files.get('logo')
+        self.require_permission(identity, "read", record=record)
+        logo_file = record.files.get("logo")
         if logo_file is None:
             raise FileNotFoundError()
         return self.files.file_result_item(
@@ -179,19 +183,18 @@ class CommunityService(RecordService):
         )
 
     @unit_of_work()
-    def update_logo(self, identity, id_, stream, content_length=None,
-                    uow=None):
+    def update_logo(self, identity, id_, stream, content_length=None, uow=None):
         """Update the community's logo."""
         record = self.record_cls.pid.resolve(id_)
-        self.require_permission(identity, 'update', record=record)
+        self.require_permission(identity, "update", record=record)
 
-        record.files['logo'] = stream
+        record.files["logo"] = stream
         uow.register(RecordCommitOp(record))
 
         return self.files.file_result_item(
             self.files,
             identity,
-            record.files['logo'],
+            record.files["logo"],
             record,
             links_tpl=self.files.file_links_item_tpl(id_),
         )
@@ -201,8 +204,8 @@ class CommunityService(RecordService):
         """Delete the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         # update permission on community is required to be able to remove logo.
-        self.require_permission(identity, 'update', record=record)
-        deleted_file = record.files.pop('logo', None)
+        self.require_permission(identity, "update", record=record)
+        deleted_file = record.files.pop("logo", None)
         if deleted_file is None:
             raise FileNotFoundError()
 
@@ -215,7 +218,6 @@ class CommunityService(RecordService):
             record,
             links_tpl=self.files.file_links_item_tpl(id_),
         )
-
 
     def _get_featured_entry(self, raise_error=True, **kwargs):
         """Retrieve featured entry based on provided arguments."""
@@ -233,23 +235,27 @@ class CommunityService(RecordService):
 
     def featured_search(self, identity, params=None, es_preference=None, **kwargs):
         """Search featured communities."""
-        self.require_permission(identity, 'search')
+        self.require_permission(identity, "search")
 
         # Prepare and execute the search
         params = params or {}
         params["sort"] = "featured"
 
         search_results = self._search(
-            'search',
+            "search",
             identity,
             params,
             es_preference,
-            extra_filter=Bool("must", must=[
-                Q("match", **{"access.visibility": "public"}),
-                Q("exists", **{"field": "featured.past"}),
-            ]),
-            permission_action='featured_search',
-            **kwargs).execute()
+            extra_filter=Bool(
+                "must",
+                must=[
+                    Q("match", **{"access.visibility": "public"}),
+                    Q("exists", **{"field": "featured.past"}),
+                ],
+            ),
+            permission_action="featured_search",
+            **kwargs
+        ).execute()
 
         return self.result_list(
             self,
@@ -257,7 +263,6 @@ class CommunityService(RecordService):
             search_results,
             links_tpl=self.links_item_tpl,
         )
-
 
     def featured_list(self, identity, community_id):
         """List featured entries for a community."""
@@ -279,10 +284,10 @@ class CommunityService(RecordService):
             schema=self.schema_featured,
         )
 
-
     @unit_of_work()
-    def featured_create(self, identity, community_id, data, raise_errors=True,
-               uow=None):
+    def featured_create(
+        self, identity, community_id, data, raise_errors=True, uow=None
+    ):
         """Create a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
 
@@ -300,7 +305,8 @@ class CommunityService(RecordService):
 
         # Run components
         self.run_components(
-            'featured_create', identity, data=data, record=record, uow=uow)
+            "featured_create", identity, data=data, record=record, uow=uow
+        )
 
         uow.register(CommunityFeaturedCommitOp(featured_entry))
         uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
@@ -313,11 +319,15 @@ class CommunityService(RecordService):
         )
 
     @unit_of_work()
-    def featured_update(self, identity, community_id, data, featured_id,
-                        raise_errors=True, uow=None):
+    def featured_update(
+        self, identity, community_id, data, featured_id, raise_errors=True, uow=None
+    ):
         """Update a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
-        featured_entry, _ = self._get_featured_entry(id=featured_id, community_id=record.id,)
+        featured_entry, _ = self._get_featured_entry(
+            id=featured_id,
+            community_id=record.id,
+        )
 
         self.require_permission(identity, "featured_update", record=record)
 
@@ -329,7 +339,8 @@ class CommunityService(RecordService):
 
         # Run components
         self.run_components(
-            'featured_update', identity, data=valid_data, record=record, uow=uow)
+            "featured_update", identity, data=valid_data, record=record, uow=uow
+        )
 
         for key, value in valid_data.items():
             setattr(featured_entry, key, value)
@@ -345,17 +356,22 @@ class CommunityService(RecordService):
         )
 
     @unit_of_work()
-    def featured_delete(self, identity, community_id, featured_id,
-                        raise_errors=True, uow=None):
+    def featured_delete(
+        self, identity, community_id, featured_id, raise_errors=True, uow=None
+    ):
         """Delete a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
-        featured_entry, _  = self._get_featured_entry(id=featured_id, community_id=record.id,)
+        featured_entry, _ = self._get_featured_entry(
+            id=featured_id,
+            community_id=record.id,
+        )
 
         self.require_permission(identity, "featured_delete", record=record)
 
         # Run components
         self.run_components(
-            'featured_delete', identity, data=None, record=record, uow=uow)
+            "featured_delete", identity, data=None, record=record, uow=uow
+        )
 
         uow.register(CommunityFeaturedDeleteOp(featured_entry))
         uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
@@ -365,9 +381,7 @@ class CommunityService(RecordService):
     #
     # notification handlers
     #
-    def on_relation_update(
-        self, identity, record_type, records_info, notif_time
-    ):
+    def on_relation_update(self, identity, record_type, records_info, notif_time):
         """Relation updates notification handler."""
         if self.members:
             self.members.on_relation_update(

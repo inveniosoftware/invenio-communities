@@ -65,7 +65,7 @@ class CommunitiesRelationManager:
         obj = self._m2m_model_cls(
             record_id=self._record_id,
             community_id=community_id,
-            request_id=self._to_id(request)
+            request_id=self._to_id(request),
         )
         db.session.add(obj)
 
@@ -86,11 +86,10 @@ class CommunitiesRelationManager:
 
         # Delete M2M row.
         res = self._m2m_model_cls.query.filter_by(
-            community_id=community_id,
-            record_id=self._record_id
+            community_id=community_id, record_id=self._record_id
         ).delete()
         if res != 1:
-            raise ValueError('The record has not been added to the community.')
+            raise ValueError("The record has not been added to the community.")
 
         # Remove from internal set
         self._communities_ids.remove(community_id)
@@ -102,8 +101,7 @@ class CommunitiesRelationManager:
     def clear(self):
         """Clear all communities from the record."""
         # Remove all associations
-        res = self._m2m_model_cls.query.filter_by(
-            record_id=self._record_id).delete()
+        res = self._m2m_model_cls.query.filter_by(record_id=self._record_id).delete()
         self._communities_ids = set()
         self._default_id = None
         self._communities_cache = {}
@@ -111,11 +109,11 @@ class CommunitiesRelationManager:
     def refresh(self):
         """Refresh from the database M2M table."""
         # Retrieve from M2M table
-        ids = db.session.query(
-            self._m2m_model_cls.community_id
-        ).filter(
-            self._m2m_model_cls.record_id == self._record_id
-        ).all()
+        ids = (
+            db.session.query(self._m2m_model_cls.community_id)
+            .filter(self._m2m_model_cls.record_id == self._record_id)
+            .all()
+        )
 
         # Set internal list
         self._communities_ids = set([str(x[0]) for x in ids])
@@ -136,8 +134,7 @@ class CommunitiesRelationManager:
     def __iter__(self):
         """Iterate over a communities."""
         # Determine community ids not already cached.
-        nocache_ids = self._communities_ids - set(
-            self._communities_cache.keys())
+        nocache_ids = self._communities_ids - set(self._communities_cache.keys())
 
         # Fetch and cache missing community records
         if nocache_ids:
@@ -146,10 +143,7 @@ class CommunitiesRelationManager:
                 self._communities_cache[str(c.id)] = c
 
         # Iterate (sort by identifier to ensure consistent results)
-        return (
-            self._communities_cache[c]
-            for c in sorted(self._communities_ids)
-        )
+        return (self._communities_cache[c] for c in sorted(self._communities_ids))
 
     @property
     def ids(self):
@@ -173,8 +167,8 @@ class CommunitiesRelationManager:
         id_ = self._to_id(community_or_id)
         if id_ not in self._communities_ids:
             raise AttributeError(
-                'Cannot set community as the default. '
-                'The record has not been added to the community.'
+                "Cannot set community as the default. "
+                "The record has not been added to the community."
             )
         self._default_id = id_
 
@@ -190,15 +184,15 @@ class CommunitiesRelationManager:
         """Get the dictionary which will be stored in the record."""
         data = {}
         if self._default_id is not None:
-            data['default'] = self._default_id
+            data["default"] = self._default_id
         ids = list(self.ids)
         if ids:
-            data['ids'] = ids
+            data["ids"] = ids
         return data
 
     def from_dict(self, data):
         """Build manager from the record dict."""
         data = data or {}
-        self._default_id = data.get('default', None)
-        self._communities_ids = set(data.get('ids', []))
+        self._default_id = data.get("default", None)
+        self._communities_ids = set(data.get("ids", []))
         return self

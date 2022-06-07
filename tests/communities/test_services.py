@@ -8,9 +8,9 @@
 
 """Test community service."""
 
+import time
 from copy import deepcopy
 from datetime import datetime, timedelta
-import time
 
 import pytest
 from invenio_access.permissions import system_identity
@@ -25,7 +25,9 @@ from invenio_communities.fixtures.tasks import reindex_featured_entries
 def comm(community_service, minimal_community, location):
     """Create minimal public community."""
     c = deepcopy(minimal_community)
-    c["slug"] = "{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
+    c["slug"] = "{slug}".format(
+        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+    )
     return community_service.create(data=c, identity=system_identity)
 
 
@@ -33,7 +35,9 @@ def comm(community_service, minimal_community, location):
 def comm_restricted(community_service, minimal_community, location):
     """Create minimal restricted community."""
     c = deepcopy(minimal_community)
-    c["slug"] = "{slug}".format(slug=str(datetime.utcnow().timestamp()).replace(".","-"))
+    c["slug"] = "{slug}".format(
+        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+    )
     c["access"]["visibility"] = "restricted"
     return community_service.create(data=c, identity=system_identity)
 
@@ -48,12 +52,18 @@ def test_search_featured(community_service, comm, db, es_clear):
     }
 
     # no featured entries -> no featured communities
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     assert len(featured_comms["hits"]["hits"]) == featured_comms["hits"]["total"] == 0
 
     # added one featured entry in the past. community should now be returned
-    community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=data).to_dict()
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=data
+    ).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 1
     assert hits[0]["id"] == comm.data["id"]
@@ -61,17 +71,27 @@ def test_search_featured(community_service, comm, db, es_clear):
     assert "featured" not in hits[0]
 
     # new community with only future entry should not show up in search
-    c2 = community_service.create(identity=system_identity, data={**comm.data, "slug":"c2-id"})
-    community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=future_data).to_dict()
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    c2 = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "c2-id"}
+    )
+    community_service.featured_create(
+        identity=system_identity, community_id=c2.data["id"], data=future_data
+    ).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 1
     assert hits[0]["id"] == comm.data["id"]
 
     # adding past featured entry to new community. first community should show up first
     data["start_date"] = (datetime.utcnow() - timedelta(days=1)).isoformat()
-    community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=data).to_dict()
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    community_service.featured_create(
+        identity=system_identity, community_id=c2.data["id"], data=data
+    ).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 2
     assert hits[0]["id"] == comm.data["id"]
@@ -79,8 +99,12 @@ def test_search_featured(community_service, comm, db, es_clear):
 
     # adding more current past featured entry to new community. new community should show up first
     data["start_date"] = datetime.utcnow().isoformat()
-    community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=data).to_dict()
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    community_service.featured_create(
+        identity=system_identity, community_id=c2.data["id"], data=data
+    ).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 2
     assert hits[0]["id"] == c2.data["id"]
@@ -92,15 +116,25 @@ def test_reindex_featured_entries_task(community_service, comm, db, es_clear):
     tomorrow = {
         "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
     }
-    c2 = community_service.create(identity=system_identity, data={**comm.data, "slug": "c2-id"})
-    community_service.featured_create(identity=system_identity, community_id=c2.data["id"], data=tomorrow).to_dict()
+    c2 = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "c2-id"}
+    )
+    community_service.featured_create(
+        identity=system_identity, community_id=c2.data["id"], data=tomorrow
+    ).to_dict()
 
-    near_future_difference=2
+    near_future_difference = 2
     near_future = {
-        "start_date": (datetime.utcnow() + timedelta(seconds=near_future_difference)).isoformat(),
+        "start_date": (
+            datetime.utcnow() + timedelta(seconds=near_future_difference)
+        ).isoformat(),
     }
-    community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=near_future).to_dict()
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=near_future
+    ).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 0
 
@@ -108,7 +142,9 @@ def test_reindex_featured_entries_task(community_service, comm, db, es_clear):
     reindex_featured_entries()
 
     # only one community should be reindexed and returned
-    featured_comms = community_service.featured_search(identity=system_identity).to_dict()
+    featured_comms = community_service.featured_search(
+        identity=system_identity
+    ).to_dict()
     hits = featured_comms["hits"]["hits"]
     assert len(hits) == featured_comms["hits"]["total"] == 1
     assert hits[0]["id"] == comm.data["id"]
@@ -120,17 +156,23 @@ def test_create_featured(community_service, comm, comm_restricted):
         "start_date": datetime.utcnow().isoformat(),
     }
 
-    f = community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=data).to_dict()
+    f = community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=data
+    ).to_dict()
     assert f["start_date"] == data["start_date"]
     assert f["id"]
 
     # can not create entry for a non-public community
     with pytest.raises(ValidationError):
-        community_service.featured_create(identity=system_identity, community_id=comm_restricted.data["id"], data=data)
+        community_service.featured_create(
+            identity=system_identity, community_id=comm_restricted.data["id"], data=data
+        )
 
     # can not create entry with invalid data
     with pytest.raises(ValidationError):
-        community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data={})
+        community_service.featured_create(
+            identity=system_identity, community_id=comm.data["id"], data={}
+        )
 
 
 def test_get_featured(community_service, comm):
@@ -142,9 +184,15 @@ def test_get_featured(community_service, comm):
         "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
     }
 
-    community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=data)
-    community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=future_data)
-    featured = community_service.featured_list(identity=system_identity, community_id=comm.data["id"]).to_dict()
+    community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=data
+    )
+    community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=future_data
+    )
+    featured = community_service.featured_list(
+        identity=system_identity, community_id=comm.data["id"]
+    ).to_dict()
     assert len(featured["hits"]["hits"]) == featured["hits"]["total"] == 2
     assert featured["hits"]["hits"][0]["start_date"] == data["start_date"]
     assert featured["hits"]["hits"][1]["start_date"] == future_data["start_date"]
@@ -159,23 +207,41 @@ def test_delete_featured(community_service, comm):
         "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
     }
 
-    past_entry = community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=data).to_dict()
-    community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=future_data).to_dict()
-    featured = community_service.featured_list(identity=system_identity, community_id=comm.data["id"]).to_dict()
+    past_entry = community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=data
+    ).to_dict()
+    community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=future_data
+    ).to_dict()
+    featured = community_service.featured_list(
+        identity=system_identity, community_id=comm.data["id"]
+    ).to_dict()
     assert len(featured["hits"]["hits"]) == featured["hits"]["total"] == 2
 
-    community_service.featured_delete(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"])
-    featured = community_service.featured_list(identity=system_identity, community_id=comm.data["id"]).to_dict()
+    community_service.featured_delete(
+        identity=system_identity,
+        community_id=comm.data["id"],
+        featured_id=past_entry["id"],
+    )
+    featured = community_service.featured_list(
+        identity=system_identity, community_id=comm.data["id"]
+    ).to_dict()
     assert len(featured["hits"]["hits"]) == featured["hits"]["total"] == 1
     assert featured["hits"]["hits"][0]["start_date"] == future_data["start_date"]
 
     # Error when trying to delete entry which is already deleted
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
-        community_service.featured_delete(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"])
+        community_service.featured_delete(
+            identity=system_identity,
+            community_id=comm.data["id"],
+            featured_id=past_entry["id"],
+        )
 
     # Error when trying to delete entry which does not exist
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
-        community_service.featured_delete(identity=system_identity, community_id=comm.data["id"], featured_id=9999)
+        community_service.featured_delete(
+            identity=system_identity, community_id=comm.data["id"], featured_id=9999
+        )
 
 
 def test_update_featured(community_service, comm):
@@ -187,29 +253,57 @@ def test_update_featured(community_service, comm):
         "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
     }
 
-    past_entry = community_service.featured_create(identity=system_identity, community_id=comm.data["id"], data=data).to_dict()
-    updated_entry = community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"], data=future_data).to_dict()
+    past_entry = community_service.featured_create(
+        identity=system_identity, community_id=comm.data["id"], data=data
+    ).to_dict()
+    updated_entry = community_service.featured_update(
+        identity=system_identity,
+        community_id=comm.data["id"],
+        featured_id=past_entry["id"],
+        data=future_data,
+    ).to_dict()
     assert updated_entry["id"] == past_entry["id"]
     assert updated_entry["start_date"] != past_entry["start_date"]
 
-    featured = community_service.featured_list(identity=system_identity, community_id=comm.data["id"]).to_dict()
+    featured = community_service.featured_list(
+        identity=system_identity, community_id=comm.data["id"]
+    ).to_dict()
     assert len(featured["hits"]["hits"]) == featured["hits"]["total"] == 1
     assert featured["hits"]["hits"][0]["start_date"] == future_data["start_date"]
 
     # Error when trying to update entry which does not exist
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
-        community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=9999, data=future_data).to_dict()
+        community_service.featured_update(
+            identity=system_identity,
+            community_id=comm.data["id"],
+            featured_id=9999,
+            data=future_data,
+        ).to_dict()
 
     # Error when trying to update entry with invalid data
     with pytest.raises(ValidationError):
-        x = community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"], data={}).to_dict()
+        x = community_service.featured_update(
+            identity=system_identity,
+            community_id=comm.data["id"],
+            featured_id=past_entry["id"],
+            data={},
+        ).to_dict()
         print(x)
 
-    community_service.featured_delete(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"])
+    community_service.featured_delete(
+        identity=system_identity,
+        community_id=comm.data["id"],
+        featured_id=past_entry["id"],
+    )
 
     # Error when trying to update entry which is already deleted
     with pytest.raises(CommunityFeaturedEntryDoesNotExistError):
-        community_service.featured_update(identity=system_identity, community_id=comm.data["id"], featured_id=past_entry["id"], data=future_data).to_dict()
+        community_service.featured_update(
+            identity=system_identity,
+            community_id=comm.data["id"],
+            featured_id=past_entry["id"],
+            data=future_data,
+        ).to_dict()
 
 
 def test_cleanup_pre_search(db, es_clear):
@@ -222,26 +316,32 @@ def test_cleanup_pre_search(db, es_clear):
 
 
 def test_search_user(
-        app, db, es_clear, location,
-        anon_identity, community_service, community,
-        members, new_user
-    ):
+    app,
+    db,
+    es_clear,
+    location,
+    anon_identity,
+    community_service,
+    community,
+    members,
+    new_user,
+):
     owner = members["owner"]
     reader = members["reader"]
 
     # Community members see them
-    hits = community_service.search_user_communities(
-        identity=owner.identity
-    ).to_dict()["hits"]["hits"]
+    hits = community_service.search_user_communities(identity=owner.identity).to_dict()[
+        "hits"
+    ]["hits"]
 
     assert 1 == len(hits)
-    assert {h["id"] for h in hits } & {community["id"]}
+    assert {h["id"] for h in hits} & {community["id"]}
 
     hits = community_service.search_user_communities(
         identity=reader.identity
     ).to_dict()["hits"]["hits"]
     assert 1 == len(hits)
-    assert {h["id"] for h in hits } & {community["id"]}
+    assert {h["id"] for h in hits} & {community["id"]}
 
     # Non-community members don't see them
     hits = community_service.search_user_communities(
@@ -254,10 +354,16 @@ def test_search_user(
 
 
 def test_search_community_requests(
-        app, db, es_clear, location,
-        anon_identity, community_service, community,
-        members, new_user
-    ):
+    app,
+    db,
+    es_clear,
+    location,
+    anon_identity,
+    community_service,
+    community,
+    members,
+    new_user,
+):
     """Test who cannot see community requests.
 
     Community managers should be the one able to see the community requests
@@ -268,20 +374,17 @@ def test_search_community_requests(
     # Community members don't see them
     with pytest.raises(PermissionDeniedError):
         community_service.search_community_requests(
-            identity=reader.identity,
-            community_id=community.id
+            identity=reader.identity, community_id=community.id
         )
 
     # Non-community members don't see them
     with pytest.raises(PermissionDeniedError):
         community_service.search_community_requests(
-            identity=new_user.identity,
-            community_id=community.id
+            identity=new_user.identity, community_id=community.id
         )
 
     # Anonymous users don't see them
     with pytest.raises(PermissionDeniedError):
         community_service.search_community_requests(
-            identity=anon_identity,
-            community_id=community.id
+            identity=anon_identity, community_id=community.id
         )

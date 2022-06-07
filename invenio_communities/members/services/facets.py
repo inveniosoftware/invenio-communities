@@ -13,13 +13,13 @@ from invenio_records_resources.services.records.facets import TermsFacet
 from ...proxies import current_roles
 
 role = TermsFacet(
-    field='role',
+    field="role",
     label=_("Role"),
     value_labels=lambda keys: {k: current_roles[k].title for k in keys},
 )
 
 status = TermsFacet(
-    field='request.status',
+    field="request.status",
     label=_("Status"),
     value_labels={
         "submitted": _("Submitted"),
@@ -31,13 +31,13 @@ status = TermsFacet(
 )
 
 visibility = TermsFacet(
-    field='visible',
-    label=_('Visibility'),
-    value_labels={"true": _("Public"), "false": _("Hidden")}
+    field="visible",
+    label=_("Visibility"),
+    value_labels={"true": _("Public"), "false": _("Hidden")},
 )
 
 is_open = TermsFacet(
-    field='request.is_open',
-    label=_('Status'),
-    value_labels={"true": _("Open"), "false": _("Closed")}
+    field="request.is_open",
+    label=_("Status"),
+    value_labels={"true": _("Open"), "false": _("Closed")},
 )

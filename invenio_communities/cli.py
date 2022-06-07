@@ -12,6 +12,7 @@ import click
 from faker import Faker
 from flask.cli import with_appcontext
 from invenio_access.permissions import system_identity
+
 from invenio_communities.proxies import current_communities
 
 from .fixtures.demo import create_fake_community
@@ -23,17 +24,17 @@ def communities():
     """Invenio communities commands."""
 
 
-@communities.command('demo')
+@communities.command("demo")
 @with_appcontext
 def demo():
     """Create 100 fake communities for demo purposes."""
-    click.secho('Creating demo communities...', fg='green')
+    click.secho("Creating demo communities...", fg="green")
     faker = Faker()
     for _ in range(100):
         fake_data = create_fake_community(faker)
         create_demo_community.delay(fake_data)
 
-    click.secho('Created communities!', fg='green')
+    click.secho("Created communities!", fg="green")
 
 
 @communities.command("rebuild-index")

@@ -22,15 +22,15 @@ from mock_module.api import MockRecord
 def extra_entry_points():
     """Extra entry points to load the mock_module features."""
     return {
-        'invenio_db.model': [
-            'mock_module = mock_module.models',
+        "invenio_db.model": [
+            "mock_module = mock_module.models",
         ],
-        'invenio_jsonschemas.schemas': [
-            'mock_module = mock_module.jsonschemas',
+        "invenio_jsonschemas.schemas": [
+            "mock_module = mock_module.jsonschemas",
         ],
-        'invenio_search.mappings': [
-            'mocks = mock_module.mappings',
-        ]
+        "invenio_search.mappings": [
+            "mocks = mock_module.mappings",
+        ],
     }
 
 
@@ -44,5 +44,5 @@ def create_app(instance_path, entry_points):
 def indexer():
     """Indexer instance with correct Record class."""
     return RecordIndexer(
-        record_cls=MockRecord, record_to_index=lambda r: (r.index._name, '_doc')
+        record_cls=MockRecord, record_to_index=lambda r: (r.index._name, "_doc")
     )

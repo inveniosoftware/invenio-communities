@@ -13,20 +13,19 @@ from uuid import UUID
 
 from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services.records.schema import BaseRecordSchema
-from invenio_vocabularies.contrib.affiliations.schema import \
-    AffiliationRelationSchema
+from invenio_vocabularies.contrib.affiliations.schema import AffiliationRelationSchema
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
-from marshmallow import Schema, fields, post_load, validate, ValidationError, \
-    pre_load
-from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, \
-    SanitizedUnicode
+from marshmallow import Schema, ValidationError, fields, post_load, pre_load, validate
+from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, SanitizedUnicode
 
 
 def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
-    max_ = kwargs.get('max','')
+    max_ = kwargs.get("max", "")
     return validate.Length(
-        error=_('Field cannot be blank or longer than {max_} characters.'.format(max_=max_)),
+        error=_(
+            "Field cannot be blank or longer than {max_} characters.".format(max_=max_)
+        ),
         min=1,
         **kwargs
     )
@@ -45,19 +44,31 @@ def is_not_uuid(value):
 
 class CommunityAccessSchema(Schema):
 
-    visibility = fields.Str(validate=validate.OneOf([
-        'public',
-        'restricted',
-    ]))
-    member_policy = fields.Str(validate=validate.OneOf([
-        'open',
-        'closed',
-    ]))
-    record_policy = fields.Str(validate=validate.OneOf([
-        'open',
-        'closed',
-        'restricted',
-    ]))
+    visibility = fields.Str(
+        validate=validate.OneOf(
+            [
+                "public",
+                "restricted",
+            ]
+        )
+    )
+    member_policy = fields.Str(
+        validate=validate.OneOf(
+            [
+                "open",
+                "closed",
+            ]
+        )
+    )
+    record_policy = fields.Str(
+        validate=validate.OneOf(
+            [
+                "open",
+                "closed",
+                "restricted",
+            ]
+        )
+    )
 
 
 # TODO this schema is duplicated from invenio-rdm-records, can't be imported
@@ -103,16 +114,18 @@ class CommunitySchema(BaseRecordSchema):
     """Schema for the community metadata."""
 
     id = fields.String(dump_only=True)
-    slug = SanitizedUnicode(required=True, validate=[
-        _not_blank(max=100),
-        validate.Regexp(
-            r'^[-\w]+$',
-            flags=re.ASCII,
-            error=_(
-                'The ID should contain only letters with numbers or dashes.')
-        ),
-        is_not_uuid,
-    ])
+    slug = SanitizedUnicode(
+        required=True,
+        validate=[
+            _not_blank(max=100),
+            validate.Regexp(
+                r"^[-\w]+$",
+                flags=re.ASCII,
+                error=_("The ID should contain only letters with numbers or dashes."),
+            ),
+            is_not_uuid,
+        ],
+    )
     metadata = NestedAttribute(CommunityMetadataSchema, required=True)
     access = NestedAttribute(CommunityAccessSchema, required=True)
 
@@ -124,5 +137,5 @@ class CommunitySchema(BaseRecordSchema):
 
 
 class CommunityFeaturedSchema(Schema):
-    id = fields.Int(metadata={'read_only': True})
+    id = fields.Int(metadata={"read_only": True})
     start_date = fields.DateTime(required=True)

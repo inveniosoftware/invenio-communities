@@ -15,12 +15,11 @@ from invenio_communities.proxies import current_communities
 
 def pass_community(f):
     """Fetch the community record."""
+
     @wraps(f)
     def view(**kwargs):
         pid_value = kwargs["pid_value"]
-        community = current_communities.service.read(
-            id_=pid_value, identity=g.identity
-        )
+        community = current_communities.service.read(id_=pid_value, identity=g.identity)
         kwargs["community"] = community
         return f(**kwargs)
 

@@ -17,7 +17,7 @@ from sqlalchemy.dialects import mysql, postgresql
 revision = "de9c14cbb0b2"
 down_revision = "90642d415317"
 branch_labels = ()
-depends_on = '8ae99b034410'
+depends_on = "8ae99b034410"
 
 
 def upgrade():
@@ -47,15 +47,13 @@ def upgrade():
             sa.JSON()
             .with_variant(sqlalchemy_utils.types.json.JSONType(), "mysql")
             .with_variant(
-                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()),
-                "postgresql"
+                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()), "postgresql"
             )
             .with_variant(sqlalchemy_utils.types.json.JSONType(), "sqlite"),
             autoincrement=False,
             nullable=True,
         ),
-        sa.Column(
-            "version_id", sa.Integer(), autoincrement=False, nullable=True),
+        sa.Column("version_id", sa.Integer(), autoincrement=False, nullable=True),
         sa.Column(
             "bucket_id",
             sqlalchemy_utils.types.uuid.UUIDType(),
@@ -63,17 +61,12 @@ def upgrade():
             nullable=True,
         ),
         sa.Column(
-            "transaction_id",
-            sa.BigInteger(),
-            autoincrement=False,
-            nullable=False
+            "transaction_id", sa.BigInteger(), autoincrement=False, nullable=False
         ),
         sa.Column("end_transaction_id", sa.BigInteger(), nullable=True),
         sa.Column("operation_type", sa.SmallInteger(), nullable=False),
         sa.PrimaryKeyConstraint(
-            "id",
-            "transaction_id",
-            name=op.f("pk_communities_metadata_version")
+            "id", "transaction_id", name=op.f("pk_communities_metadata_version")
         ),
     )
     op.create_index(
@@ -106,28 +99,19 @@ def upgrade():
             sa.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
             nullable=False,
         ),
-        sa.Column(
-            "id",
-            sqlalchemy_utils.types.uuid.UUIDType(),
-            nullable=False
-        ),
+        sa.Column("id", sqlalchemy_utils.types.uuid.UUIDType(), nullable=False),
         sa.Column(
             "json",
             sa.JSON()
             .with_variant(sqlalchemy_utils.types.json.JSONType(), "mysql")
             .with_variant(
-                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()),
-                "postgresql"
+                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()), "postgresql"
             )
             .with_variant(sqlalchemy_utils.types.json.JSONType(), "sqlite"),
             nullable=True,
         ),
         sa.Column("version_id", sa.Integer(), nullable=False),
-        sa.Column(
-            "bucket_id",
-            sqlalchemy_utils.types.uuid.UUIDType(),
-            nullable=True
-        ),
+        sa.Column("bucket_id", sqlalchemy_utils.types.uuid.UUIDType(), nullable=True),
         sa.ForeignKeyConstraint(
             ["bucket_id"],
             ["files_bucket.id"],
@@ -147,18 +131,13 @@ def upgrade():
             sa.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
             nullable=False,
         ),
-        sa.Column(
-            "id",
-            sqlalchemy_utils.types.uuid.UUIDType(),
-            nullable=False
-        ),
+        sa.Column("id", sqlalchemy_utils.types.uuid.UUIDType(), nullable=False),
         sa.Column(
             "json",
             sa.JSON()
             .with_variant(sqlalchemy_utils.types.json.JSONType(), "mysql")
             .with_variant(
-                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()),
-                "postgresql"
+                postgresql.JSONB(none_as_null=True, astext_type=sa.Text()), "postgresql"
             )
             .with_variant(sqlalchemy_utils.types.json.JSONType(), "sqlite"),
             nullable=True,
@@ -169,11 +148,7 @@ def upgrade():
             sa.Text().with_variant(mysql.VARCHAR(length=255), "mysql"),
             nullable=False,
         ),
-        sa.Column(
-            "record_id",
-            sqlalchemy_utils.types.uuid.UUIDType(),
-            nullable=False
-        ),
+        sa.Column("record_id", sqlalchemy_utils.types.uuid.UUIDType(), nullable=False),
         sa.Column(
             "object_version_id",
             sqlalchemy_utils.types.uuid.UUIDType(),
@@ -194,16 +169,13 @@ def upgrade():
         sa.PrimaryKeyConstraint("id", name=op.f("pk_communities_files")),
     )
     op.create_index(
-        "uidx_communities_files_id_key",
-        "communities_files", ["id", "key"],
-        unique=True
+        "uidx_communities_files_id_key", "communities_files", ["id", "key"], unique=True
     )
 
 
 def downgrade():
     """Downgrade database."""
-    op.drop_index(
-        "uidx_communities_files_id_key", table_name="communities_files")
+    op.drop_index("uidx_communities_files_id_key", table_name="communities_files")
     op.drop_table("communities_files")
     op.drop_table("communities_metadata")
     op.drop_index(

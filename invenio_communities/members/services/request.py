@@ -69,10 +69,10 @@ class ExpireAction(actions.ExpireAction):
 class CommunityInvitation(RequestType):
     """Community member invitation request type."""
 
-    type_id = 'community-invitation'
-    name = _('Community invitation')
+    type_id = "community-invitation"
+    name = _("Community invitation")
 
-    create_action = 'create'
+    create_action = "create"
     available_actions = {
         "create": actions.CreateAndSubmitAction,
         "delete": actions.DeleteAction,
@@ -89,5 +89,8 @@ class CommunityInvitation(RequestType):
     allowed_topic_ref_types = ["community"]
 
     needs_context = {
-        "community_roles": ['owner', 'manager',]
+        "community_roles": [
+            "owner",
+            "manager",
+        ]
     }

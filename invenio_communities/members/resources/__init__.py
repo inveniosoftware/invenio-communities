@@ -12,6 +12,6 @@ from .config import MemberResourceConfig
 from .resource import MemberResource
 
 __all__ = (
-    'MemberResource',
-    'MemberResourceConfig',
+    "MemberResource",
+    "MemberResourceConfig",
 )

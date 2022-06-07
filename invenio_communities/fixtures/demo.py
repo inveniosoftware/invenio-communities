@@ -18,7 +18,7 @@ def create_fake_community(faker):
         "access": {
             "visibility": random.choice(["public", "restricted"]),
             "member_policy": random.choice(["open", "closed"]),
-            "record_policy": random.choice(["open", "closed"])
+            "record_policy": random.choice(["open", "closed"]),
         },
         "slug": faker.unique.domain_word(),
         "metadata": {
@@ -30,9 +30,7 @@ def create_fake_community(faker):
             "curation_policy": faker.text(max_nb_chars=2000),
             "page": faker.text(max_nb_chars=2000),
             "website": "https://" + faker.domain_name(),  # fake.url()
-            "organizations": [
-                { "name": "CERN" }
-            ],
+            "organizations": [{"name": "CERN"}],
         },
     }
 

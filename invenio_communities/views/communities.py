@@ -24,8 +24,7 @@ VISIBILITY_FIELDS = [
         "value": "public",
         "icon": "group",
         "helpText": _(
-            "Your community is publicly accessible"
-            " and shows up in search results."
+            "Your community is publicly accessible" " and shows up in search results."
         ),
     },
     {
@@ -63,7 +62,7 @@ def _get_roles_can_invite(community_id):
     """Get the full list of roles that current identity can invite."""
     return dict(
         user=_filter_roles("members_invite", {"user"}, community_id),
-        group=_filter_roles("members_add", {"group"}, community_id)
+        group=_filter_roles("members_add", {"group"}, community_id),
     )
 
 

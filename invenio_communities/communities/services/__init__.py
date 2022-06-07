@@ -9,13 +9,12 @@
 
 """Community views."""
 
-from .config import CommunityFileServiceConfig, CommunityServiceConfig, \
-    SearchOptions
+from .config import CommunityFileServiceConfig, CommunityServiceConfig, SearchOptions
 from .service import CommunityService
 
 __all__ = (
-    'CommunityService',
-    'CommunityServiceConfig',
-    'CommunityFileServiceConfig',
-    'SearchOptions',
+    "CommunityService",
+    "CommunityServiceConfig",
+    "CommunityFileServiceConfig",
+    "SearchOptions",
 )

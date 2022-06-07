@@ -11,12 +11,15 @@
 
 
 from datetime import datetime
+
 from celery import shared_task
 from elasticsearch_dsl import Q
 from invenio_access.permissions import system_identity
-from invenio_pidstore.errors import PIDAlreadyExists,PIDDeletedError, \
-    PIDDoesNotExistError 
-
+from invenio_pidstore.errors import (
+    PIDAlreadyExists,
+    PIDDeletedError,
+    PIDDoesNotExistError,
+)
 from invenio_records_resources.services.uow import RecordIndexOp, unit_of_work
 
 from ..proxies import current_communities
@@ -41,10 +44,15 @@ def reindex_featured_entries():
     @unit_of_work()
     def reindex_community(hit, uow=None):
         community = service.record_cls.pid.resolve(hit["id"])
-        uow.register(RecordIndexOp(community, indexer=service.indexer, index_refresh=True))
+        uow.register(
+            RecordIndexOp(community, indexer=service.indexer, index_refresh=True)
+        )
 
     # using scan to get all communities
-    record_list = service.scan(identity=system_identity, extra_filter=Q("range", **{"featured.future": {"lte": now}}))
+    record_list = service.scan(
+        identity=system_identity,
+        extra_filter=Q("range", **{"featured.future": {"lte": now}}),
+    )
     for hit in record_list.hits:
         try:
             reindex_community(hit)

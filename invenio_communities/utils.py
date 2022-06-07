@@ -60,6 +60,7 @@ def on_membership_change(identity=None):
     if identity is not None:
         current_cache.delete(identity_cache_key(identity))
 
+
 def identity_cache_key(identity):
     """Make the cache key for storing the communities for a user."""
     return f"user-communities:{identity.id}"

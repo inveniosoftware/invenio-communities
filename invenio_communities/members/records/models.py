@@ -39,7 +39,7 @@ class BaseMemberModel(RecordMetadataBase):
         return db.Column(
             UUIDType,
             db.ForeignKey(CommunityMetadata.id, ondelete="CASCADE"),
-            nullable=False
+            nullable=False,
         )
 
     role = db.Column(db.String(50), nullable=False)
@@ -82,12 +82,10 @@ class BaseMemberModel(RecordMetadataBase):
     @classmethod
     def query_memberships(cls, user_id=None, group_ids=None, active=True):
         """Query for (community,role)-pairs."""
-        q = db.session.query(
-            cls.community_id, cls.role
-        ).filter(cls.active==active)
+        q = db.session.query(cls.community_id, cls.role).filter(cls.active == active)
 
         if user_id:
-            q = q.filter(cls.user_id==user_id)
+            q = q.filter(cls.user_id == user_id)
         if group_ids:
             q = q.filter(cls.group_id.in_(group_ids))
 
@@ -96,12 +94,9 @@ class BaseMemberModel(RecordMetadataBase):
     @classmethod
     def count_members(cls, community_id, role=None, active=True):
         """Count number of members."""
-        q = cls.query.filter(
-            cls.community_id==community_id,
-            cls.active==active
-        )
+        q = cls.query.filter(cls.community_id == community_id, cls.active == active)
         if role is not None:
-            q = q.filter(cls.role==role)
+            q = q.filter(cls.role == role)
         return q.count()
 
 
@@ -117,15 +112,16 @@ class MemberModel(db.Model, BaseMemberModel):
        constraints. E.g. it's not possible to invite an existing member, and
        a person can only be invited once (database insertion will fail).
     """
+
     __tablename__ = "communities_members"
     __table_args__ = (
-        Index('ix_community_user', 'community_id', 'user_id', unique=True),
-        Index('ix_community_group', 'community_id', 'group_id', unique=True),
+        Index("ix_community_user", "community_id", "user_id", unique=True),
+        Index("ix_community_group", "community_id", "group_id", unique=True),
         # Make sure user or group is set but not both.
         CheckConstraint(
-            '(user_id IS NULL AND group_id IS NOT NULL) OR '
-            '(user_id IS NOT NULL AND group_id IS NULL)',
-            name='user_or_group',
+            "(user_id IS NULL AND group_id IS NOT NULL) OR "
+            "(user_id IS NOT NULL AND group_id IS NULL)",
+            name="user_or_group",
         ),
     )
 

@@ -11,14 +11,26 @@
 
 """Community permissions."""
 
-from invenio_records_permissions.generators import AnyUser, \
-    AuthenticatedUser, Disable, SystemProcess
+from invenio_records_permissions.generators import (
+    AnyUser,
+    AuthenticatedUser,
+    Disable,
+    SystemProcess,
+)
 from invenio_records_permissions.policies import BasePermissionPolicy
 
-from .generators import AllowedMemberTypes, CommunityManagers, \
-    CommunityManagersForRole, CommunityMembers, CommunityOwners, \
-    CommunitySelfMember, GroupsEnabled, IfPolicyClosed, IfRestricted, \
-    CommunityCurators
+from .generators import (
+    AllowedMemberTypes,
+    CommunityCurators,
+    CommunityManagers,
+    CommunityManagersForRole,
+    CommunityMembers,
+    CommunityOwners,
+    CommunitySelfMember,
+    GroupsEnabled,
+    IfPolicyClosed,
+    IfRestricted,
+)
 
 
 # Permission Policy
@@ -29,11 +41,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_create = [AuthenticatedUser(), SystemProcess()]
 
     can_read = [
-        IfRestricted(
-            'visibility',
-            then_=[CommunityMembers()],
-            else_=[AnyUser()]
-        ),
+        IfRestricted("visibility", then_=[CommunityMembers()], else_=[AnyUser()]),
         SystemProcess(),
     ]
 
@@ -47,34 +55,34 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_search_invites = [CommunityManagers(), SystemProcess()]
 
-    can_search_requests = [
-        CommunityManagers(), CommunityCurators(), SystemProcess()
-    ]
+    can_search_requests = [CommunityManagers(), CommunityCurators(), SystemProcess()]
 
     can_rename = [CommunityOwners(), SystemProcess()]
 
     can_submit_record = [
         IfPolicyClosed(
-            'record_policy',
+            "record_policy",
             then_=[CommunityMembers(), SystemProcess()],
-            else_=[IfRestricted(
-                'visibility',
-                then_=[CommunityMembers()],
-                else_=[AuthenticatedUser()]),
+            else_=[
+                IfRestricted(
+                    "visibility",
+                    then_=[CommunityMembers()],
+                    else_=[AuthenticatedUser()],
+                ),
             ],
         ),
     ]
 
     can_members_add = [
         CommunityManagersForRole(),
-        AllowedMemberTypes('group'),
-        GroupsEnabled('group'),
+        AllowedMemberTypes("group"),
+        GroupsEnabled("group"),
         SystemProcess(),
     ]
 
     can_members_invite = [
         CommunityManagersForRole(),
-        AllowedMemberTypes('user', 'email'),
+        AllowedMemberTypes("user", "email"),
         SystemProcess(),
     ]
 
@@ -89,11 +97,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
     can_members_search_public = [
-        IfRestricted(
-            'visibility',
-            then_=[CommunityMembers()],
-            else_=[AnyUser()]
-        ),
+        IfRestricted("visibility", then_=[CommunityMembers()], else_=[AnyUser()]),
         SystemProcess(),
     ]
 

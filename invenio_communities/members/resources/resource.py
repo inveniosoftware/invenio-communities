@@ -10,9 +10,13 @@
 
 from flask import g
 from flask_resources import resource_requestctx, response_handler, route
-from invenio_records_resources.resources.records.resource import \
-    RecordResource, request_data, request_extra_args, request_search_args, \
-    request_view_args
+from invenio_records_resources.resources.records.resource import (
+    RecordResource,
+    request_data,
+    request_extra_args,
+    request_search_args,
+    request_view_args,
+)
 from invenio_records_resources.resources.records.utils import es_preference
 
 
@@ -42,7 +46,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference()
+            es_preference=es_preference(),
         )
         return hits.to_dict(), 200
 
@@ -55,7 +59,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference()
+            es_preference=es_preference(),
         )
         return hits.to_dict(), 200
 
@@ -68,7 +72,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference()
+            es_preference=es_preference(),
         )
         return hits.to_dict(), 200
 
@@ -79,7 +83,7 @@ class MemberResource(RecordResource):
         self.service.add(
             g.identity,
             resource_requestctx.view_args["pid_value"],
-            resource_requestctx.data
+            resource_requestctx.data,
         )
         return "", 204
 
@@ -90,7 +94,7 @@ class MemberResource(RecordResource):
         self.service.invite(
             g.identity,
             resource_requestctx.view_args["pid_value"],
-            resource_requestctx.data
+            resource_requestctx.data,
         )
         return "", 204
 
@@ -114,7 +118,7 @@ class MemberResource(RecordResource):
         self.service.update(
             g.identity,
             resource_requestctx.view_args["pid_value"],
-            data=resource_requestctx.data
+            data=resource_requestctx.data,
         )
         return "", 204
 
@@ -125,6 +129,6 @@ class MemberResource(RecordResource):
         self.service.delete(
             g.identity,
             resource_requestctx.view_args["pid_value"],
-            data=resource_requestctx.data
+            data=resource_requestctx.data,
         )
         return "", 204

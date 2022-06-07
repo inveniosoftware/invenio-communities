@@ -13,7 +13,4 @@ from .proxies import current_communities
 
 __version__ = "2.8.1"
 
-__all__ = (
-    'InvenioCommunities',
-    'current_communities'
-)
+__all__ = ("InvenioCommunities", "current_communities")

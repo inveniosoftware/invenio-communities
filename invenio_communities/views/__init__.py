@@ -9,13 +9,16 @@
 
 """Community views."""
 
-from .api import blueprint, create_communities_api_blueprint, \
-    create_members_api_bp_from_app
+from .api import (
+    blueprint,
+    create_communities_api_blueprint,
+    create_members_api_bp_from_app,
+)
 from .ui import create_ui_blueprint
 
 __all__ = (
-    'blueprint',
-    'create_communities_api_blueprint',
-    'create_members_api_bp_from_app',
-    'create_ui_blueprint'
+    "blueprint",
+    "create_communities_api_blueprint",
+    "create_members_api_bp_from_app",
+    "create_ui_blueprint",
 )

@@ -13,8 +13,8 @@ from sqlalchemy.dialects import mysql
 from sqlalchemy_utils import UUIDType
 
 # revision identifiers, used by Alembic.
-revision = '5b478fe7ef7f'
-down_revision = 'fbe746957cfc'
+revision = "5b478fe7ef7f"
+down_revision = "fbe746957cfc"
 branch_labels = ()
 depends_on = None
 
@@ -22,35 +22,33 @@ depends_on = None
 def upgrade():
     """Upgrade database."""
     op.create_table(
-        'communities_featured',
+        "communities_featured",
         sa.Column(
-            'created',
-            sa.DateTime().with_variant(mysql.DATETIME(fsp=6), 'mysql'),
+            "created",
+            sa.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
             nullable=False,
         ),
         sa.Column(
-            'updated',
-            sa.DateTime().with_variant(mysql.DATETIME(fsp=6), 'mysql'),
+            "updated",
+            sa.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
             nullable=False,
         ),
-        sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('community_id', UUIDType(), nullable=False),
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("community_id", UUIDType(), nullable=False),
         sa.Column(
-            'start_date',
-            sa.DateTime().with_variant(mysql.DATETIME(fsp=6), 'mysql'),
+            "start_date",
+            sa.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
             nullable=False,
         ),
         sa.ForeignKeyConstraint(
-            ['community_id'],
-            ['communities_metadata.id'],
-            name=op.f(
-                'fk_communities_featured_community_id_communities_metadata'
-            ),
+            ["community_id"],
+            ["communities_metadata.id"],
+            name=op.f("fk_communities_featured_community_id_communities_metadata"),
         ),
-        sa.PrimaryKeyConstraint('id', name=op.f('pk_communities_featured')),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_communities_featured")),
     )
 
 
 def downgrade():
     """Downgrade database."""
-    op.drop_table('communities_featured')
+    op.drop_table("communities_featured")

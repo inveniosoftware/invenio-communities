@@ -16,8 +16,10 @@ entry point.
 
 from types import SimpleNamespace
 
-from invenio_records_resources.references.resolvers.records import \
-    RecordPKProxy, RecordResolver
+from invenio_records_resources.references.resolvers.records import (
+    RecordPKProxy,
+    RecordResolver,
+)
 
 from ..generators import CommunityRoleNeed
 from ..proxies import current_communities, current_roles
@@ -31,25 +33,19 @@ def pick_fields(community_dict):
         id=community_dict["id"],
         slug=community_dict["slug"],
     )
-    logo = current_communities.service.links_item_tpl.expand(
-        fake_community_obj
-    )["logo"]
+    logo = current_communities.service.links_item_tpl.expand(fake_community_obj)["logo"]
     metadata = community_dict["metadata"]
-    access = community_dict['access']
+    access = community_dict["access"]
     return {
         "id": community_dict["id"],
         "slug": community_dict["slug"],
-        "links": {
-            "logo": logo
-        },
+        "links": {"logo": logo},
         "metadata": {
             "title": metadata["title"],
             "description": metadata.get("description"),
             "type": metadata.get("type"),
         },
-        "access": {
-            "visibility": access["visibility"]
-        }
+        "access": {"visibility": access["visibility"]},
     }
 
 
@@ -59,9 +55,7 @@ class CommunityPKProxy(RecordPKProxy):
     def get_needs(self, ctx=None):
         """Return community member need."""
         ctx = ctx or {}
-        roles = ctx.get(
-            'community_roles', [role.name for role in current_roles]
-        )
+        roles = ctx.get("community_roles", [role.name for role in current_roles])
         comid = str(self._parse_ref_dict_id())
         return [CommunityRoleNeed(comid, role) for role in roles]
 
@@ -77,13 +71,17 @@ class CommunityResolver(RecordResolver):
     receiver and topic of a request.
     """
 
-    type_id = 'community'
+    type_id = "community"
     """Type identifier for this resolver."""
 
     def __init__(self):
         """Initialize the default record resolver."""
-        super().__init__(Community, CommunityServiceConfig.service_id,
-                         type_key=self.type_id, proxy_cls=CommunityPKProxy)
+        super().__init__(
+            Community,
+            CommunityServiceConfig.service_id,
+            type_key=self.type_id,
+            proxy_cls=CommunityPKProxy,
+        )
 
     def _reference_entity(self, entity):
         """Create a reference dict for the given record."""

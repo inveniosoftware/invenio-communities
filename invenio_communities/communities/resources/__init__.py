@@ -12,6 +12,6 @@ from .config import CommunityResourceConfig
 from .resource import CommunityResource
 
 __all__ = (
-    'CommunityResource',
-    'CommunityResourceConfig',
+    "CommunityResource",
+    "CommunityResourceConfig",
 )

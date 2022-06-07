@@ -13,8 +13,7 @@ from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
 from invenio_oaiserver.models import OAISet
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
-from invenio_records_resources.services.records.components import \
-    ServiceComponent
+from invenio_records_resources.services.records.components import ServiceComponent
 from marshmallow.exceptions import ValidationError
 
 from ...proxies import current_roles
@@ -26,8 +25,7 @@ class PIDComponent(ServiceComponent):
 
     def set_slug(self, record, slug):
         error = ValidationError(
-            _('A community with this identifier already exists.'),
-            field_name='slug'
+            _("A community with this identifier already exists."), field_name="slug"
         )
         try:
             self.service.record_cls.pid.resolve(slug)
@@ -39,24 +37,25 @@ class PIDComponent(ServiceComponent):
 
     def create(self, identity, record=None, data=None, **kwargs):
         """Create a Community PID from its metadata."""
-        self.set_slug(record, data['slug'])
+        self.set_slug(record, data["slug"])
 
     def update(self, identity, record=None, data=None, **kwargs):
         """Rename the Community PIDs value."""
-        if 'slug' in data and record.slug != data['slug']:
+        if "slug" in data and record.slug != data["slug"]:
             raise ValidationError(
-                _('The ID should be modified through the renaming URL instead.'),
-                field_name='slug',
+                _("The ID should be modified through the renaming URL instead."),
+                field_name="slug",
             )
 
     def rename(self, identity, record=None, data=None, **kwargs):
         """Rename the Community PIDs value."""
-        if record.slug == data['slug']:
+        if record.slug == data["slug"]:
             raise ValidationError(
-                _('A new ID value is required for the renaming.'),
-                field_name='slug',
+                _("A new ID value is required for the renaming."),
+                field_name="slug",
             )
-        self.set_slug(record, data['slug'])
+        self.set_slug(record, data["slug"])
+
 
 class CommunityAccessComponent(ServiceComponent):
     """Service component for access integration."""
@@ -66,8 +65,8 @@ class CommunityAccessComponent(ServiceComponent):
         if record is not None and "access" in data:
             # populate the record's access field with the data already
             # validated by marshmallow
-            record.setdefault('access', {})
-            record['access'].update(data.get("access", {}))
+            record.setdefault("access", {})
+            record["access"].update(data.get("access", {}))
             record.access.refresh_from_dict(record.get("access"))
 
     def create(self, identity, data=None, record=None, **kwargs):
@@ -108,10 +107,9 @@ class FeaturedCommunityComponent(ServiceComponent):
     """Service component for featured community integration."""
 
     def featured_create(self, identity, data=None, record=None, **kwargs):
-        if(record.access.visibility != "public"):
+        if record.access.visibility != "public":
             raise ValidationError(
-                _("The community is not public"),
-                field_name="community_id"
+                _("The community is not public"), field_name="community_id"
             )
 
 
@@ -124,11 +122,15 @@ class OAISetComponent(ServiceComponent):
         return OAISet.query.filter(OAISet.spec == self._create_set_spec(slug)).first()
 
     def _create_set_spec(self, community_slug):
-        return "{prefix}-{slug}".format(prefix=self._oai_sets_prefix, slug=community_slug)
+        return "{prefix}-{slug}".format(
+            prefix=self._oai_sets_prefix, slug=community_slug
+        )
 
     def _create_set_description(self, community_title):
         # NOTE: Does not require translation since this description can also be changed by an admin
-        return "Records belonging to the community '{title}'".format(title=community_title)
+        return "Records belonging to the community '{title}'".format(
+            title=community_title
+        )
 
     def _create_set_from_community(self, record):
         community_slug = record.slug
@@ -138,7 +140,9 @@ class OAISetComponent(ServiceComponent):
         community_set.name = community_title
         community_set.description = self._create_set_description(community_title)
         community_set.spec = self._create_set_spec(community_slug)
-        community_set.search_pattern = "parent.communities.ids:{id}".format(id=record.id)
+        community_set.search_pattern = "parent.communities.ids:{id}".format(
+            id=record.id
+        )
 
         return community_set
 
@@ -151,7 +155,6 @@ class OAISetComponent(ServiceComponent):
         # NOTE: will be indexed via a listener in oaiserver module
         db.session.add(community_set)
 
-
     def delete(self, identity, data=None, record=None, **kwargs):
         """Remove the set for the community."""
         community_set = self._retrieve_set(kwargs.get("slug") or record.slug)
@@ -160,7 +163,6 @@ class OAISetComponent(ServiceComponent):
 
         # NOTE: will be removed from index via listener in oaiserver module
         db.session.delete(community_set)
-
 
     def update(self, identity, data=None, record=None, **kwargs):
         """Update set accordingly."""
@@ -179,7 +181,6 @@ class OAISetComponent(ServiceComponent):
         community_set.name = record.metadata["title"]
         community_set.description = self._create_set_description(community_set.name)
         db.session.add(community_set)
-
 
     def rename(self, identity, record=None, data=None, old_slug=None, **kwargs):
         """Delete old set and create new set on ID change"""
