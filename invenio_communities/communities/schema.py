@@ -88,9 +88,11 @@ class VocabularySchema(Schema):
         Why: We want to allow the output of a Schema dump, to be a valid input
              to a Schema load without causing strange issues.
         """
-        for name, field in self.fields.items():
-            if field.dump_only:
-                data.pop(name, None)
+        value_is_dict = isinstance(data, dict)
+        if value_is_dict:
+            for name, field in self.fields.items():
+                if field.dump_only:
+                    data.pop(name, None)
         return data
 
 
