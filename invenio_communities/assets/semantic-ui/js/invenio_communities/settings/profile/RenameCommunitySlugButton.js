@@ -89,7 +89,7 @@ export class RenameCommunitySlugButton extends Component {
           <Modal.Content>
             <Form onSubmit={this.handleChange}>
               <Form.Input
-                label={i18next.t("Enter the new unique identifier of the community")}
+                label={i18next.t("Enter the new unique identifier of the community.")}
                 fluid
                 input={{ ref: this.formInputRef }}
                 {...(error

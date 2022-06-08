@@ -113,7 +113,7 @@ def test_invite(client, headers, community_id, owner, new_user_data, db):
     assert r.status_code == 200
     assert r.json["hits"]["total"] == 2  # role message + invite message
     assert (
-        r.json["hits"]["hits"][0]["payload"]["content"] == 'You will join as "Reader"'
+        r.json["hits"]["hits"][0]["payload"]["content"] == 'You will join as "Reader".'
     )
     assert r.json["hits"]["hits"][1]["payload"]["content"] == new_user_data["message"]
 

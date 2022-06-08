@@ -32,13 +32,13 @@ class RemoveMemberModal extends Component {
     this.contentMap = {
       [modalModeEnum.leave]: {
         headerText: i18next.t("Leave community"),
-        bodyText: i18next.t("You're about to leave this community."),
+        bodyText: i18next.t("You are about to leave this community."),
         buttonText: i18next.t("Leave"),
       },
       [modalModeEnum.remove]: {
         headerText: i18next.t("Remove user"),
         bodyText: i18next.t(
-          "You're about to remove this user from this community"
+          "You are about to remove this user from this community."
         ),
         buttonText: i18next.t("Remove"),
       },

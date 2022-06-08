@@ -53,8 +53,8 @@ export class SelectedMembers extends Component {
       >
         <Header disabled>
           {displayingGroups
-            ? i18next.t("Selected groups.")
-            : i18next.t("Selected members.")}
+            ? i18next.t("Selected groups")
+            : i18next.t("Selected members")}
         </Header>
       </Segment>
     );
