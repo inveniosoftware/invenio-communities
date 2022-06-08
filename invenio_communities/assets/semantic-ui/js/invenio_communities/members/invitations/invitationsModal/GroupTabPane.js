@@ -113,7 +113,7 @@ export class GroupTabPane extends Component {
           />
           {selectedCount > 0 && (
             <Trans key="communityInviteMembersSelected" count={selectedCount}>
-              You are about to add {{ selectedCount }} groups
+              You are about to add {{ selectedCount }} groups.
             </Trans>
           )}
 

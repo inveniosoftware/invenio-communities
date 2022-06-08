@@ -85,7 +85,7 @@ class UpdateBulkSchema(MembersSchema, Schema):
     def validate_schema(self, data, **kwargs):
         """Validates that role and/or visible is set."""
         if "role" not in data and "visible" not in data:
-            raise ValidationError(_("Missing fields 'role' and/or 'visible'"))
+            raise ValidationError(_("Missing fields 'role' and/or 'visible'."))
 
 
 class DeleteBulkSchema(MembersSchema):

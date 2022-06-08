@@ -277,7 +277,7 @@ class MemberService(RecordService):
             # add role as message
             data = {
                 "payload": {
-                    "content": _('You will join as "{role}"').format(role=role.title),
+                    "content": _('You will join as "{role}".').format(role=role.title),
                 }
             }
             current_events_service.create(
@@ -488,7 +488,7 @@ class MemberService(RecordService):
         if visible is not None and member.user_id is not None:
             if visible and not (is_self or system_identity == identity):
                 raise ValidationError(
-                    _("You can only set public visibility on your own " "membership."),
+                    _("You can only set public visibility on your own membership."),
                 )
 
         # Update membership
@@ -497,7 +497,7 @@ class MemberService(RecordService):
                 data = {
                     "payload": {
                         "content": _(
-                            'You will join as "{role}" (changed from: "{previous}")'
+                            'You will join as "{role}" (changed from: "{previous}").'
                         ).format(
                             role=role.title,
                             previous=member.role,

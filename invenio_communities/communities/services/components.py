@@ -113,7 +113,7 @@ class FeaturedCommunityComponent(ServiceComponent):
         """Featured create."""
         if record.access.visibility != "public":
             raise ValidationError(
-                _("The community is not public"), field_name="community_id"
+                _("The community is not public."), field_name="community_id"
             )
 
 

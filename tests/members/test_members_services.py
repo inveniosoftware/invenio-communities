@@ -300,7 +300,7 @@ def test_invite_view_request(
     ).to_dict()
     hits = res["hits"]
     assert hits["total"] == 2  # role + invitation
-    assert hits["hits"][0]["payload"]["content"] == 'You will join as "Reader"'
+    assert hits["hits"][0]["payload"]["content"] == 'You will join as "Reader".'
     assert hits["hits"][1]["payload"]["content"] == "Welcome to the club!"
 
 
