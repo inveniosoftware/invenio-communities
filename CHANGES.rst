@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 2.8.2 (released 2022-06-08)
+
+- search bar: fix search event propagation
+- UI: remove redundant components
+- members: style action dropdowns
+- global: pin sphinx package
+- global: add black formatter
+
 Version 2.8.1 (released 2022-05-24)
 
 - rename featured communities section
