@@ -151,6 +151,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError }) => {
               fluid
               wrapped
               rounded
+              className="community-logo settings"
             />
 
             <Divider hidden />
