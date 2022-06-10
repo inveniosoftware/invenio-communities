@@ -9,9 +9,16 @@
 import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
+import { Icon } from "semantic-ui-react";
 import {
-  LabelTypeInvitation,
   LabelTypeSubmission,
+  LabelTypeInvitation,
+  LabelStatusSubmit,
+  LabelStatusDelete,
+  LabelStatusAccept,
+  LabelStatusDecline,
+  LabelStatusCancel,
+  LabelStatusExpire,
 } from "@js/invenio_requests/request";
 import {
   BucketAggregationElement,
@@ -21,9 +28,15 @@ import {
   RequestsFacets,
   RequestsResults,
   RequestsResultsGridItemTemplate,
-  RequestsResultsItemTemplate,
+  RequestsResultsItemTemplateCommunity,
   RequestsSearchLayout,
 } from "./requests";
+import {
+  RequestAcceptButton,
+  RequestCancelButton,
+  RequestDeclineButton,
+  RequestCancelButtonModal,
+} from "@js/invenio_requests/components/Buttons";
 
 const domContainer = document.getElementById("communities-request-search-root");
 
@@ -37,11 +50,72 @@ const RequestsResultsGridItemTemplateWithCommunity = parametrize(
 );
 
 const RequestsResultsItemTemplateWithCommunity = parametrize(
-  RequestsResultsItemTemplate,
+  RequestsResultsItemTemplateCommunity,
   {
     community: community,
   }
 );
+const RequestAcceptButtonWithConfig = parametrize(RequestAcceptButton, {
+  size: "mini",
+  className: "ml-5"
+});
+
+const RequestDeclineButtonWithConfig = parametrize(RequestDeclineButton, {
+  size: "mini",
+  className: "ml-5"
+});
+
+const RequestCancelButtonWithConfig = parametrize(RequestCancelButton, {
+  size: "mini",
+  className: "ml-5"
+});
+
+const RequestAcceptButtonMobileWithConfig = parametrize(RequestAcceptButton, {
+  size: "mini",
+  className: "mt-10 fluid-responsive",
+});
+
+const RequestDeclineButtonMobileWithConfig = parametrize(RequestDeclineButton, {
+  size: "mini",
+  className: "mt-10 fluid-responsive",
+});
+
+const RequestCancelButtonMobileWithConfig = parametrize(RequestCancelButton, {
+  size: "mini",
+  className: "mt-10 fluid-responsive",
+});
+
+const CommunitySubmission = () => (
+  <LabelTypeSubmission className="rel-mr-1" size="small" color="blue" />
+)
+
+const CommunityInvitation = () => (
+  <LabelTypeInvitation className="rel-mr-1" size="small" color="blue" />
+)
+
+const Submitted = () => (
+  <LabelStatusSubmit className="rel-mr-1" size="small" color="blue" />
+)
+
+const Deleted = () => (
+  <LabelStatusDelete className="rel-mr-1" size="small" color="red" />
+)
+
+const Accepted = () => (
+  <LabelStatusAccept className="rel-mr-1" size="small" color="green" />
+)
+
+const Declined = () => (
+  <LabelStatusDecline className="rel-mr-1" size="small" color="red" />
+)
+
+const Cancelled = () => (
+  <LabelStatusCancel className="rel-mr-1" size="small" color="grey" />
+)
+
+const Expired = () => (
+  <LabelStatusExpire className="rel-mr-1" size="small" color="grey" />
+)
 
 const defaultComponents = {
   "BucketAggregation.element": BucketAggregationElement,
@@ -53,12 +127,23 @@ const defaultComponents = {
   "SearchApp.results": RequestsResults,
   "SearchBar.element": RecordSearchBarElement,
   "EmptyResults.element": RequestsEmptyResultsWithState,
-  "RequestTypeLabel.layout.community-submission": () => (
-    <LabelTypeSubmission className="rel-mr-1" size="large" />
-  ),
-  "RequestTypeLabel.layout.community-invitation": () => (
-    <LabelTypeInvitation className="rel-mr-1" size="large" />
-  ),
+  "RequestTypeLabel.layout.community-submission": CommunitySubmission,
+  "RequestTypeLabel.layout.community-invitation": CommunityInvitation,
+  "RequestStatusLabel.layout.submitted": Submitted,
+  "RequestStatusLabel.layout.deleted": Deleted,
+  "RequestStatusLabel.layout.accepted": Accepted,
+  "RequestStatusLabel.layout.declined": Declined,
+  "RequestStatusLabel.layout.cancelled": Cancelled,
+  "RequestStatusLabel.layout.expired": Expired,
+  "RequestActionModalTrigger.accept.computer-tablet": RequestAcceptButtonWithConfig,
+  "RequestActionModalTrigger.decline.computer-tablet": RequestDeclineButtonWithConfig,
+  "RequestActionModalTrigger.cancel.computer-tablet": RequestCancelButtonWithConfig,
+  "RequestActionModalTrigger.accept.mobile": RequestAcceptButtonMobileWithConfig,
+  "RequestActionModalTrigger.decline.mobile": RequestDeclineButtonMobileWithConfig,
+  "RequestActionModalTrigger.cancel.mobile": RequestCancelButtonMobileWithConfig,
+  "RequestActionButton.cancel": RequestCancelButtonModal,
+  "RequestActionButton.decline": RequestDeclineButton,
+  "RequestActionButton.accept": RequestAcceptButton,
 };
 
 // Auto-initialize search app
