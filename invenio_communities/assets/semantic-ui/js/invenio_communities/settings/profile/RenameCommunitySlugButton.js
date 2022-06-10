@@ -52,10 +52,10 @@ export class RenameCommunitySlugButton extends Component {
       await this.cancellableRename.promise;
 
       window.location.href = `/communities/${newSlug}/settings`;
-      this.handleClose();
     } catch (error) {
       if (error === "UNMOUNTED") return;
 
+      this.setState({ loading: false });
       const { errors } = communityErrorSerializer(error);
 
       if (errors) {
@@ -66,7 +66,6 @@ export class RenameCommunitySlugButton extends Component {
       }
     }
 
-    this.setState({ loading: false });
   };
 
   render() {
@@ -106,10 +105,20 @@ export class RenameCommunitySlugButton extends Component {
             </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={this.handleClose} loading={loading} floated="left">
+            <Button
+              onClick={this.handleClose}
+              loading={loading}
+              disabled={loading}
+              floated="left"
+            >
               {i18next.t("Cancel")}
             </Button>
-            <Button negative onClick={this.handleChange} loading={loading}>
+            <Button
+              negative
+              onClick={this.handleChange}
+              loading={loading}
+              disabled={loading}
+            >
               {i18next.t("Change")}
             </Button>
           </Modal.Actions>
