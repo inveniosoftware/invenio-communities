@@ -34,12 +34,15 @@ import {
   Header,
   Icon,
   Input,
-  Item,
   Label,
   List,
   Segment,
 } from "semantic-ui-react";
-import RequestTypeLabel from "@js/invenio_requests/request/RequestTypeLabel";
+import { ComputerTabletRequestsItems } from "./requests_items/ComputerTabletRequestsItems";
+import { MobileRequestsItems } from "./requests_items/MobileRequestsItems";
+
+const timestampToRelativeTime = (timestamp) =>
+  DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
 
 export const RecordSearchBarElement = withState(
   ({
@@ -327,12 +330,34 @@ export const RequestsResultsGridItemTemplate = ({ result, community }) => {
   );
 };
 
-export const RequestsResultsItemTemplate = ({ result, community }) => {
-  const createdDate = new Date(result.created);
-  const timestampToRelativeTime = (timestamp) =>
-    DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
-  const differenceInDays = timestampToRelativeTime(createdDate.toISOString());
+const RightBottomLabel = ({ result, className }) => {
+  return (
+    <small className={className}>
+      {result.receiver.community && result.expanded?.receiver.metadata.title && (
+        <>
+          <Icon className="default-margin" name="users" />
+          <span className="ml-5">
+            {result.expanded?.receiver.metadata.title}
+          </span>
+        </>
+      )}
+      {result.expires_at && (
+        <>
+          <span>
+            {i18next.t("Expires at:")}{" "}
+            {DateTime.fromISO(result.expires_at).toLocaleString(
+              i18next.language
+            )}
+          </span>
+        </>
+      )}
+    </small>
+  );
+};
 
+export const RequestsResultsItemTemplateCommunity = ({ result, community }) => {
+  const createdDate = new Date(result.created);
+  const differenceInDays = timestampToRelativeTime(createdDate.toISOString());
   const createdBy = result.created_by;
   const isCreatorUser = "user" in createdBy;
   const isCreatorCommunity = "community" in createdBy;
@@ -346,30 +371,27 @@ export const RequestsResultsItemTemplate = ({ result, community }) => {
     creatorName =
       result.expanded?.created_by.metadata?.title || createdBy.community;
   }
-
+  const ComputerTabletRequestsItemsWithState = withState(
+    ComputerTabletRequestsItems
+  );
+  const MobileRequestsItemsWithState = withState(MobileRequestsItems);
   return (
-    <Item className="community-item">
-      <Item.Content>
-        <Item.Header>
-          {result.type && <RequestTypeLabel type={result.type} />}
-          <a
-            className="header-link"
-            href={`/communities/${community.slug}/requests/${result.id}`}
-          >
-            {result.title}
-          </a>
-        </Item.Header>
-
-        <Item.Meta>
-          <span className="inline-computer rel-mr-1 rel-mt-1 rel-mb-1">
-            {i18next.t(`opened {{difference}} by {{creator}}`, {
-              difference: differenceInDays,
-              creator: creatorName,
-            })}
-          </span>
-        </Item.Meta>
-      </Item.Content>
-    </Item>
+    <>
+      <ComputerTabletRequestsItemsWithState
+        result={result}
+        community={community}
+        differenceInDays={differenceInDays}
+        isCreatorCommunity={isCreatorCommunity}
+        creatorName={creatorName}
+      />
+      <MobileRequestsItemsWithState
+        result={result}
+        community={community}
+        differenceInDays={differenceInDays}
+        isCreatorCommunity={isCreatorCommunity}
+        creatorName={creatorName}
+      />
+    </>
   );
 };
 
