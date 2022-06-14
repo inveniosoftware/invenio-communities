@@ -49,6 +49,7 @@ export class SearchResultsRowCheckbox extends Component {
     return (
       <>
         <Checkbox
+          className="mt-auto mb-auto "
           checked={
             this.isChecked(bulkActionContext, allSelected) || allSelected
           }
