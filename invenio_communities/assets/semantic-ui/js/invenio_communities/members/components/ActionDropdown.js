@@ -80,7 +80,7 @@ class ActionDropdown extends Component {
             fluid={fluid}
             floating
           />
-          <div className="ml-5">
+          <div className="ml-5 action-status-container">
             {actionSuccess && (
               <SuccessIcon timeOutDelay={3000} show={actionSuccess} />
             )}
