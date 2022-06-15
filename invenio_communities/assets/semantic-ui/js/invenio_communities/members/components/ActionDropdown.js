@@ -45,10 +45,10 @@ class ActionDropdown extends Component {
     try {
       const response = await this.cancellableAction.promise;
       successCallback(response, value);
-      this.setState({ loading: false, actionSuccess: true });
+      this.setState({ loading: false, actionSuccess: true, error: undefined });
     } catch (error) {
       if (error === "UNMOUNTED") return;
-      this.setState({ error: errorSerializer(error), loading: false });
+      this.setState({ loading: false, actionSuccess: false, error: errorSerializer(error) });
     }
   };
 
