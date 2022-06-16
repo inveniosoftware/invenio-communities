@@ -47,7 +47,7 @@ export class InvitationResultItem extends Component {
     const rolesCanInviteByType = rolesCanInvite[member.type];
     return (
       <Table.Row className="community-member-item">
-        <Table.Cell>
+        <Table.Cell className="responsive-main-cell">
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item className="flex" key={invitation.id}>

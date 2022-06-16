@@ -65,7 +65,7 @@ export class ManagerMembersResultItem extends Component {
 
     return (
       <Table.Row>
-        <Table.Cell className="selected-member">
+        <Table.Cell className="responsive-main-cell">
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item
