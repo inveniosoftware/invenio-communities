@@ -19,7 +19,7 @@ export const ManagerMembersResultsContainer = ({
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell width={6} className="selected-member">
+          <Table.HeaderCell width={6}>
             <ManagerMemberBulkActions
               community={community}
               roles={config.roles}
