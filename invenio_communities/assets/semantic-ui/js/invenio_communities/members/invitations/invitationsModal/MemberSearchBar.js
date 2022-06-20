@@ -179,5 +179,5 @@ MembersSearchBar.propTypes = {
 };
 
 MembersSearchBar.defaultProps = {
-  placeholder: i18next.t("Search ..."),
+  placeholder: i18next.t("Search..."),
 };
