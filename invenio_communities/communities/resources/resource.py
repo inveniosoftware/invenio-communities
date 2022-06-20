@@ -22,6 +22,7 @@ from invenio_records_resources.resources.files.resource import request_stream
 from invenio_records_resources.resources.records.resource import (
     RecordResource,
     request_data,
+    request_extra_args,
     request_headers,
     request_search_args,
     request_view_args,
@@ -130,6 +131,7 @@ class CommunityResource(RecordResource):
         )
         return hits.to_dict(), 200
 
+    @request_extra_args
     @request_view_args
     @request_community_requests_search_args
     @response_handler(many=True)
@@ -143,6 +145,7 @@ class CommunityResource(RecordResource):
             community_id=resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
             es_preference=es_preference(),
+            expand=resource_requestctx.args.get("expand", False),
         )
         return hits.to_dict(), 200
 

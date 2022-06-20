@@ -23,6 +23,7 @@ from invenio_records_resources.services.uow import (
     unit_of_work,
 )
 from invenio_requests import current_requests_service
+from invenio_requests.services.results import EntityResolverExpandableField
 from marshmallow.exceptions import ValidationError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -67,6 +68,14 @@ class CommunityService(RecordService):
         """Returns the featured data schema instance."""
         return ServiceSchemaWrapper(self, schema=self.config.schema_featured)
 
+    @property
+    def expandable_fields(self):
+        """Get expandable fields."""
+        return [
+            EntityResolverExpandableField("created_by"),
+            EntityResolverExpandableField("receiver"),
+        ]
+
     def search_user_communities(
         self, identity, params=None, es_preference=None, **kwargs
     ):
@@ -97,7 +106,13 @@ class CommunityService(RecordService):
         )
 
     def search_community_requests(
-        self, identity, community_id, params=None, es_preference=None, **kwargs
+        self,
+        identity,
+        community_id,
+        params=None,
+        es_preference=None,
+        expand=False,
+        **kwargs
     ):
         """Search for requests of a specific community."""
         self.require_permission(identity, "search_requests", community_id=community_id)
@@ -124,6 +139,8 @@ class CommunityService(RecordService):
                 context={"args": params, "community_id": community_id},
             ),
             links_item_tpl=current_requests_service.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
         )
 
     @unit_of_work()

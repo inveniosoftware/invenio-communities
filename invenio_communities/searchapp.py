@@ -32,6 +32,7 @@ def search_app_context():
             headers={"Accept": "application/json"},
             initial_filters=[["is_open", "true"]],
             endpoint="/api/requests",
+            hidden_params=[["expand", "1"]],
         ),
         "search_app_communities_members_config": partial(
             search_app_config,
