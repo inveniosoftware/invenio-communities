@@ -1,5 +1,5 @@
 {
-  "name": "invenio-app-rdm-ui",
+  "name": "invenio-communities-ui",
   "config": {
     "languages": [
       "en",
