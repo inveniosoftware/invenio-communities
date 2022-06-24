@@ -1,7 +1,7 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C) 2021-2022 Graz University of Technology.
 //
-// Invenio-app-rdm is free software; you can redistribute it and/or modify it
+// Invenio-communities is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 // list of func used to
