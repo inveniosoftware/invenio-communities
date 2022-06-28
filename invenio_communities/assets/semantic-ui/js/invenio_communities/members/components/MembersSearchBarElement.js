@@ -19,7 +19,7 @@ export const MembersSearchBarElement = withState(
     updateQueryState,
     uiProps,
   }) => {
-    const placeholder = passedPlaceholder || i18next.t("Search");
+    const placeholder = passedPlaceholder || i18next.t("Search in members ...");
     const onBtnSearchClick = () => {
       updateQueryState({ queryString });
     };
