@@ -7,18 +7,15 @@
 import {
   SearchAppFacets,
   SearchAppResultsPane,
+  SearchBar,
+  MultipleOptionsSearchBarRSK,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
 import _get from "lodash/get";
 import _truncate from "lodash/truncate";
 import React, { useState } from "react";
 import Overridable from "react-overridable";
-import {
-  BucketAggregation,
-  SearchBar,
-  Toggle,
-  withState,
-} from "react-searchkit";
+import { BucketAggregation, Toggle, withState } from "react-searchkit";
 import {
   Accordion,
   Button,
@@ -171,41 +168,22 @@ export const CommunityRecordSearchAppLayout = ({ config }) => {
   );
 };
 
-export const CommunityRecordSearchBarElement = withState(
-  ({
-    placeholder: passedPlaceholder,
-    queryString,
-    onInputChange,
-    updateQueryState,
-  }) => {
-    const placeholder = passedPlaceholder || i18next.t("Search");
-    const onBtnSearchClick = () => {
-      updateQueryState({ queryString, filters: [] });
-    };
-    const onKeyPress = (event) => {
-      if (event.key === "Enter") {
-        updateQueryState({ queryString, filters: [] });
-      }
-    };
-    return (
-      <Input
-        action={{
-          icon: "search",
-          onClick: onBtnSearchClick,
-          className: "search",
-          "aria-label": i18next.t("Search"),
-        }}
-        fluid
-        placeholder={placeholder}
-        onChange={(event, { value }) => {
-          onInputChange(value);
-        }}
-        value={queryString}
-        onKeyPress={onKeyPress}
-      />
-    );
-  }
-);
+export const CommunityRecordSearchBarElement = ({
+  queryString,
+  onInputChange,
+}) => {
+  const headerSearchbar = document.getElementById("header-search-bar");
+  const searchbarOptions = JSON.parse(headerSearchbar.dataset.options);
+
+  return (
+    <MultipleOptionsSearchBarRSK
+      options={searchbarOptions}
+      onInputChange={onInputChange}
+      queryString={queryString}
+      placeholder={i18next.t("Search records...")}
+    />
+  );
+};
 
 export const CommunityParentFacetValue = ({
   bucket,
@@ -229,7 +207,9 @@ export const CommunityParentFacetValue = ({
             icon="angle right"
             className="transparent"
             onClick={() => setIsActive(!isActive)}
-            aria-label={i18next.t("Show all sub facets of ") + bucket.label || keyField}
+            aria-label={
+              i18next.t("Show all sub facets of ") + bucket.label || keyField
+            }
           />
           <Checkbox
             label={bucket.label || keyField}
@@ -362,7 +342,7 @@ export const CommunityBucketAggregationElement = ({
       <Card.Content>
         <Card.Header as="h2">
           {title}
-          { hasSelections() &&
+          {hasSelections() && (
             <Button
               basic
               icon
@@ -374,7 +354,7 @@ export const CommunityBucketAggregationElement = ({
             >
               {i18next.t("Clear")}
             </Button>
-          }
+          )}
         </Card.Header>
         {containerCmp}
       </Card.Content>

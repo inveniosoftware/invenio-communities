@@ -272,7 +272,6 @@ const defaultComponents = {
   "SearchBar.element": CommunitiesSearchBarElement,
   "SearchApp.results": CommunitiesResults,
 };
-const domContainer = document.getElementById("communities-search");
 
 // Auto-initialize search app
 createSearchAppInit(defaultComponents);
