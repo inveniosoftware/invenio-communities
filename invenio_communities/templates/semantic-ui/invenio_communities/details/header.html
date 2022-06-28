@@ -10,7 +10,7 @@
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
 
 <div class="ui container fluid page-subheader-outer with-submenu rel-pt-2 ml-0-mobile mr-0-mobile">
-  <div class="ui container relaxed grid page-subheader">
+  <div class="ui container relaxed grid page-subheader mr-0-mobile ml-0-mobile">
     <div class="row pb-0">
       <div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
 
@@ -18,8 +18,17 @@
           <img src="{{ community.links.logo }}" alt="Community logo" onerror="this.onerror=null;this.src='/static/images/square-placeholder.png';"/>
         </div>
 
-        <div>
-          <h2 class="ui header">{{ community.metadata.title }}</h2>
+          <div class="flex rel-mb-1">
+            <h2 class="ui header mb-0">{{ community.metadata.title }}</h2>
+            {% if community.access.visibility == 'restricted' %}
+              <div class="rel-ml-1">
+                <span class="ui label small access-status restricted" title="{{ _('Community visibility') }}"
+                  data-tooltip="{{ _('The community is restricted to users with access.') }}" data-inverted="">
+                  <i class="icon ban" aria-hidden="true"></i> {{ _("Restricted") }}
+                </span>
+              </div>
+            {% endif %}
+          </div>
 
           <div>
             {% if community.metadata.website %}
@@ -68,7 +77,6 @@
               </div>
             </div>
           {% endif %}
-        </div>
       </div>
 
       <div class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
