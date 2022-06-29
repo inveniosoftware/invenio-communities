@@ -20,7 +20,10 @@ from invenio_requests.resources.requests.config import RequestSearchRequestArgsS
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
 )
-from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
+from invenio_communities.errors import (
+    CommunityFeaturedEntryDoesNotExistError,
+    LogoSizeLimitError,
+)
 
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update(
@@ -34,6 +37,12 @@ community_error_handlers.update(
         CommunityFeaturedEntryDoesNotExistError: create_error_handler(
             lambda e: HTTPJSONException(
                 code=404,
+                description=str(e),
+            )
+        ),
+        LogoSizeLimitError: create_error_handler(
+            lambda e: HTTPJSONException(
+                code=400,
                 description=str(e),
             )
         ),

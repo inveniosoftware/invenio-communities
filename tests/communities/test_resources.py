@@ -647,6 +647,52 @@ def test_logo_flow(
     # TODO: Delete community and try all of the above operations
 
 
+def test_logo_max_content_length(
+    app, client, location, minimal_community, headers, db, es_clear, owner
+):
+    """Test logo max size."""
+    client = owner.login(client)
+
+    # Create a community
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    assert res.status_code == 201
+    created_community = res.json
+    id_ = created_community["id"]
+    assert (
+        created_community["links"]["logo"]
+        == f"https://127.0.0.1:5000/api/communities/{id_}/logo"
+    )
+    Member.index.refresh()
+
+    # Update app max size for community logos
+    max_size = 10**6
+    app.config["COMMUNITIES_LOGO_MAX_FILE_SIZE"] = max_size
+
+    # Update logo with big content
+    logo_data = b"logo" * (max_size + 1)
+    res = client.put(
+        f"/communities/{id_}/logo",
+        headers={
+            **headers,
+            "content-type": "application/octet-stream",
+        },
+        data=BytesIO(logo_data),
+    )
+    assert res.status_code == 400
+
+    # Update logo with small content
+    logo_data = b"logo"
+    res = client.put(
+        f"/communities/{id_}/logo",
+        headers={
+            **headers,
+            "content-type": "application/octet-stream",
+        },
+        data=BytesIO(logo_data),
+    )
+    assert res.status_code == 200
+
+
 def test_invalid_community_ids_create(
     client, location, minimal_community, headers, db, es_clear, owner
 ):

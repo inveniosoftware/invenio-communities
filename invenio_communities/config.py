@@ -197,3 +197,6 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 
 COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
 """"Default amount of time before an invitation expires."""
+
+COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
+"""Community logo size quota, in bytes."""

@@ -25,7 +25,7 @@ import _unset from "lodash/unset";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
-import { FundingField } from "react-invenio-deposit";
+import { FundingField, humanReadableBytes } from "react-invenio-deposit";
 import {
   FieldLabel,
   Image,
@@ -102,7 +102,7 @@ const removeEmptyValues = (obj) => {
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
 
-const LogoUploader = ({ community, defaultLogo, hasLogo, onError }) => {
+const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
   let dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
@@ -168,7 +168,10 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError }) => {
             <Icon name="upload" />
             {i18next.t("Upload new picture")}
           </Button>
-
+          <label className="helptext">
+            {i18next.t('File must be smaller than ')}
+            {humanReadableBytes(logoMaxSize, true)}
+          </label>
           {hasLogo && (
             <DeleteButton
               label={i18next.t("Delete picture")}
@@ -697,6 +700,7 @@ class CommunityProfileForm extends Component {
                     hasLogo={this.props.hasLogo}
                     defaultLogo={this.props.defaultLogo}
                     onError={this.setGlobalError}
+                    logoMaxSize={this.props.logoMaxSize}
                   />
                 </Grid.Column>
               </Grid.Row>
@@ -720,6 +724,7 @@ const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);
 const hasLogo = JSON.parse(domContainer.dataset.hasLogo);
 const types = JSON.parse(domContainer.dataset.types);
+const logoMaxSize = JSON.parse(domContainer.dataset.logoMaxSize);
 
 ReactDOM.render(
   <CommunityProfileForm
@@ -727,6 +732,7 @@ ReactDOM.render(
     hasLogo={hasLogo}
     defaultLogo="/static/images/square-placeholder.png"
     types={types}
+    logoMaxSize={logoMaxSize}
   />,
   domContainer
 );
