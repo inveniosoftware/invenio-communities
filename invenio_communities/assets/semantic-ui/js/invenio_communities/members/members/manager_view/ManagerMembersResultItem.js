@@ -65,7 +65,7 @@ export class ManagerMembersResultItem extends Component {
 
     return (
       <Table.Row>
-        <Table.Cell className="responsive-main-cell">
+        <Table.Cell>
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item
@@ -106,16 +106,10 @@ export class ManagerMembersResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell
-          data-label={i18next.t("Member since")}
-          className="mobile-table-cell"
-        >
+        <Table.Cell data-label={i18next.t("Member since")}>
           {timestampToRelativeTime(result.created)}
         </Table.Cell>
-        <Table.Cell
-          className="mobile-table-cell"
-          data-label={i18next.t("Visibility")}
-        >
+        <Table.Cell data-label={i18next.t("Visibility")}>
           {result.permissions.can_update_visible ? (
             <VisibilityDropdown
               visibilityTypes={config.visibility}
@@ -130,10 +124,7 @@ export class ManagerMembersResultItem extends Component {
             i18next.t("Hidden")
           )}
         </Table.Cell>
-        <Table.Cell
-          className="mobile-table-cell"
-          data-label={i18next.t("Role")}
-        >
+        <Table.Cell data-label={i18next.t("Role")}>
           {result.permissions.can_update_role ? (
             <RoleDropdown
               roles={config.rolesCanUpdate}
@@ -149,10 +140,7 @@ export class ManagerMembersResultItem extends Component {
 
         <ModalContext.Consumer>
           {({ openModal }) => (
-            <Table.Cell
-              className="mobile-table-cell"
-              data-label={i18next.t("Actions")}
-            >
+            <Table.Cell data-label={i18next.t("Actions")}>
               {result.permissions.can_leave && (
                 <Button
                   negative
