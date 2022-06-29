@@ -47,17 +47,17 @@ export class InvitationResultItem extends Component {
     const rolesCanInviteByType = rolesCanInvite[member.type];
     return (
       <Table.Row className="community-member-item">
-        <Table.Cell className="responsive-main-cell">
+        <Table.Cell>
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
-              <Item className="flex" key={invitation.id}>
+              <Item className="flex align-items-center" key={invitation.id}>
                 <Image
                   src={member.avatar}
                   avatar
                   circular
-                  className="rel-mr-1"
+                  className="mr-10"
                 />
-                <Item.Content className="ml-10">
+                <Item.Content>
                   <Item.Header size="small" as="b">
                     <a
                       href={`/communities/${community.slug}/requests/${request.id}`}
@@ -80,22 +80,13 @@ export class InvitationResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
-        <Table.Cell
-          className="mobile-table-cell"
-          data-label={i18next.t("Status")}
-        >
+        <Table.Cell data-label={i18next.t("Status")}>
           <RequestStatus status={request.status} />
         </Table.Cell>
-        <Table.Cell
-          className="mobile-table-cell"
-          data-label={i18next.t("Expires")}
-        >
+        <Table.Cell data-label={i18next.t("Expires")}>
           {formattedTime(request.expires_at)}
         </Table.Cell>
-        <Table.Cell
-          className="mobile-table-cell"
-          data-label={i18next.t("Role")}
-        >
+        <Table.Cell data-label={i18next.t("Role")}>
           <RoleDropdown
             roles={rolesCanInviteByType}
             successCallback={this.updateInvitation}
@@ -105,7 +96,7 @@ export class InvitationResultItem extends Component {
             resource={invitation}
           />
         </Table.Cell>
-        <Table.Cell className="mobile-table-cell">
+        <Table.Cell>
           <Container fluid textAlign="right">
             {/* TODO uncomment when links available in the request resource subschema */}
             {/*<RequestActionController*/}
