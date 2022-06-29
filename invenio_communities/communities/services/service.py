@@ -12,6 +12,7 @@
 
 from elasticsearch_dsl import Q
 from elasticsearch_dsl.query import Bool
+from flask import current_app
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import (
     RecordService,
@@ -32,7 +33,10 @@ from invenio_communities.communities.services.uow import (
     CommunityFeaturedCommitOp,
     CommunityFeaturedDeleteOp,
 )
-from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
+from invenio_communities.errors import (
+    CommunityFeaturedEntryDoesNotExistError,
+    LogoSizeLimitError,
+)
 from invenio_communities.generators import CommunityMembers
 
 
@@ -204,6 +208,14 @@ class CommunityService(RecordService):
         """Update the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         self.require_permission(identity, "update", record=record)
+
+        logo_size_limit = 10**6
+        max_size = current_app.config["COMMUNITIES_LOGO_MAX_FILE_SIZE"]
+        if type(max_size) is int and max_size > 0:
+            logo_size_limit = max_size
+
+        if content_length > logo_size_limit:
+            raise LogoSizeLimitError(logo_size_limit, content_length)
 
         record.files["logo"] = stream
         uow.register(RecordCommitOp(record))

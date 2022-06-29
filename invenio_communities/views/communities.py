@@ -118,10 +118,16 @@ def communities_settings(pid_value, community, community_ui):
     except FileNotFoundError:
         logo = False
 
+    logo_size_limit = 10**6
+    max_size = current_app.config["COMMUNITIES_LOGO_MAX_FILE_SIZE"]
+    if type(max_size) is int and max_size > 0:
+        logo_size_limit = max_size
+
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community_ui,
         has_logo=True if logo else False,
+        logo_quota=logo_size_limit,
         types=types_serialized["types"],
         permissions=permissions,  # hide/show UI components
         active_menu_tab="settings",
