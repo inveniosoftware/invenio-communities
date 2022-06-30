@@ -125,15 +125,15 @@ class CommunityCreateForm extends Component {
               negative
               className="flashed"
             >
-              <Grid container>
-                <Grid.Column width={15} textAlign="left">
+              <Grid container centered>
+                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
                   <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>
             <Grid container centered>
               <Grid.Row>
-                <Grid.Column width={8} textAlign="center">
+                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
                   <Header className="mt-15" as="h2">
                     {i18next.t("Setup your new community")}
                   </Header>
@@ -141,7 +141,7 @@ class CommunityCreateForm extends Component {
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row textAlign="left">
-                <Grid.Column width={8}>
+                <Grid.Column mobile={16} tablet={12} computer={8}>
                   <TextField
                     fluid
                     fieldPath="metadata.title"
