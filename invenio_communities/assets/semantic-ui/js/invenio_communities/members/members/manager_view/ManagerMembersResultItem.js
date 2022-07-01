@@ -88,7 +88,7 @@ export class ManagerMembersResultItem extends Component {
                       <Label className="mr-10">{i18next.t("Group")}</Label>
                     )}
                     {result.is_current_user && (
-                      <Label color="blue">{i18next.t("You")}</Label>
+                      <Label className="primary">{i18next.t("You")}</Label>
                     )}
                   </Item.Header>
                   {result.member.description && (
