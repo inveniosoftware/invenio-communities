@@ -74,10 +74,10 @@ export const CommunityRecordResultsListItem = ({ result }) => {
     <Item>
       <Item.Content>
         <Item.Extra className="labels-actions">
-          <Label size="tiny" color="blue">
+          <Label size="tiny" className="primary">
             {publicationDate} ({version})
           </Label>
-          <Label size="tiny" color="grey">
+          <Label size="tiny" className="neutral">
             {resource_type}
           </Label>
           <Label size="tiny" className={`access-status ${access_status_id}`}>

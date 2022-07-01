@@ -192,8 +192,8 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
 };
 
 const DangerZone = ({ community, onError }) => (
-  <Segment color="red" className="rel-mt-2">
-    <Header as="h2" color="red">
+  <Segment className="negative rel-mt-2">
+    <Header as="h2" className="negative">
       {i18next.t("Danger zone")}
     </Header>
     <Grid>

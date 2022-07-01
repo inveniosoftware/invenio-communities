@@ -259,7 +259,7 @@ export const CommunitiesSearchLayout = (props) => {
           </Grid.Column>
           <Grid.Column mobile={16} tablet={6} computer={4} className="mt-10">
             <Button
-              color="green"
+              positive
               icon="upload"
               labelPosition="left"
               href="/communities/new"
