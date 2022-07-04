@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright (C) 2022 KTH Royal Institute of Technology
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
 #
@@ -27,7 +28,7 @@ class MemberResourceConfig(RecordResourceConfig):
         "invitations": "/communities/<pid_value>/invitations",
     }
     request_view_args = {
-        "pid_value": ma.fields.Str(),
+        "pid_value": ma.fields.UUID(),
         "member_id": ma.fields.Str(),
     }
 
