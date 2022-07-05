@@ -23,3 +23,5 @@ Invenio module that adds support for communities.
 - Sami Hiltunen <sami.mikael.hiltunen@cern.ch>
 - Tibor Simko <tibor.simko@cern.ch>
 - Yoan Blanc <yoan.blanc@cern.ch>
+- CERN <info@inveniosoftware.org>
+- KTH Royal Institute of Technology <info@kth.se>
