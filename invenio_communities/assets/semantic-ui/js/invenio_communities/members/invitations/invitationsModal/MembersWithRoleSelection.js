@@ -88,6 +88,9 @@ export class MembersWithRoleSelection extends Component {
                   "Search by email, full name or username"
                 )}
               />
+              <label className="helptext rel-mt-1">
+                {i18next.t('Users must set profile visibility to "Public" in order to be invited to a community.')}
+              </label>
             </Form.Field>
             <RadioSelection
               options={roleOptions}
