@@ -14,7 +14,7 @@ import { RequestActionController } from "@js/invenio_requests/request/actions/Re
 import { Icon, Item } from "semantic-ui-react";
 import { RightBottomLabel } from "./RightBottomLabel";
 
-export const ComputerTabletRequestsItems = ({
+export const ComputerTabletRequestsItem = ({
   result,
   community,
   differenceInDays,
