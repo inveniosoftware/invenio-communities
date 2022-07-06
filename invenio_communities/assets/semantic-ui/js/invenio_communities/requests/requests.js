@@ -38,8 +38,8 @@ import {
   List,
   Segment,
 } from "semantic-ui-react";
-import { ComputerTabletRequestsItems } from "./requests_items/ComputerTabletRequestsItems";
-import { MobileRequestsItems } from "./requests_items/MobileRequestsItems";
+import { ComputerTabletRequestsItem } from "./requests_items/ComputerTabletRequestsItem";
+import { MobileRequestsItem } from "./requests_items/MobileRequestsItem";
 
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
@@ -371,20 +371,20 @@ export const RequestsResultsItemTemplateCommunity = ({ result, community }) => {
     creatorName =
       result.expanded?.created_by.metadata?.title || createdBy.community;
   }
-  const ComputerTabletRequestsItemsWithState = withState(
-    ComputerTabletRequestsItems
+  const ComputerTabletRequestsItemWithState = withState(
+    ComputerTabletRequestsItem
   );
-  const MobileRequestsItemsWithState = withState(MobileRequestsItems);
+  const MobileRequestsItemWithState = withState(MobileRequestsItem);
   return (
     <>
-      <ComputerTabletRequestsItemsWithState
+      <ComputerTabletRequestsItemWithState
         result={result}
         community={community}
         differenceInDays={differenceInDays}
         isCreatorCommunity={isCreatorCommunity}
         creatorName={creatorName}
       />
-      <MobileRequestsItemsWithState
+      <MobileRequestsItemWithState
         result={result}
         community={community}
         differenceInDays={differenceInDays}

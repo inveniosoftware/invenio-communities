@@ -29,12 +29,12 @@ import {
   Card,
   Container,
   Grid,
-  Icon,
   Input,
-  Item,
   Segment,
 } from "semantic-ui-react";
 import { CommunitiesFacetsValues } from "../details_search/components";
+import { ComputerTabletCommunitiesItem } from "./communities_items/ComputerTabletCommunitiesItem";
+import { MobileCommunitiesItem } from "./communities_items/MobileCommunitiesItem";
 
 function ResultsGridItemTemplate({ result }) {
   return (
@@ -56,32 +56,10 @@ function ResultsGridItemTemplate({ result }) {
 
 function ResultsItemTemplate({ result }) {
   return (
-    <Item>
-      <Item.Content>
-        <Button
-          compact
-          size="small"
-          floated="right"
-          icon
-          labelPosition="left"
-          href={`/communities/${result.slug}`}
-        >
-          <Icon name="eye" />
-          {i18next.t("View")}
-        </Button>
-        <Item.Header href={`/communities/${result.slug}`}>
-          {result.metadata.title}
-        </Item.Header>
-        <Item.Description>
-          <div
-            className="truncate-lines-2"
-            dangerouslySetInnerHTML={{
-              __html: result.metadata.description,
-            }}
-          />
-        </Item.Description>
-      </Item.Content>
-    </Item>
+    <>
+      <ComputerTabletCommunitiesItem result={result} />
+      <MobileCommunitiesItem result={result} />
+    </>
   );
 }
 
