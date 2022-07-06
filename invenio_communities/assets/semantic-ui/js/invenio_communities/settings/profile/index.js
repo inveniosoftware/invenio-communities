@@ -8,7 +8,7 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import { Formik } from "formik";
+import { Formik, useFormikContext } from "formik";
 import _cloneDeep from "lodash/cloneDeep";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
@@ -40,6 +40,7 @@ import {
   Grid,
   Header,
   Icon,
+  Label,
   Message,
   Segment,
 } from "semantic-ui-react";
@@ -103,6 +104,7 @@ const removeEmptyValues = (obj) => {
 };
 
 const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
+  const { submitForm } = useFormikContext();
   let dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
@@ -113,6 +115,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
       try {
         const client = new CommunityApi();
         await client.updateLogo(community.id, file);
+        await submitForm();
         window.location.reload();
       } catch (error) {
         onError(error);
@@ -464,7 +467,7 @@ class CommunityProfileForm extends Component {
         validationSchema={COMMUNITY_VALIDATION_SCHEMA}
         onSubmit={this.onSubmit}
       >
-        {({ isSubmitting, isValid, handleSubmit }) => (
+        {({ isSubmitting, isValid, handleSubmit, dirty }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">
             <Message
               hidden={this.state.error === ""}
@@ -702,6 +705,13 @@ class CommunityProfileForm extends Component {
                     onError={this.setGlobalError}
                     logoMaxSize={this.props.logoMaxSize}
                   />
+                  {dirty && (
+                    <Label className="helptext warning rel-mt-1 rel-ml-0">
+                      {i18next.t(
+                        "Form has unsaved changes, they will be automatically saved if a new picture is uploaded."
+                      )}
+                    </Label>
+                  )}
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row className="danger-zone">
