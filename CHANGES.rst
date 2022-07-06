@@ -9,7 +9,39 @@
 Changes
 =======
 
+
+
+Version 2.8.6 (released 2022-07-01)
+-----------------------------------
+- requests search: add expanded fields, re-design list view
+- community: update members table, add responsive width for grid columns
+- members: reserve space for success/error icon, clean up table class
+- global: fixes strings marked for translation
+- community header: add community visibility to header
+- dependencies: bump minor version of invenio-requests
+
+Version 2.8.5 (released 2022-06-24)
+-----------------------------------
+- i18n: fix naming
+
+Version 2.8.4 (released 2022-06-23)
+-----------------------------------
+
+- i18n: add german to list of languages
+- homepage: align searchbar and button
+- page subheader: add mobile class
+
+Version 2.8.3 (released 2022-06-21)
+-----------------------------------
+
+- resources: add UI serializer
+- i18n: clean up translation strings
+- community logo: add fixed height for pictures
+- settings ui: fix state behaviour
+- members landing page: fix alignment
+
 Version 2.8.2 (released 2022-06-08)
+-----------------------------------
 
 - search bar: fix search event propagation
 - UI: remove redundant components
