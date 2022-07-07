@@ -102,7 +102,14 @@ const removeEmptyValues = (obj) => {
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
 
-const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
+const LogoUploader = ({
+  community,
+  defaultLogo,
+  hasLogo,
+  onError,
+  logoMaxSize,
+}) => {
+  const currentUrl = new URL(window.location.href);
   let dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
@@ -113,7 +120,10 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
       try {
         const client = new CommunityApi();
         await client.updateLogo(community.id, file);
-        window.location.reload();
+        // set param that logo was updated
+        currentUrl.searchParams.set("updated", "true");
+
+        window.location.replace(currentUrl.href);
       } catch (error) {
         onError(error);
       }
@@ -137,6 +147,13 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
     await client.deleteLogo(community.id);
   };
 
+  // when uploading a new logo, the previously cached logo will be displayed instead of the new one. Avoid it by randomizing the URL.
+  const logoURL = new URL(community.links.logo);
+  const noCacheRandomValue = new Date().getMilliseconds() * 5;
+  logoURL.searchParams.set("no-cache", noCacheRandomValue.toString());
+
+  const logoWasUpdated = currentUrl.searchParams.has("updated");
+
   return (
     <Dropzone {...dropzoneParams}>
       {({ getRootProps, getInputProps, open: openFileDialog }) => (
@@ -145,7 +162,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
             <input {...getInputProps()} />
             <Header className="mt-0">{i18next.t("Profile picture")}</Header>
             <Image
-              src={community.links.logo}
+              src={logoURL}
               fallbackSrc={defaultLogo}
               loadFallbackFirst={true}
               fluid
@@ -169,13 +186,13 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
             {i18next.t("Upload new picture")}
           </Button>
           <label className="helptext">
-            {i18next.t('File must be smaller than ')}
+            {i18next.t("File must be smaller than ")}
             {humanReadableBytes(logoMaxSize, true)}
           </label>
           {hasLogo && (
             <DeleteButton
               label={i18next.t("Delete picture")}
-              redirectURL={`${community.links.self_html}/settings`}
+              redirectURL={`${community.links.self_html}/settings?updated=true`}
               confirmationMessage={
                 <Header as="h2" size="medium">
                   {i18next.t("Are you sure you want to delete this picture?")}
@@ -183,6 +200,16 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
               }
               onDelete={deleteLogo}
               onError={onError}
+            />
+          )}
+          {logoWasUpdated && (
+            <Message
+              info
+              icon="warning circle"
+              size="small"
+              content={i18next.t(
+                "It may take a few moments for changes to be visible everywhere"
+              )}
             />
           )}
         </>
@@ -456,6 +483,7 @@ class CommunityProfileForm extends Component {
       }
     }
   };
+
   render() {
     const { types } = this.props;
     return (

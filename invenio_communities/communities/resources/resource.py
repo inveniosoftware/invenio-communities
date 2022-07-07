@@ -29,6 +29,8 @@ from invenio_records_resources.resources.records.resource import (
 )
 from invenio_records_resources.resources.records.utils import es_preference
 
+from invenio_communities.proxies import current_communities
+
 request_community_requests_search_args = request_parser(
     from_conf("request_community_requests_search_args"), location="args"
 )
@@ -166,11 +168,18 @@ class CommunityResource(RecordResource):
     @request_view_args
     def read_logo(self):
         """Read logo's content."""
+        community_pid = resource_requestctx.view_args["pid_value"]
         item = self.service.read_logo(
             g.identity,
-            resource_requestctx.view_args["pid_value"],
+            community_pid,
         )
-        return item.send_file(), 200
+        community = current_communities.service.read(
+            id_=community_pid, identity=g.identity
+        ).to_dict()
+
+        is_restricted = community["access"]["visibility"] == "restricted"
+
+        return item.send_file(restricted=is_restricted)
 
     @request_view_args
     @request_stream
