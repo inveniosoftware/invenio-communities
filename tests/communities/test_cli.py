@@ -20,14 +20,14 @@ from invenio_communities.fixtures.tasks import create_demo_community
 
 
 def test_fake_demo_community_creation(
-    app, db, location, es_clear, community_type_record
+    app, db, location, search_clear, community_type_record
 ):
     """Assert that demo community creation works without failing."""
     faker = Faker()
     create_demo_community(create_fake_community(faker))
 
 
-def test_create_communities_custom_fields(app, location, db, es_clear, cli_runner):
+def test_create_communities_custom_fields(app, location, db, search_clear, cli_runner):
     """Assert that custom fields mappings are created for communities."""
     result = cli_runner(create_communities_custom_field, "-f", "mycommunityfield")
     assert result.exit_code == 0

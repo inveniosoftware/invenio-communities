@@ -92,7 +92,9 @@ def _assert_error_messages_response(expected, response):
     assert expected == len(set(error_messages_list).intersection(error_messages))
 
 
-def test_simple_flow(client, location, minimal_community, headers, owner, db, es_clear):
+def test_simple_flow(
+    client, location, minimal_community, headers, owner, db, search_clear
+):
     """Test a simple REST API flow."""
     client = owner.login(client)
 
@@ -155,7 +157,7 @@ def test_simple_flow(client, location, minimal_community, headers, owner, db, es
 
 
 def test_post_schema_validation(
-    client, location, minimal_community, headers, owner, es_clear, db
+    client, location, minimal_community, headers, owner, search_clear, db
 ):
     """Test the validity of community json schema"""
     client = owner.login(client)
@@ -193,7 +195,7 @@ def test_post_schema_validation(
 
 
 def test_post_metadata_schema_validation(
-    client, location, minimal_community, headers, db, owner, es_clear
+    client, location, minimal_community, headers, db, owner, search_clear
 ):
     """Test the validity of community metadata schema"""
     client = owner.login(client)
@@ -259,7 +261,7 @@ def test_post_metadata_schema_validation(
 
 
 def test_post_community_with_existing_id(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test create two communities with the same id"""
     client = owner.login(client)
@@ -288,7 +290,7 @@ def test_post_community_with_existing_id(
 
 
 def test_post_community_with_deleted_id(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test create a community with a deleted id"""
     client = owner.login(client)
@@ -317,7 +319,7 @@ def test_post_community_with_deleted_id(
 
 
 def test_post_self_links(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test self links generated after post"""
     client = owner.login(client)
@@ -352,7 +354,7 @@ def test_simple_search_response(
     minimal_community,
     owner,
     headers,
-    es_clear,
+    search_clear,
     fake_communities,
     community_types,
 ):
@@ -405,7 +407,7 @@ def test_simple_get_response(
     full_community,
     headers,
     db,
-    es_clear,
+    search_clear,
     owner,
     community_type_record,
 ):
@@ -450,7 +452,7 @@ def test_simple_put_response(
     minimal_community,
     headers,
     db,
-    es_clear,
+    search_clear,
     owner,
     community_type_record,
 ):
@@ -506,7 +508,7 @@ def test_simple_put_response(
 
 
 def test_update_renamed_record(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test to update renamed entity."""
     client = owner.login(client)
@@ -540,7 +542,7 @@ def test_update_renamed_record(
 
 
 def test_simple_delete_response(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test delete and request deleted community."""
     client = owner.login(client)
@@ -570,7 +572,7 @@ def test_simple_delete_response(
 
 
 def test_logo_flow(
-    app, client, location, minimal_community, headers, db, es_clear, owner
+    app, client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test logo workflow."""
     client = owner.login(client)
@@ -648,7 +650,7 @@ def test_logo_flow(
 
 
 def test_logo_max_content_length(
-    app, client, location, minimal_community, headers, db, es_clear, owner
+    app, client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test logo max size."""
     client = owner.login(client)
@@ -694,7 +696,7 @@ def test_logo_max_content_length(
 
 
 def test_invalid_community_ids_create(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     client = owner.login(client)
     # Create a community with invalid ID
@@ -708,7 +710,7 @@ def test_invalid_community_ids_create(
 
 
 def test_invalid_community_ids(
-    client, location, minimal_community, headers, db, es_clear, owner
+    client, location, minimal_community, headers, db, search_clear, owner
 ):
     """Test for invalid community IDs handling."""
     client = owner.login(client)
@@ -750,7 +752,7 @@ def test_invalid_community_ids(
 
 
 def test_featured_communities(
-    client, location, minimal_community, headers, db, es_clear, admin
+    client, location, minimal_community, headers, db, search_clear, admin
 ):
     """Test featured communities endpoints."""
     client = admin.login(client)

@@ -6,5 +6,4 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
--e git+git://github.com/inveniosoftware/invenio-base#egg=invenio-base
--e git+git://github.com/inveniosoftware/invenio-indexer#egg=invenio-indexer
+"""Mappings for OpenSearch v1."""

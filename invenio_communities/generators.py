@@ -16,11 +16,11 @@ from collections import namedtuple
 from functools import partial, reduce
 from itertools import chain
 
-from elasticsearch_dsl.query import Q
 from flask import current_app
 from flask_principal import UserNeed
 from invenio_access.permissions import any_user, system_process
 from invenio_records_permissions.generators import Generator
+from invenio_search.engine import dsl
 
 from .proxies import current_roles
 
@@ -92,8 +92,8 @@ class IfRestrictedBase(Generator):
     def query_filter(self, **kwargs):
         """Filters for current identity."""
         # TODO: Next two statement should be made more reusable
-        q_then = Q("match", **{self.field_name: self.then_value})
-        q_else = Q("match", **{self.field_name: self.else_value})
+        q_then = dsl.Q("match", **{self.field_name: self.then_value})
+        q_else = dsl.Q("match", **{self.field_name: self.else_value})
         then_query = self.make_query(self.then_, **kwargs)
         else_query = self.make_query(self.else_, **kwargs)
 
@@ -169,7 +169,7 @@ class CommunityRoles(Generator):
     def query_filter(self, identity=None, **kwargs):
         """Filters for current identity as owner."""
         # Gives access to all community members.
-        return Q("terms", **{"_id": self.communities(identity)})
+        return dsl.Q("terms", **{"_id": self.communities(identity)})
 
 
 class CommunityMembers(CommunityRoles):

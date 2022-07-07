@@ -11,7 +11,6 @@
 
 from datetime import datetime, timezone
 
-from elasticsearch_dsl.query import Q
 from flask import current_app
 from flask_babelex import gettext as _
 from invenio_access.permissions import system_identity
@@ -29,6 +28,7 @@ from invenio_records_resources.services.uow import (
 )
 from invenio_requests import current_events_service, current_requests_service
 from invenio_requests.customizations.event_types import CommentEventType
+from invenio_search.engine import dsl
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
@@ -312,7 +312,9 @@ class MemberService(RecordService):
                 request_id=request_item.id,
             )
 
-    def search(self, identity, community_id, params=None, es_preference=None, **kwargs):
+    def search(
+        self, identity, community_id, params=None, search_preference=None, **kwargs
+    ):
         """Search."""
         return self._members_search(
             identity,
@@ -320,14 +322,14 @@ class MemberService(RecordService):
             "members_search",
             self.member_dump_schema,
             self.config.search,
-            extra_filter=Q("term", **{"active": True}),
+            extra_filter=dsl.Q("term", **{"active": True}),
             params=params,
-            es_preference=es_preference,
+            search_preference=search_preference,
             **kwargs
         )
 
     def search_public(
-        self, identity, community_id, params=None, es_preference=None, **kwargs
+        self, identity, community_id, params=None, search_preference=None, **kwargs
     ):
         """Search public members matching the querystring."""
         # The search for members is split two methods (public, members) to
@@ -342,15 +344,15 @@ class MemberService(RecordService):
             self.public_dump_schema,
             self.config.search_public,
             extra_filter=(
-                Q("term", **{"visible": True}) & Q("term", **{"active": True})
+                dsl.Q("term", **{"visible": True}) & dsl.Q("term", **{"active": True})
             ),
             params=params,
-            es_preference=es_preference,
+            search_preference=search_preference,
             **kwargs
         )
 
     def search_invitations(
-        self, identity, community_id, params=None, es_preference=None, **kwargs
+        self, identity, community_id, params=None, search_preference=None, **kwargs
     ):
         """Search invitations."""
         # The search for invitations used the ArchivedInvitation record class
@@ -363,9 +365,9 @@ class MemberService(RecordService):
             self.invitation_dump_schema,
             self.config.search_invitations,
             record_cls=ArchivedInvitation,
-            extra_filter=Q("term", **{"active": False}),
+            extra_filter=dsl.Q("term", **{"active": False}),
             params=params,
-            es_preference=es_preference,
+            search_preference=search_preference,
             **kwargs
         )
 
@@ -378,7 +380,7 @@ class MemberService(RecordService):
         search_opts,
         extra_filter=None,
         params=None,
-        es_preference=None,
+        search_preference=None,
         **kwargs
     ):
         """Members search."""
@@ -386,7 +388,7 @@ class MemberService(RecordService):
         self.require_permission(identity, permission_action, record=community)
 
         # Apply extra filters
-        filter = Q("term", **{"community_id": community.id})
+        filter = dsl.Q("term", **{"community_id": community.id})
         if extra_filter:
             filter &= extra_filter
 
@@ -397,7 +399,7 @@ class MemberService(RecordService):
             "search_members",
             identity,
             params,
-            es_preference,
+            search_preference,
             search_opts=search_opts,
             permission_action=None,
             extra_filter=filter,

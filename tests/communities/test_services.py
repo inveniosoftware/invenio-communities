@@ -43,7 +43,7 @@ def comm_restricted(community_service, minimal_community, location):
     return community_service.create(data=c, identity=system_identity)
 
 
-def test_search_featured(community_service, comm, db, es_clear):
+def test_search_featured(community_service, comm, db, search_clear):
     """Test that featured entries are indexed and returned correctly."""
     data = {
         "start_date": datetime.utcnow().isoformat(),
@@ -113,7 +113,7 @@ def test_search_featured(community_service, comm, db, es_clear):
     assert hits[1]["id"] == comm.data["id"]
 
 
-def test_reindex_featured_entries_task(community_service, comm, db, es_clear):
+def test_reindex_featured_entries_task(community_service, comm, db, search_clear):
     """Test that reindexing task works."""
     tomorrow = {
         "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
@@ -307,8 +307,8 @@ def test_update_featured(community_service, comm):
         ).to_dict()
 
 
-def test_cleanup_pre_search(db, es_clear):
-    """Cleanup database and elasticsearch for following tests.
+def test_cleanup_pre_search(db, search_clear):
+    """Cleanup database and search for following tests.
 
     Tests before do not depend on a clean db or es. Cleanup is also an
     expensive task so te tests will run faster without them.
@@ -319,7 +319,7 @@ def test_cleanup_pre_search(db, es_clear):
 def test_search_user(
     app,
     db,
-    es_clear,
+    search_clear,
     location,
     anon_identity,
     community_service,
@@ -358,7 +358,7 @@ def test_search_user(
 def test_search_community_requests(
     app,
     db,
-    es_clear,
+    search_clear,
     location,
     anon_identity,
     community_service,

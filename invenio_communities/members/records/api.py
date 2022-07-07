@@ -11,7 +11,7 @@
 
 from invenio_accounts.models import Role, User
 from invenio_db import db
-from invenio_records.dumpers import ElasticsearchDumper
+from invenio_records.dumpers import SearchDumper
 from invenio_records.dumpers.indexedat import IndexedAtDumperExt
 from invenio_records.dumpers.relations import RelationDumperExt
 from invenio_records.systemfields import ModelField, ModelRelation, RelationsField
@@ -24,7 +24,7 @@ from sqlalchemy import or_
 from ..errors import InvalidMemberError
 from .models import ArchivedInvitationModel, MemberModel
 
-relations_dumper = ElasticsearchDumper(
+relations_dumper = SearchDumper(
     extensions=[
         RelationDumperExt("relations"),
         IndexedAtDumperExt(),

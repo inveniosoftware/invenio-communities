@@ -27,7 +27,7 @@ from invenio_records_resources.resources.records.resource import (
     request_search_args,
     request_view_args,
 )
-from invenio_records_resources.resources.records.utils import es_preference
+from invenio_records_resources.resources.records.utils import search_preference
 
 from invenio_communities.proxies import current_communities
 
@@ -129,7 +129,7 @@ class CommunityResource(RecordResource):
         hits = self.service.search_user_communities(
             identity=g.identity,
             params=resource_requestctx.args,
-            es_preference=es_preference(),
+            search_preference=search_preference(),
         )
         return hits.to_dict(), 200
 
@@ -146,7 +146,7 @@ class CommunityResource(RecordResource):
             identity=g.identity,
             community_id=resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference(),
+            search_preference=search_preference(),
             expand=resource_requestctx.args.get("expand", False),
         )
         return hits.to_dict(), 200
@@ -210,7 +210,7 @@ class CommunityResource(RecordResource):
         hits = self.service.featured_search(
             identity=g.identity,
             params=resource_requestctx.args,
-            es_preference=es_preference(),
+            search_preference=search_preference(),
         )
         return hits.to_dict(), 200
 

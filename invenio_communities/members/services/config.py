@@ -46,7 +46,7 @@ class PublicSearchOptions(SearchOptions):
 
     query_parser_cls = QueryParser.factory(
         # fields serves also as a filter, since only the ones mentioned there
-        # will be queried by ES, using multi_match query.
+        # will be queried by the search engine, using multi_match query.
         fields=[
             "user.username^2",
             "user.profile.full_name^3",

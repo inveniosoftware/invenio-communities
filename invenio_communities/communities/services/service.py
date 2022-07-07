@@ -10,8 +10,6 @@
 
 """Invenio Communities Service API."""
 
-from elasticsearch_dsl import Q
-from elasticsearch_dsl.query import Bool
 from flask import current_app
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import (
@@ -25,6 +23,7 @@ from invenio_records_resources.services.uow import (
 )
 from invenio_requests import current_requests_service
 from invenio_requests.services.results import EntityResolverExpandableField
+from invenio_search.engine import dsl
 from marshmallow.exceptions import ValidationError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -81,7 +80,7 @@ class CommunityService(RecordService):
         ]
 
     def search_user_communities(
-        self, identity, params=None, es_preference=None, **kwargs
+        self, identity, params=None, search_preference=None, **kwargs
     ):
         """Search for records matching the querystring."""
         self.require_permission(identity, "search_user_communities")
@@ -92,7 +91,7 @@ class CommunityService(RecordService):
             "search",
             identity,
             params,
-            es_preference,
+            search_preference,
             permission_action=None,
             extra_filter=CommunityMembers().query_filter(identity),
             **kwargs
@@ -114,7 +113,7 @@ class CommunityService(RecordService):
         identity,
         community_id,
         params=None,
-        es_preference=None,
+        search_preference=None,
         expand=False,
         **kwargs
     ):
@@ -127,9 +126,9 @@ class CommunityService(RecordService):
             "search",
             identity,
             params,
-            es_preference,
+            search_preference,
             permission_action=None,
-            extra_filter=Q("term", **{"receiver.community": community_id}),
+            extra_filter=dsl.Q("term", **{"receiver.community": community_id}),
             **kwargs
         ).execute()
 
@@ -261,7 +260,7 @@ class CommunityService(RecordService):
 
         return featured_entry, errors
 
-    def featured_search(self, identity, params=None, es_preference=None, **kwargs):
+    def featured_search(self, identity, params=None, search_preference=None, **kwargs):
         """Search featured communities."""
         self.require_permission(identity, "search")
 
@@ -273,12 +272,12 @@ class CommunityService(RecordService):
             "search",
             identity,
             params,
-            es_preference,
-            extra_filter=Bool(
+            search_preference,
+            extra_filter=dsl.query.Bool(
                 "must",
                 must=[
-                    Q("match", **{"access.visibility": "public"}),
-                    Q("exists", **{"field": "featured.past"}),
+                    dsl.Q("match", **{"access.visibility": "public"}),
+                    dsl.Q("exists", **{"field": "featured.past"}),
                 ],
             ),
             permission_action="featured_search",

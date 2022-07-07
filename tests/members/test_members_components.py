@@ -14,7 +14,7 @@ from invenio_communities.utils import identity_cache_key
 
 
 def test_accept_invite_cache_clear(
-    requests_service, invite_request_id, invite_user, db, es_clear
+    requests_service, invite_request_id, invite_user, db, search_clear
 ):
     """Test that the community member cached entries are cleared."""
     current_cache.clear()
@@ -33,7 +33,9 @@ def test_accept_invite_cache_clear(
     assert len(community_roles) == 1
 
 
-def test_member_delete_cache_clear(member_service, community, new_user, db, es_clear):
+def test_member_delete_cache_clear(
+    member_service, community, new_user, db, search_clear
+):
     """Test that the community member cached entries are cleared."""
     current_cache.clear()
     cache_key = identity_cache_key(new_user.identity)
@@ -66,7 +68,7 @@ def test_member_delete_cache_clear(member_service, community, new_user, db, es_c
     assert len(community_roles) == 0
 
 
-def test_member_add_cache_clear(member_service, community, new_user, db, es_clear):
+def test_member_add_cache_clear(member_service, community, new_user, db, search_clear):
     """Test that the community member cached entries are cleared."""
     current_cache.clear()
     cache_key = identity_cache_key(new_user.identity)
@@ -88,7 +90,9 @@ def test_member_add_cache_clear(member_service, community, new_user, db, es_clea
     assert len(community_roles) == 1
 
 
-def test_member_update_cache_clear(member_service, community, new_user, db, es_clear):
+def test_member_update_cache_clear(
+    member_service, community, new_user, db, search_clear
+):
     """Test that the community member cached entries are cleared."""
     current_cache.clear()
     cache_key = identity_cache_key(new_user.identity)
@@ -122,7 +126,7 @@ def test_member_update_cache_clear(member_service, community, new_user, db, es_c
 
 
 def test_group_actions_cache_clear(
-    member_service, restricted_community, admin, db, es_clear
+    member_service, restricted_community, admin, db, search_clear
 ):
     """Test that the community member cached entries are cleared on group actions."""
     current_cache.clear()

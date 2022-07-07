@@ -9,17 +9,17 @@
 """Featured timestamp dumper.
 
 Dumper used to dump/load the featured times of a record to/from an
-ElasticSearch body.
+search body.
 """
 
 from datetime import datetime
 
-from invenio_records.dumpers.elasticsearch import ElasticsearchDumperExt
+from invenio_records.dumpers import SearchDumperExt
 
 from invenio_communities.communities.records.models import CommunityFeatured
 
 
-class FeaturedDumperExt(ElasticsearchDumperExt):
+class FeaturedDumperExt(SearchDumperExt):
     """Dumper for the featured field."""
 
     def __init__(self, key="featured"):
