@@ -13,7 +13,6 @@
 from datetime import datetime
 
 from celery import shared_task
-from elasticsearch_dsl import Q
 from invenio_access.permissions import system_identity
 from invenio_pidstore.errors import (
     PIDAlreadyExists,
@@ -21,6 +20,7 @@ from invenio_pidstore.errors import (
     PIDDoesNotExistError,
 )
 from invenio_records_resources.services.uow import RecordIndexOp, unit_of_work
+from invenio_search.engine import dsl
 
 from ..proxies import current_communities
 
@@ -51,7 +51,7 @@ def reindex_featured_entries():
     # using scan to get all communities
     record_list = service.scan(
         identity=system_identity,
-        extra_filter=Q("range", **{"featured.future": {"lte": now}}),
+        extra_filter=dsl.Q("range", **{"featured.future": {"lte": now}}),
     )
     for hit in record_list.hits:
         try:

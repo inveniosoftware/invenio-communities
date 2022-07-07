@@ -17,7 +17,7 @@ from invenio_records_resources.resources.records.resource import (
     request_search_args,
     request_view_args,
 )
-from invenio_records_resources.resources.records.utils import es_preference
+from invenio_records_resources.resources.records.utils import search_preference
 
 
 class MemberResource(RecordResource):
@@ -46,7 +46,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference(),
+            search_preference=search_preference(),
         )
         return hits.to_dict(), 200
 
@@ -59,7 +59,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference(),
+            search_preference=search_preference(),
         )
         return hits.to_dict(), 200
 
@@ -72,7 +72,7 @@ class MemberResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
-            es_preference=es_preference(),
+            search_preference=search_preference(),
         )
         return hits.to_dict(), 200
 

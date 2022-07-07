@@ -8,7 +8,7 @@
 
 """Records API."""
 
-from invenio_records.dumpers import ElasticsearchDumper
+from invenio_records.dumpers import SearchDumper
 from invenio_records.dumpers.relations import RelationDumperExt
 from invenio_records.systemfields import ConstantField, DictField, ModelField
 from invenio_records.systemfields.relations import MultiRelationsField
@@ -49,7 +49,7 @@ class Community(Record):
 
     model_cls = models.CommunityMetadata
 
-    dumper = ElasticsearchDumper(
+    dumper = SearchDumper(
         extensions=[
             FeaturedDumperExt("featured"),
             RelationDumperExt("relations"),
