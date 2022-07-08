@@ -20,7 +20,7 @@ export const ComputerTabletCommunitiesItem = ({ result }) => {
     : i18next.t("Restricted");
   const visibilityIcon = isPublic ? undefined : "ban";
   return (
-    <Item key={result.id} className="computer tablet only flex">
+    <Item key={result.id} className="computer tablet only flex community-item">
       <Image
         wrapped
         src={result.links.logo}

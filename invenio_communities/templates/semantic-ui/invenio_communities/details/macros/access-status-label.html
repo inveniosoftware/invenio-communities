@@ -1,0 +1,11 @@
+{% macro access_status_label() %}
+  <div
+    class="ui label small access-status restricted"
+    title="{{ _('Community visibility') }}"
+    data-tooltip="{{ _('The community is restricted to users with access.') }}"
+    data-inverted=""
+    data-position="top right"
+  >
+    <i class="icon ban" aria-hidden="true"></i> {{ _("Restricted") }}
+  </div>
+{% endmacro %}

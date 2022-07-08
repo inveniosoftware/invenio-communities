@@ -8,6 +8,7 @@
 #}
 
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
+{%- from "invenio_communities/details/macros/access-status-label.html" import access_status_label -%}
 
 <div class="ui container fluid page-subheader-outer with-submenu rel-pt-2 ml-0-mobile mr-0-mobile">
   <div class="ui container relaxed grid page-subheader mr-0-mobile ml-0-mobile">
@@ -22,14 +23,17 @@
           />
         </div>
 
+        {% if community.access.visibility == 'restricted' %}
+          <div class="rel-mb-2 mobile only">
+            {{ access_status_label() }}
+          </div>
+        {% endif %}
+
           <div class="flex rel-mb-1">
             <h2 class="ui header mb-0">{{ community.metadata.title }}</h2>
             {% if community.access.visibility == 'restricted' %}
-              <div class="rel-ml-1">
-                <span class="ui label small access-status restricted" title="{{ _('Community visibility') }}"
-                  data-tooltip="{{ _('The community is restricted to users with access.') }}" data-inverted="">
-                  <i class="icon ban" aria-hidden="true"></i> {{ _("Restricted") }}
-                </span>
+              <div class="rel-ml-1 computer only tablet only">
+                {{ access_status_label() }}
               </div>
             {% endif %}
           </div>

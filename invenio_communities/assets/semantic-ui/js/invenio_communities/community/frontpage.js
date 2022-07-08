@@ -62,7 +62,7 @@ class CommunityCard extends Component {
         />
         <Card.Content>
           <Card.Header>
-            {_truncate(community.metadata.title, { length: 50 })}
+            {_truncate(community.metadata.title, { length: 30 })}
           </Card.Header>
           {community.metadata.description && (
             <Card.Description>
