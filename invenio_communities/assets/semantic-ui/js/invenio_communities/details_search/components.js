@@ -12,6 +12,7 @@ import {
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
 import _get from "lodash/get";
+import _isEmpty from "lodash/isEmpty";
 import _truncate from "lodash/truncate";
 import React, { useState } from "react";
 import Overridable from "react-overridable";
@@ -168,21 +169,70 @@ export const CommunityRecordSearchAppLayout = ({ config }) => {
   );
 };
 
+export const CommunityRecordSingleSearchBarElement = withState(
+  ({
+    placeholder: passedPlaceholder,
+    queryString,
+    onInputChange,
+    updateQueryState,
+  }) => {
+    const placeholder = passedPlaceholder || i18next.t("Search");
+    const onBtnSearchClick = () => {
+      updateQueryState({ queryString, filters: [] });
+    };
+    const onKeyPress = (event) => {
+      if (event.key === "Enter") {
+        updateQueryState({ queryString, filters: [] });
+      }
+    };
+    return (
+      <Input
+        action={{
+          icon: "search",
+          onClick: onBtnSearchClick,
+          className: "search",
+          "aria-label": i18next.t("Search"),
+        }}
+        fluid
+        placeholder={placeholder}
+        onChange={(event, { value }) => {
+          onInputChange(value);
+        }}
+        value={queryString}
+        onKeyPress={onKeyPress}
+      />
+    );
+  }
+);
+
 export const CommunityRecordSearchBarElement = ({
   queryString,
   onInputChange,
 }) => {
   const headerSearchbar = document.getElementById("header-search-bar");
-  const searchbarOptions = JSON.parse(headerSearchbar.dataset.options);
+  const searchbarOptions = headerSearchbar.dataset.options
+    ? JSON.parse(headerSearchbar.dataset.options)
+    : [];
 
-  return (
-    <MultipleOptionsSearchBarRSK
-      options={searchbarOptions}
-      onInputChange={onInputChange}
-      queryString={queryString}
-      placeholder={i18next.t("Search records...")}
-    />
-  );
+  if (!_isEmpty(searchbarOptions)) {
+    return (
+      <MultipleOptionsSearchBarRSK
+        options={searchbarOptions}
+        onInputChange={onInputChange}
+        queryString={queryString}
+        placeholder={i18next.t("Search records...")}
+      />
+    );
+  } else {
+    // backwards compatibility
+    return (
+      <CommunityRecordSingleSearchBarElement
+        placeholder={i18next.t("Search records...")}
+        queryString={queryString}
+        onInputChange={onInputChange}
+      />
+    );
+  }
 };
 
 export const CommunityParentFacetValue = ({
