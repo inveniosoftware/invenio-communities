@@ -9,7 +9,14 @@
 Changes
 =======
 
+Version 2.8.7 (released 2022-07-08)
+-----------------------------------
 
+- add multiple destinations search bar
+- search: redesign community search result item
+- invitations: add helptext on member search
+- settings: add file logo size limit
+- add error handling for UUID
 
 Version 2.8.6 (released 2022-07-01)
 -----------------------------------
