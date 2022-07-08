@@ -7,6 +7,7 @@
 import {
   SearchAppFacets,
   SearchAppResultsPane,
+  InvenioSearchPagination,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { DateTime } from "luxon";
@@ -17,9 +18,7 @@ import Overridable from "react-overridable";
 import {
   BucketAggregation,
   Count,
-  Pagination,
   ResultsList,
-  ResultsPerPage,
   SearchBar,
   Sort,
   withState,
@@ -288,28 +287,7 @@ export const RequestsResults = ({
             </Segment>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row verticalAlign="middle">
-          <Grid.Column width={4} />
-          <Grid.Column width={8} textAlign="center">
-            <Pagination
-              options={{
-                size: "mini",
-                showFirst: false,
-                showLast: false,
-              }}
-            />
-          </Grid.Column>
-          <Grid.Column textAlign="right" width={4}>
-            <ResultsPerPage
-              values={paginationOptions.resultsPerPage}
-              label={(cmp) => (
-                <>
-                  {cmp} {i18next.t("results per page")}
-                </>
-              )}
-            />
-          </Grid.Column>
-        </Grid.Row>
+        <InvenioSearchPagination paginationOptions={paginationOptions} />
       </Grid>
     )
   );
