@@ -268,14 +268,7 @@ export const RequestsResults = ({
                   </Grid.Column>
                   <Grid.Column width={12} textAlign="right">
                     {sortOptions && (
-                      <Sort
-                        values={sortOptions}
-                        label={(cmp) => (
-                          <>
-                            {i18next.t("Sort by")} {cmp}
-                          </>
-                        )}
-                      />
+                      <Sort values={sortOptions} />
                     )}
                   </Grid.Column>
                 </Grid.Row>

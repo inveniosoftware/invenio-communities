@@ -21,12 +21,16 @@ export class MembersSearchLayout extends Component {
     return (
       <>
         {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
-        <div className="auto-column-grid">
+        <div className="auto-column-grid three-columns">
           <div>
             <SearchBar fluid />
           </div>
+
           <div>
             <SearchFilters customFilters={customFilters} />
+          </div>
+
+          <div className="flex align-items-center">
             <Sort values={config.sortOptions} />
           </div>
         </div>

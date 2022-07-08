@@ -32,8 +32,7 @@ export class DropdownSort extends Component {
     });
     return (
       <Dropdown
-        button
-        item
+        selection
         options={optionsWithDisabled}
         value={currentSortBy}
         onChange={(_, { value }) => onValueChange(value)}
