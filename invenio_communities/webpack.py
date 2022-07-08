@@ -44,7 +44,7 @@ communities = WebpackThemeBundle(
                 "@semantic-ui-react/css-patch": "^1.0.0",
                 "react-router-dom": "^6.3.0",
                 "react-invenio-forms": "^0.10.0",
-                "react-invenio-deposit": "^0.19.0",
+                "react-invenio-deposit": "^0.19.15",
                 "axios": "^0.21.0",
                 "formik": "^2.1.0",
                 "i18next": "^20.3.0",
