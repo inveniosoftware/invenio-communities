@@ -15,7 +15,11 @@
       <div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
 
         <div class="ui rounded image community-image mt-5 rel-mr-2 left-floated">
-          <img src="{{ community.links.logo }}" alt="" class="has-placeholder"/>
+          <img
+            src="{{ community.links.logo }}"
+            alt=""
+            onerror="this.onerror=null;this.src='/static/images/square-placeholder.png'"
+          />
         </div>
 
           <div class="flex rel-mb-1">
