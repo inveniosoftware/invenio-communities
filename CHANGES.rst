@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 2.8.8 (released 2022-07-12)
+-----------------------------------
+- bugfix: display community logo in the header
+
 Version 2.8.7 (released 2022-07-08)
 -----------------------------------
 
