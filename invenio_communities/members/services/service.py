@@ -31,8 +31,11 @@ from invenio_requests.customizations.event_types import CommentEventType
 from invenio_search.engine import dsl
 from kombu import Queue
 from marshmallow import ValidationError
+from requests import request
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
+
+from invenio_communities.members.records.api import ArchivedInvitation, Member
 from werkzeug.local import LocalProxy
 
 from ...proxies import current_roles
@@ -48,6 +51,10 @@ from .schemas import (
     PublicDumpSchema,
     UpdateBulkSchema,
 )
+
+from invenio_requests.notifications.proxies import current_notifications_manager
+from invenio_requests.notifications.models import Notification
+from invenio_requests.notifications.events import CommunityInvitationAcceptedEvent, CommunityInvitationCreatedEvent, CommunityInvitationDeclinedEvent
 
 
 def invite_expires_at():
@@ -325,6 +332,13 @@ class MemberService(RecordService):
                 uow,
                 active=False,
                 request_id=request_item.id,
+            )
+
+            self._send_notification(
+                CommunityInvitationCreatedEvent,
+                uow,
+                request=request_item,
+                member=member,
             )
 
     def search(
@@ -625,6 +639,13 @@ class MemberService(RecordService):
         uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
         uow.register(IndexRefreshOp(indexer=self.indexer))
 
+        self._send_notification(
+            CommunityInvitationAcceptedEvent,
+            uow,
+            request_id=request_id,
+            member=member,
+        )
+
     @unit_of_work()
     def decline_invite(self, identity, request_id, uow=None):
         """Decline an invitation."""
@@ -642,6 +663,13 @@ class MemberService(RecordService):
                 indexer=self.indexer,
                 index=ArchivedInvitation.index,
             )
+        )
+
+        self._send_notification(
+            CommunityInvitationDeclinedEvent,
+            uow,
+            request_id=request_id,
+            member=member,
         )
 
     def read_many(self, *args, **kwargs):
@@ -674,3 +702,60 @@ class MemberService(RecordService):
         self.archive_indexer.bulk_index([inv.id for inv in archived_invitations])
 
         return True
+
+
+    def _send_notification(self, type, uow, **kwargs):
+        from invenio_access.permissions import system_identity
+        from invenio_users_resources.records.api import UserAggregate
+        from invenio_communities.proxies import current_communities
+
+        def create_trigger(request):
+            created_by = request.created_by.resolve()
+            # dumping community
+            return created_by.dumps()
+
+        recipients = []
+
+        # fetching members based on event (ideally would be defined in the policy as a callable and pass the uow and kwargs?)
+        # passing the notification would allow the callable to modify it, which is undesired
+        if type in [CommunityInvitationAcceptedEvent, CommunityInvitationDeclinedEvent]:
+            request_item = current_requests_service.read(identity=system_identity, id_=kwargs.get("request_id"))
+            community = request_item._request.created_by.resolve()
+            members = Member.get_members(community.id)
+            # get owner, managers. There should be an easier way
+            recipients = [
+                m.relations.user.dereference() for m in members
+                if m.user_id
+                and m.role in ["owner", "manager"]
+            ]
+
+        elif type in [CommunityInvitationCreatedEvent]:
+            request_item = kwargs.get("request")
+            community = request_item._request.created_by.resolve()
+            member = kwargs.get("member")
+            members = Member.get_members(community.id, members=[member])
+            recipients = [m.relations.user.dereference() for m in members]
+
+        assert request_item
+
+        notification = Notification()
+        notification.type = type.handling_key
+        notification.trigger = create_trigger(request_item._request)
+
+        notification.data.update({
+            "community": current_communities.service.read(identity=system_identity, id_=community.id).to_dict(),
+            "request": request_item.to_dict(),
+        })
+
+        # construct UI link of request review for use in template (there are request links for API but none for UI)
+        # not sure if user has access to community. The request should also be available under /me/requests/<id>
+        notification.data["request"]["links"].setdefault(
+            "self_html", f'{notification.data["community"]["links"]["self_html"]}/requests/{notification.data["request"]["id"]}',
+        )
+
+        notification.recipients = recipients
+        if not notification.recipients:
+            return
+
+        # should register in uow
+        current_notifications_manager.broadcast(notification=notification)
