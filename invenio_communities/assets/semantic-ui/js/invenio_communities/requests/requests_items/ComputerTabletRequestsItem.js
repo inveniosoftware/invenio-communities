@@ -5,27 +5,27 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import _get from "lodash/get";
-import _truncate from "lodash/truncate";
 import React from "react";
 import RequestTypeLabel from "@js/invenio_requests/request/RequestTypeLabel";
 import RequestStatusLabel from "@js/invenio_requests/request/RequestStatusLabel";
 import { RequestActionController } from "@js/invenio_requests/request/actions/RequestActionController";
 import { Icon, Item } from "semantic-ui-react";
 import { RightBottomLabel } from "./RightBottomLabel";
+import PropTypes from "prop-types";
+import { requestsResultProps } from "./RequestsResultProps";
 
 export const ComputerTabletRequestsItem = ({
   result,
   community,
-  differenceInDays,
-  isCreatorCommunity,
-  creatorName,
   updateQueryState,
   currentQueryState,
 }) => {
-  const refreshAfterAction = () => {
-    updateQueryState(currentQueryState);
-  };
+  const {
+    differenceInDays,
+    isCreatorCommunity,
+    creatorName,
+    refreshAfterAction,
+  } = requestsResultProps(result, updateQueryState, currentQueryState);
   return (
     <Item
       key={community.id}
@@ -74,4 +74,11 @@ export const ComputerTabletRequestsItem = ({
       </Item.Content>
     </Item>
   );
+};
+
+ComputerTabletRequestsItem.propTypes = {
+  result: PropTypes.object.isRequired,
+  community: PropTypes.object.isRequired,
+  updateQueryState: PropTypes.func.isRequired,
+  currentQueryState: PropTypes.object.isRequired,
 };

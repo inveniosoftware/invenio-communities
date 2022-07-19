@@ -38,6 +38,8 @@ import {
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
 } from "@js/invenio_search_ui/components";
+import { ComputerTabletRequestActions } from "@js/invenio_requests/request/actions/requestActions/ComputerTabletRequestActions";
+import { MobileRequestActions } from "@js/invenio_requests/request/actions/requestActions/MobileRequestActions";
 
 const domContainer = document.getElementById("communities-request-search-root");
 
@@ -58,65 +60,50 @@ const RequestsResultsItemTemplateWithCommunity = parametrize(
 );
 const RequestAcceptButtonWithConfig = parametrize(RequestAcceptButton, {
   size: "mini",
-  className: "ml-5"
+  className: "ml-5",
 });
 
 const RequestDeclineButtonWithConfig = parametrize(RequestDeclineButton, {
   size: "mini",
-  className: "ml-5"
+  className: "ml-5",
 });
 
 const RequestCancelButtonWithConfig = parametrize(RequestCancelButton, {
   size: "mini",
-  className: "ml-5"
+  className: "ml-5",
 });
 
 const RequestAcceptButtonMobileWithConfig = parametrize(RequestAcceptButton, {
-  size: "mini",
-  className: "mt-10 fluid-responsive",
+  className: "fluid-responsive",
 });
 
 const RequestDeclineButtonMobileWithConfig = parametrize(RequestDeclineButton, {
-  size: "mini",
-  className: "mt-10 fluid-responsive",
+  className: "fluid-responsive",
 });
 
 const RequestCancelButtonMobileWithConfig = parametrize(RequestCancelButton, {
-  size: "mini",
-  className: "mt-10 fluid-responsive",
+  className: "fluid-responsive",
 });
 
 const CommunitySubmission = () => (
-  <LabelTypeSubmission className="rel-mr-1 primary" size="small" />
-)
+  <LabelTypeSubmission className="primary" size="small" />
+);
 
 const CommunityInvitation = () => (
-  <LabelTypeInvitation className="rel-mr-1 primary" size="small" />
-)
+  <LabelTypeInvitation className="primary" size="small" />
+);
 
-const Submitted = () => (
-  <LabelStatusSubmit className="rel-mr-1 primary" size="small" />
-)
+const Submitted = () => <LabelStatusSubmit className="primary" size="small" />;
 
-const Deleted = () => (
-  <LabelStatusDelete className="rel-mr-1 negative" size="small" />
-)
+const Deleted = () => <LabelStatusDelete className="negative" size="small" />;
 
-const Accepted = () => (
-  <LabelStatusAccept className="rel-mr-1 positive" size="small" />
-)
+const Accepted = () => <LabelStatusAccept className="positive" size="small" />;
 
-const Declined = () => (
-  <LabelStatusDecline className="rel-mr-1 negative" size="small" />
-)
+const Declined = () => <LabelStatusDecline className="negative" size="small" />;
 
-const Cancelled = () => (
-  <LabelStatusCancel className="rel-mr-1 neutral" size="small" />
-)
+const Cancelled = () => <LabelStatusCancel className="neutral" size="small" />;
 
-const Expired = () => (
-  <LabelStatusExpire className="rel-mr-1 expired" size="small" />
-)
+const Expired = () => <LabelStatusExpire className="expired" size="small" />;
 
 const defaultComponents = {
   "BucketAggregation.element": ContribBucketAggregationElement,
@@ -136,12 +123,21 @@ const defaultComponents = {
   "RequestStatusLabel.layout.declined": Declined,
   "RequestStatusLabel.layout.cancelled": Cancelled,
   "RequestStatusLabel.layout.expired": Expired,
-  "RequestActionModalTrigger.accept.computer-tablet": RequestAcceptButtonWithConfig,
-  "RequestActionModalTrigger.decline.computer-tablet": RequestDeclineButtonWithConfig,
-  "RequestActionModalTrigger.cancel.computer-tablet": RequestCancelButtonWithConfig,
-  "RequestActionModalTrigger.accept.mobile": RequestAcceptButtonMobileWithConfig,
-  "RequestActionModalTrigger.decline.mobile": RequestDeclineButtonMobileWithConfig,
-  "RequestActionModalTrigger.cancel.mobile": RequestCancelButtonMobileWithConfig,
+  "RequestActionModalTrigger.accept.computer-tablet":
+    RequestAcceptButtonWithConfig,
+  "RequestActionModalTrigger.decline.computer-tablet":
+    RequestDeclineButtonWithConfig,
+  "RequestActionModalTrigger.cancel.computer-tablet":
+    RequestCancelButtonWithConfig,
+  "RequestActionModalTrigger.accept.mobile":
+    RequestAcceptButtonMobileWithConfig,
+  "RequestActionModalTrigger.decline.mobile":
+    RequestDeclineButtonMobileWithConfig,
+  "RequestActionModalTrigger.cancel.mobile":
+    RequestCancelButtonMobileWithConfig,
+  "InvenioRequests.RequestActions.layout.computer-tablet":
+    ComputerTabletRequestActions,
+  "InvenioRequests.RequestActions.layout.mobile": MobileRequestActions,
   "RequestActionButton.cancel": RequestCancelButtonModal,
   "RequestActionButton.decline": RequestDeclineButton,
   "RequestActionButton.accept": RequestAcceptButton,
