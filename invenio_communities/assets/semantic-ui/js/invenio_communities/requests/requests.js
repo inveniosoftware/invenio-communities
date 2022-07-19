@@ -34,9 +34,6 @@ import {
 import { ComputerTabletRequestsItem } from "./requests_items/ComputerTabletRequestsItem";
 import { MobileRequestsItem } from "./requests_items/MobileRequestsItem";
 
-const timestampToRelativeTime = (timestamp) =>
-  DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
-
 export const RecordSearchBarElement = withState(
   ({
     placeholder: passedPlaceholder,
@@ -153,47 +150,7 @@ export const RequestsResultsGridItemTemplate = ({ result, community }) => {
   );
 };
 
-const RightBottomLabel = ({ result, className }) => {
-  return (
-    <small className={className}>
-      {result.receiver.community && result.expanded?.receiver.metadata.title && (
-        <>
-          <Icon className="default-margin" name="users" />
-          <span className="ml-5">
-            {result.expanded?.receiver.metadata.title}
-          </span>
-        </>
-      )}
-      {result.expires_at && (
-        <>
-          <span>
-            {i18next.t("Expires at:")}{" "}
-            {DateTime.fromISO(result.expires_at).toLocaleString(
-              i18next.language
-            )}
-          </span>
-        </>
-      )}
-    </small>
-  );
-};
-
 export const RequestsResultsItemTemplateCommunity = ({ result, community }) => {
-  const createdDate = new Date(result.created);
-  const differenceInDays = timestampToRelativeTime(createdDate.toISOString());
-  const createdBy = result.created_by;
-  const isCreatorUser = "user" in createdBy;
-  const isCreatorCommunity = "community" in createdBy;
-  let creatorName = "";
-  if (isCreatorUser) {
-    creatorName =
-      result.expanded?.created_by.profile?.full_name ||
-      result.expanded?.created_by.username ||
-      createdBy.user;
-  } else if (isCreatorCommunity) {
-    creatorName =
-      result.expanded?.created_by.metadata?.title || createdBy.community;
-  }
   const ComputerTabletRequestsItemWithState = withState(
     ComputerTabletRequestsItem
   );
@@ -203,17 +160,8 @@ export const RequestsResultsItemTemplateCommunity = ({ result, community }) => {
       <ComputerTabletRequestsItemWithState
         result={result}
         community={community}
-        differenceInDays={differenceInDays}
-        isCreatorCommunity={isCreatorCommunity}
-        creatorName={creatorName}
       />
-      <MobileRequestsItemWithState
-        result={result}
-        community={community}
-        differenceInDays={differenceInDays}
-        isCreatorCommunity={isCreatorCommunity}
-        creatorName={creatorName}
-      />
+      <MobileRequestsItemWithState result={result} community={community} />
     </>
   );
 };
