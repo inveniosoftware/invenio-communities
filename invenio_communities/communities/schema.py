@@ -15,6 +15,9 @@ from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services.records.schema import BaseRecordSchema
 from invenio_vocabularies.contrib.affiliations.schema import AffiliationRelationSchema
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
+from invenio_vocabularies.services.schema import (
+    VocabularyRelationSchema as VocabularySchema,
+)
 from marshmallow import (
     EXCLUDE,
     Schema,
@@ -78,30 +81,6 @@ class CommunityAccessSchema(Schema):
             ]
         )
     )
-
-
-# TODO this schema is duplicated from invenio-rdm-records, can't be imported
-# TODO in this module. Might need to be moved to invenio-vocabularies.
-# TODO move clean method to reusable non-record schema class
-class VocabularySchema(Schema):
-    """Invenio Vocabulary schema."""
-
-    id = SanitizedUnicode(required=True)
-    title = fields.Dict(dump_only=True)
-
-    @pre_load
-    def clean(self, data, **kwargs):
-        """Removes dump_only fields.
-
-        Why: We want to allow the output of a Schema dump, to be a valid input
-             to a Schema load without causing strange issues.
-        """
-        value_is_dict = isinstance(data, dict)
-        if value_is_dict:
-            for name, field in self.fields.items():
-                if field.dump_only:
-                    data.pop(name, None)
-        return data
 
 
 class CommunityMetadataSchema(Schema):
