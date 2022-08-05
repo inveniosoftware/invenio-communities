@@ -14,13 +14,11 @@ from invenio_records_resources.services import (
     SearchOptions,
     pagination_links,
 )
+from invenio_records_resources.services.records.components import MetadataComponent
 from invenio_records_resources.services.records.queryparser import (
     QueryParser,
     SearchFieldTransformer,
 )
-
-from invenio_records_resources.services.records.components import \
-    MetadataComponent
 
 from ...communities.records.api import Community
 from ...permissions import CommunityPermissionPolicy
@@ -171,9 +169,7 @@ class MemberServiceConfig(RecordServiceConfig):
     links_item = {}
 
     # ResultList configurations
-    links_search = pagination_links(
-        "{+api}/communities/{community_id}/members{?args*}"
-    )
+    links_search = pagination_links("{+api}/communities/{community_id}/members{?args*}")
 
     # Service components
     components = [

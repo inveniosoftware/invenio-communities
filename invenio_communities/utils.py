@@ -45,9 +45,13 @@ def load_community_needs(identity):
     cache_key = identity_cache_key(identity)
     community_roles = current_cache.get(cache_key)
     if community_roles is None:
-            # aka Member.get_memberships(identity)
-            community_roles = current_communities.service.members.config.record_cls.get_memberships(identity)
-            current_cache.set(cache_key, community_roles, timeout=24*3600)
+        # aka Member.get_memberships(identity)
+        community_roles = (
+            current_communities.service.members.config.record_cls.get_memberships(
+                identity
+            )
+        )
+        current_cache.set(cache_key, community_roles, timeout=24 * 3600)
 
     # Add community needs to identity
     for c_id, role in community_roles:

@@ -11,10 +11,10 @@
 import time
 from copy import deepcopy
 from datetime import datetime, timedelta
-from invenio_cache import current_cache
 
 import pytest
 from invenio_access.permissions import system_identity
+from invenio_cache import current_cache
 from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
 
