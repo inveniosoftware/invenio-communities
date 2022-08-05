@@ -327,6 +327,7 @@ def test_search_user(
     members,
     new_user,
 ):
+    current_cache.clear()
     owner = members["owner"]
     reader = members["reader"]
 

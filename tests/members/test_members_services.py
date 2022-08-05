@@ -12,6 +12,7 @@
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
+from invenio_cache import current_cache
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_requests.records.api import RequestEvent
 from marshmallow import ValidationError
@@ -37,6 +38,7 @@ from invenio_communities.members.records.api import ArchivedInvitation, Member
 )
 def test_add_allowed(member_service, community, members, group, actor, role, db):
     """Test that the given roles CAN add a group member."""
+    current_cache.clear()
     data = {
         "members": [{"type": "group", "id": group.name}],
         "role": role,
