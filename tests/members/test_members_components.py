@@ -7,12 +7,15 @@
 
 """Test components."""
 
-from invenio_cache import current_cache
 from invenio_access.permissions import system_identity
+from invenio_cache import current_cache
+
 from invenio_communities.utils import identity_cache_key
 
 
-def test_accept_invite_cache_clear(requests_service, invite_request_id, invite_user, db, es_clear):
+def test_accept_invite_cache_clear(
+    requests_service, invite_request_id, invite_user, db, es_clear
+):
     """Test that the community member cached entries are cleared."""
     current_cache.clear()
     cache_key = identity_cache_key(invite_user.identity)
@@ -22,14 +25,14 @@ def test_accept_invite_cache_clear(requests_service, invite_request_id, invite_u
     assert len(community_roles) == 0
 
     # cached entry should be cleared on accept_invite
-    requests_service.execute_action(
-        invite_user.identity, invite_request_id, 'accept')
+    requests_service.execute_action(invite_user.identity, invite_request_id, "accept")
     community_roles = current_cache.get(cache_key)
     assert community_roles == None
     invite_user.refresh()
     community_roles = current_cache.get(cache_key)
     assert len(community_roles) == 1
-    
+
+
 def test_member_delete_cache_clear(member_service, community, new_user, db, es_clear):
     """Test that the community member cached entries are cleared."""
     current_cache.clear()
@@ -61,6 +64,7 @@ def test_member_delete_cache_clear(member_service, community, new_user, db, es_c
     new_user.refresh()
     community_roles = current_cache.get(cache_key)
     assert len(community_roles) == 0
+
 
 def test_member_add_cache_clear(member_service, community, new_user, db, es_clear):
     """Test that the community member cached entries are cleared."""

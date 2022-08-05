@@ -524,7 +524,7 @@ class MemberService(RecordService):
 
         # Run components
         self.run_components(
-            'members_update',
+            "members_update",
             identity,
             record=member,
             errors=None,
@@ -567,7 +567,7 @@ class MemberService(RecordService):
             )
             # Run components
             self.run_components(
-                'members_delete',
+                "members_delete",
                 identity,
                 record=m,
                 errors=None,
@@ -597,7 +597,7 @@ class MemberService(RecordService):
         # TODO: recompute permissions for member.
         # Run components
         self.run_components(
-            'accept_invite',
+            "accept_invite",
             identity,
             record=member,
             errors=None,
