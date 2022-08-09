@@ -121,10 +121,10 @@ def test_member_update_cache_clear(member_service, community, new_user, db, es_c
     assert len(community_roles) == 1
 
 
-def test_group_add_cache_clear(
+def test_group_actions_cache_clear(
     member_service, restricted_community, admin, db, es_clear
 ):
-    """Test that the community member cached entries are cleared on group add."""
+    """Test that the community member cached entries are cleared on group actions."""
     current_cache.clear()
     cache_key = identity_cache_key(admin.identity)
 
@@ -132,16 +132,41 @@ def test_group_add_cache_clear(
     community_roles = current_cache.get(cache_key)
     assert len(community_roles) == 0
 
+    # cached entry should be cleared for group members on add
     data = {
         "members": [{"type": "group", "id": "admin-access"}],
         "role": "reader",
     }
 
-    member_service.add(system_identity, restricted_community._record.id, data)
     # cached entry should be cleared for group members
+    member_service.add(system_identity, restricted_community._record.id, data)
     community_roles = current_cache.get(cache_key)
     assert community_roles == None
 
     admin.refresh()
     community_roles = current_cache.get(cache_key)
     assert len(community_roles) == 1
+
+    # cached entry should be cleared for group members on update
+    update_data = {
+        "members": [{"type": "group", "id": "admin-access"}],
+        "role": "manager",
+    }
+    member_service.update(system_identity, restricted_community._record.id, update_data)
+    community_roles = current_cache.get(cache_key)
+    assert community_roles == None
+
+    admin.refresh()
+    community_roles = current_cache.get(cache_key)
+    assert len(community_roles) == 1
+
+    # cached entry should be cleared for group members on delete
+    delete_data = {
+        "members": [{"type": "group", "id": "admin-access"}],
+    }
+    member_service.delete(system_identity, restricted_community._record.id, delete_data)
+    community_roles = current_cache.get(cache_key)
+    assert community_roles == None
+    admin.refresh()
+    community_roles = current_cache.get(cache_key)
+    assert len(community_roles) == 0
