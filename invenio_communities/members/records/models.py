@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -14,7 +15,7 @@ from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_records.models import RecordMetadataBase
 from invenio_requests.records.models import RequestMetadata
-from sqlalchemy import CheckConstraint, Index
+from sqlalchemy import CheckConstraint, Index, or_
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils.types import UUIDType
 
@@ -84,10 +85,15 @@ class BaseMemberModel(RecordMetadataBase):
         """Query for (community,role)-pairs."""
         q = db.session.query(cls.community_id, cls.role).filter(cls.active == active)
 
-        if user_id:
-            q = q.filter(cls.user_id == user_id)
-        if group_ids:
-            q = q.filter(cls.group_id.in_(group_ids))
+        user_filter = cls.user_id == user_id
+        group_filter = cls.group_id.in_(group_ids)
+
+        if user_id and group_ids:
+            q = q.filter(or_(user_filter, group_filter))
+        elif user_id:
+            q = q.filter(user_filter)
+        elif group_ids:
+            q = q.filter(group_filter)
 
         return q.distinct()
 
