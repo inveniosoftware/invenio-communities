@@ -34,7 +34,6 @@ export class SearchFiltersComponent extends Component {
             updateQueryState={updateQueryState}
             loading={currentResultsState.loading}
             size="large"
-            className="fluid-responsive"
           />
         ))}
       </>
