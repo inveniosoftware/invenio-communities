@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from "react";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export class DropdownSort extends Component {
@@ -32,8 +32,16 @@ export class DropdownSort extends Component {
     });
     return (
       <Dropdown
+        icon="sort"
         button
+        labeled
         item
+        trigger={
+          <span className='capitalize'>
+            {currentSortBy}
+            <Icon name='dropdown'/>
+          </span>
+        }
         options={optionsWithDisabled}
         value={currentSortBy}
         onChange={(_, { value }) => onValueChange(value)}
@@ -41,7 +49,7 @@ export class DropdownSort extends Component {
         selectOnNavigation={selectOnNavigation}
         selectOnBlur={false}
         size="large"
-        className="fluid-responsive"
+        className="icon fluid-responsive"
       />
     );
   }
@@ -88,14 +96,22 @@ export class DropdownFilter extends Component {
 
     return (
       <Dropdown
+        icon="filter"
+        labeled
         item
         button
-        text={filterLabel}
+        trigger={
+          <span>
+            {filterLabel}
+            <Icon name='dropdown'/>
+          </span>
+        }
         options={options}
         onChange={this.onChangeFilter}
         selectOnBlur={false}
         value={null}
         loading={loading}
+        className="icon fluid-responsive"
         {...uiProps}
       />
     );

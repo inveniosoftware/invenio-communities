@@ -252,7 +252,7 @@ export const RequestsResults = ({
               <Grid>
                 <Grid.Row
                   verticalAlign="middle"
-                  className="small highlight-background"
+                  className="small pt-5 pb-5 highlight-background"
                 >
                   <Grid.Column width={4}>
                     <Count
@@ -271,7 +271,10 @@ export const RequestsResults = ({
                         values={sortOptions}
                         label={(cmp) => (
                           <>
-                            {i18next.t("Sort by")} {cmp}
+                            <label className="mr-10">
+                              {i18next.t("Sort by")}
+                            </label>
+                            {cmp}
                           </>
                         )}
                       />
