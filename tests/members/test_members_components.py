@@ -119,3 +119,29 @@ def test_member_update_cache_clear(member_service, community, new_user, db, es_c
     new_user.refresh()
     community_roles = current_cache.get(cache_key)
     assert len(community_roles) == 1
+
+
+def test_group_add_cache_clear(
+    member_service, restricted_community, admin, db, es_clear
+):
+    """Test that the community member cached entries are cleared on group add."""
+    current_cache.clear()
+    cache_key = identity_cache_key(admin.identity)
+
+    admin.refresh()
+    community_roles = current_cache.get(cache_key)
+    assert len(community_roles) == 0
+
+    data = {
+        "members": [{"type": "group", "id": "admin-access"}],
+        "role": "reader",
+    }
+
+    member_service.add(system_identity, restricted_community._record.id, data)
+    # cached entry should be cleared for group members
+    community_roles = current_cache.get(cache_key)
+    assert community_roles == None
+
+    admin.refresh()
+    community_roles = current_cache.get(cache_key)
+    assert len(community_roles) == 1

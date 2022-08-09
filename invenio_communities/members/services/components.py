@@ -9,6 +9,7 @@
 """Members Components."""
 
 from flask_principal import Identity
+from invenio_accounts.models import Role
 from invenio_records_resources.services.records.components import ServiceComponent
 
 from invenio_communities.members.records.api import MemberMixin
@@ -21,15 +22,26 @@ class CommunityMemberCachingComponent(ServiceComponent):
 
     def _member_changed(self, member):
         """Call caching membership change function for user."""
-        # TODO: relevant for groups as well?
+
+        def _get_user_ids_from_group_id(role_id):
+            r = Role.query.filter(Role.id == role_id).one()
+            return [u.id for u in r.users.all()]
+
+        user_ids = []
         if isinstance(member, MemberMixin):
-            if not member.user_id:
+            if member.user_id:
+                user_ids = [member.user_id]
+            elif member.group_id:
+                user_ids = _get_user_ids_from_group_id(member.group_id)
+            else:
                 return
-            user_id = member.user_id
         elif isinstance(member, dict):
-            if member.get("type") != "user":
+            if member.get("type") == "user":
+                user_ids = [member["id"]]
+            elif member.get("type") == "group":
+                user_ids = _get_user_ids_from_group_id(member["id"])
+            else:
                 return
-            user_id = member["id"]
         else:
             raise TypeError(
                 "Member must be 'MemberMixin' or 'dict' but was {type}".format(
@@ -37,7 +49,8 @@ class CommunityMemberCachingComponent(ServiceComponent):
                 )
             )
 
-        on_membership_change(Identity(user_id))
+        for user_id in user_ids:
+            on_membership_change(Identity(user_id))
 
     def accept_invite(self, identity, record=None, data=None, **kwargs):
         """On accept invite."""
