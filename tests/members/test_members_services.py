@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -369,6 +370,29 @@ def test_search_members_restricted(
     pytest.raises(
         PermissionDeniedError, member_service.search_public, anon_identity, c._record.id
     )
+
+
+def test_search_members_restricted_as_group(
+    member_service, restricted_community, admin, owner, db, clean_index
+):
+    """Test if added group members can perform search."""
+    data = {
+        "members": [{"type": "group", "id": "admin-access"}],
+        "role": "owner",
+    }
+
+    pytest.raises(
+        PermissionDeniedError,
+        member_service.search,
+        admin.identity,
+        restricted_community._record.id,
+    )
+
+    # adding group so its members are able to perform actions
+    member_service.add(owner.identity, restricted_community._record.id, data)
+    admin.refresh()
+    res = member_service.search(admin.identity, restricted_community._record.id)
+    assert res.total == 2
 
 
 #

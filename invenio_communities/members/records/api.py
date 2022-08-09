@@ -2,13 +2,14 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 """Members data layer API."""
 
-from invenio_accounts.models import Role
+from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_records.dumpers import ElasticsearchDumper
 from invenio_records.dumpers.indexedat import IndexedAtDumperExt
@@ -91,8 +92,14 @@ class MemberMixin:
     @classmethod
     def get_memberships(cls, identity):
         """Get community memberships for a given identity."""
-        # TODO: extract group/role ids from identity
-        query = cls.model_cls.query_memberships(user_id=identity.id, group_ids=[])
+        group_ids = []
+        user = User.query.filter(User.id == identity.id).one_or_none()
+        if user:
+            group_ids = [r.id for r in user.roles]
+
+        query = cls.model_cls.query_memberships(
+            user_id=identity.id, group_ids=group_ids
+        )
         return [(str(comm_id), role) for comm_id, role in query]
 
     @classmethod
