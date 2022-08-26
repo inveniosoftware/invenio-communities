@@ -9,7 +9,7 @@
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   DropdownSort
-} from '@js/invenio_communities/members/components/SearchDropdowns';
+} from '@js/invenio_search_ui/components';
 
 import { PublicMembersResultsItem } from "./PublicMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
