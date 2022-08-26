@@ -10,7 +10,7 @@ import React, { Component } from "react";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { Filters } from "../../Filters";
 import { FilterLabels } from "../../components/FilterLabels";
-import { SearchFilters } from "../../components/SearchFilters";
+import { SearchFilters } from "@js/invenio_search_ui/components";
 import { SearchBar, Sort } from "react-searchkit";
 
 export class MembersSearchLayout extends Component {
