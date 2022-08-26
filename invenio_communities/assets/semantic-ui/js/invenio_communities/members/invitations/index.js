@@ -8,7 +8,7 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
-import { DropdownSort } from "@js/invenio_communities/members/components/SearchDropdowns";
+import { DropdownSort } from "@js/invenio_search_ui/components";
 import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
 import { InvitationResultItem } from "./InvitationResultItem";
 import { InvitationsResults } from "./InvitationsResults";

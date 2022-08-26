@@ -15,7 +15,7 @@ import { Filters } from "../Filters";
 import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
 import { SearchBar, Sort } from "react-searchkit";
 import { FilterLabels } from "../components/FilterLabels";
-import { SearchFilters } from "../components/SearchFilters";
+import { SearchFilters } from "@js/invenio_search_ui/components/SearchFilters";
 
 export class InvitationsSearchLayout extends Component {
   render() {
