@@ -22,40 +22,55 @@ from invenio_records_resources.services.records.config import (
     SearchOptions as SearchOptionsBase,
 )
 from invenio_records_resources.services.records.links import pagination_links
+from invenio_records_resources.services.records.params import (
+    FacetsParam,
+    PaginationParam,
+    QueryStrParam,
+)
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
+from invenio_communities.communities.services.customizations import (
+    ConfiguratorMixin,
+    FromConfigSearchOptions,
+    SearchOptionsMixin,
+)
 from invenio_communities.communities.services.results import CommunityFeaturedList
 
 from ...permissions import CommunityPermissionPolicy
 from ..schema import CommunityFeaturedSchema, CommunitySchema
 from .components import (
     CommunityAccessComponent,
+    CustomFieldsComponent,
     FeaturedCommunityComponent,
     OAISetComponent,
     OwnershipComponent,
     PIDComponent,
 )
+from .sort import CommunitiesSortParam
 
 
-class SearchOptions(SearchOptionsBase):
+class SearchOptions(SearchOptionsBase, SearchOptionsMixin):
     """Search options."""
 
-    sort_options = {
-        **SearchOptionsBase.sort_options,
-        "featured": dict(
-            title=_("Featured"),
-            fields=[
-                {
-                    "featured.past": {
-                        "order": "desc",
-                    }
+    sort_featured = {
+        "title": _("Featured"),
+        "fields": [
+            {
+                "featured.past": {
+                    "order": "desc",
                 }
-            ],
-        ),
+            }
+        ],
     }
 
     facets = {"type": facets.type, "visibility": facets.visibility}
+    params_interpreters_cls = [
+        QueryStrParam,
+        PaginationParam,
+        CommunitiesSortParam,
+        FacetsParam,
+    ]
 
 
 class CommunityLink(Link):
@@ -72,7 +87,7 @@ class CommunityLink(Link):
         )
 
 
-class CommunityServiceConfig(RecordServiceConfig):
+class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     """Communities service configuration."""
 
     service_id = "communities"
@@ -85,7 +100,9 @@ class CommunityServiceConfig(RecordServiceConfig):
     indexer_queue_name = "communities"
 
     # Search configuration
-    search = SearchOptions
+    search = FromConfigSearchOptions(
+        "COMMUNITIES_SEARCH", search_option_cls=SearchOptions
+    )
 
     # Service schema
     schema = CommunitySchema
@@ -115,6 +132,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     # Service components
     components = [
         MetadataComponent,
+        CustomFieldsComponent,
         PIDComponent,
         RelationsComponent,
         CommunityAccessComponent,

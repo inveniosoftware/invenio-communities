@@ -63,7 +63,7 @@ class InvenioCommunities(object):
         """Initialize communities service."""
         # Services
         self.service = CommunityService(
-            CommunityServiceConfig,
+            CommunityServiceConfig.build(app),
             files_service=FileService(CommunityFileServiceConfig),
             members_service=MemberService(MemberServiceConfig()),
         )

@@ -10,7 +10,8 @@
 
 from invenio_records.dumpers import ElasticsearchDumper
 from invenio_records.dumpers.relations import RelationDumperExt
-from invenio_records.systemfields import ConstantField, ModelField, RelationsField
+from invenio_records.systemfields import ConstantField, DictField, ModelField
+from invenio_records.systemfields.relations import MultiRelationsField
 from invenio_records_resources.records.api import FileRecord, Record
 from invenio_records_resources.records.systemfields import (
     FilesField,
@@ -22,6 +23,7 @@ from invenio_vocabularies.contrib.affiliations.api import Affiliation
 from invenio_vocabularies.contrib.awards.api import Award
 from invenio_vocabularies.contrib.funders.api import Funder
 from invenio_vocabularies.records.api import Vocabulary
+from invenio_vocabularies.records.systemfields.relations import CustomFieldsRelation
 
 from ..dumpers.featured import FeaturedDumperExt
 from . import models
@@ -58,6 +60,9 @@ class Community(Record):
 
     access = CommunityAccessField()
 
+    #: Custom fields system field.
+    custom_fields = DictField(clear_none=True, create_if_missing=True)
+
     bucket_id = ModelField(dump=False)
     bucket = ModelField(dump=False)
     files = FilesField(
@@ -67,7 +72,7 @@ class Community(Record):
         delete=False,
     )
 
-    relations = RelationsField(
+    relations = MultiRelationsField(
         funding_award=PIDListRelation(
             "metadata.funding",
             relation_field="award",
@@ -94,6 +99,7 @@ class Community(Record):
             pid_field=Vocabulary.pid.with_type_ctx("communitytypes"),
             cache_key="communitytypes",
         ),
+        custom=CustomFieldsRelation("COMMUNITIES_CUSTOM_FIELDS"),
     )
 
 

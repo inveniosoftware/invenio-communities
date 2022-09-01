@@ -93,9 +93,28 @@ def communities_new():
     )
 
 
+def load_custom_fields(conf_ui, conf_backend):
+    """Load custom fields configuration."""
+    vocabulary_fields = []
+    conf_backend = {cf.name: cf for cf in conf_backend}
+    for section_cfg in conf_ui:
+        fields = section_cfg["fields"]
+        for field in fields:
+            field_instance = conf_backend.get(field["field"])
+            if getattr(field_instance, "relation_cls", None):
+                # add vocabulary options to field's properties
+                field["props"]["options"] = field_instance.options(g.identity)
+                vocabulary_fields.append(field["field"])
+    return {
+        "ui": conf_ui,
+        "vocabularies": vocabulary_fields,
+    }
+
+
 @pass_community(serialize=True)
 def communities_settings(pid_value, community, community_ui):
     """Community settings/profile page."""
+    conf = current_app.config
     permissions = community.has_permissions_to(
         ["update", "read", "search_requests", "search_invites"]
     )
@@ -131,6 +150,10 @@ def communities_settings(pid_value, community, community_ui):
         types=types_serialized["types"],
         permissions=permissions,  # hide/show UI components
         active_menu_tab="settings",
+        custom_fields=load_custom_fields(
+            conf.get("COMMUNITIES_CUSTOM_FIELDS_UI", []),
+            conf.get("COMMUNITIES_CUSTOM_FIELDS", []),
+        ),
     )
 
 
