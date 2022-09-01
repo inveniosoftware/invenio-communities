@@ -196,3 +196,15 @@ class OAISetComponent(ServiceComponent):
         self.delete(identity, data=data, record=record, **kwargs, slug=old_slug)
         community_set = self._create_set_from_community(record)
         db.session.add(community_set)
+
+
+class CustomFieldsComponent(ServiceComponent):
+    """Service component for custom fields."""
+
+    def create(self, identity, data=None, record=None, errors=None, **kwargs):
+        """Inject parsed custom fields to the record."""
+        record.custom_fields = data.get("custom_fields", {})
+
+    def update(self, identity, data=None, record=None, **kwargs):
+        """Inject parsed custom fields to the record."""
+        record.custom_fields = data.get("custom_fields", {})

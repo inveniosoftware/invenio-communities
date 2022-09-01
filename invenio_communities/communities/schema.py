@@ -9,9 +9,11 @@
 """Community schema."""
 
 import re
+from functools import partial
 from uuid import UUID
 
 from flask_babelex import lazy_gettext as _
+from invenio_records_resources.services.custom_fields import CustomFieldsSchema
 from invenio_records_resources.services.records.schema import BaseRecordSchema
 from invenio_vocabularies.contrib.affiliations.schema import AffiliationRelationSchema
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
@@ -124,6 +126,19 @@ class CommunitySchema(BaseRecordSchema):
     )
     metadata = NestedAttribute(CommunityMetadataSchema, required=True)
     access = NestedAttribute(CommunityAccessSchema, required=True)
+    custom_fields = NestedAttribute(
+        partial(CustomFieldsSchema, fields_var="COMMUNITIES_CUSTOM_FIELDS")
+    )
+
+    @pre_load
+    def initialize_custom_fields(self, data, **kwargs):
+        """Ensure custom fields are initialized.
+
+        We need to do that so that validation can take place in case a configured
+        field is marked as required.
+        """
+        data.setdefault("custom_fields", {})
+        return data
 
     @post_load
     def lowercase(self, in_data, **kwargs):

@@ -37,6 +37,9 @@
           }
         }
       },
+      "custom_fields": {
+        "type": "object"
+      },
       "metadata": {
         "properties": {
           "title": {

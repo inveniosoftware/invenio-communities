@@ -27,6 +27,7 @@ import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { FundingField, humanReadableBytes } from "react-invenio-deposit";
 import {
+  CustomFields,
   FieldLabel,
   Image,
   RemoteSelectField,
@@ -46,6 +47,7 @@ import {
 import * as Yup from "yup";
 import { CommunityApi } from "../../api";
 import { communityErrorSerializer } from "../../api/serializers";
+import { CustomFieldSerializer } from "./CustomFieldSerializer";
 import { DeleteButton } from "./DeleteButton";
 import { RenameCommunitySlugButton } from "./RenameCommunitySlugButton";
 
@@ -363,6 +365,14 @@ class CommunityProfileForm extends Component {
       };
     });
 
+    // Deserialize custom fields
+    initialValues = new CustomFieldSerializer({
+      fieldpath: "custom_fields",
+      deserializedDefault: {},
+      serializedDefault: {},
+      vocabularyFields: this.props.customFields.vocabularies,
+    }).deserialize(initialValues);
+
     return {
       ...initialValues,
       metadata: {
@@ -444,6 +454,14 @@ class CommunityProfileForm extends Component {
       };
     });
 
+    // Serialize custom fields
+    submittedCommunity = new CustomFieldSerializer({
+      fieldpath: "custom_fields",
+      deserializedDefault: {},
+      serializedDefault: {},
+      vocabularyFields: this.props.customFields.vocabularies,
+    }).serialize(submittedCommunity);
+
     submittedCommunity = {
       ...submittedCommunity,
       metadata: { ...values.metadata, organizations, funding },
@@ -485,7 +503,7 @@ class CommunityProfileForm extends Component {
   };
 
   render() {
-    const { types } = this.props;
+    const { types, customFields } = this.props;
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
@@ -679,6 +697,16 @@ class CommunityProfileForm extends Component {
                       };
                     }}
                   />
+                  {!_isEmpty(customFields.ui) && (
+                    <CustomFields
+                      config={customFields.ui}
+                      templateLoader={(widget) =>
+                        import(`@templates/custom_fields/${widget}.js`)
+                      }
+                      fieldPathPrefix="custom_fields"
+                    />
+                  )}
+
                   {/* TODO: Re-enable once properly integrated to be displayed */}
                   {/* <RichInputField
                     label="Curation policy"
@@ -710,8 +738,9 @@ class CommunityProfileForm extends Component {
                     loading={isSubmitting}
                     labelPosition="left"
                     primary
-                    type="submit"
+                    type="button"
                     icon
+                    onClick={(event) => handleSubmit(event)}
                   >
                     <Icon name="save" />
                     {i18next.t("Save")}
@@ -753,6 +782,7 @@ const community = JSON.parse(domContainer.dataset.community);
 const hasLogo = JSON.parse(domContainer.dataset.hasLogo);
 const types = JSON.parse(domContainer.dataset.types);
 const logoMaxSize = JSON.parse(domContainer.dataset.logoMaxSize);
+const customFields = JSON.parse(domContainer.dataset.customFields);
 
 ReactDOM.render(
   <CommunityProfileForm
@@ -761,6 +791,7 @@ ReactDOM.render(
     defaultLogo="/static/images/square-placeholder.png"
     types={types}
     logoMaxSize={logoMaxSize}
+    customFields={customFields}
   />,
   domContainer
 );

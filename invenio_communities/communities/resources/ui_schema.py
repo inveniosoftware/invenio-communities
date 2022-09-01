@@ -8,7 +8,10 @@
 
 """UI community schema."""
 
+from functools import partial
+
 from flask_resources import BaseObjectSchema
+from invenio_records_resources.services.custom_fields import CustomFieldsSchemaUI
 from invenio_vocabularies.contrib.awards.serializer import AwardL10NItemSchema
 from invenio_vocabularies.contrib.funders.serializer import FunderL10NItemSchema
 from invenio_vocabularies.resources import VocabularyL10Schema
@@ -30,6 +33,11 @@ class UICommunitySchema(BaseObjectSchema):
     funding = fields.List(
         fields.Nested(FundingSchema()),
         attribute="metadata.funding",
+    )
+
+    # Custom fields
+    custom_fields = fields.Nested(
+        partial(CustomFieldsSchemaUI, fields_var="COMMUNITIES_CUSTOM_FIELDS")
     )
 
 

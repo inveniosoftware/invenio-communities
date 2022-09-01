@@ -38,7 +38,10 @@
         }
       }
     },
-
+    "custom_fields": {
+      "type": "object",
+      "description": "Configured additional metadata"
+    },
     "metadata": {
       "type": "object",
       "description": "Resource metadata.",
