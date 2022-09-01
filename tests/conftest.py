@@ -19,6 +19,7 @@ from invenio_access.permissions import superuser_access
 from invenio_accounts.models import Role
 from invenio_admin.permissions import action_admin_access
 from invenio_app.factory import create_api
+from invenio_records_resources.services.custom_fields import TextCF
 from invenio_requests.proxies import current_events_service, current_requests_service
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 from invenio_vocabularies.records.api import Vocabulary
@@ -44,6 +45,11 @@ def app_config(app_config):
     ] = "invenio_jsonschemas.proxies.current_refresolver_store"
     # Variable not used. We set it to silent warnings
     app_config["JSONSCHEMAS_HOST"] = "not-used"
+
+    # Custom fields
+    app_config["COMMUNITIES_CUSTOM_FIELDS"] = [
+        TextCF(name="mycommunityfield", use_as_filter=True),
+    ]
 
     return app_config
 
@@ -398,3 +404,13 @@ def members(member_service, community, users, db):
         Member.index.refresh()
     db.session.commit()
     return users
+
+
+@pytest.fixture(scope="module")
+def cli_runner(base_app):
+    """Create a CLI runner for testing a CLI command."""
+
+    def cli_invoke(command, *args, input=None):
+        return base_app.test_cli_runner().invoke(command, args, input=input)
+
+    return cli_invoke
