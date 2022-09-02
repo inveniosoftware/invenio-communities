@@ -1,0 +1,373 @@
+# Translations template for invenio-communities.
+# Copyright (C) 2022 CERN
+# This file is distributed under the same license as the invenio-communities
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+# 
+# Translators:
+# Tibor Simko <tibor.simko@cern.ch>, 2022
+# Kalven Richie, 2022
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: invenio-communities 2.8.1\n"
+"Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
+"POT-Creation-Date: 2022-05-25 13:52+0200\n"
+"PO-Revision-Date: 2016-08-18 12:29+0000\n"
+"Last-Translator: Kalven Richie, 2022\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/inveniosoftware/teams/23537/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: invenio_communities/config.py:52 invenio_communities/config.py:136
+#: invenio_communities/config.py:178
+#: invenio_communities/members/services/config.py:29
+#: invenio_communities/members/services/config.py:66
+#: invenio_communities/members/services/config.py:96
+msgid "Best match"
+msgstr "最佳匹配"
+
+#: invenio_communities/config.py:56 invenio_communities/config.py:144
+#: invenio_communities/config.py:186
+#: invenio_communities/members/services/config.py:74
+#: invenio_communities/members/services/config.py:104
+msgid "Newest"
+msgstr "最新"
+
+#: invenio_communities/config.py:60 invenio_communities/config.py:148
+#: invenio_communities/config.py:190
+#: invenio_communities/members/services/config.py:78
+#: invenio_communities/members/services/config.py:108
+msgid "Oldest"
+msgstr "最老的"
+
+#: invenio_communities/config.py:64
+msgid "Version"
+msgstr "版本"
+
+#: invenio_communities/config.py:68
+msgid "Recently updated"
+msgstr "最近更新"
+
+#: invenio_communities/config.py:72
+msgid "Least recently updated"
+msgstr "最近更新最少的"
+
+#: invenio_communities/communities/services/facets.py:38
+#: invenio_communities/config.py:82
+msgid "Reader"
+msgstr "读者"
+
+#: invenio_communities/config.py:83
+msgid "Can view restricted records."
+msgstr "可以查看受限记录。"
+
+#: invenio_communities/communities/services/facets.py:40
+#: invenio_communities/config.py:88
+msgid "Curator"
+msgstr "管理者"
+
+#: invenio_communities/config.py:89
+msgid "Can curate records and view restricted records."
+msgstr "可以管理记录和查看受限记录。"
+
+#: invenio_communities/communities/services/facets.py:39
+#: invenio_communities/config.py:95
+msgid "Manager"
+msgstr "经营者"
+
+#: invenio_communities/config.py:96
+msgid "Can manage members, curate records and view restricted records."
+msgstr "可以管理成员、管理记录和查看受限记录。"
+
+#: invenio_communities/communities/services/facets.py:37
+#: invenio_communities/config.py:105
+msgid "Owner"
+msgstr "拥有者"
+
+#: invenio_communities/config.py:106
+msgid "Full administrative access to the entire community."
+msgstr "对整个社区的完全管理权限。"
+
+#: invenio_communities/config.py:140 invenio_communities/config.py:182
+#: invenio_communities/members/services/config.py:33
+#: invenio_communities/members/services/config.py:70
+#: invenio_communities/members/services/config.py:100
+msgid "Name"
+msgstr "名称"
+
+#: invenio_communities/errors.py:25
+msgid "A featured community entry with {q} does not exist."
+msgstr "带有{q}的特色社区条目不存在。"
+
+#: invenio_communities/communities/schema.py:29
+msgid "Field cannot be blank or longer than {max_} characters."
+msgstr "字段不能为空或长于{max}个字符。"
+
+#: invenio_communities/communities/schema.py:40
+msgid "The ID must not be an Universally Unique IDentifier (UUID)."
+msgstr "ID不能是通用唯一标识符（UUID）。"
+
+#: invenio_communities/communities/schema.py:111
+msgid "The ID should contain only letters with numbers or dashes."
+msgstr "ID只能包含带数字或破折号的字母。"
+
+#: invenio_communities/communities/services/components.py:29
+msgid "A community with this identifier already exists."
+msgstr "具有此标识符的社区已存在。"
+
+#: invenio_communities/communities/services/components.py:48
+msgid "The ID should be modified through the renaming URL instead."
+msgstr "应该通过重命名URL修改ID。"
+
+#: invenio_communities/communities/services/components.py:56
+msgid "A new ID value is required for the renaming."
+msgstr "重命名需要新的ID值。"
+
+#: invenio_communities/communities/services/components.py:113
+msgid "The community is not public"
+msgstr "社区不是公共的"
+
+#: invenio_communities/communities/services/config.py:41
+msgid "Featured"
+msgstr "作为特色的"
+
+#: invenio_communities/communities/services/facets.py:15
+msgid "Type"
+msgstr "类型"
+
+#: invenio_communities/communities/services/facets.py:17
+msgid "Organization"
+msgstr "组织"
+
+#: invenio_communities/communities/services/facets.py:18
+msgid "Event"
+msgstr "事件"
+
+#: invenio_communities/communities/services/facets.py:19
+msgid "Topic"
+msgstr "主题"
+
+#: invenio_communities/communities/services/facets.py:20
+msgid "Project"
+msgstr "项目"
+
+#: invenio_communities/communities/services/facets.py:26
+#: invenio_communities/communities/services/facets.py:35
+#: invenio_communities/communities/services/facets.py:46
+#: invenio_communities/members/services/facets.py:35
+msgid "Visibility"
+msgstr "可见性"
+
+#: invenio_communities/communities/services/facets.py:28
+#: invenio_communities/members/services/facets.py:36
+msgid "Public"
+msgstr "公开"
+
+#: invenio_communities/communities/services/facets.py:29
+#: invenio_communities/communities/services/facets.py:49
+msgid "Restricted"
+msgstr "被限制"
+
+#: invenio_communities/communities/services/facets.py:48
+#: invenio_communities/members/services/facets.py:36
+msgid "Hidden"
+msgstr "隐藏的"
+
+#: invenio_communities/members/services/facets.py:17
+msgid "Role"
+msgstr "角色"
+
+#: invenio_communities/members/services/facets.py:23
+#: invenio_communities/members/services/facets.py:41
+msgid "Status"
+msgstr "状态"
+
+#: invenio_communities/members/services/facets.py:25
+msgid "Submitted"
+msgstr "已提交"
+
+#: invenio_communities/members/services/facets.py:26
+msgid "Expired"
+msgstr "已过期"
+
+#: invenio_communities/members/services/facets.py:27
+msgid "Accepted"
+msgstr "已接受"
+
+#: invenio_communities/members/services/facets.py:28
+msgid "Declined"
+msgstr "拒绝"
+
+#: invenio_communities/members/services/facets.py:29
+msgid "Cancelled"
+msgstr "已取消"
+
+#: invenio_communities/members/services/facets.py:42
+msgid "Open"
+msgstr "开放"
+
+#: invenio_communities/members/services/facets.py:42
+msgid "Closed"
+msgstr "已关闭"
+
+#: invenio_communities/members/services/fields.py:21
+msgid "Invalid role."
+msgstr "角色无效。"
+
+#: invenio_communities/members/services/request.py:73
+msgid "Community invitation"
+msgstr "社区邀请"
+
+#: invenio_communities/members/services/schemas.py:82
+msgid "Missing fields 'role' and/or 'visible'"
+msgstr "缺少字段“role”和/或“visible”"
+
+#: invenio_communities/members/services/schemas.py:109
+msgid "Untitled"
+msgstr "无标题"
+
+#: invenio_communities/members/services/service.py:167
+msgid "Must be false"
+msgstr "必须为false"
+
+#: invenio_communities/members/services/service.py:188
+msgid "Invalid member type: email"
+msgstr "无效的成员类型：电子邮件"
+
+#: invenio_communities/members/services/service.py:239
+msgid "Invitation to join \"{community}\""
+msgstr "加入{community}的邀请"
+
+#: invenio_communities/members/services/service.py:258
+msgid "You will join as \"{role}\""
+msgstr "您将以{role}的身份加入"
+
+#: invenio_communities/members/services/service.py:434
+#: invenio_communities/members/services/service.py:537
+msgid "A community must have at least one owner."
+msgstr "社区必须至少有一个所有者。"
+
+#: invenio_communities/members/services/service.py:466
+msgid "You cannot change your own role."
+msgstr "你不能改变自己的角色。"
+
+#: invenio_communities/members/services/service.py:474
+msgid "You can only set public visibility on your own membership."
+msgstr "您只能对自己的会员资格设置公共可见性。"
+
+#: invenio_communities/members/services/service.py:482
+msgid "You will join as \"{role}\" (changed from: \"{previous}\")"
+msgstr "您将以“{role}”的身份加入（由“{previous}”更改）"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:24
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:22
+msgid "Communities"
+msgstr "社区"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:30
+msgid ""
+"Organize, curate and collaborate on records for your institution, project, "
+"topic or event."
+msgstr "为您的机构、项目、主题或活动组织、策划和合作记录。"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:38
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:12
+msgid "Search communities"
+msgstr "搜索社区"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:46
+#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
+msgid "New community"
+msgstr "新社群"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:56
+msgid "My communities"
+msgstr "我的社区"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:58
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:68
+msgid "See all"
+msgstr "查看全部"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:66
+msgid "New communities"
+msgstr "新的社区"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:12
+msgid "Tombstone"
+msgstr "墓碑文件"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:15
+msgid "Gone"
+msgstr "用完"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:17
+#, python-format
+msgid ""
+"\n"
+"    The community you are trying to access was removed from %(sitename)s. The\n"
+"    metadata of the community is kept for archival purposes.\n"
+"  "
+msgstr ""
+"\n"
+"您试图访问的社区已从%(sitename)s中删除。这个社区的元数据是为了存档而保存的。"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:60
+msgid "About this community"
+msgstr "关于这个社区"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:78
+msgid "New upload"
+msgstr "最新上传"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:12
+msgid " members"
+msgstr "成员"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:19
+#: invenio_communities/views/ui.py:127
+msgid "Members"
+msgstr "成员"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:20
+msgid "Invitations"
+msgstr "邀请"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:12
+msgid " requests"
+msgstr "请求"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
+msgid " settings"
+msgstr "设置"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
+msgid "Profile"
+msgstr "配置文件"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
+msgid "Privileges"
+msgstr "权限"
+
+#: invenio_communities/views/communities.py:26
+msgid "Your community is publicly accessible and shows up in search results."
+msgstr "您的社区可以公开访问，并显示在搜索结果中。"
+
+#: invenio_communities/views/communities.py:35
+msgid "Your community is restricted to users with access."
+msgstr "您的社区仅限于具有访问权限的用户。"
+
+#: invenio_communities/views/ui.py:120
+msgid "Requests"
+msgstr "请求"
+
+#: invenio_communities/views/ui.py:134
+msgid "Settings"
+msgstr "设置"
