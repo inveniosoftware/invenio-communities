@@ -9,6 +9,7 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
+import { extend } from "lodash";
 import _cloneDeep from "lodash/cloneDeep";
 import _defaultsDeep from "lodash/defaultsDeep";
 import _get from "lodash/get";
@@ -22,13 +23,12 @@ import _map from "lodash/map";
 import _mapValues from "lodash/mapValues";
 import _pickBy from "lodash/pickBy";
 import _unset from "lodash/unset";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { FundingField, humanReadableBytes } from "react-invenio-deposit";
 import {
   FieldLabel,
-  Image,
   RemoteSelectField,
   SelectField,
   TextField,
@@ -42,6 +42,7 @@ import {
   Icon,
   Message,
   Segment,
+  Image
 } from "semantic-ui-react";
 import * as Yup from "yup";
 import { CommunityApi } from "../../api";
@@ -102,21 +103,18 @@ const removeEmptyValues = (obj) => {
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
 
-const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
+const ProfileLogoForm = ({ community, defaultLogo, hasLogo, onError, logoMaxSize, setBackendPicture }) => {
+  const [logo, setLogo] = useState({
+    url: hasLogo ? community.links.logo : defaultLogo,
+    file: undefined
+  });
+
   let dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
       const file = acceptedFiles[0];
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        const client = new CommunityApi();
-        await client.updateLogo(community.id, file);
-        window.location.reload();
-      } catch (error) {
-        onError(error);
-      }
+      setBackendPicture(file);
+      setLogo({url: URL.createObjectURL(file), file: file});
     },
     onDropRejected: (rejectedFiles) => {
       // TODO: show error message when files are rejected e.g size limit
@@ -145,9 +143,8 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
             <input {...getInputProps()} />
             <Header className="mt-0">{i18next.t("Profile picture")}</Header>
             <Image
-              src={community.links.logo}
-              fallbackSrc={defaultLogo}
-              loadFallbackFirst={true}
+              src={logo.url}
+              onLoad={() => {return logo.file ? URL.revokeObjectURL(logo.url) : undefined}}
               fluid
               wrapped
               rounded
@@ -241,11 +238,252 @@ const DangerZone = ({ community, onError }) => (
   </Segment>
 );
 
-class CommunityProfileForm extends Component {
+
+class GlobalError extends Component {
+  render() {
+    return (
+      <Message
+        hidden={this.props.error === ""}
+        negative
+        className="flashed"
+      >
+        <Grid container>
+          <Grid.Column width={15} textAlign="left">
+            <strong>{this.props.error}</strong>
+          </Grid.Column>
+        </Grid>
+      </Message>
+    );
+  }
+}
+
+
+class ProfileMetadataForm extends Component {
+  render() {
+    const { isSubmitting, isValid, types } = this.props;
+
+    return (
+      <>
+      <TextField
+        fluid
+        fieldPath="metadata.title"
+        label={
+          <FieldLabel
+            htmlFor="metadata.title"
+            icon={"book"}
+            label={i18next.t("Community name")}
+          />
+        }
+      />
+      <SelectField
+        search
+        clearable
+        fieldPath="metadata.type.id"
+        label={
+          <FieldLabel
+            htmlFor="metadata.type.id"
+            icon="tag"
+            label={i18next.t("Type")}
+          />
+        }
+        options={types.map((ct) => {
+          return {
+            value: ct.id,
+            text: ct?.title_l10n ?? ct.id,
+          };
+        })}
+      />
+      <TextField
+        fieldPath="metadata.website"
+        label={
+          <FieldLabel
+            htmlFor="metadata.website"
+            icon="chain"
+            label={i18next.t("Website")}
+          />
+        }
+        fluid
+      />
+      <TextField
+        fieldPath="metadata.description"
+        label={
+          <FieldLabel
+            htmlFor="metadata.description"
+            icon={"pencil"}
+            label={i18next.t("Description")}
+          />
+        }
+      />
+      <RemoteSelectField
+        fieldPath={"metadata.organizations"}
+        suggestionAPIUrl="/api/affiliations"
+        suggestionAPIHeaders={{
+          Accept: "application/json",
+        }}
+        placeholder={i18next.t(
+          "Search for an organization by name"
+        )}
+        clearable
+        multiple
+        initialSuggestions={_get(
+          this.props.community,
+          "metadata.organizations",
+          []
+        )}
+        serializeSuggestions={(organizations) =>
+          _map(organizations, (organization) => {
+            const isKnownOrg =
+              this.knownOrganizations.hasOwnProperty(
+                organization.name
+              );
+            if (!isKnownOrg) {
+              this.knownOrganizations = {
+                ...this.knownOrganizations,
+                [organization.name]: organization.id,
+              };
+            }
+            return {
+              text: organization.name,
+              value: organization.name,
+              key: organization.name,
+            };
+          })
+        }
+        label={i18next.t("Organizations")}
+        noQueryMessage={i18next.t("Search for organizations...")}
+        allowAdditions
+        search={(filteredOptions, searchQuery) => filteredOptions}
+      />
+
+      <FundingField
+        fieldPath="metadata.funding"
+        searchConfig={{
+          searchApi: {
+            axios: {
+              headers: {
+                Accept: "application/vnd.inveniordm.v1+json",
+              },
+              url: "/api/awards",
+              withCredentials: false,
+            },
+          },
+          initialQueryState: {
+            sortBy: "bestmatch",
+            sortOrder: "asc",
+            layout: "list",
+            page: 1,
+            size: 5,
+          },
+        }}
+        label="Awards"
+        labelIcon="money bill alternate outline"
+        deserializeAward={(award) => {
+          return {
+            title: award.title_l10n,
+            pid: award.pid,
+            number: award.number,
+            funder: award.funder ?? "",
+            id: award.id,
+            ...(award.identifiers && {
+              identifiers: award.identifiers,
+            }),
+            ...(award.acronym && { acronym: award.acronym }),
+          };
+        }}
+        deserializeFunder={(funder) => {
+          return {
+            id: funder.id,
+            name: funder.name,
+            ...(funder.title_l10n && { title: funder.title_l10n }),
+            ...(funder.pid && { pid: funder.pid }),
+            ...(funder.country && { country: funder.country }),
+            ...(funder.identifiers && {
+              identifiers: funder.identifiers,
+            }),
+          };
+        }}
+        computeFundingContents={(funding) => {
+          let headerContent,
+          descriptionContent = "";
+          let awardOrFunder = "award";
+          if (funding.award) {
+            headerContent = funding.award.title;
+          }
+
+          if (funding.funder) {
+            const funderName =
+            funding.funder?.name ??
+            funding.funder?.title ??
+            funding.funder?.id ??
+            "";
+            descriptionContent = funderName;
+            if (!headerContent) {
+              awardOrFunder = "funder";
+              headerContent = funderName;
+              descriptionContent = "";
+            }
+          }
+
+          return {
+            headerContent,
+            descriptionContent,
+            awardOrFunder,
+          };
+        }}
+      />
+      {/* TODO: Re-enable once properly integrated to be displayed */ }
+      {/* <RichInputField
+            label="Curation policy"
+            fieldPath="metadata.curation_policy"
+            label={
+              <FieldLabel
+                htmlFor="metadata.curation_policy"
+                icon={"pencil"}
+                label="Curation policy"
+                />
+              }
+              editorConfig={CKEditorConfig}
+              fluid
+              />
+              <RichInputField
+              fieldPath="metadata.page"
+              label={
+                <FieldLabel
+                htmlFor="metadata.page"
+                icon={"pencil"}
+                label="Page description"
+              />
+            }
+            editorConfig={CKEditorConfig}
+            fluid
+          /> */}
+      <Button
+        disabled={!isValid || isSubmitting}
+        loading={isSubmitting}
+        labelPosition="left"
+        primary
+        type="submit"
+        icon
+      >
+        <Icon name="save" />
+        {i18next.t("Save")}
+      </Button>
+      </>
+    );
+  }
+}
+
+
+class ProfileDataForm extends Component {
   state = {
-    error: "",
+    newFile: undefined
   };
+
   knownOrganizations = {};
+
+  setBackendPicture = (file) => {
+    this.setState({ newFile: file });
+  };
 
   getInitialValues = () => {
     let initialValues = _defaultsDeep(this.props.community, {
@@ -428,19 +666,16 @@ class CommunityProfileForm extends Component {
     return submittedCommunity;
   };
 
-  setGlobalError = (error) => {
-    const { message } = communityErrorSerializer(error);
-    this.setState({ error: message });
-  };
-
   onSubmit = async (values, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
-    const payload = this.serializeValues(values);
+
     const client = new CommunityApi();
+
+    // Deal with metadata
+    const payload = this.serializeValues(values);
 
     try {
       await client.update(this.props.community.id, payload);
-      window.location.reload();
     } catch (error) {
       if (error === "UNMOUNTED") return;
 
@@ -449,15 +684,30 @@ class CommunityProfileForm extends Component {
       setSubmitting(false);
 
       if (message) {
-        this.setGlobalError(error);
+        this.props.onError(error);
       }
       if (errors) {
         errors.map(({ field, messages }) => setFieldError(field, messages[0]));
       }
+      return;
     }
+
+    // Deal with file
+    if (this.state.newFile) {
+      try {
+        await client.updateLogo(this.props.community.id, this.state.newFile);
+      } catch(error) {
+        setSubmitting(false);
+        this.props.onError(error);
+        return;
+      }
+    }
+
+    window.location.reload();
+
   };
+
   render() {
-    const { types } = this.props;
     return (
       <Formik
         initialValues={this.getInitialValues(this.props.community)}
@@ -466,17 +716,6 @@ class CommunityProfileForm extends Component {
       >
         {({ isSubmitting, isValid, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">
-            <Message
-              hidden={this.state.error === ""}
-              negative
-              className="flashed"
-            >
-              <Grid container>
-                <Grid.Column width={15} textAlign="left">
-                  <strong>{this.state.error}</strong>
-                </Grid.Column>
-              </Grid>
-            </Message>
             <Grid>
               <Grid.Row className="pt-10 pb-0">
                 <Grid.Column
@@ -485,209 +724,11 @@ class CommunityProfileForm extends Component {
                   computer={9}
                   className="rel-pb-2"
                 >
-                  <TextField
-                    fluid
-                    fieldPath="metadata.title"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.title"
-                        icon={"book"}
-                        label={i18next.t("Community name")}
-                      />
-                    }
+                  <ProfileMetadataForm
+                    isSubmitting={isSubmitting}
+                    isValid={isValid}
+                    types={this.props.types}
                   />
-                  <SelectField
-                    search
-                    clearable
-                    fieldPath="metadata.type.id"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.type.id"
-                        icon="tag"
-                        label={i18next.t("Type")}
-                      />
-                    }
-                    options={types.map((ct) => {
-                      return {
-                        value: ct.id,
-                        text: ct?.title_l10n ?? ct.id,
-                      };
-                    })}
-                  />
-                  <TextField
-                    fieldPath="metadata.website"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.website"
-                        icon="chain"
-                        label={i18next.t("Website")}
-                      />
-                    }
-                    fluid
-                  />
-                  <TextField
-                    fieldPath="metadata.description"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.description"
-                        icon={"pencil"}
-                        label={i18next.t("Description")}
-                      />
-                    }
-                  />
-                  <RemoteSelectField
-                    fieldPath={"metadata.organizations"}
-                    suggestionAPIUrl="/api/affiliations"
-                    suggestionAPIHeaders={{
-                      Accept: "application/json",
-                    }}
-                    placeholder={i18next.t(
-                      "Search for an organization by name"
-                    )}
-                    clearable
-                    multiple
-                    initialSuggestions={_get(
-                      this.props.community,
-                      "metadata.organizations",
-                      []
-                    )}
-                    serializeSuggestions={(organizations) =>
-                      _map(organizations, (organization) => {
-                        const isKnownOrg =
-                          this.knownOrganizations.hasOwnProperty(
-                            organization.name
-                          );
-                        if (!isKnownOrg) {
-                          this.knownOrganizations = {
-                            ...this.knownOrganizations,
-                            [organization.name]: organization.id,
-                          };
-                        }
-                        return {
-                          text: organization.name,
-                          value: organization.name,
-                          key: organization.name,
-                        };
-                      })
-                    }
-                    label={i18next.t("Organizations")}
-                    noQueryMessage={i18next.t("Search for organizations...")}
-                    allowAdditions
-                    search={(filteredOptions, searchQuery) => filteredOptions}
-                  />
-                  <FundingField
-                    fieldPath="metadata.funding"
-                    searchConfig={{
-                      searchApi: {
-                        axios: {
-                          headers: {
-                            Accept: "application/vnd.inveniordm.v1+json",
-                          },
-                          url: "/api/awards",
-                          withCredentials: false,
-                        },
-                      },
-                      initialQueryState: {
-                        sortBy: "bestmatch",
-                        sortOrder: "asc",
-                        layout: "list",
-                        page: 1,
-                        size: 5,
-                      },
-                    }}
-                    label="Awards"
-                    labelIcon="money bill alternate outline"
-                    deserializeAward={(award) => {
-                      return {
-                        title: award.title_l10n,
-                        pid: award.pid,
-                        number: award.number,
-                        funder: award.funder ?? "",
-                        id: award.id,
-                        ...(award.identifiers && {
-                          identifiers: award.identifiers,
-                        }),
-                        ...(award.acronym && { acronym: award.acronym }),
-                      };
-                    }}
-                    deserializeFunder={(funder) => {
-                      return {
-                        id: funder.id,
-                        name: funder.name,
-                        ...(funder.title_l10n && { title: funder.title_l10n }),
-                        ...(funder.pid && { pid: funder.pid }),
-                        ...(funder.country && { country: funder.country }),
-                        ...(funder.identifiers && {
-                          identifiers: funder.identifiers,
-                        }),
-                      };
-                    }}
-                    computeFundingContents={(funding) => {
-                      let headerContent,
-                        descriptionContent = "";
-                      let awardOrFunder = "award";
-                      if (funding.award) {
-                        headerContent = funding.award.title;
-                      }
-
-                      if (funding.funder) {
-                        const funderName =
-                          funding.funder?.name ??
-                          funding.funder?.title ??
-                          funding.funder?.id ??
-                          "";
-                        descriptionContent = funderName;
-                        if (!headerContent) {
-                          awardOrFunder = "funder";
-                          headerContent = funderName;
-                          descriptionContent = "";
-                        }
-                      }
-
-                      return {
-                        headerContent,
-                        descriptionContent,
-                        awardOrFunder,
-                      };
-                    }}
-                  />
-                  {/* TODO: Re-enable once properly integrated to be displayed */}
-                  {/* <RichInputField
-                    label="Curation policy"
-                    fieldPath="metadata.curation_policy"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.curation_policy"
-                        icon={"pencil"}
-                        label="Curation policy"
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  />
-                  <RichInputField
-                    fieldPath="metadata.page"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.page"
-                        icon={"pencil"}
-                        label="Page description"
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  /> */}
-                  <Button
-                    disabled={!isValid || isSubmitting}
-                    loading={isSubmitting}
-                    labelPosition="left"
-                    primary
-                    type="submit"
-                    icon
-                  >
-                    <Icon name="save" />
-                    {i18next.t("Save")}
-                  </Button>
                 </Grid.Column>
                 <Grid.Column
                   mobile={16}
@@ -695,20 +736,13 @@ class CommunityProfileForm extends Component {
                   computer={4}
                   floated="right"
                 >
-                  <LogoUploader
+                  <ProfileLogoForm
                     community={this.props.community}
                     hasLogo={this.props.hasLogo}
                     defaultLogo={this.props.defaultLogo}
-                    onError={this.setGlobalError}
+                    onError={this.props.onError}
                     logoMaxSize={this.props.logoMaxSize}
-                  />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row className="danger-zone">
-                <Grid.Column width={16}>
-                  <DangerZone
-                    community={this.props.community}
-                    onError={this.setGlobalError}
+                    setBackendPicture={this.setBackendPicture}
                   />
                 </Grid.Column>
               </Grid.Row>
@@ -717,6 +751,31 @@ class CommunityProfileForm extends Component {
         )}
       </Formik>
     );
+  }
+}
+
+class CommunityProfileForm extends Component {
+  state = {
+    error: "",
+  };
+
+  setGlobalError = (error) => {
+    const { message } = communityErrorSerializer(error);
+    this.setState({ error: message });
+  };
+
+
+  render() {
+    return <>
+      <GlobalError error={this.state.error} />
+      <ProfileDataForm {...this.props}
+        onError={this.setGlobalError}
+      />
+      <DangerZone
+        community={this.props.community}
+        onError={this.setGlobalError}
+      />
+    </>;
   }
 }
 
