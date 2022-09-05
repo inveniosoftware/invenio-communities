@@ -7,7 +7,7 @@
 # details.
 
 """Invenio administration OAI-PMH view module."""
-from invenio_administration.views.base import AdminResourceListView,\
+from invenio_administration.views.base import AdminResourceListView, \
     AdminResourceEditView
 
 from invenio_communities.communities.schema import CommunityFeaturedSchema
@@ -16,20 +16,24 @@ from invenio_communities.communities.schema import CommunityFeaturedSchema
 class CommunityListView(AdminResourceListView):
 
     api_endpoint = "/communities"
-    search_request_headers = {"Accept": "application/vnd.inveniordm.v1+json"}
-    name = "Communities"
+    name = "communities"
     resource_config = "communities_resource"
+    search_request_headers = {"Accept": "application/vnd.inveniordm.v1+json"}
     title = "Communities"
+    menu_label = "Communities"
     category = "Communities"
-    pid_path = "pid"
+    pid_path = "id"
+    icon = "users"
 
     display_search = True
-    display_delete = False
+    display_delete = True
+    display_create = False
+    display_edit = True
 
     item_field_list = {
-        "id": {
-          "text": "ID",
-          "order": 1
+        "slug": {
+            "text": "Slug",
+            "order": 1,
         },
         "metadata.title": {
             "text": "Title",
@@ -40,10 +44,10 @@ class CommunityListView(AdminResourceListView):
             "text": "Type",
             "order": 3
         },
-        # "featured": {
-        #     "text": "Featured",
-        #     "order": 4
-        # },
+        "featured.past": {
+            "text": "Featured",
+            "order": 4
+        },
         # "created": {
         #     "text": "Created",
         #     "order": 5
@@ -57,7 +61,25 @@ class CommunityListView(AdminResourceListView):
             "order": 1
         }
     }
-
     search_config_name = "COMMUNITIES_SEARCH"
     search_facets_config_name = "COMMUNITIES_FACETS"
     search_sort_config_name = "COMMUNITIES_SORT_OPTIONS"
+
+
+class CommunityEditView(AdminResourceEditView):
+    name = "communities_edit"
+    url = "/communities/<pid_value>/edit"
+    resource_config = "communities_resource"
+    pid_path = "id"
+    api_endpoint = "/communities"
+    title = "Edit community"
+    icon = "users"
+
+    list_view_name = "communities"
+
+    form_fields = {
+        "metadata": {"order": 0},
+        "metadata.title": {"order": 1},
+        "metadata.description": {"order": 2},
+        "metadata.type": {"order": 3}
+    }

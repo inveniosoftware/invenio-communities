@@ -126,3 +126,13 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_featured_create = [Admin(), SystemProcess()]
     can_featured_update = [Admin(), SystemProcess()]
     can_featured_delete = [Admin(), SystemProcess()]
+
+
+def can_perform_action(community, context):
+    """Check if the given action is available on the request."""
+    action = context.get("action")
+    identity = context.get("identity")
+    permission_policy_cls = context.get("permission_policy_cls")
+    permission = permission_policy_cls(action, community=community)
+    return permission.allows(identity)
+
