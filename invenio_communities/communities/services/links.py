@@ -25,15 +25,14 @@ class CommunityLinksTemplate(LinksTemplate):
         links = {}
 
         # expand links for all available actions on the request
-        links["actions"] = {}
         link = self._action_link
         for action in self._available_actions:
             ctx = self.context.copy()
-            ctx["action_name"] = action[1]
-            ctx["action"] = action[0]
+            ctx["action_name"] = action["action_name"]
+            ctx["action"] = action["action_permission"]
             ctx["identity"] = identity
             if link.should_render(community, ctx):
-                links["actions"][action[0]] = link.expand(community, ctx)
+                links[action["action_name"]] = link.expand(community, ctx)
 
         # expand the other configured links
         for key, link in self._links.items():
