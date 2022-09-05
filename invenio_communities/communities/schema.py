@@ -150,5 +150,5 @@ class CommunitySchema(BaseRecordSchema):
 class CommunityFeaturedSchema(Schema):
     """Community Featured Schema."""
 
-    id = fields.Int(metadata={"read_only": True})
+    id = fields.Int(dump_only=True)
     start_date = fields.DateTime(required=True)
