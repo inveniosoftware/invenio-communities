@@ -14,8 +14,7 @@
 from invenio_records_permissions.generators import (
     AnyUser,
     AuthenticatedUser,
-    Disable,
-    SystemProcess,
+    SystemProcess, Admin,
 )
 from invenio_records_permissions.policies import BasePermissionPolicy
 
@@ -123,7 +122,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Abilities for featured communities
     can_featured_search = [AnyUser(), SystemProcess()]
-    can_featured_list = [SystemProcess()]
-    can_featured_create = [SystemProcess()]
-    can_featured_update = [SystemProcess()]
-    can_featured_delete = [SystemProcess()]
+    can_featured_list = [Admin(), SystemProcess()]
+    can_featured_create = [Admin(), SystemProcess()]
+    can_featured_update = [Admin(), SystemProcess()]
+    can_featured_delete = [Admin(), SystemProcess()]

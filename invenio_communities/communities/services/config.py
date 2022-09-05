@@ -35,7 +35,9 @@ from invenio_records_resources.services.records.params import (
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
-from invenio_communities.communities.services.results import CommunityFeaturedList
+from invenio_communities.communities.services.results import CommunityFeaturedList, \
+    CommunityItem, CommunityListResult
+from .links import CommunityLink
 
 from ...permissions import CommunityPermissionPolicy
 from ..schema import CommunityFeaturedSchema, CommunitySchema
@@ -51,6 +53,16 @@ from .sort import CommunitiesSortParam
 
 
 class SearchOptions(SearchOptionsBase, SearchOptionsMixin):
+def _is_action_available(community, context):
+    """Check if the given action is available on the request."""
+    action = context.get("action")
+    identity = context.get("identity")
+    permission_policy_cls = context.get("permission_policy_cls")
+    permission = permission_policy_cls(action, community=community)
+    return permission.allows(identity)
+
+
+class SearchOptions(SearchOptionsBase):
     """Search options."""
 
     sort_featured = {
@@ -73,20 +85,6 @@ class SearchOptions(SearchOptionsBase, SearchOptionsMixin):
     ]
 
 
-class CommunityLink(Link):
-    """Link variables setter for Community Members links."""
-
-    @staticmethod
-    def vars(record, vars):
-        """Variables for the URI template."""
-        vars.update(
-            {
-                "id": record.id,
-                "slug": record.slug,
-            }
-        )
-
-
 class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     """Communities service configuration."""
 
@@ -97,6 +95,8 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     # Record specific configuration
     record_cls = Community
+    result_item_cls = CommunityItem
+    result_list_cls = CommunityListResult
     indexer_queue_name = "communities"
 
     # Search configuration
@@ -125,12 +125,17 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "requests": CommunityLink("{+api}/communities/{id}/requests"),
     }
 
+    action_link = CommunityLink("{+api}/communities/{id}/{action_name}",
+                                when=_is_action_available)
+
     links_search = pagination_links("{+api}/communities{?args*}")
     links_featured_search = pagination_links("{+api}/communities/featured{?args*}")
     links_user_search = pagination_links("{+api}/user/communities{?args*}")
     links_community_requests_search = pagination_links(
         "{+api}/communities/{community_id}/requests{?args*}"
     )
+
+    available_actions = [("featured_create", "featured")]
 
     # Service components
     components = [
