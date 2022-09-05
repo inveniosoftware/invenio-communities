@@ -92,7 +92,7 @@ class CommunityMetadataSchema(Schema):
     curation_policy = SanitizedHTML(validate=_not_blank(max=2000))
     page = SanitizedHTML(validate=_not_blank(max=2000))
 
-    type = fields.Nested(VocabularySchema)
+    type = fields.Nested(VocabularySchema, metadata={"type": "communitytypes"})
     website = fields.Url(validate=_not_blank())
     funding = fields.List(fields.Nested(FundingRelationSchema))
     organizations = fields.List(fields.Nested(AffiliationRelationSchema))

@@ -29,7 +29,7 @@ from invenio_communities.communities.services.results import CommunityFeaturedLi
     CommunityItem, CommunityListResult
 from .links import CommunityLink
 
-from ...permissions import CommunityPermissionPolicy
+from ...permissions import CommunityPermissionPolicy, can_perform_action
 from ..schema import CommunityFeaturedSchema, CommunitySchema
 from .components import (
     CommunityAccessComponent,
@@ -38,15 +38,6 @@ from .components import (
     OwnershipComponent,
     PIDComponent,
 )
-
-
-def _is_action_available(community, context):
-    """Check if the given action is available on the request."""
-    action = context.get("action")
-    identity = context.get("identity")
-    permission_policy_cls = context.get("permission_policy_cls")
-    permission = permission_policy_cls(action, community=community)
-    return permission.allows(identity)
 
 
 class SearchOptions(SearchOptionsBase):
@@ -105,7 +96,7 @@ class CommunityServiceConfig(RecordServiceConfig):
     }
 
     action_link = CommunityLink("{+api}/communities/{id}/{action_name}",
-                                when=_is_action_available)
+                                when=can_perform_action)
 
     links_search = pagination_links("{+api}/communities{?args*}")
     links_featured_search = pagination_links("{+api}/communities/featured{?args*}")
@@ -114,7 +105,8 @@ class CommunityServiceConfig(RecordServiceConfig):
         "{+api}/communities/{community_id}/requests{?args*}"
     )
 
-    available_actions = [("featured_create", "featured")]
+    available_actions = [{"action_name": "feature",
+                          "action_permission": "featured_create"}]
 
     # Service components
     components = [
