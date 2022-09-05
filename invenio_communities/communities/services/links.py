@@ -1,0 +1,57 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2022 CERN.
+#
+# Invenio-Requests is free software; you can redistribute it and/or
+# modify it under the terms of the MIT License; see LICENSE file for more
+# details.
+
+"""Utility for rendering URI template links."""
+
+from invenio_records_resources.services.base.links import Link, LinksTemplate
+
+
+class CommunityLinksTemplate(LinksTemplate):
+    """Templates for generating links for a community object."""
+
+    def __init__(self, links, action_link, available_actions, context=None):
+        """Constructor."""
+        super().__init__(links, context=context)
+        self._action_link = action_link
+        self._available_actions = available_actions
+
+    def expand(self, community, identity=None):
+        """Expand all the link templates."""
+        links = {}
+
+        # expand links for all available actions on the request
+        links["actions"] = {}
+        link = self._action_link
+        for action in self._available_actions:
+            ctx = self.context.copy()
+            ctx["action_name"] = action[1]
+            ctx["action"] = action[0]
+            ctx["identity"] = identity
+            if link.should_render(community, ctx):
+                links["actions"][action[0]] = link.expand(community, ctx)
+
+        # expand the other configured links
+        for key, link in self._links.items():
+            if link.should_render(community, self.context):
+                links[key] = link.expand(community, self.context)
+
+        return links
+
+
+class CommunityLink(Link):
+    """Link variables setter for Community Members links."""
+
+    @staticmethod
+    def vars(record, vars):
+        """Variables for the URI template."""
+        vars.update(
+            {
+                "id": record.id,
+                "slug": record.slug,
+            }
+        )
