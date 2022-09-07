@@ -81,40 +81,63 @@ def communities_search():
     )
 
 
+# Custom fields config loading
+def load_custom_fields(dump_only_required=False):
+    """Load custom fields configuration for communities.
+
+    @param boolean dump_only_required: keep only required fields in UI configuration
+    """
+    conf = current_app.config
+    conf_ui = conf.get("COMMUNITIES_CUSTOM_FIELDS_UI", [])
+    conf_backend = {cf.name: cf for cf in conf.get("COMMUNITIES_CUSTOM_FIELDS", [])}
+    _vocabulary_fields = []
+
+    for section_cfg in conf_ui:
+        _fields = []
+        fields = section_cfg["fields"]
+
+        for field in fields:
+            field_instance = conf_backend.get(field["field"])
+            if getattr(field_instance, "relation_cls", None):
+                # add vocabulary options to field's properties
+                field["props"]["options"] = field_instance.options(g.identity)
+                _vocabulary_fields.append(field["field"])
+            if dump_only_required:
+                is_field_required = getattr(field_instance, "_field_args", {}).get(
+                    "required"
+                )
+                if is_field_required:
+                    _fields.append(field)
+            else:
+                _fields.append(field)
+
+        section_cfg["fields"] = _fields
+
+    return {
+        "ui": conf_ui,
+        "vocabularies": _vocabulary_fields,
+    }
+
+
 @login_required
 def communities_new():
     """Communities creation page."""
+    conf = current_app.config
     return render_template(
         "invenio_communities/new.html",
         form_config=dict(
             access=dict(visibility=VISIBILITY_FIELDS),
             SITE_UI_URL=current_app.config["SITE_UI_URL"],
         ),
+        custom_fields=load_custom_fields(
+            dump_only_required=True,
+        ),
     )
-
-
-def load_custom_fields(conf_ui, conf_backend):
-    """Load custom fields configuration."""
-    vocabulary_fields = []
-    conf_backend = {cf.name: cf for cf in conf_backend}
-    for section_cfg in conf_ui:
-        fields = section_cfg["fields"]
-        for field in fields:
-            field_instance = conf_backend.get(field["field"])
-            if getattr(field_instance, "relation_cls", None):
-                # add vocabulary options to field's properties
-                field["props"]["options"] = field_instance.options(g.identity)
-                vocabulary_fields.append(field["field"])
-    return {
-        "ui": conf_ui,
-        "vocabularies": vocabulary_fields,
-    }
 
 
 @pass_community(serialize=True)
 def communities_settings(pid_value, community, community_ui):
     """Community settings/profile page."""
-    conf = current_app.config
     permissions = community.has_permissions_to(
         ["update", "read", "search_requests", "search_invites"]
     )
@@ -150,10 +173,7 @@ def communities_settings(pid_value, community, community_ui):
         types=types_serialized["types"],
         permissions=permissions,  # hide/show UI components
         active_menu_tab="settings",
-        custom_fields=load_custom_fields(
-            conf.get("COMMUNITIES_CUSTOM_FIELDS_UI", []),
-            conf.get("COMMUNITIES_CUSTOM_FIELDS", []),
-        ),
+        custom_fields=load_custom_fields(dump_only_required=False),
     )
 
 

@@ -9,10 +9,12 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
+import _isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import {
+  CustomFields,
   FieldLabel,
   RadioField,
   TextField,
@@ -45,6 +47,7 @@ const IdentifierField = ({ formConfig, slug = "" }) => {
 
   return (
     <TextField
+      required
       onChange={setNewSlug}
       label={
         <FieldLabel
@@ -58,7 +61,9 @@ const IdentifierField = ({ formConfig, slug = "" }) => {
       fluid
       className="text-muted"
       // Prevent submitting before the value is updated:
-      onKeyDown={(e) => { e.key === "Enter" && e.preventDefault()}}
+      onKeyDown={(e) => {
+        e.key === "Enter" && e.preventDefault();
+      }}
     />
   );
 };
@@ -120,20 +125,26 @@ class CommunityCreateForm extends Component {
       >
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
-            <Message
-              hidden={error === ""}
-              negative
-              className="flashed"
-            >
+            <Message hidden={error === ""} negative className="flashed">
               <Grid container centered>
-                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
+                <Grid.Column
+                  mobile={16}
+                  tablet={12}
+                  computer={8}
+                  textAlign="left"
+                >
                   <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>
             <Grid container centered>
               <Grid.Row>
-                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
+                <Grid.Column
+                  mobile={16}
+                  tablet={12}
+                  computer={8}
+                  textAlign="center"
+                >
                   <Header className="mt-15" as="h2">
                     {i18next.t("Setup your new community")}
                   </Header>
@@ -143,10 +154,13 @@ class CommunityCreateForm extends Component {
               <Grid.Row textAlign="left">
                 <Grid.Column mobile={16} tablet={12} computer={8}>
                   <TextField
+                    required
                     fluid
                     fieldPath="metadata.title"
                     // Prevent submitting before the value is updated:
-                    onKeyDown={(e) => { e.key === "Enter" && e.preventDefault()}}
+                    onKeyDown={(e) => {
+                      e.key === "Enter" && e.preventDefault();
+                    }}
                     label={
                       <FieldLabel
                         htmlFor="metadata.title"
@@ -159,6 +173,15 @@ class CommunityCreateForm extends Component {
                     formConfig={formConfig}
                     slug={values["slug"]}
                   />
+                  {!_isEmpty(customFields.ui) && (
+                    <CustomFields
+                      config={customFields.ui}
+                      templateLoader={(widget) =>
+                        import(`@templates/custom_fields/${widget}.js`)
+                      }
+                      fieldPathPrefix="custom_fields"
+                    />
+                  )}
                   <Header as="h3">{i18next.t("Community visibility")}</Header>
                   {formConfig.access.visibility.map((item) => (
                     <React.Fragment key={item.value}>
@@ -191,7 +214,8 @@ class CommunityCreateForm extends Component {
                     labelPosition="left"
                     loading={isSubmitting}
                     disabled={isSubmitting}
-                    type="submit"
+                    type="button"
+                    onClick={(event) => handleSubmit(event)}
                   >
                     <Icon name="plus" />
                     {i18next.t("Create community")}
@@ -208,6 +232,10 @@ class CommunityCreateForm extends Component {
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
+const customFields = JSON.parse(domContainer.dataset.customFields);
 
-ReactDOM.render(<CommunityCreateForm formConfig={formConfig} />, domContainer);
+ReactDOM.render(
+  <CommunityCreateForm formConfig={formConfig} customFields={customFields} />,
+  domContainer
+);
 export default CommunityCreateForm;
