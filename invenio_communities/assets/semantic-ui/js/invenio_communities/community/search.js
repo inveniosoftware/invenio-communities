@@ -15,8 +15,8 @@ import {
 import { i18next } from "@translations/invenio_communities/i18next";
 import React from "react";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
+import { parametrize } from "react-overridable";
 import {
-  BucketAggregation,
   Count,
   ResultsList,
   SearchBar,
@@ -31,9 +31,12 @@ import {
   Input,
   Segment,
 } from "semantic-ui-react";
-import { CommunitiesFacetsValues } from "../details_search/components";
 import { ComputerTabletCommunitiesItem } from "./communities_items/ComputerTabletCommunitiesItem";
 import { MobileCommunitiesItem } from "./communities_items/MobileCommunitiesItem";
+import {
+  ContribSearchAppFacets,
+  ContribBucketAggregationValuesElement,
+} from "@js/invenio_search_ui/components";
 
 function ResultsGridItemTemplate({ result }) {
   return (
@@ -162,20 +165,6 @@ export const CommunitiesSearchBarElement = withState(
   }
 );
 
-const CommunitiesFacets = ({ aggs, currentResultsState }) => {
-  return (
-    <>
-      {aggs.map((agg) => {
-        return (
-          <div className="facet-container" key={agg.title}>
-            <BucketAggregation title={agg.title} agg={agg} />
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
 const RDMBucketAggregationElement = ({ title, containerCmp }) => {
   return (
     <Card className="borderless facet">
@@ -243,10 +232,14 @@ export const CommunitiesSearchLayout = (props) => {
   );
 };
 
+const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
+  help: false,
+});
+
 const defaultComponents = {
   "BucketAggregation.element": RDMBucketAggregationElement,
-  "BucketAggregationValues.element": CommunitiesFacetsValues,
-  "SearchApp.facets": CommunitiesFacets,
+  "BucketAggregationValues.element": ContribBucketAggregationValuesElement,
+  "SearchApp.facets": ContribSearchAppFacetsWithConfig,
   "ResultsList.item": ResultsItemTemplate,
   "ResultsGrid.item": ResultsGridItemTemplate,
   "SearchApp.layout": CommunitiesSearchLayout,

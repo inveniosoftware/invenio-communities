@@ -9,7 +9,6 @@
 import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
-import { Icon } from "semantic-ui-react";
 import {
   LabelTypeSubmission,
   LabelTypeInvitation,
@@ -21,11 +20,8 @@ import {
   LabelStatusExpire,
 } from "@js/invenio_requests/request";
 import {
-  BucketAggregationElement,
-  RecordFacetsValues,
   RecordSearchBarElement,
   RequestsEmptyResultsWithState,
-  RequestsFacets,
   RequestsResults,
   RequestsResultsGridItemTemplate,
   RequestsResultsItemTemplateCommunity,
@@ -37,6 +33,11 @@ import {
   RequestDeclineButton,
   RequestCancelButtonModal,
 } from "@js/invenio_requests/components/Buttons";
+import {
+  ContribSearchAppFacets,
+  ContribBucketAggregationElement,
+  ContribBucketAggregationValuesElement,
+} from "@js/invenio_search_ui/components";
 
 const domContainer = document.getElementById("communities-request-search-root");
 
@@ -118,9 +119,9 @@ const Expired = () => (
 )
 
 const defaultComponents = {
-  "BucketAggregation.element": BucketAggregationElement,
-  "BucketAggregationValues.element": RecordFacetsValues,
-  "SearchApp.facets": RequestsFacets,
+  "BucketAggregation.element": ContribBucketAggregationElement,
+  "BucketAggregationValues.element": ContribBucketAggregationValuesElement,
+  "SearchApp.facets": ContribSearchAppFacets,
   "ResultsList.item": RequestsResultsItemTemplateWithCommunity,
   "ResultsGrid.item": RequestsResultsGridItemTemplateWithCommunity,
   "SearchApp.layout": RequestsSearchLayout,

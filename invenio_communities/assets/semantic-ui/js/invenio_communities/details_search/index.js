@@ -6,26 +6,33 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
-  CommunitiesFacetsValues,
-  CommunityBucketAggregationElement,
   CommunityCountComponent,
   CommunityEmptyResults,
   CommunityErrorComponent,
-  CommunityRecordFacets,
   CommunityRecordResultsGridItem,
   CommunityRecordResultsListItem,
   CommunityRecordSearchAppLayout,
   CommunityRecordSearchBarElement,
   CommunityToggleComponent,
 } from "./components";
+import { parametrize } from "react-overridable";
+import {
+  ContribSearchAppFacets,
+  ContribBucketAggregationElement,
+  ContribBucketAggregationValuesElement,
+} from "@js/invenio_search_ui/components";
+
+const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
+  toogle: true,
+});
 
 createSearchAppInit({
-  "BucketAggregation.element": CommunityBucketAggregationElement,
-  "BucketAggregationValues.element": CommunitiesFacetsValues,
+  "BucketAggregation.element": ContribBucketAggregationElement,
+  "BucketAggregationValues.element": ContribBucketAggregationValuesElement,
   "ResultsGrid.item": CommunityRecordResultsGridItem,
   "EmptyResults.element": CommunityEmptyResults,
   "ResultsList.item": CommunityRecordResultsListItem,
-  "SearchApp.facets": CommunityRecordFacets,
+  "SearchApp.facets": ContribSearchAppFacetsWithConfig,
   "SearchApp.layout": CommunityRecordSearchAppLayout,
   "SearchBar.element": CommunityRecordSearchBarElement,
   "Count.element": CommunityCountComponent,
