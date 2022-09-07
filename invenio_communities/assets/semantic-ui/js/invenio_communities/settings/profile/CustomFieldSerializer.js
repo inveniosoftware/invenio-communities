@@ -8,6 +8,7 @@ import _get from "lodash/get";
 import _set from "lodash/set";
 import _cloneDeep from "lodash/cloneDeep";
 import _isArray from "lodash/isArray";
+import _isEmpty from "lodash/isEmpty";
 
 export class CustomFieldSerializer {
   constructor({
@@ -25,7 +26,7 @@ export class CustomFieldSerializer {
   }
 
   #mapCustomFields(record, customFields, mapValue) {
-    if (customFields !== null) {
+    if (!_isEmpty(customFields)) {
       for (const [key, value] of Object.entries(customFields)) {
         const isVocabularyField = this.vocabularyFields.includes(key);
         if (isVocabularyField) {
@@ -37,6 +38,8 @@ export class CustomFieldSerializer {
           record = _set(record, `custom_fields.${key}`, value);
         }
       }
+    } else {
+      record = _set(record, "custom_fields", this.serializedDefault);
     }
   }
 
