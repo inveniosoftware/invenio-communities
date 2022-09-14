@@ -202,6 +202,22 @@ COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""
 
 
+COMMUNITIES_NAMESPACES = {}
+"""Custom fields namespaces.
+
+.. code-block:: python
+    {<namespace>: <uri>, ...}
+
+For example:
+
+.. code-block:: python
+    {
+        "cern": "https://cern.ch/terms",
+        "dwc": "http://rs.tdwg.org/dwc/terms/"
+    }
+
+"""
+
 COMMUNITIES_CUSTOM_FIELDS = {}
 """Communities custom fields definition.
 
