@@ -8,6 +8,8 @@
 
 """Routes for community-related pages provided by Invenio-Communities."""
 
+from copy import deepcopy
+
 from flask import current_app, g, render_template
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
@@ -88,7 +90,7 @@ def load_custom_fields(dump_only_required=False):
     @param boolean dump_only_required: keep only required fields in UI configuration
     """
     conf = current_app.config
-    conf_ui = conf.get("COMMUNITIES_CUSTOM_FIELDS_UI", [])
+    conf_ui = deepcopy(conf.get("COMMUNITIES_CUSTOM_FIELDS_UI", []))
     conf_backend = {cf.name: cf for cf in conf.get("COMMUNITIES_CUSTOM_FIELDS", [])}
     _vocabulary_fields = []
 
@@ -122,7 +124,6 @@ def load_custom_fields(dump_only_required=False):
 @login_required
 def communities_new():
     """Communities creation page."""
-    conf = current_app.config
     return render_template(
         "invenio_communities/new.html",
         form_config=dict(
