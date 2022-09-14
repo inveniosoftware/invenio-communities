@@ -8,7 +8,8 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import { Formik } from "formik";
+import { Formik, useFormikContext } from "formik";
+import _isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
@@ -30,8 +31,8 @@ import {
 import { CommunityApi } from "../api";
 import { communityErrorSerializer } from "../api/serializers";
 
-const IdentifierField = ({ formConfig, slug = "" }) => {
-  const [newSlug, setNewSlug] = React.useState(slug);
+const IdentifierField = ({ formConfig }) => {
+  const { values } = useFormikContext();
 
   const helpText = (
     <>
@@ -39,13 +40,13 @@ const IdentifierField = ({ formConfig, slug = "" }) => {
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${newSlug}`}
+      {`${formConfig.SITE_UI_URL}/communities/${values["slug"]}`}
     </>
   );
 
   return (
     <TextField
-      onChange={setNewSlug}
+      required
       label={
         <FieldLabel
           htmlFor="slug"
@@ -58,7 +59,9 @@ const IdentifierField = ({ formConfig, slug = "" }) => {
       fluid
       className="text-muted"
       // Prevent submitting before the value is updated:
-      onKeyDown={(e) => { e.key === "Enter" && e.preventDefault()}}
+      onKeyDown={(e) => {
+        e.key === "Enter" && e.preventDefault();
+      }}
     />
   );
 };
@@ -120,20 +123,26 @@ class CommunityCreateForm extends Component {
       >
         {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
-            <Message
-              hidden={error === ""}
-              negative
-              className="flashed"
-            >
+            <Message hidden={error === ""} negative className="flashed">
               <Grid container centered>
-                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
+                <Grid.Column
+                  mobile={16}
+                  tablet={12}
+                  computer={8}
+                  textAlign="left"
+                >
                   <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>
             <Grid container centered>
               <Grid.Row>
-                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
+                <Grid.Column
+                  mobile={16}
+                  tablet={12}
+                  computer={8}
+                  textAlign="center"
+                >
                   <Header className="mt-15" as="h2">
                     {i18next.t("Setup your new community")}
                   </Header>
@@ -146,7 +155,9 @@ class CommunityCreateForm extends Component {
                     fluid
                     fieldPath="metadata.title"
                     // Prevent submitting before the value is updated:
-                    onKeyDown={(e) => { e.key === "Enter" && e.preventDefault()}}
+                    onKeyDown={(e) => {
+                      e.key === "Enter" && e.preventDefault();
+                    }}
                     label={
                       <FieldLabel
                         htmlFor="metadata.title"
@@ -155,10 +166,7 @@ class CommunityCreateForm extends Component {
                       />
                     }
                   />
-                  <IdentifierField
-                    formConfig={formConfig}
-                    slug={values["slug"]}
-                  />
+                  <IdentifierField formConfig={formConfig} />
                   <Header as="h3">{i18next.t("Community visibility")}</Header>
                   {formConfig.access.visibility.map((item) => (
                     <React.Fragment key={item.value}>
