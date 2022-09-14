@@ -33,7 +33,6 @@ import { CommunityApi } from "../api";
 import { communityErrorSerializer } from "../api/serializers";
 
 const IdentifierField = ({ formConfig }) => {
-  // const [newSlug, setNewSlug] = React.useState(slug);
   const { values } = useFormikContext();
 
   const helpText = (
