@@ -8,7 +8,7 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import { Formik } from "formik";
+import { Formik, useFormikContext } from "formik";
 import _isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import React, { Component } from "react";
@@ -32,8 +32,9 @@ import {
 import { CommunityApi } from "../api";
 import { communityErrorSerializer } from "../api/serializers";
 
-const IdentifierField = ({ formConfig, slug = "" }) => {
-  const [newSlug, setNewSlug] = React.useState(slug);
+const IdentifierField = ({ formConfig }) => {
+  // const [newSlug, setNewSlug] = React.useState(slug);
+  const { values } = useFormikContext();
 
   const helpText = (
     <>
@@ -41,14 +42,13 @@ const IdentifierField = ({ formConfig, slug = "" }) => {
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${newSlug}`}
+      {`${formConfig.SITE_UI_URL}/communities/${values["slug"]}`}
     </>
   );
 
   return (
     <TextField
       required
-      onChange={setNewSlug}
       label={
         <FieldLabel
           htmlFor="slug"
@@ -169,10 +169,7 @@ class CommunityCreateForm extends Component {
                       />
                     }
                   />
-                  <IdentifierField
-                    formConfig={formConfig}
-                    slug={values["slug"]}
-                  />
+                  <IdentifierField formConfig={formConfig} />
                   {!_isEmpty(customFields.ui) && (
                     <CustomFields
                       config={customFields.ui}
