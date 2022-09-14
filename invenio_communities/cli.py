@@ -14,11 +14,16 @@ from faker import Faker
 from flask import current_app
 from flask.cli import with_appcontext
 from invenio_access.permissions import system_identity
-
-from invenio_communities.proxies import current_communities
+from invenio_records_resources.services.custom_fields.errors import (
+    CustomFieldsException,
+)
+from invenio_records_resources.services.custom_fields.validate import (
+    validate_custom_fields,
+)
 
 from .fixtures.demo import create_fake_community
 from .fixtures.tasks import create_demo_community
+from .proxies import current_communities
 
 
 @click.group()
@@ -57,23 +62,19 @@ def custom_fields():
 
 
 # helper functions
-def _prepare_mapping(fields_name, available_fields):
+def _prepare_mapping(given_fields_name, available_fields):
     """Prepare ES mapping properties for each field."""
-    available_fields = {field.name: field for field in available_fields}
     fields = []
-    if fields_name:  # create only specified fields
-        for field_name in fields_name:
-            if field_name in available_fields.keys():
-                fields.append(available_fields[field_name])
-            else:
-                click.secho(
-                    "Field {0} not found. Available fields: {1}".format(
-                        field_name, ", ".join(available_fields.keys())
-                    ),
-                    fg="red",
-                )
+    if given_fields_name:  # create only specified fields
+        given_fields_name = set(given_fields_name)
+        for a_field in available_fields:
+            if a_field.name in given_fields_name:
+                fields.append(a_field)
+                given_fields_name.remove(a_field.name)
+            if len(given_fields_name) == 0:
+                break
     else:  # create all fields
-        fields = available_fields.values()
+        fields = available_fields
 
     properties = {}
     for field in fields:
@@ -114,8 +115,19 @@ def create_communities_custom_field(field_name):
     available_fields = current_app.config.get("COMMUNITIES_CUSTOM_FIELDS")
     if not available_fields:
         click.secho("No custom fields were configured. Exiting...", fg="green")
-        return
-
+        exit(1)
+    namespaces = set(current_app.config.get("COMMUNITIES_NAMESPACES").keys())
+    try:
+        validate_custom_fields(
+            given_fields=field_name,
+            available_fields=available_fields,
+            namespaces=namespaces,
+        )
+    except CustomFieldsException as e:
+        click.secho(
+            f"Custom fields configuration is not valid. {e.description}", fg="red"
+        )
+        exit(1)
     click.secho("Creating communities custom fields...", fg="green")
     # multiple=True makes it an iterable
     properties = _prepare_mapping(field_name, available_fields)
