@@ -23,11 +23,11 @@ from invenio_db import db
 from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.resolver import Resolver
 from invenio_records.api import Record
+from werkzeug.local import LocalProxy
 
 from invenio_communities.forms import CommunityForm, DeleteCommunityForm, \
     EditCommunityForm, RecaptchaCommunityForm, SearchForm
 from invenio_communities.models import Community, FeaturedCommunity
-from invenio_communities.permissions import can_user_create_community
 from invenio_communities.proxies import current_permission_factory
 from invenio_communities.signals import community_created
 from invenio_communities.utils import Pagination, render_template_to_string
@@ -53,7 +53,8 @@ def sanitize_html(value):
 
 
 blueprint.add_app_template_global(
-    can_user_create_community, "can_user_create_community")
+    LocalProxy(lambda: (
+        'COMMUNITIES_CAN_CREATE'), "can_user_create_community"))
 
 blueprint.add_app_template_global(
     humanize, "humanize")
@@ -126,6 +127,8 @@ def index():
         'communities': communities.slice(
             per_page * (page - 1), per_page * page).all(),
         'featured_community': featured_community,
+        'can_create_communities': current_app.config.get(
+            'COMMUNITIES_CAN_CREATE')(current_user)
     })
 
     return render_template(
@@ -176,13 +179,9 @@ def generic_item(community, template, **extra_ctx):
 @login_required
 def new():
     """Create a new community."""
-    if not can_user_create_community(current_user):
-        error_message = (
-            "To create a community your account must be verified "
-            "for at least {}. If you want to speed up the process, you "
-            "can contact our support team describing your case.".format(
-                humanize.naturaldelta(
-                    current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE'])))
+    can_create, error_message = current_app.config.get(
+        'COMMUNITIES_CAN_CREATE')(current_user)
+    if not can_create:
         error_code = 403
         flash(
             error_message,
@@ -202,6 +201,7 @@ def new():
         'form': form,
         'is_new': True,
         'community': None,
+        'can_create_communities': (can_create, error_message),
     })
 
     if form.validate_on_submit():
@@ -253,6 +253,8 @@ def edit(community):
         'is_new': False,
         'community': community,
         'deleteform': deleteform,
+        'can_create_communities': current_app.config.get(
+            'COMMUNITIES_CAN_CREATE')(current_user)
     })
 
     if form.validate_on_submit():
