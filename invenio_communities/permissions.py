@@ -10,6 +10,8 @@
 
 from __future__ import absolute_import, print_function
 
+import humanize
+
 from datetime import datetime, timedelta
 
 from flask import current_app
@@ -55,8 +57,15 @@ def can_user_create_community(user):
         current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE']
 
     if confirmed_date is None:
-        return False
+        return False, 'You have not yet confirmed your account.'
 
     delta = current_date - confirmed_date
 
-    return delta >= community_user_confirmed_since
+    if delta < community_user_confirmed_since:
+        return False, 'To create a community your account must be verified ' \
+           'for at least {}. If you want to speed up the process, you ' \
+           'can contact our support team describing your case.' \
+               .format(humanize.naturaldelta(
+               current_app.config['COMMUNITIES_USER_CONFIRMED_SINCE']))
+
+    return True, ''

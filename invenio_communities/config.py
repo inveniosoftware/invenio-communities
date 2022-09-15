@@ -14,6 +14,8 @@ from datetime import timedelta
 
 import pkg_resources
 
+from invenio_communities.permissions import can_user_create_community
+
 COMMUNITIES_REQUEST_EXPIRY_TIME = timedelta(days=365)
 """Time after which the inclusion requests automatically expire."""
 
@@ -146,3 +148,6 @@ COMMUNITIES_ALLOWED_ATTRS = {
 
 COMMUNITIES_USER_CONFIRMED_SINCE = timedelta(days=7)
 """Set the minimum account verification time for creating a community."""
+
+COMMUNITIES_CAN_CREATE = can_user_create_community
+"""Permission check function for community creation."""
