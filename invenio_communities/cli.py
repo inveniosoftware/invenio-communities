@@ -80,7 +80,7 @@ def create_communities_custom_field(field_name):
     available_fields = current_app.config.get("COMMUNITIES_CUSTOM_FIELDS")
     if not available_fields:
         click.secho("No custom fields were configured. Exiting...", fg="green")
-        exit(1)
+        exit(0)
     namespaces = set(current_app.config.get("COMMUNITIES_NAMESPACES").keys())
     try:
         validate_custom_fields(
