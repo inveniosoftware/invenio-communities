@@ -12,6 +12,11 @@
 from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.base import Link
+from invenio_records_resources.services.base.config import (
+    ConfiguratorMixin,
+    FromConfigSearchOptions,
+    SearchOptionsMixin,
+)
 from invenio_records_resources.services.files.links import FileLink
 from invenio_records_resources.services.records.components import (
     MetadataComponent,
@@ -30,11 +35,6 @@ from invenio_records_resources.services.records.params import (
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
-from invenio_communities.communities.services.customizations import (
-    ConfiguratorMixin,
-    FromConfigSearchOptions,
-    SearchOptionsMixin,
-)
 from invenio_communities.communities.services.results import CommunityFeaturedList
 
 from ...permissions import CommunityPermissionPolicy
@@ -101,7 +101,10 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     # Search configuration
     search = FromConfigSearchOptions(
-        "COMMUNITIES_SEARCH", search_option_cls=SearchOptions
+        "COMMUNITIES_SEARCH",
+        "COMMUNITIES_SORT_OPTIONS",
+        "COMMUNITIES_FACETS",
+        search_option_cls=SearchOptions,
     )
 
     # Service schema
