@@ -17,6 +17,7 @@ from invenio_access.permissions import system_identity
 from invenio_records_resources.services.custom_fields.errors import (
     CustomFieldsException,
 )
+from invenio_records_resources.services.custom_fields.mappings import Mapping
 from invenio_records_resources.services.custom_fields.validate import (
     validate_custom_fields,
 )
@@ -61,42 +62,6 @@ def custom_fields():
     """Communities custom fields commands."""
 
 
-# helper functions
-def _prepare_mapping(given_fields_name, available_fields):
-    """Prepare ES mapping properties for each field."""
-    fields = []
-    if given_fields_name:  # create only specified fields
-        given_fields_name = set(given_fields_name)
-        for a_field in available_fields:
-            if a_field.name in given_fields_name:
-                fields.append(a_field)
-                given_fields_name.remove(a_field.name)
-            if len(given_fields_name) == 0:
-                break
-    else:  # create all fields
-        fields = available_fields
-
-    properties = {}
-    for field in fields:
-        properties[f"custom_fields.{field.name}"] = field.mapping
-
-    return properties
-
-
-def _exists(field_name, index):
-    """Check if a field exists in `index`'s mapping."""
-    mapping = list(index.get_mapping().values())[0]["mappings"]
-
-    parts = field_name.split(".")
-    for part in parts:
-        mapping = mapping["properties"]  # here to avoid last field access
-        if part not in mapping.keys():
-            return False
-        mapping = mapping[part]
-
-    return True
-
-
 @custom_fields.command("init")
 @click.option(
     "-f",
@@ -130,7 +95,7 @@ def create_communities_custom_field(field_name):
         exit(1)
     click.secho("Creating communities custom fields...", fg="green")
     # multiple=True makes it an iterable
-    properties = _prepare_mapping(field_name, available_fields)
+    properties = Mapping.properties_for_fields(field_name, available_fields)
 
     try:
         communities_index = current_communities.service.config.record_cls.index
@@ -159,7 +124,9 @@ def custom_field_exists_in_communities(field_name):
     click.secho("Checking custom field...", fg="green")
     communities_index = current_communities.service.config.record_cls.index
 
-    field_exists = _exists(f"custom_fields.{field_name}", communities_index)
+    field_exists = Mapping.field_exists(
+        f"custom_fields.{field_name}", communities_index
+    )
     if field_exists:
         click.secho(f"Field {field_name} exists", fg="green")
     else:
