@@ -1,5 +1,24 @@
 {
   "mappings": {
+    "dynamic_templates": [
+      {
+        "i18n_title": {
+          "path_match": "*.title.*",
+          "unmatch": "metadata.title",
+          "match_mapping_type": "object",
+          "mapping": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    ],
+    "dynamic": "strict",
     "numeric_detection": false,
     "properties": {
       "created": {
