@@ -21,6 +21,14 @@
     "dynamic": "strict",
     "numeric_detection": false,
     "properties": {
+      "$schema": {
+        "type": "keyword",
+        "index": false
+      },
+      "uuid": {
+        "type": "keyword",
+        "index": false
+      },
       "created": {
         "type": "date"
       },
@@ -155,6 +163,17 @@
           },
           "website": {
             "type": "keyword"
+          }
+        }
+      },
+      "version_id": {
+        "type": "long"
+      },
+      "files": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
           }
         }
       }
