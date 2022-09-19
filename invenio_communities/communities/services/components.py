@@ -142,6 +142,7 @@ class OAISetComponent(ServiceComponent):
 
         community_set = OAISet()
         community_set.name = community_title
+        community_set.system_created = True
         community_set.description = self._create_set_description(community_title)
         community_set.spec = self._create_set_spec(community_slug)
         community_set.search_pattern = "parent.communities.ids:{id}".format(
