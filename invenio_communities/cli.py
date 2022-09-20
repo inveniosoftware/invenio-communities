@@ -10,6 +10,7 @@
 
 import click
 from elasticsearch.exceptions import RequestError
+from elasticsearch_dsl import Index
 from faker import Faker
 from flask import current_app
 from flask.cli import with_appcontext
@@ -21,6 +22,8 @@ from invenio_records_resources.services.custom_fields.mappings import Mapping
 from invenio_records_resources.services.custom_fields.validate import (
     validate_custom_fields,
 )
+from invenio_search import current_search_client
+from invenio_search.utils import build_alias_name
 
 from .fixtures.demo import create_fake_community
 from .fixtures.tasks import create_demo_community
@@ -98,7 +101,10 @@ def create_communities_custom_field(field_name):
     properties = Mapping.properties_for_fields(field_name, available_fields)
 
     try:
-        communities_index = current_communities.service.config.record_cls.index
+        communities_index = Index(
+            build_alias_name(current_communities.service.config.record_cls.index._name),
+            using=current_search_client,
+        )
         communities_index.put_mapping(body={"properties": properties})
         click.secho("Created all communities custom fields!", fg="green")
     except RequestError as e:
@@ -122,7 +128,10 @@ def custom_field_exists_in_communities(field_name):
     $ invenio custom-fields communities exists <field name>.
     """
     click.secho("Checking custom field...", fg="green")
-    communities_index = current_communities.service.config.record_cls.index
+    communities_index = Index(
+        build_alias_name(current_communities.service.config.record_cls.index._name),
+        using=current_search_client,
+    )
 
     field_exists = Mapping.field_exists(
         f"custom_fields.{field_name}", communities_index
