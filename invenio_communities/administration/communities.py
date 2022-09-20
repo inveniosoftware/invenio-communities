@@ -16,7 +16,7 @@ from invenio_communities.communities.schema import CommunityFeaturedSchema
 class CommunityListView(AdminResourceListView):
 
     api_endpoint = "/communities"
-    search_request_headers = {"Accept": "application/json"}
+    search_request_headers = {"Accept": "application/vnd.inveniordm.v1+json"}
     name = "Communities"
     resource_config = "communities_resource"
     title = "Communities"
@@ -35,7 +35,8 @@ class CommunityListView(AdminResourceListView):
             "text": "Title",
             "order": 2
         },
-        "metadata.type.title.en": {
+        # This field is for display only, it won't work on forms
+        "ui.type.title_l10n": {
             "text": "Type",
             "order": 3
         },
