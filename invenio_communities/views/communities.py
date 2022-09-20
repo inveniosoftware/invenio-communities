@@ -113,7 +113,10 @@ def load_custom_fields(dump_only_required=False):
             else:
                 _fields.append(field)
 
-        section_cfg["fields"] = _fields
+        if not _fields:  # do not display section if there are no fields
+            conf_ui.remove(section_cfg)
+        else:
+            section_cfg["fields"] = _fields
 
     return {
         "ui": conf_ui,
