@@ -55,7 +55,7 @@ class CommunityListView(AdminResourceListView):
     }
 
     actions = {
-        "featured_create": {
+        "feature": {
             "text": "Feature",
             "payload_schema": CommunityFeaturedSchema,
             "order": 1
