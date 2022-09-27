@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 3.0.0 (released 2022-09-27)
+-----------------------------------
+- Drop Elasticsearch < 7
+- Add OpenSearch v1
+
 Version 2.8.8 (released 2022-07-12)
 -----------------------------------
 - bugfix: display community logo in the header
