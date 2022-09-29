@@ -1,0 +1,182 @@
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "i18n_title": {
+          "path_match": "*.title.*",
+          "unmatch": "metadata.title",
+          "match_mapping_type": "object",
+          "mapping": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    ],
+    "dynamic": "strict",
+    "numeric_detection": false,
+    "properties": {
+      "$schema": {
+        "type": "keyword",
+        "index": false
+      },
+      "uuid": {
+        "type": "keyword",
+        "index": false
+      },
+      "created": {
+        "type": "date"
+      },
+      "updated": {
+        "type": "date"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "slug": {
+        "type": "keyword"
+      },
+      "access": {
+        "properties": {
+          "visibility": {
+            "type": "keyword"
+          },
+          "member_policy": {
+            "type": "keyword"
+          },
+          "record_policy": {
+            "type": "keyword"
+          }
+        }
+      },
+      "featured": {
+        "properties": {
+          "past": {
+            "type": "date"
+          },
+          "future": {
+            "type": "date"
+          }
+        }
+      },
+      "custom_fields": {
+        "type": "object"
+      },
+      "metadata": {
+        "properties": {
+          "title": {
+            "type": "text"
+          },
+          "description": {
+            "type": "text"
+          },
+          "type": {
+            "type": "object",
+            "properties": {
+              "@v": {
+                "type": "keyword"
+              },
+              "id": {
+                "type": "keyword"
+              },
+              "title": {
+                "type": "object",
+                "dynamic": true,
+                "properties": {
+                  "en": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
+          },
+          "curation_policy": {
+            "type": "text"
+          },
+          "page": {
+            "type": "text"
+          },
+          "organizations": {
+            "type": "object",
+            "properties": {
+              "@v": {
+                "type": "keyword"
+              },
+              "id": {
+                "type": "keyword"
+              },
+              "name": {
+                "type": "text"
+              }
+            }
+          },
+          "funding": {
+            "properties": {
+              "award": {
+                "type": "object",
+                "properties": {
+                  "@v": {
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "type": "keyword"
+                  },
+                  "title": {
+                    "type": "object",
+                    "dynamic": true
+                  },
+                  "number": {
+                    "type": "text"
+                  },
+                  "identifiers": {
+                    "properties": {
+                      "identifier": {
+                        "type": "text"
+                      },
+                      "scheme": {
+                        "type": "keyword"
+                      }
+                    }
+                  }
+                }
+              },
+              "funder": {
+                "type": "object",
+                "properties": {
+                  "@v": {
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "type": "keyword"
+                  },
+                  "name": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
+          },
+          "website": {
+            "type": "keyword"
+          }
+        }
+      },
+      "version_id": {
+        "type": "long"
+      },
+      "files": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
