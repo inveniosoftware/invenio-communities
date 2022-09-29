@@ -1,0 +1,125 @@
+{
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "created": {
+        "type": "date"
+      },
+      "updated": {
+        "type": "date"
+      },
+      "indexed_at": {
+        "type": "date"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "uuid": {
+        "type": "keyword"
+      },
+      "version_id": {
+        "type": "integer"
+      },
+      "community_id": {
+        "type": "keyword"
+      },
+      "user_id": {
+        "type": "keyword"
+      },
+      "user": {
+        "properties": {
+          "@v": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "username": {
+            "type": "keyword"
+          },
+          "email": {
+            "type": "keyword"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "confirmed": {
+            "type": "boolean"
+          },
+          "profile": {
+            "properties": {
+              "full_name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "affiliations": {
+                "type": "text"
+              }
+            }
+          },
+          "preferences": {
+            "properties": {
+              "visibility": {
+                "type": "keyword"
+              },
+              "email_visibility": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "group_id": {
+        "type": "keyword"
+      },
+      "group": {
+        "properties": {
+          "@v": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          }
+        }
+      },
+      "request_id": {
+        "type": "keyword"
+      },
+      "request": {
+        "properties": {
+          "@v": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "status": {
+            "type": "keyword"
+          },
+          "expires_at": {
+            "type": "date"
+          },
+          "is_open": {
+            "type": "boolean"
+          }
+        }
+      },
+      "role": {
+        "type": "keyword"
+      },
+      "visible": {
+        "type": "boolean"
+      },
+      "active": {
+        "type": "boolean"
+      }
+    }
+  }
+}
