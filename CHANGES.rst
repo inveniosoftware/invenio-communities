@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 3.1.0 (released 2022-10-04)
+-----------------------------------
+- Add OpenSearch v2
+
+Version 3.0.1 (yanked)
+
 Version 3.0.0 (released 2022-09-27)
 -----------------------------------
 - Drop Elasticsearch < 7
