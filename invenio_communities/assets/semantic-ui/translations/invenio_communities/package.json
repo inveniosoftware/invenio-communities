@@ -4,7 +4,8 @@
     "languages": [
       "en",
       "es",
-      "de"
+      "de",
+      "sv"
     ]
   },
   "devDependencies": {
