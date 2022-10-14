@@ -63,7 +63,7 @@ communities = WebpackThemeBundle(
                 "redux-thunk": "^2.3.0",
                 "semantic-ui-css": "^2.4.0",
                 "semantic-ui-react": "^2.1.0",
-                "yup": "^0.28.0",
+                "yup": "^0.32.11",
             },
             aliases={
                 # Define Semantic-UI theme configuration needed by
