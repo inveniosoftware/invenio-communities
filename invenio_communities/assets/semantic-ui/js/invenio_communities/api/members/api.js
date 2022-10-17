@@ -5,7 +5,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { CommunityLinksExtractor } from "../CommunityLinksExtractor";
-import { http } from "../config";
+import { http } from "react-invenio-forms";
 import { bulkMembersSerializer } from "../serializers";
 
 export class CommunityMembersApi {

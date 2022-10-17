@@ -10,7 +10,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { http } from "../../api/config";
+import { http } from "react-invenio-forms";
 import { withCancel } from "react-invenio-forms";
 import { Transition, Container, Grid, Header, Item, Icon } from "semantic-ui-react";
 import CarouselItem from "./CarouselItem";

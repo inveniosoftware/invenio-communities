@@ -5,7 +5,7 @@
 // Invenio-communities is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { http } from "./config";
+import { http } from "react-invenio-forms";
 
 /**
  * API Client for communities.
