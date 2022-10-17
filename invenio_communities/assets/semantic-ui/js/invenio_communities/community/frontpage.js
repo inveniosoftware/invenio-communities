@@ -11,7 +11,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Image, withCancel } from "react-invenio-forms";
 import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
-import { http } from "../api/config";
+import { http } from "react-invenio-forms";
 import PropTypes from "prop-types";
 
 const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
