@@ -213,7 +213,7 @@ class CommunityService(RecordService):
         if type(max_size) is int and max_size > 0:
             logo_size_limit = max_size
 
-        if content_length > logo_size_limit:
+        if content_length and content_length > logo_size_limit:
             raise LogoSizeLimitError(logo_size_limit, content_length)
 
         record.files["logo"] = stream

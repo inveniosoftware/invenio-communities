@@ -11,6 +11,7 @@
 
 
 from datetime import datetime
+from pathlib import Path
 
 from celery import shared_task
 from invenio_access.permissions import system_identity
@@ -26,11 +27,17 @@ from ..proxies import current_communities
 
 
 @shared_task
-def create_demo_community(data):
+def create_demo_community(data, logo_path=None):
     """Create a demo community."""
     service = current_communities.service
     try:
-        service.create(data=data, identity=system_identity)
+        community = service.create(data=data, identity=system_identity)
+
+        # upload logo for community if provided
+        if logo_path:
+            with open(logo_path, "rb") as filestream:
+                service.update_logo(system_identity, community.id, filestream)
+
     except PIDAlreadyExists:
         pass
 
