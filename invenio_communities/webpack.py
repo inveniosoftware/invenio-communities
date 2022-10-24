@@ -43,8 +43,8 @@ communities = WebpackThemeBundle(
                 "@ckeditor/ckeditor5-react": "^2.1.0",
                 "@semantic-ui-react/css-patch": "^1.0.0",
                 "react-router-dom": "^6.3.0",
-                "react-invenio-forms": "^0.10.0",
-                "react-invenio-deposit": "^0.19.15",
+                "react-invenio-forms": "^1.0.0",
+                "react-invenio-deposit": "^1.0.0",
                 "axios": "^0.21.0",
                 "formik": "^2.1.0",
                 "i18next": "^20.3.0",
@@ -63,7 +63,7 @@ communities = WebpackThemeBundle(
                 "redux-thunk": "^2.3.0",
                 "semantic-ui-css": "^2.4.0",
                 "semantic-ui-react": "^2.1.0",
-                "yup": "^0.28.0",
+                "yup": "^0.32.11",
             },
             aliases={
                 # Define Semantic-UI theme configuration needed by
