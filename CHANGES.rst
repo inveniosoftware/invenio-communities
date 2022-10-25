@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 3.2.0 (released 2022-10-24)
+-----------------------------------
+- upgrade invenio-assets
+- upgrade to node v18
+- add responsive classes to community request search
+- fix overflowing content
+
 Version 3.1.0 (released 2022-10-04)
 -----------------------------------
 - Add OpenSearch v2
