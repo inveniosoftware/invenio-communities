@@ -9,11 +9,15 @@
 Changes
 =======
 
+Version 3.2.2 (released 2022-10-26)
+-----------------------------------
+
+- add featured communities carousel component
+
 Version 3.2.1 (released 2022-10-26)
 -----------------------------------
 
 - remove obsolete imports
-
 
 Version 3.2.0 (released 2022-10-24)
 -----------------------------------
