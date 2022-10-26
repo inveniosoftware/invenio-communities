@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 3.2.1 (released 2022-10-26)
+-----------------------------------
+
+- remove obsolete imports
+
+
 Version 3.2.0 (released 2022-10-24)
 -----------------------------------
 - upgrade invenio-assets
