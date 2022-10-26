@@ -38,8 +38,6 @@ import {
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
 } from "@js/invenio_search_ui/components";
-import { ComputerTabletRequestActions } from "@js/invenio_requests/request/actions/requestActions/ComputerTabletRequestActions";
-import { MobileRequestActions } from "@js/invenio_requests/request/actions/requestActions/MobileRequestActions";
 
 const domContainer = document.getElementById("communities-request-search-root");
 
@@ -135,9 +133,6 @@ const defaultComponents = {
     RequestDeclineButtonMobileWithConfig,
   "RequestActionModalTrigger.cancel.mobile":
     RequestCancelButtonMobileWithConfig,
-  "InvenioRequests.RequestActions.layout.computer-tablet":
-    ComputerTabletRequestActions,
-  "InvenioRequests.RequestActions.layout.mobile": MobileRequestActions,
   "RequestActionButton.cancel": RequestCancelButtonModal,
   "RequestActionButton.decline": RequestDeclineButton,
   "RequestActionButton.accept": RequestAcceptButton,
