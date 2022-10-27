@@ -28,10 +28,14 @@ import {
   RequestsSearchLayout,
 } from "./requests";
 import {
+  RequestAcceptModalTrigger,
+  RequestCancelModalTrigger,
+  RequestDeclineModalTrigger,
+} from "@js/invenio_requests/components/ModalTriggers";
+import {
   RequestAcceptButton,
   RequestCancelButton,
   RequestDeclineButton,
-  RequestCancelButtonModal,
 } from "@js/invenio_requests/components/Buttons";
 import {
   ContribSearchAppFacets,
@@ -56,31 +60,19 @@ const RequestsResultsItemTemplateWithCommunity = parametrize(
     community: community,
   }
 );
-const RequestAcceptButtonWithConfig = parametrize(RequestAcceptButton, {
+const RequestAcceptModalTriggerWithConfig = parametrize(RequestAcceptModalTrigger, {
   size: "mini",
   className: "ml-5",
 });
 
-const RequestDeclineButtonWithConfig = parametrize(RequestDeclineButton, {
+const RequestDeclineModalTriggerWithConfig = parametrize(RequestDeclineModalTrigger, {
   size: "mini",
   className: "ml-5",
 });
 
-const RequestCancelButtonWithConfig = parametrize(RequestCancelButton, {
+const RequestCancelModalTriggerWithConfig = parametrize(RequestCancelModalTrigger, {
   size: "mini",
   className: "ml-5",
-});
-
-const RequestAcceptButtonMobileWithConfig = parametrize(RequestAcceptButton, {
-  className: "fluid-responsive",
-});
-
-const RequestDeclineButtonMobileWithConfig = parametrize(RequestDeclineButton, {
-  className: "fluid-responsive",
-});
-
-const RequestCancelButtonMobileWithConfig = parametrize(RequestCancelButton, {
-  className: "fluid-responsive",
 });
 
 const CommunitySubmission = () => (
@@ -121,19 +113,10 @@ const defaultComponents = {
   "RequestStatusLabel.layout.declined": Declined,
   "RequestStatusLabel.layout.cancelled": Cancelled,
   "RequestStatusLabel.layout.expired": Expired,
-  "RequestActionModalTrigger.accept.computer-tablet":
-    RequestAcceptButtonWithConfig,
-  "RequestActionModalTrigger.decline.computer-tablet":
-    RequestDeclineButtonWithConfig,
-  "RequestActionModalTrigger.cancel.computer-tablet":
-    RequestCancelButtonWithConfig,
-  "RequestActionModalTrigger.accept.mobile":
-    RequestAcceptButtonMobileWithConfig,
-  "RequestActionModalTrigger.decline.mobile":
-    RequestDeclineButtonMobileWithConfig,
-  "RequestActionModalTrigger.cancel.mobile":
-    RequestCancelButtonMobileWithConfig,
-  "RequestActionButton.cancel": RequestCancelButtonModal,
+  "RequestActionModalTrigger.accept": RequestAcceptModalTriggerWithConfig,
+  "RequestActionModalTrigger.decline": RequestDeclineModalTriggerWithConfig,
+  "RequestActionModalTrigger.cancel": RequestCancelModalTriggerWithConfig,
+  "RequestActionButton.cancel": RequestCancelButton,
   "RequestActionButton.decline": RequestDeclineButton,
   "RequestActionButton.accept": RequestAcceptButton,
 };
