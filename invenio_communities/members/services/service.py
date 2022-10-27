@@ -29,14 +29,15 @@ from invenio_records_resources.services.uow import (
 from invenio_requests import current_events_service, current_requests_service
 from invenio_requests.customizations.event_types import CommentEventType
 from invenio_search.engine import dsl
+from kombu import Queue
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
-
-from invenio_communities.members.records.api import ArchivedInvitation
+from werkzeug.local import LocalProxy
 
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
+from ..records.api import ArchivedInvitation
 from .request import CommunityInvitation
 from .schemas import (
     AddBulkSchema,
@@ -103,8 +104,22 @@ class MemberService(RecordService):
     @property
     def archive_indexer(self):
         """Factory for creating an indexer instance."""
-        return self.config.indexer_cls(
-            record_cls=ArchivedInvitation,
+        return self.config.archive_indexer_cls(
+            # the routing key is mandatory in the indexer constructor since
+            # it is afterwards passed explicitly to the created consumers
+            # and producers. this means that it is not strictly necessary to
+            # pass it to the queue constructor. however, it is passed for
+            # consistency (in case the queue is used by itself) and to help
+            # entity declaration on publish.
+            queue=LocalProxy(
+                lambda: Queue(
+                    self.config.archive_indexer_queue_name,
+                    exchange=current_app.config["INDEXER_MQ_EXCHANGE"],
+                    routing_key=self.config.archive_indexer_queue_name,
+                )
+            ),
+            routing_key=self.config.archive_indexer_queue_name,
+            record_cls=self.config.archive_cls,
             record_to_index=self.record_to_index,
             record_dumper=self.config.index_dumper,
         )
@@ -650,16 +665,12 @@ class MemberService(RecordService):
 
         Note: Skips (soft) deleted records.
         """
-        for rec_meta in self.record_cls.model_cls.query.all():
-            rec = self.record_cls(rec_meta.data, model=rec_meta)
+        members = self.record_cls.model_cls.query.filter_by(is_deleted=False).all()
+        self.indexer.bulk_index([member.id for member in members])
 
-            if not rec.is_deleted:
-                self.indexer.index(rec)
-
-        for rec_meta in ArchivedInvitation.model_cls.query.all():
-            rec = ArchivedInvitation(rec_meta.data, model=rec_meta)
-
-            if not rec.is_deleted:
-                self.indexer.index(rec)
+        archived_invitations = ArchivedInvitation.model_cls.query.filter_by(
+            is_deleted=False
+        ).all()
+        self.archive_indexer.bulk_index([inv.id for inv in archived_invitations])
 
         return True

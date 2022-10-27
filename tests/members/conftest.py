@@ -51,6 +51,8 @@ def clean_index(member_service, requests_service, db):
     )
     member_service.rebuild_index(system_identity)
     requests_service.rebuild_index(system_identity)
+    member_service.indexer.process_bulk_queue()
+    requests_service.indexer.process_bulk_queue()
     Member.index.refresh()
     Request.index.refresh()
     ArchivedInvitation.index.refresh()
