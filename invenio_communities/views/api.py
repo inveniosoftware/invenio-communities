@@ -24,10 +24,16 @@ def init(state):
     ext = app.extensions["invenio-communities"]
 
     # services
-    rr_ext.registry.register(ext.service)
+    rr_ext.registry.register(ext.service, service_id="communities")
+    rr_ext.registry.register(ext.service.members, service_id="members")
+
     # indexers
     idx_ext.registry.register(ext.service.indexer, indexer_id="communities")
     idx_ext.registry.register(ext.service.members.indexer, indexer_id="members")
+    idx_ext.registry.register(
+        ext.service.members.archive_indexer, indexer_id="archived-invitations"
+    )
+
     # change notification handlers
     rr_ext.notification_registry.register("users", ext.service.on_relation_update)
 
