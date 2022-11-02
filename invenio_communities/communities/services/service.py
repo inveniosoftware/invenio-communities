@@ -44,8 +44,7 @@ class CommunityService(RecordService):
     """community Service."""
 
     def __init__(
-            self, config, files_service=None, invitations_service=None,
-            members_service=None
+        self, config, files_service=None, invitations_service=None, members_service=None
     ):
         """Constructor for CommunityService."""
         super().__init__(config)
@@ -162,7 +161,7 @@ class CommunityService(RecordService):
 
     @unit_of_work()
     def rename(
-            self, identity, id_, data, revision_id=None, raise_errors=True, uow=None
+        self, identity, id_, data, revision_id=None, raise_errors=True, uow=None
     ):
         """Rename a community."""
         record = self.record_cls.pid.resolve(id_)
@@ -222,7 +221,7 @@ class CommunityService(RecordService):
         record = self.record_cls.pid.resolve(id_)
         self.require_permission(identity, "update", record=record)
 
-        logo_size_limit = 10 ** 6
+        logo_size_limit = 10**6
         max_size = current_app.config["COMMUNITIES_LOGO_MAX_FILE_SIZE"]
         if type(max_size) is int and max_size > 0:
             logo_size_limit = max_size
@@ -297,7 +296,6 @@ class CommunityService(RecordService):
             permission_action="featured_search",
             **kwargs
         ).execute()
-
         return self.result_list(
             self,
             identity,
@@ -326,12 +324,13 @@ class CommunityService(RecordService):
             self,
             identity,
             featured_entries,
+            links_tpl=LinksTemplate(self.config.links_featured_search),
             schema=self.schema_featured,
         )
 
     @unit_of_work()
     def featured_create(
-            self, identity, community_id, data, raise_errors=True, uow=None
+        self, identity, community_id, data, raise_errors=True, uow=None
     ):
         """Create a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
@@ -365,7 +364,7 @@ class CommunityService(RecordService):
 
     @unit_of_work()
     def featured_update(
-            self, identity, community_id, data, featured_id, raise_errors=True, uow=None
+        self, identity, community_id, data, featured_id, raise_errors=True, uow=None
     ):
         """Update a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)
@@ -402,7 +401,7 @@ class CommunityService(RecordService):
 
     @unit_of_work()
     def featured_delete(
-            self, identity, community_id, featured_id, raise_errors=True, uow=None
+        self, identity, community_id, featured_id, raise_errors=True, uow=None
     ):
         """Delete a featured entry for a community."""
         record = self.record_cls.pid.resolve(community_id)

@@ -7,8 +7,11 @@
 
 """Result items for OAI-PMH services."""
 
-from invenio_records_resources.services.records.results import RecordItem, \
-    FieldsResolver, RecordList
+from invenio_records_resources.services.records.results import (
+    FieldsResolver,
+    RecordItem,
+    RecordList,
+)
 
 
 class CommunityListResult(RecordList):
@@ -49,6 +52,9 @@ class CommunityListResult(RecordList):
             # Load dump
             record = self._service.record_cls.loads(hit.to_dict())
 
+            # TODO better handling of featured field
+            record["featured"] = True if hit.featured["past"] else False
+
             # Project the record
             projection = self._schema.dump(
                 record,
@@ -59,13 +65,47 @@ class CommunityListResult(RecordList):
             )
             if self._links_item_tpl:
                 projection["links"] = self._links_item_tpl.expand(
-                    record, identity=self._identity)
+                    record, identity=self._identity
+                )
 
             yield projection
 
 
 class CommunityFeaturedList(CommunityListResult):
     """List of featured community entry result items."""
+
+    def __len__(self):
+        """Return the total numer of hits."""
+        return self.total
+
+    def __iter__(self):
+        """Iterator over the hits."""
+        return self.hits
+
+    @property
+    def total(self):
+        """Get total number of hits."""
+        return self._results.total
+
+    @property
+    def hits(self):
+        """Iterator over the hits."""
+        for record in self._results.items:
+
+            # Project the record
+            projection = self._schema.dump(
+                record,
+                context=dict(
+                    identity=self._identity,
+                    record=record,
+                ),
+            )
+            if self._links_item_tpl:
+                projection["links"] = self._links_item_tpl.expand(
+                    record, identity=self._identity
+                )
+
+            yield projection
 
 
 class CommunityItem(RecordItem):
@@ -82,3 +122,7 @@ class CommunityItem(RecordItem):
         if self._errors:
             res["errors"] = self._errors
         return res
+
+
+class FeaturedCommunityItem(CommunityItem):
+    """Single request result."""

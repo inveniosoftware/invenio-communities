@@ -57,13 +57,15 @@ class CommunityResourceConfig(RecordResourceConfig):
     url_prefix = ""
 
     routes = {
-        "communities-prefix": "/communities",
-        "user-prefix": "/user/communities",
-        "list": "",
-        "item": "/<pid_value>",
-        "featured-prefix": "/featured",
-        "featured-id": "/<featured_id>",
-        "community-requests": "/requests",
+        "list": "/communities",
+        "item": "/communities/<pid_value>",
+        "rename": "/communities/<pid_value>/rename",
+        "logo": "/communities/<pid_value>/logo",
+        "featured-search": "/communities/featured",
+        "featured-list": "/communities/<pid_value>/featured",
+        "featured-item": "/communities/<pid_value>/featured/<featured_id>",
+        "user-communities": "/user/communities",
+        "community-requests": "/communities/<pid_value>/requests",
     }
 
     request_view_args = {

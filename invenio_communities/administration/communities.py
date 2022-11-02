@@ -2,18 +2,21 @@
 #
 # Copyright (C) 2022 CERN.
 #
-# invenio-administration is free software; you can redistribute it and/or
+# Invenio-Communities is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
 """Invenio administration OAI-PMH view module."""
-from invenio_administration.views.base import AdminResourceListView, \
-    AdminResourceEditView
+from invenio_administration.views.base import (
+    AdminResourceDetailView,
+    AdminResourceListView,
+)
 
 from invenio_communities.communities.schema import CommunityFeaturedSchema
 
 
 class CommunityListView(AdminResourceListView):
+    """Search admin view."""
 
     api_endpoint = "/communities"
     name = "communities"
@@ -24,41 +27,30 @@ class CommunityListView(AdminResourceListView):
     category = "Communities"
     pid_path = "id"
     icon = "users"
+    template = "invenio_communities/administration/community_search.html"
 
     display_search = True
-    display_delete = True
+    display_delete = False
     display_create = False
-    display_edit = True
+    display_edit = False
 
     item_field_list = {
         "slug": {
             "text": "Slug",
             "order": 1,
         },
-        "metadata.title": {
-            "text": "Title",
-            "order": 2
-        },
+        "metadata.title": {"text": "Title", "order": 2},
         # This field is for display only, it won't work on forms
-        "ui.type.title_l10n": {
-            "text": "Type",
-            "order": 3
-        },
-        "featured.past": {
-            "text": "Featured",
-            "order": 4
-        },
-        # "created": {
-        #     "text": "Created",
-        #     "order": 5
-        # }
+        "ui.type.title_l10n": {"text": "Type", "order": 3},
+        "featured": {"text": "Featured", "order": 4},
+        "created": {"text": "Created", "order": 5},
     }
 
     actions = {
-        "feature": {
+        "featured": {
             "text": "Feature",
             "payload_schema": CommunityFeaturedSchema,
-            "order": 1
+            "order": 1,
         }
     }
     search_config_name = "COMMUNITIES_SEARCH"
@@ -66,20 +58,38 @@ class CommunityListView(AdminResourceListView):
     search_sort_config_name = "COMMUNITIES_SORT_OPTIONS"
 
 
-class CommunityEditView(AdminResourceEditView):
-    name = "communities_edit"
-    url = "/communities/<pid_value>/edit"
-    resource_config = "communities_resource"
-    pid_path = "id"
+class CommunityDetailView(AdminResourceDetailView):
+    """Admin community detail view."""
+
+    url = "/communities/<pid_value>"
     api_endpoint = "/communities"
-    title = "Edit community"
-    icon = "users"
+    name = "community-details"
+    resource_config = "communities_resource"
+    title = "Community"
+
+    template = "invenio_communities/administration/community_details.html"
+    display_delete = False
+    display_edit = False
 
     list_view_name = "communities"
+    pid_path = "id"
+    request_headers = {"Accept": "application/vnd.inveniordm.v1+json"}
 
-    form_fields = {
-        "metadata": {"order": 0},
-        "metadata.title": {"order": 1},
-        "metadata.description": {"order": 2},
-        "metadata.type": {"order": 3}
+    actions = {
+        "featured": {
+            "text": "Feature",
+            "payload_schema": CommunityFeaturedSchema,
+            "order": 1,
+        }
+    }
+
+    item_field_list = {
+        "slug": {
+            "text": "Slug",
+            "order": 1,
+        },
+        "metadata.title": {"text": "Title", "order": 2},
+        # This field is for display only, it won't work on forms
+        "ui.type.title_l10n": {"text": "Type", "order": 3},
+        "created": {"text": "Created", "order": 5},
     }

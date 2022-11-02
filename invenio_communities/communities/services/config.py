@@ -11,7 +11,6 @@
 
 from flask_babelex import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
-from invenio_records_resources.services.base import Link
 from invenio_records_resources.services.base.config import (
     ConfiguratorMixin,
     FromConfigSearchOptions,
@@ -35,9 +34,12 @@ from invenio_records_resources.services.records.params import (
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.services import facets
-from invenio_communities.communities.services.results import CommunityFeaturedList, \
-    CommunityItem, CommunityListResult
-from .links import CommunityLink
+from invenio_communities.communities.services.results import (
+    CommunityFeaturedList,
+    CommunityItem,
+    CommunityListResult,
+    FeaturedCommunityItem,
+)
 
 from ...permissions import CommunityPermissionPolicy, can_perform_action
 from ..schema import CommunityFeaturedSchema, CommunitySchema
@@ -49,6 +51,7 @@ from .components import (
     OwnershipComponent,
     PIDComponent,
 )
+from .links import CommunityLink
 from .sort import CommunitiesSortParam
 
 
@@ -102,6 +105,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     schema_featured = CommunityFeaturedSchema
 
     result_list_cls_featured = CommunityFeaturedList
+    result_item_cls_featured = FeaturedCommunityItem
 
     links_item = {
         "self": CommunityLink("{+api}/communities/{id}"),
@@ -115,8 +119,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "requests": CommunityLink("{+api}/communities/{id}/requests"),
     }
 
-    action_link = CommunityLink("{+api}/communities/{id}/{action_name}",
-                                when=can_perform_action)
+    action_link = CommunityLink(
+        "{+api}/communities/{id}/{action_name}", when=can_perform_action
+    )
 
     links_search = pagination_links("{+api}/communities{?args*}")
     links_featured_search = pagination_links("{+api}/communities/featured{?args*}")
@@ -125,8 +130,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "{+api}/communities/{community_id}/requests{?args*}"
     )
 
-    available_actions = [{"action_name": "feature",
-                          "action_permission": "featured_create"}]
+    available_actions = [
+        {"action_name": "featured", "action_permission": "featured_create"}
+    ]
 
     # Service components
     components = [

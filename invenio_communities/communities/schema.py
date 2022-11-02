@@ -7,7 +7,6 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Community schema."""
-
 import re
 from functools import partial
 from uuid import UUID
@@ -126,6 +125,7 @@ class CommunitySchema(BaseRecordSchema):
     )
     metadata = NestedAttribute(CommunityMetadataSchema, required=True)
     access = NestedAttribute(CommunityAccessSchema, required=True)
+
     custom_fields = NestedAttribute(
         partial(CustomFieldsSchema, fields_var="COMMUNITIES_CUSTOM_FIELDS")
     )

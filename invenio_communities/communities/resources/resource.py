@@ -48,75 +48,22 @@ class CommunityResource(RecordResource):
 
         routes = self.config.routes
         return [
-            route("GET", p(routes["communities-prefix"], routes["list"]), self.search),
-            route("POST", p(routes["communities-prefix"], routes["list"]), self.create),
-            route("GET", p(routes["communities-prefix"], routes["item"]), self.read),
-            route("PUT", p(routes["communities-prefix"], routes["item"]), self.update),
-            route(
-                "DELETE", p(routes["communities-prefix"], routes["item"]), self.delete
-            ),
-            route(
-                "GET",
-                p(routes["user-prefix"], routes["list"]),
-                self.search_user_communities,
-            ),
-            route(
-                "POST",
-                p(routes["communities-prefix"], routes["item"]) + "/rename",
-                self.rename,
-            ),
-            route(
-                "GET",
-                p(routes["communities-prefix"], routes["item"]) + "/logo",
-                self.read_logo,
-            ),
-            route(
-                "PUT",
-                p(routes["communities-prefix"], routes["item"]) + "/logo",
-                self.update_logo,
-            ),
-            route(
-                "DELETE",
-                p(routes["communities-prefix"], routes["item"]) + "/logo",
-                self.delete_logo,
-            ),
-            route(
-                "GET",
-                p(routes["communities-prefix"], routes["featured-prefix"]),
-                self.featured_communities_search,
-            ),
-            route(
-                "GET",
-                p(routes["communities-prefix"], routes["item"])
-                + routes["featured-prefix"],
-                self.featured_list,
-            ),
-            route(
-                "POST",
-                p(routes["communities-prefix"], routes["item"])
-                + routes["featured-prefix"],
-                self.featured_create,
-            ),
-            route(
-                "PUT",
-                p(routes["communities-prefix"], routes["item"])
-                + p(routes["featured-prefix"], routes["featured-id"]),
-                self.featured_update,
-            ),
-            route(
-                "DELETE",
-                p(routes["communities-prefix"], routes["item"])
-                + p(routes["featured-prefix"], routes["featured-id"]),
-                self.featured_delete,
-            ),
-            route(
-                "GET",
-                p(
-                    routes["communities-prefix"],
-                    routes["item"] + routes["community-requests"],
-                ),
-                self.search_community_requests,
-            ),
+            route("GET", routes["list"], self.search),
+            route("POST", routes["list"], self.create),
+            route("GET", routes["item"], self.read),
+            route("PUT", routes["item"], self.update),
+            route("DELETE", routes["item"], self.delete),
+            route("GET", routes["user-communities"], self.search_user_communities),
+            route("POST", routes["rename"], self.rename),
+            route("GET", routes["logo"], self.read_logo),
+            route("PUT", routes["logo"], self.update_logo),
+            route("DELETE", routes["logo"], self.delete_logo),
+            route("GET", routes["featured-search"], self.featured_communities_search),
+            route("GET", routes["featured-list"], self.featured_list),
+            route("POST", routes["featured-list"], self.featured_create),
+            route("PUT", routes["featured-item"], self.featured_update),
+            route("DELETE", routes["featured-item"], self.featured_delete),
+            route("GET", routes["community-requests"], self.search_community_requests),
         ]
 
     @request_search_args
