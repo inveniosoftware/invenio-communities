@@ -218,6 +218,7 @@ def test_delete_featured(community_service, comm):
     featured = community_service.featured_list(
         identity=system_identity, community_id=comm.data["id"]
     ).to_dict()
+
     assert len(featured["hits"]["hits"]) == featured["hits"]["total"] == 2
 
     community_service.featured_delete(
