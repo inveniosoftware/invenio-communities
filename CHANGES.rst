@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 3.2.3 (released 2022-11-03)
+-----------------------------------
+
+- add logo to demo data
+- refactor styling
+
+
 Version 3.2.2 (released 2022-10-26)
 -----------------------------------
 
