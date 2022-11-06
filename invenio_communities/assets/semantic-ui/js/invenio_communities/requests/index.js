@@ -31,7 +31,6 @@ import {
   RequestAcceptButton,
   RequestCancelButton,
   RequestDeclineButton,
-  RequestCancelButtonModal,
 } from "@js/invenio_requests/components/Buttons";
 import {
   ContribSearchAppFacets,
@@ -133,7 +132,7 @@ const defaultComponents = {
     RequestDeclineButtonMobileWithConfig,
   "RequestActionModalTrigger.cancel.mobile":
     RequestCancelButtonMobileWithConfig,
-  "RequestActionButton.cancel": RequestCancelButtonModal,
+  "RequestActionButton.cancel": RequestCancelButton,
   "RequestActionButton.decline": RequestDeclineButton,
   "RequestActionButton.accept": RequestAcceptButton,
 };
