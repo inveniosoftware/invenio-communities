@@ -4,17 +4,17 @@
 # David Eckhard <dabombeeer@gmail.com>, 2022
 # Mojib Wali <mojib.wali@tugraz.at>, 2022
 # Alizee Pace <alizee.pace@gmail.com>, 2022
-# Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2022
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
 # chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
+# Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-05-25T11:56:06.251Z\n"
+"POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: chriz_uniba <christina.zeller@uni-bamberg.de>, 2022\n"
+"Last-Translator: Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -97,9 +97,6 @@ msgstr "Organisationen"
 msgid "Save"
 msgstr "Speichern"
 
-msgid "Enter the new unique identifier of the community"
-msgstr "Geben Sie die neue eindeutige Kennung der Community ein."
-
 msgid "Change"
 msgstr "Ändern"
 
@@ -157,21 +154,6 @@ msgstr "Hochgeladen am"
 msgid "Search guide"
 msgstr "Suchanleitung"
 
-msgid "Versions"
-msgstr "Versionen"
-
-msgid "View all versions"
-msgstr "Alle Versionen ansehen"
-
-msgid "Help"
-msgstr "Hilfe"
-
-msgid "Clear selection"
-msgstr "Auswahl löschen"
-
-msgid "Clear"
-msgstr "Löschen"
-
 msgid "We couldn't find any matches for "
 msgstr "Wir konnten keine Treffer finden für"
 
@@ -202,9 +184,6 @@ msgstr "ROR Profil"
 msgid "Filter results"
 msgstr "Filterergebnisse"
 
-msgid "filters"
-msgstr "Filter"
-
 msgid "search guide"
 msgstr "Suchanleitung"
 
@@ -214,26 +193,17 @@ msgstr "ausgewählte Mitglieder"
 msgid "Leave community"
 msgstr "Community verlassen"
 
-msgid "You're about to leave this community."
-msgstr "Sie sind dabei, diese Community zu verlassen."
-
 msgid "Leave"
 msgstr "Verlassen"
 
 msgid "Remove user"
 msgstr "BenutzerIn entfernen"
 
-msgid "You're about to remove this user from this community"
-msgstr "Sie sind dabei, diese/n BenutzerIn aus dieser Community zu entfernen."
-
 msgid "This action cannot be undone."
 msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 
 msgid "Clear all filters"
 msgstr "Alle Filter löschen"
-
-msgid "Search ..."
-msgstr "Suchen ..."
 
 msgid "Group"
 msgstr "Gruppe"
@@ -243,11 +213,6 @@ msgstr "Suche nach Gruppen"
 
 msgid "Add"
 msgstr "Hinzufügen"
-
-msgid "You are about to add <1>{{selectedCount}}</1> groups"
-msgid_plural "You are about to add <1>{{selectedCount}}</1> groups"
-msgstr[0] "Sie sind dabei, <1>{{selectedCount}}</1> Gruppe hinzuzufügen"
-msgstr[1] "Sie sind dabei, <1>{{selectedCount}}</1> Gruppen hinzuzufügen."
 
 msgid "People"
 msgstr "Personen"
@@ -296,9 +261,6 @@ msgstr "Mitglieder suchen..."
 msgid "Public"
 msgstr "Öffentlich"
 
-msgid "Your community membership is visible to everyone"
-msgstr "Ihre Mitgliedschaft in der Communiy ist für alle sichtbar."
-
 msgid "Hidden"
 msgstr "Verborgen"
 
@@ -324,9 +286,6 @@ msgstr "Verlassen..."
 
 msgid "Remove..."
 msgstr "Entfernen..."
-
-msgid "opened {{difference}} by {{creator}}"
-msgstr "{{difference}} geöffnet von {{creator}}"
 
 msgid "Open"
 msgstr "Offen"
@@ -359,9 +318,6 @@ msgstr ""
 "Dies ist die eindeutige Kennung Ihrer Community. Über folgende URL können "
 "Sie auf Ihre Community zugreifen:"
 
-msgid "Show all sub facets of "
-msgstr "Zeige alle Unterfacetten von"
-
 msgid "bulk actions"
 msgstr "Sammelaktionen"
 
@@ -373,9 +329,6 @@ msgstr "Eingereicht"
 
 msgid "Accepted"
 msgstr "Angenommen"
-
-msgid "Cancelled"
-msgstr "Abgebrochen"
 
 msgid "Declined"
 msgstr "Abgelehnt"
@@ -395,11 +348,61 @@ msgstr "Keine Übereinstimmungen gefunden."
 msgid "Actions"
 msgstr "Aktionen"
 
-msgid "Selected groups."
-msgstr "Ausgewählte Gruppen."
-
-msgid "Selected members."
-msgstr "Ausgewählte Mitglieder."
-
 msgid "Add groups"
 msgstr "Gruppen hinzufügen"
+
+msgid "Restricted"
+msgstr "Eingeschränkt"
+
+msgid "Search records..."
+msgstr ""
+
+msgid "Selected groups"
+msgstr ""
+
+msgid "Selected members"
+msgstr ""
+
+msgid "Search in members ..."
+msgstr ""
+
+msgid "You are about to leave this community."
+msgstr ""
+
+msgid "You are about to remove this user from this community."
+msgstr ""
+
+msgid "You are about to add <1>{{selectedCount}}</1> groups."
+msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Search..."
+msgstr ""
+
+msgid ""
+"Users must set profile visibility to \"Public\" in order to be invited to a "
+"community."
+msgstr ""
+
+msgid "Your community membership is visible to everyone."
+msgstr ""
+
+msgid ""
+"Your community membership is only visible to other members of the community."
+msgstr ""
+
+msgid "Opened {{difference}} by"
+msgstr ""
+
+msgid "Expires at:"
+msgstr ""
+
+msgid "File must be smaller than "
+msgstr ""
+
+msgid "It may take a few moments for changes to be visible everywhere"
+msgstr ""
+
+msgid "New unique identifier of the community"
+msgstr ""
