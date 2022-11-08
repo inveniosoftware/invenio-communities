@@ -11,44 +11,44 @@
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2022
 # Alizee Pace <alizee.pace@gmail.com>, 2022
-# Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
 # chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
+# Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: invenio-communities 2.8.1\n"
+"Project-Id-Version: invenio-communities 3.1.0\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2022-05-25 13:52+0200\n"
+"POT-Creation-Date: 2022-10-12 09:34+0200\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: chriz_uniba <christina.zeller@uni-bamberg.de>, 2022\n"
+"Last-Translator: Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.1\n"
+"Generated-By: Babel 2.10.3\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: invenio_communities/config.py:52 invenio_communities/config.py:136
-#: invenio_communities/config.py:178
-#: invenio_communities/members/services/config.py:29
-#: invenio_communities/members/services/config.py:66
-#: invenio_communities/members/services/config.py:96
+#: invenio_communities/config.py:52 invenio_communities/config.py:137
+#: invenio_communities/config.py:179
+#: invenio_communities/members/services/config.py:38
+#: invenio_communities/members/services/config.py:77
+#: invenio_communities/members/services/config.py:108
 msgid "Best match"
 msgstr "Höchste Übereinstimmung"
 
-#: invenio_communities/config.py:56 invenio_communities/config.py:144
-#: invenio_communities/config.py:186
-#: invenio_communities/members/services/config.py:74
-#: invenio_communities/members/services/config.py:104
+#: invenio_communities/config.py:56 invenio_communities/config.py:145
+#: invenio_communities/config.py:187
+#: invenio_communities/members/services/config.py:85
+#: invenio_communities/members/services/config.py:116
 msgid "Newest"
 msgstr "Neuester"
 
-#: invenio_communities/config.py:60 invenio_communities/config.py:148
-#: invenio_communities/config.py:190
-#: invenio_communities/members/services/config.py:78
-#: invenio_communities/members/services/config.py:108
+#: invenio_communities/config.py:60 invenio_communities/config.py:149
+#: invenio_communities/config.py:191
+#: invenio_communities/members/services/config.py:89
+#: invenio_communities/members/services/config.py:120
 msgid "Oldest"
 msgstr "Ältester"
 
@@ -94,57 +94,62 @@ msgstr ""
 "sehen."
 
 #: invenio_communities/communities/services/facets.py:37
-#: invenio_communities/config.py:105
+#: invenio_communities/config.py:106
 msgid "Owner"
 msgstr "BesitzerIn"
 
-#: invenio_communities/config.py:106
+#: invenio_communities/config.py:107
 msgid "Full administrative access to the entire community."
 msgstr "Voller administrativer Zugang zur gesamten Community."
 
-#: invenio_communities/config.py:140 invenio_communities/config.py:182
-#: invenio_communities/members/services/config.py:33
-#: invenio_communities/members/services/config.py:70
-#: invenio_communities/members/services/config.py:100
+#: invenio_communities/config.py:141 invenio_communities/config.py:183
+#: invenio_communities/members/services/config.py:42
+#: invenio_communities/members/services/config.py:81
+#: invenio_communities/members/services/config.py:112
 msgid "Name"
 msgstr "Name"
 
-#: invenio_communities/errors.py:25
+#: invenio_communities/errors.py:26
 msgid "A featured community entry with {q} does not exist."
 msgstr ""
 "Ein Eintrag einer ausgezeichneten Community mit {q} ist nicht vorhanden."
 
-#: invenio_communities/communities/schema.py:29
+#: invenio_communities/errors.py:41
+msgid ""
+"Logo size limit exceeded. Limit: {limit} bytes Given: {file_size} bytes"
+msgstr ""
+
+#: invenio_communities/communities/schema.py:40
 msgid "Field cannot be blank or longer than {max_} characters."
 msgstr "Feld kann nicht leer oder länger als {max_} Zeichen sein."
 
-#: invenio_communities/communities/schema.py:40
+#: invenio_communities/communities/schema.py:52
 msgid "The ID must not be an Universally Unique IDentifier (UUID)."
 msgstr ""
 "Bei der ID darf es sich nicht um einen \"Universally Unique Identifier "
 "(UUID)\" handeln."
 
-#: invenio_communities/communities/schema.py:111
+#: invenio_communities/communities/schema.py:122
 msgid "The ID should contain only letters with numbers or dashes."
 msgstr "Die ID darf nur Buchstaben, Zahlen und Bindestriche enthalten."
 
-#: invenio_communities/communities/services/components.py:29
+#: invenio_communities/communities/services/components.py:31
 msgid "A community with this identifier already exists."
 msgstr "Eine Community mit dieser Kennung existiert bereits."
 
-#: invenio_communities/communities/services/components.py:48
+#: invenio_communities/communities/services/components.py:49
 msgid "The ID should be modified through the renaming URL instead."
 msgstr "Die ID sollte stattdessen über die Umbenennungs-URL geändert werden."
 
-#: invenio_communities/communities/services/components.py:56
+#: invenio_communities/communities/services/components.py:57
 msgid "A new ID value is required for the renaming."
 msgstr "Für die Umbenennung ist eine neue ID erforderlich."
 
-#: invenio_communities/communities/services/components.py:113
-msgid "The community is not public"
-msgstr "Die Community ist nicht öffentlich."
+#: invenio_communities/communities/services/components.py:116
+msgid "The community is not public."
+msgstr ""
 
-#: invenio_communities/communities/services/config.py:41
+#: invenio_communities/communities/services/config.py:57
 msgid "Featured"
 msgstr "Ausgezeichnet"
 
@@ -182,6 +187,7 @@ msgstr "Öffentlich"
 
 #: invenio_communities/communities/services/facets.py:29
 #: invenio_communities/communities/services/facets.py:49
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:31
 msgid "Restricted"
 msgstr "Eingeschränkt"
 
@@ -227,56 +233,56 @@ msgstr "Offen"
 msgid "Closed"
 msgstr "Geschlossen"
 
-#: invenio_communities/members/services/fields.py:21
+#: invenio_communities/members/services/fields.py:20
 msgid "Invalid role."
 msgstr "Ungültige Rolle."
 
-#: invenio_communities/members/services/request.py:73
+#: invenio_communities/members/services/request.py:74
 msgid "Community invitation"
 msgstr "Communityeinladung"
 
-#: invenio_communities/members/services/schemas.py:82
-msgid "Missing fields 'role' and/or 'visible'"
-msgstr "Fehlende Felder \"role\" und/oder \"visible\"."
+#: invenio_communities/members/services/schemas.py:88
+msgid "Missing fields 'role' and/or 'visible'."
+msgstr ""
 
-#: invenio_communities/members/services/schemas.py:109
+#: invenio_communities/members/services/schemas.py:116
 msgid "Untitled"
 msgstr "Ohne Titel"
 
-#: invenio_communities/members/services/service.py:167
+#: invenio_communities/members/services/service.py:180
 msgid "Must be false"
 msgstr "\"visible and identity != system_identity\" muss \"false\" ergeben."
 
-#: invenio_communities/members/services/service.py:188
+#: invenio_communities/members/services/service.py:202
 msgid "Invalid member type: email"
 msgstr "Ungültiger Mitgliedstyp: E-Mail"
 
-#: invenio_communities/members/services/service.py:239
+#: invenio_communities/members/services/service.py:269
 msgid "Invitation to join \"{community}\""
 msgstr "Einladung für den Beitritt zu \"{community}\""
 
-#: invenio_communities/members/services/service.py:258
-msgid "You will join as \"{role}\""
-msgstr "Sie werden als \"{role}\" beitreten."
+#: invenio_communities/members/services/service.py:289
+msgid "You will join as \"{role}\"."
+msgstr ""
 
-#: invenio_communities/members/services/service.py:434
-#: invenio_communities/members/services/service.py:537
+#: invenio_communities/members/services/service.py:465
+#: invenio_communities/members/services/service.py:585
 msgid "A community must have at least one owner."
 msgstr "Eine Community muss mindestens eine/n BesitzerIn haben."
 
-#: invenio_communities/members/services/service.py:466
+#: invenio_communities/members/services/service.py:494
 msgid "You cannot change your own role."
 msgstr "Sie können Ihre eigene Rolle nicht ändern."
 
-#: invenio_communities/members/services/service.py:474
+#: invenio_communities/members/services/service.py:502
 msgid "You can only set public visibility on your own membership."
 msgstr ""
 "Sie können die Sichtbarkeit \"Öffentlich\" nur für Ihre eigene "
 "Mitgliedschaft setzen."
 
-#: invenio_communities/members/services/service.py:482
-msgid "You will join as \"{role}\" (changed from: \"{previous}\")"
-msgstr "Sie werden als \"{role}\" beitreten (bisherige Rolle: \"{previous}\")."
+#: invenio_communities/members/services/service.py:510
+msgid "You will join as \"{role}\" (changed from: \"{previous}\")."
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:24
@@ -335,11 +341,19 @@ msgstr ""
 "    Die Community, auf die Sie zuzugreifen versuchen, wurde von %(sitename)s entfernt.\n"
 "Die Metadaten der Community werden zu Archivierungszwecken aufbewahrt."
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:60
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:29
+msgid "Community visibility"
+msgstr "Sichtbarkeit der Community"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:30
+msgid "The community is restricted to users with access."
+msgstr "Die Community ist auf BenutzerInnen mit Zugang beschränkt."
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:73
 msgid "About this community"
 msgstr "Über diese Community"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:78
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:90
 msgid "New upload"
 msgstr "Neuer Eintrag"
 
@@ -348,7 +362,7 @@ msgid " members"
 msgstr "Mitglieder"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:19
-#: invenio_communities/views/ui.py:127
+#: invenio_communities/views/ui.py:128
 msgid "Members"
 msgstr "Mitglieder"
 
@@ -372,20 +386,20 @@ msgstr "Profil"
 msgid "Privileges"
 msgstr "Rechte"
 
-#: invenio_communities/views/communities.py:26
+#: invenio_communities/views/communities.py:29
 msgid "Your community is publicly accessible and shows up in search results."
 msgstr ""
 "Ihre Community ist öffentlich zugänglich und wird in den Suchergebnissen "
 "angezeigt."
 
-#: invenio_communities/views/communities.py:35
+#: invenio_communities/views/communities.py:37
 msgid "Your community is restricted to users with access."
 msgstr "Ihre Community ist auf BenutzerInnen mit Zugang beschränkt."
 
-#: invenio_communities/views/ui.py:120
+#: invenio_communities/views/ui.py:121
 msgid "Requests"
 msgstr "Anfragen"
 
-#: invenio_communities/views/ui.py:134
+#: invenio_communities/views/ui.py:135
 msgid "Settings"
 msgstr "Einstellungen"
