@@ -4,11 +4,12 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_communities/i18next";
 import _get from "lodash/get";
 import React from "react";
 import { Image } from "react-invenio-forms";
 import { Icon, Item, Label } from "semantic-ui-react";
+import { DateTime } from "luxon";
 
 export const MobileCommunitiesItem = ({ result }) => {
   const community_type = result.ui?.type?.title_l10n;
@@ -37,7 +38,7 @@ export const MobileCommunitiesItem = ({ result }) => {
         <Item.Extra>
           <Image wrapped src={result.links.logo} size="small" />
         </Item.Extra>
-        <Item.Header as="h2">
+        <Item.Header as="h2" className="rel-mt-1">
           <a href={`/communities/${result.id}`}>{result.metadata.title}</a>
         </Item.Header>
         <Item.Meta>
@@ -59,6 +60,10 @@ export const MobileCommunitiesItem = ({ result }) => {
             </a>
           )}
         </Item>
+        <Item.Extra>
+          {i18next.t("Created: ")}
+          {DateTime.fromISO(result.created).toLocaleString(i18next.language)}
+        </Item.Extra>
       </Item.Content>
     </Item>
   );
