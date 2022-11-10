@@ -13,7 +13,6 @@ import { FeaturedEntries } from "./featured";
 import { AdminDetailsView, Edit, Delete } from "@js/invenio_administration";
 import { i18next } from "@translations/invenio_communities/i18next";
 
-
 const domContainer = document.getElementById("invenio-details-config");
 const title = domContainer.dataset.title;
 const fields = JSON.parse(domContainer.dataset.fields);
@@ -34,13 +33,15 @@ const createdBySystem = (data) => data?.system_created;
 const overridenComponents = {
   "InvenioAdministration.EditAction": parametrize(Edit, {
     disable: createdBySystem,
-    disabledMessage:
-      i18next.t("This set is not editable as it was created by the system."),
+    disabledMessage: i18next.t(
+      "This set is not editable as it was created by the system."
+    ),
   }),
   "InvenioAdministration.DeleteAction": parametrize(Delete, {
     disable: createdBySystem,
-    disabledMessage:
-      i18next.t("This set is not deletable as it was created by the system."),
+    disabledMessage: i18next.t(
+      "This set is not deletable as it was created by the system."
+    ),
   }),
   "InvenioAdministration.ActionModal.layout": FeatureModal,
 };

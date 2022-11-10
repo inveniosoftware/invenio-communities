@@ -10,11 +10,9 @@ import React from "react";
 import { Grid } from "semantic-ui-react";
 import { ResultsPerPage, Pagination, ResultsList } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
 
-export const InvitationsResults = ({
-  paginationOptions,
-  currentResultsState,
-}) => {
+export const InvitationsResults = ({ paginationOptions, currentResultsState }) => {
   const { total } = currentResultsState.data;
   return (
     total && (
@@ -49,4 +47,9 @@ export const InvitationsResults = ({
       </Grid>
     )
   );
+};
+
+InvitationsResults.propTypes = {
+  paginationOptions: PropTypes.object.isRequired,
+  currentResultsState: PropTypes.object.isRequired,
 };

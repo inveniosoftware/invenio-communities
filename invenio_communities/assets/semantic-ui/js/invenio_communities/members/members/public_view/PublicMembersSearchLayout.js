@@ -11,6 +11,7 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import React, { Component } from "react";
 import { SearchBar } from "react-searchkit";
 import { Grid } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 const PublicViewSearchBar = () => {
   return (
@@ -35,3 +36,7 @@ export class PublicMembersSearchLayout extends Component {
     );
   }
 }
+
+PublicMembersSearchLayout.propTypes = {
+  config: PropTypes.object.isRequired,
+};

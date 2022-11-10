@@ -8,9 +8,8 @@
 
 import React from "react";
 import { Table } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
+import PropTypes from "prop-types";
 
 export const PublicMembersResultsContainer = ({ results }) => {
   return (
@@ -23,4 +22,8 @@ export const PublicMembersResultsContainer = ({ results }) => {
       <Table.Body>{results}</Table.Body>
     </Table>
   );
+};
+
+PublicMembersResultsContainer.propTypes = {
+  results: PropTypes.array.isRequired,
 };

@@ -6,7 +6,6 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
@@ -21,11 +20,12 @@ export class SearchResultsBulkActions extends Component {
   constructor(props) {
     super(props);
     const { allSelected } = this.props;
-    this.state = { allSelectedChecked: allSelected, action: undefined };
+    this.state = { allSelectedChecked: allSelected };
   }
 
   componentDidMount() {
     const { allSelected } = this.context;
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ allSelectedChecked: allSelected });
   }
 
@@ -39,15 +39,10 @@ export class SearchResultsBulkActions extends Component {
     if (!value) return;
 
     const { optionSelectionCallback } = this.props;
-    this.setState({ action: value });
 
     const { selectedCount, bulkActionContext } = this.context;
-    const selected = _pickBy(
-      bulkActionContext,
-      ({ selected }) => selected === true
-    );
+    const selected = _pickBy(bulkActionContext, ({ selected }) => selected === true);
     optionSelectionCallback(value, selected, selectedCount);
-    this.setState({ action: undefined });
   };
 
   render() {

@@ -11,6 +11,7 @@ export class SuccessIcon extends Component {
 
   componentDidMount() {
     const { timeOutDelay, show } = this.props;
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ show: show });
 
     const timerAlreadySet = !!this.successTimer;
@@ -35,9 +36,7 @@ export class SuccessIcon extends Component {
   render() {
     const { className } = this.props;
     const { show } = this.state;
-    return (
-      show && <Icon name="checkmark" className={`positive ${className}`} />
-    );
+    return show && <Icon name="checkmark" className={`positive ${className}`} />;
   }
 }
 

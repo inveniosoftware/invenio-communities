@@ -18,20 +18,15 @@ export default class CarouselItem extends Component {
     const { community, defaultLogo, className } = this.props;
 
     return (
-      <Item className={`carousel flex align-items-center ${className}`} key={community.id}>
-        <Image
-          size="small"
-          src={community.links.logo}
-          fallbackSrc={defaultLogo}
-        />
+      <Item
+        className={`carousel flex align-items-center ${className}`}
+        key={community.id}
+      >
+        <Image size="small" src={community.links.logo} fallbackSrc={defaultLogo} />
         <Item.Content>
           <Item.Header as={Grid} stackable className="rel-pb-1">
             <Grid.Column computer="10" tablet="16" className="pl-0 pb-0">
-              <Header
-                as="a"
-                size="medium"
-                href={community.links.self_html}
-              >
+              <Header as="a" size="medium" href={community.links.self_html}>
                 {community.metadata.title}
               </Header>
             </Grid.Column>
@@ -52,15 +47,16 @@ export default class CarouselItem extends Component {
             </Grid.Column>
           </Item.Header>
           <Item.Description
-            content={_truncate(community.metadata.description, { length: 300 } )}
+            content={_truncate(community.metadata.description, { length: 300 })}
           />
         </Item.Content>
       </Item>
-    )
+    );
   }
 }
 
 CarouselItem.propTypes = {
   community: PropTypes.object.isRequired,
   defaultLogo: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
 };

@@ -47,6 +47,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Run eslint test
+        run: ./run-js-linter.sh -i
+        
       - name: Generate dependencies
         run: |
           pip install wheel requirements-builder

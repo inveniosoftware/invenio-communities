@@ -33,8 +33,7 @@ export class ManagerMembersResultItem extends Component {
     // visibility can not be changed from hidden to public by other members
     const newValueIsPublic = !!value;
     const isEditingSelf = result.is_current_user;
-    const memberCanChangeVisibilityAfterUpdate =
-      newValueIsPublic || isEditingSelf;
+    const memberCanChangeVisibilityAfterUpdate = newValueIsPublic || isEditingSelf;
 
     const updatedPermissions = {
       ...result.permissions,
@@ -69,9 +68,7 @@ export class ManagerMembersResultItem extends Component {
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item
-                className={
-                  result.is_current_user ? "flex align-no-checkbox" : "flex"
-                }
+                className={result.is_current_user ? "flex align-no-checkbox" : "flex"}
                 key={result.id}
               >
                 {!result.is_current_user && (
@@ -79,9 +76,7 @@ export class ManagerMembersResultItem extends Component {
                 )}
                 <Image src={result.member.avatar} avatar />
                 <Item.Content className="ml-10">
-                  <Item.Header
-                    className={!result.member.description ? "mt-5" : ""}
-                  >
+                  <Item.Header className={!result.member.description ? "mt-5" : ""}>
                     <b className="mr-10">{result.member.name}</b>
 
                     {result.member.is_group && (

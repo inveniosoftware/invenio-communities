@@ -5,6 +5,7 @@
 
 const { readFileSync, writeFileSync } = require("fs");
 const { gettextToI18next } = require("i18next-conv");
+
 const PACKAGE_JSON_BASE_PATH = "./";
 const { languages } = require(`../package`).config;
 

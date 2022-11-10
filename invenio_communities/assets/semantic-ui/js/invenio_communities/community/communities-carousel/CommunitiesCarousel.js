@@ -8,7 +8,6 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { http } from "react-invenio-forms";
 import { withCancel } from "react-invenio-forms";
@@ -20,28 +19,28 @@ export default class CommunitiesCarousel extends Component {
     super(props);
 
     this.state = {
-      isLoading: false,
       data: { hits: [] },
-      error: {},
       activeIndex: 0,
-      animationDirection: 'left',
+      animationDirection: "left",
       carouselTimer: null,
     };
   }
 
   getDataIndex = (index) => {
-    const { data: { hits }} = this.state;
-    if(index > hits.length - 1) return 0;
-    if(index < 0) return hits.length - 1;
+    const {
+      data: { hits },
+    } = this.state;
+    if (index > hits.length - 1) return 0;
+    if (index < 0) return hits.length - 1;
     return index;
-  }
+  };
 
   runCarousel = async (newIndex) => {
     const { activeIndex } = this.state;
-    let animationDirection = newIndex < activeIndex ? 'right' : 'left';
+    let animationDirection = newIndex < activeIndex ? "right" : "left";
     await this.setState({ animationDirection });
-    this.setState({ activeIndex: this.getDataIndex(newIndex) })
-  }
+    this.setState({ activeIndex: this.getDataIndex(newIndex) });
+  };
 
   setCarouselTimer = () => {
     const { data } = this.state;
@@ -49,13 +48,17 @@ export default class CommunitiesCarousel extends Component {
     this.setState({
       carouselTimer: setInterval(() => {
         data.hits.length && this.runCarousel(this.state.activeIndex + 1);
-      }, intervalDelay)
-    })
-  }
+      }, intervalDelay),
+    });
+  };
 
   // Pause carousel when user focuses elements in the container
-  stopCarousel = () => { clearInterval(this.state.carouselTimer) }
-  startCarousel = () => { this.setCarouselTimer() }
+  stopCarousel = () => {
+    clearInterval(this.state.carouselTimer);
+  };
+  startCarousel = () => {
+    this.setCarouselTimer();
+  };
 
   componentWillUnmount() {
     this.cancellableFetch && this.cancellableFetch.cancel();
@@ -67,12 +70,12 @@ export default class CommunitiesCarousel extends Component {
   }
 
   fetchData = async () => {
-    this.setState({ isLoading: true });
-    this.cancellableFetch = withCancel(http.get(this.props.fetchUrl));
+    const { fetchUrl } = this.props;
+    this.cancellableFetch = withCancel(http.get(fetchUrl));
 
     try {
       const response = await this.cancellableFetch.promise;
-      this.setState({ data: response.data.hits, isLoading: false });
+      this.setState({ data: response.data.hits });
       this.setCarouselTimer();
     } catch (error) {
       console.error(error);
@@ -84,11 +87,14 @@ export default class CommunitiesCarousel extends Component {
     const { title, animationSpeed, defaultLogo } = this.props;
 
     const carouselSlides = data.hits?.map(
-      (community, index) => (
+      (community, index) =>
         index === activeIndex && (
-          <CarouselItem community={community} defaultLogo={defaultLogo} key={community.id} />
+          <CarouselItem
+            community={community}
+            defaultLogo={defaultLogo}
+            key={community.id}
+          />
         )
-      )
     );
 
     return data.hits.length ? (
@@ -99,11 +105,7 @@ export default class CommunitiesCarousel extends Component {
           </Container>
         )}
 
-        <Grid
-          container
-          onFocus={this.stopCarousel}
-          onBlur={this.startCarousel}
-        >
+        <Grid container onFocus={this.stopCarousel} onBlur={this.startCarousel}>
           <Grid.Column
             width="2"
             className="pr-0"
@@ -118,7 +120,9 @@ export default class CommunitiesCarousel extends Component {
               size="huge"
               aria-label={i18next.t("Previous slide")}
               onClick={() => this.runCarousel(activeIndex - 1)}
-              onKeyDown={(event) => event.key === "Enter" && this.runCarousel(activeIndex - 1)}
+              onKeyDown={(event) =>
+                event.key === "Enter" && this.runCarousel(activeIndex - 1)
+              }
               tabIndex="0"
             />
           </Grid.Column>
@@ -129,7 +133,7 @@ export default class CommunitiesCarousel extends Component {
               className="flex align-items-center justify-center"
               duration={animationSpeed}
               animation={`carousel-slide ${animationDirection}`}
-              directional={true}
+              directional
             >
               {carouselSlides}
             </Transition.Group>
@@ -149,13 +153,17 @@ export default class CommunitiesCarousel extends Component {
               size="huge"
               aria-label={i18next.t("Next slide")}
               onClick={() => this.runCarousel(activeIndex + 1)}
-              onKeyDown={(event) => event.key === "Enter" && this.runCarousel(activeIndex + 1)}
+              onKeyDown={(event) =>
+                event.key === "Enter" && this.runCarousel(activeIndex + 1)
+              }
               tabIndex="0"
             />
           </Grid.Column>
         </Grid>
       </Container>
-    ) : "";
+    ) : (
+      ""
+    );
   }
 }
 

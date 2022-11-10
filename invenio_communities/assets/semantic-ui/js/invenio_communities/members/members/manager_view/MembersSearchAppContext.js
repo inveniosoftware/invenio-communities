@@ -18,4 +18,5 @@ export class MembersSearchAppContext extends Component {
 
 MembersSearchAppContext.propTypes = {
   community: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
 };

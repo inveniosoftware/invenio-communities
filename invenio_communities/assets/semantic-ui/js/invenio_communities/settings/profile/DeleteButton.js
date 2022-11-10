@@ -10,6 +10,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import React, { useEffect, useState } from "react";
 import { Button, Icon, Modal } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export const DeleteButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,13 +27,14 @@ export const DeleteButton = (props) => {
 
   const handleDelete = async () => {
     setLoading(true);
+    const { onDelete, redirectURL, onError } = props;
     try {
-      await props.onDelete();
-      if (props.redirectURL) {
-        window.location.href = props.redirectURL;
+      await onDelete();
+      if (redirectURL) {
+        window.location.href = redirectURL;
       }
     } catch (error) {
-      props.onError(error);
+      onError(error);
     }
     handleClose();
   };
@@ -40,6 +42,8 @@ export const DeleteButton = (props) => {
   useEffect(() => {
     if (modalOpen) cancelBtnRef?.current?.focus();
   }, [modalOpen]);
+
+  const { label, confirmationMessage } = props;
 
   return (
     <>
@@ -57,8 +61,8 @@ export const DeleteButton = (props) => {
         aria-expanded={modalOpen}
         id="delete-button"
       >
-        <Icon name="trash"></Icon>
-        {props.label}
+        <Icon name="trash" />
+        {label}
       </Button>
 
       <Modal
@@ -69,7 +73,7 @@ export const DeleteButton = (props) => {
         onClose={handleClose}
         size="tiny"
       >
-        <Modal.Content>{props.confirmationMessage}</Modal.Content>
+        <Modal.Content>{confirmationMessage}</Modal.Content>
         <Modal.Actions>
           <Button
             ref={cancelBtnRef}
@@ -86,4 +90,12 @@ export const DeleteButton = (props) => {
       </Modal>
     </>
   );
+};
+
+DeleteButton.propTypes = {
+  onDelete: PropTypes.func.isRequired,
+  redirectURL: PropTypes.string.isRequired,
+  onError: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  confirmationMessage: PropTypes.string.isRequired,
 };

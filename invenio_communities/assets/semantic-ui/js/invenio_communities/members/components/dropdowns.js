@@ -6,9 +6,7 @@ import PropTypes from "prop-types";
 const DropdownContent = ({ title, description, selected }) => (
   <Grid>
     <Grid.Row>
-      <Grid.Column width={1}>
-        {selected && <Icon name="checkmark" />}
-      </Grid.Column>
+      <Grid.Column width={1}>{selected && <Icon name="checkmark" />}</Grid.Column>
       <Grid.Column width={14}>
         <Item.Group unstackable>
           <Item>
@@ -24,6 +22,12 @@ const DropdownContent = ({ title, description, selected }) => (
     </Grid.Row>
   </Grid>
 );
+
+DropdownContent.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+};
 
 const rolesToDropdownOptions = (roles, currentValue) =>
   roles.map((role) => ({
@@ -49,9 +53,7 @@ export const RoleDropdown = ({
 }) => {
   return (
     <ActionDropdown
-      optionsSerializer={(options) =>
-        rolesToDropdownOptions(options, currentValue)
-      }
+      optionsSerializer={(options) => rolesToDropdownOptions(options, currentValue)}
       options={roles}
       successCallback={successCallback}
       action={action}

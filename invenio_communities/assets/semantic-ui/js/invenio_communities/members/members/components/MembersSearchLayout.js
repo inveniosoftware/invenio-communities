@@ -12,6 +12,7 @@ import { Filters } from "../../Filters";
 import { FilterLabels } from "../../components/FilterLabels";
 import { SearchFilters } from "@js/invenio_search_ui/components";
 import { SearchBar, Sort } from "react-searchkit";
+import PropTypes from "prop-types";
 
 export class MembersSearchLayout extends Component {
   render() {
@@ -40,3 +41,8 @@ export class MembersSearchLayout extends Component {
     );
   }
 }
+
+MembersSearchLayout.propTypes = {
+  config: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired,
+};

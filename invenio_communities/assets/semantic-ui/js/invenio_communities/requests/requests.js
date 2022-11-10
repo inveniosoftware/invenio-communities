@@ -10,17 +10,10 @@ import {
   InvenioSearchPagination,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { DateTime } from "luxon";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
-import {
-  Count,
-  ResultsList,
-  SearchBar,
-  Sort,
-  withState,
-} from "react-searchkit";
+import { Count, ResultsList, SearchBar, Sort, withState } from "react-searchkit";
 import {
   Button,
   Card,
@@ -59,9 +52,9 @@ export const RecordSearchBarElement = withState(
     return (
       <Input
         action={{
-          icon: "search",
-          onClick: onBtnSearchClick,
-          className: "search",
+          "icon": "search",
+          "onClick": onBtnSearchClick,
+          "className": "search",
           "aria-label": i18next.t("Search"),
         }}
         fluid
@@ -110,9 +103,7 @@ export const RequestsResults = ({
                         values={sortOptions}
                         label={(cmp) => (
                           <>
-                            <label className="mr-10">
-                              {i18next.t("Sort by")}
-                            </label>
+                            <label className="mr-10">{i18next.t("Sort by")}</label>
                             {cmp}
                           </>
                         )}
@@ -135,35 +126,44 @@ export const RequestsResults = ({
   );
 };
 
+RequestsResults.propTypes = {
+  sortOptions: PropTypes.object.isRequired,
+  paginationOptions: PropTypes.object.isRequired,
+  currentResultsState: PropTypes.object.isRequired,
+};
+
 export const RequestsResultsGridItemTemplate = ({ result, community }) => {
   return (
     <Card fluid href={`/communities/${community.slug}/requests/${result.id}`}>
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
         <Card.Description>
-          <div
-            dangerouslySetInnerHTML={{ __html: result.metadata.description }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: result.metadata.description }} />
         </Card.Description>
       </Card.Content>
     </Card>
   );
 };
 
+RequestsResultsGridItemTemplate.propTypes = {
+  result: PropTypes.object.isRequired,
+  community: PropTypes.object.isRequired,
+};
+
 export const RequestsResultsItemTemplateCommunity = ({ result, community }) => {
-  const ComputerTabletRequestsItemWithState = withState(
-    ComputerTabletRequestsItem
-  );
+  const ComputerTabletRequestsItemWithState = withState(ComputerTabletRequestsItem);
   const MobileRequestsItemWithState = withState(MobileRequestsItem);
   return (
     <>
-      <ComputerTabletRequestsItemWithState
-        result={result}
-        community={community}
-      />
+      <ComputerTabletRequestsItemWithState result={result} community={community} />
       <MobileRequestsItemWithState result={result} community={community} />
     </>
   );
+};
+
+RequestsResultsItemTemplateCommunity.propTypes = {
+  result: PropTypes.object.isRequired,
+  community: PropTypes.object.isRequired,
 };
 
 class RequestStatusFilterComponent extends Component {
@@ -178,10 +178,9 @@ class RequestStatusFilterComponent extends Component {
   componentDidMount() {
     const { currentQueryState } = this.props;
     const userSelectionFilters = currentQueryState.filters;
-    const openFilter = userSelectionFilters.find((obj) =>
-      obj.includes("is_open")
-    );
+    const openFilter = userSelectionFilters.find((obj) => obj.includes("is_open"));
     if (openFilter) {
+      // eslint-disable-next-line react/no-did-mount-set-state
       this.setState({
         open: openFilter.includes("true"),
       });
@@ -193,8 +192,7 @@ class RequestStatusFilterComponent extends Component {
    * @param {string} OpenStatus true if open requests and false if closed requests
    */
   retrieveRequests = (OpenStatus) => {
-    const { currentQueryState, updateQueryState, keepFiltersOnUpdate } =
-      this.props;
+    const { currentQueryState, updateQueryState, keepFiltersOnUpdate } = this.props;
     const { open } = this.state;
 
     if (open === OpenStatus) {
@@ -255,7 +253,7 @@ export const RequestStatusFilter = withState(RequestStatusFilterComponent);
 
 export const RequestsSearchLayout = (props) => {
   const [sidebarVisible, setSidebarVisible] = React.useState(false);
-
+  const { config } = props;
   return (
     <Container>
       <Grid>
@@ -292,10 +290,11 @@ export const RequestsSearchLayout = (props) => {
             width={4}
             open={sidebarVisible}
             onHideClick={() => setSidebarVisible(false)}
-            children={<SearchAppFacets aggs={props.config.aggs} />}
+            // eslint-disable-next-line react/no-children-prop
+            children={<SearchAppFacets aggs={config.aggs} />}
           />
           <Grid.Column mobile={16} tablet={16} computer={12}>
-            <SearchAppResultsPane layoutOptions={props.config.layoutOptions} />
+            <SearchAppResultsPane layoutOptions={config.layoutOptions} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -303,17 +302,19 @@ export const RequestsSearchLayout = (props) => {
   );
 };
 
+RequestsSearchLayout.propTypes = {
+  config: PropTypes.object.isRequired,
+};
+
 export const RequestsEmptyResults = ({
   queryString,
   userSelectionFilters,
   updateQueryState,
 }) => {
-  const is_open = userSelectionFilters.some(
+  const isOpen = userSelectionFilters.some(
     (obj) => obj.includes("is_open") && obj.includes("true")
   );
-  const filtersToNotReset = userSelectionFilters.find((obj) =>
-    obj.includes("is_open")
-  );
+  const filtersToNotReset = userSelectionFilters.find((obj) => obj.includes("is_open"));
   const elementsToReset = {
     queryString: "",
     page: 1,
@@ -322,14 +323,12 @@ export const RequestsEmptyResults = ({
 
   const AllDone = () => {
     return (
-      <>
-        <Header as="h1" icon>
-          {i18next.t("All done!")}
-          <Header.Subheader>
-            {i18next.t("You've caught up with all open requests.")}
-          </Header.Subheader>
-        </Header>
-      </>
+      <Header as="h1" icon>
+        {i18next.t("All done!")}
+        <Header.Subheader>
+          {i18next.t("You've caught up with all open requests.")}
+        </Header.Subheader>
+      </Header>
     );
   };
 
@@ -349,14 +348,18 @@ export const RequestsEmptyResults = ({
     );
   };
 
-  const allRequestsDone = is_open && !queryString;
+  const allRequestsDone = isOpen && !queryString;
   return (
-    <>
-      <Segment placeholder textAlign="center">
-        {allRequestsDone ? <AllDone /> : <NoResults />}
-      </Segment>
-    </>
+    <Segment placeholder textAlign="center">
+      {allRequestsDone ? <AllDone /> : <NoResults />}
+    </Segment>
   );
+};
+
+RequestsEmptyResults.propTypes = {
+  queryString: PropTypes.string.isRequired,
+  userSelectionFilters: PropTypes.array.isRequired,
+  updateQueryState: PropTypes.func.isRequired,
 };
 
 export const RequestsEmptyResultsWithState = withState(RequestsEmptyResults);

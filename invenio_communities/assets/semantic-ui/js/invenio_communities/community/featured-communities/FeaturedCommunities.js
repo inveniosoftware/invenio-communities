@@ -33,8 +33,14 @@ export default class FeaturedCommunities extends Component {
       const response = await this.cancellableFetch.promise;
       this.setState({ data: response.data.hits, isLoading: false });
     } catch (error) {
-      this.setState({ error: error, isLoading: false });
-      console.error(error);
+      let errorMessage = error.message;
+      if (error.response) {
+        errorMessage = error.response.data.message;
+      }
+      this.setState({
+        error: errorMessage,
+        isLoading: false,
+      });
     }
   };
 
@@ -47,30 +53,31 @@ export default class FeaturedCommunities extends Component {
       tabletColumnWidth,
       computerColumnWidth,
     } = this.props;
-    return isLoading
-      ? <Loader active inline='centered' ></Loader>
-      : error
-        ? <Container>
-          <Message negative>
-            <Message.Header>{i18next.t("An error occurred.")}</Message.Header>
-            <p>{error?.response?.data.message}</p>
-          </Message>
-        </Container>
-        : data?.hits
-          ? <Grid className="featured-communities" columns={columnNumber} centered>
-            {data.hits.map((hit, index) => (
-              <FeaturedCommunity
-                key={index}
-                community={hit}
-                mobileColumnWidth={mobileColumnWidth}
-                tabletColumnWidth={tabletColumnWidth}
-                computerColumnWidth={computerColumnWidth}
-                widescreenColumnWidth={widescreenColumnWidth}
-              />
-            ))}
-          </Grid>
-          : ""
-      ;
+    return isLoading ? (
+      <Loader active inline="centered" />
+    ) : error ? (
+      <Container>
+        <Message negative>
+          <Message.Header>{i18next.t("An error occurred.")}</Message.Header>
+          <p>{error}</p>
+        </Message>
+      </Container>
+    ) : data?.hits ? (
+      <Grid className="featured-communities" columns={columnNumber} centered>
+        {data.hits.map((hit, index) => (
+          <FeaturedCommunity
+            key={index}
+            community={hit}
+            mobileColumnWidth={mobileColumnWidth}
+            tabletColumnWidth={tabletColumnWidth}
+            computerColumnWidth={computerColumnWidth}
+            widescreenColumnWidth={widescreenColumnWidth}
+          />
+        ))}
+      </Grid>
+    ) : (
+      ""
+    );
   }
 }
 

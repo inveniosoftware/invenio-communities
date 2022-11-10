@@ -22,7 +22,7 @@ export class FilterLabelsComponent extends Component {
   onClearAllFilters = (currentQueryState, updateCurrentFilters) => {
     const { ignoreFilters } = this.props;
     currentQueryState.filters = currentQueryState.filters.filter((element) =>
-    ignoreFilters.includes(element[0])
+      ignoreFilters.includes(element[0])
     );
     updateCurrentFilters(currentQueryState);
   };

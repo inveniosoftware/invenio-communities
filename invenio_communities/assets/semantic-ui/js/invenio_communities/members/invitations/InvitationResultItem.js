@@ -14,11 +14,10 @@ import { Image } from "react-invenio-forms";
 import { Container, Grid, Item, Table } from "semantic-ui-react";
 import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
-import Overridable from "react-overridable";
 import RequestStatus from "@js/invenio_requests/request/RequestStatus";
 
-const formattedTime = (expires_at) =>
-  DateTime.fromISO(expires_at).setLocale(i18next.language).toRelative();
+const formattedTime = (expiresAt) =>
+  DateTime.fromISO(expiresAt).setLocale(i18next.language).toRelative();
 
 export class InvitationResultItem extends Component {
   static contextType = InvitationsContext;
@@ -51,17 +50,10 @@ export class InvitationResultItem extends Component {
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
               <Item className="flex align-items-center" key={invitation.id}>
-                <Image
-                  src={member.avatar}
-                  avatar
-                  circular
-                  className="mr-10"
-                />
+                <Image src={member.avatar} avatar circular className="mr-10" />
                 <Item.Content>
                   <Item.Header size="small" as="b">
-                    <a
-                      href={`/communities/${community.slug}/requests/${request.id}`}
-                    >
+                    <a href={`/communities/${community.slug}/requests/${request.id}`}>
                       {member.name}
                     </a>
                   </Item.Header>
@@ -115,6 +107,7 @@ export class InvitationResultItem extends Component {
 InvitationResultItem.propTypes = {
   result: PropTypes.object.isRequired,
   config: PropTypes.object.isRequired,
+  community: PropTypes.object.isRequired,
 };
 
 InvitationResultItem.defaultProps = {};

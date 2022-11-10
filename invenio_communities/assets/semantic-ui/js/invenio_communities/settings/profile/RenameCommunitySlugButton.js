@@ -13,6 +13,7 @@ import { withCancel } from "react-invenio-forms";
 import { Button, Form, Icon, Modal } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
 import { communityErrorSerializer } from "../../api/serializers";
+import PropTypes from "prop-types";
 
 export class RenameCommunitySlugButton extends Component {
   constructor(props) {
@@ -43,9 +44,7 @@ export class RenameCommunitySlugButton extends Component {
     const newSlug = this.formInputRef.current.value;
     const client = new CommunityApi();
 
-    this.cancellableRename = withCancel(
-      client.renameSlug(community.id, newSlug)
-    );
+    this.cancellableRename = withCancel(client.renameSlug(community.id, newSlug));
     this.setState({ loading: true });
 
     try {
@@ -65,7 +64,6 @@ export class RenameCommunitySlugButton extends Component {
         this.setState({ error: invalidIdError });
       }
     }
-
   };
 
   render() {
@@ -128,3 +126,8 @@ export class RenameCommunitySlugButton extends Component {
     );
   }
 }
+
+RenameCommunitySlugButton.propTypes = {
+  community: PropTypes.object.isRequired,
+  onError: PropTypes.func.isRequired,
+};

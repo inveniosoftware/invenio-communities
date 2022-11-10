@@ -35,9 +35,7 @@ export class InvitationsMembersModal extends Component {
 
   onGroupSuccess = () => {
     const { community } = this.props;
-    window.location = InvenioCommunitiesRoutesGenerator.membersList(
-      community.slug
-    );
+    window.location = InvenioCommunitiesRoutesGenerator.membersList(community.slug);
   };
 
   getPanes = () => {
@@ -104,9 +102,7 @@ export class InvitationsMembersModal extends Component {
         }
       >
         <Modal.Header as="h2">
-          {activeIndex == 0
-            ? i18next.t("Invite members")
-            : i18next.t("Add groups")}
+          {activeIndex == 0 ? i18next.t("Invite members") : i18next.t("Add groups")}
         </Modal.Header>
         <Tab
           menu={{
@@ -128,8 +124,7 @@ InvitationsMembersModal.propTypes = {
   currentQueryState: PropTypes.object.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
   groupsEnabled: PropTypes.bool.isRequired,
+  community: PropTypes.object.isRequired,
 };
 
-export const InvitationsMembersModalWithSearchKit = withState(
-  InvitationsMembersModal
-);
+export const InvitationsMembersModalWithSearchKit = withState(InvitationsMembersModal);

@@ -37,9 +37,7 @@ class RemoveMemberModal extends Component {
       },
       [modalModeEnum.remove]: {
         headerText: i18next.t("Remove user"),
-        bodyText: i18next.t(
-          "You are about to remove this user from this community."
-        ),
+        bodyText: i18next.t("You are about to remove this user from this community."),
         buttonText: i18next.t("Remove"),
       },
     };

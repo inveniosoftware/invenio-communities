@@ -51,36 +51,36 @@ export class FeatureModal extends Component {
           {loading && <Loader active={loading} />}
           {error && <ErrorMessage error={error} />}
           {!loading && !error && (
-              <Table celled striped collapsing>
-                <Table.Header>
-                  <Table.HeaderCell>{i18next.t("Start date")}</Table.HeaderCell>
-                  <Table.HeaderCell>{i18next.t("Active")}</Table.HeaderCell>
-                </Table.Header>
-                <Table.Body>
-                  {featuredList?.hits?.hits.map((row) => {
-                    const startDate = DateTime.fromISO(row.start_date);
-                    return (
-                      <Table.Row>
-                        <Table.Cell
-                          key={row.id}
-                          data-label={row.id}
-                          className="word-break-all"
-                        >
-                          <DateFormatter value={row.start_date} />
-                        </Table.Cell>
-                        <Table.Cell textAlign="center">
-                          <BoolFormatter
-                            icon="star"
-                            color="yellow"
-                            value={startDate <= now}
-                          />
-                        </Table.Cell>
-                      </Table.Row>
-                    );
-                  })}
-                </Table.Body>
-              </Table>
-            )}
+            <Table celled striped collapsing>
+              <Table.Header>
+                <Table.HeaderCell>{i18next.t("Start date")}</Table.HeaderCell>
+                <Table.HeaderCell>{i18next.t("Active")}</Table.HeaderCell>
+              </Table.Header>
+              <Table.Body>
+                {featuredList?.hits?.hits.map((row) => {
+                  const startDate = DateTime.fromISO(row.start_date);
+                  return (
+                    <Table.Row key={row.id}>
+                      <Table.Cell
+                        key={row.id}
+                        data-label={row.id}
+                        className="word-break-all"
+                      >
+                        <DateFormatter value={row.start_date} />
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <BoolFormatter
+                          icon="star"
+                          color="yellow"
+                          value={startDate <= now}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+          )}
         </Modal.Content>
         {children}
       </Modal>
@@ -90,6 +90,7 @@ export class FeatureModal extends Component {
 
 FeatureModal.propTypes = {
   resource: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
   modalOpen: PropTypes.bool,
 };
 

@@ -84,12 +84,12 @@ export class MembersWithRoleSelection extends Component {
                 selectedMembers={selectedMembers}
                 handleChange={this.addMemberToSelected}
                 searchType="user"
-                placeholder={i18next.t(
-                  "Search by email, full name or username"
-                )}
+                placeholder={i18next.t("Search by email, full name or username")}
               />
               <label className="helptext rel-mt-1">
-                {i18next.t('Users must set profile visibility to "Public" in order to be invited to a community.')}
+                {i18next.t(
+                  'Users must set profile visibility to "Public" in order to be invited to a community.'
+                )}
               </label>
             </Form.Field>
             <RadioSelection
@@ -159,6 +159,8 @@ export class MembersWithRoleSelection extends Component {
 MembersWithRoleSelection.propTypes = {
   roleOptions: PropTypes.array.isRequired,
   modalClose: PropTypes.func.isRequired,
+  action: PropTypes.func.isRequired,
+  onSuccessCallback: PropTypes.func.isRequired,
 };
 
 MembersWithRoleSelection.defaultProps = {};

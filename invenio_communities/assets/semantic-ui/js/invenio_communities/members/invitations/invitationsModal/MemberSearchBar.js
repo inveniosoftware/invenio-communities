@@ -46,12 +46,8 @@ export class MembersSearchBar extends Component {
             <List.Item key={person.id}>
               <Image size="mini" src={person.links.avatar} avatar />
               <List.Content>
-                <List.Header as="a">
-                  {this.serializeMemberName(person)}
-                </List.Header>
-                <List.Description>
-                  {person.profile.affiliations}
-                </List.Description>
+                <List.Header as="a">{this.serializeMemberName(person)}</List.Header>
+                <List.Description>{person.profile.affiliations}</List.Description>
               </List.Content>
             </List.Item>
           </List>
@@ -100,9 +96,7 @@ export class MembersSearchBar extends Component {
 
     if (memberAlreadySelected) return;
 
-    const newSelectedMember = suggestions.find(
-      (item) => item.id === selectedValue
-    );
+    const newSelectedMember = suggestions.find((item) => item.id === selectedValue);
 
     const serializedSelectedMember = {
       id: newSelectedMember.id,
@@ -113,8 +107,7 @@ export class MembersSearchBar extends Component {
     if (searchType === "group") {
       serializedSelectedMember["name"] = newSelectedMember.id;
     } else {
-      serializedSelectedMember["name"] =
-        this.serializeMemberName(newSelectedMember);
+      serializedSelectedMember["name"] = this.serializeMemberName(newSelectedMember);
     }
     selectedMembers[serializedSelectedMember.id] = serializedSelectedMember;
     handleChange(selectedMembers);

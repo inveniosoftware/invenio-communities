@@ -8,7 +8,7 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize } from "react-overridable";
-import { DropdownSort } from '@js/invenio_search_ui/components';
+import { DropdownSort } from "@js/invenio_search_ui/components";
 import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
@@ -18,26 +18,19 @@ import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer"
 import { ManagerMembersResultItem } from "./ManagerMembersResultItem";
 import { MembersSearchAppContext as MembersSearchAppContextCmp } from "./MembersSearchAppContext";
 
-const dataAttr = document.getElementById(
-  "community-members-search-root"
-).dataset;
-const communitiesRolesCanUpdate = JSON.parse(
-  dataAttr.communitiesRolesCanUpdate
-);
+const dataAttr = document.getElementById("community-members-search-root").dataset;
+const communitiesRolesCanUpdate = JSON.parse(dataAttr.communitiesRolesCanUpdate);
 const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
 const community = JSON.parse(dataAttr.community);
 const permissions = JSON.parse(dataAttr.permissions);
 
-const ManagerMembersResultItemWithConfig = parametrize(
-  ManagerMembersResultItem,
-  {
-    config: {
-      rolesCanUpdate: communitiesRolesCanUpdate,
-      visibility: memberVisibilityTypes,
-      permissions: permissions,
-    },
-  }
-);
+const ManagerMembersResultItemWithConfig = parametrize(ManagerMembersResultItem, {
+  config: {
+    rolesCanUpdate: communitiesRolesCanUpdate,
+    visibility: memberVisibilityTypes,
+    permissions: permissions,
+  },
+});
 
 const ManagerMembersResultContainerWithCommunity = parametrize(
   ManagerMembersResultsContainer,

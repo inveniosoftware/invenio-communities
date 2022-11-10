@@ -8,10 +8,7 @@ import { initDefaultSearchComponents } from "@js/invenio_administration";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { FeatureModal } from "./FeatureModal";
 import { parametrize } from "react-overridable";
-import {
-  NotificationController,
-  BoolFormatter,
-} from "@js/invenio_administration";
+import { NotificationController, BoolFormatter } from "@js/invenio_administration";
 
 const domContainer = document.getElementById("invenio-search-config");
 

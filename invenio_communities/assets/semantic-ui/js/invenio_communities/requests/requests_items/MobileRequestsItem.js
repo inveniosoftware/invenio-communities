@@ -20,12 +20,8 @@ export const MobileRequestsItem = ({
   updateQueryState,
   currentQueryState,
 }) => {
-  const {
-    differenceInDays,
-    isCreatorCommunity,
-    creatorName,
-    refreshAfterAction,
-  } = requestsResultProps(result, updateQueryState, currentQueryState);
+  const { differenceInDays, isCreatorCommunity, creatorName, refreshAfterAction } =
+    requestsResultProps(result, updateQueryState, currentQueryState);
 
   return (
     <Item key={community.id} className="community-item mobile only flex">
@@ -50,9 +46,7 @@ export const MobileRequestsItem = ({
             {i18next.t(`Opened {{difference}} by`, {
               difference: differenceInDays,
             })}{" "}
-            {isCreatorCommunity && (
-              <Icon className="default-margin" name="users" />
-            )}{" "}
+            {isCreatorCommunity && <Icon className="default-margin" name="users" />}{" "}
             {creatorName}
           </small>
           <RightBottomLabel className="mb-5 block" result={result} />
