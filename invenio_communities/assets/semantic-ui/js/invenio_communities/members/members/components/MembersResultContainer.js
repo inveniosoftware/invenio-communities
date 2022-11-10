@@ -8,9 +8,8 @@
 
 import React from "react";
 import { Table } from "semantic-ui-react";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
-import _upperFirst from "lodash/upperFirst";
+import PropTypes from "prop-types";
 
 export const MembersResultsContainer = ({ results }) => {
   return (
@@ -18,12 +17,8 @@ export const MembersResultsContainer = ({ results }) => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell width={6}>{i18next.t("Members")}</Table.HeaderCell>
-          <Table.HeaderCell width={2}>
-            {i18next.t("Member since")}
-          </Table.HeaderCell>
-          <Table.HeaderCell width={2}>
-            {i18next.t("Visibility")}
-          </Table.HeaderCell>
+          <Table.HeaderCell width={2}>{i18next.t("Member since")}</Table.HeaderCell>
+          <Table.HeaderCell width={2}>{i18next.t("Visibility")}</Table.HeaderCell>
           <Table.HeaderCell width={4}>{i18next.t("Role")}</Table.HeaderCell>
           <Table.HeaderCell width={2} />
         </Table.Row>
@@ -31,4 +26,8 @@ export const MembersResultsContainer = ({ results }) => {
       <Table.Body>{results}</Table.Body>
     </Table>
   );
+};
+
+MembersResultsContainer.propTypes = {
+  results: PropTypes.array.isRequired,
 };

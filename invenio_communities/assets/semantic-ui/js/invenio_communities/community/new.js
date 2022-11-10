@@ -20,17 +20,10 @@ import {
   TextField,
   withCancel,
 } from "react-invenio-forms";
-import {
-  Button,
-  Divider,
-  Form,
-  Grid,
-  Header,
-  Icon,
-  Message,
-} from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../api";
 import { communityErrorSerializer } from "../api/serializers";
+import PropTypes from "prop-types";
 
 const IdentifierField = ({ formConfig }) => {
   const { values } = useFormikContext();
@@ -49,11 +42,7 @@ const IdentifierField = ({ formConfig }) => {
     <TextField
       required
       label={
-        <FieldLabel
-          htmlFor="slug"
-          icon="barcode"
-          label={i18next.t("Identifier")}
-        />
+        <FieldLabel htmlFor="slug" icon="barcode" label={i18next.t("Identifier")} />
       }
       fieldPath="slug"
       helpText={helpText}
@@ -65,6 +54,10 @@ const IdentifierField = ({ formConfig }) => {
       }}
     />
   );
+};
+
+IdentifierField.propTypes = {
+  formConfig: PropTypes.object.isRequired,
 };
 
 class CommunityCreateForm extends Component {
@@ -126,24 +119,14 @@ class CommunityCreateForm extends Component {
           <Form onSubmit={handleSubmit} className="communities-creation">
             <Message hidden={error === ""} negative className="flashed">
               <Grid container centered>
-                <Grid.Column
-                  mobile={16}
-                  tablet={12}
-                  computer={8}
-                  textAlign="left"
-                >
+                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
                   <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>
             <Grid container centered>
               <Grid.Row>
-                <Grid.Column
-                  mobile={16}
-                  tablet={12}
-                  computer={8}
-                  textAlign="center"
-                >
+                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
                   <Header className="mt-15" as="h2">
                     {i18next.t("Setup your new community")}
                   </Header>
@@ -186,9 +169,7 @@ class CommunityCreateForm extends Component {
                         fieldPath="access.visibility"
                         label={item.text}
                         labelIcon={item.icon}
-                        checked={
-                          _get(values, "access.visibility") === item.value
-                        }
+                        checked={_get(values, "access.visibility") === item.value}
                         value={item.value}
                         onChange={({ event, data, formikProps }) => {
                           formikProps.form.setFieldValue(
@@ -225,6 +206,10 @@ class CommunityCreateForm extends Component {
     );
   }
 }
+
+CommunityCreateForm.propTypes = {
+  formConfig: PropTypes.object.isRequired,
+};
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);

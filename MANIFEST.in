@@ -8,10 +8,12 @@
 
 include .dockerignore
 include .editorconfig
+include .prettierrc
 include .tx/config
 include *.rst
 include *.sh
 include *.txt
+include *.yml
 include babel.ini
 include docs/requirements.txt
 include LICENSE

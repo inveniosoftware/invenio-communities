@@ -24,15 +24,10 @@ import {
   ExpireStatus,
 } from "@js/invenio_requests/request";
 
-
-const dataAttr = document.getElementById(
-  "community-invitations-search-root"
-).dataset;
+const dataAttr = document.getElementById("community-invitations-search-root").dataset;
 const community = JSON.parse(dataAttr.community);
 const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
-const communitiesRolesCanInvite = JSON.parse(
-  dataAttr.communitiesRolesCanInvite
-);
+const communitiesRolesCanInvite = JSON.parse(dataAttr.communitiesRolesCanInvite);
 const permissions = JSON.parse(dataAttr.permissions);
 
 const communityGroupsEnabled = JSON.parse(dataAttr.communityGroupsEnabled);

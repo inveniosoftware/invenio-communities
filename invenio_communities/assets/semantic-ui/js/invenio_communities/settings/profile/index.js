@@ -50,13 +50,11 @@ import { communityErrorSerializer } from "../../api/serializers";
 import { CustomFieldSerializer } from "./CustomFieldSerializer";
 import { DeleteButton } from "./DeleteButton";
 import { RenameCommunitySlugButton } from "./RenameCommunitySlugButton";
+import PropTypes from "prop-types";
 
 const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
-    title: Yup.string().max(
-      250,
-      i18next.t("Maximum number of characters is 2000")
-    ),
+    title: Yup.string().max(250, i18next.t("Maximum number of characters is 2000")),
     description: Yup.string().max(
       2000,
       i18next.t("Maximum number of characters is 2000")
@@ -104,13 +102,7 @@ const removeEmptyValues = (obj) => {
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
 
-const LogoUploader = ({
-  community,
-  defaultLogo,
-  hasLogo,
-  onError,
-  logoMaxSize,
-}) => {
+const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
   const currentUrl = new URL(window.location.href);
   let dropzoneParams = {
     preventDropOnDocument: true,
@@ -166,7 +158,7 @@ const LogoUploader = ({
             <Image
               src={logoURL}
               fallbackSrc={defaultLogo}
-              loadFallbackFirst={true}
+              loadFallbackFirst
               fluid
               wrapped
               rounded
@@ -220,6 +212,14 @@ const LogoUploader = ({
   );
 };
 
+LogoUploader.propTypes = {
+  community: PropTypes.object.isRequired,
+  defaultLogo: PropTypes.string.isRequired,
+  hasLogo: PropTypes.bool.isRequired,
+  onError: PropTypes.func.isRequired,
+  logoMaxSize: PropTypes.number.isRequired,
+};
+
 const DangerZone = ({ community, onError }) => (
   <Segment className="negative rel-mt-2">
     <Header as="h2" className="negative">
@@ -243,11 +243,7 @@ const DangerZone = ({ community, onError }) => (
         <Header as="h3" size="small">
           {i18next.t("Delete community")}
         </Header>
-        <p>
-          {i18next.t(
-            "Once deleted, it will be gone forever. Please be certain."
-          )}
-        </p>
+        <p>{i18next.t("Once deleted, it will be gone forever. Please be certain.")}</p>
       </Grid.Column>
       <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
         <DeleteButton
@@ -255,9 +251,7 @@ const DangerZone = ({ community, onError }) => (
           label={i18next.t("Delete community")}
           redirectURL="/communities"
           confirmationMessage={
-            <h3>
-              {i18next.t("Are you sure you want to delete this community?")}
-            </h3>
+            <h3>{i18next.t("Are you sure you want to delete this community?")}</h3>
           }
           onDelete={async () => {
             const client = new CommunityApi();
@@ -270,6 +264,11 @@ const DangerZone = ({ community, onError }) => (
   </Segment>
 );
 
+DangerZone.propTypes = {
+  community: PropTypes.object.isRequired,
+  onError: PropTypes.func.isRequired,
+};
+
 class CommunityProfileForm extends Component {
   state = {
     error: "",
@@ -277,7 +276,8 @@ class CommunityProfileForm extends Component {
   knownOrganizations = {};
 
   getInitialValues = () => {
-    let initialValues = _defaultsDeep(this.props.community, {
+    const { community } = this.props;
+    let initialValues = _defaultsDeep(community, {
       id: "",
       slug: "",
       metadata: {
@@ -364,13 +364,14 @@ class CommunityProfileForm extends Component {
         funder: deserializeFunding(fund.funder),
       };
     });
+    const { customFields } = this.props;
 
     // Deserialize custom fields
     initialValues = new CustomFieldSerializer({
       fieldpath: "custom_fields",
       deserializedDefault: {},
       serializedDefault: {},
-      vocabularyFields: this.props.customFields.vocabularies,
+      vocabularyFields: customFields.vocabularies,
     }).deserialize(initialValues);
 
     return {
@@ -427,9 +428,7 @@ class CommunityProfileForm extends Component {
 
       let serializedValue = {};
       if (fund !== null) {
-        serializedValue = Array.isArray(fund)
-          ? fund.map(_serialize)
-          : _serialize(fund);
+        serializedValue = Array.isArray(fund) ? fund.map(_serialize) : _serialize(fund);
       }
       return serializedValue;
     };
@@ -453,13 +452,13 @@ class CommunityProfileForm extends Component {
         funder: serializeFunding(fund.funder),
       };
     });
-
+    const { customFields } = this.props;
     // Serialize custom fields
     submittedCommunity = new CustomFieldSerializer({
       fieldpath: "custom_fields",
       deserializedDefault: {},
       serializedDefault: {},
-      vocabularyFields: this.props.customFields.vocabularies,
+      vocabularyFields: customFields.vocabularies,
     }).serialize(submittedCommunity);
 
     submittedCommunity = {
@@ -482,9 +481,10 @@ class CommunityProfileForm extends Component {
     setSubmitting(true);
     const payload = this.serializeValues(values);
     const client = new CommunityApi();
+    const { community } = this.props;
 
     try {
-      await client.update(this.props.community.id, payload);
+      await client.update(community.id, payload);
       window.location.reload();
     } catch (error) {
       if (error === "UNMOUNTED") return;
@@ -503,41 +503,33 @@ class CommunityProfileForm extends Component {
   };
 
   render() {
-    const { types, customFields } = this.props;
+    const { types, customFields, community } = this.props;
+    const { error } = this.state;
     return (
       <Formik
-        initialValues={this.getInitialValues(this.props.community)}
+        initialValues={this.getInitialValues(community)}
         validationSchema={COMMUNITY_VALIDATION_SCHEMA}
         onSubmit={this.onSubmit}
       >
         {({ isSubmitting, isValid, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-profile">
-            <Message
-              hidden={this.state.error === ""}
-              negative
-              className="flashed"
-            >
+            <Message hidden={error === ""} negative className="flashed">
               <Grid container>
                 <Grid.Column width={15} textAlign="left">
-                  <strong>{this.state.error}</strong>
+                  <strong>{error}</strong>
                 </Grid.Column>
               </Grid>
             </Message>
             <Grid>
               <Grid.Row className="pt-10 pb-0">
-                <Grid.Column
-                  mobile={16}
-                  tablet={9}
-                  computer={9}
-                  className="rel-pb-2"
-                >
+                <Grid.Column mobile={16} tablet={9} computer={9} className="rel-pb-2">
                   <TextField
                     fluid
                     fieldPath="metadata.title"
                     label={
                       <FieldLabel
                         htmlFor="metadata.title"
-                        icon={"book"}
+                        icon="book"
                         label={i18next.t("Community name")}
                       />
                     }
@@ -576,33 +568,27 @@ class CommunityProfileForm extends Component {
                     label={
                       <FieldLabel
                         htmlFor="metadata.description"
-                        icon={"pencil"}
+                        icon="pencil"
                         label={i18next.t("Description")}
                       />
                     }
                   />
                   <RemoteSelectField
-                    fieldPath={"metadata.organizations"}
+                    fieldPath="metadata.organizations"
                     suggestionAPIUrl="/api/affiliations"
                     suggestionAPIHeaders={{
                       Accept: "application/json",
                     }}
-                    placeholder={i18next.t(
-                      "Search for an organization by name"
-                    )}
+                    placeholder={i18next.t("Search for an organization by name")}
                     clearable
                     multiple
-                    initialSuggestions={_get(
-                      this.props.community,
-                      "metadata.organizations",
-                      []
-                    )}
+                    initialSuggestions={_get(community, "metadata.organizations", [])}
                     serializeSuggestions={(organizations) =>
                       _map(organizations, (organization) => {
-                        const isKnownOrg =
-                          this.knownOrganizations.hasOwnProperty(
-                            organization.name
-                          );
+                        // eslint-disable-next-line no-prototype-builtins
+                        const isKnownOrg = this.knownOrganizations.hasOwnProperty(
+                          organization.name
+                        );
                         if (!isKnownOrg) {
                           this.knownOrganizations = {
                             ...this.knownOrganizations,
@@ -746,12 +732,7 @@ class CommunityProfileForm extends Component {
                     {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
-                <Grid.Column
-                  mobile={16}
-                  tablet={6}
-                  computer={4}
-                  floated="right"
-                >
+                <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
                   <LogoUploader
                     community={this.props.community}
                     hasLogo={this.props.hasLogo}
@@ -776,6 +757,15 @@ class CommunityProfileForm extends Component {
     );
   }
 }
+
+CommunityProfileForm.propTypes = {
+  community: PropTypes.object.isRequired,
+  defaultLogo: PropTypes.string.isRequired,
+  hasLogo: PropTypes.bool.isRequired,
+  logoMaxSize: PropTypes.number.isRequired,
+  customFields: PropTypes.object.isRequired,
+  types: PropTypes.array.isRequired,
+};
 
 const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);

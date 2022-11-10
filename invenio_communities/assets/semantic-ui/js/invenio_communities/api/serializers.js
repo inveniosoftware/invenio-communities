@@ -25,4 +25,3 @@ export const bulkMembersSerializer = (members) =>
     id: memberData.id,
     type: memberData.type,
   }));
-

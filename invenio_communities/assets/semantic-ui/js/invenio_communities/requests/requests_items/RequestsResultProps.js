@@ -10,11 +10,7 @@ import { DateTime } from "luxon";
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
 
-export const requestsResultProps = (
-  result,
-  updateQueryState,
-  currentQueryState
-) => {
+export const requestsResultProps = (result, updateQueryState, currentQueryState) => {
   const createdDate = new Date(result.created);
   const createdBy = result.created_by;
   let creatorName = "";
@@ -26,8 +22,7 @@ export const requestsResultProps = (
       result.expanded?.created_by.username ||
       createdBy.user;
   } else if (isCreatorCommunity) {
-    creatorName =
-      result.expanded?.created_by.metadata?.title || createdBy.community;
+    creatorName = result.expanded?.created_by.metadata?.title || createdBy.community;
   }
   return {
     differenceInDays: timestampToRelativeTime(createdDate.toISOString()),

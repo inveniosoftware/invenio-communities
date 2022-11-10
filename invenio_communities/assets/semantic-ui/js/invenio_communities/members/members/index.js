@@ -12,6 +12,7 @@ export const memberVisibilityTypes = [
     visible: false,
     title: i18next.t("Hidden"),
     description: i18next.t(
-      "Your community membership is only visible to other members of the community."),
+      "Your community membership is only visible to other members of the community."
+    ),
   },
 ];

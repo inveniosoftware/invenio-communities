@@ -2,6 +2,7 @@ import { BulkActionsContext } from "./context";
 import React, { Component } from "react";
 import Overridable from "react-overridable";
 import _hasIn from "lodash/hasIn";
+import PropTypes from "prop-types";
 
 class SearchResultsBulkActionsManager extends Component {
   constructor(props) {
@@ -73,7 +74,9 @@ class SearchResultsBulkActionsManager extends Component {
 
 SearchResultsBulkActionsManager.contextType = BulkActionsContext;
 
-SearchResultsBulkActionsManager.propTypes = {};
+SearchResultsBulkActionsManager.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default Overridable.component(
   "SearchResultsBulkActionsManager",

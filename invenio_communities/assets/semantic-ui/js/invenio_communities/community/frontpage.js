@@ -14,7 +14,7 @@ import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import { http } from "react-invenio-forms";
 import PropTypes from "prop-types";
 
-const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
+const PlaceholderLoader = ({ size, isLoading, children, ...props }) => {
   const PlaceholderItem = () => (
     <Grid.Column width={3}>
       <Placeholder>
@@ -34,7 +34,7 @@ const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   }
 
   if (!isLoading) {
-    return props.children;
+    return children;
   }
   return (
     <Grid columns="equal" stackable>
@@ -43,8 +43,22 @@ const PlaceholderLoader = ({ size = 5, isLoading, ...props }) => {
   );
 };
 
+PlaceholderLoader.propTypes = {
+  size: PropTypes.number,
+  isLoading: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+PlaceholderLoader.defaultProps = {
+  size: 5,
+};
+
 const EmptyMessage = ({ message }) => {
   return <Message icon="info" header={message} />;
+};
+
+EmptyMessage.propTypes = {
+  message: PropTypes.string.isRequired,
 };
 
 class CommunityCard extends Component {
@@ -58,7 +72,7 @@ class CommunityCard extends Component {
           ui={false}
           src={community.links.logo}
           fallbackSrc={defaultLogo}
-          loadFallbackFirst={true}
+          loadFallbackFirst
         />
         <Card.Content>
           <Card.Header>
@@ -91,21 +105,21 @@ class CommunitiesCardGroup extends Component {
     this.state = {
       isLoading: false,
       data: { hits: [] },
-      error: {},
     };
-  }
-
-  componentWillUnmount() {
-    this.cancellableFetch && this.cancellableFetch.cancel();
   }
 
   componentDidMount() {
     this.fetchData();
   }
 
+  componentWillUnmount() {
+    this.cancellableFetch && this.cancellableFetch.cancel();
+  }
+
   fetchData = async () => {
+    const { fetchDataUrl } = this.props;
     this.setState({ isLoading: true });
-    this.cancellableFetch = withCancel(http.get(this.props.fetchDataUrl));
+    this.cancellableFetch = withCancel(http.get(fetchDataUrl));
 
     try {
       const response = await this.cancellableFetch.promise;
@@ -118,23 +132,26 @@ class CommunitiesCardGroup extends Component {
 
   renderCards() {
     const { data } = this.state;
+    const { defaultLogo } = this.props;
+
     return data.hits.map((community) => {
       return (
         <CommunityCard
           key={community.id}
           community={community}
-          defaultLogo={this.props.defaultLogo}
+          defaultLogo={defaultLogo}
         />
       );
     });
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, data } = this.state;
+    const { emptyMessage } = this.props;
     return (
       <PlaceholderLoader isLoading={isLoading}>
-        {this.state.data.hits.length === 0 ? (
-          <EmptyMessage message={this.props.emptyMessage} />
+        {data.hits.length === 0 ? (
+          <EmptyMessage message={emptyMessage} />
         ) : (
           <Card.Group
             doubling
@@ -150,15 +167,19 @@ class CommunitiesCardGroup extends Component {
   }
 }
 
+CommunitiesCardGroup.propTypes = {
+  fetchDataUrl: PropTypes.string.isRequired,
+  defaultLogo: PropTypes.string.isRequired,
+  emptyMessage: PropTypes.string.isRequired,
+};
+
 const userCommunitiesContainer = document.getElementById("user-communities");
-const featuredCommunitiesContainer = document.getElementById(
-  "featured-communities"
-);
+const featuredCommunitiesContainer = document.getElementById("featured-communities");
 
 if (userCommunitiesContainer) {
   ReactDOM.render(
     <CommunitiesCardGroup
-      fetchDataUrl={`/api/user/communities?q=&sort=newest&page=1&size=5`}
+      fetchDataUrl="/api/user/communities?q=&sort=newest&page=1&size=5"
       emptyMessage="You are not a member of any community."
       defaultLogo="/static/images/square-placeholder.png"
     />,
@@ -167,7 +188,7 @@ if (userCommunitiesContainer) {
 }
 ReactDOM.render(
   <CommunitiesCardGroup
-    fetchDataUrl={`/api/communities?q=&sort=newest&page=1&size=5`}
+    fetchDataUrl="/api/communities?q=&sort=newest&page=1&size=5"
     emptyMessage="There are no featured communities."
     defaultLogo="/static/images/square-placeholder.png"
   />,

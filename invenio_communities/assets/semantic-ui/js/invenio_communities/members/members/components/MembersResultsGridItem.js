@@ -8,6 +8,7 @@
 
 import React from "react";
 import { Card } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export function MembersResultsGridItem({ result }) {
   return (
@@ -26,3 +27,7 @@ export function MembersResultsGridItem({ result }) {
     </Card>
   );
 }
+
+MembersResultsGridItem.propTypes = {
+  result: PropTypes.object.isRequired,
+};

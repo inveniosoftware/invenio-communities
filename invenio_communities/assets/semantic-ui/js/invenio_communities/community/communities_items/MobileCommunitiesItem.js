@@ -5,29 +5,27 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import _get from "lodash/get";
 import React from "react";
 import { Image } from "react-invenio-forms";
 import { Icon, Item, Label } from "semantic-ui-react";
 import { DateTime } from "luxon";
+import PropTypes from "prop-types";
 
 export const MobileCommunitiesItem = ({ result }) => {
-  const community_type = result.ui?.type?.title_l10n;
+  const communityType = result.ui?.type?.title_l10n;
   const visibility = result.access.visibility;
   const isPublic = visibility === "public";
   const visibilityColor = isPublic ? "green" : "red";
-  const visibilityText = isPublic
-    ? i18next.t("Public")
-    : i18next.t("Restricted");
+  const visibilityText = isPublic ? i18next.t("Public") : i18next.t("Restricted");
   const visibilityIcon = isPublic ? undefined : "ban";
   return (
     <Item key={result.id} className="mobile only community-item">
       <Item.Content className="centered">
         <Item.Extra className="user-communities">
-          {community_type && (
+          {communityType && (
             <Label size="tiny" color="blue">
               <Icon name="tag" />
-              {community_type}
+              {communityType}
             </Label>
           )}
           <Label size="tiny" color={visibilityColor}>
@@ -51,11 +49,7 @@ export const MobileCommunitiesItem = ({ result }) => {
         </Item.Meta>
         <Item>
           {result.metadata.website && (
-            <a
-              href={result.metadata.website}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={result.metadata.website} target="_blank" rel="noopener noreferrer">
               {result.metadata.website}
             </a>
           )}
@@ -67,4 +61,8 @@ export const MobileCommunitiesItem = ({ result }) => {
       </Item.Content>
     </Item>
   );
+};
+
+MobileCommunitiesItem.propTypes = {
+  result: PropTypes.object.isRequired,
 };

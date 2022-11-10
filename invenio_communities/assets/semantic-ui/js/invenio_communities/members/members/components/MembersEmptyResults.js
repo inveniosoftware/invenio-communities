@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { withState } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
 
 class MembersEmptyResults extends Component {
   render() {
@@ -36,5 +37,13 @@ class MembersEmptyResults extends Component {
     );
   }
 }
+
+MembersEmptyResults.propTypes = {
+  resetQuery: PropTypes.func.isRequired,
+  extraContent: PropTypes.node.isRequired,
+  queryString: PropTypes.string.isRequired,
+  currentQueryState: PropTypes.object.isRequired,
+  currentResultsState: PropTypes.object.isRequired,
+};
 
 export default withState(MembersEmptyResults);

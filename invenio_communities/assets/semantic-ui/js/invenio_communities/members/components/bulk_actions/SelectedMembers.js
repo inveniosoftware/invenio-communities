@@ -24,33 +24,27 @@ export class SelectedMembers extends Component {
     const { selectedMembers, displayingGroups } = this.props;
 
     return !_isEmpty(selectedMembers) ? (
-      <>
-        <Segment className="selected-members-header mb-20 mr-20">
-          {Object.entries(selectedMembers).map(([memberId, member]) => (
-            <Button
-              key={memberId}
-              className="p-0 mr-10 mb-5 mt-5"
-              onClick={() => this.removeMember(memberId)}
-              type="button"
-              aria-label={i18next.t("remove {{name}}", {
-                name: member.name,
-              })}
-            >
-              <Label image>
-                <Image src={member.avatar} alt="" aria-hidden={true} />
-                {member.name}
-                <Icon name="delete" />
-              </Label>
-            </Button>
-          ))}
-        </Segment>
-      </>
+      <Segment className="selected-members-header mb-20 mr-20">
+        {Object.entries(selectedMembers).map(([memberId, member]) => (
+          <Button
+            key={memberId}
+            className="p-0 mr-10 mb-5 mt-5"
+            onClick={() => this.removeMember(memberId)}
+            type="button"
+            aria-label={i18next.t("remove {{name}}", {
+              name: member.name,
+            })}
+          >
+            <Label image>
+              <Image src={member.avatar} alt="" aria-hidden />
+              {member.name}
+              <Icon name="delete" />
+            </Label>
+          </Button>
+        ))}
+      </Segment>
     ) : (
-      <Segment
-        textAlign="center"
-        className="selected-members-header mb-20"
-        placeholder
-      >
+      <Segment textAlign="center" className="selected-members-header mb-20" placeholder>
         <Header disabled>
           {displayingGroups
             ? i18next.t("Selected groups")

@@ -37,9 +37,7 @@ export class RadioSelection extends Component {
                     />
                   </Form.Field>
                 </Item.Header>
-                <Item.Meta className="ml-25 mt-0">
-                  {option.description}
-                </Item.Meta>
+                <Item.Meta className="ml-25 mt-0">{option.description}</Item.Meta>
               </Item.Content>
             </Item>
           ))}
@@ -53,9 +51,4 @@ RadioSelection.propTypes = {
   options: PropTypes.array.isRequired,
   label: PropTypes.string.isRequired,
   onOptionChangeCallback: PropTypes.func.isRequired,
-  permissions: PropTypes.object,
-};
-
-RadioSelection.defaultProps = {
-  permissions: {},
 };

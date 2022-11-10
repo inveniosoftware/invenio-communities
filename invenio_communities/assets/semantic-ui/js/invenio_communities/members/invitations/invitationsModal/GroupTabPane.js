@@ -71,7 +71,7 @@ export class GroupTabPane extends Component {
           <SelectedMembers
             updateSelectedMembers={this.updateSelectedMembers}
             selectedMembers={selectedMembers}
-            displayingGroups={true}
+            displayingGroups
           />
           <Form>
             <Form.Field>
@@ -94,9 +94,7 @@ export class GroupTabPane extends Component {
             <Form.Field disabled>
               <>
                 <label>{i18next.t("Message")}</label>
-                <CKEditor
-                  editor={ClassicEditor}
-                />
+                <CKEditor editor={ClassicEditor} />
               </>
             </Form.Field>
           </Form>
@@ -135,4 +133,6 @@ export class GroupTabPane extends Component {
 GroupTabPane.propTypes = {
   roleOptions: PropTypes.array.isRequired,
   modalClose: PropTypes.func.isRequired,
+  action: PropTypes.func.isRequired,
+  onSuccessCallback: PropTypes.func.isRequired,
 };

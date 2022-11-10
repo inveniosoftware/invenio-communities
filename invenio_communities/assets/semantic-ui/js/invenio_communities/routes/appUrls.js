@@ -1,6 +1,6 @@
-import { generatePath } from 'react-router-dom';
+import { generatePath } from "react-router-dom";
 
-const CommunitiesRoutesBase = '/communities';
+const CommunitiesRoutesBase = "/communities";
 
 export const InvenioCommunitiesRoutesList = {
   home: CommunitiesRoutesBase,

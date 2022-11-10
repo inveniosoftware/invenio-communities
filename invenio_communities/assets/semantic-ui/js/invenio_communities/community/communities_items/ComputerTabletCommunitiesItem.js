@@ -5,20 +5,18 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import _get from "lodash/get";
 import React from "react";
 import { Image } from "react-invenio-forms";
 import { Icon, Item, Label, Grid } from "semantic-ui-react";
 import { DateTime } from "luxon";
+import PropTypes from "prop-types";
 
 export const ComputerTabletCommunitiesItem = ({ result }) => {
-  const community_type = result.ui?.type?.title_l10n;
+  const communityType = result.ui?.type?.title_l10n;
   const visibility = result.access.visibility;
   const isPublic = visibility === "public";
   const visibilityColor = isPublic ? "green" : "red";
-  const visibilityText = isPublic
-    ? i18next.t("Public")
-    : i18next.t("Restricted");
+  const visibilityText = isPublic ? i18next.t("Public") : i18next.t("Restricted");
   const visibilityIcon = isPublic ? undefined : "ban";
   return (
     <Item key={result.id} className="computer tablet only flex community-item">
@@ -33,10 +31,10 @@ export const ComputerTabletCommunitiesItem = ({ result }) => {
           <Grid.Row>
             <Grid.Column width={13}>
               <Item.Extra className="user-communities">
-                {community_type && (
+                {communityType && (
                   <Label size="tiny" color="blue">
                     <Icon name="tag" />
-                    {community_type}
+                    {communityType}
                   </Label>
                 )}
                 <Label size="tiny" color={visibilityColor}>
@@ -45,9 +43,7 @@ export const ComputerTabletCommunitiesItem = ({ result }) => {
                 </Label>
               </Item.Extra>
               <Item.Header as="h2">
-                <a href={`/communities/${result.id}`}>
-                  {result.metadata.title}
-                </a>
+                <a href={`/communities/${result.id}`}>{result.metadata.title}</a>
               </Item.Header>
               <Item.Meta>
                 <div
@@ -72,9 +68,7 @@ export const ComputerTabletCommunitiesItem = ({ result }) => {
             <Grid.Column width={3} className="flex column">
               <Item.Extra className="text-align-right mt-auto">
                 {i18next.t("Created: ")}
-                {DateTime.fromISO(result.created).toLocaleString(
-                  i18next.language
-                )}
+                {DateTime.fromISO(result.created).toLocaleString(i18next.language)}
               </Item.Extra>
             </Grid.Column>
           </Grid.Row>
@@ -82,4 +76,8 @@ export const ComputerTabletCommunitiesItem = ({ result }) => {
       </Item.Content>
     </Item>
   );
+};
+
+ComputerTabletCommunitiesItem.propTypes = {
+  result: PropTypes.object.isRequired,
 };

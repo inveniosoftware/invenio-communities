@@ -49,4 +49,6 @@ export class ModalContextProvider extends Component {
   }
 }
 
-ModalContextProvider.propTypes = {};
+ModalContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

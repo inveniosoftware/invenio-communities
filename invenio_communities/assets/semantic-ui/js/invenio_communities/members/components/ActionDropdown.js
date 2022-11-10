@@ -48,7 +48,11 @@ class ActionDropdown extends Component {
       this.setState({ loading: false, actionSuccess: true, error: undefined });
     } catch (error) {
       if (error === "UNMOUNTED") return;
-      this.setState({ loading: false, actionSuccess: false, error: errorSerializer(error) });
+      this.setState({
+        loading: false,
+        actionSuccess: false,
+        error: errorSerializer(error),
+      });
     }
   };
 
@@ -81,9 +85,7 @@ class ActionDropdown extends Component {
             floating
           />
           <div className="ml-5 action-status-container">
-            {actionSuccess && (
-              <SuccessIcon timeOutDelay={3000} show={actionSuccess} />
-            )}
+            {actionSuccess && <SuccessIcon timeOutDelay={3000} show={actionSuccess} />}
             {error && <ErrorPopup error={error} />}
           </div>
         </div>
@@ -101,7 +103,7 @@ ActionDropdown.propTypes = {
   disabled: PropTypes.bool,
   direction: PropTypes.string,
   resource: PropTypes.object.isRequired,
-  fluid: PropTypes.bool
+  fluid: PropTypes.bool,
 };
 
 ActionDropdown.defaultProps = {
@@ -109,7 +111,7 @@ ActionDropdown.defaultProps = {
   disabled: false,
   direction: "right",
   optionsSerializer: dropdownOptionsGenerator,
-  fluid: false
+  fluid: false,
 };
 
 export default Overridable.component("ActionDropdown", ActionDropdown);

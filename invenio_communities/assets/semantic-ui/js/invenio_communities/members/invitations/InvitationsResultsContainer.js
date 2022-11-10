@@ -9,6 +9,7 @@
 import React from "react";
 import { Table } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
 
 export const InvitationsResultsContainer = ({ results }) => {
   return (
@@ -22,9 +23,11 @@ export const InvitationsResultsContainer = ({ results }) => {
           <Table.HeaderCell width={2} />
         </Table.Row>
       </Table.Header>
-      <Table.Body>
-        {results}
-      </Table.Body>
+      <Table.Body>{results}</Table.Body>
     </Table>
   );
+};
+
+InvitationsResultsContainer.propTypes = {
+  results: PropTypes.array.isRequired,
 };

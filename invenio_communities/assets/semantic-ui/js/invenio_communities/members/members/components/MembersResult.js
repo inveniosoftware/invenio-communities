@@ -8,15 +8,11 @@
 
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import {
-  ResultsList,
-  Pagination,
-  ResultsPerPage,
-  Count,
-} from "react-searchkit";
+import { ResultsList, Pagination, ResultsPerPage, Count } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { ModalContextProvider } from "../../components/modal_manager";
 import RemoveMemberModal from "../../components/RemoveMemberModal";
+import PropTypes from "prop-types";
 
 export const MembersResults = ({ paginationOptions, currentResultsState }) => {
   const { total } = currentResultsState.data;
@@ -31,7 +27,7 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
                 <Grid.Column>
                   <ModalContextProvider>
                     <ResultsList />
-                    <RemoveMemberModal/>
+                    <RemoveMemberModal />
                   </ModalContextProvider>
                 </Grid.Column>
               </Grid.Row>
@@ -72,4 +68,9 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
       </Grid>
     )
   );
+};
+
+MembersResults.propTypes = {
+  paginationOptions: PropTypes.object.isRequired,
+  currentResultsState: PropTypes.object.isRequired,
 };

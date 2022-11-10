@@ -63,12 +63,10 @@ export class FeaturedEntries extends Component {
             </Table.Header>
             <Table.Body>
               {featuredList?.hits?.hits.map((row) => {
-                const deleteEndpoint = `${_get(data, "links.featured")}/${
-                  row.id
-                }`;
+                const deleteEndpoint = `${_get(data, "links.featured")}/${row.id}`;
                 const startDate = DateTime.fromISO(row.start_date);
                 return (
-                  <Table.Row>
+                  <Table.Row key={row.id}>
                     <Table.Cell
                       key={row.id}
                       data-label={row.id}
