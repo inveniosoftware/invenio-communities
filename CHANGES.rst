@@ -8,6 +8,11 @@
 
 Changes
 =======
+Version 3.2.4 (released 2022-11-14)
+-----------------------------------
+
+- Added Jinja macro to render featured communities section
+
 
 Version 3.2.3 (released 2022-11-03)
 -----------------------------------
