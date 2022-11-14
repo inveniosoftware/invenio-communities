@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2022 TU Wien.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -344,6 +345,89 @@ def test_search_invitation(
     assert "permissions" in hit
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_cancel"] is True
+
+
+#
+# Read-only mode
+#
+
+
+def test_add_ro(client, headers, community_id, owner, group_data, db):
+    """Test adding a member in read-only mode."""
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    client = owner.login(client)
+    r = client.post(
+        f"/communities/{community_id}/members", headers=headers, json=group_data
+    )
+    assert r.status_code == 403
+
+
+def test_invite_ro(client, headers, community_id, owner, new_user_data, db):
+    """Test inviting somebody while in read-only mode."""
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    client = owner.login(client)
+    r = client.post(
+        f"/communities/{community_id}/invitations",
+        headers=headers,
+        json=new_user_data,
+    )
+    assert r.status_code == 403
+
+
+def test_update_ro(client, headers, community_id, owner, public_reader):
+    """Test update of members while in read-only mode."""
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    client = owner.login(client)
+    data = {
+        "members": [{"type": "user", "id": str(public_reader.id)}],
+        "visible": False,
+        "role": "curator",
+    }
+    r = client.put(
+        f"/communities/{community_id}/members",
+        headers=headers,
+        json=data,
+    )
+    assert r.status_code == 403
+
+
+def test_update_invite_ro(client, headers, community_id, owner, new_user_data, db):
+    """Test update of members while in read-only mode."""
+    # Create an invite before we set the system into RO-mode
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = False
+    client = owner.login(client)
+    new_user_data.pop("message")  # not accepted by update
+    r = client.post(
+        f"/communities/{community_id}/invitations",
+        headers=headers,
+        json=new_user_data,
+    )
+    assert r.status_code == 204
+
+    # Try to update the invite in RO-mode
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    new_user_data["role"] = "curator"
+    r = client.put(
+        f"/communities/{community_id}/invitations",
+        headers=headers,
+        json=new_user_data,
+    )
+    assert r.status_code == 403
+
+
+def test_delete_ro(client, headers, community_id, owner, public_reader):
+    """Test delete of members while in read-only mode."""
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    client = public_reader.login(client)
+    data = {
+        "members": [{"type": "user", "id": str(public_reader.id)}],
+    }
+    r = client.delete(
+        f"/communities/{community_id}/members",
+        headers=headers,
+        json=data,
+    )
+    assert r.status_code == 403
 
 
 # TODO: member serialization/links

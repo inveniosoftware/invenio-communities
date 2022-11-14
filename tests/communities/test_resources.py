@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Invenio.
 # Copyright (C) 2016-2022 CERN.
-# Copyright (C) 2022 Northwestern University.
-# Invenio is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
+# Copyright (C)      2022 Northwestern University.
+# Copyright (C)      2022 TU Wien.
+#
+# Invenio-Communities is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License; see LICENSE file for more details.
 
 """Community resources tests."""
 
@@ -785,3 +786,100 @@ def test_featured_communities(
 
     res = client.delete(f"/communities/{c_id_}/featured/0", headers=headers)
     assert res.status_code == 404
+
+
+#
+# Read-only mode
+#
+
+
+def _create_community(client, data, headers):
+    """Create a community in RW mode and return its ID."""
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = False
+    res = client.post("/communities", headers=headers, json=data)
+    assert res.status_code == 201
+
+    return res.json["id"]
+
+
+def test_create_community_ro(client, admin, minimal_community, headers):
+    """Try to create a community in read-only mode."""
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    client = admin.login(client)
+
+    # Try to create a new community while in read-only mode (should fail)
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    assert res.status_code == 403
+
+
+def test_update_community_ro(client, admin, minimal_community, headers):
+    """Try to update a community in read-only mode."""
+    client = admin.login(client)
+    id_ = _create_community(client, minimal_community, headers)
+
+    # Reading a community should still work in RO mode
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    res = client.get(f"/communities/{id_}", headers=headers)
+    assert res.status_code == 200
+
+    # However, updating the community in RO mode should fail
+    data = copy.deepcopy(minimal_community)
+    data["metadata"]["title"] = "New title"
+    res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 403
+
+
+def test_delete_community_ro(client, admin, minimal_community, headers):
+    """Try to delete a community in read-only mode."""
+    client = admin.login(client)
+    id_ = _create_community(client, minimal_community, headers)
+
+    # Deleting the community in RO mode should fail
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    res = client.delete(f"/communities/{id_}", headers=headers)
+    assert res.status_code == 403
+
+
+def test_rename_community_ro(client, admin, minimal_community, headers):
+    """Try to rename a community in read-only mode."""
+    client = admin.login(client)
+    id_ = _create_community(client, minimal_community, headers)
+
+    # Renaming a community in RO mode should fail
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    data = copy.deepcopy(minimal_community)
+    data["slug"] = "renamed_comm"
+    data["access"] = {
+        "visibility": "restricted",
+        "member_policy": "closed",
+        "record_policy": "closed",
+    }
+    res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 403
+
+
+def test_update_community_logo_ro(client, admin, minimal_community, headers):
+    """Try to update a community logo in read-only mode."""
+    client = admin.login(client)
+    id_ = _create_community(client, minimal_community, headers)
+
+    # Updating the logo in RO mode should fail
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    data = copy.deepcopy(minimal_community)
+    data["metadata"]["title"] = "New title"
+    res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 403
+
+
+def test_delete_community_logo_ro(client, admin, minimal_community, headers):
+    """Try to rename a community logo in read-only mode."""
+    client = admin.login(client)
+    id_ = _create_community(client, minimal_community, headers)
+
+    # Deleting the community logo in RO mode should fail
+    client.application.config["RECORDS_PERMISSIONS_READ_ONLY"] = True
+    res = client.delete(f"/communities/{id_}/logo", headers=headers)
+    assert res.status_code == 403
+
+
+# TODO test creating/updating/deleting featured communities, also in RO mode
