@@ -8,6 +8,13 @@
 
 Changes
 =======
+
+Version 3.2.5 (released 2022-11-16)
+-----------------------------------
+
+- ensure members service using bulk indexing in the `rebuild_index` method
+
+
 Version 3.2.4 (released 2022-11-14)
 -----------------------------------
 
