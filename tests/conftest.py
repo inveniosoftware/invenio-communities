@@ -51,6 +51,14 @@ def app_config(app_config):
         TextCF(name="mycommunityfield", use_as_filter=True),
     ]
 
+    # Define files storage class list
+    app_config["FILES_REST_STORAGE_CLASS_LIST"] = {
+        "L": "Local",
+        "F": "Fetch",
+        "R": "Remote",
+    }
+    app_config["FILES_REST_DEFAULT_STORAGE_CLASS"] = "L"
+
     return app_config
 
 
