@@ -16,6 +16,22 @@ from invenio_records_resources.proxies import current_service_registry
 from invenio_vocabularies.contrib.affiliations.api import Affiliation
 
 
+@pytest.fixture(scope="module")
+def app_config(app_config):
+    """Override pytest-invenio app_config fixture.
+    Needed to set the files storage class list.
+    """
+    app_config["FILES_REST_STORAGE_CLASS_LIST"] = {
+        "L": "Local",
+        "F": "Fetch",
+        "R": "Remote",
+    }
+
+    app_config["FILES_REST_DEFAULT_STORAGE_CLASS"] = "L"
+
+    return app_config
+
+
 @pytest.fixture()
 def affiliation(app, db, superuser_identity):
     """Affiliation vocabulary record."""
