@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withCancel } from "react-invenio-forms";
-import { http } from "../../api/config";
+import { http } from "react-invenio-forms";
 import { Grid, Message, Container, Loader } from "semantic-ui-react";
 import FeaturedCommunity from "./FeaturedCommunity";
 import PropTypes from "prop-types";
