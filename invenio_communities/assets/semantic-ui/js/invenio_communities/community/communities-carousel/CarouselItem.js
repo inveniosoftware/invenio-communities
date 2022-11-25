@@ -12,45 +12,53 @@ import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Image } from "react-invenio-forms";
 import { Grid, Header, Item, Button } from "semantic-ui-react";
+import Overridable from "react-overridable";
 
-export default class CarouselItem extends Component {
+class CarouselItem extends Component {
   render() {
     const { community, defaultLogo, className } = this.props;
 
     return (
-      <Item
-        className={`carousel flex align-items-center ${className}`}
-        key={community.id}
+      <Overridable
+        id="InvenioCommunities.CarouselItem.layout"
+        community={community}
+        defaultLogo={defaultLogo}
+        className={className}
       >
-        <Image size="small" src={community.links.logo} fallbackSrc={defaultLogo} />
-        <Item.Content>
-          <Item.Header as={Grid} stackable className="rel-pb-1">
-            <Grid.Column computer="10" tablet="16" className="pl-0 pb-0">
-              <Header as="a" size="medium" href={community.links.self_html}>
-                {community.metadata.title}
-              </Header>
-            </Grid.Column>
-            <Grid.Column computer="6" tablet="16" className="buttons pl-0 pb-0">
-              <Button
-                size="mini"
-                href={community.links.self_html}
-                content={i18next.t("Browse")}
-              />
-              <Button
-                size="mini"
-                icon="upload"
-                labelPosition="left"
-                positive
-                href={`/uploads/new?community=${community.id}`}
-                content={i18next.t("New upload")}
-              />
-            </Grid.Column>
-          </Item.Header>
-          <Item.Description
-            content={_truncate(community.metadata.description, { length: 300 })}
-          />
-        </Item.Content>
-      </Item>
+        <Item
+          className={`carousel flex align-items-center ${className}`}
+          key={community.id}
+        >
+          <Image size="small" src={community.links.logo} fallbackSrc={defaultLogo} />
+          <Item.Content>
+            <Item.Header as={Grid} stackable className="rel-pb-1">
+              <Grid.Column computer="10" tablet="16" className="pl-0 pb-0">
+                <Header as="a" size="medium" href={community.links.self_html}>
+                  {community.metadata.title}
+                </Header>
+              </Grid.Column>
+              <Grid.Column computer="6" tablet="16" className="buttons pl-0 pb-0">
+                <Button
+                  size="mini"
+                  href={community.links.self_html}
+                  content={i18next.t("Browse")}
+                />
+                <Button
+                  size="mini"
+                  icon="upload"
+                  labelPosition="left"
+                  positive
+                  href={`/uploads/new?community=${community.id}`}
+                  content={i18next.t("New upload")}
+                />
+              </Grid.Column>
+            </Item.Header>
+            <Item.Description
+              content={_truncate(community.metadata.description, { length: 300 })}
+            />
+          </Item.Content>
+        </Item>
+      </Overridable>
     );
   }
 }
@@ -60,3 +68,5 @@ CarouselItem.propTypes = {
   defaultLogo: PropTypes.string.isRequired,
   className: PropTypes.string.isRequired,
 };
+
+export default Overridable.component("InvenioCommunities.CarouselItem", CarouselItem);
