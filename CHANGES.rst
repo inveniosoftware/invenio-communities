@@ -9,10 +9,15 @@
 Changes
 =======
 
+Version 4.0.0 (released 2022-11-25)
+-----------------------------------
+
+-
+
 Version 3.2.5 (released 2022-11-16)
 -----------------------------------
 
-- ensure members service using bulk indexing in the `rebuild_index` method
+- Ensure members service using bulk indexing in the `rebuild_index` method
 
 
 Version 3.2.4 (released 2022-11-14)
@@ -24,26 +29,26 @@ Version 3.2.4 (released 2022-11-14)
 Version 3.2.3 (released 2022-11-03)
 -----------------------------------
 
-- add logo to demo data
-- refactor styling
+- Add logo to demo data
+- Refactor styling
 
 
 Version 3.2.2 (released 2022-10-26)
 -----------------------------------
 
-- add featured communities carousel component
+- Add featured communities carousel component
 
 Version 3.2.1 (released 2022-10-26)
 -----------------------------------
 
-- remove obsolete imports
+- Remove obsolete imports
 
 Version 3.2.0 (released 2022-10-24)
 -----------------------------------
-- upgrade invenio-assets
-- upgrade to node v18
-- add responsive classes to community request search
-- fix overflowing content
+- Upgrade invenio-assets
+- Upgrade to node v18
+- Add responsive classes to community request search
+- Fix overflowing content
 
 Version 3.1.0 (released 2022-10-04)
 -----------------------------------
@@ -58,25 +63,25 @@ Version 3.0.0 (released 2022-09-27)
 
 Version 2.8.8 (released 2022-07-12)
 -----------------------------------
-- bugfix: display community logo in the header
+- Bugfix: display community logo in the header
 
 Version 2.8.7 (released 2022-07-08)
 -----------------------------------
 
-- add multiple destinations search bar
-- search: redesign community search result item
-- invitations: add helptext on member search
-- settings: add file logo size limit
-- add error handling for UUID
+- Add multiple destinations search bar
+- Search: redesign community search result item
+- Invitations: add helptext on member search
+- Settings: add file logo size limit
+- Add error handling for UUID
 
 Version 2.8.6 (released 2022-07-01)
 -----------------------------------
-- requests search: add expanded fields, re-design list view
-- community: update members table, add responsive width for grid columns
-- members: reserve space for success/error icon, clean up table class
-- global: fixes strings marked for translation
-- community header: add community visibility to header
-- dependencies: bump minor version of invenio-requests
+- Requests search: add expanded fields, re-design list view
+- Community: update members table, add responsive width for grid columns
+- Members: reserve space for success/error icon, clean up table class
+- Global: fixes strings marked for translation
+- Community header: add community visibility to header
+- Dependencies: bump minor version of invenio-requests
 
 Version 2.8.5 (released 2022-06-24)
 -----------------------------------
@@ -86,30 +91,30 @@ Version 2.8.4 (released 2022-06-23)
 -----------------------------------
 
 - i18n: add german to list of languages
-- homepage: align searchbar and button
-- page subheader: add mobile class
+- Homepage: align searchbar and button
+- Page subheader: add mobile class
 
 Version 2.8.3 (released 2022-06-21)
 -----------------------------------
 
-- resources: add UI serializer
+- Resources: add UI serializer
 - i18n: clean up translation strings
-- community logo: add fixed height for pictures
-- settings ui: fix state behaviour
-- members landing page: fix alignment
+- Community logo: add fixed height for pictures
+- Settings ui: fix state behaviour
+- Members landing page: fix alignment
 
 Version 2.8.2 (released 2022-06-08)
 -----------------------------------
 
-- search bar: fix search event propagation
+- Search bar: fix search event propagation
 - UI: remove redundant components
-- members: style action dropdowns
-- global: pin sphinx package
-- global: add black formatter
+- Members: style action dropdowns
+- Global: pin sphinx package
+- Global: add black formatter
 
 Version 2.8.1 (released 2022-05-24)
 
-- rename featured communities section
+- Rename featured communities section
 
 Version 2.8.0 (released 2022-05-23)
 
