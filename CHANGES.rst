@@ -12,7 +12,9 @@ Changes
 Version 4.0.0 (released 2022-11-25)
 -----------------------------------
 
--
+- Add links to search results
+- Add i18 translations
+- Use centralized Axios configuration
 
 Version 3.2.5 (released 2022-11-16)
 -----------------------------------
