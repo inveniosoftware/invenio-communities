@@ -53,7 +53,7 @@ class CommunityService(RecordService):
         self._members = members_service
 
     @property
-    def links_item_tpl(self):
+    def links_item_tpl(self, identity):
         """Item links template."""
         return CommunityLinksTemplate(
             self.config.links_item,
@@ -61,6 +61,7 @@ class CommunityService(RecordService):
             self.config.available_actions,
             context={
                 "permission_policy_cls": self.config.permission_policy_cls,
+                "identity": identity,
             },
         )
 
@@ -118,7 +119,7 @@ class CommunityService(RecordService):
             links_tpl=LinksTemplate(
                 self.config.links_user_search, context={"args": params}
             ),
-            links_item_tpl=self.links_item_tpl,
+            links_item_tpl=self.links_item_tpl(identity),
         )
 
     def search_community_requests(
@@ -197,7 +198,7 @@ class CommunityService(RecordService):
             self,
             identity,
             record,
-            links_tpl=self.links_item_tpl,
+            links_tpl=self.links_item_tpl(identity),
         )
 
     def read_logo(self, identity, id_):
@@ -304,7 +305,7 @@ class CommunityService(RecordService):
             links_tpl=LinksTemplate(
                 self.config.links_featured_search, context={"args": params}
             ),
-            links_item_tpl=self.links_item_tpl,
+            links_item_tpl=self.links_item_tpl(identity),
         )
 
     def featured_list(self, identity, community_id):

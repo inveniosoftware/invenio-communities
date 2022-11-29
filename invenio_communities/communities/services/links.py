@@ -20,7 +20,7 @@ class CommunityLinksTemplate(LinksTemplate):
         self._action_link = action_link
         self._available_actions = available_actions
 
-    def expand(self, community, identity=None):
+    def expand(self, community):
         """Expand all the link templates."""
         links = {}
 
@@ -30,7 +30,6 @@ class CommunityLinksTemplate(LinksTemplate):
             ctx = self.context.copy()
             ctx["action_name"] = action["action_name"]
             ctx["action"] = action["action_permission"]
-            ctx["identity"] = identity
             if link.should_render(community, ctx):
                 links[action["action_name"]] = link.expand(community, ctx)
 
