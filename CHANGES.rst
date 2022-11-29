@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 4.0.1 (released 2022-11-29)
+
+- fixtures: add option to feature communities
+
 Version 4.0.0 (released 2022-11-25)
 -----------------------------------
 
