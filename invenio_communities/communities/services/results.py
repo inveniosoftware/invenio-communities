@@ -65,7 +65,7 @@ class CommunityListResult(RecordList):
             )
             if self._links_item_tpl:
                 projection["links"] = self._links_item_tpl.expand(
-                    record, identity=self._identity
+                    self._identity, record
                 )
 
             yield projection
@@ -102,7 +102,7 @@ class CommunityFeaturedList(CommunityListResult):
             )
             if self._links_item_tpl:
                 projection["links"] = self._links_item_tpl.expand(
-                    record, identity=self._identity
+                    self._identity, record
                 )
 
             yield projection
@@ -114,7 +114,7 @@ class CommunityItem(RecordItem):
     @property
     def links(self):
         """Get links for this result item."""
-        return self._links_tpl.expand(self._record, identity=self._identity)
+        return self._links_tpl.expand(self._identity, self._record)
 
     def to_dict(self):
         """Get a dictionary for the request."""
