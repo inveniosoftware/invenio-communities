@@ -27,13 +27,15 @@ from .records.api import Community
 from .services.config import CommunityServiceConfig
 
 
-def pick_fields(community_dict):
+def pick_fields(identity, community_dict):
     """Pick fields to return when expanding the community obj."""
     fake_community_obj = SimpleNamespace(
         id=community_dict["id"],
         slug=community_dict["slug"],
     )
-    logo = current_communities.service.links_item_tpl.expand(fake_community_obj)["logo"]
+    logo = current_communities.service.links_item_tpl.expand(
+        identity, fake_community_obj
+    )["logo"]
     metadata = community_dict["metadata"]
     access = community_dict["access"]
     return {
@@ -59,9 +61,9 @@ class CommunityPKProxy(RecordPKProxy):
         comid = str(self._parse_ref_dict_id())
         return [CommunityRoleNeed(comid, role) for role in roles]
 
-    def pick_resolved_fields(self, resolved_dict):
+    def pick_resolved_fields(self, identity, resolved_dict):
         """Select which fields to return when resolving the reference."""
-        return pick_fields(resolved_dict)
+        return pick_fields(identity, resolved_dict)
 
 
 class CommunityResolver(RecordResolver):

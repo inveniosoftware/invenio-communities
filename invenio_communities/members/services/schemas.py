@@ -116,7 +116,10 @@ class PublicDumpSchema(Schema):
         name = profile.get("full_name") or user.get("username") or _("Untitled")
         description = profile.get("affiliations") or ""
         fake_user_obj = SimpleNamespace(id=user["id"])
-        avatar = current_users_service.links_item_tpl.expand(fake_user_obj)["avatar"]
+        current_identity = self.context["identity"]
+        avatar = current_users_service.links_item_tpl.expand(
+            current_identity, fake_user_obj
+        )["avatar"]
 
         return {
             "type": "user",
@@ -129,7 +132,10 @@ class PublicDumpSchema(Schema):
     def get_group_member(self, group):
         """Get a group member."""
         fake_group_obj = SimpleNamespace(id=group["id"])
-        avatar = current_groups_service.links_item_tpl.expand(fake_group_obj)["avatar"]
+        current_identity = self.context["identity"]
+        avatar = current_groups_service.links_item_tpl.expand(
+            current_identity, fake_group_obj
+        )["avatar"]
         return {
             "type": "group",
             "id": group["id"],
