@@ -15,7 +15,7 @@ import _get from "lodash/get";
 import _isEmpty from "lodash/isEmpty";
 import _truncate from "lodash/truncate";
 import React from "react";
-import { withState } from "react-searchkit";
+import { withState, Count, Sort } from "react-searchkit";
 import {
   Button,
   Card,
@@ -140,7 +140,32 @@ export const CommunityRecordSearchAppLayout = ({ config }) => {
         </Grid.Column>
 
         <Grid.Column mobile={14} tablet={14} computer={12} floated="right">
-          <SearchBar placeholder={i18next.t("Search records in community...")} />
+          <Grid>
+            <Grid.Column width={16}>
+              <SearchBar placeholder={i18next.t("Search records in community...")} />
+            </Grid.Column>
+
+            <Grid.Column width={4} textAlign="left">
+              <Count
+                label={(cmp) => (
+                  <>
+                    {cmp} {i18next.t("result(s) found")}
+                  </>
+                )}
+              />
+            </Grid.Column>
+            <Grid.Column width={12} textAlign="right">
+              <Sort
+                values={config.sortOptions}
+                label={(cmp) => (
+                  <>
+                    <label className="mr-10">{i18next.t("Sort by")}</label>
+                    {cmp}
+                  </>
+                )}
+              />
+            </Grid.Column>
+          </Grid>
         </Grid.Column>
 
         <Grid.Row>
