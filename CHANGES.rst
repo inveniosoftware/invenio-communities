@@ -9,12 +9,19 @@
 Changes
 =======
 
+Version 4.0.3 (released 2022-12-02)
+-----------------------------------
+
+- community details search: add search results counter and sort
+
 Version 4.0.2 (released 2022-12-01)
+-----------------------------------
 
 - Add identity to links template expand method.
 - Add identity to field resolver pick_resolved_fields method.
 
 Version 4.0.1 (released 2022-11-29)
+-----------------------------------
 
 - fixtures: add option to feature communities
 
