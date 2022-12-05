@@ -123,7 +123,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Abilities for featured communities
     can_featured_search = [AnyUser(), SystemProcess()]
-    can_featured_list = [SystemProcess()]
+    can_featured_list = [Administration(), SystemProcess()]
     can_featured_create = [Administration(), SystemProcess()]
     can_featured_update = [Administration(), SystemProcess()]
     can_featured_delete = [Administration(), SystemProcess()]
