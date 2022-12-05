@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 4.0.4 (released 2022-12-05)
+-----------------------------------
+
+- permissions: add featured community list action to administration permissions
+
 Version 4.0.3 (released 2022-12-02)
 -----------------------------------
 
