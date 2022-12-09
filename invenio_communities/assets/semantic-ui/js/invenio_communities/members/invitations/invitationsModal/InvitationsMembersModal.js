@@ -17,8 +17,6 @@ import { GroupTabPane } from "./GroupTabPane";
 import { MembersWithRoleSelection } from "./MembersWithRoleSelection";
 
 export class InvitationsMembersModal extends Component {
-  static contextType = InvitationsContext;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +24,8 @@ export class InvitationsMembersModal extends Component {
       activeIndex: 0, // by default members is the active pane
     };
   }
+
+  static contextType = InvitationsContext;
 
   onMemberSuccess = () => {
     const { updateQueryState, currentQueryState } = this.props;
@@ -102,7 +102,7 @@ export class InvitationsMembersModal extends Component {
         }
       >
         <Modal.Header as="h2">
-          {activeIndex == 0 ? i18next.t("Invite members") : i18next.t("Add groups")}
+          {activeIndex === 0 ? i18next.t("Invite members") : i18next.t("Add groups")}
         </Modal.Header>
         <Tab
           menu={{

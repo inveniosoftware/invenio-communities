@@ -64,9 +64,9 @@ export default class FeaturedCommunities extends Component {
       </Container>
     ) : data?.hits ? (
       <Grid className="featured-communities" columns={columnNumber} centered>
-        {data.hits.map((hit, index) => (
+        {data.hits.map((hit) => (
           <FeaturedCommunity
-            key={index}
+            key={hit.id}
             community={hit}
             mobileColumnWidth={mobileColumnWidth}
             tabletColumnWidth={tabletColumnWidth}

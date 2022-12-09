@@ -20,13 +20,13 @@ const formattedTime = (expiresAt) =>
   DateTime.fromISO(expiresAt).setLocale(i18next.language).toRelative();
 
 export class InvitationResultItem extends Component {
-  static contextType = InvitationsContext;
-
   constructor(props) {
     super(props);
     const { result } = this.props;
     this.state = { invitation: result };
   }
+
+  static contextType = InvitationsContext;
 
   updateInvitation = (data, value) => {
     const { invitation } = this.state;

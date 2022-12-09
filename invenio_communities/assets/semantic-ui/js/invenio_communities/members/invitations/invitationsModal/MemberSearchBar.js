@@ -167,7 +167,7 @@ MembersSearchBar.propTypes = {
   handleChange: PropTypes.func.isRequired,
   selectedMembers: PropTypes.object.isRequired,
   fetchMembers: PropTypes.func.isRequired,
-  searchType: PropTypes.oneOf(["group", "user"]),
+  searchType: PropTypes.oneOf(["group", "user"]).isRequired,
   placeholder: PropTypes.string,
 };
 

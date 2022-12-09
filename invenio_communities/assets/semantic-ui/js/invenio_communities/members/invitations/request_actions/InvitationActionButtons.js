@@ -15,13 +15,14 @@ export class ActionButtons extends Component {
   static contextType = RequestActionContext;
 
   render() {
+    const { linkExtractor } = this.context;
     return (
       <Button
         as="a"
         target="_blank"
         size="medium"
         content={i18next.t("View")}
-        href={this.context.linkExtractor.self_html}
+        href={linkExtractor.self_html}
       />
     );
   }

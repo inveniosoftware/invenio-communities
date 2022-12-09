@@ -19,8 +19,6 @@ export const modalModeEnum = {
 };
 
 class RemoveMemberModal extends Component {
-  static contextType = ModalContext;
-
   constructor(props) {
     super(props);
 
@@ -42,6 +40,8 @@ class RemoveMemberModal extends Component {
       },
     };
   }
+
+  static contextType = ModalContext;
 
   onActionHandler = async () => {
     const { modalAction } = this.context;

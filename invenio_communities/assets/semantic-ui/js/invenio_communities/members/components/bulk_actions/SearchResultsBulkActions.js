@@ -15,8 +15,6 @@ import Overridable from "react-overridable";
 import _pickBy from "lodash/pickBy";
 
 export class SearchResultsBulkActions extends Component {
-  static contextType = BulkActionsContext;
-
   constructor(props) {
     super(props);
     const { allSelected } = this.props;
@@ -28,6 +26,8 @@ export class SearchResultsBulkActions extends Component {
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ allSelectedChecked: allSelected });
   }
+
+  static contextType = BulkActionsContext;
 
   handleOnChange = () => {
     const { setAllSelected, allSelected } = this.context;

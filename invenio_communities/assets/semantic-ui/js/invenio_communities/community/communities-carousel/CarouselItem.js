@@ -66,7 +66,11 @@ class CarouselItem extends Component {
 CarouselItem.propTypes = {
   community: PropTypes.object.isRequired,
   defaultLogo: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
+};
+
+CarouselItem.defaultProps = {
+  className: "",
 };
 
 export default Overridable.component("InvenioCommunities.CarouselItem", CarouselItem);
