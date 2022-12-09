@@ -8,7 +8,6 @@ import _get from "lodash/get";
 import _set from "lodash/set";
 import _cloneDeep from "lodash/cloneDeep";
 import _isArray from "lodash/isArray";
-import _isEmpty from "lodash/isEmpty";
 
 export class CustomFieldSerializer {
   constructor({

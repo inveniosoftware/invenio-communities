@@ -5,8 +5,6 @@ import { Checkbox } from "semantic-ui-react";
 import _hasIn from "lodash/hasIn";
 
 export class SearchResultsRowCheckbox extends Component {
-  static contextType = BulkActionsContext;
-
   constructor(props) {
     super(props);
     this.state = { isChecked: false };
@@ -20,6 +18,8 @@ export class SearchResultsRowCheckbox extends Component {
       isChecked: this.isChecked(bulkActionContext, allSelected),
     });
   }
+
+  static contextType = BulkActionsContext;
 
   isChecked = (bulkActionContext, allSelected) => {
     const { rowId } = this.props;

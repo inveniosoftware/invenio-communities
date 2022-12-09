@@ -15,13 +15,13 @@ const timestampToRelativeTime = (timestamp) =>
   DateTime.fromISO(timestamp).setLocale(i18next.language).toRelative();
 
 export class ManagerMembersResultItem extends Component {
-  static contextType = MembersContext;
-
   constructor(props) {
     super(props);
     const { result } = props;
     this.state = { result: result };
   }
+
+  static contextType = MembersContext;
 
   updateMemberRole = (data, value) => {
     const { result } = this.state;

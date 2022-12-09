@@ -14,8 +14,6 @@ import { withState } from "react-searchkit";
 import { withCancel } from "react-invenio-forms";
 
 class ManagerMemberBulkActionsCmp extends Component {
-  static contextType = BulkActionsContext;
-
   constructor(props) {
     super(props);
     const { community } = this.props;
@@ -26,6 +24,7 @@ class ManagerMemberBulkActionsCmp extends Component {
       modalOpen: false,
       currentAction: undefined,
       role: undefined,
+      visible: undefined,
       selectedMembers: {},
     };
   }
@@ -33,6 +32,8 @@ class ManagerMemberBulkActionsCmp extends Component {
   componentWillUnmount() {
     this.cancellableAction && this.cancellableAction.cancel();
   }
+
+  static contextType = BulkActionsContext;
 
   bulkAction = (action) => {
     action();
@@ -116,6 +117,7 @@ class ManagerMemberBulkActionsCmp extends Component {
     const { setAllSelected } = this.context;
 
     const actionToPerform = this.currentAction.action;
+    // eslint-disable-next-line react/destructuring-assignment
     const actionParameter = this.state[this.currentAction.actionParam];
 
     const members = Object.entries(selectedMembers).map(([memberId, member]) => member);
@@ -154,12 +156,13 @@ class ManagerMemberBulkActionsCmp extends Component {
     const currentActionRender =
       this.currentAction?.renderOnActive && this.currentAction.renderOnActive();
 
-    const currentActionText = this.currentAction?.text;
+    const { text: currentActionText, actionParam } = this.currentAction;
 
     const actionDisabled =
       loading ||
       selectedCount === 0 ||
-      !this.state[this.currentAction.actionParam] === undefined;
+      // eslint-disable-next-line react/destructuring-assignment
+      !this.state[actionParam] === undefined;
 
     return (
       <>

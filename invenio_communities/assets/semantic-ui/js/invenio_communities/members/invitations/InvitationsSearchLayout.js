@@ -22,7 +22,6 @@ export class InvitationsSearchLayout extends Component {
     const { config, roles, rolesCanInvite, community, communityGroupsEnabled } =
       this.props;
 
-    const sortOptions = config.sortOptions;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getInvitationFilters();
 

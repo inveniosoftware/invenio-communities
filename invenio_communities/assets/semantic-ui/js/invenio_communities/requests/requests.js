@@ -202,7 +202,7 @@ class RequestStatusFilterComponent extends Component {
       open: OpenStatus,
     });
     currentQueryState.filters = keepFiltersOnUpdate
-      ? currentQueryState.filters.filter((element) => element[0] != "is_open")
+      ? currentQueryState.filters.filter((element) => element[0] !== "is_open")
       : [];
     currentQueryState.filters.push(["is_open", OpenStatus]);
     updateQueryState(currentQueryState);

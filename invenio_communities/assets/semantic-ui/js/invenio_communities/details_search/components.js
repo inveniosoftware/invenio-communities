@@ -83,8 +83,8 @@ export const CommunityRecordResultsListItem = ({ result }) => {
           {_truncate(descriptionStripped, { length: 350 })}
         </Item.Description>
         <Item.Extra>
-          {subjects.map((subject, index) => (
-            <Label key={index} size="tiny">
+          {subjects.map((subject) => (
+            <Label key={subject.id} size="tiny">
               {subject.title_l10n}
             </Label>
           ))}
@@ -263,7 +263,6 @@ export const CommunityToggleComponent = ({
   filterValue,
   label,
   title,
-  isChecked,
 }) => {
   const _isChecked = (userSelectionFilters) => {
     const isFilterActive =
@@ -275,7 +274,7 @@ export const CommunityToggleComponent = ({
     updateQueryFilters(filterValue);
   };
 
-  var isChecked = _isChecked(userSelectionFilters);
+  const isFilterChecked = _isChecked(userSelectionFilters);
   return (
     <Card className="borderless facet">
       <Card.Content>
@@ -288,7 +287,7 @@ export const CommunityToggleComponent = ({
           name="versions-toggle"
           id="versions-toggle"
           onClick={onToggleClicked}
-          checked={isChecked}
+          checked={isFilterChecked}
         />
       </Card.Content>
     </Card>
@@ -301,7 +300,6 @@ CommunityToggleComponent.propTypes = {
   filterValue: PropTypes.array.isRequired,
   label: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  isChecked: PropTypes.bool.isRequired,
 };
 
 export const CommunityCountComponent = ({ totalResults }) => {
@@ -396,7 +394,7 @@ export function SearchItemCreators({ creators }) {
         icon = (
           <a
             className="identifier-link"
-            href={"https://orcid.org/" + `${firstId.identifier}`}
+            href={`https://orcid.org/${firstId.identifier}`}
             aria-label={`${creatorName}: ${i18next.t("ORCID profile")}`}
             title={`${creatorName}: ${i18next.t("ORCID profile")}`}
           >
@@ -407,7 +405,7 @@ export function SearchItemCreators({ creators }) {
       case "ror":
         icon = (
           <a
-            href={"https://ror.org/" + `${firstId.identifier}`}
+            href={`https://ror.org/${firstId.identifier}`}
             aria-label={`${creatorName}: ${i18next.t("ROR profile")}`}
             title={`${creatorName}: ${i18next.t("ROR profile")}`}
           >
@@ -434,8 +432,12 @@ export function SearchItemCreators({ creators }) {
     );
     return link;
   }
+
   return creators.map((creator, index) => (
-    <span className="creatibutor-wrap" key={index}>
+    <span
+      className="creatibutor-wrap"
+      key={creator.person_or_org.identifiers.identifier}
+    >
       {getLink(creator)}
       {getIcon(creator)}
       {index < creators.length - 1 && ";"}

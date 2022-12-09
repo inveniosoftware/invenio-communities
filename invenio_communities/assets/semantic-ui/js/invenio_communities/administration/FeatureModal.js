@@ -20,6 +20,10 @@ export class FeatureModal extends Component {
     this.state = { featuredList: undefined, loading: false, error: undefined };
   }
 
+  componentDidMount() {
+    this.fetchData();
+  }
+
   fetchData = async () => {
     const { resource } = this.props;
     try {
@@ -34,10 +38,6 @@ export class FeatureModal extends Component {
       this.setState({ error: e, loading: false });
     }
   };
-
-  componentDidMount() {
-    this.fetchData();
-  }
 
   render() {
     const { featuredList, loading, error } = this.state;

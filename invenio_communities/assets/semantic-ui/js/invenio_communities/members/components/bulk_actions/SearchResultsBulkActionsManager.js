@@ -40,7 +40,7 @@ class SearchResultsBulkActionsManager extends Component {
   setAllSelected = (val, global = false) => {
     this.setState({ allSelected: val });
     if (global) {
-      for (const [key, value] of Object.entries(this.selected)) {
+      for (const [key] of Object.entries(this.selected)) {
         this.selected[key].selected = val;
       }
       if (val) {

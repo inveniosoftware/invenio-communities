@@ -54,11 +54,14 @@ class CommunitiesCarousel extends Component {
   };
 
   setCarouselTimer = () => {
-    const { data, activeIndex } = this.state;
+    const {
+      data: { hits: length },
+      activeIndex,
+    } = this.state;
     const { intervalDelay } = this.props;
     this.setState({
       carouselTimer: setInterval(() => {
-        data.hits.length && this.runCarousel(activeIndex + 1);
+        length && this.runCarousel(activeIndex + 1);
       }, intervalDelay),
     });
   };

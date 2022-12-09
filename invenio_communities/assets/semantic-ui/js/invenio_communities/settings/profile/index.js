@@ -82,22 +82,20 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
 const removeEmptyValues = (obj) => {
   if (_isArray(obj)) {
     let mappedValues = obj.map((value) => removeEmptyValues(value));
-    let filterValues = mappedValues.filter((value) => {
+    return mappedValues.filter((value) => {
       if (_isBoolean(value) || _isNumber(value)) {
         return value;
       }
       return !_isEmpty(value);
     });
-    return filterValues;
   } else if (_isObject(obj)) {
     let mappedValues = _mapValues(obj, (value) => removeEmptyValues(value));
-    let pickedValues = _pickBy(mappedValues, (value) => {
+    return _pickBy(mappedValues, (value) => {
       if (_isArray(value) || _isObject(value)) {
         return !_isEmpty(value);
       }
       return !_isNull(value);
     });
-    return pickedValues;
   }
   return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
 };
@@ -302,13 +300,12 @@ class CommunityProfileForm extends Component {
     // create a map with all organizations that are not custom (part of the
     // vocabulary), so that on form submission, newly custom organization input
     // by the user can be identified and correctly sent to the backend.
-    const organizationsNames = [];
-    initialValues.metadata.organizations.map((org) => {
+    const organizationsNames = initialValues.metadata.organizations.map((org) => {
       const isNonCustomOrganization = org.id;
       if (isNonCustomOrganization) {
         this.knownOrganizations[org.name] = org.id;
       }
-      organizationsNames.push(org.name);
+      return org.name;
     });
 
     _unset(initialValues, "metadata.type.title");
@@ -503,7 +500,8 @@ class CommunityProfileForm extends Component {
   };
 
   render() {
-    const { types, customFields, community } = this.props;
+    const { types, customFields, community, hasLogo, defaultLogo, logoMaxSize } =
+      this.props;
     const { error } = this.state;
     return (
       <Formik
@@ -734,20 +732,17 @@ class CommunityProfileForm extends Component {
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
                   <LogoUploader
-                    community={this.props.community}
-                    hasLogo={this.props.hasLogo}
-                    defaultLogo={this.props.defaultLogo}
+                    community={community}
+                    hasLogo={hasLogo}
+                    defaultLogo={defaultLogo}
                     onError={this.setGlobalError}
-                    logoMaxSize={this.props.logoMaxSize}
+                    logoMaxSize={logoMaxSize}
                   />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row className="danger-zone">
                 <Grid.Column width={16}>
-                  <DangerZone
-                    community={this.props.community}
-                    onError={this.setGlobalError}
-                  />
+                  <DangerZone community={community} onError={this.setGlobalError} />
                 </Grid.Column>
               </Grid.Row>
             </Grid>

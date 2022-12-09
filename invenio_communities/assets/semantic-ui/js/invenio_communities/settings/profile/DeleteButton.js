@@ -41,7 +41,7 @@ export const DeleteButton = (props) => {
 
   useEffect(() => {
     if (modalOpen) cancelBtnRef?.current?.focus();
-  }, [modalOpen]);
+  }, [modalOpen, cancelBtnRef]);
 
   const { label, confirmationMessage } = props;
 
