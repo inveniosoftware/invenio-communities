@@ -14,77 +14,81 @@
   <div class="ui container relaxed grid page-subheader mr-0-mobile ml-0-mobile">
     <div class="row pb-0">
       <div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
+        <div class="ui items">
+          <div class="item community-header">
+            <div class="ui rounded image community-image mt-5 rel-mr-2">
+              <img
+                src="{{ community.links.logo }}"
+                alt=""
+                class="has-placeholder"
+              />
+            </div>
+            <div class="content">
+              {% if community.access.visibility == 'restricted' %}
+                <div class="rel-mb-2 mobile only">
+                  {{ access_status_label() }}
+                </div>
+              {% endif %}
 
-        <div class="ui rounded image community-image mt-5 rel-mr-2 left-floated">
-          <img
-            src="{{ community.links.logo }}"
-            alt=""
-            class="has-placeholder"
-          />
+              <div class="rel-mb-1">
+                <h2 class="ui mb-0">{{ community.metadata.title }}</h2>
+                {% if community.access.visibility == 'restricted' %}
+                  <div class="rel-ml-1 computer only tablet only">
+                    {{ access_status_label() }}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div>
+                {% if community.metadata.website %}
+                <div class="inline-computer mt-5 rel-mr-1">
+                  <i class="linkify icon" aria-hidden="true"></i>
+                  <a href="{{community.metadata.website}}">
+                    {{community.metadata.website}}
+                  </a>
+                </div>
+                {% endif %}
+
+                {% if community.metadata.type is defined %}
+                <div class="inline-computer mt-5 rel-mr-1">
+                  <i class="tag icon" aria-hidden="true"></i>
+                  <span class="label label-keyword">
+                    {{ community.ui.type.title_l10n }}
+                  </span>
+                </div>
+                {% endif %}
+
+                {% if community.metadata.organizations %}
+                <div class="inline-computer mt-5 rel-mr-1">
+                  <i class="building outline icon" aria-hidden="true"></i>
+                  <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
+                </div>
+                {% endif %}
+              </div>
+
+              {% if community.metadata.description %}
+                <div class="ui accordion mt-5">
+                  <div id="description-accordion"
+                        role="button"
+                        aria-controls="community-description"
+                        aria-expanded="false"
+                        tabindex="0"
+                        class="title trigger"
+                  >
+                    {{ _("About this community") }}
+                    <i class="icon right chevron pl-5"></i>
+                  </div>
+                  <div id="community-description"
+                        aria-labelledby="description-accordion"
+                        class="content rel-mb-2"
+                  >
+                    {{ community.metadata.description }}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
         </div>
-
-        {% if community.access.visibility == 'restricted' %}
-          <div class="rel-mb-2 mobile only">
-            {{ access_status_label() }}
-          </div>
-        {% endif %}
-
-          <div class="flex rel-mb-1">
-            <h2 class="ui header mb-0">{{ community.metadata.title }}</h2>
-            {% if community.access.visibility == 'restricted' %}
-              <div class="rel-ml-1 computer only tablet only">
-                {{ access_status_label() }}
-              </div>
-            {% endif %}
-          </div>
-
-          <div>
-            {% if community.metadata.website %}
-            <div class="inline-computer mt-5 rel-mr-1">
-              <i class="linkify icon" aria-hidden="true"></i>
-              <a href="{{community.metadata.website}}">
-                {{community.metadata.website}}
-              </a>
-            </div>
-            {% endif %}
-
-            {% if community.metadata.type is defined %}
-            <div class="inline-computer mt-5 rel-mr-1">
-              <i class="tag icon" aria-hidden="true"></i>
-              <span class="label label-keyword">
-                {{ community.ui.type.title_l10n }}
-              </span>
-            </div>
-            {% endif %}
-
-            {% if community.metadata.organizations %}
-            <div class="inline-computer mt-5 rel-mr-1">
-              <i class="building outline icon" aria-hidden="true"></i>
-              <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
-            </div>
-            {% endif %}
-          </div>
-
-          {% if community.metadata.description %}
-            <div class="ui accordion mt-5">
-              <div id="description-accordion"
-                   role="button"
-                   aria-controls="community-description"
-                   aria-expanded="false"
-                   tabindex="0"
-                   class="title trigger"
-              >
-                {{ _("About this community") }}
-                <i class="icon right chevron pl-5"></i>
-              </div>
-              <div id="community-description"
-                   aria-labelledby="description-accordion"
-                   class="content rel-mb-2"
-              >
-                {{ community.metadata.description }}
-              </div>
-            </div>
-          {% endif %}
       </div>
 
       <div class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
