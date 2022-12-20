@@ -10,12 +10,14 @@
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
 {%- from "invenio_communities/details/macros/access-status-label.html" import access_status_label -%}
 
-<div class="ui container fluid page-subheader-outer with-submenu rel-pt-2 ml-0-mobile mr-0-mobile">
+<div
+  class="ui container fluid page-subheader-outer with-submenu rel-pt-2 ml-0-mobile mr-0-mobile">
   <div class="ui container relaxed grid page-subheader mr-0-mobile ml-0-mobile">
     <div class="row pb-0">
-      <div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
-        <div class="ui items">
-          <div class="item community-header">
+      <div
+        class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
+        <div class="community-header ui grid">
+          <div class="two wide column">
             <div class="ui rounded image community-image mt-5 rel-mr-2">
               <img
                 src="{{ community.links.logo }}"
@@ -23,77 +25,79 @@
                 class="has-placeholder"
               />
             </div>
-            <div class="content">
+          </div>
+          <div class="fourteen wide column">
+            {% if community.access.visibility == 'restricted' %}
+              <div class="rel-mb-2 mobile only">
+                {{ access_status_label() }}
+              </div>
+            {% endif %}
+
+            <div class="rel-mb-1">
+              <h2 class="ui mb-0">{{ community.metadata.title }}</h2>
               {% if community.access.visibility == 'restricted' %}
-                <div class="rel-mb-2 mobile only">
+                <div class="rel-ml-1 computer only tablet only">
                   {{ access_status_label() }}
                 </div>
               {% endif %}
+            </div>
 
-              <div class="rel-mb-1">
-                <h2 class="ui mb-0">{{ community.metadata.title }}</h2>
-                {% if community.access.visibility == 'restricted' %}
-                  <div class="rel-ml-1 computer only tablet only">
-                    {{ access_status_label() }}
-                  </div>
-                {% endif %}
-              </div>
-
-              <div>
-                {% if community.metadata.website %}
+            <div>
+              {% if community.metadata.website %}
                 <div class="inline-computer mt-5 rel-mr-1">
                   <i class="linkify icon" aria-hidden="true"></i>
-                  <a href="{{community.metadata.website}}">
-                    {{community.metadata.website}}
+                  <a href="{{ community.metadata.website }}">
+                    {{ community.metadata.website }}
                   </a>
                 </div>
-                {% endif %}
+              {% endif %}
 
-                {% if community.metadata.type is defined %}
+              {% if community.metadata.type is defined %}
                 <div class="inline-computer mt-5 rel-mr-1">
                   <i class="tag icon" aria-hidden="true"></i>
                   <span class="label label-keyword">
                     {{ community.ui.type.title_l10n }}
                   </span>
                 </div>
-                {% endif %}
+              {% endif %}
 
-                {% if community.metadata.organizations %}
+              {% if community.metadata.organizations %}
                 <div class="inline-computer mt-5 rel-mr-1">
                   <i class="building outline icon" aria-hidden="true"></i>
-                  <span class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
-                </div>
-                {% endif %}
-              </div>
-
-              {% if community.metadata.description %}
-                <div class="ui accordion mt-5">
-                  <div id="description-accordion"
-                        role="button"
-                        aria-controls="community-description"
-                        aria-expanded="false"
-                        tabindex="0"
-                        class="title trigger"
-                  >
-                    {{ _("About this community") }}
-                    <i class="icon right chevron pl-5"></i>
-                  </div>
-                  <div id="community-description"
-                        aria-labelledby="description-accordion"
-                        class="content rel-mb-2"
-                  >
-                    {{ community.metadata.description }}
-                  </div>
+                  <span
+                    class="label label-keyword">{{ community.metadata.organizations| map(attribute='name') | join(', ') }}</span>
                 </div>
               {% endif %}
             </div>
+
+            {% if community.metadata.description %}
+              <div class="ui accordion mt-5">
+                <div id="description-accordion"
+                     role="button"
+                     aria-controls="community-description"
+                     aria-expanded="false"
+                     tabindex="0"
+                     class="title trigger"
+                >
+                  {{ _("About this community") }}
+                  <i class="icon right chevron pl-5"></i>
+                </div>
+                <div id="community-description"
+                     aria-labelledby="description-accordion"
+                     class="content rel-mb-2"
+                >
+                  {{ community.metadata.description }}
+                </div>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
 
-      <div class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
+      <div
+        class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
         <a href="/uploads/new?community={{ community.id }}"
-            class="ui positive button labeled icon rel-mt-1">
+           class="ui positive button labeled icon rel-mt-1">
           <i class="plus icon" aria-hidden="true"></i>
           {{ _("New upload") }}
         </a>
@@ -124,9 +128,13 @@
     </div>
     <!--TODO: Delete this menu to avoid using invenio_app_rdm-->
     <div class="ui divider mobile only"></div>
-    <div class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
-      {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions]  %}
-        <a class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}" href="{{ item.url }}"><i aria-hidden="true" class="{{item.icon}} icon"></i>{{ item.text }}</a>
+    <div
+      class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
+      {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions] %}
+        <a
+          class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}"
+          href="{{ item.url }}"><i aria-hidden="true"
+                                   class="{{ item.icon }} icon"></i>{{ item.text }}</a>
       {% endfor %}
     </div>
   </div>
