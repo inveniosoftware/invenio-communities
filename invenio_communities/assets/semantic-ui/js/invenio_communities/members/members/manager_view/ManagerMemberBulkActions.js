@@ -156,13 +156,13 @@ class ManagerMemberBulkActionsCmp extends Component {
     const currentActionRender =
       this.currentAction?.renderOnActive && this.currentAction.renderOnActive();
 
-    const { text: currentActionText, actionParam } = this.currentAction;
+    const currentActionText = this.currentAction?.text;
 
     const actionDisabled =
       loading ||
       selectedCount === 0 ||
       // eslint-disable-next-line react/destructuring-assignment
-      !this.state[actionParam] === undefined;
+      !this.state[this.currentAction.actionParam] === undefined;
 
     return (
       <>
