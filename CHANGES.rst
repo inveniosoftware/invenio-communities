@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 4.0.5 (released 2023-01-05)
+-----------------------------------
+
+- featured: add overridable id to featured communities component
+- assets: refactor eslint warnings
+- community: details page styling adjustments
+
 Version 4.0.4 (released 2022-12-05)
 -----------------------------------
 
