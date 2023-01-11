@@ -9,7 +9,7 @@
 
 from math import ceil
 
-from flask_babelex import gettext as _
+from invenio_i18n import gettext as _
 
 
 class CommunityError(Exception):
