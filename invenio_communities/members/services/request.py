@@ -2,14 +2,15 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2023 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 """Invitation request type."""
 
-from flask_babelex import lazy_gettext as _
 from invenio_access.permissions import system_identity
+from invenio_i18n import lazy_gettext as _
 from invenio_requests.customizations import RequestType, actions
 
 from ...proxies import current_communities

@@ -3,16 +3,16 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2022 Northwestern University.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2023 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Components."""
 
-from flask_babelex import lazy_gettext as _
 from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
+from invenio_i18n import lazy_gettext as _
 from invenio_oaiserver.models import OAISet
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.records.components import ServiceComponent
