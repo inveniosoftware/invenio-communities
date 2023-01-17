@@ -151,4 +151,9 @@ class CommunityFeaturedSchema(Schema):
     """Community Featured Schema."""
 
     id = fields.Int(dump_only=True)
-    start_date = fields.DateTime(required=True)
+    start_date = fields.DateTime(
+        required=True,
+        title="start date",
+        description="Accepted format: YYYY-MM-DD hh:mm",
+        placeholder="YYYY-MM-DD hh:mm",
+    )
