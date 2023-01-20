@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 4.0.6 (released 2023-01-20)
+-----------------------------------
+
+- featured: add tooltip to featured community schema field
+
 Version 4.0.5 (released 2023-01-05)
 -----------------------------------
 
