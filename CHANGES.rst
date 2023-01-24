@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 4.0.7 (released 2023-01-24)
+-----------------------------------
+
+- featured: add feature flag for administration panel
+
+
 Version 4.0.6 (released 2023-01-20)
 -----------------------------------
 
