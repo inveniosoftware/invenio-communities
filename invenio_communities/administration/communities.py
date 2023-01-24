@@ -7,6 +7,7 @@
 # details.
 
 """Invenio administration OAI-PMH view module."""
+from flask import app, current_app, has_app_context
 from invenio_administration.views.base import (
     AdminResourceDetailView,
     AdminResourceListView,
@@ -56,6 +57,11 @@ class CommunityListView(AdminResourceListView):
     search_config_name = "COMMUNITIES_SEARCH"
     search_facets_config_name = "COMMUNITIES_FACETS"
     search_sort_config_name = "COMMUNITIES_SORT_OPTIONS"
+
+    @staticmethod
+    def disabled():
+        """Disable the view on demand."""
+        return current_app.config["COMMUNITIES_ADMINISTRATION_DISABLED"]
 
 
 class CommunityDetailView(AdminResourceDetailView):
