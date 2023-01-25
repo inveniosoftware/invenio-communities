@@ -7,27 +7,31 @@
 import { initDefaultSearchComponents } from "@js/invenio_administration";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { FeatureModal } from "./FeatureModal";
-import { parametrize } from "react-overridable";
+import { parametrize, overrideStore } from "react-overridable";
 import { NotificationController, BoolFormatter } from "@js/invenio_administration";
 
 const domContainer = document.getElementById("invenio-search-config");
 
-const defaultComponents = initDefaultSearchComponents(domContainer);
+const appName = "InvenioCommunities.AdministrationListView";
+
+const defaultComponents = initDefaultSearchComponents(domContainer, appName);
 const CustomBoolFormatter = parametrize(BoolFormatter, {
   icon: "star",
   color: "yellow",
 });
 
-const overridenComponents = {
+const overriddenDefaultComponents = {
   ...defaultComponents,
-  "InvenioAdministration.BoolFormatter": CustomBoolFormatter,
-  "InvenioAdministration.ActionModal": FeatureModal,
+  [`${appName}.BoolFormatter`]: CustomBoolFormatter,
+  [`${appName}.ActionModal.layout`]: FeatureModal,
 };
 
+const overriddenComponents = overrideStore.getAll();
+
 createSearchAppInit(
-  overridenComponents,
+  { ...overriddenDefaultComponents, ...overriddenComponents },
   true,
   "invenio-search-config",
-  false,
+  true,
   NotificationController
 );

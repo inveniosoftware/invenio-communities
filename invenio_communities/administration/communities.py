@@ -28,7 +28,7 @@ class CommunityListView(AdminResourceListView):
     pid_path = "id"
     icon = "users"
     template = "invenio_communities/administration/community_search.html"
-
+    app_id = "InvenioCommunities.AdministrationListView"
     display_search = True
     display_delete = False
     display_create = False
@@ -68,6 +68,7 @@ class CommunityDetailView(AdminResourceDetailView):
     title = "Community"
 
     template = "invenio_communities/administration/community_details.html"
+    app_id = "InvenioCommunities.AdministrationDetailView"
     display_delete = False
     display_edit = False
 
