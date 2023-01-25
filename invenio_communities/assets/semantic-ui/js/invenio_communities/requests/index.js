@@ -8,7 +8,7 @@
 
 import React from "react";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from "react-overridable";
+import { parametrize, overrideStore } from "react-overridable";
 import {
   LabelTypeSubmission,
   LabelTypeInvitation,
@@ -45,6 +45,8 @@ import {
 
 const domContainer = document.getElementById("communities-request-search-root");
 
+const appName = "InvenioCommunities.RequestSearch";
+
 const community = JSON.parse(domContainer.dataset.community);
 
 const RequestsResultsGridItemTemplateWithCommunity = parametrize(
@@ -75,6 +77,10 @@ const RequestCancelModalTriggerWithConfig = parametrize(RequestCancelModalTrigge
   className: "ml-5",
 });
 
+const RequestsSearchLayoutWAppName = parametrize(RequestsSearchLayout, {
+  appName: appName,
+});
+
 const CommunitySubmission = () => (
   <LabelTypeSubmission className="primary" size="small" />
 );
@@ -96,30 +102,38 @@ const Cancelled = () => <LabelStatusCancel className="neutral" size="small" />;
 const Expired = () => <LabelStatusExpire className="expired" size="small" />;
 
 const defaultComponents = {
-  "BucketAggregation.element": ContribBucketAggregationElement,
-  "BucketAggregationValues.element": ContribBucketAggregationValuesElement,
-  "SearchApp.facets": ContribSearchAppFacets,
-  "ResultsList.item": RequestsResultsItemTemplateWithCommunity,
-  "ResultsGrid.item": RequestsResultsGridItemTemplateWithCommunity,
-  "SearchApp.layout": RequestsSearchLayout,
-  "SearchApp.results": RequestsResults,
-  "SearchBar.element": RecordSearchBarElement,
-  "EmptyResults.element": RequestsEmptyResultsWithState,
-  "RequestTypeLabel.layout.community-submission": CommunitySubmission,
-  "RequestTypeLabel.layout.community-invitation": CommunityInvitation,
-  "RequestStatusLabel.layout.submitted": Submitted,
-  "RequestStatusLabel.layout.deleted": Deleted,
-  "RequestStatusLabel.layout.accepted": Accepted,
-  "RequestStatusLabel.layout.declined": Declined,
-  "RequestStatusLabel.layout.cancelled": Cancelled,
-  "RequestStatusLabel.layout.expired": Expired,
-  "RequestActionModalTrigger.accept": RequestAcceptModalTriggerWithConfig,
-  "RequestActionModalTrigger.decline": RequestDeclineModalTriggerWithConfig,
-  "RequestActionModalTrigger.cancel": RequestCancelModalTriggerWithConfig,
-  "RequestActionButton.cancel": RequestCancelButton,
-  "RequestActionButton.decline": RequestDeclineButton,
-  "RequestActionButton.accept": RequestAcceptButton,
+  [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
+  [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
+  [`${appName}.SearchApp.facets`]: ContribSearchAppFacets,
+  [`${appName}.ResultsList.item`]: RequestsResultsItemTemplateWithCommunity,
+  [`${appName}.ResultsGrid.item`]: RequestsResultsGridItemTemplateWithCommunity,
+  [`${appName}.SearchApp.layout`]: RequestsSearchLayoutWAppName,
+  [`${appName}.SearchApp.results`]: RequestsResults,
+  [`${appName}.SearchBar.element`]: RecordSearchBarElement,
+  [`${appName}.EmptyResults.element`]: RequestsEmptyResultsWithState,
+  [`${appName}.RequestTypeLabel.layout.community-submission`]: CommunitySubmission,
+  [`${appName}.RequestTypeLabel.layout.community-invitation`]: CommunityInvitation,
+  [`${appName}.RequestStatusLabel.layout.submitted`]: Submitted,
+  [`${appName}.RequestStatusLabel.layout.deleted`]: Deleted,
+  [`${appName}.RequestStatusLabel.layout.accepted`]: Accepted,
+  [`${appName}.RequestStatusLabel.layout.declined`]: Declined,
+  [`${appName}.RequestStatusLabel.layout.cancelled`]: Cancelled,
+  [`${appName}.RequestStatusLabel.layout.expired`]: Expired,
+  [`${appName}.RequestActionModalTrigger.accept`]: RequestAcceptModalTriggerWithConfig,
+  [`${appName}.RequestActionModalTrigger.decline`]:
+    RequestDeclineModalTriggerWithConfig,
+  [`${appName}.RequestActionModalTrigger.cancel`]: RequestCancelModalTriggerWithConfig,
+  [`${appName}.RequestActionButton.cancel`]: RequestCancelButton,
+  [`${appName}.RequestActionButton.decline`]: RequestDeclineButton,
+  [`${appName}.RequestActionButton.accept`]: RequestAcceptButton,
 };
 
+const overriddenComponents = overrideStore.getAll();
+
 // Auto-initialize search app
-createSearchAppInit(defaultComponents);
+createSearchAppInit(
+  { ...defaultComponents, ...overriddenComponents },
+  true,
+  "invenio-search-config",
+  true
+);

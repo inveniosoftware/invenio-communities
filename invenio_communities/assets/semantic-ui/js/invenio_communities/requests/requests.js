@@ -253,7 +253,7 @@ export const RequestStatusFilter = withState(RequestStatusFilterComponent);
 
 export const RequestsSearchLayout = (props) => {
   const [sidebarVisible, setSidebarVisible] = React.useState(false);
-  const { config } = props;
+  const { config, appName } = props;
   return (
     <Container>
       <Grid>
@@ -291,10 +291,13 @@ export const RequestsSearchLayout = (props) => {
             open={sidebarVisible}
             onHideClick={() => setSidebarVisible(false)}
             // eslint-disable-next-line react/no-children-prop
-            children={<SearchAppFacets aggs={config.aggs} />}
+            children={<SearchAppFacets aggs={config.aggs} appName={appName} />}
           />
           <Grid.Column mobile={16} tablet={16} computer={12}>
-            <SearchAppResultsPane layoutOptions={config.layoutOptions} />
+            <SearchAppResultsPane
+              layoutOptions={config.layoutOptions}
+              appName={appName}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -304,6 +307,11 @@ export const RequestsSearchLayout = (props) => {
 
 RequestsSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
+  appName: PropTypes.string,
+};
+
+RequestsSearchLayout.defaultProps = {
+  appName: undefined,
 };
 
 export const RequestsEmptyResults = ({

@@ -15,27 +15,45 @@ import {
   CommunityRecordSearchBarElement,
   CommunityToggleComponent,
 } from "./components";
-import { parametrize } from "react-overridable";
+import { parametrize, overrideStore } from "react-overridable";
 import {
   ContribSearchAppFacets,
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
 } from "@js/invenio_search_ui/components";
 
+const appName = "InvenioCommunities.DetailsSearch";
+
 const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
   toogle: true,
 });
 
-createSearchAppInit({
-  "BucketAggregation.element": ContribBucketAggregationElement,
-  "BucketAggregationValues.element": ContribBucketAggregationValuesElement,
-  "ResultsGrid.item": CommunityRecordResultsGridItem,
-  "EmptyResults.element": CommunityEmptyResults,
-  "ResultsList.item": CommunityRecordResultsListItem,
-  "SearchApp.facets": ContribSearchAppFacetsWithConfig,
-  "SearchApp.layout": CommunityRecordSearchAppLayout,
-  "SearchBar.element": CommunityRecordSearchBarElement,
-  "Count.element": CommunityCountComponent,
-  "Error.element": CommunityErrorComponent,
-  "SearchFilters.Toggle.element": CommunityToggleComponent,
-});
+const CommunityRecordSearchAppLayoutWAppName = parametrize(
+  CommunityRecordSearchAppLayout,
+  {
+    appName: appName,
+  }
+);
+
+const defaultComponents = {
+  [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
+  [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
+  [`${appName}.ResultsGrid.item`]: CommunityRecordResultsGridItem,
+  [`${appName}.EmptyResults.element`]: CommunityEmptyResults,
+  [`${appName}.ResultsList.item`]: CommunityRecordResultsListItem,
+  [`${appName}.SearchApp.facets`]: ContribSearchAppFacetsWithConfig,
+  [`${appName}.SearchApp.layout`]: CommunityRecordSearchAppLayoutWAppName,
+  [`${appName}.SearchBar.element`]: CommunityRecordSearchBarElement,
+  [`${appName}.Count.element`]: CommunityCountComponent,
+  [`${appName}.Error.element`]: CommunityErrorComponent,
+  [`${appName}.SearchFilters.Toggle.element`]: CommunityToggleComponent,
+};
+
+const overriddenComponents = overrideStore.getAll();
+
+createSearchAppInit(
+  { ...defaultComponents, ...overriddenComponents },
+  true,
+  "invenio-search-config",
+  true
+);
