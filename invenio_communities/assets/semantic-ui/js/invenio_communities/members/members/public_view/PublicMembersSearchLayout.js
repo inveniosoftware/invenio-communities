@@ -27,11 +27,11 @@ const PublicViewSearchBar = () => {
 
 export class PublicMembersSearchLayout extends Component {
   render() {
-    const { config } = this.props;
+    const { config, appName } = this.props;
     return (
       <>
         <PublicViewSearchBar />
-        <SearchAppResultsPane layoutOptions={config.layoutOptions} />
+        <SearchAppResultsPane layoutOptions={config.layoutOptions} appName={appName} />
       </>
     );
   }
@@ -39,4 +39,9 @@ export class PublicMembersSearchLayout extends Component {
 
 PublicMembersSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
+  appName: PropTypes.string,
+};
+
+PublicMembersSearchLayout.defaultProps = {
+  appName: "",
 };

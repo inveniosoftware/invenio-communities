@@ -8,6 +8,7 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { DropdownSort } from "@js/invenio_search_ui/components";
+import { overrideStore, parametrize } from "react-overridable";
 
 import { PublicMembersResultsItem } from "./PublicMembersResultItem";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
@@ -17,16 +18,29 @@ import { PublicMembersResultsContainer } from "./PublicMembersResultContainer";
 import { PublicMembersSearchLayout } from "./PublicMembersSearchLayout";
 import MembersEmptyResults from "../components/MembersEmptyResults";
 
+const appName = "InvenioCommunities.PublicSearch";
+
+const PublicMembersSearchLayoutWithConfig = parametrize(PublicMembersSearchLayout, {
+  appName: appName,
+});
+
 const defaultComponents = {
-  "ResultsList.item": PublicMembersResultsItem,
-  "ResultsGrid.item": MembersResultsGridItem,
-  "SearchApp.layout": PublicMembersSearchLayout,
-  "SearchBar.element": MembersSearchBarElement,
-  "SearchApp.results": MembersResults,
-  "ResultsList.container": PublicMembersResultsContainer,
-  "EmptyResults.element": MembersEmptyResults,
-  "Sort.element": DropdownSort,
+  [`${appName}.ResultsList.item`]: PublicMembersResultsItem,
+  [`${appName}.ResultsGrid.item`]: MembersResultsGridItem,
+  [`${appName}.SearchApp.layout`]: PublicMembersSearchLayoutWithConfig,
+  [`${appName}.SearchBar.element`]: MembersSearchBarElement,
+  [`${appName}.SearchApp.results`]: MembersResults,
+  [`${appName}.ResultsList.container`]: PublicMembersResultsContainer,
+  [`${appName}.EmptyResults.element`]: MembersEmptyResults,
+  [`${appName}.Sort.element`]: DropdownSort,
 };
 
+const overriddenComponents = overrideStore.getAll();
+
 // Auto-initialize search app
-createSearchAppInit(defaultComponents);
+createSearchAppInit(
+  { ...defaultComponents, ...overriddenComponents },
+  true,
+  "invenio-search-config",
+  true
+);

@@ -60,7 +60,7 @@ export class SearchResultsBulkActions extends Component {
     }));
 
     return (
-      <Overridable id="SearchResultsBulkActionsManager.layout">
+      <Overridable id="InvenioCommunities.SearchResultsBulkActionsManager.layout">
         <div className="flex">
           <Checkbox
             className="align-self-center mr-10"

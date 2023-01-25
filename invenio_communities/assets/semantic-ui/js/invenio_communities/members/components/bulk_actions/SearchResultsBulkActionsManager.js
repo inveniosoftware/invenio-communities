@@ -55,7 +55,7 @@ class SearchResultsBulkActionsManager extends Component {
     const { children } = this.props;
     const { allSelected, selectedCount } = this.state;
     return (
-      <Overridable id="SearchResultsBulkActionsManager.layout">
+      <Overridable id="InvenioCommunities.SearchResultsBulkActionsManager.layout">
         <BulkActionsContext.Provider
           value={{
             bulkActionContext: this.selected,

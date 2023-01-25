@@ -7,7 +7,7 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from "react-overridable";
+import { parametrize, overrideStore } from "react-overridable";
 import { DropdownSort } from "@js/invenio_search_ui/components";
 import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
@@ -24,6 +24,8 @@ const communitiesRolesCanUpdate = JSON.parse(dataAttr.communitiesRolesCanUpdate)
 const permissions = JSON.parse(dataAttr.permissions);
 const community = JSON.parse(dataAttr.community);
 
+const appName = "InvenioCommunities.MemberSearch";
+
 const ManagerMembersResultItemWithConfig = parametrize(ManagerMembersResultItem, {
   config: {
     rolesCanUpdate: communitiesRolesCanUpdate,
@@ -38,23 +40,26 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
 
 const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
   roles: communitiesAllRoles,
+  appName: appName,
 });
 
 const defaultComponents = {
-  "ResultsList.item": ManagerMembersResultItemWithConfig,
-  "ResultsGrid.item": MembersResultsGridItem,
-  "SearchApp.layout": MembersSearchLayoutWithConfig,
-  "SearchBar.element": MembersSearchBarElement,
-  "SearchApp.results": MembersResults,
-  "ResultsList.container": MembersResultsContainer,
-  "Sort.element": DropdownSort,
+  [`${appName}.ResultsList.item`]: ManagerMembersResultItemWithConfig,
+  [`${appName}.ResultsGrid.item`]: MembersResultsGridItem,
+  [`${appName}.SearchApp.layout`]: MembersSearchLayoutWithConfig,
+  [`${appName}.SearchBar.element`]: MembersSearchBarElement,
+  [`${appName}.SearchApp.results`]: MembersResults,
+  [`${appName}.ResultsList.container`]: MembersResultsContainer,
+  [`${appName}.Sort.element`]: DropdownSort,
 };
+
+const overriddenComponents = overrideStore.getAll();
 
 // Auto-initialize search app
 createSearchAppInit(
-  defaultComponents,
+  { ...defaultComponents, ...overriddenComponents },
   true,
   "invenio-search-config",
-  false,
+  true,
   MembersSearchAppContext
 );

@@ -7,7 +7,7 @@
  */
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize } from "react-overridable";
+import { parametrize, overrideStore } from "react-overridable";
 import { DropdownSort } from "@js/invenio_search_ui/components";
 import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
@@ -23,6 +23,8 @@ const communitiesRolesCanUpdate = JSON.parse(dataAttr.communitiesRolesCanUpdate)
 const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
 const community = JSON.parse(dataAttr.community);
 const permissions = JSON.parse(dataAttr.permissions);
+
+const appName = "InvenioCommunities.ManagerSearch";
 
 const ManagerMembersResultItemWithConfig = parametrize(ManagerMembersResultItem, {
   config: {
@@ -50,23 +52,26 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
 
 const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
   roles: communitiesAllRoles,
+  appName: appName,
 });
 
 const defaultComponents = {
-  "ResultsList.item": ManagerMembersResultItemWithConfig,
-  "ResultsGrid.item": MembersResultsGridItem,
-  "SearchApp.layout": MembersSearchLayoutWithConfig,
-  "SearchBar.element": MembersSearchBarElement,
-  "SearchApp.results": MembersResults,
-  "ResultsList.container": ManagerMembersResultContainerWithCommunity,
-  "Sort.element": DropdownSort,
+  [`${appName}.ResultsList.item`]: ManagerMembersResultItemWithConfig,
+  [`${appName}.ResultsGrid.item`]: MembersResultsGridItem,
+  [`${appName}.SearchApp.layout`]: MembersSearchLayoutWithConfig,
+  [`${appName}.SearchBar.element`]: MembersSearchBarElement,
+  [`${appName}.SearchApp.results`]: MembersResults,
+  [`${appName}.ResultsList.container`]: ManagerMembersResultContainerWithCommunity,
+  [`${appName}.Sort.element`]: DropdownSort,
 };
+
+const overriddenComponents = overrideStore.getAll();
 
 // Auto-initialize search app
 createSearchAppInit(
-  defaultComponents,
+  { ...defaultComponents, ...overriddenComponents },
   true,
   "invenio-search-config",
-  false,
+  true,
   MembersSearchAppContext
 );

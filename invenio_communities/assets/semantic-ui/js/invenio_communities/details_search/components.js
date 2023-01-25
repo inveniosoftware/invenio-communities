@@ -124,7 +124,7 @@ CommunityRecordResultsGridItem.propTypes = {
   result: PropTypes.object.isRequired,
 };
 
-export const CommunityRecordSearchAppLayout = ({ config }) => {
+export const CommunityRecordSearchAppLayout = ({ config, appName }) => {
   const [sidebarVisible, setSidebarVisible] = React.useState(false);
 
   return (
@@ -174,10 +174,13 @@ export const CommunityRecordSearchAppLayout = ({ config }) => {
             open={sidebarVisible}
             onHideClick={() => setSidebarVisible(false)}
             // eslint-disable-next-line react/no-children-prop
-            children={<SearchAppFacets aggs={config.aggs} />}
+            children={<SearchAppFacets aggs={config.aggs} appName={appName} />}
           />
           <Grid.Column mobile={16} tablet={16} computer={12}>
-            <SearchAppResultsPane layoutOptions={config.layoutOptions} />
+            <SearchAppResultsPane
+              layoutOptions={config.layoutOptions}
+              appName={appName}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -187,6 +190,11 @@ export const CommunityRecordSearchAppLayout = ({ config }) => {
 
 CommunityRecordSearchAppLayout.propTypes = {
   config: PropTypes.object.isRequired,
+  appName: PropTypes.string,
+};
+
+CommunityRecordSearchAppLayout.defaultProps = {
+  appName: "",
 };
 
 export const CommunityRecordSingleSearchBarElement = withState(
