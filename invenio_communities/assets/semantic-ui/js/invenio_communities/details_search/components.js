@@ -444,7 +444,7 @@ export function SearchItemCreators({ creators }) {
   return creators.map((creator, index) => (
     <span
       className="creatibutor-wrap"
-      key={creator.person_or_org.identifiers.identifier}
+      key={creator.person_or_org?.identifiers?.identifier}
     >
       {getLink(creator)}
       {getIcon(creator)}
