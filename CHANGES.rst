@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 4.1.1 (released 2023-01-26)
+-----------------------------------
+
+- assets: remove namespace from requests overridable ids
+
 Version 4.1.0 (released 2023-01-26)
 -----------------------------------
 
