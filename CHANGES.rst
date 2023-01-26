@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 4.1.0 (released 2023-01-26)
+-----------------------------------
+
+- assets: normalise overridable ids
+
 Version 4.0.7 (released 2023-01-24)
 -----------------------------------
 
