@@ -149,7 +149,7 @@ class CommunitiesCarousel extends Component {
                 />
               </Grid.Column>
 
-              <Grid.Column width="12" className="flex align-items-center">
+              <Grid.Column width="12">
                 <Transition.Group
                   as={Item.Group}
                   className="flex align-items-center justify-center"
