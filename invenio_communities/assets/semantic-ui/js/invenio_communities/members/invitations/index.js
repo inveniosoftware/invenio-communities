@@ -59,12 +59,12 @@ const defaultComponents = {
   [`${appName}.SearchApp.results`]: InvitationsResults,
   [`${appName}.ResultsList.container`]: InvitationsResultsContainer,
   [`${appName}.Sort.element`]: DropdownSort,
-  [`${appName}.RequestStatus.layout.submitted`]: SubmitStatus,
-  [`${appName}.RequestStatus.layout.deleted`]: DeleteStatus,
-  [`${appName}.RequestStatus.layout.accepted`]: AcceptStatus,
-  [`${appName}.RequestStatus.layout.declined`]: DeclineStatus,
-  [`${appName}.RequestStatus.layout.cancelled`]: CancelStatus,
-  [`${appName}.RequestStatus.layout.expired`]: ExpireStatus,
+  [`RequestStatus.layout.submitted`]: SubmitStatus,
+  [`RequestStatus.layout.deleted`]: DeleteStatus,
+  [`RequestStatus.layout.accepted`]: AcceptStatus,
+  [`RequestStatus.layout.declined`]: DeclineStatus,
+  [`RequestStatus.layout.cancelled`]: CancelStatus,
+  [`RequestStatus.layout.expired`]: ExpireStatus,
 };
 
 const overriddenComponents = overrideStore.getAll();
