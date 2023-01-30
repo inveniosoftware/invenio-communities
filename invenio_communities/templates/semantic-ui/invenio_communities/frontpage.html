@@ -37,7 +37,13 @@
         <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
           <div class="ui fluid action input">
             <input type="text" name="q" class="form-control" placeholder="{{ _('Search communities') }}">
-            <button type="submit" class="ui icon search button" aria-label="Search communities"><i class="search icon"></i></button>
+            <button 
+              type="submit" 
+              class="ui icon search button" 
+              aria-label="{{ _('Search communities') }}"
+            >
+              <i class="search icon"></i>
+            </button>
           </div>
         </form>
       </div>
