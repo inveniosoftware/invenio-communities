@@ -51,6 +51,9 @@
           },
           "record_policy": {
             "type": "keyword"
+          },
+          "review_policy": {
+            "type": "keyword"
           }
         }
       },

@@ -38,6 +38,25 @@ VISIBILITY_FIELDS = [
     },
 ]
 
+REVIEW_POLICY_FIELDS = [
+    {
+        "text": "Require always review",
+        "value": "closed",
+        "icon": "lock",
+        "helpText": _(
+            "Publishing to your community will always go through a review request."
+        ),
+    },
+    {
+        "text": "Curators can directly publish",
+        "value": "open",
+        "icon": "group",
+        "helpText": _(
+            "The curators of your community can publish directly without a review request."
+        ),
+    },
+]
+
 
 def _filter_roles(action, member_types, community_id, identity=None):
     """Compute current identity roles for action, member type and community."""
@@ -210,7 +229,9 @@ def communities_settings_privileges(pid_value, community, community_ui):
         "invenio_communities/details/settings/privileges.html",
         community=community_ui,
         form_config=dict(
-            access=dict(visibility=VISIBILITY_FIELDS),
+            access=dict(
+                visibility=VISIBILITY_FIELDS, review_policy=REVIEW_POLICY_FIELDS
+            ),
         ),
         permissions=permissions,
     )

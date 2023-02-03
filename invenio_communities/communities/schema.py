@@ -82,6 +82,14 @@ class CommunityAccessSchema(Schema):
             ]
         )
     )
+    review_policy = fields.Str(
+        validate=validate.OneOf(
+            [
+                "open",
+                "closed",
+            ]
+        )
+    )
 
 
 class CommunityMetadataSchema(Schema):
