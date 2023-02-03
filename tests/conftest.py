@@ -335,6 +335,7 @@ def fake_communities(
     data = deepcopy(minimal_community)
     """Multiple community created and posted to test search functionality."""
     N = 4
+
     for type_, ind in itertools.product(community_types, list(range(N))):
         data["slug"] = f'comm_{type_["id"]}_{ind}'
         data["metadata"]["type"] = {"id": type_["id"]}

@@ -22,8 +22,11 @@ COMMUNITIES_ROUTES = {
     "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
+    "settings_curation_policy": "/communities/<pid_value>/settings/curation-policy",
     "members": "/communities/<pid_value>/members",
     "invitations": "/communities/<pid_value>/invitations",
+    "about": "/communities/<pid_value>/about",
+    "curation_policy": "/communities/<pid_value>/curation-policy",
 }
 
 """Communities ui endpoints."""

@@ -1,0 +1,62 @@
+{# -*- coding: utf-8 -*-
+
+  This file is part of Invenio.
+  Copyright (C) 2023 CERN.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+
+{% extends "invenio_communities/details/base.html" %}
+{% set active_community_header_menu_item= 'about' %}
+
+{%- block page_body %}
+  {{ super() }}
+  <div class="ui text container rel-mt-2">
+    <h2 class="ui header rel-mt-2">{{ _("About this community") }}</h2>
+    <p class="text-muted">{{ _("Created") }} {{ community.created|invenio_format_datetime }}</p>
+    <p>{{ community.metadata.description | safe }}</p>
+
+    {% if community.ui.funding|length %}
+      <h3 class="ui header">{{ _("Awards") }}</h3>
+      <dl class="ui list">
+
+        {% for funding in community.ui.funding %}
+          <div class="item rel-mb-1">
+            {% if funding.award %}
+              <dd class="header">
+                {{ funding.award.title_l10n }}
+                <label class="ui basic small label">
+                  {{funding.award.number}}
+                </label>
+
+                {% if funding.award.identifiers|length and funding.award.identifiers[0].scheme == "url" %}
+                  <a
+                    class="ui transparent icon button"
+                    href="{{ funding.award.identifiers[0].identifier }}"
+                    aria-label="{{ _('Visit external website') }}"
+                    title="{{ _('Opens in new tab') }}"
+                  >
+                    <i class="external primary icon" aria-hidden="true"></i>
+                  </a>
+                {% endif %}
+              </dd>
+            {% endif %}
+
+            {% if funding.funder %}
+              <dt class="text-muted">
+                {{ funding.funder.name }}
+              </dt>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+      </dl>
+    {% endif %}
+  </div>
+
+  {% include "invenio_communities/details/upload-instructions.html" %}
+
+
+
+{%- endblock page_body -%}

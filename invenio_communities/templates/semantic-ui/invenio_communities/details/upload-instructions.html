@@ -1,0 +1,13 @@
+<div class="ui container rel-mt-2">
+    <div class="ui divider" aria-hidden="true"></div>
+    <div class="ui text container rel-mt-2">
+
+    <h2 class="ui small header">Want your upload to appear in this community?</h2>
+      <ul>
+        <!-- TODO: This text content needs to be updated (Copied from Zenodo) -->
+        <li>Click the "New upload" button above to upload a record directly to this community.</li>
+        <li>The community curator will then be notified to either accept or reject your upload (see the community <a href="{{ url_for('invenio_communities.communities_curation_policy', pid_value=community.slug) }}">curation policy</a>).</li>
+        <li>If your upload is rejected by the curator, it will still be available, just not in this community.</li>
+      </ul>
+    </div>
+  </div>

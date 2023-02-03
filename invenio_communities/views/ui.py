@@ -8,6 +8,9 @@
 
 """Communities UI views."""
 
+from datetime import datetime
+
+from babel.dates import format_datetime
 from flask import Blueprint, current_app, render_template
 from flask_babelex import lazy_gettext as _
 from flask_login import current_user
@@ -17,11 +20,14 @@ from invenio_records_resources.services.errors import PermissionDeniedError
 
 from ..searchapp import search_app_context
 from .communities import (
+    communities_about,
+    communities_curation_policy,
     communities_frontpage,
     communities_new,
     communities_requests,
     communities_search,
     communities_settings,
+    communities_settings_curation_policy,
     communities_settings_privileges,
     invitations,
     members,
@@ -79,6 +85,16 @@ def create_ui_blueprint(app):
         view_func=communities_new,
     )
 
+    blueprint.add_url_rule(
+        routes["about"],
+        view_func=communities_about,
+    )
+
+    blueprint.add_url_rule(
+        routes["curation_policy"],
+        view_func=communities_curation_policy,
+    )
+
     # Settings tab routes
     blueprint.add_url_rule(
         routes["settings"],
@@ -93,6 +109,11 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["settings_privileges"],
         view_func=communities_settings_privileges,
+    )
+
+    blueprint.add_url_rule(
+        routes["settings_curation_policy"],
+        view_func=communities_settings_curation_policy,
     )
 
     blueprint.add_url_rule(routes["members"], view_func=members)
@@ -130,10 +151,24 @@ def create_ui_blueprint(app):
             expected_args=["pid_value"],
             **dict(icon="users", permissions="can_read")
         )
+        communities.submenu("about").register(
+            "invenio_communities.communities_about",
+            text=_("About"),
+            order=4,
+            expected_args=["pid_value"],
+            **dict(icon="info", permissions="can_read")
+        )
+        communities.submenu("curation_policy").register(
+            "invenio_communities.communities_curation_policy",
+            text=_("Curation policy"),
+            order=5,
+            expected_args=["pid_value"],
+            **dict(icon="balance scale", permissions="can_read")
+        )
         communities.submenu("settings").register(
             "invenio_communities.communities_settings",
             text=_("Settings"),
-            order=4,
+            order=6,
             expected_args=["pid_value"],
             **dict(icon="settings", permissions="can_update")
         )
@@ -147,5 +182,12 @@ def create_ui_blueprint(app):
 
     # Register context processor
     blueprint.app_context_processor(search_app_context)
+
+    # Template filters
+    @blueprint.app_template_filter()
+    def invenio_format_datetime(value):
+        date = datetime.fromisoformat(value)
+        locale_value = current_app.config.get("BABEL_DEFAULT_LOCALE")
+        return format_datetime(date, locale=locale_value)
 
     return blueprint
