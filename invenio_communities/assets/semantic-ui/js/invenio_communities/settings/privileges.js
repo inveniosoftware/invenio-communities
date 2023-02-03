@@ -32,6 +32,7 @@ class CommunityPrivilegesForm extends Component {
         // TODO: Re-enable once properly integrated to be displayed
         // member_policy: "open",
         // record_policy: "open",
+        review_policy: "open",
       },
     });
 
@@ -113,20 +114,8 @@ class CommunityPrivilegesForm extends Component {
                       <label className="helptext">{item.helpText}</label>
                     </React.Fragment>
                   ))}
-                  <Button
-                    compact
-                    primary
-                    icon
-                    labelPosition="left"
-                    loading={isSubmitting}
-                    toggle
-                    active={isSaved}
-                    type="submit"
-                  >
-                    <Icon name="save" />
-                    {isSaved ? i18next.t("Saved") : i18next.t("Save")}
-                  </Button>
                 </Grid.Column>
+
                 {/* TODO: Re-enable once properly integrated to be displayed */}
                 {/*
               <Grid.Column width={6}>
@@ -153,6 +142,46 @@ class CommunityPrivilegesForm extends Component {
                 </Button>
               </Grid.Column>
               <Grid.Column width={10} /> */}
+              </Grid.Row>
+              <Grid.Row className="pt-10 pb-0">
+                <Grid.Column mobile={16} tablet={12} computer={8}>
+                  <Header as="h2" size="tiny">
+                    {i18next.t("Community review policy")}
+                  </Header>
+                  {formConfig.access.review_policy.map((item) => (
+                    <React.Fragment key={item.value}>
+                      <RadioField
+                        key={item.value}
+                        fieldPath="access.review_policy"
+                        label={item.text}
+                        labelIcon={item.icon}
+                        checked={_get(values, "access.review_policy") === item.value}
+                        value={item.value}
+                        onChange={({ event, data, formikProps }) => {
+                          formikProps.form.setFieldValue(
+                            "access.review_policy",
+                            item.value
+                          );
+                          this.setIsSavedState(false);
+                        }}
+                      />
+                      <label className="helptext">{item.helpText}</label>
+                    </React.Fragment>
+                  ))}
+                  <Button
+                    compact
+                    primary
+                    icon
+                    labelPosition="left"
+                    loading={isSubmitting}
+                    toggle
+                    active={isSaved}
+                    type="submit"
+                  >
+                    <Icon name="save" />
+                    {isSaved ? i18next.t("Saved") : i18next.t("Save")}
+                  </Button>
+                </Grid.Column>
               </Grid.Row>
             </Grid>
           </Form>

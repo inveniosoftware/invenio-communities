@@ -15,6 +15,7 @@ from invenio_administration.generators import Administration
 from invenio_records_permissions.generators import (
     AnyUser,
     AuthenticatedUser,
+    Disable,
     SystemProcess,
 )
 from invenio_records_permissions.policies import BasePermissionPolicy
@@ -70,6 +71,14 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
                     else_=[AuthenticatedUser()],
                 ),
             ],
+        ),
+    ]
+
+    can_direct_publish = [
+        IfPolicyClosed(
+            "review_policy",
+            then_=[Disable()],
+            else_=[CommunityCurators()],
         ),
     ]
 

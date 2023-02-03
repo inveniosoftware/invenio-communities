@@ -10,12 +10,24 @@
 
 from functools import partial
 
+from flask import g
 from flask_resources import BaseObjectSchema
 from invenio_records_resources.services.custom_fields import CustomFieldsSchemaUI
 from invenio_vocabularies.contrib.awards.serializer import AwardL10NItemSchema
 from invenio_vocabularies.contrib.funders.serializer import FunderL10NItemSchema
 from invenio_vocabularies.resources import VocabularyL10Schema
 from marshmallow import Schema, fields
+
+from invenio_communities.proxies import current_communities
+
+
+def _community_permission_check(action, community, identity):
+    """Check community permission for identity."""
+    return current_communities.service.config.permission_policy_cls(
+        action,
+        community_id=getattr(community, "id", community["id"]),
+        community=community,
+    ).allows(identity)
 
 
 class FundingSchema(Schema):
@@ -39,6 +51,18 @@ class UICommunitySchema(BaseObjectSchema):
     custom_fields = fields.Nested(
         partial(CustomFieldsSchemaUI, fields_var="COMMUNITIES_CUSTOM_FIELDS")
     )
+
+    permissions = fields.Method("get_permissions", dump_only=True)
+
+    def get_permissions(self, obj):
+        """Get permission."""
+        can_direct_publish = _community_permission_check(
+            "direct_publish", community=obj, identity=g.identity
+        )
+
+        return {
+            "can_direct_publish": can_direct_publish,
+        }
 
 
 class TypesSchema(Schema):

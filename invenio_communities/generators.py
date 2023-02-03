@@ -131,8 +131,8 @@ class IfPolicyClosed(IfRestrictedBase):
         super().__init__(
             lambda r: getattr(r.access, field, None),
             f"access.{field}",
-            "open",
             "closed",
+            "open",
             then_,
             else_,
         )

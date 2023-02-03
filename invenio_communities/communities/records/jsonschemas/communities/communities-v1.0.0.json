@@ -35,6 +35,13 @@
             "closed",
             "restricted"
           ]
+        },
+        "review_policy": {
+          "description": "Community review policy.",
+          "enum": [
+            "open",
+            "closed"
+          ]
         }
       }
     },
@@ -124,7 +131,9 @@
         }
       }
     },
-    "featured": {"$ref": "local://communities/definitions-v2.0.0.json#/featured"},
+    "featured": {
+      "$ref": "local://communities/definitions-v2.0.0.json#/featured"
+    },
     "files": {
       "type": "object",
       "description": "Files associated with the record",

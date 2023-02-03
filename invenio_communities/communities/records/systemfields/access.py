@@ -19,12 +19,14 @@ class CommunityAccess:
     VISIBILITY_LEVELS = ("public", "restricted")
     MEMBER_POLICY_LEVELS = ("open", "closed")
     RECORD_POLICY_LEVELS = ("open", "closed")
+    REVIEW_POLICY_LEVELS = ("open", "closed")
 
     def __init__(
         self,
         visibility=None,
         member_policy=None,
         record_policy=None,
+        review_policy=None,
     ):
         """Create a new CommunityAccess object.
 
@@ -33,6 +35,7 @@ class CommunityAccess:
         self.visibility = visibility or "public"
         self.member_policy = member_policy or "open"
         self.record_policy = record_policy or "open"
+        self.review_policy = review_policy or "closed"
         self.errors = []
 
     def _validate_visibility_level(self, level):
@@ -43,6 +46,9 @@ class CommunityAccess:
 
     def _validate_record_policy_level(self, level):
         return level in self.RECORD_POLICY_LEVELS
+
+    def _validate_review_policy_level(self, level):
+        return level in self.REVIEW_POLICY_LEVELS
 
     @property
     def visibility(self):
@@ -80,12 +86,25 @@ class CommunityAccess:
             raise ValueError(f"Unknown record policy level: {value}")
         self._record_policy = value
 
+    @property
+    def review_policy(self):
+        """Get the review policy level."""
+        return self._review_policy
+
+    @review_policy.setter
+    def review_policy(self, value):
+        """Set the review policy level."""
+        if not self._validate_review_policy_level(value):
+            raise ValueError(f"Unknown review policy level: {value}")
+        self._review_policy = value
+
     def dump(self):
         """Dump the field values as dictionary."""
         return {
             "visibility": self.visibility,
             "member_policy": self.member_policy,
             "record_policy": self.record_policy,
+            "review_policy": self.review_policy,
         }
 
     def refresh_from_dict(self, access_dict):
@@ -94,6 +113,7 @@ class CommunityAccess:
         self.visibility = new_access.visibility
         self.member_policy = new_access.member_policy
         self.record_policy = new_access.record_policy
+        self.review_policy = new_access.review_policy
 
     @classmethod
     def from_dict(
@@ -111,6 +131,7 @@ class CommunityAccess:
             visibility=access_dict.get("visibility"),
             member_policy=access_dict.get("member_policy"),
             record_policy=access_dict.get("record_policy"),
+            review_policy=access_dict.get("review_policy"),
         )
         access.errors = errors
         return access
@@ -124,6 +145,7 @@ class CommunityAccess:
             self.visibility,
             self.member_policy,
             self.record_policy,
+            self.review_policy,
         )
 
 

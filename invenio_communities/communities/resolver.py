@@ -47,7 +47,10 @@ def pick_fields(identity, community_dict):
             "description": metadata.get("description"),
             "type": metadata.get("type"),
         },
-        "access": {"visibility": access["visibility"]},
+        "access": {
+            "visibility": access["visibility"],
+            "review_policy": access["review_policy"],
+        },
     }
 
 
