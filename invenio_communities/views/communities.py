@@ -217,6 +217,20 @@ def communities_settings_privileges(pid_value, community, community_ui):
 
 
 @pass_community(serialize=True)
+def communities_settings_curation_policy(pid_value, community, community_ui):
+    """Community settings/curation-policy page."""
+    permissions = community.has_permissions_to(["update", "read", "search_requests"])
+    if not permissions["can_update"]:
+        raise PermissionDeniedError()
+
+    return render_template(
+        "invenio_communities/details/settings/curation_policy.html",
+        community=community_ui,
+        permissions=permissions,
+    )
+
+
+@pass_community(serialize=True)
 def members(pid_value, community, community_ui):
     """Community members page."""
     permissions = community.has_permissions_to(
@@ -260,5 +274,44 @@ def invitations(pid_value, community, community_ui):
         "invenio_communities/details/members/invitations.html",
         community=community_ui,
         roles_can_invite=_get_roles_can_invite(community.id),
+        permissions=permissions,
+    )
+
+
+@pass_community(serialize=True)
+def communities_about(pid_value, community, community_ui):
+    """Community about page."""
+    permissions = community.has_permissions_to(
+        [
+            "update",
+            "read",
+            "search_requests",
+        ]
+    )
+    if not permissions["can_read"]:
+        raise PermissionDeniedError()
+    return render_template(
+        "invenio_communities/details/about/index.html",
+        community=community_ui,
+        permissions=permissions,
+        custom_fields=load_custom_fields(dump_only_required=False),
+    )
+
+
+@pass_community(serialize=True)
+def communities_curation_policy(pid_value, community, community_ui):
+    """Community curation policy page."""
+    permissions = community.has_permissions_to(
+        [
+            "update",
+            "read",
+            "search_requests",
+        ]
+    )
+    if not permissions["can_read"]:
+        raise PermissionDeniedError()
+    return render_template(
+        "invenio_communities/details/curation_policy/index.html",
+        community=community_ui,
         permissions=permissions,
     )

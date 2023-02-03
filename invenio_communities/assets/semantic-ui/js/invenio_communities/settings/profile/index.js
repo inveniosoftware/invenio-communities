@@ -33,6 +33,8 @@ import {
   RemoteSelectField,
   SelectField,
   TextField,
+  RichInputField,
+  CKEditorConfig,
 } from "react-invenio-forms";
 import {
   Button,
@@ -63,12 +65,7 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
     type: Yup.object().shape({
       id: Yup.string(),
     }),
-    // TODO: Re-enable once properly integrated to be displayed
-    // page: Yup.string().max(2000, "Maximum number of characters is 2000"),
-    // curation_policy: Yup.string().max(
-    //   2000,
-    //   "Maximum number of characters is 2000"
-    // ),
+    page: Yup.string().max(2000, "Maximum number of characters is 2000"),
   }),
 });
 
@@ -281,9 +278,8 @@ class CommunityProfileForm extends Component {
       metadata: {
         description: "",
         title: "",
-        // TODO: Re-enable once properly integrated to be displayed
-        // curation_policy: "",
-        // page: "",
+        curation_policy: "",
+        page: "",
         type: {},
         website: "",
         organizations: [],
@@ -518,6 +514,10 @@ class CommunityProfileForm extends Component {
                 </Grid.Column>
               </Grid>
             </Message>
+
+            <Header as="h2" size="medium" className="mt-0">
+              {i18next.t("Header content")}
+            </Header>
             <Grid>
               <Grid.Row className="pt-10 pb-0">
                 <Grid.Column mobile={16} tablet={9} computer={9} className="rel-pb-2">
@@ -561,16 +561,7 @@ class CommunityProfileForm extends Component {
                     }
                     fluid
                   />
-                  <TextField
-                    fieldPath="metadata.description"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.description"
-                        icon="pencil"
-                        label={i18next.t("Description")}
-                      />
-                    }
-                  />
+
                   <RemoteSelectField
                     fieldPath="metadata.organizations"
                     suggestionAPIUrl="/api/affiliations"
@@ -605,6 +596,24 @@ class CommunityProfileForm extends Component {
                     allowAdditions
                     search={(filteredOptions, searchQuery) => filteredOptions}
                   />
+
+                  <Header as="h2" size="medium">
+                    {i18next.t("About page")}
+                  </Header>
+
+                  <RichInputField
+                    fieldPath="metadata.description"
+                    label={
+                      <FieldLabel
+                        htmlFor="metadata.description"
+                        icon="pencil"
+                        label={i18next.t("Description")}
+                      />
+                    }
+                    editorConfig={CKEditorConfig}
+                    fluid
+                  />
+
                   <FundingField
                     fieldPath="metadata.funding"
                     searchConfig={{
@@ -681,6 +690,7 @@ class CommunityProfileForm extends Component {
                       };
                     }}
                   />
+
                   {!_isEmpty(customFields.ui) && (
                     <CustomFields
                       config={customFields.ui}
@@ -691,32 +701,6 @@ class CommunityProfileForm extends Component {
                     />
                   )}
 
-                  {/* TODO: Re-enable once properly integrated to be displayed */}
-                  {/* <RichInputField
-                    label="Curation policy"
-                    fieldPath="metadata.curation_policy"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.curation_policy"
-                        icon={"pencil"}
-                        label="Curation policy"
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  />
-                  <RichInputField
-                    fieldPath="metadata.page"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.page"
-                        icon={"pencil"}
-                        label="Page description"
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  /> */}
                   <Button
                     disabled={!isValid || isSubmitting}
                     loading={isSubmitting}
