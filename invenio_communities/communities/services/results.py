@@ -91,7 +91,6 @@ class CommunityFeaturedList(CommunityListResult):
     def hits(self):
         """Iterator over the hits."""
         for record in self._results.items:
-
             # Project the record
             projection = self._schema.dump(
                 record,
