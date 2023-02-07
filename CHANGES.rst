@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 4.1.2 (released 2023-02-07)
+-----------------------------------
+
+- a11y: add missing area labels
+- detail: fix restricted label in community details page
+
 Version 4.1.1 (released 2023-01-26)
 -----------------------------------
 
