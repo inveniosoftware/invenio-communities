@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 5.0.0 (released 2023-02-09)
+-----------------------------------
+
+- datamodel: add new `access.review_policy` subfield
+- permisssions: add policy for direct publish
+
 Version 4.1.2 (released 2023-02-07)
 -----------------------------------
 
