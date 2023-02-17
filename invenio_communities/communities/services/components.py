@@ -15,7 +15,11 @@ from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
 from invenio_oaiserver.models import OAISet
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
-from invenio_records_resources.services.records.components import ServiceComponent
+from invenio_records_resources.services.records.components import (
+    MetadataComponent,
+    RelationsComponent,
+    ServiceComponent,
+)
 from marshmallow.exceptions import ValidationError
 
 from ...proxies import current_roles
@@ -209,3 +213,15 @@ class CustomFieldsComponent(ServiceComponent):
     def update(self, identity, data=None, record=None, **kwargs):
         """Inject parsed custom fields to the record."""
         record.custom_fields = data.get("custom_fields", {})
+
+
+DefaultCommunityComponents = [
+    MetadataComponent,
+    CustomFieldsComponent,
+    PIDComponent,
+    RelationsComponent,
+    CommunityAccessComponent,
+    OwnershipComponent,
+    FeaturedCommunityComponent,
+    OAISetComponent,
+]
