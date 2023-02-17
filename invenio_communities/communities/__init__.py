@@ -14,6 +14,7 @@ from .services import (
     CommunityFileServiceConfig,
     CommunityService,
     CommunityServiceConfig,
+    DefaultCommunityComponents,
     SearchOptions,
 )
 
@@ -24,4 +25,5 @@ __all__ = (
     "CommunityResource",
     "CommunityResourceConfig",
     "SearchOptions",
+    "DefaultCommunityComponents",
 )
