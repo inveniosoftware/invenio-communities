@@ -41,11 +41,6 @@ class CommunityResource(RecordResource):
 
     def create_url_rules(self):
         """Create the URL rules for the record resource."""
-
-        def p(prefix, route):
-            """Prefix a route with the URL prefix."""
-            return f"{prefix}{route}"
-
         routes = self.config.routes
         return [
             route("GET", routes["list"], self.search),

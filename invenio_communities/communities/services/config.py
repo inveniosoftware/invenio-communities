@@ -14,14 +14,11 @@ from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services import FileServiceConfig
 from invenio_records_resources.services.base.config import (
     ConfiguratorMixin,
+    FromConfig,
     FromConfigSearchOptions,
     SearchOptionsMixin,
 )
 from invenio_records_resources.services.files.links import FileLink
-from invenio_records_resources.services.records.components import (
-    MetadataComponent,
-    RelationsComponent,
-)
 from invenio_records_resources.services.records.config import RecordServiceConfig
 from invenio_records_resources.services.records.config import (
     SearchOptions as SearchOptionsBase,
@@ -44,14 +41,7 @@ from invenio_communities.communities.services.results import (
 
 from ...permissions import CommunityPermissionPolicy, can_perform_action
 from ..schema import CommunityFeaturedSchema, CommunitySchema
-from .components import (
-    CommunityAccessComponent,
-    CustomFieldsComponent,
-    FeaturedCommunityComponent,
-    OAISetComponent,
-    OwnershipComponent,
-    PIDComponent,
-)
+from .components import DefaultCommunityComponents
 from .links import CommunityLink
 from .sort import CommunitiesSortParam
 
@@ -136,16 +126,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     ]
 
     # Service components
-    components = [
-        MetadataComponent,
-        CustomFieldsComponent,
-        PIDComponent,
-        RelationsComponent,
-        CommunityAccessComponent,
-        OwnershipComponent,
-        FeaturedCommunityComponent,
-        OAISetComponent,
-    ]
+    components = FromConfig(
+        "COMMUNITY_SERVICE_COMPONENTS", default=DefaultCommunityComponents
+    )
 
 
 class CommunityFileServiceConfig(FileServiceConfig):
