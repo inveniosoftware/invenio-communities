@@ -437,6 +437,10 @@ class MemberService(RecordService):
             schema=schema,
         )
 
+    def read_memberships(self, identity):
+        """Searches the memberships of a specific user/identity."""
+        return {"memberships": self.config.record_cls.get_memberships(identity)}
+
     @unit_of_work()
     def update(self, identity, community_id, data, uow=None, refresh=False):
         """Bulk update.

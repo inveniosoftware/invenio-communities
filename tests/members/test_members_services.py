@@ -397,6 +397,21 @@ def test_search_members_restricted_as_group(
     assert res.total == 2
 
 
+def test_read_memberships(member_service, community, any_user, db, clean_index):
+    # empty at first
+    assert member_service.read_memberships(any_user.identity) == {"memberships": []}
+    # add membership
+    data = {
+        "members": [{"type": "user", "id": str(any_user.id)}],
+        "role": "reader",
+    }
+    member_service.add(system_identity, community._record.id, data)
+    any_user.refresh()
+    assert member_service.read_memberships(any_user.identity) == {
+        "memberships": [(str(community._record.id), "reader")]
+    }
+
+
 #
 # Search invitations
 #
@@ -506,7 +521,13 @@ def test_invite_cancel_flow(
 
 
 def test_invite_actions_permissions(
-    requests_service, owner, any_user, members, invite_user, invite_request_id, db
+    db,
+    requests_service,
+    owner,
+    any_user,
+    members,
+    invite_user,
+    invite_request_id,
 ):
     """Actions should be protected."""
     manager = members["manager"]
@@ -564,8 +585,12 @@ def test_leave_single_owner_denied(member_service, community, owner):
     )
 
 
-def test_leave_denied(member_service, community, any_user, invite_user):
+def test_leave_denied(db, member_service, community, any_user, invite_user):
     """No permission for others"""
+    # some test is not undoing membership correctly
+    # FIXME when https://github.com/inveniosoftware/pytest-invenio/issues/30
+    current_cache.clear()
+    any_user.refresh()
     data = {"members": [{"type": "user", "id": str(any_user.id)}]}
     pytest.raises(
         PermissionDeniedError,
@@ -702,7 +727,7 @@ def test_delete_invalid_member(member_service, community, owner):
 #
 # Update self
 #
-def test_selfupdate_denied(member_service, community, any_user, new_user):
+def test_selfupdate_denied(db, member_service, community, any_user, new_user):
     data = {
         "members": [{"type": "user", "id": str(new_user.id)}],
         "visible": False,
