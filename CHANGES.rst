@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 5.0.1 (released 2023-02-20)
+-----------------------------------
+
+- members: add support to read the memberships of an identity (service layer only)
+
 Version 5.0.0 (released 2023-02-09)
 -----------------------------------
 
