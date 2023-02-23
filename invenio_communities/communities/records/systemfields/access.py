@@ -139,7 +139,10 @@ class CommunityAccess:
     def __repr__(self):
         """Return repr(self)."""
         return (
-            "<{} (visibility: {}, " "member_policy: {}, " "record_policy: {})>"
+            "<{} (visibility: {}, "
+            "member_policy: {}, "
+            "record_policy: {}, "
+            "review_policy: {})>"
         ).format(
             type(self).__name__,
             self.visibility,
