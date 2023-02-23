@@ -26,7 +26,7 @@ def _community_permission_check(action, community, identity):
     return current_communities.service.config.permission_policy_cls(
         action,
         community_id=getattr(community, "id", community["id"]),
-        community=community,
+        record=community,
     ).allows(identity)
 
 
@@ -60,9 +60,7 @@ class UICommunitySchema(BaseObjectSchema):
             "direct_publish", community=obj, identity=g.identity
         )
 
-        return {
-            "can_direct_publish": can_direct_publish,
-        }
+        return {"can_direct_publish": can_direct_publish}
 
 
 class TypesSchema(Schema):

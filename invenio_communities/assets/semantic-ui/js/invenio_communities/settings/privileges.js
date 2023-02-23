@@ -32,7 +32,7 @@ class CommunityPrivilegesForm extends Component {
         // TODO: Re-enable once properly integrated to be displayed
         // member_policy: "open",
         // record_policy: "open",
-        review_policy: "open",
+        review_policy: "closed",
       },
     });
 
