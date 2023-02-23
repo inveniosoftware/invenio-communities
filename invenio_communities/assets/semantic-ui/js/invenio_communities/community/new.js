@@ -155,9 +155,11 @@ class CommunityCreateForm extends Component {
                   {!_isEmpty(customFields.ui) && (
                     <CustomFields
                       config={customFields.ui}
-                      templateLoader={(widget) =>
-                        import(`@templates/custom_fields/${widget}.js`)
-                      }
+                      templateLoaders={[
+                        (widget) => import(`@templates/custom_fields/${widget}.js`),
+                        (widget) => import(`react-invenio-deposit`),
+                        (widget) => import(`react-invenio-forms`),
+                      ]}
                       fieldPathPrefix="custom_fields"
                     />
                   )}
