@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 5.1.0 (released 2023-02-24)
+-----------------------------------
+
+- profile: add about and curation policy tab
+- generators: fix permission check for communities on serializers
+
 Version 5.0.1 (released 2023-02-20)
 -----------------------------------
 
