@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
-# Copyright (C)      2022 Graz University of Technology.
+# Copyright (C) 2022-2023 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -24,9 +24,9 @@
 #    $ tx pull -a
 
 [main]
-host = https://www.transifex.com
+host = https://app.transifex.com
 
-[invenio.invenio-communities-messages]
+[o:inveniosoftware:p:invenio:r:invenio-communities-messages]
 file_filter = invenio_communities/translations/<lang>/LC_MESSAGES/messages.po
 source_file = invenio_communities/translations/messages.pot
 source_lang = en
@@ -59,7 +59,7 @@ type = PO
 # 11) Convert .po file for a single language
 #    $ npm run compile_catalog lang <lang>
 
-[invenio.invenio-communities-messages-ui]
+[o:inveniosoftware:p:invenio:r:invenio-communities-messages-ui]
 file_filter = invenio_communities/assets/semantic-ui/translations/invenio_communities/messages/<lang>/messages.po
 source_file = invenio_communities/assets/semantic-ui/translations/invenio_communities/translations.pot
 source_lang = en
