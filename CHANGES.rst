@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 5.2.0 (released 2023-03-03)
+-----------------------------------
+
+- remove deprecated flask_babelex dependency and imports
+- upgrade invenio dependencies
+
 Version 5.1.0 (released 2023-02-24)
 -----------------------------------
 
