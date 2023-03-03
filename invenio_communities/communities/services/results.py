@@ -7,11 +7,7 @@
 
 """Result items for OAI-PMH services."""
 
-from invenio_records_resources.services.records.results import (
-    FieldsResolver,
-    RecordItem,
-    RecordList,
-)
+from invenio_records_resources.services.records.results import RecordItem, RecordList
 
 
 class CommunityListResult(RecordList):

@@ -24,6 +24,7 @@ from invenio_communities.communities.resources.serializer import (
 from invenio_communities.errors import (
     CommunityFeaturedEntryDoesNotExistError,
     LogoSizeLimitError,
+    OpenRequestsForCommunityError,
 )
 
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
@@ -42,6 +43,12 @@ community_error_handlers.update(
             )
         ),
         LogoSizeLimitError: create_error_handler(
+            lambda e: HTTPJSONException(
+                code=400,
+                description=str(e),
+            )
+        ),
+        OpenRequestsForCommunityError: create_error_handler(
             lambda e: HTTPJSONException(
                 code=400,
                 description=str(e),

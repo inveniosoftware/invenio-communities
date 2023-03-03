@@ -16,7 +16,7 @@ entry point.
 
 from types import SimpleNamespace
 
-from invenio_records_resources.references.resolvers.records import (
+from invenio_records_resources.references.entity_resolvers import (
     RecordPKProxy,
     RecordResolver,
 )
@@ -24,18 +24,26 @@ from invenio_records_resources.references.resolvers.records import (
 from ..generators import CommunityRoleNeed
 from ..proxies import current_communities, current_roles
 from .records.api import Community
+from .schema import CommunityGhostSchema
 from .services.config import CommunityServiceConfig
 
 
 def pick_fields(identity, community_dict):
     """Pick fields to return when expanding the community obj."""
+    if community_dict.get("is_ghost"):
+        return community_dict
+
     fake_community_obj = SimpleNamespace(
         id=community_dict["id"],
         slug=community_dict["slug"],
     )
-    logo = current_communities.service.links_item_tpl.expand(
-        identity, fake_community_obj
-    )["logo"]
+    logo = community_dict.get("links", {}).get(
+        "logo",
+        current_communities.service.links_item_tpl.expand(identity, fake_community_obj)[
+            "logo"
+        ],
+    )
+
     metadata = community_dict["metadata"]
     access = community_dict["access"]
     return {
@@ -56,6 +64,10 @@ def pick_fields(identity, community_dict):
 
 class CommunityPKProxy(RecordPKProxy):
     """Resolver proxy for a Record entity using the UUID."""
+
+    def ghost_record(self, value):
+        """Return default representation of not resolved community."""
+        return CommunityGhostSchema().dump(value)
 
     def get_needs(self, ctx=None):
         """Return community member need."""
