@@ -22,6 +22,7 @@ export const DeleteButton = (props) => {
 
   const handleClose = () => {
     setModalOpen(false);
+    setLoading(false);
     openModalBtnRef?.current?.focus();
   };
 

@@ -36,6 +36,7 @@ from invenio_communities.communities.services.uow import (
 from invenio_communities.errors import (
     CommunityFeaturedEntryDoesNotExistError,
     LogoSizeLimitError,
+    OpenRequestsForCommunityError,
 )
 from invenio_communities.generators import CommunityMembers
 
@@ -91,6 +92,23 @@ class CommunityService(RecordService):
             EntityResolverExpandableField("created_by"),
             EntityResolverExpandableField("receiver"),
         ]
+
+    def delete(self, identity, id_, revision_id=None):
+        """Delete a record from database and search indexes."""
+        # we assert that record exists
+        # when calling super() the method will resolve again the record. We take that
+        # compromisation as not resolving it here results to a permission error instead
+        # of not-found
+        record = self.record_cls.pid.resolve(id_)
+
+        # check if requests are open
+        requests = self.search_community_requests(
+            identity, record.id, {"is_open": True}
+        )
+        if len(requests) > 0:
+            raise OpenRequestsForCommunityError(len(requests))
+
+        return super().delete(identity, record.id, revision_id)
 
     def search_user_communities(
         self, identity, params=None, search_preference=None, **kwargs

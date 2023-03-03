@@ -29,7 +29,12 @@ from marshmallow import (
     pre_load,
     validate,
 )
-from marshmallow_utils.fields import NestedAttribute, SanitizedHTML, SanitizedUnicode
+from marshmallow_utils.fields import (
+    Links,
+    NestedAttribute,
+    SanitizedHTML,
+    SanitizedUnicode,
+)
 
 
 def _not_blank(**kwargs):
@@ -157,7 +162,7 @@ class CommunitySchema(BaseRecordSchema):
 
 
 class CommunityFeaturedSchema(Schema):
-    """Community Featured Schema."""
+    """Community Featured schema."""
 
     id = fields.Int(dump_only=True)
     start_date = fields.DateTime(
@@ -166,3 +171,17 @@ class CommunityFeaturedSchema(Schema):
         description="Accepted format: YYYY-MM-DD hh:mm",
         placeholder="YYYY-MM-DD hh:mm",
     )
+
+
+class CommunityGhostSchema(Schema):
+    """Community ghost schema."""
+
+    id = SanitizedUnicode(dump_only=True)
+    metadata = fields.Constant(
+        {
+            "title": _("Deleted Community"),
+            "description": _("The community was deleted."),
+        },
+        dump_only=True,
+    )
+    is_ghost = fields.Boolean(dump_only=True)
