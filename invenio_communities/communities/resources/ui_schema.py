@@ -59,8 +59,10 @@ class UICommunitySchema(BaseObjectSchema):
         can_direct_publish = _community_permission_check(
             "direct_publish", community=obj, identity=g.identity
         )
-
-        return {"can_direct_publish": can_direct_publish}
+        can_update = _community_permission_check(
+            "update", community=obj, identity=g.identity
+        )
+        return {"can_direct_publish": can_direct_publish, "can_update": can_update}
 
 
 class TypesSchema(Schema):
