@@ -38,9 +38,9 @@ communities = WebpackThemeBundle(
                 "invenio-communities-members-manager": "./js/invenio_communities/members/members/manager_view/index.js",
                 "invenio-communities-members-public": "./js/invenio_communities/members/members/public_view/index.js",
                 "invenio-communities-invitations": "./js/invenio_communities/members/invitations/index.js",
-                "invenio-communities-carousel": "./js/invenio_communities/community/communities-carousel/index.js",
+                "invenio-communities-carousel": "./js/invenio_communities/community/communitiesCarousel/index.js",
                 "invenio-communities-admin-search": "./js/invenio_communities/administration/search.js",
-                "invenio-communities-featured": "./js/invenio_communities/community/featured-communities/index.js",
+                "invenio-communities-featured": "./js/invenio_communities/community/featuredCommunities/index.js",
                 "invenio-communities-admin-featured": "./js/invenio_communities/administration/details.js",
             },
             dependencies={
