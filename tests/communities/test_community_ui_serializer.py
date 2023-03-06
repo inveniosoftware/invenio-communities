@@ -19,7 +19,9 @@ def test_ui_serializer(app, community, users, any_user):
     reader = users["reader"]
     closed_review_comm = community.to_dict()
     closed_review_comm["access"]["review_policy"] = "closed"
-    closed_review_expected_data = {"permissions": {"can_direct_publish": False}}
+    closed_review_expected_data = {
+        "permissions": {"can_direct_publish": False, "can_update": True}
+    }
 
     # set current user to owner
     g.identity = owner.identity
@@ -32,7 +34,9 @@ def test_ui_serializer(app, community, users, any_user):
 
     open_review_comm = community.to_dict()
     open_review_comm["access"]["review_policy"] = "open"
-    open_review_expected_data = {"permissions": {"can_direct_publish": True}}
+    open_review_expected_data = {
+        "permissions": {"can_direct_publish": True, "can_update": True}
+    }
 
     serialized_record = UICommunityJSONSerializer().dump_obj(open_review_comm)
     assert (
@@ -42,7 +46,9 @@ def test_ui_serializer(app, community, users, any_user):
 
     # set user to community reader
     g.identity = reader.identity
-    require_review_expected_data = {"permissions": {"can_direct_publish": False}}
+    require_review_expected_data = {
+        "permissions": {"can_direct_publish": False, "can_update": False}
+    }
 
     serialized_record = UICommunityJSONSerializer().dump_obj(open_review_comm)
     assert (
