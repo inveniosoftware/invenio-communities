@@ -1,0 +1,1 @@
+export { RestrictedLabel } from "./RestrictedLabel";

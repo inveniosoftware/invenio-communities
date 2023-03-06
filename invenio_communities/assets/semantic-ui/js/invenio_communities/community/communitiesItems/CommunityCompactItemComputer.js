@@ -1,88 +1,76 @@
 // This file is part of InvenioRDM
-// Copyright (C) 2022 CERN.
+// Copyright (C) 2023 CERN.
 //
-// Invenio App RDM is free software; you can redistribute it and/or modify it
+// InvenioRDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { CommunityTypeLabel } from "../components";
+import _truncate from "lodash/truncate";
 import React from "react";
-import { Image } from "react-invenio-forms";
-import { Button, Icon, Item, Label, Grid, Header } from "semantic-ui-react";
-import { DateTime } from "luxon";
 import PropTypes from "prop-types";
 
-export const CommunityCompactItemComputer = ({ result }) => {
-  const communityType = result.ui?.type?.title_l10n;
-  const visibility = result.access.visibility;
-  const isPublic = visibility === "public";
+import { Item, Image, Grid, Icon } from "semantic-ui-react";
+import { RestrictedLabel } from "../access";
 
-  const label = {
-    color: "red",
-    icon: "lock",
-    content: "restricted",
-    corner: "left",
-    size: "tiny",
-  };
-  // <Label size="tiny" className="negative" ribbon>
-  //               <Icon name="ban" />
-  //               restricted
-  //             </Label>
+export const CommunityCompactItemComputer = ({ result, actions }) => {
+  const communityType = result.ui?.type?.title_l10n;
+
   return (
-    <Item key={result.id} className="computer tablet only flex community-item">
-      <Image
-        as={Item.Image}
-        wrapped
-        src={result.links.logo}
-        className="community-logo"
-      />
+    <Item
+      key={result.id}
+      className="computer tablet only justify-space-between community-item"
+    >
+      <Image as={Item.Image} size="tiny" src={result.links.logo} />
       <Grid>
-        <Grid.Column width={12}>
-          <Item.Content>
-            <Item.Header size="medium" as={Header}>
-              <a href={`/communities/${result.slug}`}>{result.metadata.title}</a>
-            </Item.Header>
-            <Item.Meta>
-              <a
-                href={result.metadata.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {result.metadata.website}
+        <Grid.Column width={10}>
+          <Item.Content verticalAlign="middle">
+            <Item.Header
+              as="h3"
+              className="ui small header flex align-items-center mb-5"
+            >
+              <a href={result.links.self_html} className="p-0">
+                {result.metadata.title}
               </a>
-            </Item.Meta>
+            </Item.Header>
+
             <Item.Description>
               <div
-                className="truncate-lines-2"
                 dangerouslySetInnerHTML={{
-                  __html: result.metadata.description,
+                  __html: _truncate(result.metadata.description, { length: 50 }),
                 }}
               />
             </Item.Description>
-
             <Item.Extra>
-              <Label size="tiny" className="negative">
-                <Icon name="lock" />
-                restricted
-              </Label>
-              {communityType && (
-                <Label size="tiny" className="primary">
-                  <Icon name="tag" />
-                  {communityType}
-                </Label>
-              )}
+              <RestrictedLabel access={result.access.visibility} />
+              <CommunityTypeLabel type={communityType} />
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
-        <Grid.Column width={4} textAlign="right">
-          <Item.Content className="flex right-column">
-
+        <Grid.Column width={4}>
+          <Item.Content>
+            <Item.Meta>
+              {result.ui.permissions.can_direct_publish && (
+                <Icon name="paper plane outline" size="big" />
+              )}
+              {!result.ui.permissions.can_direct_publish && (
+                <>
+                  <Icon name="comments outline" size="big" />
+                  <Icon corner="top right" name="question" size="small" fitted />
+                </>
+              )}
+            </Item.Meta>
           </Item.Content>
         </Grid.Column>
       </Grid>
+      <div className="flex align-items-start">{actions}</div>
     </Item>
   );
 };
-
 CommunityCompactItemComputer.propTypes = {
   result: PropTypes.object.isRequired,
+  actions: PropTypes.node,
+};
+
+CommunityCompactItemComputer.defaultProps = {
+  actions: undefined,
 };

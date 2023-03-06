@@ -18,7 +18,7 @@ export const ResultsGridItemTemplate = ({ result }) => {
       </Card.Content>
     </Card>
   );
-}
+};
 
 ResultsGridItemTemplate.propTypes = {
   result: PropTypes.object.isRequired,

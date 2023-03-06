@@ -4,82 +4,49 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { CommunityTypeLabel } from "../components";
+import { RestrictedLabel } from "../access";
+import _truncate from "lodash/truncate";
 import React from "react";
 import { Image } from "react-invenio-forms";
-import { Button, Icon, Item, Label } from "semantic-ui-react";
+import { Item } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import { DateTime } from "luxon";
 
-export const CommunityCompactItemMobile = ({ result, index }) => {
+export const CommunityCompactItemMobile = ({ result, actions }) => {
   const communityType = result.ui?.type?.title_l10n;
-  const visibility = result.access.visibility;
-  const isPublic = visibility === "public";
+
   return (
-    <Item key={index} className="mobile only community-item">
-      <Item.Content className="centered">
-        <Item.Extra className="user-communities">
-          {communityType && (
-            <Label size="tiny" className="primary">
-              <Icon name="tag" />
-              {communityType}
-            </Label>
-          )}
-          {!isPublic && (
-            <Label size="tiny" className="negative">
-              <Icon name="ban" />
-              "restricted"
-            </Label>
-          )}
-        </Item.Extra>
-        <Item.Extra>
-          <Image wrapped src={result.links.logo} size="small" />
-        </Item.Extra>
-        <Item.Header as="h2" className="rel-mt-1">
-          <a href={`/communities/${result.slug}`}>{result.metadata.title}</a>
+    <Item key={result.id} className="mobile only justify-space-between">
+      <Image size="mini" src={result.links.logo} />
+
+      <Item.Content verticalAlign="middle">
+        <Item.Header as="h3" className="ui small header flex align-items-center mb-5">
+          <a href={result.links.self_html} className="p-0">
+            {result.metadata.title}
+          </a>
         </Item.Header>
-        <Item.Meta>
-          <div
-            className="truncate-lines-2"
-            dangerouslySetInnerHTML={{
-              __html: result.metadata.description,
-            }}
-          />
-        </Item.Meta>
-        <Item>
-          {result.metadata.website && (
-            <a href={result.metadata.website} target="_blank" rel="noopener noreferrer">
-              {result.metadata.website}
-            </a>
-          )}
-        </Item>
+
+        <Item.Description
+          dangerouslySetInnerHTML={{
+            __html: _truncate(result.metadata.description, { length: 50 }),
+          }}
+        />
         <Item.Extra>
-          {i18next.t("Created: ")}
-          {DateTime.fromISO(result.created).toLocaleString(i18next.language)}
+          <RestrictedLabel access={result.access.visibility} />
+          <CommunityTypeLabel type={communityType} />
         </Item.Extra>
-        {result.ui.permissions.can_update && (
-          <Item.Extra>
-            <Button
-              compact
-              size="small"
-              fluid
-              href={`/communities/${result.id}/settings`}
-              labelPosition="left"
-              icon="edit"
-              content={i18next.t("Edit")}
-            />
-          </Item.Extra>
-        )}
       </Item.Content>
+
+      <div className="flex align-items-start">{actions}</div>
     </Item>
   );
 };
 
 CommunityCompactItemMobile.propTypes = {
   result: PropTypes.object.isRequired,
-  index: PropTypes.string,
+  actions: PropTypes.node,
 };
 
 CommunityCompactItemMobile.defaultProps = {
-  index: null,
+  actions: undefined,
 };

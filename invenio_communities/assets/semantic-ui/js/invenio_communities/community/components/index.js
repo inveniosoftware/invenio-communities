@@ -1,0 +1,1 @@
+export { CommunityTypeLabel } from "./CommunityTypeLabel";

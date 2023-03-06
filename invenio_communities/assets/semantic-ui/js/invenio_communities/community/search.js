@@ -13,7 +13,6 @@ import {
   ContribBucketAggregationValuesElement,
 } from "@js/invenio_search_ui/components";
 import { CommunityItem } from "./";
-import React from "react";
 import { parametrize, overrideStore } from "react-overridable";
 import {
   ResultsGridItemTemplate,
@@ -24,12 +23,13 @@ import {
 
 const appName = "InvenioCommunities.Search";
 
-
 const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
   help: false,
 });
 
-const CommunitiesSearchLayoutConfig = parametrize(CommunitiesSearchLayout, {appName: appName})
+const CommunitiesSearchLayoutConfig = parametrize(CommunitiesSearchLayout, {
+  appName: appName,
+});
 
 export const defaultComponents = {
   [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,

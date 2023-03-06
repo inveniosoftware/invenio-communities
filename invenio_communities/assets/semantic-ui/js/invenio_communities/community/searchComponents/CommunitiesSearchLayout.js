@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   SearchAppFacets,
   SearchAppResultsPane,
@@ -6,10 +6,10 @@ import {
 import { i18next } from "@translations/invenio_communities/i18next";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
 import { SearchBar } from "react-searchkit";
-import { Button,  Container, Grid } from "semantic-ui-react";
+import { Button, Container, Grid } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
-export const CommunitiesSearchLayout = ({config, appName}) => {
+export const CommunitiesSearchLayout = ({ config, appName }) => {
   const [sidebarVisible, setSidebarVisible] = React.useState(false);
   return (
     <Container>
@@ -71,6 +71,5 @@ export const CommunitiesSearchLayout = ({config, appName}) => {
 
 CommunitiesSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
-  appName: PropTypes.object.isRequired
+  appName: PropTypes.object.isRequired,
 };
-
