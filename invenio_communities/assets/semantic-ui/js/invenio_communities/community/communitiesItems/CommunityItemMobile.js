@@ -5,32 +5,23 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { CommunityTypeLabel } from "../components";
+import { RestrictedLabel } from "../access";
 import React from "react";
 import { Image } from "react-invenio-forms";
-import { Button, Icon, Item, Label } from "semantic-ui-react";
+import { Button, Item } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import { DateTime } from "luxon";
 
 export const CommunityItemMobile = ({ result, index }) => {
   const communityType = result.ui?.type?.title_l10n;
-  const visibility = result.access.visibility;
-  const isPublic = visibility === "public";
+
   return (
     <Item key={index} className="mobile only community-item">
       <Item.Content className="centered">
         <Item.Extra className="user-communities">
-          {communityType && (
-            <Label size="tiny" className="primary">
-              <Icon name="tag" />
-              {communityType}
-            </Label>
-          )}
-          {!isPublic && (
-            <Label size="tiny" className="negative">
-              <Icon name="ban" />
-              "restricted"
-            </Label>
-          )}
+          <RestrictedLabel access={result.access.visibility} />
+          <CommunityTypeLabel type={communityType} />
         </Item.Extra>
         <Item.Extra>
           <Image wrapped src={result.links.logo} size="small" />

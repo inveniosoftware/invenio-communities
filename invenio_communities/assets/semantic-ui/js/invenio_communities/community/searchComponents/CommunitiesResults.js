@@ -1,6 +1,4 @@
-import {
-  InvenioSearchPagination,
-} from "@js/invenio_search_ui/components";
+import { InvenioSearchPagination } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
 import React from "react";
 import { Count, ResultsList, Sort } from "react-searchkit";

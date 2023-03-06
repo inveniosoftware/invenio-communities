@@ -5,16 +5,16 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { CommunityTypeLabel } from "../components";
+import { RestrictedLabel } from "../access";
 import React from "react";
 import { Image } from "react-invenio-forms";
-import { Button, Icon, Item, Label, Grid, Header } from "semantic-ui-react";
+import { Button, Item, Grid, Header } from "semantic-ui-react";
 import { DateTime } from "luxon";
 import PropTypes from "prop-types";
 
 export const CommunityItemComputer = ({ result }) => {
   const communityType = result.ui?.type?.title_l10n;
-  const visibility = result.access.visibility;
-  const isPublic = visibility === "public";
 
   return (
     <Item key={result.id} className="computer tablet only flex community-item">
@@ -49,18 +49,8 @@ export const CommunityItemComputer = ({ result }) => {
             </Item.Description>
 
             <Item.Extra>
-              {!isPublic && (
-                <Label size="tiny" className="negative">
-                  <Icon name="lock" />
-                  restricted
-                </Label>
-              )}
-              {communityType && (
-                <Label size="tiny" className="primary">
-                  <Icon name="tag" />
-                  {communityType}
-                </Label>
-              )}
+              <RestrictedLabel access={result.access.visibility} />
+              <CommunityTypeLabel type={communityType} />
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
