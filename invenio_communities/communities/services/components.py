@@ -79,6 +79,18 @@ class CommunityAccessComponent(ServiceComponent):
     def update(self, identity, data=None, record=None, **kwargs):
         """Update handler."""
         self._populate_access_and_validate(identity, data, record, **kwargs)
+        visibility = data["access"]["visibility"]
+        opposite = "public" if visibility == "public" else "restricted"
+        total = self.service.search(q={"access.visibility": opposite})
+        if total > 0:
+            raise ValidationError(
+                field="access.visibility",
+                messages=[
+                    _(
+                        "Cannot change community visibility since it contains {} records"
+                    ).format(visibility)
+                ],
+            )
 
 
 class OwnershipComponent(ServiceComponent):
