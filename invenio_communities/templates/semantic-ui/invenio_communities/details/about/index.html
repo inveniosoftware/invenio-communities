@@ -12,10 +12,8 @@
 
 {%- block page_body %}
   {{ super() }}
-  <div class="ui text container rel-mt-2">
-    <h2 class="ui header rel-mt-2">{{ _("About this community") }}</h2>
-    <p class="text-muted">{{ _("Created") }} {{ community.created|invenio_format_datetime }}</p>
-    <p>{{ community.metadata.description | safe }}</p>
+  <div class="ui text container rel-mt-2 rel-pt-1 rel-mb-2">
+    {{ community.metadata.page | safe }}
 
     {% if community.ui.funding|length %}
       <h3 class="ui header">{{ _("Awards") }}</h3>
@@ -54,9 +52,4 @@
       </dl>
     {% endif %}
   </div>
-
-  {% include "invenio_communities/details/upload-instructions.html" %}
-
-
-
 {%- endblock page_body -%}

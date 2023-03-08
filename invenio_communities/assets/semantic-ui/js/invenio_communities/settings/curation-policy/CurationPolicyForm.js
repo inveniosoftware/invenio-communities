@@ -9,9 +9,15 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import _defaultsDeep from "lodash/defaultsDeep";
+import _get from "lodash/get";
 import React, { Component } from "react";
-import { FieldLabel, RichInputField, CKEditorConfig } from "react-invenio-forms";
-import { Button, Form, Grid, Icon, Message } from "semantic-ui-react";
+import {
+  FieldLabel,
+  RichInputField,
+  CKEditorConfig,
+  RadioField,
+} from "react-invenio-forms";
+import { Button, Form, Grid, Icon, Message, Header } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
 import { communityErrorSerializer } from "../../api/serializers";
 import PropTypes from "prop-types";
@@ -32,6 +38,9 @@ export class CurationPolicyForm extends Component {
     let initialValues = _defaultsDeep(community, {
       metadata: {
         curation_policy: "",
+      },
+      access: {
+        review_policy: "closed",
       },
     });
 
@@ -68,14 +77,14 @@ export class CurationPolicyForm extends Component {
   };
   render() {
     const { error } = this.state;
-    const { community } = this.props;
+    const { community, formConfig } = this.props;
     return (
       <Formik
         initialValues={this.getInitialValues(community)}
         validationSchema={COMMUNITY_VALIDATION_SCHEMA}
         onSubmit={this.onSubmit}
       >
-        {({ isSubmitting, isValid, handleSubmit }) => (
+        {({ isSubmitting, isValid, handleSubmit, values }) => (
           <Form onSubmit={handleSubmit}>
             <Message hidden={error === ""} negative className="flashed">
               <Grid container>
@@ -86,19 +95,51 @@ export class CurationPolicyForm extends Component {
             </Message>
             <Grid>
               <Grid.Row className="pt-10 pb-0">
-                <Grid.Column mobile={16} tablet={16} computer={12} className="rel-pb-2">
+                <Grid.Column mobile={16} tablet={16} computer={12} className="rel-pb-1">
                   <RichInputField
                     fieldPath="metadata.curation_policy"
                     label={
                       <FieldLabel
                         htmlFor="metadata.curation_policy"
                         icon="pencil"
-                        label={i18next.t("Curation policy")}
+                        label={i18next.t("Community curation policy")}
                       />
                     }
                     editorConfig={CKEditorConfig}
                     fluid
                   />
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row>
+                <Grid.Column mobile={16} tablet={16} computer={12}>
+                  <Header as="h2" size="tiny">
+                    {i18next.t("Submission review policy")}
+                  </Header>
+                  {formConfig.access.review_policy.map((item) => (
+                    <React.Fragment key={item.value}>
+                      <RadioField
+                        key={item.value}
+                        fieldPath="access.review_policy"
+                        label={item.text}
+                        labelIcon={item.icon}
+                        checked={_get(values, "access.review_policy") === item.value}
+                        value={item.value}
+                        onChange={({ event, data, formikProps }) => {
+                          formikProps.form.setFieldValue(
+                            "access.review_policy",
+                            item.value
+                          );
+                        }}
+                      />
+                      <label className="helptext">{item.helpText}</label>
+                    </React.Fragment>
+                  ))}
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row>
+                <Grid.Column mobile={16} tablet={16} computer={12} className="rel-pb-2">
                   <Button
                     primary
                     icon
@@ -123,4 +164,5 @@ export class CurationPolicyForm extends Component {
 
 CurationPolicyForm.propTypes = {
   community: PropTypes.object.isRequired,
+  formConfig: PropTypes.object.isRequired,
 };

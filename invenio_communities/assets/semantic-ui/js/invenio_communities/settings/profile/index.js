@@ -27,6 +27,7 @@ import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { FundingField, humanReadableBytes } from "react-invenio-deposit";
 import {
+  AccordionField,
   CustomFields,
   FieldLabel,
   Image,
@@ -35,6 +36,7 @@ import {
   TextField,
   RichInputField,
   CKEditorConfig,
+  TextAreaField,
 } from "react-invenio-forms";
 import {
   Button,
@@ -514,182 +516,210 @@ class CommunityProfileForm extends Component {
                 </Grid.Column>
               </Grid>
             </Message>
-
-            <Header as="h2" size="medium" className="mt-0">
-              {i18next.t("Header content")}
-            </Header>
             <Grid>
-              <Grid.Row className="pt-10 pb-0">
-                <Grid.Column mobile={16} tablet={9} computer={9} className="rel-pb-2">
-                  <TextField
-                    fluid
-                    fieldPath="metadata.title"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.title"
-                        icon="book"
-                        label={i18next.t("Community name")}
-                      />
-                    }
-                  />
-                  <SelectField
-                    search
-                    clearable
-                    fieldPath="metadata.type.id"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.type.id"
-                        icon="tag"
-                        label={i18next.t("Type")}
-                      />
-                    }
-                    options={types.map((ct) => {
-                      return {
-                        value: ct.id,
-                        text: ct?.title_l10n ?? ct.id,
-                      };
-                    })}
-                  />
-                  <TextField
-                    fieldPath="metadata.website"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.website"
-                        icon="chain"
-                        label={i18next.t("Website")}
-                      />
-                    }
-                    fluid
-                  />
-
-                  <RemoteSelectField
-                    fieldPath="metadata.organizations"
-                    suggestionAPIUrl="/api/affiliations"
-                    suggestionAPIHeaders={{
-                      Accept: "application/json",
-                    }}
-                    placeholder={i18next.t("Search for an organization by name")}
-                    clearable
-                    multiple
-                    initialSuggestions={_get(community, "metadata.organizations", [])}
-                    serializeSuggestions={(organizations) =>
-                      _map(organizations, (organization) => {
-                        // eslint-disable-next-line no-prototype-builtins
-                        const isKnownOrg = this.knownOrganizations.hasOwnProperty(
-                          organization.name
-                        );
-                        if (!isKnownOrg) {
-                          this.knownOrganizations = {
-                            ...this.knownOrganizations,
-                            [organization.name]: organization.id,
-                          };
-                        }
+              <Grid.Row>
+                <Grid.Column mobile={16} tablet={10} computer={11} className="rel-pb-2">
+                  <AccordionField
+                    includesPaths={[
+                      "metadata.title",
+                      "metadata.type.id",
+                      "metadata.website",
+                      "metadata.organizations",
+                      "metadata.description",
+                    ]}
+                    label={i18next.t("Header content")}
+                    active
+                  >
+                    <TextField
+                      fluid
+                      fieldPath="metadata.title"
+                      label={
+                        <FieldLabel
+                          htmlFor="metadata.title"
+                          icon="book"
+                          label={i18next.t("Community name")}
+                        />
+                      }
+                    />
+                    <SelectField
+                      search
+                      clearable
+                      fieldPath="metadata.type.id"
+                      label={
+                        <FieldLabel
+                          htmlFor="metadata.type.id"
+                          icon="tag"
+                          label={i18next.t("Community type")}
+                        />
+                      }
+                      options={types.map((ct) => {
                         return {
-                          text: organization.name,
-                          value: organization.name,
-                          key: organization.name,
+                          value: ct.id,
+                          text: ct?.title_l10n ?? ct.id,
                         };
-                      })
-                    }
-                    label={i18next.t("Organizations")}
-                    noQueryMessage={i18next.t("Search for organizations...")}
-                    allowAdditions
-                    search={(filteredOptions, searchQuery) => filteredOptions}
-                  />
+                      })}
+                    />
+                    <TextField
+                      fieldPath="metadata.website"
+                      label={
+                        <FieldLabel
+                          htmlFor="metadata.website"
+                          icon="chain"
+                          label={i18next.t("Community website")}
+                        />
+                      }
+                      fluid
+                    />
 
-                  <Header as="h2" size="medium">
-                    {i18next.t("About page")}
-                  </Header>
+                    <RemoteSelectField
+                      fieldPath="metadata.organizations"
+                      suggestionAPIUrl="/api/affiliations"
+                      suggestionAPIHeaders={{
+                        Accept: "application/json",
+                      }}
+                      placeholder={i18next.t("Search for an organization by name")}
+                      clearable
+                      multiple
+                      initialSuggestions={_get(community, "metadata.organizations", [])}
+                      serializeSuggestions={(organizations) =>
+                        _map(organizations, (organization) => {
+                          // eslint-disable-next-line no-prototype-builtins
+                          const isKnownOrg = this.knownOrganizations.hasOwnProperty(
+                            organization.name
+                          );
+                          if (!isKnownOrg) {
+                            this.knownOrganizations = {
+                              ...this.knownOrganizations,
+                              [organization.name]: organization.id,
+                            };
+                          }
+                          return {
+                            text: organization.name,
+                            value: organization.name,
+                            key: organization.name,
+                          };
+                        })
+                      }
+                      label={
+                        <FieldLabel
+                          htmlFor="metadata.organizations"
+                          icon="group"
+                          label={i18next.t("Community organizations")}
+                        />
+                      }
+                      noQueryMessage={i18next.t("Search for organizations...")}
+                      allowAdditions
+                      search={(filteredOptions, searchQuery) => filteredOptions}
+                    />
 
-                  <RichInputField
-                    fieldPath="metadata.description"
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.description"
-                        icon="pencil"
-                        label={i18next.t("Description")}
-                      />
-                    }
-                    editorConfig={CKEditorConfig}
-                    fluid
-                  />
+                    <TextAreaField
+                      fieldPath="metadata.description"
+                      label={
+                        <FieldLabel
+                          htmlFor="metadata.description"
+                          icon="pencil"
+                          label={i18next.t("Short description of the community")}
+                        />
+                      }
+                      fluid
+                    />
+                  </AccordionField>
 
-                  <FundingField
-                    fieldPath="metadata.funding"
-                    searchConfig={{
-                      searchApi: {
-                        axios: {
-                          headers: {
-                            Accept: "application/vnd.inveniordm.v1+json",
+                  <AccordionField
+                    includesPaths={["metadata.page", "metadata.funding"]}
+                    label={i18next.t("About page")}
+                    active
+                  >
+                    <RichInputField
+                      fieldPath="metadata.page"
+                      label={
+                        <FieldLabel
+                          htmlFor="metadata.page"
+                          icon="pencil"
+                          label={i18next.t("Community page description")}
+                        />
+                      }
+                      editorConfig={CKEditorConfig}
+                      fluid
+                    />
+
+                    <FundingField
+                      fieldPath="metadata.funding"
+                      searchConfig={{
+                        searchApi: {
+                          axios: {
+                            headers: {
+                              Accept: "application/vnd.inveniordm.v1+json",
+                            },
+                            url: "/api/awards",
+                            withCredentials: false,
                           },
-                          url: "/api/awards",
-                          withCredentials: false,
                         },
-                      },
-                      initialQueryState: {
-                        sortBy: "bestmatch",
-                        sortOrder: "asc",
-                        layout: "list",
-                        page: 1,
-                        size: 5,
-                      },
-                    }}
-                    label="Awards"
-                    labelIcon="money bill alternate outline"
-                    deserializeAward={(award) => {
-                      return {
-                        title: award.title_l10n,
-                        pid: award.pid,
-                        number: award.number,
-                        funder: award.funder ?? "",
-                        id: award.id,
-                        ...(award.identifiers && {
-                          identifiers: award.identifiers,
-                        }),
-                        ...(award.acronym && { acronym: award.acronym }),
-                      };
-                    }}
-                    deserializeFunder={(funder) => {
-                      return {
-                        id: funder.id,
-                        name: funder.name,
-                        ...(funder.title_l10n && { title: funder.title_l10n }),
-                        ...(funder.pid && { pid: funder.pid }),
-                        ...(funder.country && { country: funder.country }),
-                        ...(funder.identifiers && {
-                          identifiers: funder.identifiers,
-                        }),
-                      };
-                    }}
-                    computeFundingContents={(funding) => {
-                      let headerContent,
-                        descriptionContent = "";
-                      let awardOrFunder = "award";
-                      if (funding.award) {
-                        headerContent = funding.award.title;
-                      }
-
-                      if (funding.funder) {
-                        const funderName =
-                          funding.funder?.name ??
-                          funding.funder?.title ??
-                          funding.funder?.id ??
-                          "";
-                        descriptionContent = funderName;
-                        if (!headerContent) {
-                          awardOrFunder = "funder";
-                          headerContent = funderName;
+                        initialQueryState: {
+                          sortBy: "bestmatch",
+                          sortOrder: "asc",
+                          layout: "list",
+                          page: 1,
+                          size: 5,
+                        },
+                      }}
+                      label={i18next.t("Community awards")}
+                      labelIcon="money bill alternate outline"
+                      deserializeAward={(award) => {
+                        return {
+                          title: award.title_l10n,
+                          pid: award.pid,
+                          number: award.number,
+                          funder: award.funder ?? "",
+                          id: award.id,
+                          ...(award.identifiers && {
+                            identifiers: award.identifiers,
+                          }),
+                          ...(award.acronym && { acronym: award.acronym }),
+                        };
+                      }}
+                      deserializeFunder={(funder) => {
+                        return {
+                          id: funder.id,
+                          name: funder.name,
+                          ...(funder.title_l10n && { title: funder.title_l10n }),
+                          ...(funder.pid && { pid: funder.pid }),
+                          ...(funder.country && { country: funder.country }),
+                          ...(funder.identifiers && {
+                            identifiers: funder.identifiers,
+                          }),
+                        };
+                      }}
+                      computeFundingContents={(funding) => {
+                        let headerContent,
                           descriptionContent = "";
+                        let awardOrFunder = "award";
+                        if (funding.award) {
+                          headerContent = funding.award.title;
                         }
-                      }
 
-                      return {
-                        headerContent,
-                        descriptionContent,
-                        awardOrFunder,
-                      };
-                    }}
-                  />
+                        if (funding.funder) {
+                          const funderName =
+                            funding.funder?.name ??
+                            funding.funder?.title ??
+                            funding.funder?.id ??
+                            "";
+                          descriptionContent = funderName;
+                          if (!headerContent) {
+                            awardOrFunder = "funder";
+                            headerContent = funderName;
+                            descriptionContent = "";
+                          }
+                        }
+
+                        return {
+                          headerContent,
+                          descriptionContent,
+                          awardOrFunder,
+                        };
+                      }}
+                    />
+                  </AccordionField>
 
                   {!_isEmpty(customFields.ui) && (
                     <CustomFields
@@ -716,7 +746,7 @@ class CommunityProfileForm extends Component {
                     {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
-                <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
+                <Grid.Column mobile={16} tablet={5} computer={4} floated="right">
                   <LogoUploader
                     community={community}
                     hasLogo={hasLogo}

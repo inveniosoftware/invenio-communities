@@ -21,7 +21,9 @@
 <div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
   <div
     id="app"
-    data-community='{{ community | tojson }}'>
+    data-community='{{ community | tojson }}'
+    data-form-config='{{ form_config | tojson }}'
+  >
   </div>
 </div>
 {%- endblock settings_body %}
