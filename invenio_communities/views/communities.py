@@ -41,19 +41,17 @@ VISIBILITY_FIELDS = [
 
 REVIEW_POLICY_FIELDS = [
     {
-        "text": "Require always review",
+        "text": "Review all submissions",
         "value": "closed",
         "icon": "lock",
-        "helpText": _(
-            "Publishing to your community will always go through a review request."
-        ),
+        "helpText": _("All submissions to the community must be reviewed."),
     },
     {
-        "text": "Curators can directly publish",
+        "text": "Allow curators, managers and owners to publish without review",
         "value": "open",
         "icon": "group",
         "helpText": _(
-            "The curators of your community can publish directly without a review request."
+            "Submissions to the community by default requires review, but curators, managers and owners can publish directly without review."
         ),
     },
 ]
@@ -230,9 +228,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
         "invenio_communities/details/settings/privileges.html",
         community=community_ui,
         form_config=dict(
-            access=dict(
-                visibility=VISIBILITY_FIELDS, review_policy=REVIEW_POLICY_FIELDS
-            ),
+            access=dict(visibility=VISIBILITY_FIELDS),
         ),
         permissions=permissions,
     )
@@ -249,6 +245,9 @@ def communities_settings_curation_policy(pid_value, community, community_ui):
         "invenio_communities/details/settings/curation_policy.html",
         community=community_ui,
         permissions=permissions,
+        form_config=dict(
+            access=dict(review_policy=REVIEW_POLICY_FIELDS),
+        ),
     )
 
 

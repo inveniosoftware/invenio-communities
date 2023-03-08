@@ -13,12 +13,8 @@
 
 {%- block page_body %}
   {{ super() }}
-  <div class="ui text container rel-mt-2">
+  <div class="ui text container rel-mt-2 rel-mb-2">
     <h2 class="ui header rel-mt-2">{{ _("Curation policy") }}</h2>
     {{ community.metadata.curation_policy | safe }}
   </div>
-
-  {% include "invenio_communities/details/upload-instructions.html" %}
-
-
 {%- endblock page_body -%}
