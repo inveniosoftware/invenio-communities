@@ -8,18 +8,62 @@
 
 """Community access system field."""
 
+from enum import Enum, unique
+
 from invenio_records.systemfields import SystemField
+
+
+class AccessEnumMixin:
+    """Mixin for enum functionalities."""
+
+    @classmethod
+    def validate(cls, level):
+        """Validate a string against the enum values."""
+        return cls(level) in cls
+
+    def __str__(self):
+        """Return its value."""
+        return self.value
+
+
+@unique
+class VisibilityEnum(AccessEnumMixin, Enum):
+    """Enum defining access visibility."""
+
+    PUBLIC = "public"
+
+    RESTRICTED = "restricted"
+
+
+@unique
+class MemberPolicyEnum(AccessEnumMixin, Enum):
+    """Enum defining member policies."""
+
+    OPEN = "open"
+
+    CLOSED = "closed"
+
+
+@unique
+class RecordPolicyEnum(AccessEnumMixin, Enum):
+    """Enum defining record policies."""
+
+    OPEN = "open"
+
+    CLOSED = "closed"
+
+
+@unique
+class ReviewPolicyEnum(AccessEnumMixin, Enum):
+    """Enum defining review policies."""
+
+    OPEN = "open"
+
+    CLOSED = "closed"
 
 
 class CommunityAccess:
     """Access management per community."""
-
-    # important: the order in tuple matters
-    # TODO move to ENUM to improve code readability when using
-    VISIBILITY_LEVELS = ("public", "restricted")
-    MEMBER_POLICY_LEVELS = ("open", "closed")
-    RECORD_POLICY_LEVELS = ("open", "closed")
-    REVIEW_POLICY_LEVELS = ("open", "closed")
 
     def __init__(
         self,
@@ -32,27 +76,31 @@ class CommunityAccess:
 
         :param visibility: The visibility level.
         """
-        self.visibility = visibility or "public"
-        self.member_policy = member_policy or "open"
-        self.record_policy = record_policy or "open"
-        self.review_policy = review_policy or "closed"
+        self.visibility = visibility or VisibilityEnum.PUBLIC
+        self.member_policy = member_policy or MemberPolicyEnum.OPEN
+        self.record_policy = record_policy or RecordPolicyEnum.OPEN
+        self.review_policy = review_policy or ReviewPolicyEnum.CLOSED
         self.errors = []
 
     @classmethod
     def validate_visibility_level(cls, level):
-        return level in cls.VISIBILITY_LEVELS
+        """Validate the visibility level."""
+        return VisibilityEnum.validate(level)
 
     @classmethod
     def validate_member_policy_level(cls, level):
-        return level in cls.MEMBER_POLICY_LEVELS
+        """Validate the member policy level."""
+        return MemberPolicyEnum.validate(level)
 
     @classmethod
     def validate_record_policy_level(cls, level):
-        return level in cls.RECORD_POLICY_LEVELS
+        """Validate the record policy level."""
+        return RecordPolicyEnum.validate(level)
 
     @classmethod
     def validate_review_policy_level(cls, level):
-        return level in cls.REVIEW_POLICY_LEVELS
+        """Validate the review policy level."""
+        return ReviewPolicyEnum.validate(level)
 
     @property
     def visibility(self):
@@ -105,10 +153,10 @@ class CommunityAccess:
     def dump(self):
         """Dump the field values as dictionary."""
         return {
-            "visibility": self.visibility,
-            "member_policy": self.member_policy,
-            "record_policy": self.record_policy,
-            "review_policy": self.review_policy,
+            "visibility": str(self.visibility),
+            "member_policy": str(self.member_policy),
+            "record_policy": str(self.record_policy),
+            "review_policy": str(self.review_policy),
         }
 
     def refresh_from_dict(self, access_dict):
@@ -143,16 +191,10 @@ class CommunityAccess:
     def __repr__(self):
         """Return repr(self)."""
         return (
-            "<{} (visibility: {}, "
-            "member_policy: {}, "
-            "record_policy: {}, "
-            "review_policy: {})>"
-        ).format(
-            type(self).__name__,
-            self.visibility,
-            self.member_policy,
-            self.record_policy,
-            self.review_policy,
+            f"<{type(self).__name__} (visibility: {str(self.visibility)}, "
+            f"member_policy: {str(self.member_policy)}, "
+            f"record_policy: {str(self.record_policy)}, "
+            f"review_policy: {str(self.review_policy)})>"
         )
 
 
