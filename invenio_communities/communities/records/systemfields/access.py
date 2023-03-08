@@ -38,17 +38,21 @@ class CommunityAccess:
         self.review_policy = review_policy or "closed"
         self.errors = []
 
-    def _validate_visibility_level(self, level):
-        return level in self.VISIBILITY_LEVELS
+    @classmethod
+    def validate_visibility_level(cls, level):
+        return level in cls.VISIBILITY_LEVELS
 
-    def _validate_member_policy_level(self, level):
-        return level in self.MEMBER_POLICY_LEVELS
+    @classmethod
+    def validate_member_policy_level(cls, level):
+        return level in cls.MEMBER_POLICY_LEVELS
 
-    def _validate_record_policy_level(self, level):
-        return level in self.RECORD_POLICY_LEVELS
+    @classmethod
+    def validate_record_policy_level(cls, level):
+        return level in cls.RECORD_POLICY_LEVELS
 
-    def _validate_review_policy_level(self, level):
-        return level in self.REVIEW_POLICY_LEVELS
+    @classmethod
+    def validate_review_policy_level(cls, level):
+        return level in cls.REVIEW_POLICY_LEVELS
 
     @property
     def visibility(self):
@@ -58,7 +62,7 @@ class CommunityAccess:
     @visibility.setter
     def visibility(self, value):
         """Set the visibility level."""
-        if not self._validate_visibility_level(value):
+        if not self.validate_visibility_level(value):
             raise ValueError(f"Unknown visibility level: {value}")
         self._visibility = value
 
@@ -70,7 +74,7 @@ class CommunityAccess:
     @member_policy.setter
     def member_policy(self, value):
         """Set the member policy level."""
-        if not self._validate_member_policy_level(value):
+        if not self.validate_member_policy_level(value):
             raise ValueError(f"Unknown member policy level: {value}")
         self._member_policy = value
 
@@ -82,7 +86,7 @@ class CommunityAccess:
     @record_policy.setter
     def record_policy(self, value):
         """Set the record policy level."""
-        if not self._validate_record_policy_level(value):
+        if not self.validate_record_policy_level(value):
             raise ValueError(f"Unknown record policy level: {value}")
         self._record_policy = value
 
@@ -94,7 +98,7 @@ class CommunityAccess:
     @review_policy.setter
     def review_policy(self, value):
         """Set the review policy level."""
-        if not self._validate_review_policy_level(value):
+        if not self.validate_review_policy_level(value):
             raise ValueError(f"Unknown review policy level: {value}")
         self._review_policy = value
 
