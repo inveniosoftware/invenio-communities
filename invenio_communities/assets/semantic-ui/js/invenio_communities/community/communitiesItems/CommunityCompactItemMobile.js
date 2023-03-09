@@ -4,8 +4,8 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { CommunityTypeLabel } from "../components";
-import { RestrictedLabel } from "../access";
+import { CommunityTypeLabel } from "../labels";
+import { RestrictedLabel } from "../labels";
 import _truncate from "lodash/truncate";
 import React from "react";
 import { Image } from "react-invenio-forms";

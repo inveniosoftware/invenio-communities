@@ -4,23 +4,30 @@
 // InvenioRDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { CommunityTypeLabel } from "../components";
+import { CommunityTypeLabel } from "../labels";
 import _truncate from "lodash/truncate";
 import React from "react";
 import PropTypes from "prop-types";
 
 import { Item, Image, Grid, Icon } from "semantic-ui-react";
-import { RestrictedLabel } from "../access";
+import { RestrictedLabel } from "../labels";
 
-export const CommunityCompactItemComputer = ({ result, actions }) => {
-  const communityType = result.ui?.type?.title_l10n;
+export const CommunityCompactItemComputer = ({
+  result,
+  actions,
+  extraLabels,
+  itemClassName,
+}) => {
+  const { metadata, ui, links, access, id } = result;
+
+  const communityType = ui?.type?.title_l10n;
 
   return (
     <Item
-      key={result.id}
-      className="computer tablet only justify-space-between community-item"
+      key={id}
+      className={`computer tablet only justify-space-between community-item ${itemClassName}`}
     >
-      <Image as={Item.Image} size="tiny" src={result.links.logo} />
+      <Image as={Item.Image} size="tiny" src={links.logo} />
       <Grid>
         <Grid.Column width={10}>
           <Item.Content verticalAlign="middle">
@@ -28,31 +35,32 @@ export const CommunityCompactItemComputer = ({ result, actions }) => {
               as="h3"
               className="ui small header flex align-items-center mb-5"
             >
-              <a href={result.links.self_html} className="p-0">
-                {result.metadata.title}
+              <a href={links.self_html} className="p-0">
+                {metadata.title}
               </a>
             </Item.Header>
 
             <Item.Description>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: _truncate(result.metadata.description, { length: 50 }),
+                  __html: _truncate(metadata.description, { length: 50 }),
                 }}
               />
             </Item.Description>
             <Item.Extra>
-              <RestrictedLabel access={result.access.visibility} />
+              <RestrictedLabel access={access.visibility} />
               <CommunityTypeLabel type={communityType} />
+              {extraLabels}
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
         <Grid.Column width={4}>
           <Item.Content>
             <Item.Meta>
-              {result.ui.permissions.can_direct_publish && (
+              {ui.permissions.can_direct_publish && (
                 <Icon name="paper plane outline" size="big" />
               )}
-              {!result.ui.permissions.can_direct_publish && (
+              {!ui.permissions.can_direct_publish && (
                 <>
                   <Icon name="comments outline" size="big" />
                   <Icon corner="top right" name="question" size="small" fitted />
@@ -69,8 +77,12 @@ export const CommunityCompactItemComputer = ({ result, actions }) => {
 CommunityCompactItemComputer.propTypes = {
   result: PropTypes.object.isRequired,
   actions: PropTypes.node,
+  extraLabels: PropTypes.node,
+  itemClassName: PropTypes.string,
 };
 
 CommunityCompactItemComputer.defaultProps = {
   actions: undefined,
+  extraLabels: undefined,
+  itemClassName: "",
 };
