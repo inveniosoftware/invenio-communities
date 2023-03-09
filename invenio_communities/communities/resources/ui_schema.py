@@ -56,13 +56,13 @@ class UICommunitySchema(BaseObjectSchema):
 
     def get_permissions(self, obj):
         """Get permission."""
-        can_direct_publish = _community_permission_check(
-            "direct_publish", community=obj, identity=g.identity
+        can_include_directly = _community_permission_check(
+            "include_directly", community=obj, identity=g.identity
         )
         can_update = _community_permission_check(
             "update", community=obj, identity=g.identity
         )
-        return {"can_direct_publish": can_direct_publish, "can_update": can_update}
+        return {"can_include_directly": can_include_directly, "can_update": can_update}
 
 
 class TypesSchema(Schema):

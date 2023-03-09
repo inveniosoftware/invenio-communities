@@ -1,24 +1,40 @@
 /*
  * This file is part of Invenio.
- * Copyright (C) 2022 CERN.
+ * Copyright (C) 2022-2023 CERN.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React from "react";
-import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize, overrideStore } from "react-overridable";
 import {
-  LabelTypeSubmission,
-  LabelTypeInvitation,
-  LabelStatusSubmit,
-  LabelStatusDelete,
+  RequestAcceptButton,
+  RequestCancelButton,
+  RequestDeclineButton,
+} from "@js/invenio_requests/components/Buttons";
+import {
+  RequestAcceptModalTrigger,
+  RequestCancelModalTrigger,
+  RequestDeclineModalTrigger,
+} from "@js/invenio_requests/components/ModalTriggers";
+import {
   LabelStatusAccept,
-  LabelStatusDecline,
   LabelStatusCancel,
+  LabelStatusDecline,
+  LabelStatusDelete,
   LabelStatusExpire,
+  LabelStatusSubmit,
+  LabelTypeCommunityInclusion,
+  LabelTypeCommunityInvitation,
+  LabelTypeCommunitySubmission,
 } from "@js/invenio_requests/request";
+import { createSearchAppInit } from "@js/invenio_search_ui";
+import {
+  ContribBucketAggregationElement,
+  ContribBucketAggregationValuesElement,
+  ContribSearchAppFacets,
+} from "@js/invenio_search_ui/components";
+import React from "react";
+import { overrideStore, parametrize } from "react-overridable";
 import {
   RecordSearchBarElement,
   RequestsEmptyResultsWithState,
@@ -27,21 +43,6 @@ import {
   RequestsResultsItemTemplateCommunity,
   RequestsSearchLayout,
 } from "./requests";
-import {
-  RequestAcceptModalTrigger,
-  RequestCancelModalTrigger,
-  RequestDeclineModalTrigger,
-} from "@js/invenio_requests/components/ModalTriggers";
-import {
-  RequestAcceptButton,
-  RequestCancelButton,
-  RequestDeclineButton,
-} from "@js/invenio_requests/components/Buttons";
-import {
-  ContribSearchAppFacets,
-  ContribBucketAggregationElement,
-  ContribBucketAggregationValuesElement,
-} from "@js/invenio_search_ui/components";
 
 const domContainer = document.getElementById("communities-request-search-root");
 
@@ -82,11 +83,15 @@ const RequestsSearchLayoutWAppName = parametrize(RequestsSearchLayout, {
 });
 
 const CommunitySubmission = () => (
-  <LabelTypeSubmission className="primary" size="small" />
+  <LabelTypeCommunitySubmission className="primary" size="small" />
+);
+
+const CommunityInclusion = () => (
+  <LabelTypeCommunityInclusion className="primary" size="small" />
 );
 
 const CommunityInvitation = () => (
-  <LabelTypeInvitation className="primary" size="small" />
+  <LabelTypeCommunityInvitation className="primary" size="small" />
 );
 
 const Submitted = () => <LabelStatusSubmit className="primary" size="small" />;
@@ -112,6 +117,7 @@ const defaultComponents = {
   [`${appName}.SearchBar.element`]: RecordSearchBarElement,
   [`${appName}.EmptyResults.element`]: RequestsEmptyResultsWithState,
   [`RequestTypeLabel.layout.community-submission`]: CommunitySubmission,
+  [`RequestTypeLabel.layout.community-inclusion`]: CommunityInclusion,
   [`RequestTypeLabel.layout.community-invitation`]: CommunityInvitation,
   [`RequestStatusLabel.layout.submitted`]: Submitted,
   [`RequestStatusLabel.layout.deleted`]: Deleted,

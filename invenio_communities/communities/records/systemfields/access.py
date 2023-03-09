@@ -115,6 +115,16 @@ class CommunityAccess:
         self._visibility = value
 
     @property
+    def visibility_is_public(self):
+        """Return True when visibility is public."""
+        return self.visibility == VisibilityEnum.PUBLIC.value
+
+    @property
+    def visibility_is_restricted(self):
+        """Return True when visibility is restricted."""
+        return self.visibility == VisibilityEnum.RESTRICTED.value
+
+    @property
     def member_policy(self):
         """Get the member policy level."""
         return self._member_policy

@@ -4,12 +4,12 @@
 // InvenioRDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { CommunityTypeLabel } from "../labels";
 import _truncate from "lodash/truncate";
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+import { CommunityTypeLabel } from "../labels";
 
-import { Item, Image, Grid, Icon } from "semantic-ui-react";
+import { Grid, Icon, Image, Item } from "semantic-ui-react";
 import { RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
@@ -57,10 +57,10 @@ export const CommunityCompactItemComputer = ({
         <Grid.Column width={4}>
           <Item.Content>
             <Item.Meta>
-              {ui.permissions.can_direct_publish && (
+              {ui.permissions.can_include_directly && (
                 <Icon name="paper plane outline" size="big" />
               )}
-              {!ui.permissions.can_direct_publish && (
+              {!ui.permissions.can_include_directly && (
                 <>
                   <Icon name="comments outline" size="big" />
                   <Icon corner="top right" name="question" size="small" fitted />
