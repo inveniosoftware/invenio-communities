@@ -74,7 +74,8 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         ),
     ]
 
-    can_direct_publish = [
+    # who can include a record directly, without a review
+    can_include_directly = [
         IfPolicyClosed(
             "review_policy",
             then_=[Disable()],
