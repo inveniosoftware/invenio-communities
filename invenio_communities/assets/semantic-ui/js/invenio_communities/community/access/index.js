@@ -1,1 +1,0 @@
-export { RestrictedLabel } from "./RestrictedLabel";

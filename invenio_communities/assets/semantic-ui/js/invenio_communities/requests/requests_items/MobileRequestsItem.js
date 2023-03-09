@@ -24,7 +24,7 @@ export const MobileRequestsItem = ({
     requestsResultProps(result, updateQueryState, currentQueryState);
 
   return (
-    <Item key={community.id} className="community-item mobile only flex">
+    <Item key={community.id} className="mobile only flex">
       <Item.Content className="centered">
         <Item.Extra>
           {result.type && <RequestTypeLabel type={result.type} />}

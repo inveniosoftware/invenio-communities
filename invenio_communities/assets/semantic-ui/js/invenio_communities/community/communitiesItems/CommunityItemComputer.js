@@ -5,8 +5,8 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { CommunityTypeLabel } from "../components";
-import { RestrictedLabel } from "../access";
+import { CommunityTypeLabel } from "../labels";
+import { RestrictedLabel } from "../labels";
 import React from "react";
 import { Image } from "react-invenio-forms";
 import { Button, Item, Grid, Header } from "semantic-ui-react";
@@ -28,7 +28,7 @@ export const CommunityItemComputer = ({ result }) => {
         <Grid.Column width={12}>
           <Item.Content>
             <Item.Header size="medium" as={Header}>
-              <a href={`/communities/${result.slug}`}>{result.metadata.title}</a>
+              <a href={result.links.self_html}>{result.metadata.title}</a>
             </Item.Header>
             <Item.Meta>
               <a
@@ -61,7 +61,7 @@ export const CommunityItemComputer = ({ result }) => {
                 <Button
                   compact
                   size="small"
-                  href={`/communities/${result.id}/settings`}
+                  href={result.links.settings_html}
                   className="mt-0"
                   labelPosition="left"
                   icon="edit"

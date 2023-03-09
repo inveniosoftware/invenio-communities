@@ -5,8 +5,8 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import { CommunityTypeLabel } from "../components";
-import { RestrictedLabel } from "../access";
+import { CommunityTypeLabel } from "../labels";
+import { RestrictedLabel } from "../labels";
 import React from "react";
 import { Image } from "react-invenio-forms";
 import { Button, Item } from "semantic-ui-react";
@@ -27,7 +27,7 @@ export const CommunityItemMobile = ({ result, index }) => {
           <Image wrapped src={result.links.logo} size="small" />
         </Item.Extra>
         <Item.Header as="h2" className="rel-mt-1">
-          <a href={`/communities/${result.slug}`}>{result.metadata.title}</a>
+          <a href={result.links.self_html}>{result.metadata.title}</a>
         </Item.Header>
         <Item.Meta>
           <div
@@ -54,7 +54,7 @@ export const CommunityItemMobile = ({ result, index }) => {
               compact
               size="small"
               fluid
-              href={`/communities/${result.id}/settings`}
+              href={result.links.settings_html}
               labelPosition="left"
               icon="edit"
               content={i18next.t("Edit")}
