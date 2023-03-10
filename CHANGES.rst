@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 5.3.0 (released 2023-03-10)
+-----------------------------------
+
+- Custom fields: add multiple custom field widget loaders
+- ui serializer: add permissions
+- assets: refactor community components
+
+
 Version 5.2.0 (released 2023-03-03)
 -----------------------------------
 
