@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 5.4.0 (released 2023-03-10)
+-----------------------------------
+
+- assets: add abstraction and reusability to search component
+- access systemfield: update class attributes tuples into enums
+- access systemfield: update validation to a class function
+- service: add configurable components
+
 Version 5.3.0 (released 2023-03-10)
 -----------------------------------
 
