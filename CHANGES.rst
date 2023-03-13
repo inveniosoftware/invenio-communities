@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 5.5.0 (released 2023-03-13)
+-----------------------------------
+
+
+- requests: add community inclusion request tyoe
+- rename permission policy for direct publish
+
+
 Version 5.4.0 (released 2023-03-10)
 -----------------------------------
 
