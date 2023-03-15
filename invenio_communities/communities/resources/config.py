@@ -15,6 +15,7 @@ from flask_resources import (
     create_error_handler,
 )
 from invenio_records_resources.resources import RecordResourceConfig
+from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
 
 from invenio_communities.communities.resources.serializer import (
@@ -50,7 +51,7 @@ community_error_handlers.update(
 )
 
 
-class CommunityResourceConfig(RecordResourceConfig):
+class CommunityResourceConfig(RecordResourceConfig, ConfiguratorMixin):
     """Communities resource configuration."""
 
     blueprint_name = "communities"
@@ -72,7 +73,9 @@ class CommunityResourceConfig(RecordResourceConfig):
         **RecordResourceConfig.request_view_args,
         "featured_id": ma.fields.Int(),
     }
-    error_handlers = community_error_handlers
+    error_handlers = FromConfig(
+        "COMMUNITIES_ERROR_HANDLERS", default=community_error_handlers
+    )
     request_community_requests_search_args = RequestSearchRequestArgsSchema
 
     response_handlers = {

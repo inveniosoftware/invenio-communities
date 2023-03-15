@@ -72,7 +72,7 @@ class InvenioCommunities(object):
         """Initialize communities resources."""
         # Resources
         self.communities_resource = CommunityResource(
-            CommunityResourceConfig,
+            CommunityResourceConfig.build(app),
             self.service,
         )
         self.members_resource = MemberResource(
