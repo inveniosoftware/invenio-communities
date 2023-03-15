@@ -127,7 +127,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     # Service components
     components = FromConfig(
-        "COMMUNITY_SERVICE_COMPONENTS", default=DefaultCommunityComponents
+        "COMMUNITIES_SERVICE_COMPONENTS", default=DefaultCommunityComponents
     )
 
 
