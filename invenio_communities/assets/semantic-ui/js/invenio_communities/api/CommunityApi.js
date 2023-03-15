@@ -1,4 +1,4 @@
-// This file is part of React-Invenio-Deposit
+// This file is part of Invenio-Communities
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
 //
