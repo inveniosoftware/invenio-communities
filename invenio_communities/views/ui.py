@@ -31,7 +31,7 @@ from .communities import (
     communities_settings_curation_policy,
     communities_settings_privileges,
     invitations,
-    members,
+    members, communities_settings_pages,
 )
 
 
@@ -96,6 +96,7 @@ def create_ui_blueprint(app):
         view_func=communities_curation_policy,
     )
 
+
     # Settings tab routes
     blueprint.add_url_rule(
         routes["settings"],
@@ -115,6 +116,11 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["settings_curation_policy"],
         view_func=communities_settings_curation_policy,
+    )
+
+    blueprint.add_url_rule(
+        routes["settings_pages"],
+        view_func=communities_settings_pages,
     )
 
     blueprint.add_url_rule(routes["members"], view_func=members)
