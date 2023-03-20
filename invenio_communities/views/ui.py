@@ -29,9 +29,10 @@ from .communities import (
     communities_search,
     communities_settings,
     communities_settings_curation_policy,
+    communities_settings_pages,
     communities_settings_privileges,
     invitations,
-    members, communities_settings_pages,
+    members,
 )
 
 
@@ -96,7 +97,6 @@ def create_ui_blueprint(app):
         view_func=communities_curation_policy,
     )
 
-
     # Settings tab routes
     blueprint.add_url_rule(
         routes["settings"],
@@ -134,16 +134,17 @@ def create_ui_blueprint(app):
         item.register(
             "invenio_communities.communities_frontpage",
             "Communities",
-            order=3,
+            order=1,
         )
 
-        item = current_menu.submenu("plus.community").register(
+        current_menu.submenu("plus.community").register(
             "invenio_communities.communities_new",
             "New community",
             order=3,
         )
 
         communities = current_menu.submenu("communities")
+
         communities.submenu("requests").register(
             "invenio_communities.communities_requests",
             text=_("Requests"),
@@ -158,12 +159,13 @@ def create_ui_blueprint(app):
             expected_args=["pid_value"],
             **dict(icon="users", permissions="can_read")
         )
-        communities.submenu("about").register(
-            "invenio_communities.communities_about",
-            text=_("About"),
+
+        communities.submenu("settings").register(
+            "invenio_communities.communities_settings",
+            text=_("Settings"),
             order=4,
             expected_args=["pid_value"],
-            **dict(icon="info", permissions="can_read")
+            **dict(icon="settings", permissions="can_update")
         )
         communities.submenu("curation_policy").register(
             "invenio_communities.communities_curation_policy",
@@ -172,12 +174,12 @@ def create_ui_blueprint(app):
             expected_args=["pid_value"],
             **dict(icon="balance scale", permissions="can_read")
         )
-        communities.submenu("settings").register(
-            "invenio_communities.communities_settings",
-            text=_("Settings"),
+        communities.submenu("about").register(
+            "invenio_communities.communities_about",
+            text=_("About"),
             order=6,
             expected_args=["pid_value"],
-            **dict(icon="settings", permissions="can_update")
+            **dict(icon="info", permissions="can_read")
         )
 
     # Register error handlers

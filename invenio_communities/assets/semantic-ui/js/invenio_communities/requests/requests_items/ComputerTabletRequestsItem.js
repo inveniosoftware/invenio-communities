@@ -23,7 +23,7 @@ export const ComputerTabletRequestsItem = ({
   const { differenceInDays, isCreatorCommunity, creatorName, refreshAfterAction } =
     requestsResultProps(result, updateQueryState, currentQueryState);
   return (
-    <Item key={community.id} className="community-item computer tablet only flex">
+    <Item key={community.id} className="computer tablet only flex">
       <div className="status-icon mr-10">
         <Item.Content verticalAlign="top">
           <Item.Extra>

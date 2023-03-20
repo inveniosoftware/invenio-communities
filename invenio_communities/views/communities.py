@@ -254,7 +254,9 @@ def communities_settings_curation_policy(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_settings_pages(pid_value, community, community_ui):
     """Community settings/curation-policy page."""
-    permissions = community.has_permissions_to(["update", "read", "search_requests", "search_invites"])
+    permissions = community.has_permissions_to(
+        ["update", "read", "search_requests", "search_invites"]
+    )
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
