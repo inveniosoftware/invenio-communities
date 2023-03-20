@@ -359,6 +359,17 @@ class CommunityProfileForm extends Component {
                           />
                         }
                       />
+                      <TextAreaField
+                        fieldPath="metadata.description"
+                        label={
+                          <FieldLabel
+                            htmlFor="metadata.description"
+                            icon="pencil"
+                            label={i18next.t("Short description")}
+                          />
+                        }
+                        fluid
+                      />
                       <SelectField
                         search
                         clearable
@@ -432,18 +443,6 @@ class CommunityProfileForm extends Component {
                         noQueryMessage={i18next.t("Search for organizations...")}
                         allowAdditions
                         search={(filteredOptions, searchQuery) => filteredOptions}
-                      />
-
-                      <TextAreaField
-                        fieldPath="metadata.description"
-                        label={
-                          <FieldLabel
-                            htmlFor="metadata.description"
-                            icon="pencil"
-                            label={i18next.t("Short description")}
-                          />
-                        }
-                        fluid
                       />
                     </div>
                   </AccordionField>

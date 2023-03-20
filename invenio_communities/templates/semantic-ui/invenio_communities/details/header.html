@@ -104,14 +104,10 @@
         </div>
       </div> -->
     </div>
-    <!--TODO: Delete this menu to avoid using invenio_app_rdm-->
     <div class="ui divider mobile only"></div>
     <div
       class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
       {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions] %}
-        {% if item.name == "curation_policy" and not community.metadata.curation_policy %}
-        {% elif item.name == "about" and not community.metadata.page %}
-        {% else %}
           <a
             class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}"
             href="{{ item.url }}"
@@ -119,7 +115,6 @@
             <i aria-hidden="true" class="{{ item.icon }} icon"></i>
             {{ item.text }}
           </a>
-        {% endif %}
       {% endfor %}
     </div>
   </div>
