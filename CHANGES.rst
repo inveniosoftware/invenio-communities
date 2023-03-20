@@ -9,6 +9,18 @@
 Changes
 =======
 
+Version 6.0.0 (released 2023-03-20)
+-----------------------------------
+
+
+- upgrade community settings layout
+- split pages configuration
+- reorganise community details submenu
+- reorder details fields
+- rename service component configuration variable
+- add configurable error handler
+
+
 Version 5.5.0 (released 2023-03-13)
 -----------------------------------
 
