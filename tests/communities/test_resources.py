@@ -501,7 +501,7 @@ def test_simple_put_response(
     # Update deleted community
     res = client.delete(f"/communities/{id_}", headers=headers)
     assert res.status_code == 204
-    data["metadata"]["title"] = ("Deleted Community",)
+    data["metadata"]["title"] = ("Deleted community",)
     res = client.put(f"/communities/{id_}", headers=headers, json=data)
     assert res.status_code == 410
     assert res.json["message"] == "The record has been deleted."

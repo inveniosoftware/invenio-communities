@@ -44,8 +44,8 @@ class LogoSizeLimitError(CommunityError):
         )
 
 
-class OpenRequestsForCommunityError(CommunityError):
-    """The provided logo size exceeds limit."""
+class OpenRequestsForCommunityDeletionError(CommunityError):
+    """There are open requests related to a specific community and cannot be deleted."""
 
     def __init__(self, requests):
         """Initialise error."""

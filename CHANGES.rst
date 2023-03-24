@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 6.1.0 (released 2023-03-24)
+-----------------------------------
+
+- deny deletion of a community if there are open requests
+- add ghost community when the community cannot be resolved
+
+
 Version 6.0.0 (released 2023-03-20)
 -----------------------------------
 

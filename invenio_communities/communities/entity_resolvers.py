@@ -30,19 +30,18 @@ from .services.config import CommunityServiceConfig
 
 def pick_fields(identity, community_dict):
     """Pick fields to return when expanding the community obj."""
-    if community_dict.get("is_ghost"):
+    # in the case of a "ghost" community we return the representation as is because
+    # not all the fields are available as expected below
+    if community_dict.get("is_ghost", False):
         return community_dict
 
     fake_community_obj = SimpleNamespace(
         id=community_dict["id"],
         slug=community_dict["slug"],
     )
-    logo = community_dict.get("links", {}).get(
-        "logo",
-        current_communities.service.links_item_tpl.expand(identity, fake_community_obj)[
-            "logo"
-        ],
-    )
+    logo = current_communities.service.links_item_tpl.expand(
+        identity, fake_community_obj
+    )["logo"]
 
     metadata = community_dict["metadata"]
     access = community_dict["access"]
