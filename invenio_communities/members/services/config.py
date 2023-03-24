@@ -54,16 +54,20 @@ class PublicSearchOptions(SearchOptions):
             "user.profile.full_name^3",
             "user.profile.affiliations",
         ],
-        tree_transformer_factory=SearchFieldTransformer.factory(
-            mapping={
-                "affiliation": "user.profile.affiliations",
-                "affiliations": "user.profile.affiliations",
-                "full_name": "user.profile.full_name",
-                "fullname": "user.profile.full_name",
-                "name": "user.profile.full_name",
-                "username": "user.username",
-            }
-        ),
+        allow_list=[  # present to restrict to mapped fields
+            "user.profile.affiliations",
+            "user.profile.full_name",
+            "user.username",
+        ],
+        mapping={
+            "affiliation": "user.profile.affiliations",
+            "affiliations": "user.profile.affiliations",
+            "full_name": "user.profile.full_name",
+            "fullname": "user.profile.full_name",
+            "name": "user.profile.full_name",
+            "username": "user.username",
+        },
+        tree_transformer_cls=SearchFieldTransformer,
     )
 
 
@@ -136,17 +140,22 @@ class MemberSearchOptions(PublicSearchOptions):
             "user.profile.full_name^3",
             "user.profile.affiliations",
         ],
-        tree_transformer_factory=SearchFieldTransformer.factory(
-            mapping={
-                "affiliation": "user.profile.affiliations",
-                "affiliations": "user.profile.affiliations",
-                "email": "user.email",
-                "full_name": "user.profile.full_name",
-                "fullname": "user.profile.full_name",
-                "name": "user.profile.full_name",
-                "username": "user.username",
-            }
-        ),
+        allow_list=[  # present to restrict to mapping
+            "user.profile.affiliations",
+            "user.profile.full_name",
+            "user.username",
+            "user.email",
+        ],
+        mapping={
+            "affiliation": "user.profile.affiliations",
+            "affiliations": "user.profile.affiliations",
+            "email": "user.email",
+            "full_name": "user.profile.full_name",
+            "fullname": "user.profile.full_name",
+            "name": "user.profile.full_name",
+            "username": "user.username",
+        },
+        tree_transformer_cls=SearchFieldTransformer,
     )
 
 
