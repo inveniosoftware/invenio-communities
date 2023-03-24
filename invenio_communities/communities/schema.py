@@ -179,7 +179,7 @@ class CommunityGhostSchema(Schema):
     id = SanitizedUnicode(dump_only=True)
     metadata = fields.Constant(
         {
-            "title": _("Deleted Community"),
+            "title": _("Deleted community"),
             "description": _("The community was deleted."),
         },
         dump_only=True,

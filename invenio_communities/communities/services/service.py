@@ -36,7 +36,7 @@ from invenio_communities.communities.services.uow import (
 from invenio_communities.errors import (
     CommunityFeaturedEntryDoesNotExistError,
     LogoSizeLimitError,
-    OpenRequestsForCommunityError,
+    OpenRequestsForCommunityDeletionError,
 )
 from invenio_communities.generators import CommunityMembers
 
@@ -106,7 +106,7 @@ class CommunityService(RecordService):
             identity, record.id, {"is_open": True}
         )
         if len(requests) > 0:
-            raise OpenRequestsForCommunityError(len(requests))
+            raise OpenRequestsForCommunityDeletionError(len(requests))
 
         return super().delete(identity, record.id, revision_id)
 
