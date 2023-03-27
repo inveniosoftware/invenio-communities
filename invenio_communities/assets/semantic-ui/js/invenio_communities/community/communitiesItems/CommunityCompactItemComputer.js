@@ -29,7 +29,7 @@ export const CommunityCompactItemComputer = ({
     >
       <Image as={Item.Image} size="tiny" src={links.logo} />
       <Grid>
-        <Grid.Column width={10}>
+        <Grid.Column width={14}>
           <Item.Content verticalAlign="middle">
             <Item.Header
               as="h3"
@@ -54,21 +54,21 @@ export const CommunityCompactItemComputer = ({
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
-        <Grid.Column width={4}>
-          <Item.Content>
-            <Item.Meta>
-              {ui.permissions.can_include_directly && (
-                <Icon name="paper plane outline" size="big" />
-              )}
-              {!ui.permissions.can_include_directly && (
-                <>
-                  <Icon name="comments outline" size="big" />
-                  <Icon corner="top right" name="question" size="small" fitted />
-                </>
-              )}
-            </Item.Meta>
-          </Item.Content>
-        </Grid.Column>
+        {/*<Grid.Column width={4}>*/}
+        {/*  <Item.Content>*/}
+        {/*    <Item.Meta>*/}
+        {/*      {ui.permissions.can_include_directly && (*/}
+        {/*        <Icon name="paper plane outline" size="big" />*/}
+        {/*      )}*/}
+        {/*      {!ui.permissions.can_include_directly && (*/}
+        {/*        <>*/}
+        {/*          <Icon name="comments outline" size="big" />*/}
+        {/*          <Icon corner="top right" name="question" size="small" fitted />*/}
+        {/*        </>*/}
+        {/*      )}*/}
+        {/*    </Item.Meta>*/}
+        {/*  </Item.Content>*/}
+        {/*</Grid.Column>*/}
       </Grid>
       <div className="flex align-items-start">{actions}</div>
     </Item>
