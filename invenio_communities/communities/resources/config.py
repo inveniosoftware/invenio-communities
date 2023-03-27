@@ -11,12 +11,14 @@ import marshmallow as ma
 from flask_resources import (
     HTTPJSONException,
     JSONSerializer,
+    MultiDictSchema,
     ResponseHandler,
     create_error_handler,
 )
 from invenio_records_resources.resources import RecordResourceConfig
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
+from marshmallow import fields, post_load
 
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
@@ -58,6 +60,18 @@ community_error_handlers.update(
 )
 
 
+class RequestSearchExcludedCommunitiesArgsSchema(MultiDictSchema):
+    """Add parameter to exclude communities from search."""
+
+    excluded_communities = fields.String()
+
+    @post_load()
+    def create_list(self, data, **kwargs):
+        """Create the list of communities."""
+        data["excluded_communities"] = data.get("excluded_communities", "").split(",")
+        return data
+
+
 class CommunityResourceConfig(RecordResourceConfig, ConfiguratorMixin):
     """Communities resource configuration."""
 
@@ -84,6 +98,7 @@ class CommunityResourceConfig(RecordResourceConfig, ConfiguratorMixin):
         "COMMUNITIES_ERROR_HANDLERS", default=community_error_handlers
     )
     request_community_requests_search_args = RequestSearchRequestArgsSchema
+    excluded_communities = RequestSearchExcludedCommunitiesArgsSchema
 
     response_handlers = {
         "application/json": ResponseHandler(JSONSerializer()),

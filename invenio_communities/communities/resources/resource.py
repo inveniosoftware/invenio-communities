@@ -28,11 +28,16 @@ from invenio_records_resources.resources.records.resource import (
     request_view_args,
 )
 from invenio_records_resources.resources.records.utils import search_preference
+from invenio_search.engine import dsl
 
 from invenio_communities.proxies import current_communities
 
 request_community_requests_search_args = request_parser(
     from_conf("request_community_requests_search_args"), location="args"
+)
+
+excluded_communities = request_parser(
+    from_conf("excluded_communities"), location="args"
 )
 
 
@@ -60,6 +65,28 @@ class CommunityResource(RecordResource):
             route("DELETE", routes["featured-item"], self.featured_delete),
             route("GET", routes["community-requests"], self.search_community_requests),
         ]
+
+    @excluded_communities
+    @request_extra_args
+    @request_search_args
+    @response_handler(many=True)
+    def search(self):
+        """Perform a search over the items."""
+        identity = g.identity
+        community_ids = resource_requestctx.args.get("excluded_communities", [])
+        communities_list = []
+
+        for community_id in community_ids:
+            communities_list.append(dsl.Q("term", **{"id": community_id}))
+
+        hits = self.service.search(
+            identity=identity,
+            params=resource_requestctx.args,
+            search_preference=search_preference(),
+            expand=resource_requestctx.args.get("expand", False),
+            extra_filter=dsl.query.Bool("must_not", must_not=communities_list),
+        )
+        return hits.to_dict(), 200
 
     @request_search_args
     @response_handler(many=True)
