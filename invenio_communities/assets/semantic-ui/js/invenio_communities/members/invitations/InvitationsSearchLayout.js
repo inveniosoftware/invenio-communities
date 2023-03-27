@@ -10,7 +10,7 @@ import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
-import { RequestStatusFilter } from "../../requests/requests";
+import { RequestStatusFilter } from "@js/invenio_requests/search";
 import { Filters } from "../Filters";
 import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
 import { SearchBar, Sort } from "react-searchkit";

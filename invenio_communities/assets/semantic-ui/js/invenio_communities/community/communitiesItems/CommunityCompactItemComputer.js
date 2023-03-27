@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { CommunityTypeLabel } from "../labels";
 
-import { Grid, Icon, Image, Item } from "semantic-ui-react";
+import { Grid, Container, Image, Item } from "semantic-ui-react";
 import { RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
@@ -18,7 +18,8 @@ export const CommunityCompactItemComputer = ({
   extraLabels,
   itemClassName,
 }) => {
-  const { metadata, ui, links, access, id } = result;
+  const { metadata, links, access, id } = result;
+  const ui = result.ui;
 
   const communityType = ui?.type?.title_l10n;
 
@@ -54,23 +55,10 @@ export const CommunityCompactItemComputer = ({
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
-        <Grid.Column width={4}>
-          <Item.Content>
-            <Item.Meta>
-              {ui.permissions.can_include_directly && (
-                <Icon name="paper plane outline" size="big" />
-              )}
-              {!ui.permissions.can_include_directly && (
-                <>
-                  <Icon name="comments outline" size="big" />
-                  <Icon corner="top right" name="question" size="small" fitted />
-                </>
-              )}
-            </Item.Meta>
-          </Item.Content>
-        </Grid.Column>
       </Grid>
-      <div className="flex align-items-start">{actions}</div>
+      <Container fluid>
+        <div className="flex align-items-start ">{actions}</div>
+      </Container>
     </Item>
   );
 };
