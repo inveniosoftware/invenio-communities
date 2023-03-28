@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 6.1.1 (released 2023-03-28)
+-----------------------------------
+
+- refactor requests components
+
+
 Version 6.1.0 (released 2023-03-24)
 -----------------------------------
 
