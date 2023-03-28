@@ -8,13 +8,13 @@
 #}
 
 {% extends "invenio_communities/details/base.html" %}
+{% from "invenio_communities/details/macros/custom_fields.html" import list_vocabulary_values, list_string_values, show_custom_field %}
 {% set active_community_header_menu_item= 'about' %}
 
 {%- block page_body %}
   {{ super() }}
   <div class="ui text container rel-mt-2 rel-pt-1 rel-mb-2">
     {{ community.metadata.page | safe }}
-
     {% if community.ui.funding|length %}
       <h3 class="ui header">{{ _("Awards") }}</h3>
       <dl class="ui list">
@@ -51,5 +51,25 @@
 
       </dl>
     {% endif %}
+
+
+    {% set custom_fields = community.ui.custom_fields %}
+
+    {% for section_cfg in custom_fields_ui if custom_fields %}
+      {% set section_fields = section_cfg.fields %}
+
+      <h2>{{ section_cfg.section }}</h2>
+
+      {% for field_cfg in section_fields %}
+        {% set field_value = custom_fields.get(field_cfg.field) %}
+
+        {% if field_value and field_cfg.template %}
+          {% include field_cfg.template %}
+        {% elif field_value and not field_cfg.template %}
+          <dt class="ui tiny header">{{ field_cfg.props.label }}</dt>
+          {{ show_custom_field(field_value, field_cfg) }}
+        {% endif %}
+      {% endfor %}
+    {%- endfor %}
   </div>
 {%- endblock page_body -%}
