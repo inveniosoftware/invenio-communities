@@ -6,9 +6,7 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import {
-  defaultContribComponents
-} from "@js/invenio_requests/contrib";
+import { defaultContribComponents } from "@js/invenio_requests/contrib";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   ContribBucketAggregationElement,
@@ -22,7 +20,6 @@ import {
   RequestsResultsItemTemplateCommunity,
 } from "./requests";
 import {
-  RequestsResultsGridItemTemplate,
   RequestsSearchLayout,
   RequestsEmptyResultsWithState,
   RequestsResults,
@@ -33,13 +30,6 @@ const domContainer = document.getElementById("communities-request-search-root");
 const appName = "InvenioCommunities.RequestSearch";
 
 const community = JSON.parse(domContainer.dataset.community);
-
-const RequestsResultsGridItemTemplateWithCommunity = parametrize(
-  RequestsResultsGridItemTemplate,
-  {
-    community: community,
-  }
-);
 
 const RequestsResultsItemTemplateWithCommunity = parametrize(
   RequestsResultsItemTemplateCommunity,
@@ -52,18 +42,17 @@ const RequestsSearchLayoutWAppName = parametrize(RequestsSearchLayout, {
   appName: appName,
 });
 
-
 const defaultComponents = {
   [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
   [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
   [`${appName}.SearchApp.facets`]: ContribSearchAppFacets,
   [`${appName}.ResultsList.item`]: RequestsResultsItemTemplateWithCommunity,
-  [`${appName}.ResultsGrid.item`]: RequestsResultsGridItemTemplateWithCommunity,
+  [`${appName}.ResultsGrid.item`]: () => null,
   [`${appName}.SearchApp.layout`]: RequestsSearchLayoutWAppName,
   [`${appName}.SearchApp.results`]: RequestsResults,
   [`${appName}.SearchBar.element`]: RecordSearchBarElement,
   [`${appName}.EmptyResults.element`]: RequestsEmptyResultsWithState,
-  ...defaultContribComponents
+  ...defaultContribComponents,
 };
 
 const overriddenComponents = overrideStore.getAll();

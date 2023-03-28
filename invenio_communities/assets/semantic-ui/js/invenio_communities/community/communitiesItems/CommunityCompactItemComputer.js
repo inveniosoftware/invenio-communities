@@ -57,7 +57,7 @@ export const CommunityCompactItemComputer = ({
         </Grid.Column>
       </Grid>
       <Container fluid>
-        <div className="flex align-items-start ">{actions}</div>
+        <div className="flex flex-direction-column align-items-end">{actions}</div>
       </Container>
     </Item>
   );
