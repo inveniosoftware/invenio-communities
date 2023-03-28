@@ -334,7 +334,7 @@ def communities_about(pid_value, community, community_ui):
         "invenio_communities/details/about/index.html",
         community=community_ui,
         permissions=permissions,
-        custom_fields=load_custom_fields(dump_only_required=False),
+        custom_fields_ui=load_custom_fields(dump_only_required=False)["ui"],
     )
 
 
