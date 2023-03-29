@@ -11,9 +11,9 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import React from "react";
 import { Grid, Header, Segment } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
-import { DeleteButton } from "./DeleteButton";
 import { RenameCommunitySlugButton } from "./RenameCommunitySlugButton";
 import PropTypes from "prop-types";
+import { DeleteCommunityModal } from "./DeleteCommunityModal";
 
 const DangerZone = ({ community, onError }) => (
   <Segment className="negative rel-mt-2">
@@ -41,20 +41,14 @@ const DangerZone = ({ community, onError }) => (
         <p>{i18next.t("Once deleted, it will be gone forever. Please be certain.")}</p>
       </Grid.Column>
       <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
-        <DeleteButton
+        <DeleteCommunityModal
           community={community}
           label={i18next.t("Delete community")}
           redirectURL="/communities"
-          confirmationMessage={
-            <Header as="h3">
-              {i18next.t("Are you sure you want to delete this community?")}
-            </Header>
-          }
           onDelete={async () => {
             const client = new CommunityApi();
             await client.delete(community.id);
           }}
-          onError={onError}
         />
       </Grid.Column>
     </Grid>
