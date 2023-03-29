@@ -45,16 +45,10 @@ const DangerZone = ({ community, onError }) => (
           community={community}
           label={i18next.t("Delete community")}
           redirectURL="/communities"
-          confirmationMessage={
-            <Header as="h3">
-              {i18next.t("Are you sure you want to delete this community?")}
-            </Header>
-          }
           onDelete={async () => {
             const client = new CommunityApi();
             await client.delete(community.id);
           }}
-          onError={onError}
         />
       </Grid.Column>
     </Grid>
