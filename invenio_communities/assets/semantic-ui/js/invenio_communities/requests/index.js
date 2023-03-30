@@ -13,7 +13,6 @@ import {
   ContribBucketAggregationValuesElement,
   ContribSearchAppFacets,
 } from "@js/invenio_search_ui/components";
-import React from "react";
 import { overrideStore, parametrize } from "react-overridable";
 import {
   RecordSearchBarElement,
