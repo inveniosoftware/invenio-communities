@@ -6,13 +6,13 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import _truncate from "lodash/truncate";
 import { i18next } from "@translations/invenio_communities/i18next";
+import _truncate from "lodash/truncate";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { Image } from "react-invenio-forms";
-import { Grid, Header, Item, Button } from "semantic-ui-react";
 import Overridable from "react-overridable";
+import { Button, Grid, Header, Item } from "semantic-ui-react";
 
 class CarouselItem extends Component {
   render() {
@@ -48,7 +48,7 @@ class CarouselItem extends Component {
                   icon="upload"
                   labelPosition="left"
                   positive
-                  href={`/uploads/new?community=${community.id}`}
+                  href={`/uploads/new?community=${community.slug}`}
                   content={i18next.t("New upload")}
                 />
               </Grid.Column>
