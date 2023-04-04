@@ -49,6 +49,15 @@ def _not_blank(**kwargs):
     )
 
 
+def no_longer_than(max, **kwargs):
+    """Returns a character limit validation rule."""
+    return validate.Length(
+        error=_("Field cannot be longer than {max} characters.".format(max=max)),
+        max=max,
+        **kwargs
+    )
+
+
 def is_not_uuid(value):
     """Make sure value is not a UUID."""
     try:
@@ -104,8 +113,8 @@ class CommunityMetadataSchema(Schema):
     title = SanitizedUnicode(required=True, validate=_not_blank(max=250))
     description = SanitizedUnicode(validate=_not_blank(max=2000))
 
-    curation_policy = SanitizedHTML(validate=_not_blank(max=2000))
-    page = SanitizedHTML(validate=_not_blank(max=2000))
+    curation_policy = SanitizedHTML(validate=no_longer_than(max=2000))
+    page = SanitizedHTML(validate=no_longer_than(max=2000))
 
     type = fields.Nested(VocabularySchema, metadata={"type": "communitytypes"})
     website = fields.Url(validate=_not_blank())
