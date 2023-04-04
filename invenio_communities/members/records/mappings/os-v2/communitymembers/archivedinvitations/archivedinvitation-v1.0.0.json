@@ -68,6 +68,14 @@
               },
               "email_visibility": {
                 "type": "keyword"
+              },
+              "locale": {
+                "type": "keyword",
+                "index":"false"
+              },
+              "timezone": {
+                "type": "keyword",
+                "index":"false"
               }
             }
           }
