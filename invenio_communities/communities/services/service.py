@@ -111,20 +111,25 @@ class CommunityService(RecordService):
         return super().delete(identity, record.id, revision_id)
 
     def search_user_communities(
-        self, identity, params=None, search_preference=None, **kwargs
+        self, identity, params=None, search_preference=None, extra_filter=None, **kwargs
     ):
         """Search for records matching the querystring."""
         self.require_permission(identity, "search_user_communities")
 
         # Prepare and execute the search
         params = params or {}
+
+        current_user_filter = CommunityMembers().query_filter(identity)
+        if extra_filter:
+            current_user_filter = current_user_filter & extra_filter
+
         search_result = self._search(
             "search",
             identity,
             params,
             search_preference,
             permission_action=None,
-            extra_filter=CommunityMembers().query_filter(identity),
+            extra_filter=current_user_filter,
             **kwargs
         ).execute()
 
