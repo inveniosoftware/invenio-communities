@@ -114,7 +114,7 @@ export class DeleteButton extends Component {
       checkboxSlug,
       inputSlug,
     } = this.state;
-    const { label, community } = this.props;
+    const { label, community, stats } = this.props;
     const communitySlug = community.slug;
     return (
       <>
@@ -170,7 +170,10 @@ export class DeleteButton extends Component {
                     /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
                     <label>
                       <Trans>
-                        <strong>All the members</strong> will be removed from the
+                        <strong>{stats.members?
+                          stats.members.toString() :
+                          'All the'} members </strong>
+                        will be removed from the
                         community.
                       </Trans>
                     </label>
@@ -184,7 +187,9 @@ export class DeleteButton extends Component {
                     /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
                     <label>
                       <Trans>
-                        <strong>All the records</strong> will be removed from the
+                        <strong>{stats.records?
+                          stats.records.toString() :
+                          'All the'} records </strong> will be removed from the
                         community.
                       </Trans>
                     </label>

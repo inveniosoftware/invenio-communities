@@ -14,6 +14,7 @@ export class CommunitySettingsForm extends Component {
   };
   getInitialValues = () => {
     const { community, initialValues } = this.props;
+    console.log(community)
     return _defaultsDeep(community, initialValues);
   };
 

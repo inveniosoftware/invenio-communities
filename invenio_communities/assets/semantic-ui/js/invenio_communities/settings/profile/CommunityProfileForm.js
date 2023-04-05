@@ -315,7 +315,7 @@ class CommunityProfileForm extends Component {
   };
 
   render() {
-    const { types, customFields, community, hasLogo, defaultLogo, logoMaxSize } =
+    const { types, customFields, community, hasLogo, defaultLogo, logoMaxSize, stats } =
       this.props;
     const { error } = this.state;
     return (
@@ -571,7 +571,7 @@ class CommunityProfileForm extends Component {
               </Grid.Row>
               <Grid.Row className="danger-zone">
                 <Grid.Column width={16}>
-                  <DangerZone community={community} onError={this.setGlobalError} />
+                  <DangerZone community={community} stats={stats} onError={this.setGlobalError} />
                 </Grid.Column>
               </Grid.Row>
             </Grid>

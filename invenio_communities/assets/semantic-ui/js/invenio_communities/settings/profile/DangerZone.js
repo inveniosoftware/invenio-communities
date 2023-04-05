@@ -15,7 +15,7 @@ import { DeleteButton } from "./DeleteButton";
 import { RenameCommunitySlugButton } from "./RenameCommunitySlugButton";
 import PropTypes from "prop-types";
 
-const DangerZone = ({ community, onError }) => (
+const DangerZone = ({ community, stats, onError }) => (
   <Segment className="negative rel-mt-2">
     <Header as="h2" className="negative">
       {i18next.t("Danger zone")}
@@ -43,6 +43,7 @@ const DangerZone = ({ community, onError }) => (
       <Grid.Column mobile={16} tablet={6} computer={4} floated="right">
         <DeleteButton
           community={community}
+          stats={stats}
           label={i18next.t("Delete community")}
           redirectURL="/communities"
           onDelete={async () => {
@@ -57,6 +58,7 @@ const DangerZone = ({ community, onError }) => (
 
 DangerZone.propTypes = {
   community: PropTypes.object.isRequired,
+  // stats: PropTypes.object.isRequired,
   onError: PropTypes.func.isRequired,
 };
 

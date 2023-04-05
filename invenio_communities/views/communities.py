@@ -17,6 +17,7 @@ from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 
+from invenio_communities.members import MemberModel
 from invenio_communities.proxies import current_communities
 
 from ..communities.resources.ui_schema import TypesSchema
@@ -187,6 +188,11 @@ def communities_settings(pid_value, community, community_ui):
     if type(max_size) is int and max_size > 0:
         logo_size_limit = max_size
 
+    stats = {
+        "members": MemberModel.count_members(community_id=community.id),
+        "records": 2
+    }
+
     return render_template(
         "invenio_communities/details/settings/profile.html",
         community=community_ui,
@@ -196,6 +202,7 @@ def communities_settings(pid_value, community, community_ui):
         permissions=permissions,  # hide/show UI components
         active_menu_tab="settings",
         custom_fields=load_custom_fields(dump_only_required=False),
+        stats=stats
     )
 
 
