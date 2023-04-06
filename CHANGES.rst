@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 6.2.0 (released 2023-04-06)
+-----------------------------------
+
+- add custom fields of community to display on about page
+- allow blank curation policy page and about page
+- add extra filter to community service
+
 Version 6.1.1 (released 2023-03-28)
 -----------------------------------
 
