@@ -23,7 +23,7 @@ import _mapValues from "lodash/mapValues";
 import _pickBy from "lodash/pickBy";
 import _unset from "lodash/unset";
 import React, { Component } from "react";
-import { FundingField } from "react-invenio-deposit";
+import { FundingField } from "@js/invenio_vocabularies";
 import {
   AccordionField,
   CustomFields,
@@ -537,7 +537,6 @@ class CommunityProfileForm extends Component {
                       config={customFields.ui}
                       templateLoaders={[
                         (widget) => import(`@templates/custom_fields/${widget}.js`),
-                        (widget) => import(`react-invenio-deposit`),
                         (widget) => import(`react-invenio-forms`),
                       ]}
                       fieldPathPrefix="custom_fields"
