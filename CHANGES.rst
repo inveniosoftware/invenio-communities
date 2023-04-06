@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 6.2.1 (released 2023-04-06)
+-----------------------------------
+
+- improve UX of community deletion modal
+
 Version 6.2.0 (released 2023-04-06)
 -----------------------------------
 
