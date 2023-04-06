@@ -10,7 +10,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import React from "react";
 import Dropzone from "react-dropzone";
-import { humanReadableBytes } from "react-invenio-deposit";
+import { humanReadableBytes } from "react-invenio-forms";
 import { Image } from "react-invenio-forms";
 import { Button, Divider, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
