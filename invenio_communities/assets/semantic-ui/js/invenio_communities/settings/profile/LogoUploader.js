@@ -103,8 +103,9 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
             {i18next.t("Upload new picture")}
           </Button>
           <label className="helptext">
-            {i18next.t("File must be smaller than ")}
-            {humanReadableBytes(logoMaxSize, true)}
+            {i18next.t("File must be smaller than {{fileSize}}", {
+              fileSize: humanReadableBytes(logoMaxSize, true),
+            })}
           </label>
           {hasLogo && (
             <DeleteButton

@@ -69,7 +69,9 @@ export class SearchResultsBulkActions extends Component {
           />
           <Dropdown
             className="align-self-center fluid-responsive"
-            text={`${selectedCount} ${i18next.t("members selected")}`}
+            text={i18next.t("{{count}} members selected", {
+              count: selectedCount,
+            })}
             options={dropdownOptions}
             aria-label={i18next.t("bulk actions")}
             item
