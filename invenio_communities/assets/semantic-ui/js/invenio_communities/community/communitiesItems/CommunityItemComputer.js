@@ -70,8 +70,11 @@ export const CommunityItemComputer = ({ result }) => {
               </Item.Description>
             )}
             <Item.Extra className="text-align-right">
-              {i18next.t("Created: ")}
-              {DateTime.fromISO(result.created).toLocaleString(i18next.language)}
+              {i18next.t("Created: {{- createdDate}}", {
+                createdDate: DateTime.fromISO(result.created).toLocaleString(
+                  i18next.language
+                ),
+              })}
             </Item.Extra>
           </Item.Content>
         </Grid.Column>

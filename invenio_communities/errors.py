@@ -9,6 +9,7 @@
 
 from math import ceil
 
+from flask_babel import ngettext
 from invenio_i18n import gettext as _
 
 
@@ -50,9 +51,9 @@ class OpenRequestsForCommunityDeletionError(CommunityError):
     def __init__(self, requests):
         """Initialise error."""
         super().__init__(
-            _(
-                "There are {requests} request(s) open for this community. Please, resolve all of them before deleting this community.".format(
-                    requests=requests
-                )
+            ngettext(
+                "There is %(count)s request open for this community. Please, resolve it before deleting this community.",
+                "There are %(count)s requests open for this community. Please, resolve all of them before deleting this community.",
+                requests,
             )
         )

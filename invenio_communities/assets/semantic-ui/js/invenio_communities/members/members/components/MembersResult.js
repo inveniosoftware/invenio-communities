@@ -13,6 +13,7 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import { ModalContextProvider } from "../../components/modal_manager";
 import RemoveMemberModal from "../../components/RemoveMemberModal";
 import PropTypes from "prop-types";
+import { Trans } from "react-i18next";
 
 export const MembersResults = ({ paginationOptions, currentResultsState }) => {
   const { total } = currentResultsState.data;
@@ -57,10 +58,9 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
             <ResultsPerPage
               values={paginationOptions.resultsPerPage}
               label={(cmp) => (
-                <>
-                  {" "}
-                  {cmp} {i18next.t("results per page")}
-                </>
+                <Trans key="communitiesMembersResult" count={cmp}>
+                  {cmp} results per page
+                </Trans>
               )}
             />
           </Grid.Column>
