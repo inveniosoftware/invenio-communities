@@ -56,6 +56,6 @@ SuccessIcon.propTypes = {
 
 SuccessIcon.defaultProps = {
   show: false,
-  className: undefined,
+  className: "",
   content: undefined,
 };
