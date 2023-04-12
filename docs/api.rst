@@ -17,6 +17,7 @@ API Docs
 .. automodule:: invenio_communities.communities.records.models
    :members:
 
+
 Exceptions
 ----------
 
