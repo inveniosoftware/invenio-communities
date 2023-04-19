@@ -109,6 +109,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "public_members": CommunityLink("{+api}/communities/{id}/members/public"),
         "invitations": CommunityLink("{+api}/communities/{id}/invitations"),
         "requests": CommunityLink("{+api}/communities/{id}/requests"),
+        "records": CommunityLink("{+api}/communities/{id}/records"),
     }
 
     action_link = CommunityLink(
