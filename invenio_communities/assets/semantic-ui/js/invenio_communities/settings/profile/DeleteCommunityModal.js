@@ -12,7 +12,7 @@ import { Button, Icon, Modal, Message, Grid, Checkbox, Input } from "semantic-ui
 import PropTypes from "prop-types";
 import { Trans } from "react-i18next";
 import { communityErrorSerializer } from "../../api/serializers";
-import { ErrorMessage, withCancel } from "react-invenio-forms";
+import { ErrorMessage, http, withCancel } from "react-invenio-forms";
 
 export class DeleteCommunityModal extends Component {
   constructor(props) {
@@ -31,6 +31,10 @@ export class DeleteCommunityModal extends Component {
     this.state = this.INITIAL_STATE;
   }
 
+  componentDidMount() {
+    this.updateCommunityMetrics();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { modalOpen } = this.state;
     if (modalOpen && modalOpen !== prevState.modalOpen) {
@@ -43,7 +47,26 @@ export class DeleteCommunityModal extends Component {
 
   componentWillUnmount() {
     this.cancellableDelete && this.cancellableDelete.cancel();
+    this.cancellableMembersCountFetch && this.cancellableMembersCountFetch.cancel();
+    this.cancellableRecordsCountFetch && this.cancellableRecordsCountFetch.cancel();
   }
+
+  updateCommunityMetrics = async () => {
+    const { community } = this.props;
+    this.cancellableMembersCountFetch = withCancel(http.get(community.links.members));
+    this.cancellableRecordsCountFetch = withCancel(http.get(community.links.records));
+
+    try {
+      const membersResponse = await this.cancellableMembersCountFetch.promise;
+      const recordsResponse = await this.cancellableRecordsCountFetch.promise;
+      this.setState({
+        membersCount: membersResponse.data.hits.total,
+        recordsCount: recordsResponse.data.hits.total,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   handleInputChange = (event) => {
     this.setState({ inputSlug: event.target.value });
@@ -111,6 +134,8 @@ export class DeleteCommunityModal extends Component {
       checkboxRecords,
       checkboxSlug,
       inputSlug,
+      membersCount,
+      recordsCount,
     } = this.state;
     const { label, community } = this.props;
     const communitySlug = community.slug;
@@ -168,8 +193,8 @@ export class DeleteCommunityModal extends Component {
                     /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
                     <label>
                       <Trans>
-                        <strong>All the members</strong> will be removed from the
-                        community.
+                        <strong>{`${membersCount}`} members</strong> will be removed
+                        from the community.
                       </Trans>
                     </label>
                   }
@@ -182,8 +207,8 @@ export class DeleteCommunityModal extends Component {
                     /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
                     <label>
                       <Trans>
-                        <strong>All the records</strong> will be removed from the
-                        community.
+                        <strong>{`${recordsCount}`} records</strong> will be removed
+                        from the community.
                       </Trans>
                     </label>
                   }
