@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 6.3.0 (released 2023-04-20)
+-----------------------------------
+
+- search: add query parser mappings and allowed terms list
+- assets: change import components from invenio-vocabularies and react-invenio-forms
+
 Version 6.2.1 (released 2023-04-06)
 -----------------------------------
 
