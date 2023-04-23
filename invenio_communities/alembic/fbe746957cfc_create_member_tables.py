@@ -16,7 +16,10 @@ from sqlalchemy_utils import JSONType, UUIDType
 revision = "fbe746957cfc"
 down_revision = "f701a32e6fbe"
 branch_labels = ()
-depends_on = None
+depends_on = (
+    "a14fa442680f",
+    "2f63be7b7572",
+)  # where the accounts_role and request_metadata table are created
 
 
 def upgrade():

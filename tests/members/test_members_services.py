@@ -19,6 +19,7 @@ from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
 from invenio_communities.members.records.api import ArchivedInvitation, Member
+from invenio_communities.proxies import current_identities_cache
 
 
 #
@@ -127,9 +128,9 @@ def test_add_visible_property(member_service, community, owner, new_user, db):
 def test_add_invalid_data(member_service, community, owner, group, db):
     """Test various forms of invalid data."""
     # Invalid group id
-    data = {"members": [{"type": "group", "id": "invalid"}], "role": "reader"}
+    data = {"members": [{"type": "group", "id": 123}], "role": "reader"}
     assert pytest.raises(
-        InvalidMemberError,
+        ValidationError,
         member_service.add,
         owner.identity,
         community._record.id,
@@ -604,7 +605,7 @@ def test_leave_denied(db, member_service, community, any_user, invite_user):
     """No permission for others"""
     # some test is not undoing membership correctly
     # FIXME when https://github.com/inveniosoftware/pytest-invenio/issues/30
-    current_cache.clear()
+    current_identities_cache.flush()
     any_user.refresh()
     data = {"members": [{"type": "user", "id": str(any_user.id)}]}
     pytest.raises(

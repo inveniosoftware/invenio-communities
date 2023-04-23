@@ -27,12 +27,26 @@ from invenio_search.utils import build_alias_name
 
 from .fixtures.demo import create_fake_community
 from .fixtures.tasks import create_demo_community
-from .proxies import current_communities
+from .proxies import current_communities, current_identities_cache
 
 
 @click.group()
 def communities():
     """Invenio communities commands."""
+
+
+@click.group()
+def identity_cache():
+    """Invenio identity cache commands."""
+
+
+@identity_cache.command("clear")
+@with_appcontext
+def clear():
+    """Clears identity cache."""
+    click.secho("Clearing identity cache.", fg="green")
+    current_identities_cache.flush()
+    click.secho("Identity cache cleared.", fg="green")
 
 
 @communities.command("demo")

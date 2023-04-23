@@ -60,7 +60,7 @@ class BaseMemberModel(RecordMetadataBase):
     def group_id(cls):
         """Foreign key to the related group."""
         return db.Column(
-            db.Integer(),
+            db.String(80),
             db.ForeignKey(Role.id, ondelete="RESTRICT"),
             nullable=True,
         )

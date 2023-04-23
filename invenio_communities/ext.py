@@ -10,6 +10,8 @@
 """Invenio communities extension."""
 
 from flask_principal import identity_loaded
+from invenio_accounts.signals import datastore_post_commit
+from invenio_base.utils import load_or_import_from_config
 from invenio_records_resources.services import FileService
 
 from invenio_communities.communities import (
@@ -27,8 +29,9 @@ from invenio_communities.members import (
 )
 
 from . import config
+from .cache.cache import IdentityCache
 from .roles import RoleRegistry
-from .utils import load_community_needs
+from .utils import load_community_needs, on_datastore_post_commit
 
 
 class InvenioCommunities(object):
@@ -47,6 +50,7 @@ class InvenioCommunities(object):
         self.init_services(app)
         self.init_resource(app)
         self.init_hooks(app)
+        self.init_cache(app)
 
     def init_config(self, app):
         """Initialize configuration.
@@ -82,7 +86,21 @@ class InvenioCommunities(object):
 
     def init_hooks(self, app):
         """Initialize hooks."""
+        datastore_post_commit.connect(on_datastore_post_commit)
 
         @identity_loaded.connect_via(app)
         def on_identity_loaded(_, identity):
             load_community_needs(identity)
+
+    def cache_handler(self, app):
+        """Return the cache handler."""
+        handler_func = load_or_import_from_config(
+            "COMMUNITIES_IDENTITIES_CACHE_HANDLER", app
+        )
+        handler = handler_func(app)
+        assert isinstance(handler, IdentityCache)
+        return handler
+
+    def init_cache(self, app):
+        """Initialize cache."""
+        self.cache = self.cache_handler(app)

@@ -59,6 +59,15 @@ def app_config(app_config):
         "R": "Remote",
     }
     app_config["FILES_REST_DEFAULT_STORAGE_CLASS"] = "L"
+    app_config["COMMUNITIES_IDENTITIES_CACHE_TIME"] = 2
+
+    # Redis URL Cache for identities
+    app_config["COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"] = "redis://localhost:6379/4"
+
+    # Cache handler
+    app_config[
+        "COMMUNITIES_IDENTITIES_CACHE_HANDLER"
+    ] = "invenio_communities.cache.redis:IdentityRedisCache"
 
     return app_config
 
@@ -142,7 +151,7 @@ def users(UserFixture, app, database):
 @pytest.fixture(scope="module")
 def group(database):
     """Group."""
-    r = Role(name="it-dep")
+    r = Role(id="it-dep", name="it-dep")
     database.session.add(r)
     database.session.commit()
     return r
@@ -203,7 +212,7 @@ def admin_role_need(db):
          If no User/Role is associated with that Need (in the DB), the
          permission is expanded to an empty list.
     """
-    role = Role(name="admin-access")
+    role = Role(id="admin-access", name="admin-access")
     db.session.add(role)
 
     action_role = ActionRoles.create(action=action_admin_access, role=role)
@@ -223,7 +232,7 @@ def superuser_role_need(db):
          If no User/Role is associated with that Need (in the DB), the
          permission is expanded to an empty list.
     """
-    role = Role(name="superuser-access")
+    role = Role(id="superuser-access", name="superuser-access")
     db.session.add(role)
 
     action_role = ActionRoles.create(action=superuser_access, role=role)

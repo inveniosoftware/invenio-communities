@@ -79,7 +79,7 @@ export class ManagerMembersResultItem extends Component {
                   <Item.Header className={!result.member.description ? "mt-5" : ""}>
                     <b className="mr-10">{result.member.name}</b>
 
-                    {result.member.is_group && (
+                    {result.member.type === "group" && (
                       <Label className="mr-10">{i18next.t("Group")}</Label>
                     )}
                     {result.is_current_user && (
