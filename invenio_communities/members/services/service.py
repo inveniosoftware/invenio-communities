@@ -222,6 +222,7 @@ class MemberService(RecordService):
                 action,
                 identity,
                 record=m,
+                community=community,
                 errors=None,
                 uow=uow,
             )
@@ -241,15 +242,6 @@ class MemberService(RecordService):
         request_id=None,
     ):
         """Add a member to the community."""
-        # TODO: inefficient to do here, should be done in bulk instead.
-        if member["type"] == "group":
-            try:
-                # member['id'] is mapped from role.name
-                # (check invenio-users-resources)
-                member["id"] = Role.query.filter_by(name=member["id"]).one().id
-            except NoResultFound as e:
-                raise InvalidMemberError(member) from e
-
         member_arg = {member["type"] + "_id": member["id"]}
         try:
             # Integrity checks happens here which will validate:
@@ -596,6 +588,7 @@ class MemberService(RecordService):
             "members_update",
             identity,
             record=member,
+            community=community,
             errors=None,
             uow=uow,
         )
@@ -639,6 +632,7 @@ class MemberService(RecordService):
                 "members_delete",
                 identity,
                 record=m,
+                community=community,
                 errors=None,
                 uow=uow,
             )

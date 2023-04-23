@@ -295,3 +295,15 @@ For example:
 COMMUNITIES_ADMINISTRATION_DISABLED = True
 
 COMMUNITIES_ALLOW_RESTRICTED = True
+
+# Cache duration
+# 60 seconds * 60 (1 hour) * 24 (1 day)
+COMMUNITIES_IDENTITIES_CACHE_TIME = 60 * 60 * 24
+
+# Redis URL Cache for identities
+COMMUNITIES_IDENTITIES_CACHE_REDIS_URL = "redis://localhost:6379/4"
+
+# Cache handler
+COMMUNITIES_IDENTITIES_CACHE_HANDLER = (
+    "invenio_communities.cache.redis:IdentityRedisCache"
+)

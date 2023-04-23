@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Image, withCancel } from "react-invenio-forms";
 import { Dropdown, List } from "semantic-ui-react";
+import _truncate from "lodash/truncate";
 
 export class MembersSearchBar extends Component {
   constructor(props) {
@@ -67,7 +68,10 @@ export class MembersSearchBar extends Component {
             <List.Item>
               <Image size="mini" src={group.links.avatar} avatar />
               <List.Content>
-                <List.Header as="a">{group.id}</List.Header>
+                <List.Header as="a">{group.name}</List.Header>
+                <List.Description>
+                  {_truncate(group.description, { length: 30 })}
+                </List.Description>
               </List.Content>
             </List.Item>
           </List>
@@ -105,7 +109,7 @@ export class MembersSearchBar extends Component {
     };
 
     if (searchType === "group") {
-      serializedSelectedMember["name"] = newSelectedMember.id;
+      serializedSelectedMember["name"] = newSelectedMember.name;  // The schema will pass the id if the name is missing
     } else {
       serializedSelectedMember["name"] = this.serializeMemberName(newSelectedMember);
     }

@@ -90,6 +90,17 @@ class MemberMixin:
     )
 
     @classmethod
+    def get_memberships_from_group_ids(cls, identity, group_ids):
+        """Get community memberships for a given list of group ids."""
+        community_role_list = []
+        if group_ids:
+            query = cls.model_cls.query_memberships(
+                user_id=identity.id, group_ids=group_ids
+            )
+            community_role_list = [(str(comm_id), role) for comm_id, role in query]
+        return community_role_list
+
+    @classmethod
     def get_memberships(cls, identity):
         """Get community memberships for a given identity."""
         group_ids = []
@@ -114,10 +125,10 @@ class MemberMixin:
         """Get members of a community."""
         # Collect users and groups we are interested in
         user_ids = []
-        group_names = []
+        group_ids = []
         for m in members or []:
             if m["type"] == "group":
-                group_names.append(m["id"])
+                group_ids.append(m["id"])
             elif m["type"] == "user":
                 user_ids.append(m["id"])
             else:
@@ -129,13 +140,13 @@ class MemberMixin:
         # Apply user and group query if applicable
         user_q = cls.model_cls.user_id.in_(user_ids)
         groups_q = cls.model_cls.group_id.in_(
-            db.session.query(Role.id).filter(Role.name.in_(group_names))
+            db.session.query(Role.id).filter(Role.id.in_(group_ids))
         )
-        if user_ids and group_names:
+        if user_ids and group_ids:
             q = q.filter(or_(user_q, groups_q))
         elif user_ids:
             q = q.filter(user_q)
-        elif group_names:
+        elif group_ids:
             q = q.filter(groups_q)
 
         return [cls(obj.data, model=obj) for obj in q.all()]

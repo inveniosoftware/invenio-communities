@@ -23,7 +23,7 @@ from invenio_records_resources.services.records.components import (
 from marshmallow.exceptions import ValidationError
 
 from ...proxies import current_roles
-from ...utils import on_membership_change
+from ...utils import on_user_membership_change
 from ..records.systemfields.access import VisibilityEnum
 
 
@@ -126,7 +126,7 @@ class OwnershipComponent(ServiceComponent):
         )
 
         # Invalidate the membership cache
-        on_membership_change(identity=identity)
+        on_user_membership_change(identity=identity)
 
 
 class FeaturedCommunityComponent(ServiceComponent):

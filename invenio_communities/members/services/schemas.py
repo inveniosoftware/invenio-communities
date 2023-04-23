@@ -140,7 +140,8 @@ class PublicDumpSchema(Schema):
         return {
             "type": "group",
             "id": group["id"],
-            "name": group["id"] or "",
+            "name": group.get("name") or group["id"],
+            "description": group.get("description", ""),
             "avatar": avatar,
         }
 

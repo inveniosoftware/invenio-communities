@@ -18,4 +18,9 @@ current_communities = LocalProxy(lambda: current_app.extensions["invenio-communi
 current_roles = LocalProxy(
     lambda: current_app.extensions["invenio-communities"].roles_registry
 )
-"""Proxy to the extension."""
+"""Proxy to the roles."""
+
+current_identities_cache = LocalProxy(
+    lambda: current_app.extensions["invenio-communities"].cache
+)
+"""Proxy to the cache."""
