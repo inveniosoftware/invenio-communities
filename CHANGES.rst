@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 6.4.0 (released 2023-04-25)
+-----------------------------------
+
+- update mappings of members and invitations
+
 Version 6.3.0 (released 2023-04-20)
 -----------------------------------
 
