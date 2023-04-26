@@ -8,7 +8,16 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import React, { Component } from "react";
-import { Button, Icon, Modal, Message, Grid, Checkbox, Input } from "semantic-ui-react";
+import {
+  Button,
+  Icon,
+  Loader,
+  Modal,
+  Message,
+  Grid,
+  Checkbox,
+  Input,
+} from "semantic-ui-react";
 import PropTypes from "prop-types";
 import { Trans } from "react-i18next";
 import { communityErrorSerializer } from "../../api/serializers";
@@ -19,7 +28,7 @@ export class DeleteCommunityModal extends Component {
     super(props);
     this.INITIAL_STATE = {
       modalOpen: false,
-      loading: false,
+      loading: true,
       checkboxMembers: false,
       checkboxRecords: false,
       checkboxSlug: false,
@@ -36,8 +45,8 @@ export class DeleteCommunityModal extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { modalOpen } = this.state;
-    if (modalOpen && modalOpen !== prevState.modalOpen) {
+    const { loading, modalOpen } = this.state;
+    if (!loading && modalOpen && modalOpen !== prevState.modalOpen) {
       const {
         current: { inputRef },
       } = this.checkboxRef;
@@ -52,6 +61,7 @@ export class DeleteCommunityModal extends Component {
   }
 
   updateCommunityMetrics = async () => {
+    this.setState({ loading: true });
     const { community } = this.props;
     this.cancellableMembersCountFetch = withCancel(http.get(community.links.members));
     this.cancellableRecordsCountFetch = withCancel(http.get(community.links.records));
@@ -60,11 +70,16 @@ export class DeleteCommunityModal extends Component {
       const membersResponse = await this.cancellableMembersCountFetch.promise;
       const recordsResponse = await this.cancellableRecordsCountFetch.promise;
       this.setState({
+        loading: false,
         membersCount: membersResponse.data.hits.total,
         recordsCount: recordsResponse.data.hits.total,
       });
     } catch (error) {
       console.error(error);
+      const { message } = communityErrorSerializer(error);
+      if (message) {
+        this.setState({ error: message, loading: false });
+      }
     }
   };
 
@@ -98,7 +113,8 @@ export class DeleteCommunityModal extends Component {
   openConfirmModal = () => this.setState({ modalOpen: true });
 
   closeConfirmModal = () => {
-    this.setState(this.INITIAL_STATE);
+    let { loading } = this.state;
+    this.setState({ ...this.INITIAL_STATE, loading: loading });
     this.openModalBtnRef?.current?.focus();
   };
 
@@ -168,6 +184,7 @@ export class DeleteCommunityModal extends Component {
           size="tiny"
         >
           <Modal.Header>{i18next.t("Permanently delete community")}</Modal.Header>
+          {loading && <Loader active={loading} />}
           <Modal.Content>
             <Trans>
               Are you <strong>absolutely sure</strong> you want to delete the community?
@@ -190,8 +207,7 @@ export class DeleteCommunityModal extends Component {
                   id="members-confirm"
                   ref={this.checkboxRef}
                   label={
-                    /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
-                    <label>
+                    <label htmlFor="members-confirm">
                       <Trans>
                         <strong>{`${membersCount}`} members</strong> will be removed
                         from the community.
@@ -204,8 +220,7 @@ export class DeleteCommunityModal extends Component {
                 <Checkbox
                   id="records-confirm"
                   label={
-                    /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
-                    <label>
+                    <label htmlFor="records-confirm">
                       <Trans>
                         <strong>{`${recordsCount}`} records</strong> will be removed
                         from the community.
@@ -218,8 +233,7 @@ export class DeleteCommunityModal extends Component {
                 <Checkbox
                   id="slug-confirm"
                   label={
-                    /* eslint-disable-next-line jsx-a11y/label-has-associated-control */
-                    <label>
+                    <label htmlFor="slug-confirm">
                       <Trans>
                         You <strong>CANNOT</strong> reuse the community identifier "
                         {{ communitySlug }}".
