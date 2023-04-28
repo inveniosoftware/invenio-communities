@@ -17,13 +17,15 @@ export const CommunityCompactItemMobile = ({ result, actions }) => {
 
   return (
     <Item key={result.id} className="mobile only justify-space-between">
-      <Image size="mini" src={result.links.logo} />
+      <Image size="mini" src={result.links.logo} alt="" />
 
       <Item.Content verticalAlign="middle">
-        <Item.Header as="h3" className="ui small header flex align-items-center mb-5">
-          <a href={result.links.self_html} className="p-0">
-            {result.metadata.title}
-          </a>
+        <Item.Header
+          as="a"
+          href={result.links.self_html}
+          className="ui small header flex align-items-center mb-5"
+        >
+          {result.metadata.title}
         </Item.Header>
 
         <Item.Description
@@ -37,7 +39,9 @@ export const CommunityCompactItemMobile = ({ result, actions }) => {
         </Item.Extra>
       </Item.Content>
 
-      <div className="flex align-items-start">{actions}</div>
+      <div className="flex flex-direction-column align-items-center rel-mt-1">
+        {actions}
+      </div>
     </Item>
   );
 };

@@ -23,6 +23,7 @@ export const CommunityItemComputer = ({ result }) => {
         wrapped
         src={result.links.logo}
         className="community-logo"
+        alt=""
       />
       <Grid>
         <Grid.Column width={12}>
