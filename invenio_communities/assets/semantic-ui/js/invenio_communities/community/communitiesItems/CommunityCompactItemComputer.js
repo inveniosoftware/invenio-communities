@@ -4,23 +4,23 @@
 // InvenioRDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _truncate from "lodash/truncate";
-import PropTypes from "prop-types";
+import { i18next } from "@translations/invenio_app_rdm/i18next";
 import React from "react";
-import { CommunityTypeLabel } from "../labels";
+import PropTypes from "prop-types";
+import _truncate from "lodash/truncate";
 
-import { Grid, Container, Image, Item } from "semantic-ui-react";
-import { RestrictedLabel } from "../labels";
+import { Image, InvenioPopup } from "react-invenio-forms";
+import { Item, Grid, Icon } from "semantic-ui-react";
+import { CommunityTypeLabel, RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
   result,
   actions,
   extraLabels,
   itemClassName,
+  showPermissionLabel,
 }) => {
-  const { metadata, links, access, id } = result;
-  const ui = result.ui;
-
+  const { metadata, ui, links, access, id } = result;
   const communityType = ui?.type?.title_l10n;
 
   return (
@@ -28,17 +28,16 @@ export const CommunityCompactItemComputer = ({
       key={id}
       className={`computer tablet only justify-space-between community-item ${itemClassName}`}
     >
-      <Image as={Item.Image} size="tiny" src={links.logo} />
+      <Image size="tiny" src={links.logo} alt="" />
       <Grid>
         <Grid.Column width={10}>
           <Item.Content verticalAlign="middle">
             <Item.Header
-              as="h3"
+              as="a"
+              href={links.self_html}
               className="ui small header flex align-items-center mb-5"
             >
-              <a href={links.self_html} className="p-0">
-                {metadata.title}
-              </a>
+              {metadata.title}
             </Item.Header>
 
             <Item.Description>
@@ -55,22 +54,58 @@ export const CommunityCompactItemComputer = ({
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
+        <Grid.Column width={5} verticalAlign="middle" align="right">
+          {showPermissionLabel && (
+            <Item.Content>
+              <Item.Meta>
+                {ui?.permissions?.can_include_directly && (
+                  <InvenioPopup
+                    popupId="direct-publish-info-popup"
+                    size="small"
+                    trigger={<Icon name="paper plane outline" size="large" />}
+                    ariaLabel={i18next.t("Submission information")}
+                    content={i18next.t(
+                      "Submission to this community does not require review, and will be published immediately."
+                    )}
+                  />
+                )}
+                {!ui?.permissions?.can_include_directly && (
+                  <InvenioPopup
+                    popupId="requires-review-popup"
+                    size="small"
+                    ariaLabel={i18next.t("Submission information")}
+                    trigger={
+                      <span>
+                        <Icon name="comments outline" size="large" />
+                        <Icon corner="top right" name="question" size="small" fitted />
+                      </span>
+                    }
+                    content={i18next.t(
+                      "Submission to this community requires review and will be published upon curator's approval."
+                    )}
+                  />
+                )}
+              </Item.Meta>
+            </Item.Content>
+          )}
+        </Grid.Column>
       </Grid>
-      <Container fluid>
-        <div className="flex flex-direction-column align-items-end">{actions}</div>
-      </Container>
+      <div className="flex align-items-center">{actions}</div>
     </Item>
   );
 };
+
 CommunityCompactItemComputer.propTypes = {
   result: PropTypes.object.isRequired,
   actions: PropTypes.node,
   extraLabels: PropTypes.node,
   itemClassName: PropTypes.string,
+  showPermissionLabel: PropTypes.bool,
 };
 
 CommunityCompactItemComputer.defaultProps = {
   actions: undefined,
   extraLabels: undefined,
   itemClassName: "",
+  showPermissionLabel: false,
 };

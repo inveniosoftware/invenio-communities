@@ -5,7 +5,7 @@ import { Label, Icon } from "semantic-ui-react";
 export const CommunityTypeLabel = ({ type }) => {
   if (type === undefined) return null;
   return (
-    <Label size="tiny" className="primary">
+    <Label size="small" horizontal className="primary">
       <Icon name="tag" />
       {type}
     </Label>
@@ -13,5 +13,9 @@ export const CommunityTypeLabel = ({ type }) => {
 };
 
 CommunityTypeLabel.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
+};
+
+CommunityTypeLabel.defaultProps = {
+  type: undefined,
 };

@@ -24,7 +24,7 @@ export const CommunityItemMobile = ({ result, index }) => {
           <CommunityTypeLabel type={communityType} />
         </Item.Extra>
         <Item.Extra>
-          <Image wrapped src={result.links.logo} size="small" />
+          <Image wrapped src={result.links.logo} size="small" alt="" />
         </Item.Extra>
         <Item.Header as="h2" className="rel-mt-1">
           <a href={result.links.self_html}>{result.metadata.title}</a>
