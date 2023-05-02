@@ -75,8 +75,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     service_id = "communities"
 
     # Common configuration
-    permission_policy_cls = CommunityPermissionPolicy
-
+    permission_policy_cls = FromConfig(
+        "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy
+    )
     # Record specific configuration
     record_cls = Community
     result_item_cls = CommunityItem
@@ -131,12 +132,13 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     )
 
 
-class CommunityFileServiceConfig(FileServiceConfig):
+class CommunityFileServiceConfig(FileServiceConfig, ConfiguratorMixin):
     """Configuration for community files."""
 
     record_cls = Community
-    permission_policy_cls = CommunityPermissionPolicy
-
+    permission_policy_cls = FromConfig(
+        "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy
+    )
     file_links_item = {
         "self": FileLink("{+api}/communities/{id}/logo"),
     }
