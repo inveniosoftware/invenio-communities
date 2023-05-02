@@ -64,8 +64,8 @@ class InvenioCommunities(object):
         # Services
         self.service = CommunityService(
             CommunityServiceConfig.build(app),
-            files_service=FileService(CommunityFileServiceConfig),
-            members_service=MemberService(MemberServiceConfig()),
+            files_service=FileService(CommunityFileServiceConfig.build(app)),
+            members_service=MemberService(MemberServiceConfig.build(app)),
         )
 
     def init_resource(self, app):

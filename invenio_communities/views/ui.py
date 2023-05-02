@@ -12,12 +12,14 @@
 from datetime import datetime
 
 from babel.dates import format_datetime
-from flask import Blueprint, current_app, render_template
+from flask import Blueprint, current_app, g, render_template
 from flask_login import current_user
 from flask_menu import current_menu
 from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
+
+from invenio_communities.proxies import current_communities
 
 from ..searchapp import search_app_context
 from .communities import (
@@ -55,6 +57,12 @@ def record_permission_denied_error(error):
         # trigger the flask-login unauthorized handler
         return current_app.login_manager.unauthorized()
     return render_template(current_app.config["THEME_403_TEMPLATE"]), 403
+
+
+def _can_create_comunity():
+    """Function used to check if a user has permissions to create a community."""
+    can_create = current_communities.service.check_permission(g.identity, "create")
+    return can_create
 
 
 #
@@ -136,11 +144,11 @@ def create_ui_blueprint(app):
             "Communities",
             order=1,
         )
-
         current_menu.submenu("plus.community").register(
             "invenio_communities.communities_new",
             "New community",
             order=3,
+            visible_when=_can_create_comunity,
         )
 
         communities = current_menu.submenu("communities")

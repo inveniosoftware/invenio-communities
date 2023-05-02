@@ -15,6 +15,7 @@ from invenio_records_resources.services import (
     SearchOptions,
     pagination_links,
 )
+from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_records_resources.services.records.components import MetadataComponent
 from invenio_records_resources.services.records.queryparser import (
     QueryParser,
@@ -159,7 +160,7 @@ class MemberSearchOptions(PublicSearchOptions):
     )
 
 
-class MemberServiceConfig(RecordServiceConfig):
+class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     """Member Service Config."""
 
     service_id = "members"
@@ -174,8 +175,9 @@ class MemberServiceConfig(RecordServiceConfig):
     archive_indexer_cls = RecordServiceConfig.indexer_cls
     archive_indexer_queue_name = "archived-invitations"
 
-    permission_policy_cls = CommunityPermissionPolicy
-
+    permission_policy_cls = FromConfig(
+        "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy
+    )
     search = MemberSearchOptions
     search_public = PublicSearchOptions
     search_invitations = InvitationsSearchOptions

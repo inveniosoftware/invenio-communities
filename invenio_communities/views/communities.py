@@ -89,8 +89,10 @@ def _get_roles_can_invite(community_id):
 
 def communities_frontpage():
     """Communities index page."""
+    can_create = current_communities.service.check_permission(g.identity, "create")
     return render_template(
         "invenio_communities/frontpage.html",
+        can_create=can_create,
     )
 
 
@@ -145,6 +147,9 @@ def load_custom_fields(dump_only_required=False):
 @login_required
 def communities_new():
     """Communities creation page."""
+    can_create = current_communities.service.check_permission(g.identity, "create")
+    if not can_create:
+        raise PermissionDeniedError()
     return render_template(
         "invenio_communities/new.html",
         form_config=dict(
