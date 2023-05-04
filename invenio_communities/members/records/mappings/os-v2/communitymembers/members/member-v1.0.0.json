@@ -76,6 +76,13 @@
               "timezone": {
                 "type": "keyword",
                 "index":"false"
+              },
+              "notifications": {
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
