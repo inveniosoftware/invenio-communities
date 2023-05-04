@@ -335,7 +335,13 @@ class CommunityProfileForm extends Component {
             </Message>
             <Grid>
               <Grid.Row>
-                <Grid.Column mobile={16} tablet={10} computer={11} className="rel-pb-2">
+                <Grid.Column
+                  as="section"
+                  mobile={16}
+                  tablet={10}
+                  computer={11}
+                  className="rel-pb-2"
+                >
                   <AccordionField
                     includesPaths={[
                       "metadata.title",
@@ -558,7 +564,13 @@ class CommunityProfileForm extends Component {
                     {i18next.t("Save")}
                   </Button>
                 </Grid.Column>
-                <Grid.Column mobile={16} tablet={5} computer={4} floated="right">
+                <Grid.Column
+                  as="section"
+                  mobile={16}
+                  tablet={5}
+                  computer={4}
+                  floated="right"
+                >
                   <LogoUploader
                     community={community}
                     hasLogo={hasLogo}
@@ -569,7 +581,7 @@ class CommunityProfileForm extends Component {
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row className="danger-zone">
-                <Grid.Column width={16}>
+                <Grid.Column as="section" width={16}>
                   <DangerZone community={community} onError={this.setGlobalError} />
                 </Grid.Column>
               </Grid.Row>

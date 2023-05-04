@@ -26,6 +26,11 @@ export class RenameCommunitySlugButton extends Component {
     };
 
     this.formInputRef = React.createRef();
+    this.modalTriggerRef = React.createRef();
+  }
+
+  componentDidUpdate() {
+    this.formInputRef.current && this.formInputRef.current.focus();
   }
 
   componentWillUnmount() {
@@ -34,7 +39,10 @@ export class RenameCommunitySlugButton extends Component {
 
   handleOpen = () => this.setState({ modalOpen: true });
 
-  handleClose = () => this.setState({ modalOpen: false });
+  handleClose = () => {
+    this.setState({ modalOpen: false });
+    this.modalTriggerRef.current.focus();
+  };
 
   handleChange = async (event) => {
     // stop event propagation so the submit event is restricted to the modal
@@ -62,6 +70,7 @@ export class RenameCommunitySlugButton extends Component {
           .filter((error) => error.field === "slug")
           .map((error) => error.messages[0]);
         this.setState({ error: invalidIdError });
+        this.formInputRef.current.focus();
       }
     }
   };
@@ -72,6 +81,7 @@ export class RenameCommunitySlugButton extends Component {
     return (
       <>
         <Button
+          ref={this.modalTriggerRef}
           compact
           negative
           onClick={this.handleOpen}

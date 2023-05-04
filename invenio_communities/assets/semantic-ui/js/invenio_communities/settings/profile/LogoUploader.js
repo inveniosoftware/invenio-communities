@@ -77,7 +77,9 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
         <>
           <span {...getRootProps()}>
             <input {...getInputProps()} />
-            <Header className="mt-0">{i18next.t("Profile picture")}</Header>
+            <Header as="h2" size="small" className="mt-0">
+              {i18next.t("Profile picture")}
+            </Header>
             <Image
               src={logoURL}
               fallbackSrc={defaultLogo}
