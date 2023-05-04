@@ -11,25 +11,42 @@
 {%- set title = community.metadata.title + _(" settings") -%}
 
 {%- block page_body %}
-{{ super() }}
-<div  class="ui container grid communities-settings rel-mt-2">
-  {%- block settings_menu %}
-    {%- set menu_items = {
-      'profile': (_('Profile'), url_for('invenio_communities.communities_settings', pid_value=community.slug), ),
-      'privileges': (_('Privileges'), url_for('invenio_communities.communities_settings_privileges', pid_value=community.slug)),
-      'curation_policy': (_('Curation policy'), url_for('invenio_communities.communities_settings_curation_policy', pid_value=community.slug)),
-      'pages': (_('Pages'), url_for('invenio_communities.communities_settings_pages', pid_value=community.slug)),
-    } %}
-    <div class="sixteen wide mobile sixteen wide tablet three wide computer column">
-      <div class="ui vertical horizontal mobile tablet menu">
-        {% for menu_key, (menu_item, menu_link, ) in menu_items.items() %}
-          <a href="{{ menu_link }}" class="{{ 'brand item active' if active_settings_menu_item and menu_key == active_settings_menu_item }} {{ 'disabled' if not menu_link }} item">{{ menu_item }}</a>
-        {% endfor %}
-      </div>
-    </div>
+  {{ super() }}
+  <div class="ui container grid communities-settings rel-mt-2">
 
-  {%- endblock settings_menu %}
-  {%- block settings_body %}
-  {%- endblock settings_body %}
-</div>
+    {%- block settings_menu %}
+      {%- set menu_items = {
+        'profile': (_('Profile'), url_for('invenio_communities.communities_settings', pid_value=community.slug), ),
+        'privileges': (_('Privileges'), url_for('invenio_communities.communities_settings_privileges', pid_value=community.slug)),
+        'curation_policy': (_('Curation policy'), url_for('invenio_communities.communities_settings_curation_policy', pid_value=community.slug)),
+        'pages': (_('Pages'), url_for('invenio_communities.communities_settings_pages', pid_value=community.slug)),
+      } %}
+      <div class="sixteen wide mobile sixteen wide tablet three wide computer column">
+        <div role="tablist" class="ui vertical horizontal mobile tablet menu">
+          {% for menu_key, (menu_item, menu_link, ) in menu_items.items() %}
+          <a
+            role="tab"
+            id="{{ menu_key }}"
+            aria-selected="{{ active_settings_menu_item and menu_key == active_settings_menu_item }}"
+            href="{{ menu_link }}"
+            class="{{ 'brand item active' if active_settings_menu_item and menu_key == active_settings_menu_item }} {{ 'disabled' if not menu_link }} item"
+            >{{ menu_item }}</a
+          >
+          {% endfor %}
+        </div>
+      </div>
+    {%- endblock settings_menu %}
+
+    <div
+      role="tabpanel"
+      id="{{ active_settings_menu_item }}-panel"
+      aria-expanded="true"
+      hidden="false"
+      aria-labelledby="{{ active_settings_menu_item }}"
+      class="sixteen wide mobile sixteen wide tablet thirteen wide computer column"
+    >
+      {%- block settings_body %}
+      {%- endblock settings_body %}
+    </div>
+  </div>
 {%- endblock page_body %}

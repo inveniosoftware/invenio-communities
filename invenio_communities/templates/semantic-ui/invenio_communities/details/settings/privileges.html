@@ -18,11 +18,9 @@
 {% set active_community_header_menu_item = 'settings' %}
 
 {%- block settings_body %}
-<div class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
   <div
     id="app"
     data-form-config='{{ form_config | tojson }}'
     data-community='{{ community | tojson}}'>
   </div>
-</div>
 {%- endblock settings_body %}
