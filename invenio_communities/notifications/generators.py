@@ -12,6 +12,7 @@ from invenio_access.permissions import system_identity
 from invenio_notifications.models import Recipient
 from invenio_notifications.services.generators import RecipientGenerator
 from invenio_records.dictutils import dict_lookup
+from invenio_search.engine import dsl
 from invenio_users_resources.proxies import current_users_service
 
 from invenio_communities.proxies import current_communities
@@ -28,14 +29,18 @@ class CommunityMembersRecipient(RecipientGenerator):
     def __call__(self, notification, recipients: dict):
         """Fetch community and add members as recipients, based on roles."""
         community = dict_lookup(notification.context, self.key)
-        members = current_communities.service.members.search(
+
+        filter_ = dsl.Q("terms", **{"role": self.roles}) if self.roles else None
+
+        members = current_communities.service.members.scan(
             system_identity,
             community["id"],
-            roles=self.roles,
+            extra_filter=filter_,
         )
 
         user_ids = []
         for m in members:
+            # TODO: add support for groups
             if m["member"]["type"] != "user":
                 continue
             user_ids.append(m["member"]["id"])
@@ -43,7 +48,8 @@ class CommunityMembersRecipient(RecipientGenerator):
         if not user_ids:
             return recipients
 
-        users = current_users_service.read_many(system_identity, user_ids)
+        filter_ = dsl.Q("terms", **{"id": user_ids})
+        users = current_users_service.scan(system_identity, extra_filter=filter_)
         for u in users:
             recipients[u["id"]] = Recipient(data=u)
         return recipients

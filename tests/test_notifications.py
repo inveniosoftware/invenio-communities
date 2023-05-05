@@ -23,7 +23,7 @@ def test_user_recipient_generator(community, members):
     # get all members of the community
     recipients = {}
     CommunityMembersRecipient(key="community")(n, recipients=recipients)
-    assert len(members) == len(recipients)
+    assert len(recipients) == len(members)
     assert [u.id for u in members.values()] == list(recipients.keys())
 
     # get owner and reader only
