@@ -26,25 +26,35 @@ export const CommunityItemMobile = ({ result, index }) => {
         <Item.Extra>
           <Image wrapped src={result.links.logo} size="small" />
         </Item.Extra>
-        <Item.Header as="h2" className="rel-mt-1">
+        <Item.Header as="h2" className="rel-mt-1 mb-10">
           <a href={result.links.self_html}>{result.metadata.title}</a>
         </Item.Header>
-        <Item.Meta>
-          <div
-            className="truncate-lines-2"
+
+        {result.metadata.description && (
+          <Item.Description
+            as="p"
+            className="truncate-lines-2 mb-10"
             dangerouslySetInnerHTML={{
               __html: result.metadata.description,
             }}
           />
-        </Item.Meta>
-        <Item>
-          {result.metadata.website && (
-            <a href={result.metadata.website} target="_blank" rel="noopener noreferrer">
-              {result.metadata.website}
-            </a>
-          )}
-        </Item>
-        <Item.Extra>
+        )}
+
+        {result.metadata.website && (
+          <Item.Meta className="mb-10">
+            {result.metadata.website && (
+              <a
+                href={result.metadata.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {result.metadata.website}
+              </a>
+            )}
+          </Item.Meta>
+        )}
+
+        <Item.Extra className="mb-10">
           {i18next.t("Created: ")}
           {DateTime.fromISO(result.created).toLocaleString(i18next.language)}
         </Item.Extra>

@@ -26,11 +26,15 @@ export const CommunityCompactItemMobile = ({ result, actions }) => {
           </a>
         </Item.Header>
 
-        <Item.Description
-          dangerouslySetInnerHTML={{
-            __html: _truncate(result.metadata.description, { length: 50 }),
-          }}
-        />
+        {result.metadata.description && (
+          <Item.Description
+            as="p"
+            dangerouslySetInnerHTML={{
+              __html: _truncate(result.metadata.description, { length: 50 }),
+            }}
+          />
+        )}
+
         <Item.Extra>
           <RestrictedLabel access={result.access.visibility} />
           <CommunityTypeLabel type={communityType} />
