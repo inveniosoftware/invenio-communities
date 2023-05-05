@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2023 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -328,6 +328,21 @@ def test_search_members(
         owner.identity, community._record.id, q=f"email:newuser@newuser.org"
     )
     assert res.to_dict()["hits"]["total"] == 1
+
+
+#
+# Scan members
+#
+def test_scan_members(member_service, community, owner, clean_index):
+    """Scan should work the same as search."""
+    res_search = member_service.search(owner.identity, community._record.id)
+
+    # scan members (pagination not possible with scan)
+    res_scan = member_service.scan(owner.identity, community._record.id)
+    scan_hits = res_scan.to_dict()["hits"]["hits"]
+    assert len(scan_hits) == res_search.total
+    for index, hit in enumerate(res_search.to_dict()["hits"]["hits"]):
+        assert scan_hits[index] == hit
 
 
 def test_search_public_members(

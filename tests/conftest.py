@@ -21,6 +21,7 @@ from invenio_admin.permissions import action_admin_access
 from invenio_app.factory import create_api
 from invenio_records_resources.services.custom_fields import TextCF
 from invenio_requests.proxies import current_events_service, current_requests_service
+from invenio_users_resources.records import UserAggregate
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 from invenio_vocabularies.records.api import Vocabulary
 
@@ -441,6 +442,8 @@ def members(member_service, community, users, db):
         )
         member_service.indexer.index(m)
         Member.index.refresh()
+    # reindexing users to make sure the user service is up-to-date
+    UserAggregate.index.refresh()
     db.session.commit()
     return users
 

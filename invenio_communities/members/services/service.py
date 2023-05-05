@@ -328,18 +328,57 @@ class MemberService(RecordService):
             )
 
     def search(
-        self, identity, community_id, params=None, search_preference=None, **kwargs
+        self,
+        identity,
+        community_id,
+        params=None,
+        search_preference=None,
+        extra_filter=None,
+        **kwargs
     ):
         """Search."""
+        # Apply extra filters
+        filter_ = dsl.Q("term", **{"active": True})
+        if extra_filter:
+            filter_ &= extra_filter
+
         return self._members_search(
             identity,
             community_id,
             "members_search",
             self.member_dump_schema,
             self.config.search,
-            extra_filter=dsl.Q("term", **{"active": True}),
+            extra_filter=filter_,
             params=params,
             search_preference=search_preference,
+            **kwargs
+        )
+
+    def scan(
+        self,
+        identity,
+        community_id,
+        params=None,
+        search_preference=None,
+        extra_filter=None,
+        **kwargs
+    ):
+        """Scan community members to retrieve all matching the query."""
+        # Apply extra filters
+        filter_ = dsl.Q("term", **{"active": True})
+        if extra_filter:
+            filter_ &= extra_filter
+
+        return self._members_search(
+            identity,
+            community_id,
+            "members_search",
+            self.member_dump_schema,
+            self.config.search,
+            extra_filter=filter_,
+            params=params,
+            search_preference=search_preference,
+            scan=True,
             **kwargs
         )
 
@@ -396,6 +435,7 @@ class MemberService(RecordService):
         extra_filter=None,
         params=None,
         search_preference=None,
+        scan=False,
         **kwargs
     ):
         """Members search."""
@@ -420,14 +460,16 @@ class MemberService(RecordService):
             extra_filter=filter,
             **kwargs
         )
-        search_result = search.execute()
+        search_result = search.scan() if scan else search.execute()
 
         return self.result_list(
             self,
             identity,
             search_result,
             params,
-            links_tpl=LinksTemplate(
+            links_tpl=None
+            if scan
+            else LinksTemplate(
                 self.config.links_search,
                 context={
                     "args": params,
