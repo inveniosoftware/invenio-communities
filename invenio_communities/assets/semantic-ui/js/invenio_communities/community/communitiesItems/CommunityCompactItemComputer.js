@@ -40,13 +40,14 @@ export const CommunityCompactItemComputer = ({
               {metadata.title}
             </Item.Header>
 
-            <Item.Description>
-              <div
+            {metadata.description && (
+              <Item.Description
+                as="p"
                 dangerouslySetInnerHTML={{
                   __html: _truncate(metadata.description, { length: 50 }),
                 }}
               />
-            </Item.Description>
+            )}
             <Item.Extra>
               <RestrictedLabel access={access.visibility} />
               <CommunityTypeLabel type={communityType} />

@@ -31,23 +31,28 @@ export const CommunityItemComputer = ({ result }) => {
             <Item.Header size="medium" as={Header}>
               <a href={result.links.self_html}>{result.metadata.title}</a>
             </Item.Header>
-            <Item.Meta>
-              <a
-                href={result.metadata.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {result.metadata.website}
-              </a>
-            </Item.Meta>
-            <Item.Description>
-              <div
+
+            {result.metadata.website && (
+              <Item.Meta>
+                <a
+                  href={result.metadata.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {result.metadata.website}
+                </a>
+              </Item.Meta>
+            )}
+
+            {result.metadata.description && (
+              <Item.Description
+                as="p"
                 className="truncate-lines-2"
                 dangerouslySetInnerHTML={{
                   __html: result.metadata.description,
                 }}
               />
-            </Item.Description>
+            )}
 
             <Item.Extra>
               <RestrictedLabel access={result.access.visibility} />
