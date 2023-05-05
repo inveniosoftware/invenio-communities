@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 6.5.0 (released 2023-05-05)
+-----------------------------------
+
+- update mappings of members and invitations
+- add configurable community permission policy
+
 Version 6.4.0 (released 2023-04-25)
 -----------------------------------
 
