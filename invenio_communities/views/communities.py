@@ -150,6 +150,11 @@ def communities_new():
     can_create = current_communities.service.check_permission(g.identity, "create")
     if not can_create:
         raise PermissionDeniedError()
+
+    can_create_restricted = current_communities.service.check_permission(
+        g.identity, "create_restricted"
+    )
+
     return render_template(
         "invenio_communities/new.html",
         form_config=dict(
@@ -159,6 +164,7 @@ def communities_new():
         custom_fields=load_custom_fields(
             dump_only_required=True,
         ),
+        can_create_restricted=can_create_restricted,
     )
 
 
@@ -166,7 +172,13 @@ def communities_new():
 def communities_settings(pid_value, community, community_ui):
     """Community settings/profile page."""
     permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "search_invites"]
+        [
+            "update",
+            "read",
+            "search_requests",
+            "search_invites",
+            "manage_access",
+        ]
     )
     if not permissions["can_update"]:
         raise PermissionDeniedError()
@@ -224,9 +236,16 @@ def communities_requests(pid_value, community, community_ui):
 def communities_settings_privileges(pid_value, community, community_ui):
     """Community settings/privileges page."""
     permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "search_invites"]
+        [
+            "update",
+            "read",
+            "search_requests",
+            "search_invites",
+            "manage_access",
+        ]
     )
-    if not permissions["can_update"]:
+
+    if not permissions["can_manage_access"]:
         raise PermissionDeniedError()
 
     return render_template(
@@ -242,7 +261,10 @@ def communities_settings_privileges(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_settings_curation_policy(pid_value, community, community_ui):
     """Community settings/curation-policy page."""
-    permissions = community.has_permissions_to(["update", "read", "search_requests"])
+    permissions = community.has_permissions_to(
+        ["update", "read", "search_requests", "manage_access"]
+    )
+
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
@@ -260,7 +282,13 @@ def communities_settings_curation_policy(pid_value, community, community_ui):
 def communities_settings_pages(pid_value, community, community_ui):
     """Community settings/curation-policy page."""
     permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "search_invites"]
+        [
+            "update",
+            "read",
+            "search_requests",
+            "search_invites",
+            "manage_access",
+        ]
     )
     if not permissions["can_update"]:
         raise PermissionDeniedError()

@@ -70,10 +70,22 @@ class CommunityAccessComponent(ServiceComponent):
     def _populate_access_and_validate(self, identity, data, record, **kwargs):
         """Populate and validate the community's access field."""
         if record is not None and "access" in data:
-            # populate the record's access field with the data already
-            # validated by marshmallow
+            # "access" only exists in existing community
+            operation = (
+                "create_restricted" if "access" not in record else "manage_access"
+            )
+
+            access = data.get("access", {})
+            new_record_access = access.get("visibility")
+            if record.access.visibility != new_record_access:
+                can_do_operation = self.service.check_permission(
+                    identity, operation, record=record
+                )
+                if not can_do_operation and "visibility" in access:
+                    access["visibility"] = record.access.visibility
+
             record.setdefault("access", {})
-            record["access"].update(data.get("access", {}))
+            record["access"].update(access)
             record.access.refresh_from_dict(record.get("access"))
 
     def create(self, identity, data=None, record=None, **kwargs):

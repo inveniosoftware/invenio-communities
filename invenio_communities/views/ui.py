@@ -59,7 +59,7 @@ def record_permission_denied_error(error):
     return render_template(current_app.config["THEME_403_TEMPLATE"]), 403
 
 
-def _can_create_comunity():
+def _can_create_community():
     """Function used to check if a user has permissions to create a community."""
     can_create = current_communities.service.check_permission(g.identity, "create")
     return can_create
@@ -148,7 +148,7 @@ def create_ui_blueprint(app):
             "invenio_communities.communities_new",
             "New community",
             order=3,
-            visible_when=_can_create_comunity,
+            visible_when=_can_create_community,
         )
 
         communities = current_menu.submenu("communities")
