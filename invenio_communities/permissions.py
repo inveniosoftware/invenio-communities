@@ -29,6 +29,7 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     GroupsEnabled,
+    IfConfig,
     IfPolicyClosed,
     IfRestricted,
 )
@@ -49,6 +50,14 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_update = [CommunityOwners(), SystemProcess()]
 
     can_delete = [CommunityOwners(), SystemProcess()]
+
+    can_manage_access = [
+        IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=can_update, else_=[]),
+    ]
+
+    can_create_restricted = [
+        IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=can_create, else_=[]),
+    ]
 
     can_search = [AnyUser(), SystemProcess()]
 

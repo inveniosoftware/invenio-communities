@@ -293,3 +293,5 @@ For example:
 
 # Preview: Feature flag for invenio-app-rdm v11
 COMMUNITIES_ADMINISTRATION_DISABLED = True
+
+COMMUNITIES_ALLOW_RESTRICTED = True
