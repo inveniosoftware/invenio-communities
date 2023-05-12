@@ -14,7 +14,10 @@ from uuid import UUID
 
 from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services.custom_fields import CustomFieldsSchema
-from invenio_records_resources.services.records.schema import BaseRecordSchema
+from invenio_records_resources.services.records.schema import (
+    BaseGhostSchema,
+    BaseRecordSchema,
+)
 from invenio_vocabularies.contrib.affiliations.schema import AffiliationRelationSchema
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
 from invenio_vocabularies.services.schema import (
@@ -182,7 +185,7 @@ class CommunityFeaturedSchema(Schema):
     )
 
 
-class CommunityGhostSchema(Schema):
+class CommunityGhostSchema(BaseGhostSchema):
     """Community ghost schema."""
 
     id = SanitizedUnicode(dump_only=True)
@@ -193,4 +196,3 @@ class CommunityGhostSchema(Schema):
         },
         dump_only=True,
     )
-    is_ghost = fields.Boolean(dump_only=True)
