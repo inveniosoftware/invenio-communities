@@ -276,6 +276,36 @@ def minimal_community():
 
 
 @pytest.fixture(scope="module")
+def minimal_restricted_community_1():
+    """Minimal restricted community metadata."""
+    return {
+        "access": {
+            "visibility": "restricted",
+            "record_policy": "closed",
+        },
+        "slug": "community1",
+        "metadata": {
+            "title": "Community 1",
+        },
+    }
+
+
+@pytest.fixture(scope="module")
+def minimal_restricted_community_2():
+    """Minimal restricted community metadata."""
+    return {
+        "access": {
+            "visibility": "restricted",
+            "record_policy": "closed",
+        },
+        "slug": "community2",
+        "metadata": {
+            "title": "Community 2",
+        },
+    }
+
+
+@pytest.fixture(scope="module")
 def full_community():
     """Full community data as dict coming from the external world."""
     return {
