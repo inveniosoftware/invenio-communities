@@ -785,3 +785,68 @@ def test_featured_communities(
 
     res = client.delete(f"/communities/{c_id_}/featured/0", headers=headers)
     assert res.status_code == 404
+
+
+def test_simple_flow_restricted_community(
+    app,
+    client,
+    location,
+    minimal_restricted_community_1,
+    minimal_restricted_community_2,
+    headers,
+    owner,
+    db,
+):
+    """Test a simple REST API flow."""
+    client = owner.login(client)
+
+    # Create a community
+    res = client.post(
+        "/communities", headers=headers, json=minimal_restricted_community_1
+    )
+    Member.index.refresh()
+
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+
+    created_community = res.json
+    id_ = created_community["id"]
+    slug = created_community["slug"]
+
+    # Read the community
+    res = client.get(f"/communities/{id_}", headers=headers)
+    assert res.status_code == 200
+    assert res.json["metadata"] == created_community["metadata"]
+
+    read_community = res.json
+    Community.index.refresh()
+
+    app.config["COMMUNITIES_ALLOW_RESTRICTED"] = False
+
+    # Create a new community, which should default to public
+    res = client.post(
+        "/communities", headers=headers, json=minimal_restricted_community_2
+    )
+    Member.index.refresh()
+
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+
+    created_community = res.json
+    id_ = created_community["id"]
+
+    # Get the community
+    res = client.get(f"/communities/{id_}", headers=headers)
+    assert res.status_code == 200
+    assert res.json["access"]["visibility"] == "public"
+
+    read_community = res.json
+
+    # Update community
+    data = copy.deepcopy(read_community)
+    data["metadata"]["title"] = "New title"
+    data["access"]["visibility"] = "restricted"
+    res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 200
+    assert res.json["metadata"]["title"] == "New title"
+    assert res.json["access"]["visibility"] == "public"
