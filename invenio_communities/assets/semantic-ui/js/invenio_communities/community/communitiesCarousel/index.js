@@ -16,6 +16,7 @@ const fetchUrl = communitiesCarouselContainer.dataset.fetchUrl;
 const intervalDelay = parseInt(communitiesCarouselContainer.dataset.intervalDelay);
 const animationSpeed = parseInt(communitiesCarouselContainer.dataset.animationSpeed);
 const defaultLogo = communitiesCarouselContainer.dataset.defaultLogo;
+const itemsPerPage = communitiesCarouselContainer.dataset.itemsPerPage;
 
 const overriddenComponents = overrideStore.getAll();
 
@@ -27,6 +28,7 @@ ReactDOM.render(
       intervalDelay={intervalDelay}
       animationSpeed={animationSpeed}
       defaultLogo={defaultLogo}
+      itemsPerPage={itemsPerPage}
     />
   </OverridableContext.Provider>,
   communitiesCarouselContainer
