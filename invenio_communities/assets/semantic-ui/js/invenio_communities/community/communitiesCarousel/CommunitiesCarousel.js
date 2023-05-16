@@ -47,12 +47,14 @@ class CommunitiesCarousel extends Component {
   }
 
   getDataIndex = (index) => {
+    const { itemsPerPage } = this.props;
     const {
       data: { hits },
     } = this.state;
-    if (index > hits.length - 1) return 0;
-    if (index < 0) return hits.length - 1;
-    return index;
+    const i = index * parseInt(itemsPerPage);
+    if (i > hits.length - 1) return 0;
+    if (i < 0) return hits.length - 1;
+    return i;
   };
 
   runCarousel = async (newIndex) => {
@@ -146,20 +148,28 @@ class CommunitiesCarousel extends Component {
     );
   };
 
+  carouselSlides = () => {
+    const { data, activeIndex } = this.state;
+    const { defaultLogo, itemsPerPage } = this.props;
+
+    const sliceEnd = parseInt(activeIndex) + parseInt(itemsPerPage);
+
+    const carouselSlides = data.hits
+      ?.slice(activeIndex, sliceEnd)
+      .map((community) => (
+        <CarouselItem
+          community={community}
+          defaultLogo={defaultLogo}
+          key={community.id}
+        />
+      ));
+
+    return carouselSlides;
+  };
+
   render() {
     const { data, animationDirection, activeIndex, isLoading } = this.state;
-    const { title, animationSpeed, defaultLogo } = this.props;
-
-    const carouselSlides = data.hits?.map(
-      (community, index) =>
-        index === activeIndex && (
-          <CarouselItem
-            community={community}
-            defaultLogo={defaultLogo}
-            key={community.id}
-          />
-        )
-    );
+    const { title, animationSpeed, itemsPerPage } = this.props;
 
     return (
       <Overridable
@@ -169,10 +179,11 @@ class CommunitiesCarousel extends Component {
         activeIndex={activeIndex}
         title={title}
         animationSpeed={animationSpeed}
-        carouselSlides={carouselSlides}
+        carouselSlides={this.carouselSlides()}
         stopCarousel={this.stopCarousel}
         startCarousel={this.startCarousel}
         runCarousel={this.runCarousel}
+        itemsPerPage={itemsPerPage}
       >
         <>
           {isLoading && this.renderPlaceholder()}
@@ -215,7 +226,7 @@ class CommunitiesCarousel extends Component {
                     animation={`carousel-slide ${animationDirection}`}
                     directional
                   >
-                    {carouselSlides}
+                    {this.carouselSlides()}
                   </Transition.Group>
                 </Grid.Column>
 
@@ -254,6 +265,7 @@ CommunitiesCarousel.propTypes = {
   intervalDelay: PropTypes.number.isRequired,
   animationSpeed: PropTypes.number.isRequired,
   defaultLogo: PropTypes.string.isRequired,
+  itemsPerPage: PropTypes.string.isRequired,
 };
 
 export default Overridable.component(
