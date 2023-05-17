@@ -24,6 +24,7 @@ from marshmallow.exceptions import ValidationError
 
 from ...proxies import current_roles
 from ...utils import on_membership_change
+from ..records.systemfields.access import VisibilityEnum
 
 
 class PIDComponent(ServiceComponent):
@@ -69,24 +70,30 @@ class CommunityAccessComponent(ServiceComponent):
 
     def _populate_access_and_validate(self, identity, data, record, **kwargs):
         """Populate and validate the community's access field."""
-        if record is not None and "access" in data:
-            # "access" only exists in existing community
-            operation = (
-                "create_restricted" if "access" not in record else "manage_access"
+        is_modifying_access = record is not None and "access" in data
+
+        if not is_modifying_access:
+            return
+
+        access = data.get("access", {})
+        new_visibility = access.get("visibility")
+
+        record_has_defined_access = "access" in record
+        is_restricting = new_visibility == "restricted"
+
+        if (
+            VisibilityEnum(record.access.visibility) != new_visibility
+            and record_has_defined_access
+        ):
+            self.service.require_permission(identity, "manage_access", record=record)
+        if not record_has_defined_access and is_restricting:
+            self.service.require_permission(
+                identity, "create_restricted", record=record
             )
 
-            access = data.get("access", {})
-            new_record_access = access.get("visibility")
-            if record.access.visibility != new_record_access:
-                can_do_operation = self.service.check_permission(
-                    identity, operation, record=record
-                )
-                if not can_do_operation and "visibility" in access:
-                    access["visibility"] = record.access.visibility
-
-            record.setdefault("access", {})
-            record["access"].update(access)
-            record.access.refresh_from_dict(record.get("access"))
+        record.setdefault("access", {})
+        record["access"].update(access)
+        record.access.refresh_from_dict(record.get("access"))
 
     def create(self, identity, data=None, record=None, **kwargs):
         """Add basic ownership fields to the record."""

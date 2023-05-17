@@ -808,7 +808,6 @@ def test_simple_flow_restricted_community(
 
     assert res.status_code == 201
     _assert_single_item_response(res)
-
     created_community = res.json
     id_ = created_community["id"]
     slug = created_community["slug"]
@@ -829,24 +828,87 @@ def test_simple_flow_restricted_community(
     )
     Member.index.refresh()
 
+    assert res.status_code == 403
+
+
+def test_permissions_modify_community_visibility(
+    app,
+    client,
+    location,
+    minimal_community,
+    headers,
+    owner,
+    db,
+):
+    """Test modifying community visibility."""
+
+    app.config["COMMUNITIES_ALLOW_RESTRICTED"] = False
+
+    client = owner.login(client)
+    # Create a public community
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    Member.index.refresh()
+
     assert res.status_code == 201
     _assert_single_item_response(res)
 
     created_community = res.json
     id_ = created_community["id"]
+    slug = created_community["slug"]
 
-    # Get the community
+    # Read the community
     res = client.get(f"/communities/{id_}", headers=headers)
     assert res.status_code == 200
-    assert res.json["access"]["visibility"] == "public"
+    assert res.json["metadata"] == created_community["metadata"]
 
     read_community = res.json
+    Community.index.refresh()
 
-    # Update community
+    # try to change public community to restricted
     data = copy.deepcopy(read_community)
     data["metadata"]["title"] = "New title"
     data["access"]["visibility"] = "restricted"
     res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 403
+
+
+def test_permissions_modify_community_to_public(
+    app,
+    client,
+    location,
+    minimal_restricted_community_1,
+    headers,
+    owner,
+    db,
+):
+    """Test modifying community visibility."""
+    app.config["COMMUNITIES_ALLOW_RESTRICTED"] = True
+    client = owner.login(client)
+    # Create a public community
+    res = client.post(
+        "/communities", headers=headers, json=minimal_restricted_community_1
+    )
+    Member.index.refresh()
+
+    assert res.status_code == 201
+    _assert_single_item_response(res)
+
+    created_community = res.json
+    id_ = created_community["id"]
+    slug = created_community["slug"]
+
+    # Read the community
+    res = client.get(f"/communities/{id_}", headers=headers)
     assert res.status_code == 200
-    assert res.json["metadata"]["title"] == "New title"
-    assert res.json["access"]["visibility"] == "public"
+    assert res.json["metadata"] == created_community["metadata"]
+
+    read_community = res.json
+    Community.index.refresh()
+    app.config["COMMUNITIES_ALLOW_RESTRICTED"] = False
+
+    # try to change public community to restricted
+    data = copy.deepcopy(read_community)
+    data["metadata"]["title"] = "New title"
+    data["access"]["visibility"] = "public"
+    res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 403
