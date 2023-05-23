@@ -54,7 +54,10 @@ class CarouselItem extends Component {
               </Grid.Column>
             </Item.Header>
             <Item.Description
-              content={_truncate(community.metadata.description, { length: 300 })}
+              as="p"
+              dangerouslySetInnerHTML={{
+                __html: _truncate(community.metadata.description, { length: 300 }),
+              }}
             />
           </Item.Content>
         </Item>
