@@ -22,8 +22,50 @@
     data-interval-delay="{{ interval_delay }}"
     data-animation-speed="{{ animation_speed }}"
     data-default-logo="{{ default_logo }}"
-  ></div>
+  >
+    <div class="ui fluid container rel-pt-2 rel-pb-2 ml-0-mobile mr-0-mobile">
+      <div class="ui container">
+        <h2 class="ui header rel-mb-1">{{ title }}</h2>
+      </div>
+      <div class="ui grid container">
+        <div class="two wide column"></div>
 
+        <div class="twelve wide column">
+          <div class="ui items">
+            <div class="item">
+              <div class="image">
+                <div class="ui placeholder">
+                  <div class="square image"></div>
+                </div>
+              </div>
+
+              <div class="content">
+                <div class="header mt-5 rel-mb-2">
+                  <div class="ui placeholder">
+                    <div class="header">
+                      <div class="line"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="description">
+                  <div class="ui placeholder">
+                    <div class="paragraph">
+                      <div class="line"></div>
+                      <div class="line"></div>
+                      <div class="line"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two wide column"></div>
+      </div>
+    </div>
+  </div>
   {{ webpack['invenio-communities-carousel.js'] }}
 {% endmacro %}
 
