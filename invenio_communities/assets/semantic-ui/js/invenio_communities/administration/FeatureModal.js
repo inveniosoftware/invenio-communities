@@ -49,12 +49,14 @@ export class FeatureModal extends Component {
         <Modal.Content>
           <Header as="h2">{i18next.t("Planned features")}</Header>
           {loading && <Loader active={loading} />}
-          {error && <ErrorMessage error={error} />}
+          {error && <ErrorMessage id="featured-community-errors" error={error} />}
           {!loading && !error && (
             <Table celled striped collapsing>
               <Table.Header>
-                <Table.HeaderCell>{i18next.t("Start date")}</Table.HeaderCell>
-                <Table.HeaderCell>{i18next.t("Active")}</Table.HeaderCell>
+                <Table.Row>
+                  <Table.HeaderCell>{i18next.t("Start date")}</Table.HeaderCell>
+                  <Table.HeaderCell>{i18next.t("Active")}</Table.HeaderCell>
+                </Table.Row>
               </Table.Header>
               <Table.Body>
                 {featuredList?.hits?.hits.map((row) => {

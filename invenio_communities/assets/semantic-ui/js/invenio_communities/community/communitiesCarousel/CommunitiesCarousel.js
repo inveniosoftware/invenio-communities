@@ -11,7 +11,15 @@ import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { http } from "react-invenio-forms";
 import { withCancel } from "react-invenio-forms";
-import { Transition, Container, Grid, Header, Item, Icon } from "semantic-ui-react";
+import {
+  Transition,
+  Container,
+  Grid,
+  Header,
+  Item,
+  Icon,
+  Placeholder,
+} from "semantic-ui-react";
 import CarouselItem from "./CarouselItem";
 import Overridable from "react-overridable";
 import _isEmpty from "lodash/isEmpty";
@@ -25,6 +33,7 @@ class CommunitiesCarousel extends Component {
       activeIndex: 0,
       animationDirection: "left",
       carouselTimer: null,
+      isLoading: true,
     };
   }
 
@@ -78,18 +87,67 @@ class CommunitiesCarousel extends Component {
   fetchData = async () => {
     const { fetchUrl } = this.props;
     this.cancellableFetch = withCancel(http.get(fetchUrl));
-
     try {
       const response = await this.cancellableFetch.promise;
       this.setState({ data: response.data.hits });
       this.setCarouselTimer();
+      this.setState({ isLoading: false });
     } catch (error) {
       console.error(error);
+      this.setState({ isLoading: false });
     }
   };
 
+  renderPlaceholder = () => {
+    const { title } = this.props;
+    return (
+      <Container fluid className="rel-pt-2 rel-pb-2 ml-0-mobile mr-0-mobile">
+        <Container>
+          <Header as="h2" className="rel-mb-1">
+            {title}
+          </Header>
+        </Container>
+        <Grid container>
+          <Grid.Column width="2" />
+          <Grid.Column width="12">
+            <Item.Group>
+              <Item>
+                <Item.Image>
+                  <Placeholder>
+                    <Placeholder.Image square />
+                  </Placeholder>
+                </Item.Image>
+
+                <Item.Content>
+                  <Item.Header className="mt-5 rel-mb-2">
+                    <Placeholder>
+                      <Placeholder.Header>
+                        <Placeholder.Line />
+                      </Placeholder.Header>
+                    </Placeholder>
+                  </Item.Header>
+
+                  <Item.Description>
+                    <Placeholder>
+                      <Placeholder.Paragraph>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                      </Placeholder.Paragraph>
+                    </Placeholder>
+                  </Item.Description>
+                </Item.Content>
+              </Item>
+            </Item.Group>
+          </Grid.Column>
+          <Grid.Column width="2" />
+        </Grid>
+      </Container>
+    );
+  };
+
   render() {
-    const { data, animationDirection, activeIndex } = this.state;
+    const { data, animationDirection, activeIndex, isLoading } = this.state;
     const { title, animationSpeed, defaultLogo } = this.props;
 
     const carouselSlides = data.hits?.map(
@@ -116,74 +174,75 @@ class CommunitiesCarousel extends Component {
         startCarousel={this.startCarousel}
         runCarousel={this.runCarousel}
       >
-        {!_isEmpty(data.hits) && (
-          <Container
-            fluid
-            className="carousel rel-pt-2 rel-pb-2 ml-0-mobile mr-0-mobile"
-          >
-            {title && (
+        <>
+          {isLoading && this.renderPlaceholder()}
+
+          {!isLoading && !_isEmpty(data.hits) && (
+            <Container
+              fluid
+              className="carousel rel-pt-2 rel-pb-2 ml-0-mobile mr-0-mobile"
+            >
               <Container className="rel-mb-1">
                 <Header as="h2">{title}</Header>
               </Container>
-            )}
 
-            <Grid container onFocus={this.stopCarousel} onBlur={this.startCarousel}>
-              <Grid.Column
-                width="2"
-                className="pr-0"
-                verticalAlign="middle"
-                textAlign="left"
-              >
-                <Icon
-                  className="carousel-arrow"
-                  inverted
-                  role="button"
-                  name="angle left"
-                  size="huge"
-                  aria-label={i18next.t("Previous slide")}
-                  onClick={() => this.runCarousel(activeIndex - 1)}
-                  onKeyDown={(event) =>
-                    event.key === "Enter" && this.runCarousel(activeIndex - 1)
-                  }
-                  tabIndex="0"
-                />
-              </Grid.Column>
-
-              <Grid.Column width="12">
-                <Transition.Group
-                  as={Item.Group}
-                  className="flex align-items-center justify-center"
-                  duration={animationSpeed}
-                  animation={`carousel-slide ${animationDirection}`}
-                  directional
+              <Grid container onFocus={this.stopCarousel} onBlur={this.startCarousel}>
+                <Grid.Column
+                  width="2"
+                  className="pr-0"
+                  verticalAlign="middle"
+                  textAlign="left"
                 >
-                  {carouselSlides}
-                </Transition.Group>
-              </Grid.Column>
+                  <Icon
+                    className="carousel-arrow"
+                    inverted
+                    role="button"
+                    name="angle left"
+                    size="huge"
+                    aria-label={i18next.t("Previous slide")}
+                    onClick={() => this.runCarousel(activeIndex - 1)}
+                    onKeyDown={(event) =>
+                      event.key === "Enter" && this.runCarousel(activeIndex - 1)
+                    }
+                    tabIndex="0"
+                  />
+                </Grid.Column>
+                <Grid.Column width="12">
+                  <Transition.Group
+                    as={Item.Group}
+                    className="flex align-items-center justify-center"
+                    duration={animationSpeed}
+                    animation={`carousel-slide ${animationDirection}`}
+                    directional
+                  >
+                    {carouselSlides}
+                  </Transition.Group>
+                </Grid.Column>
 
-              <Grid.Column
-                width="2"
-                className="pl-0"
-                verticalAlign="middle"
-                textAlign="right"
-              >
-                <Icon
-                  className="carousel-arrow"
-                  inverted
-                  role="button"
-                  name="angle right"
-                  size="huge"
-                  aria-label={i18next.t("Next slide")}
-                  onClick={() => this.runCarousel(activeIndex + 1)}
-                  onKeyDown={(event) =>
-                    event.key === "Enter" && this.runCarousel(activeIndex + 1)
-                  }
-                  tabIndex="0"
-                />
-              </Grid.Column>
-            </Grid>
-          </Container>
-        )}
+                <Grid.Column
+                  width="2"
+                  className="pl-0"
+                  verticalAlign="middle"
+                  textAlign="right"
+                >
+                  <Icon
+                    className="carousel-arrow"
+                    inverted
+                    role="button"
+                    name="angle right"
+                    size="huge"
+                    aria-label={i18next.t("Next slide")}
+                    onClick={() => this.runCarousel(activeIndex + 1)}
+                    onKeyDown={(event) =>
+                      event.key === "Enter" && this.runCarousel(activeIndex + 1)
+                    }
+                    tabIndex="0"
+                  />
+                </Grid.Column>
+              </Grid>
+            </Container>
+          )}
+        </>
       </Overridable>
     );
   }
