@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 6.6.0 (released 2023-05-26)
+-----------------------------------
+
+- configure number of items in communities carousel
+- add placeholder in communities carousel
+- introduce a configuration to disallow the creation of a restricted community
+- fix a11y for tabs and modals in communities settings
+
 Version 6.5.0 (released 2023-05-05)
 -----------------------------------
 
