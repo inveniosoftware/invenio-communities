@@ -376,7 +376,7 @@ class MemberService(RecordService):
             self.member_dump_schema,
             self.config.search,
             extra_filter=filter_,
-            params=params,
+            scan_params=params,
             search_preference=search_preference,
             scan=True,
             **kwargs
@@ -436,6 +436,7 @@ class MemberService(RecordService):
         params=None,
         search_preference=None,
         scan=False,
+        scan_params=None,
         **kwargs
     ):
         """Members search."""
@@ -449,6 +450,7 @@ class MemberService(RecordService):
 
         # Prepare and execute the search
         params = params or {}
+        scan_params = scan_params or {}
 
         search = self._search(
             "search_members",
@@ -460,7 +462,11 @@ class MemberService(RecordService):
             extra_filter=filter,
             **kwargs
         )
-        search_result = search.scan() if scan else search.execute()
+        # scan has a default scroll timeout of 5 minutes
+        # https://github.com/opensearch-project/opensearch-py/blob/fe3b5a8922aa8eb04f735c74d127d7ea68a00bec/opensearchpy/helpers/actions.py#L492-L503
+        search_result = (
+            search.params(**scan_params).scan() if scan else search.execute()
+        )
 
         return self.result_list(
             self,
