@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 6.6.1 (released 2023-06-02)
+-----------------------------------
+
+- schemas: use parent class for CommunityGhostSchema stub
+
 Version 6.6.0 (released 2023-05-26)
 -----------------------------------
 
