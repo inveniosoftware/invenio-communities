@@ -7,6 +7,13 @@
   under the terms of the MIT License; see LICENSE file for more details.
 #}
 
+
+{#
+  Note: this macro is using React and might have some impact on your frontpage loading time.
+  If you want to reduce the loading time, use the jquery version instead (found in the same folder).
+  TODO: Add reference to docs on how to implement backend.
+#}
+
 {% macro communities_carousel(
     title=_("Featured communities"),
     fetch_url="/api/communities/featured",
@@ -71,4 +78,3 @@
 
   {{ webpack['invenio-communities-carousel.js'] }}
 {% endmacro %}
-

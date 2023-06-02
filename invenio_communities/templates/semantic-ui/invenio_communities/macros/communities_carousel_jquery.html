@@ -1,0 +1,64 @@
+{# -*- coding: utf-8 -*-
+
+  This file is part of Invenio.
+  Copyright (C) 2023 CERN.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+
+{% from "invenio_communities/macros/communities_carousel_slides.html" import communities_carousel_slides %}
+
+{% macro communities_carousel_jquery(
+    communities,
+    title=_("Featured communities"),
+    interval_delay="10000",
+    animation_speed="300",
+    items_per_page=1,
+    default_logo="/static/images/square-placeholder.png"
+  )
+%}
+  <div
+    id="communities-carousel-jquery"
+    data-title="{{ title }}"
+    data-fetch-url="{{ fetch_url }}"
+    data-interval-delay="{{ interval_delay }}"
+    data-animation-speed="{{ animation_speed }}"
+    data-default-logo="{{ default_logo }}"
+  >
+    <div class="ui fluid container carousel rel-pt-2 rel-pb-2 ml-0-mobile mr-0-mobile">
+      <div class="ui container rel-mb-1">
+        <h2 class="ui header">{{ title }}</h2>
+      </div>
+
+      <div class="ui container grid">
+        <div class="left aligned middle aligned two wide column pr-0">
+          <i
+            id="prev-slide-btn"
+            role="button"
+            tabindex="0"
+            aria-label="{{ _('Previous slide') }}"
+            class="angle left huge inverted icon carousel-arrow"
+          >
+          </i>
+        </div>
+        <div class="twelve wide column">
+          {{ communities_carousel_slides(communities, items_per_page) }}
+        </div>
+        <div class="right aligned middle aligned two wide column pl-0">
+          <i
+            id="next-slide-btn"
+            role="button"
+            tabindex="0"
+            aria-label="{{ _('Next slide') }}"
+            class="angle right huge inverted icon carousel-arrow"
+            >
+          </i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {{ webpack['invenio-communities-carousel-jquery.js'] }}
+{% endmacro %}
+

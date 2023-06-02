@@ -1,0 +1,34 @@
+{# -*- coding: utf-8 -*-
+
+  This file is part of Invenio.
+  Copyright (C) 2023 CERN.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+
+{% from "invenio_communities/macros/carousel_item.html" import carousel_item %}
+
+{% macro communities_carousel_slides(communities, items_per_page) %}
+  {% set pageListLength = (communities|length / items_per_page) | round(0, 'ceil') | int %}
+  {% set communitiesList = communities|list %}
+  {% set index = 0 %}
+
+  <div id="carousel-slides">
+    {% for page in range(pageListLength) %}
+      {% set visibility_class = "visible" if (loop.index == 1) else "hidden" %}
+      <div class="ui items carousel page transition {{ visibility_class }} flex align-items-center">
+        {% for item in range(items_per_page) %}
+          {% set communityIndex = page*items_per_page + item %}
+          {% set community = communitiesList[communityIndex] %}
+
+          {% if community is defined %}
+            {{ carousel_item(community=community) }}
+          {% endif %}
+
+          {% set index = index + 1 %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% endmacro %}
