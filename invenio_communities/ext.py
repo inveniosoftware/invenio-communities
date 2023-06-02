@@ -116,10 +116,15 @@ def _can_create_community():
     return can_create
 
 
+def api_finalize_app(app):
+    """Finalize app."""
+    init(app)
+
+
 def finalize_app(app):
     """Finalize app."""
     init(app)
-    register_menus()
+    register_menus(app)
 
 
 def register_menus(app):
