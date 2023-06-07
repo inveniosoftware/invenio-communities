@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 6.7.0 (released 2023-06-07)
+-----------------------------------
+
+- notifications: add member recipient generator
+- tests: add notification member recipient generator test case
+- services: add extra_filter param
+- services: provide explicit scan params
+
 Version 6.6.1 (released 2023-06-02)
 -----------------------------------
 
