@@ -109,7 +109,7 @@ export class MembersSearchBar extends Component {
     };
 
     if (searchType === "group") {
-      serializedSelectedMember["name"] = newSelectedMember.name;  // The schema will pass the id if the name is missing
+      serializedSelectedMember["name"] = newSelectedMember.name; // The schema will pass the id if the name is missing
     } else {
       serializedSelectedMember["name"] = this.serializeMemberName(newSelectedMember);
     }
