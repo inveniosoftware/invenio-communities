@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 7.0.0 (released 2023-06-15)
+-----------------------------------
+
+- cache: adds unmanaged groups to be cached and loaded in the identity
+- adds identity cache
+- add groups as community members
+- assets: display metrics on deletion modal
+
 Version 6.7.0 (released 2023-06-07)
 -----------------------------------
 
