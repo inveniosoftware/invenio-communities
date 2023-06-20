@@ -9,16 +9,22 @@
 
 """Test community member service."""
 
+from unittest.mock import MagicMock
+
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
 from invenio_cache import current_cache
+from invenio_notifications.proxies import current_notifications_manager
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_requests.records.api import RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
 from invenio_communities.members.records.api import ArchivedInvitation, Member
+from invenio_communities.notifications.builders import (
+    CommunityInvitationSubmittedNotificationBuilder,
+)
 from invenio_communities.proxies import current_identities_cache
 
 
@@ -1156,3 +1162,59 @@ def test_relation_update_propagation(
 
     member = list(comm_members.hits)[0]
     assert member.get("member").get("name") == "Update test"
+
+
+#
+# invenio-notification testcases
+#
+def test_community_invitation_notification(
+    member_service, community, owner, new_user, db, monkeypatch, app
+):
+    """Test notifcation being built on community invitation submit."""
+
+    original_builder = CommunityInvitationSubmittedNotificationBuilder
+
+    # mock build to observe calls
+    mock_build = MagicMock()
+    mock_build.side_effect = original_builder.build
+    monkeypatch.setattr(original_builder, "build", mock_build)
+    # setting specific builder for test case
+    monkeypatch.setattr(
+        current_notifications_manager,
+        "builders",
+        {
+            **current_notifications_manager.builders,
+            original_builder.type: original_builder,
+        },
+    )
+    assert not mock_build.called
+
+    mail = app.extensions.get("mail")
+    assert mail
+
+    with mail.record_messages() as outbox:
+        # Validate that email was sent
+        role = "reader"
+        message = "<p>invitation message</p>"
+
+        data = {
+            "members": [{"type": "user", "id": str(new_user.id)}],
+            "role": role,
+            "message": message,
+        }
+        member_service.invite(owner.identity, community.id, data)
+        # ensure that the invited user request has been indexed
+        res = member_service.search_invitations(owner.identity, community.id).to_dict()
+        assert res["hits"]["total"] == 1
+        inv = res["hits"]["hits"][0]
+
+        # check notification is build on submit
+        assert mock_build.called
+        assert len(outbox) == 1
+        html = outbox[0].html
+        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
+        assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        # role titles will be capitalized
+        assert role.capitalize() in html
+        assert message in html
+        assert community._record.metadata["title"] in html

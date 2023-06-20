@@ -19,17 +19,54 @@ from invenio_access.permissions import superuser_access
 from invenio_accounts.models import Role
 from invenio_admin.permissions import action_admin_access
 from invenio_app.factory import create_api
+from invenio_notifications.backends import EmailNotificationBackend
+from invenio_notifications.services.builders import NotificationBuilder
+from invenio_records_resources.references.entity_resolvers import ServiceResultResolver
 from invenio_records_resources.services.custom_fields import TextCF
 from invenio_requests.proxies import current_events_service, current_requests_service
+from invenio_users_resources.records import UserAggregate
+from invenio_users_resources.services.schemas import (
+    NotificationPreferences,
+    UserPreferencesSchema,
+    UserSchema,
+)
 from invenio_users_resources.proxies import current_users_service
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 from invenio_vocabularies.records.api import Vocabulary
+from marshmallow import fields
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.members.records.api import Member
+from invenio_communities.notifications.builders import (
+    CommunityInvitationSubmittedNotificationBuilder,
+)
 from invenio_communities.proxies import current_communities
 
 pytest_plugins = ("celery.contrib.pytest",)
+
+
+class UserPreferencesNotificationsSchema(UserPreferencesSchema):
+    """Schema extending preferences with notification preferences for model validation."""
+
+    notifications = fields.Nested(NotificationPreferences)
+
+
+class NotificationsUserSchema(UserSchema):
+    """Schema for dumping a user with preferences including notifications."""
+
+    preferences = fields.Nested(UserPreferencesNotificationsSchema)
+
+
+class DummyNotificationBuilder(NotificationBuilder):
+    """Dummy builder class to do nothing.
+
+    Specific test cases should override their respective builder to test functionality.
+    """
+
+    @classmethod
+    def build(cls, **kwargs):
+        """Build notification based on type and additional context."""
+        return {}
 
 
 #
@@ -68,6 +105,32 @@ def app_config(app_config):
     app_config[
         "COMMUNITIES_IDENTITIES_CACHE_HANDLER"
     ] = "invenio_communities.cache.redis:IdentityRedisCache"
+
+    app_config["MAIL_DEFAULT_SENDER"] = "test@invenio-rdm-records.org"
+
+    # Specifying backend for notifications. Only used in specific testcases.
+    app_config["NOTIFICATIONS_BACKENDS"] = {
+        EmailNotificationBackend.id: EmailNotificationBackend(),
+    }
+
+    # Specifying dummy builders to avoid raising errors for most tests. Extend as needed.
+    app_config["NOTIFICATIONS_BUILDERS"] = {
+        CommunityInvitationSubmittedNotificationBuilder.type: DummyNotificationBuilder,
+    }
+
+    # Specifying default resolvers. Will only be used in specific test cases.
+    app_config["NOTIFICATIONS_ENTITY_RESOLVERS"] = [
+        ServiceResultResolver(service_id="users", type_key="user"),
+        ServiceResultResolver(service_id="communities", type_key="community"),
+        ServiceResultResolver(service_id="requests", type_key="request"),
+        ServiceResultResolver(service_id="request_events", type_key="request_event"),
+    ]
+
+    # Extending preferences schemas, to include notification preferences. Should not matter for most test cases
+    app_config[
+        "ACCOUNTS_USER_PREFERENCES_SCHEMA"
+    ] = UserPreferencesNotificationsSchema()
+    app_config["USERS_RESOURCES_SERVICE_SCHEMA"] = NotificationsUserSchema
 
     return app_config
 
@@ -256,6 +319,9 @@ def new_user(UserFixture, app, database):
         preferences={
             "visibility": "public",
             "email_visibility": "restricted",
+            "notifications": {
+                "enabled": True,
+            },
         },
         active=True,
         confirmed=True,
