@@ -15,6 +15,7 @@ from flask import current_app
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import Role
 from invenio_i18n import gettext as _
+from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services import LinksTemplate
 from invenio_records_resources.services.records import (
     RecordService,
@@ -35,6 +36,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+from ...notifications.builders import CommunityInvitationSubmittedNotificationBuilder
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from ..records.api import ArchivedInvitation
@@ -305,6 +307,17 @@ class MemberService(RecordService):
                 current_events_service.create(
                     identity, request_item.id, data, CommentEventType, uow=uow
                 )
+
+            uow.register(
+                NotificationOp(
+                    CommunityInvitationSubmittedNotificationBuilder.build(
+                        request=request_item._request,
+                        # explicit string conversion to get the value of LazyText
+                        role=str(role.title),
+                        message=message,
+                    )
+                )
+            )
 
             # Create an inactive member entry linked to the request.
             self._add_factory(

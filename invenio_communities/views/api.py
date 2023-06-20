@@ -10,7 +10,11 @@
 
 from flask import Blueprint
 
-blueprint = Blueprint("invenio_communities_ext", __name__)
+blueprint = Blueprint(
+    "invenio_communities_ext",
+    __name__,
+    template_folder="../templates",
+)
 
 
 @blueprint.record_once
