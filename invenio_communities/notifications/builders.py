@@ -15,10 +15,10 @@ from invenio_users_resources.notifications.filters import UserPreferencesRecipie
 from invenio_users_resources.notifications.generators import UserRecipient
 
 
-class CommunityInvitationNotificationBuilder(NotificationBuilder):
-    """Base notification builder for community invitation events."""
+class CommunityInvitationSubmittedNotificationBuilder(NotificationBuilder):
+    """Notification builder for community invitation submit event."""
 
-    type = "community-invitation"
+    type = "community-invitation.submit"
 
     @classmethod
     def build(cls, request, role, message=None):
@@ -49,11 +49,3 @@ class CommunityInvitationNotificationBuilder(NotificationBuilder):
     recipient_backends = [
         UserEmailBackend(),
     ]
-
-
-class CommunityInvitationSubmittedNotificationBuilder(
-    CommunityInvitationNotificationBuilder
-):
-    """Notification builder for community invitation submitted."""
-
-    type = "community-invitation.submit"

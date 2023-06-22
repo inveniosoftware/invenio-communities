@@ -301,17 +301,18 @@ def test_invite_view_request(
         type="community-invitation",
     ).to_dict()
     assert res["hits"]["total"] == 1
+    request = res["hits"]["hits"][0]
+    assert 'You will join as "Reader"' in request["description"]
 
     # check request comment since invite user has a message
     RequestEvent.index.refresh()
     res = events_service.search(
         invite_user.identity,
-        request_id=res["hits"]["hits"][0]["id"],
+        request_id=request["id"],
     ).to_dict()
     hits = res["hits"]
-    assert hits["total"] == 2  # role + invitation
-    assert hits["hits"][0]["payload"]["content"] == 'You will join as "Reader".'
-    assert hits["hits"][1]["payload"]["content"] == "Welcome to the club!"
+    assert hits["total"] == 1
+    assert hits["hits"][0]["payload"]["content"] == "Welcome to the club!"
 
 
 #

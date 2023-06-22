@@ -4,7 +4,7 @@
 {% set request_id = invitation_request.id %}
 
 {% set community_title = community.metadata.title %}
-{% set message = notification.context.message %}
+{% set message = notification.context.message | safe %}
 {% set role = notification.context.role %}
 
 {# TODO: use request.links.self_html when issue issue is resolved: https://github.com/inveniosoftware/invenio-rdm-records/issues/1327 #}
@@ -29,18 +29,18 @@ New invitation to join community {{ community_title }} as {{ role }}
 </p>
 {%- endif %}
 
-<a href="{{ request_link }}" class="button"> {{ _("Checkout the invitation") }}</a>
+<a href="{{ request_link }}" class="button"> {{ _("Check out the invitation") }}</a>
 {%- endblock html_body %}
 
 {%- block plain_body -%}
 {{ _("You have been invited to join community '{community_title}' as '{role}'").format(community_title=community_title, role=role) }}.
 
 {%- if message %}
-{{ _("Invitation message:") }}
-{{ message }}
+    {{ _("Invitation message:") }}
+    {{ message }}
 {%- endif %}
 
-{{ _("Checkout the invitation:") }} {{ request_link }}
+{{ _("Check out the invitation:") }} {{ request_link }}
 {%- endblock plain_body %}
 
 {# Markdown for Slack/Mattermost/chat #}
@@ -52,5 +52,5 @@ New invitation to join community {{ community_title }} as {{ role }}
     {{ message }}
 {%- endif %}
 
-{{ _("[Checkout the invitation]({request_link})").format(request_link=request_link) }}
+[{{ _("Check out the invitation") }}]({{ request_link }})
 {%- endblock md_body %}

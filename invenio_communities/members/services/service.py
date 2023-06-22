@@ -278,10 +278,14 @@ class MemberService(RecordService):
             title = _('Invitation to join "{community}"').format(
                 community=community.metadata["title"],
             )
+            description = _('You will join as "{role}".').format(role=role.title)
 
             request_item = current_requests_service.create(
                 identity,
-                {"title": title},
+                {
+                    "title": title,
+                    "description": description,
+                },
                 CommunityInvitation,
                 {"user": member["id"]},
                 creator=community,
@@ -292,20 +296,16 @@ class MemberService(RecordService):
                 uow=uow,
             )
 
-            # add role as message
-            data = {
-                "payload": {
-                    "content": _('You will join as "{role}".').format(role=role.title),
-                }
-            }
-            current_events_service.create(
-                identity, request_item.id, data, CommentEventType, uow=uow
-            )
             # message was provided.
             if message:
                 data = {"payload": {"content": message}}
                 current_events_service.create(
-                    identity, request_item.id, data, CommentEventType, uow=uow
+                    identity,
+                    request_item.id,
+                    data,
+                    CommentEventType,
+                    uow=uow,
+                    notify=False,
                 )
 
             uow.register(
