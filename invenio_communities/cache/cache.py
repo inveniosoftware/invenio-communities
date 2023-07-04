@@ -47,3 +47,7 @@ class IdentityCache(ABC):
     @abstractmethod
     def flush(self):
         """Flush the cache."""
+
+    @abstractmethod
+    def append(self):
+        """Flush the cache."""
