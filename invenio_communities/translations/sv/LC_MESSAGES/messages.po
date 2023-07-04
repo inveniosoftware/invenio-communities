@@ -7,6 +7,7 @@
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Sam Arbid, 2022
+# Rim Sharif, 2023
 # 
 #, fuzzy
 msgid ""
@@ -15,8 +16,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2022-10-12 09:34+0200\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Sam Arbid, 2022\n"
-"Language-Team: Swedish (https://www.transifex.com/inveniosoftware/teams/23537/sv/)\n"
+"Last-Translator: Rim Sharif, 2023\n"
+"Language-Team: Swedish (https://app.transifex.com/inveniosoftware/teams/23537/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,7 +38,7 @@ msgstr "Bästa matchningen"
 #: invenio_communities/members/services/config.py:85
 #: invenio_communities/members/services/config.py:116
 msgid "Newest"
-msgstr "Nyaste"
+msgstr "Nyast"
 
 #: invenio_communities/config.py:60 invenio_communities/config.py:149
 #: invenio_communities/config.py:191
@@ -65,7 +66,7 @@ msgstr "Läsare"
 
 #: invenio_communities/config.py:83
 msgid "Can view restricted records."
-msgstr "Kan se begränsade rekord."
+msgstr "Kan se begränsade poster."
 
 #: invenio_communities/communities/services/facets.py:40
 #: invenio_communities/config.py:88
@@ -74,7 +75,7 @@ msgstr "Kurator"
 
 #: invenio_communities/config.py:89
 msgid "Can curate records and view restricted records."
-msgstr "Kan kurera rekord och se begränsade rekord."
+msgstr "Kan kurera poster och se begränsade poster."
 
 #: invenio_communities/communities/services/facets.py:39
 #: invenio_communities/config.py:95
@@ -83,7 +84,7 @@ msgstr "Manager"
 
 #: invenio_communities/config.py:96
 msgid "Can manage members, curate records and view restricted records."
-msgstr "Kan hantera medlemmar, kurera poster och visa begränsade rekord."
+msgstr "Kan hantera medlemmar, kurera poster och visa begränsade poster."
 
 #: invenio_communities/communities/services/facets.py:37
 #: invenio_communities/config.py:106
@@ -122,7 +123,7 @@ msgstr "ID:t får inte vara en Universally Unique IDentifier (UUID)."
 
 #: invenio_communities/communities/schema.py:122
 msgid "The ID should contain only letters with numbers or dashes."
-msgstr "ID:t ska endast innehålla bokstäver med siffror eller bindestreck."
+msgstr "ID ska endast innehålla bokstäver med siffror eller bindestreck."
 
 #: invenio_communities/communities/services/components.py:31
 msgid "A community with this identifier already exists."
@@ -130,7 +131,7 @@ msgstr "En community med denna identifierare finns redan."
 
 #: invenio_communities/communities/services/components.py:49
 msgid "The ID should be modified through the renaming URL instead."
-msgstr "ID:t bör ändras genom att byta namn på URL istället."
+msgstr "ID bör ändras genom att byta namn på URL istället."
 
 #: invenio_communities/communities/services/components.py:57
 msgid "A new ID value is required for the renaming."
@@ -198,7 +199,7 @@ msgstr "Status"
 
 #: invenio_communities/members/services/facets.py:25
 msgid "Submitted"
-msgstr "Skickade in"
+msgstr "Inskickad"
 
 #: invenio_communities/members/services/facets.py:26
 msgid "Expired"
@@ -238,7 +239,7 @@ msgstr "Saknade fält \"roll\" och/eller \"synlig\"."
 
 #: invenio_communities/members/services/schemas.py:116
 msgid "Untitled"
-msgstr "Namnlös"
+msgstr "Ingen titel"
 
 #: invenio_communities/members/services/service.py:180
 msgid "Must be false"
@@ -304,7 +305,7 @@ msgstr "Mina communities"
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:58
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:68
 msgid "See all"
-msgstr "Se allt"
+msgstr "Se alla"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:66
 msgid "New communities"
@@ -327,8 +328,8 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"    Gemenskapen du försöker komma åt togs bort från %(sitename)s. Den \n"
-"    metadata från gemenskapen bevaras för arkivändamål.\n"
+"    Den community som du försöker komma åt togs bort från %(sitename)s. Metadatan\n"
+"    från denna community bevaras för arkivändamål.\n"
 "  "
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:29
@@ -362,7 +363,7 @@ msgstr "Inbjudningar"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:12
 msgid " requests"
-msgstr "Begäran"
+msgstr "förfrågningar"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
 msgid " settings"
@@ -390,4 +391,4 @@ msgstr "Förfrågningar"
 
 #: invenio_communities/views/ui.py:135
 msgid "Settings"
-msgstr "inställningar"
+msgstr "Inställningar"
