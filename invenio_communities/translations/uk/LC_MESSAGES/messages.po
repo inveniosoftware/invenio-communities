@@ -4,6 +4,9 @@
 # project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 # 
+# Translators:
+# Vasyl Ostrovskyi <vasyusya@yahoo.com>, 2023
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -11,7 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2022-10-12 09:34+0200\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Language-Team: Ukrainian (https://www.transifex.com/inveniosoftware/teams/23537/uk/)\n"
+"Last-Translator: Vasyl Ostrovskyi <vasyusya@yahoo.com>, 2023\n"
+"Language-Team: Ukrainian (https://app.transifex.com/inveniosoftware/teams/23537/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,101 +29,108 @@ msgstr ""
 #: invenio_communities/members/services/config.py:77
 #: invenio_communities/members/services/config.py:108
 msgid "Best match"
-msgstr ""
+msgstr "Найкраща відповідність"
 
 #: invenio_communities/config.py:56 invenio_communities/config.py:145
 #: invenio_communities/config.py:187
 #: invenio_communities/members/services/config.py:85
 #: invenio_communities/members/services/config.py:116
 msgid "Newest"
-msgstr ""
+msgstr "Найновіші"
 
 #: invenio_communities/config.py:60 invenio_communities/config.py:149
 #: invenio_communities/config.py:191
 #: invenio_communities/members/services/config.py:89
 #: invenio_communities/members/services/config.py:120
 msgid "Oldest"
-msgstr ""
+msgstr "Найстаріші"
 
 #: invenio_communities/config.py:64
 msgid "Version"
-msgstr ""
+msgstr "Версія"
 
 #: invenio_communities/config.py:68
 msgid "Recently updated"
-msgstr ""
+msgstr "Нещодавно оновлені"
 
 #: invenio_communities/config.py:72
 msgid "Least recently updated"
-msgstr ""
+msgstr "Найбільш давно не оновлювались"
 
 #: invenio_communities/communities/services/facets.py:38
 #: invenio_communities/config.py:82
 msgid "Reader"
-msgstr ""
+msgstr "Читач"
 
 #: invenio_communities/config.py:83
 msgid "Can view restricted records."
-msgstr ""
+msgstr "Може переглядати записи з обмеженим доступом."
 
 #: invenio_communities/communities/services/facets.py:40
 #: invenio_communities/config.py:88
 msgid "Curator"
-msgstr ""
+msgstr "Куратор"
 
 #: invenio_communities/config.py:89
 msgid "Can curate records and view restricted records."
-msgstr ""
+msgstr "Може курувати записи та переглядати записи з обмеженим доступом."
 
 #: invenio_communities/communities/services/facets.py:39
 #: invenio_communities/config.py:95
 msgid "Manager"
-msgstr ""
+msgstr "Менеджер"
 
 #: invenio_communities/config.py:96
 msgid "Can manage members, curate records and view restricted records."
 msgstr ""
+"Може керувати учасниками, курувати записи, та переглядати записи з обмеженим"
+" доступом."
 
 #: invenio_communities/communities/services/facets.py:37
 #: invenio_communities/config.py:106
 msgid "Owner"
-msgstr ""
+msgstr "Власник"
 
 #: invenio_communities/config.py:107
 msgid "Full administrative access to the entire community."
-msgstr ""
+msgstr "Повний адміністративний доступ до всієї спільноти."
 
 #: invenio_communities/config.py:141 invenio_communities/config.py:183
 #: invenio_communities/members/services/config.py:42
 #: invenio_communities/members/services/config.py:81
 #: invenio_communities/members/services/config.py:112
 msgid "Name"
-msgstr ""
+msgstr "Назва"
 
 #: invenio_communities/errors.py:26
 msgid "A featured community entry with {q} does not exist."
-msgstr ""
+msgstr "Запису для рекомедованої спільноти з {q} не існує."
 
 #: invenio_communities/errors.py:41
 msgid ""
 "Logo size limit exceeded. Limit: {limit} bytes Given: {file_size} bytes"
 msgstr ""
+"Перевищено граничний розмір логотипу. Граничний розмір {limit} байтів, "
+"надано {file_size} байтів."
 
 #: invenio_communities/communities/schema.py:40
 msgid "Field cannot be blank or longer than {max_} characters."
-msgstr ""
+msgstr "Поле не може бути порожнім або перевищувати {max_} символів."
 
 #: invenio_communities/communities/schema.py:52
 msgid "The ID must not be an Universally Unique IDentifier (UUID)."
 msgstr ""
+"Ідентифікатор не повинен бути у форматі Universally Unique IDentifier "
+"(UUID)."
 
 #: invenio_communities/communities/schema.py:122
 msgid "The ID should contain only letters with numbers or dashes."
 msgstr ""
+"Ідентифікатор повинен складатись лише з латинських літер, цифр, та дефісів."
 
 #: invenio_communities/communities/services/components.py:31
 msgid "A community with this identifier already exists."
-msgstr ""
+msgstr "Спільнота з цим ідентифікатором вже існує."
 
 #: invenio_communities/communities/services/components.py:49
 msgid "The ID should be modified through the renaming URL instead."
@@ -131,107 +142,107 @@ msgstr ""
 
 #: invenio_communities/communities/services/components.py:116
 msgid "The community is not public."
-msgstr ""
+msgstr "Спільнота не є публічною."
 
 #: invenio_communities/communities/services/config.py:57
 msgid "Featured"
-msgstr ""
+msgstr "Рекомендована"
 
 #: invenio_communities/communities/services/facets.py:15
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: invenio_communities/communities/services/facets.py:17
 msgid "Organization"
-msgstr ""
+msgstr "Організація"
 
 #: invenio_communities/communities/services/facets.py:18
 msgid "Event"
-msgstr ""
+msgstr "Подія"
 
 #: invenio_communities/communities/services/facets.py:19
 msgid "Topic"
-msgstr ""
+msgstr "Тема"
 
 #: invenio_communities/communities/services/facets.py:20
 msgid "Project"
-msgstr ""
+msgstr "Проєкт"
 
 #: invenio_communities/communities/services/facets.py:26
 #: invenio_communities/communities/services/facets.py:35
 #: invenio_communities/communities/services/facets.py:46
 #: invenio_communities/members/services/facets.py:35
 msgid "Visibility"
-msgstr ""
+msgstr "Видимість"
 
 #: invenio_communities/communities/services/facets.py:28
 #: invenio_communities/members/services/facets.py:36
 msgid "Public"
-msgstr ""
+msgstr "Публічний"
 
 #: invenio_communities/communities/services/facets.py:29
 #: invenio_communities/communities/services/facets.py:49
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:31
 msgid "Restricted"
-msgstr ""
+msgstr "Обмежений доступ"
 
 #: invenio_communities/communities/services/facets.py:48
 #: invenio_communities/members/services/facets.py:36
 msgid "Hidden"
-msgstr ""
+msgstr "Прихований"
 
 #: invenio_communities/members/services/facets.py:17
 msgid "Role"
-msgstr ""
+msgstr "Роль"
 
 #: invenio_communities/members/services/facets.py:23
 #: invenio_communities/members/services/facets.py:41
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: invenio_communities/members/services/facets.py:25
 msgid "Submitted"
-msgstr ""
+msgstr "Подано"
 
 #: invenio_communities/members/services/facets.py:26
 msgid "Expired"
-msgstr ""
+msgstr "Застаріло"
 
 #: invenio_communities/members/services/facets.py:27
 msgid "Accepted"
-msgstr ""
+msgstr "Прийнято"
 
 #: invenio_communities/members/services/facets.py:28
 msgid "Declined"
-msgstr ""
+msgstr "Відхилено"
 
 #: invenio_communities/members/services/facets.py:29
 msgid "Cancelled"
-msgstr ""
+msgstr "Скасовано"
 
 #: invenio_communities/members/services/facets.py:42
 msgid "Open"
-msgstr ""
+msgstr "Відкритий"
 
 #: invenio_communities/members/services/facets.py:42
 msgid "Closed"
-msgstr ""
+msgstr "Закритий"
 
 #: invenio_communities/members/services/fields.py:20
 msgid "Invalid role."
-msgstr ""
+msgstr "Недійсна роль"
 
 #: invenio_communities/members/services/request.py:74
 msgid "Community invitation"
-msgstr ""
+msgstr "Запрошення до спільноти"
 
 #: invenio_communities/members/services/schemas.py:88
 msgid "Missing fields 'role' and/or 'visible'."
-msgstr ""
+msgstr "Відсутні поля 'роль' та/чи 'видимий'."
 
 #: invenio_communities/members/services/schemas.py:116
 msgid "Untitled"
-msgstr ""
+msgstr "Без назви"
 
 #: invenio_communities/members/services/service.py:180
 msgid "Must be false"
@@ -243,63 +254,66 @@ msgstr ""
 
 #: invenio_communities/members/services/service.py:269
 msgid "Invitation to join \"{community}\""
-msgstr ""
+msgstr "Запрошення приєднатись до \"{community}\""
 
 #: invenio_communities/members/services/service.py:289
 msgid "You will join as \"{role}\"."
-msgstr ""
+msgstr "Ви будете приєднані у ролі \"{role}\"."
 
 #: invenio_communities/members/services/service.py:465
 #: invenio_communities/members/services/service.py:585
 msgid "A community must have at least one owner."
-msgstr ""
+msgstr "Спільнота повинна мати принаймні одного власника."
 
 #: invenio_communities/members/services/service.py:494
 msgid "You cannot change your own role."
-msgstr ""
+msgstr "Ви не можете змінювати власну роль."
 
 #: invenio_communities/members/services/service.py:502
 msgid "You can only set public visibility on your own membership."
 msgstr ""
+"Ви можете встановлювати публічну видимість лише для власного членства."
 
 #: invenio_communities/members/services/service.py:510
 msgid "You will join as \"{role}\" (changed from: \"{previous}\")."
-msgstr ""
+msgstr "Ви будете приєднані у ролі  \"{role}\" (змінено з: \"{previous}\")."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:24
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:22
 msgid "Communities"
-msgstr ""
+msgstr "Спільноти"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:30
 msgid ""
 "Organize, curate and collaborate on records for your institution, project, "
 "topic or event."
 msgstr ""
+"Організуйте, керуйте, та спільно працюйте з записами вашої інституції, "
+"проєкту, теми, чи події."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:38
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:12
 msgid "Search communities"
-msgstr ""
+msgstr "Пошук спільнот"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:46
 #: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
 msgid "New community"
-msgstr ""
+msgstr "Нова спільнота"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:56
 msgid "My communities"
-msgstr ""
+msgstr "Мої спільноти"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:58
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:68
 msgid "See all"
-msgstr ""
+msgstr "Переглянути всі"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:66
 msgid "New communities"
-msgstr ""
+msgstr "Нові спільноти"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:12
 msgid "Tombstone"
@@ -307,7 +321,7 @@ msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:15
 msgid "Gone"
-msgstr ""
+msgstr "Втрачено"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:17
 #, python-format
@@ -317,64 +331,69 @@ msgid ""
 "    metadata of the community is kept for archival purposes.\n"
 "  "
 msgstr ""
+"\n"
+"    Спільнота, до якої ви намагаєтесь отримати доступ, видалена з репозитарію %(sitename)s. \n"
+"    Метадані спільноти залишено з архівною метою.\n"
+"  "
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:29
 msgid "Community visibility"
-msgstr ""
+msgstr "Видимість спільноти"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:30
 msgid "The community is restricted to users with access."
-msgstr ""
+msgstr "Спільнота для користуваічв з належним доступом "
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:73
 msgid "About this community"
-msgstr ""
+msgstr "Про цю спільноту"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:90
 msgid "New upload"
-msgstr ""
+msgstr "Нове завантаження"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:12
 msgid " members"
-msgstr ""
+msgstr "члени"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:19
 #: invenio_communities/views/ui.py:128
 msgid "Members"
-msgstr ""
+msgstr "Члени"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:20
 msgid "Invitations"
-msgstr ""
+msgstr "Запрошення"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:12
 msgid " requests"
-msgstr ""
+msgstr "запити"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:11
 msgid " settings"
-msgstr ""
+msgstr "налаштування"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
 msgid "Profile"
-msgstr ""
+msgstr "Профіль"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
 msgid "Privileges"
-msgstr ""
+msgstr "Права"
 
 #: invenio_communities/views/communities.py:29
 msgid "Your community is publicly accessible and shows up in search results."
 msgstr ""
+"Ваша спільнота публічно доступна, та буде показана в результатах пошуку."
 
 #: invenio_communities/views/communities.py:37
 msgid "Your community is restricted to users with access."
-msgstr ""
+msgstr "Доступ до вашої спільноти обмежено колом відповідних користувачів."
 
 #: invenio_communities/views/ui.py:121
 msgid "Requests"
-msgstr ""
+msgstr "Запити"
 
 #: invenio_communities/views/ui.py:135
 msgid "Settings"
-msgstr ""
+msgstr "Налаштування"

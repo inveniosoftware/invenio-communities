@@ -1,14 +1,15 @@
 # 
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2022
+# Vasyl Ostrovskyi <vasyusya@yahoo.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2022\n"
-"Language-Team: Ukrainian (https://www.transifex.com/inveniosoftware/teams/23537/uk/)\n"
+"Last-Translator: Vasyl Ostrovskyi <vasyusya@yahoo.com>, 2023\n"
+"Language-Team: Ukrainian (https://app.transifex.com/inveniosoftware/teams/23537/uk/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: uk\n"
@@ -16,386 +17,393 @@ msgstr ""
 "mime-version: 1.0\n"
 
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
 msgid "Search for organizations..."
-msgstr ""
+msgstr "Шукати організації..."
 
 msgid "Delete"
-msgstr ""
+msgstr "Видалити"
 
 msgid "Remove"
-msgstr ""
+msgstr "Вилучити"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Скасувати"
 
 msgid "Maximum number of characters is 2000"
-msgstr ""
+msgstr "Максимальна кількість символів 2000"
 
 msgid "Must be a valid URL"
-msgstr ""
+msgstr "Потрібно вказати дійсний URL"
 
 msgid "Profile picture"
-msgstr ""
+msgstr "Зображення профілю"
 
 msgid "Upload new picture"
-msgstr ""
+msgstr "Завантажити нове зображення"
 
 msgid "Delete picture"
-msgstr ""
+msgstr "Видалити зображення"
 
 msgid "Are you sure you want to delete this picture?"
-msgstr ""
+msgstr "Ви певні, що слід видалити це зображення?"
 
 msgid "Danger zone"
-msgstr ""
+msgstr "Небезпечна зона"
 
 msgid "Change identifier"
-msgstr ""
+msgstr "Змінити ідентифікатор"
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
 msgstr ""
+"Зміна унікального ідентифікатора спільноти може мати непередбачені побічні "
+"ефекти."
 
 msgid "Delete community"
-msgstr ""
+msgstr "Видалити спільноту"
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
+msgstr "Після видалення вона зникне назавжди. Будь ласка, будьте уважні."
 
 msgid "Are you sure you want to delete this community?"
-msgstr ""
+msgstr "Ви певні, що слід видалити цю спільноту?"
 
 msgid "Community name"
-msgstr ""
+msgstr "Назва спільноти"
 
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 msgid "Website"
-msgstr ""
+msgstr "Вебсайт"
 
 msgid "Search for an organization by name"
-msgstr ""
+msgstr "Шукати організацію за назвою"
 
 msgid "Organizations"
-msgstr ""
+msgstr "Організації"
 
 msgid "Save"
-msgstr ""
+msgstr "Зберегти"
 
 msgid "Change"
-msgstr ""
+msgstr "Змінити"
 
 msgid "Saved"
-msgstr ""
+msgstr "Збережено"
 
 msgid "Member"
-msgstr ""
+msgstr "Член"
 
 msgid "Members"
-msgstr ""
+msgstr "Члени"
 
 msgid "Role"
-msgstr ""
+msgstr "Роль"
 
 msgid "Setup your new community"
-msgstr ""
+msgstr "Налаштуйте вашу спільноту"
 
 msgid "Identifier"
-msgstr ""
+msgstr "Ідентифікатор"
 
 msgid "Community visibility"
-msgstr ""
+msgstr "Видимість спільноти"
 
 msgid "Create community"
-msgstr ""
+msgstr "Створити спільноту"
 
 msgid "Message"
-msgstr ""
+msgstr "Повідомлення"
 
 msgid "View"
-msgstr ""
+msgstr "Переглянути"
 
 msgid "{{total}} result(s) found"
-msgstr ""
+msgstr "знайдено {{total}} результат(ів)"
 
 msgid "Sort by"
-msgstr ""
+msgstr "Впорядкувати за"
 
 msgid "results per page"
-msgstr ""
+msgstr "результатів на сторінку"
 
 msgid "Search"
 msgstr "Пошук"
 
 msgid "Search communities..."
-msgstr ""
+msgstr "Пошук спільнот..."
 
 msgid "New community"
-msgstr ""
+msgstr "Нова спільнота"
 
 msgid "Uploaded on"
-msgstr ""
+msgstr "Завантажено"
 
 msgid "Search guide"
-msgstr ""
+msgstr "Посібник з пошуку"
 
 msgid "We couldn't find any matches for "
-msgstr ""
+msgstr "Ми не знайшли жодних збігів для "
 
 msgid "your search"
-msgstr ""
+msgstr "вашого пошуку"
 
 msgid "Start over"
-msgstr ""
+msgstr "Розпочати заново"
 
 msgid "ProTip"
-msgstr ""
+msgstr "Підказка"
 
 msgid "will give you all the publications from 2017 until today"
-msgstr ""
+msgstr "видасть усі публікації з 2017 року до сьогодні."
 
 msgid "For more tips, check out our "
-msgstr ""
+msgstr "Для отримання інших порад перегляньте"
 
 msgid " for defining advanced search queries"
-msgstr ""
+msgstr "для створення складних пошукових запитів"
 
 msgid "ORCID profile"
-msgstr ""
+msgstr "Профіль ORCID"
 
 msgid "ROR profile"
-msgstr ""
+msgstr "Профіль ROR"
 
 msgid "Filter results"
-msgstr ""
+msgstr "Фільтрувати результати"
 
 msgid "search guide"
-msgstr ""
+msgstr "посібник з пошуку"
 
 msgid "members selected"
-msgstr ""
+msgstr "членів вибрано"
 
 msgid "Leave community"
-msgstr ""
+msgstr "Вийти зі спільноти"
 
 msgid "Leave"
-msgstr ""
+msgstr "Залишити"
 
 msgid "Remove user"
-msgstr ""
+msgstr "Видалити користувача"
 
 msgid "This action cannot be undone."
-msgstr ""
+msgstr "Результат цієї дії не можна скасувати."
 
 msgid "Clear all filters"
-msgstr ""
+msgstr "Очистити усі фільтри"
 
 msgid "Group"
-msgstr ""
+msgstr "Група"
 
 msgid "Search for groups"
-msgstr ""
+msgstr "Пошук груп"
 
 msgid "Add"
-msgstr ""
+msgstr "Додати"
 
 msgid "People"
-msgstr ""
+msgstr "Люди"
 
 msgid "Groups"
-msgstr ""
+msgstr "Групи"
 
 msgid "Invite groups"
-msgstr ""
+msgstr "Запросити групи"
 
 msgid "Invite members"
-msgstr ""
+msgstr "Запросити членів"
 
 msgid "Search by email, full name or username"
 msgstr ""
+"Пошук за електронною адресою, повним імʼям, чи назвою облікового запису"
 
 msgid "Invite"
-msgstr ""
+msgstr "Запросити"
 
 msgid "You are about to invite <1>{{selectedCount}}</1> users"
 msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Ви збираєтесь запросити <1>{{selectedCount}}</1> користувача"
+msgstr[1] "Ви збираєтесь запросити <1>{{selectedCount}}</1> користувачі."
+msgstr[2] "Ви збираєтесь запросити <1>{{selectedCount}}</1> користувачів"
+msgstr[3] "Ви збираєтесь запросити <1>{{selectedCount}}</1> користувачів"
 
 msgid "Name"
-msgstr ""
+msgstr "Назва"
 
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 msgid "Expires"
-msgstr ""
+msgstr "Термін дії"
 
 msgid "result(s) found"
-msgstr ""
+msgstr "результат(ів) знайдено"
 
 msgid "Member since"
-msgstr ""
+msgstr "Член з "
 
 msgid "Visibility"
-msgstr ""
+msgstr "Видимість"
 
 msgid "Search members..."
-msgstr ""
+msgstr "Пошук членів..."
 
 msgid "Public"
-msgstr ""
+msgstr "Публічний"
 
 msgid "Hidden"
-msgstr ""
+msgstr "Прихований"
 
 msgid "Change roles"
-msgstr ""
+msgstr "Змінити ролі"
 
 msgid "Change visibilities"
-msgstr ""
+msgstr "Змінити видимість"
 
 msgid "Remove from community"
-msgstr ""
+msgstr "Видалити зі спільноти"
 
 msgid "You have selected <1>{{selectedCount}}</1> users"
 msgid_plural "You have selected <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Ви вибрали <1>{{selectedCount}}</1> користувача"
+msgstr[1] "Ви вибрали<1>{{selectedCount}}</1> користувачів"
+msgstr[2] "Ви вибрали <1>{{selectedCount}}</1> користувачів"
+msgstr[3] "Ви вибрали  <1>{{selectedCount}}</1> користувач"
 
 msgid "You"
-msgstr ""
+msgstr "Ви"
 
 msgid "Leave..."
-msgstr ""
+msgstr "Залишити..."
 
 msgid "Remove..."
-msgstr ""
+msgstr "Видалити..."
 
 msgid "Open"
-msgstr ""
+msgstr "Відкритий"
 
 msgid "Closed"
-msgstr ""
+msgstr "Закритий"
 
 msgid "Search requests..."
-msgstr ""
+msgstr "Шукати запити..."
 
 msgid "All done!"
-msgstr ""
+msgstr "Все зроблено!"
 
 msgid "You've caught up with all open requests."
-msgstr ""
+msgstr "Ви розібралсь з усіма відкритими запитами"
 
 msgid "No requests found!"
-msgstr ""
+msgstr "Не знайдено жодного запиту!"
 
 msgid "Reset search"
-msgstr ""
+msgstr "Скинути пошук"
 
 msgid "Search records in community..."
-msgstr ""
+msgstr "Шукати записи у спільноті..."
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
+"Це унікальний ідентифікатор вашої спільноти. Ви зможете отримати доступ до "
+"своєї спільноти через URL:"
 
 msgid "bulk actions"
-msgstr ""
+msgstr "масові дії"
 
 msgid "remove {{name}}"
-msgstr ""
+msgstr "видалити {{name}}"
 
 msgid "Submitted"
-msgstr ""
+msgstr "Подано"
 
 msgid "Accepted"
-msgstr ""
+msgstr "Прийнято"
 
 msgid "Declined"
-msgstr ""
+msgstr "Відхилено"
 
 msgid "Expired"
-msgstr ""
+msgstr "Застаріло"
 
 msgid "Search in invitations..."
-msgstr ""
+msgstr "Шукати в запрошеннях..."
 
 msgid "This community has no public members."
-msgstr ""
+msgstr "Ця спільнота не має публічно доступних членів."
 
 msgid "No matching members found."
-msgstr ""
+msgstr "Не знайдено відповідних членів."
 
 msgid "Actions"
-msgstr ""
+msgstr "Дії"
 
 msgid "Add groups"
-msgstr ""
+msgstr "Додати групи"
 
 msgid "Restricted"
-msgstr ""
+msgstr "Обмежений доступ"
 
 msgid "Search records..."
-msgstr ""
+msgstr "Шукати записи..."
 
 msgid "Selected groups"
-msgstr ""
+msgstr "Вибрані групи"
 
 msgid "Selected members"
-msgstr ""
+msgstr "Вибрані члени"
 
 msgid "Search in members ..."
-msgstr ""
+msgstr "Шукати серед членів..."
 
 msgid "You are about to leave this community."
-msgstr ""
+msgstr "Ви збираєтесь вийти з цієї спільноти."
 
 msgid "You are about to remove this user from this community."
-msgstr ""
+msgstr "Ви збираєтесь вилучити цього користувача з цієї спільноти."
 
 msgid "You are about to add <1>{{selectedCount}}</1> groups."
 msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Ви збираєтесь додати <1>{{selectedCount}}</1> групу."
+msgstr[1] "Ви збираєтесь додати  <1>{{selectedCount}}</1> груп."
+msgstr[2] "Ви збираєтесь додати  <1>{{selectedCount}}</1> груп."
+msgstr[3] "Ви збираєтесь додати <1>{{selectedCount}}</1> груп."
 
 msgid "Search..."
-msgstr ""
+msgstr "Шукати..."
 
 msgid ""
 "Users must set profile visibility to \"Public\" in order to be invited to a "
 "community."
 msgstr ""
+"Щоб отримувати запрошення до спільноти, користувач повинен встановити свій "
+"профіль як публічний."
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "Ваше членство у спільноті є видимим для усіх."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
-msgstr ""
+msgstr "Ваше членство у спільноті є видимим лише для інших членів спільноти."
 
 msgid "Opened {{difference}} by"
 msgstr ""
 
 msgid "Expires at:"
-msgstr ""
+msgstr "Термін дії:"
 
 msgid "File must be smaller than "
-msgstr ""
+msgstr "Файл повинен бути меншим, ніж"
 
 msgid "It may take a few moments for changes to be visible everywhere"
-msgstr ""
+msgstr "Перш ніж зміни стануть видимими для всіх, може пройти трохи часу."
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "Новий унікальний ідентифікатор спільноти"

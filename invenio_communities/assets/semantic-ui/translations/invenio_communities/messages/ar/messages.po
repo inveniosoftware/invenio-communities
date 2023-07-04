@@ -2,15 +2,15 @@
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Bessem Aamira <bessemamira@gmail.com>, 2022
-# Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2022
+# Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2022\n"
-"Language-Team: Arabic (https://www.transifex.com/inveniosoftware/teams/23537/ar/)\n"
+"Last-Translator: Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/inveniosoftware/teams/23537/ar/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ar\n"
@@ -147,7 +147,7 @@ msgid "Search guide"
 msgstr "دليل البحث"
 
 msgid "We couldn't find any matches for "
-msgstr "لا يمكن إيجاد أي تطابق مع"
+msgstr "لا يمكن إيجاد أي تطابق مع "
 
 msgid "your search"
 msgstr "بحثك"
@@ -159,13 +159,13 @@ msgid "ProTip"
 msgstr "نصيحة محترف"
 
 msgid "will give you all the publications from 2017 until today"
-msgstr "سوف نقدم لك جميع المنشورات إبتداءا من سنة 2017 "
+msgstr "سوف نقدم لك جميع المنشورات إبتداء من سنة 2017 "
 
 msgid "For more tips, check out our "
-msgstr "لمزيد من النصائح، قم بالاطلاع على"
+msgstr "لمزيد من النصائح، قم بالاطلاع على "
 
 msgid " for defining advanced search queries"
-msgstr "للإنشاء أستعلاما متقدما"
+msgstr " لإنشاء مقاربات بحث متقدّمة"
 
 msgid "ORCID profile"
 msgstr "الملف الشخصي أوركيد ORCID"
@@ -249,13 +249,13 @@ msgid "Member since"
 msgstr "عضو منذ"
 
 msgid "Visibility"
-msgstr "رؤية"
+msgstr "مرئيّة"
 
 msgid "Search members..."
 msgstr "البحث في الأعضاء..."
 
 msgid "Public"
-msgstr "عام"
+msgstr "مشاع"
 
 msgid "Hidden"
 msgstr "مخفي"
@@ -341,7 +341,7 @@ msgid "This community has no public members."
 msgstr "هذا المجتمع لا يضم أعضاء عامة."
 
 msgid "No matching members found."
-msgstr "لا يوجد اي غضو يوافق البحث."
+msgstr "لا يوجد اي عضو يوافق البحث."
 
 msgid "Actions"
 msgstr "العمليات"
@@ -380,31 +380,33 @@ msgstr[4] ""
 msgstr[5] ""
 
 msgid "Search..."
-msgstr ""
+msgstr "البحث ..."
 
 msgid ""
 "Users must set profile visibility to \"Public\" in order to be invited to a "
 "community."
 msgstr ""
+"يجب على المستخدمين تهيئة مرئية الملف الشخصي على \"مشاع\" لتتم دعوتهم إلى "
+"المجتمع."
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "عضويتك للمجتمع مرئية من الجميع"
 
 msgid ""
 "Your community membership is only visible to other members of the community."
-msgstr ""
+msgstr "عضويتك للمجتمع مرئية لأعصاء المجموعة فقط."
 
 msgid "Opened {{difference}} by"
 msgstr "مفتوح {{difference}} من طرف"
 
 msgid "Expires at:"
-msgstr ""
+msgstr "تنتهي في:"
 
 msgid "File must be smaller than "
-msgstr ""
+msgstr "الملف يجب ان يكون أصغر من"
 
 msgid "It may take a few moments for changes to be visible everywhere"
-msgstr ""
+msgstr "مرئية التغييرات في كل مكان ستتطلب بعض الوقت"
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "معرّف وحيد جديد للمجتمع"

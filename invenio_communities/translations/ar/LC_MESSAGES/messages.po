@@ -6,8 +6,8 @@
 # 
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2022
-# Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2022
 # Bessem Aamira <bessemamira@gmail.com>, 2022
+# Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2023
 # 
 #, fuzzy
 msgid ""
@@ -16,8 +16,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2022-10-12 09:34+0200\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Bessem Aamira <bessemamira@gmail.com>, 2022\n"
-"Language-Team: Arabic (https://www.transifex.com/inveniosoftware/teams/23537/ar/)\n"
+"Last-Translator: Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/inveniosoftware/teams/23537/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -110,6 +110,7 @@ msgstr "لا وجود لمجموعة مميزة بمدخل {q}."
 msgid ""
 "Logo size limit exceeded. Limit: {limit} bytes Given: {file_size} bytes"
 msgstr ""
+"تجاوز للحد الاقصى لحجم الترخيمة. Limit: {limit} bytes Given: {file_size}"
 
 #: invenio_communities/communities/schema.py:40
 msgid "Field cannot be blank or longer than {max_} characters."
@@ -137,7 +138,7 @@ msgstr "إضافة معرف جديد إجباري لإعادة التسمية."
 
 #: invenio_communities/communities/services/components.py:116
 msgid "The community is not public."
-msgstr ""
+msgstr "المجموعة ليست عامة."
 
 #: invenio_communities/communities/services/config.py:57
 msgid "Featured"
@@ -173,7 +174,7 @@ msgstr "رؤية"
 #: invenio_communities/communities/services/facets.py:28
 #: invenio_communities/members/services/facets.py:36
 msgid "Public"
-msgstr "عام"
+msgstr "مشاع"
 
 #: invenio_communities/communities/services/facets.py:29
 #: invenio_communities/communities/services/facets.py:49
@@ -233,7 +234,7 @@ msgstr "دعوات المجموعة"
 
 #: invenio_communities/members/services/schemas.py:88
 msgid "Missing fields 'role' and/or 'visible'."
-msgstr ""
+msgstr "الحقول 'دور' و / أو 'المرئية' مفقودة"
 
 #: invenio_communities/members/services/schemas.py:116
 msgid "Untitled"
@@ -253,7 +254,7 @@ msgstr "دعوة للإلتحاق بـ \"{community}\""
 
 #: invenio_communities/members/services/service.py:289
 msgid "You will join as \"{role}\"."
-msgstr ""
+msgstr "ستلتحق مع دور \"{role}\""
 
 #: invenio_communities/members/services/service.py:465
 #: invenio_communities/members/services/service.py:585
@@ -270,7 +271,7 @@ msgstr "يمكنك فقط تبيان مرئية عامة على عضويتك."
 
 #: invenio_communities/members/services/service.py:510
 msgid "You will join as \"{role}\" (changed from: \"{previous}\")."
-msgstr ""
+msgstr "ستلتحق بدور \"{role}\" (تغيير عوضا: \"{previous}\")"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:12
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:24
@@ -325,8 +326,8 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"    تمت إزالة المجوعة الذي تحاول الوصول إليه من %(sitename)s.  تم الابقاء على\n"
-"    الميتاداتا (البيانات الوصفية) للمجموعة لأغراض الأرشفة والحفظ.\n"
+"    تمت إزالة المجموعة التي تحاول الوصول إليها من %(sitename)s.  تم الابقاء على\n"
+"    الميتاداتا للمجموعة لأغراض الأرشفة والحفظ.\n"
 "  "
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:29
@@ -339,7 +340,7 @@ msgstr "المجموعة حصريّة للأعضاء المخوّل لهم ال�
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:73
 msgid "About this community"
-msgstr "حوا هذه المجموعة"
+msgstr "حول هذه المجموعة"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:90
 msgid "New upload"

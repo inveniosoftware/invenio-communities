@@ -2,14 +2,15 @@
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Andrea Dömötör, 2022
+# Dorottya Szemigán, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Andrea Dömötör, 2022\n"
-"Language-Team: Hungarian (https://www.transifex.com/inveniosoftware/teams/23537/hu/)\n"
+"Last-Translator: Dorottya Szemigán, 2023\n"
+"Language-Team: Hungarian (https://app.transifex.com/inveniosoftware/teams/23537/hu/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hu\n"
@@ -150,13 +151,13 @@ msgid "We couldn't find any matches for "
 msgstr "Nincs találat erre:"
 
 msgid "your search"
-msgstr "az ön keresése"
+msgstr "az Ön keresése"
 
 msgid "Start over"
 msgstr "Újrakezdés"
 
 msgid "ProTip"
-msgstr "ProTipp"
+msgstr "ProTip"
 
 msgid "will give you all the publications from 2017 until today"
 msgstr "megadjuk az összes publikációt 2017-től máig"
@@ -226,8 +227,8 @@ msgstr "Meghívás"
 
 msgid "You are about to invite <1>{{selectedCount}}</1> users"
 msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ön <1>{{selectedCount}}</1> felhasználót készül meghívni"
+msgstr[1] "Ön <1>{{selectedCount}}</1> felhasználót készül meghívni"
 
 msgid "Name"
 msgstr "Név"
@@ -267,8 +268,8 @@ msgstr "Eltávolítás a közösségből"
 
 msgid "You have selected <1>{{selectedCount}}</1> users"
 msgid_plural "You have selected <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ön <1>{{selectedCount}}</1> felhasználót választott ki"
+msgstr[1] "Ön <1>{{selectedCount}}</1> felhasználót választott ki"
 
 msgid "You"
 msgstr "Ön"
@@ -307,7 +308,7 @@ msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
-"Ez az ön közösségének egyéni azonosítója. A közösséget ezen a linken érheti "
+"Ez az Ön közösségének egyéni azonosítója. A közösséget ezen a linken érheti "
 "el:"
 
 msgid "bulk actions"
@@ -366,8 +367,8 @@ msgstr "Arra készül, hogy eltávolítsa ezt a felhasználót a közösségből
 
 msgid "You are about to add <1>{{selectedCount}}</1> groups."
 msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ön <1>{{selectedCount}}</1> csoportot készül hozzáadni"
+msgstr[1] "Ön <1>{{selectedCount}}</1> csoportot készül hozzáadni"
 
 msgid "Search..."
 msgstr "Keresés..."
@@ -380,11 +381,11 @@ msgstr ""
 "\"Nyilvános\"-ra kell állítania."
 
 msgid "Your community membership is visible to everyone."
-msgstr "Az ön közösségi tagsága mindenki számára látható."
+msgstr "Az Ön közösségi tagsága mindenki számára látható."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
-msgstr "Az ön közösségi tagsága csak a közösség tagjai számára látható."
+msgstr "Az Ön közösségi tagsága csak a közösség tagjai számára látható."
 
 msgid "Opened {{difference}} by"
 msgstr "{{difference}} megnyitva általa:"
