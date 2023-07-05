@@ -8,6 +8,9 @@
 
 Changes
 =======
+Version 7.0.1 (released 2023-07-05)
+
+- tests: fix users update
 
 Version 7.0.0 (released 2023-06-15)
 -----------------------------------
