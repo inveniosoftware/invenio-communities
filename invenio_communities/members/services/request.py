@@ -79,8 +79,8 @@ class CommunityInvitation(RequestType):
         "create": actions.CreateAndSubmitAction,
         "delete": actions.DeleteAction,
         "accept": AcceptAction,
-        "cancel": CancelAction,
         "decline": DeclineAction,
+        "cancel": CancelAction,
         "expire": ExpireAction,
     }
 
