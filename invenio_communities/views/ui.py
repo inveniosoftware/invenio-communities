@@ -158,7 +158,7 @@ def create_ui_blueprint(app):
             text=_("Requests"),
             order=2,
             expected_args=["pid_value"],
-            **dict(icon="comments", permissions="can_search_requests")
+            **dict(icon="inbox", permissions="can_search_requests")
         )
         communities.submenu("members").register(
             "invenio_communities.members",
