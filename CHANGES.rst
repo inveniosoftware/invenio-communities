@@ -8,6 +8,12 @@
 
 Changes
 =======
+
+Version 7.1.0 (released 2023-07-14)
+
+- ui: export ErrorPopup
+- ui: change communities requests menu icon
+
 Version 7.0.1 (released 2023-07-05)
 
 - tests: fix users update
