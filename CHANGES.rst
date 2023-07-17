@@ -9,10 +9,9 @@
 Changes
 =======
 
-Version 7.1.0 (released 2023-07-14)
+Version 7.1.1 (released 2023-07-17)
 
-- ui: export ErrorPopup
-- ui: change communities requests menu icon
+- actions: reorder actions
 
 Version 7.0.1 (released 2023-07-05)
 
