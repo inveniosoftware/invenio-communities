@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.1.2 (released 2023-07-18)
+
+- ui: fix mobile version
+
 Version 7.1.1 (released 2023-07-17)
 
 - actions: reorder actions
