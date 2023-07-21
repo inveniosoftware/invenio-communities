@@ -9,15 +9,23 @@
 Changes
 =======
 
+Version 7.2.0 (released 2023-07-21)
+-----------------------------------
+
+- notifications: add member invitation notification
+
 Version 7.1.2 (released 2023-07-18)
+-----------------------------------
 
 - ui: fix mobile version
 
 Version 7.1.1 (released 2023-07-17)
+-----------------------------------
 
 - actions: reorder actions
 
 Version 7.0.1 (released 2023-07-05)
+-----------------------------------
 
 - tests: fix users update
 
