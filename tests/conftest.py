@@ -24,13 +24,13 @@ from invenio_notifications.services.builders import NotificationBuilder
 from invenio_records_resources.references.entity_resolvers import ServiceResultResolver
 from invenio_records_resources.services.custom_fields import TextCF
 from invenio_requests.proxies import current_events_service, current_requests_service
+from invenio_users_resources.proxies import current_users_service
 from invenio_users_resources.records import UserAggregate
 from invenio_users_resources.services.schemas import (
     NotificationPreferences,
     UserPreferencesSchema,
     UserSchema,
 )
-from invenio_users_resources.proxies import current_users_service
 from invenio_vocabularies.proxies import current_service as vocabulary_service
 from invenio_vocabularies.records.api import Vocabulary
 from marshmallow import fields
