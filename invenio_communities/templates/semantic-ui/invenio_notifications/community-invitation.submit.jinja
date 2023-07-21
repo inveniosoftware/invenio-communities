@@ -4,7 +4,7 @@
 {% set request_id = invitation_request.id %}
 
 {% set community_title = community.metadata.title %}
-{% set message = notification.context.message | safe %}
+{% set message = notification.context.message | safe if message else '' %}
 {% set role = notification.context.role %}
 
 {# TODO: use request.links.self_html when issue issue is resolved: https://github.com/inveniosoftware/invenio-rdm-records/issues/1327 #}
