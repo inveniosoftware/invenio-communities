@@ -37,9 +37,9 @@
         <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
           <div class="ui fluid action input">
             <input type="text" name="q" class="form-control" placeholder="{{ _('Search communities') }}">
-            <button 
-              type="submit" 
-              class="ui icon search button" 
+            <button
+              type="submit"
+              class="ui icon search button"
               aria-label="{{ _('Search communities') }}"
             >
               <i class="search icon" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
           </div>
         </form>
       </div>
-      {% if can_create %}
+      {% if permissions.can_create %}
         <div class="three wide mobile five wide tablet three wide computer stretched column">
           <a href="{{ config.COMMUNITIES_ROUTES['new'] }}" class="ui icon left labeled positive button" role="button">
             <i class="icon plus"></i>

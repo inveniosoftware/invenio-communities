@@ -22,7 +22,9 @@
     <h3 class="ui header">{{_("Communities")}}</h3>
   </div>
 </div>
-<div id="communities-search" class="rel-mt-3" data-invenio-search-config='{{
-    search_app_communities_config(app_id="InvenioCommunities.Search") | tojson }}'>
+<div id="communities-search" class="rel-mt-3"
+    data-invenio-search-config='{{search_app_communities_config(app_id="InvenioCommunities.Search") | tojson }}'
+    data-permissions='{{ permissions | tojson }}'
+    >
 </div>
 {%- endblock page_body %}

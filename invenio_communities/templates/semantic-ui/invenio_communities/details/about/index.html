@@ -13,7 +13,7 @@
 
 {%- block page_body %}
   {{ super() }}
-  <div class="ui text container rel-mt-2 rel-pt-1 rel-mb-2">
+  <div class="ui text container rel-m-2 rel-pt-1">
     {{ community.metadata.page | safe }}
     {% if community.ui.funding|length %}
       <h3 class="ui header">{{ _("Awards") }}</h3>
