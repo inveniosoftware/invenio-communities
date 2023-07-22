@@ -92,14 +92,16 @@ def communities_frontpage():
     can_create = current_communities.service.check_permission(g.identity, "create")
     return render_template(
         "invenio_communities/frontpage.html",
-        can_create=can_create,
+        permissions=dict(can_create=can_create),
     )
 
 
 def communities_search():
     """Communities search page."""
+    can_create = current_communities.service.check_permission(g.identity, "create")
     return render_template(
         "invenio_communities/search.html",
+        permissions=dict(can_create=can_create),
     )
 
 

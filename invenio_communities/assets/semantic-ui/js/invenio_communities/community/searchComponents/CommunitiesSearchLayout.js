@@ -1,15 +1,15 @@
-import React from "react";
 import {
   SearchAppFacets,
   SearchAppResultsPane,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
+import PropTypes from "prop-types";
+import React from "react";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
 import { SearchBar } from "react-searchkit";
 import { Button, Container, Grid } from "semantic-ui-react";
-import PropTypes from "prop-types";
 
-export const CommunitiesSearchLayout = ({ config, appName }) => {
+export const CommunitiesSearchLayout = ({ config, appName, permissions }) => {
   const [sidebarVisible, setSidebarVisible] = React.useState(false);
   return (
     <Container>
@@ -39,14 +39,16 @@ export const CommunitiesSearchLayout = ({ config, appName }) => {
             <SearchBar placeholder={i18next.t("Search communities...")} />
           </Grid.Column>
           <Grid.Column mobile={16} tablet={6} computer={4} className="mt-10">
-            <Button
-              positive
-              icon="upload"
-              labelPosition="left"
-              href="/communities/new"
-              content={i18next.t("New community")}
-              floated="right"
-            />
+            {permissions.can_create && (
+              <Button
+                positive
+                icon="upload"
+                labelPosition="left"
+                href="/communities/new"
+                content={i18next.t("New community")}
+                floated="right"
+              />
+            )}
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -71,5 +73,10 @@ export const CommunitiesSearchLayout = ({ config, appName }) => {
 
 CommunitiesSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
-  appName: PropTypes.object.isRequired,
+  appName: PropTypes.string,
+  permissions: PropTypes.object.isRequired,
+};
+
+CommunitiesSearchLayout.defaultProps = {
+  appName: "",
 };

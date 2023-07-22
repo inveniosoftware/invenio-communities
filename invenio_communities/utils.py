@@ -51,12 +51,12 @@ def load_community_needs(identity):
     community_roles = current_identities_cache.get(cache_key)
     if community_roles is None:
         # aka Member.get_memberships(identity)
-        group_ids = session.get("_unmanaged_groups", [])
+        roles_ids = session.get("unmanaged_roles_ids", [])
 
         member_cls = current_communities.service.members.config.record_cls
         managed_community_roles = member_cls.get_memberships(identity)
         unmanaged_community_roles = member_cls.get_memberships_from_group_ids(
-            identity, group_ids
+            identity, roles_ids
         )
         community_roles = managed_community_roles + unmanaged_community_roles
 

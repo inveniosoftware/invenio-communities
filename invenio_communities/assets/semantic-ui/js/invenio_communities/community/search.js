@@ -9,17 +9,20 @@
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
   ContribBucketAggregationElement,
-  ContribSearchAppFacets,
   ContribBucketAggregationValuesElement,
+  ContribSearchAppFacets,
 } from "@js/invenio_search_ui/components";
-import { CommunityItem } from "./";
-import { parametrize, overrideStore } from "react-overridable";
+import { overrideStore, parametrize } from "react-overridable";
 import {
-  ResultsGridItemTemplate,
   CommunitiesResults,
-  CommunitiesSearchLayout,
   CommunitiesSearchBarElement,
+  CommunitiesSearchLayout,
+  CommunityItem,
+  ResultsGridItemTemplate,
 } from "./";
+
+const dataAttr = document.getElementById("communities-search").dataset;
+const permissions = JSON.parse(dataAttr.permissions);
 
 const appName = "InvenioCommunities.Search";
 
@@ -29,6 +32,7 @@ const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
 
 const CommunitiesSearchLayoutConfig = parametrize(CommunitiesSearchLayout, {
   appName: appName,
+  permissions: permissions,
 });
 
 export const defaultComponents = {
