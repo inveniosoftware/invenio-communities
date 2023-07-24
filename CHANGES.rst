@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.2.1 (released 2023-07-24)
+-----------------------------------
+
+- inject create permissions to communities search
+
 Version 7.2.0 (released 2023-07-21)
 -----------------------------------
 
