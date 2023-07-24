@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.2.2 (released 2023-07-24)
+-----------------------------------
+
+- templates: access message and mark subject for translation
+
 Version 7.2.1 (released 2023-07-24)
 -----------------------------------
 
