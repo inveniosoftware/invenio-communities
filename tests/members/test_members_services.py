@@ -1169,7 +1169,7 @@ def test_relation_update_propagation(
 # invenio-notification testcases
 #
 def test_community_invitation_notification(
-    member_service, community, owner, new_user, db, monkeypatch, app
+    member_service, requests_service, community, owner, new_user, db, monkeypatch, app
 ):
     """Test notifcation being built on community invitation submit."""
 
@@ -1217,7 +1217,32 @@ def test_community_invitation_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert role.capitalize() in html
-        # TODO message was showing None in the email see fix in community-invitation.submit.jinja:7
-        # assert message in html
         assert "You have been invited to join" in html
+        assert message in html
+        assert community._record.metadata["title"] in html
+
+    with mail.record_messages() as outbox:
+        requests_service.execute_action(
+            new_user.identity, inv["request"]["id"], "decline"
+        )
+        data = {
+            "members": [{"type": "user", "id": str(new_user.id)}],
+            "role": role,
+        }
+        member_service.invite(owner.identity, community.id, data)
+        # ensure that the invited user request has been indexed
+        res = member_service.search_invitations(owner.identity, community.id).to_dict()
+        assert res["hits"]["total"] == 2
+        inv = res["hits"]["hits"][1]
+
+        # check notification is build on submit
+        assert mock_build.called
+        assert len(outbox) == 1
+        html = outbox[0].html
+        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
+        assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        # role titles will be capitalized
+        assert role.capitalize() in html
+        assert "You have been invited to join" in html
+        assert "Invitation message" not in html
         assert community._record.metadata["title"] in html

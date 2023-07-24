@@ -4,7 +4,7 @@
 {% set request_id = invitation_request.id %}
 
 {% set community_title = community.metadata.title %}
-{% set message = notification.context.message | safe if message else '' %}
+{% set message = notification.context.message | safe if notification.context.message else '' %}
 {% set role = notification.context.role %}
 
 {# TODO: use request.links.self_html when issue issue is resolved: https://github.com/inveniosoftware/invenio-rdm-records/issues/1327 #}
@@ -14,12 +14,12 @@
 %}
 
 {%- block subject -%}
-New invitation to join community {{ community_title }} as {{ role }}
+  {{ _("New invitation to join community '{community_title}' as '{role}'.").format(community_title=community_title, role=role) }}
 {%- endblock subject -%}
 
 {%- block html_body -%}
 <p>
-    {{ _("You have been invited to join community '{community_title}' as '{role}'").format(community_title=community_title, role=role) }}.
+    {{ _("You have been invited to join community '{community_title}' as '{role}'.").format(community_title=community_title, role=role) }}
 </p>
 
 {%- if message %}
@@ -33,7 +33,7 @@ New invitation to join community {{ community_title }} as {{ role }}
 {%- endblock html_body %}
 
 {%- block plain_body -%}
-{{ _("You have been invited to join community '{community_title}' as '{role}'").format(community_title=community_title, role=role) }}.
+{{ _("You have been invited to join community '{community_title}' as '{role}'.").format(community_title=community_title, role=role) }}
 
 {%- if message %}
     {{ _("Invitation message:") }}
@@ -45,7 +45,7 @@ New invitation to join community {{ community_title }} as {{ role }}
 
 {# Markdown for Slack/Mattermost/chat #}
 {%- block md_body -%}
-{{ _("You have been invited to join community *{community_title}* as *{role}*").format(community_title=community_title, role=role) }}.
+{{ _("You have been invited to join community *{community_title}* as *{role}*.").format(community_title=community_title, role=role) }}
 
 {%- if message %}
     {{ _("Invitation message:") }}
