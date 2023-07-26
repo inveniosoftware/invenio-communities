@@ -9,6 +9,12 @@
 Changes
 =======
 
+
+Version 7.2.3 (released 2023-07-26)
+-----------------------------------
+
+- ui: align search with "My account" header
+
 Version 7.2.2 (released 2023-07-24)
 -----------------------------------
 
