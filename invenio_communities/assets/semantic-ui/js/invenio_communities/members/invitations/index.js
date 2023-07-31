@@ -15,6 +15,7 @@ import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
 import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
+import { InvitationsEmptyResults } from "./InvitationsEmptyResults";
 import {
   SubmitStatus,
   DeleteStatus,
@@ -52,12 +53,25 @@ const InvitationsContextProvider = parametrize(ContextProvider, {
   community: community,
 });
 
+const InvitationsResultsContainerWithConfig = parametrize(InvitationsResultsContainer, {
+  rolesCanInvite: communitiesRolesCanInvite,
+  community: community,
+  communityGroupsEnabled: communityGroupsEnabled,
+});
+
+const InvitationsEmptyResultsWithCommunity = parametrize(InvitationsEmptyResults, {
+  community: community,
+  communityGroupsEnabled: communityGroupsEnabled,
+  rolesCanInvite: communitiesRolesCanInvite,
+});
+
 const defaultComponents = {
+  [`${appName}.EmptyResults.element`]: InvitationsEmptyResultsWithCommunity,
   [`${appName}.ResultsList.item`]: InvitationResultItemWithConfig,
   [`${appName}.SearchApp.layout`]: InvitationsSearchLayoutWithConfig,
   [`${appName}.SearchBar.element`]: InvitationsSearchBarElement,
   [`${appName}.SearchApp.results`]: InvitationsResults,
-  [`${appName}.ResultsList.container`]: InvitationsResultsContainer,
+  [`${appName}.ResultsList.container`]: InvitationsResultsContainerWithConfig,
   [`${appName}.Sort.element`]: DropdownSort,
   [`RequestStatus.layout.submitted`]: SubmitStatus,
   [`RequestStatus.layout.deleted`]: DeleteStatus,

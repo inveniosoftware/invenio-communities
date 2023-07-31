@@ -13,7 +13,8 @@ import { memberVisibilityTypes } from "../";
 import { MembersSearchBarElement } from "../../components/MembersSearchBarElement";
 import { MembersResults } from "../components/MembersResult";
 import { MembersResultsGridItem } from "../components/MembersResultsGridItem";
-import { MembersSearchLayout } from "../components/MembersSearchLayout";
+import { ManagerSearchLayout } from "./ManagerSearchLayout";
+import { ManagerEmptyResults } from "./ManagerEmptyResults";
 import { ManagerMembersResultsContainer } from "./ManagerMembersResultContainer";
 import { ManagerMembersResultItem } from "./ManagerMembersResultItem";
 import { MembersSearchAppContext as MembersSearchAppContextCmp } from "./MembersSearchAppContext";
@@ -23,7 +24,8 @@ const communitiesRolesCanUpdate = JSON.parse(dataAttr.communitiesRolesCanUpdate)
 const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
 const community = JSON.parse(dataAttr.community);
 const permissions = JSON.parse(dataAttr.permissions);
-
+const communityGroupsEnabled = JSON.parse(dataAttr.communityGroupsEnabled);
+const rolesCanInvite = JSON.parse(dataAttr.communitiesRolesCanInvite);
 const appName = "InvenioCommunities.ManagerSearch";
 
 const ManagerMembersResultItemWithConfig = parametrize(ManagerMembersResultItem, {
@@ -38,6 +40,8 @@ const ManagerMembersResultContainerWithCommunity = parametrize(
   ManagerMembersResultsContainer,
   {
     community: community,
+    communityGroupsEnabled: communityGroupsEnabled,
+    rolesCanInvite: rolesCanInvite,
     config: {
       roles: communitiesAllRoles,
       visibility: memberVisibilityTypes,
@@ -50,15 +54,26 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
   community: community,
 });
 
-const MembersSearchLayoutWithConfig = parametrize(MembersSearchLayout, {
+const ManagerSearchLayoutWithConfig = parametrize(ManagerSearchLayout, {
+  community: community,
+  communityGroupsEnabled: communityGroupsEnabled,
+  rolesCanInvite: rolesCanInvite,
+  permissions: permissions,
   roles: communitiesAllRoles,
   appName: appName,
 });
 
+const ManagerEmptyResultsWithCommunity = parametrize(ManagerEmptyResults, {
+  community: community,
+  communityGroupsEnabled: communityGroupsEnabled,
+  rolesCanInvite: rolesCanInvite,
+});
+
 const defaultComponents = {
+  [`${appName}.EmptyResults.element`]: ManagerEmptyResultsWithCommunity,
   [`${appName}.ResultsList.item`]: ManagerMembersResultItemWithConfig,
   [`${appName}.ResultsGrid.item`]: MembersResultsGridItem,
-  [`${appName}.SearchApp.layout`]: MembersSearchLayoutWithConfig,
+  [`${appName}.SearchApp.layout`]: ManagerSearchLayoutWithConfig,
   [`${appName}.SearchBar.element`]: MembersSearchBarElement,
   [`${appName}.SearchApp.results`]: MembersResults,
   [`${appName}.ResultsList.container`]: ManagerMembersResultContainerWithCommunity,

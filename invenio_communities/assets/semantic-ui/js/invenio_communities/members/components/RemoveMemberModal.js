@@ -32,11 +32,13 @@ class RemoveMemberModal extends Component {
         headerText: i18next.t("Leave community"),
         bodyText: i18next.t("You are about to leave this community."),
         buttonText: i18next.t("Leave"),
+        buttonIcon: "log out",
       },
       [modalModeEnum.remove]: {
         headerText: i18next.t("Remove user"),
         bodyText: i18next.t("You are about to remove this user from this community."),
         buttonText: i18next.t("Remove"),
+        buttonIcon: "user delete",
       },
     };
   }
@@ -91,12 +93,16 @@ class RemoveMemberModal extends Component {
               loading={loading}
               onClick={this.onCloseHandler}
               floated="left"
+              icon="cancel"
+              labelPosition="left"
             />
             <Button
               negative
               content={content?.buttonText}
               loading={loading}
               onClick={this.onActionHandler}
+              icon={content?.buttonIcon}
+              labelPosition="left"
             />
           </Modal.Actions>
         </Modal>

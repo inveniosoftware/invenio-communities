@@ -40,12 +40,29 @@ export class InvitationsMembersModal extends Component {
 
   getPanes = () => {
     const { groupsEnabled, rolesCanInvite } = this.props;
+    const { activeIndex } = this.state;
     const { api } = this.context;
     const userRoles = rolesCanInvite["user"];
     const peopleTab = {
-      menuItem: i18next.t("People"),
+      menuItem: (
+        <Button
+          role="tab"
+          className="item"
+          id="members-users-tab"
+          aria-controls="members-users-tab-panel"
+          aria-selected={activeIndex === 0}
+        >
+          {i18next.t("People")}
+        </Button>
+      ),
       pane: (
-        <Tab.Pane key="members-users" as={Container}>
+        <Tab.Pane
+          role="tabpanel"
+          id="members-users-tab-panel"
+          aria-labelledby="members-users-tab"
+          key="members-users"
+          as={Container}
+        >
           <MembersWithRoleSelection
             key="members-users"
             roleOptions={userRoles}
@@ -59,9 +76,25 @@ export class InvitationsMembersModal extends Component {
 
     const groupRoles = rolesCanInvite["group"];
     const groupsTab = {
-      menuItem: i18next.t("Groups"),
+      menuItem: (
+        <Button
+          role="tab"
+          className="item"
+          id="members-group-tab"
+          aria-controls="members-groups-tab-panel"
+          aria-selected={activeIndex === 1}
+        >
+          {i18next.t("Groups")}
+        </Button>
+      ),
       pane: (
-        <Tab.Pane key="members-groups" as={Container}>
+        <Tab.Pane
+          role="tabpanel"
+          id="members-groups-tab-panel"
+          aria-labelledby="members-groups-tab"
+          key="members-groups"
+          as={Container}
+        >
           <GroupTabPane
             modalClose={this.handleCloseModal}
             roleOptions={groupRoles}
@@ -77,12 +110,18 @@ export class InvitationsMembersModal extends Component {
 
   handleCloseModal = () => this.setState({ open: false });
 
-  handleOpenModal = () => this.setState({ open: true });
+  handleOpenModal = () => {
+    this.setState({ open: true }, () => {
+      const membersTab = document.getElementById("members-users-tab");
+      membersTab.focus();
+    });
+  };
 
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
     const { open, activeIndex } = this.state;
+    const { triggerButtonSize } = this.props;
     return (
       <Modal
         role="dialog"
@@ -93,9 +132,13 @@ export class InvitationsMembersModal extends Component {
         trigger={
           <Button
             className="fluid-responsive"
-            content={i18next.t("Invite members")}
+            content={i18next.t("Invite...")}
             positive
-            size="medium"
+            fluid
+            compact
+            size={triggerButtonSize}
+            icon="user plus"
+            labelPosition="left"
             aria-expanded={open}
             aria-haspopup="dialog"
           />
@@ -125,6 +168,11 @@ InvitationsMembersModal.propTypes = {
   rolesCanInvite: PropTypes.object.isRequired,
   groupsEnabled: PropTypes.bool.isRequired,
   community: PropTypes.object.isRequired,
+  triggerButtonSize: PropTypes.string,
+};
+
+InvitationsMembersModal.defaultProps = {
+  triggerButtonSize: "medium",
 };
 
 export const InvitationsMembersModalWithSearchKit = withState(InvitationsMembersModal);

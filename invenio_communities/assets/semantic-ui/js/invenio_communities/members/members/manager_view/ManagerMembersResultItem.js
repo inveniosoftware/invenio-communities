@@ -74,16 +74,28 @@ export class ManagerMembersResultItem extends Component {
                 {!result.is_current_user && (
                   <SearchResultsRowCheckbox rowId={result.id} data={result} />
                 )}
-                <Image src={result.member.avatar} avatar />
+                <Image
+                  src={result.member.avatar}
+                  avatar
+                  className={result.is_current_user ? "" : "rel-ml-1"}
+                />
                 <Item.Content className="ml-10">
-                  <Item.Header className={!result.member.description ? "mt-5" : ""}>
+                  <Item.Header
+                    className={`flex align-items-center ${
+                      !result.member.description ? "mt-5" : ""
+                    }`}
+                  >
                     <b className="mr-10">{result.member.name}</b>
 
                     {result.member.type === "group" && (
-                      <Label className="mr-10">{i18next.t("Group")}</Label>
+                      <Label size="tiny" className="mr-10">
+                        {i18next.t("Group")}
+                      </Label>
                     )}
                     {result.is_current_user && (
-                      <Label className="primary">{i18next.t("You")}</Label>
+                      <Label size="tiny" className="primary">
+                        {i18next.t("You")}
+                      </Label>
                     )}
                   </Item.Header>
                   {result.member.description && (
@@ -101,9 +113,11 @@ export class ManagerMembersResultItem extends Component {
             </Grid.Column>
           </Grid>
         </Table.Cell>
+
         <Table.Cell data-label={i18next.t("Member since")}>
           {timestampToRelativeTime(result.created)}
         </Table.Cell>
+
         <Table.Cell data-label={i18next.t("Visibility")}>
           {result.permissions.can_update_visible ? (
             <VisibilityDropdown
@@ -119,6 +133,7 @@ export class ManagerMembersResultItem extends Component {
             i18next.t("Hidden")
           )}
         </Table.Cell>
+
         <Table.Cell data-label={i18next.t("Role")}>
           {result.permissions.can_update_role ? (
             <RoleDropdown
@@ -136,23 +151,33 @@ export class ManagerMembersResultItem extends Component {
         <ModalContext.Consumer>
           {({ openModal }) => (
             <Table.Cell data-label={i18next.t("Actions")}>
-              {result.permissions.can_leave && (
-                <Button
-                  negative
-                  fluid
-                  onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
-                >
-                  {i18next.t("Leave...")}
-                </Button>
-              )}
-              {result.permissions.can_delete && (
-                <Button
-                  fluid
-                  onClick={() => this.openLeaveOrRemoveModal(openModal, true)}
-                >
-                  {i18next.t("Remove...")}
-                </Button>
-              )}
+              <div>
+                {result.permissions.can_leave && (
+                  <Button
+                    negative
+                    size="tiny"
+                    labelPosition="left"
+                    icon="log out"
+                    fluid
+                    className="fluid-computer-only"
+                    compact
+                    content={i18next.t("Leave...")}
+                    onClick={() => this.openLeaveOrRemoveModal(openModal, false)}
+                  />
+                )}
+                {result.permissions.can_delete && (
+                  <Button
+                    size="tiny"
+                    labelPosition="left"
+                    icon="user delete"
+                    fluid
+                    className="fluid-computer-only"
+                    compact
+                    content={i18next.t("Remove...")}
+                    onClick={() => this.openLeaveOrRemoveModal(openModal, true)}
+                  />
+                )}
+              </div>
             </Table.Cell>
           )}
         </ModalContext.Consumer>
