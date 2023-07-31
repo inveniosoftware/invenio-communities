@@ -25,11 +25,16 @@ class MembersEmptyResults extends Component {
           {isEmptyPage && i18next.t("This community has no public members.")}
           {isEmptyPageAfterSearch && i18next.t("No matching members found.")}
         </Header>
-        {queryString && <em>Current search "{queryString}"</em>}
-        <br />
+        {queryString && (
+          <p>
+            <em>
+              {i18next.t("Current search")} "{queryString}"
+            </em>
+          </p>
+        )}
         {isEmptyPageAfterSearch && (
           <Button primary onClick={() => resetQuery()}>
-            Clear query
+            {i18next.t("Clear query")}
           </Button>
         )}
         {extraContent}
@@ -40,10 +45,14 @@ class MembersEmptyResults extends Component {
 
 MembersEmptyResults.propTypes = {
   resetQuery: PropTypes.func.isRequired,
-  extraContent: PropTypes.node.isRequired,
   queryString: PropTypes.string.isRequired,
   currentQueryState: PropTypes.object.isRequired,
   currentResultsState: PropTypes.object.isRequired,
+  extraContent: PropTypes.node,
+};
+
+MembersEmptyResults.defaultProps = {
+  extraContent: null,
 };
 
 export default withState(MembersEmptyResults);

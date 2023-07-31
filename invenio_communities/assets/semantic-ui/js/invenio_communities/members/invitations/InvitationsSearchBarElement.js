@@ -20,7 +20,7 @@ export const InvitationsSearchBarElement = ({
 }) => {
   return (
     <Input
-      className="invitation-searchbar rel-ml-2"
+      className="invitation-searchbar"
       action={{
         icon: "search",
         onClick: onBtnSearchClick,
@@ -43,5 +43,9 @@ InvitationsSearchBarElement.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   onKeyPress: PropTypes.func.isRequired,
   queryString: PropTypes.string.isRequired,
-  uiProps: PropTypes.object.isRequired,
+  uiProps: PropTypes.object,
+};
+
+InvitationsSearchBarElement.defaultProps = {
+  uiProps: null,
 };

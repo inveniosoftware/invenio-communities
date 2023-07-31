@@ -6,18 +6,17 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
-import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { RequestStatusFilter } from "@js/invenio_requests/search";
-import { Filters } from "../Filters";
-import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
-import { InvitationsMembersModalWithSearchKit } from "./invitationsModal/InvitationsMembersModal";
+import PropTypes from "prop-types";
+import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
+import { Filters } from "../../Filters";
+import { FilterLabels } from "../../components/FilterLabels";
+import { SearchFilters } from "@js/invenio_search_ui/components";
 import { SearchBar, Sort } from "react-searchkit";
-import { FilterLabels } from "../components/FilterLabels";
-import { SearchFilters } from "@js/invenio_search_ui/components/SearchFilters";
+import { InvitationsContextProvider } from "../../../api/invitations/InvitationsContextProvider";
+import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitationsModal/InvitationsMembersModal";
 
-export class InvitationsSearchLayout extends Component {
+export class ManagerSearchLayout extends Component {
   render() {
     const {
       config,
@@ -27,35 +26,27 @@ export class InvitationsSearchLayout extends Component {
       communityGroupsEnabled,
       appName,
     } = this.props;
-
     const filtersClass = new Filters(roles);
-    const customFilters = filtersClass.getInvitationFilters();
-
+    const customFilters = filtersClass.getMembersFilters();
     return (
       <>
         {/* auto column grid used instead of SUI grid for better searchbar width adjustment */}
         <div className="auto-column-grid">
-          <div className="flex column-mobile">
-            <div className="mobile only rel-mb-1 flex align-items-center justify-space-between">
-              <RequestStatusFilter keepFiltersOnUpdate />
-              <div>
-                <InvitationsContextProvider community={community}>
-                  <InvitationsMembersModalWithSearchKit
-                    rolesCanInvite={rolesCanInvite}
-                    groupsEnabled={communityGroupsEnabled}
-                    community={community}
-                  />
-                </InvitationsContextProvider>
-              </div>
-            </div>
-
-            <div className="tablet computer only only rel-mr-2">
-              <RequestStatusFilter keepFiltersOnUpdate />
+          <div>
+            <div className="mobile only rel-mb-1">
+              <InvitationsContextProvider community={community}>
+                <InvitationsMembersModalWithSearchKit
+                  rolesCanInvite={rolesCanInvite}
+                  groupsEnabled={communityGroupsEnabled}
+                  community={community}
+                />
+              </InvitationsContextProvider>
             </div>
             <SearchBar fluid />
           </div>
+
           <div className="flex align-items-center column-mobile">
-            <div className="tablet only mr-5">
+            <div className="tablet only">
               <InvitationsContextProvider community={community}>
                 <InvitationsMembersModalWithSearchKit
                   rolesCanInvite={rolesCanInvite}
@@ -71,8 +62,9 @@ export class InvitationsSearchLayout extends Component {
             </div>
           </div>
         </div>
+
         <div className="rel-mb-1">
-          <FilterLabels ignoreFilters={["is_open"]} />
+          <FilterLabels />
         </div>
 
         <SearchAppResultsPane layoutOptions={config.layoutOptions} appName={appName} />
@@ -81,7 +73,7 @@ export class InvitationsSearchLayout extends Component {
   }
 }
 
-InvitationsSearchLayout.propTypes = {
+ManagerSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
@@ -90,6 +82,6 @@ InvitationsSearchLayout.propTypes = {
   appName: PropTypes.string,
 };
 
-InvitationsSearchLayout.defaultProps = {
+ManagerSearchLayout.defaultProps = {
   appName: "",
 };

@@ -7,11 +7,19 @@
  */
 import { i18next } from "@translations/invenio_communities/i18next";
 import React from "react";
+import PropTypes from "prop-types";
+import { InvitationsContextProvider } from "../../../api/invitations/InvitationsContextProvider";
+import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitationsModal/InvitationsMembersModal";
 import { Table } from "semantic-ui-react";
 import { ManagerMemberBulkActions } from "./ManagerMemberBulkActions";
-import PropTypes from "prop-types";
 
-export const ManagerMembersResultsContainer = ({ results, community, config }) => {
+export const ManagerMembersResultsContainer = ({
+  results,
+  community,
+  communityGroupsEnabled,
+  rolesCanInvite,
+  config,
+}) => {
   return (
     <Table>
       <Table.Header>
@@ -24,10 +32,19 @@ export const ManagerMembersResultsContainer = ({ results, community, config }) =
               permissions={config.permissions}
             />
           </Table.HeaderCell>
-          <Table.HeaderCell width={2}>{i18next.t("Member since")}</Table.HeaderCell>
+          <Table.HeaderCell width={3}>{i18next.t("Member since")}</Table.HeaderCell>
           <Table.HeaderCell width={3}>{i18next.t("Visibility")}</Table.HeaderCell>
-          <Table.HeaderCell width={4}>{i18next.t("Role")}</Table.HeaderCell>
-          <Table.HeaderCell width={2} />
+          <Table.HeaderCell width={3}>{i18next.t("Role")}</Table.HeaderCell>
+          <Table.HeaderCell width={1} textAlign="right">
+            <InvitationsContextProvider community={community}>
+              <InvitationsMembersModalWithSearchKit
+                rolesCanInvite={rolesCanInvite}
+                groupsEnabled={communityGroupsEnabled}
+                community={community}
+                triggerButtonSize="tiny"
+              />
+            </InvitationsContextProvider>
+          </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>{results}</Table.Body>
@@ -38,5 +55,7 @@ export const ManagerMembersResultsContainer = ({ results, community, config }) =
 ManagerMembersResultsContainer.propTypes = {
   results: PropTypes.array.isRequired,
   community: PropTypes.object.isRequired,
+  rolesCanInvite: PropTypes.object.isRequired,
+  communityGroupsEnabled: PropTypes.bool.isRequired,
   config: PropTypes.object.isRequired,
 };

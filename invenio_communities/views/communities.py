@@ -328,6 +328,7 @@ def members(pid_value, community, community_ui):
         community=community_ui,
         permissions=permissions,
         roles_can_update=_get_roles_can_update(community.id),
+        roles_can_invite=_get_roles_can_invite(community.id),
     )
 
 
