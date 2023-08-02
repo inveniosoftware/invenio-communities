@@ -10,6 +10,11 @@ Changes
 =======
 
 
+Version 7.3.0 (released 2023-08-02)
+-----------------------------------
+
+- members and invitations: Add invite button to members tab, a11y fixes, UI fixes
+
 Version 7.2.3 (released 2023-07-26)
 -----------------------------------
 
