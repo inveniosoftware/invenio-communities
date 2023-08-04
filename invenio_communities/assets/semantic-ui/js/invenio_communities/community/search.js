@@ -21,9 +21,6 @@ import {
   ResultsGridItemTemplate,
 } from "./";
 
-const dataAttr = document.getElementById("communities-search").dataset;
-const permissions = JSON.parse(dataAttr.permissions);
-
 const appName = "InvenioCommunities.Search";
 
 const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
@@ -32,7 +29,6 @@ const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
 
 const CommunitiesSearchLayoutConfig = parametrize(CommunitiesSearchLayout, {
   appName: appName,
-  permissions: permissions,
 });
 
 export const defaultComponents = {

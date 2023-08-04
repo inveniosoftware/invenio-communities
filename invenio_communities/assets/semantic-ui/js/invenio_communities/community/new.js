@@ -127,7 +127,7 @@ class CommunityCreateForm extends Component {
             <Grid container centered>
               <Grid.Row>
                 <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
-                  <Header className="mt-15" as="h2">
+                  <Header as="h1" className="rel-mt-2">
                     {i18next.t("Setup your new community")}
                   </Header>
                   <Divider />
