@@ -18,11 +18,18 @@
 
 {%- block page_body %}
 <div class="ui container fluid page-subheader-outer compact ml-0-mobile mr-0-mobile">
-  <div class="ui container community-search page-subheader">
-    <h1 class="ui large header">{{_("Communities")}}</h1>
+  <div class="ui container community-search page-subheader flex align-items-center justify-space-between">
+    <h1 class="ui large header m-0">{{_("Communities")}}</h1>
+
+    {% if permissions.can_create %}
+      <a class="ui button positive left labeled icon m-0" href="/communities/new">
+        <i class="plus icon" aria-hidden="true"></i>
+        {{ _('New community') }}
+      </a>
+    {% endif %}
   </div>
 </div>
-<div id="communities-search" class="rel-mt-3"
+<div id="communities-search" class="rel-mt-2"
     data-invenio-search-config='{{search_app_communities_config(app_id="InvenioCommunities.Search") | tojson }}'
     data-permissions='{{ permissions | tojson }}'
     >
