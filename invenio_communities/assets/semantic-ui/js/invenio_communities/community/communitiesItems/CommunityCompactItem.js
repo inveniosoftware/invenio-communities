@@ -25,6 +25,7 @@ export function CommunityCompactItem({
         actions={actions}
         extraLabels={extraLabels}
         itemClassName={itemClassName}
+        showPermissionLabel={showPermissionLabel}
       />
     </>
   );

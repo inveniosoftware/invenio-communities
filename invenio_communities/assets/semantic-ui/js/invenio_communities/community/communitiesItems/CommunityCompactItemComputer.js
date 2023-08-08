@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import _truncate from "lodash/truncate";
 
 import { Image, InvenioPopup } from "react-invenio-forms";
-import { Item, Grid, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { CommunityTypeLabel, RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
@@ -22,77 +22,65 @@ export const CommunityCompactItemComputer = ({
 }) => {
   const { metadata, ui, links, access, id } = result;
   const communityType = ui?.type?.title_l10n;
-
   return (
-    <Item
+    <div
       key={id}
-      className={`computer tablet only justify-space-between community-item ${itemClassName}`}
+      className={`community-item tablet computer only display-grid auto-column-grid no-wrap ${itemClassName}`}
     >
-      <Image size="tiny" src={links.logo} alt="" />
-      <Grid>
-        <Grid.Column width={10}>
-          <Item.Content verticalAlign="middle">
-            <Item.Header
-              as="a"
-              href={links.self_html}
-              className="ui small header flex align-items-center mb-5"
-            >
-              {metadata.title}
-            </Item.Header>
+      <div className="flex align-items-center">
+        <Image
+          wrapped
+          size="tiny"
+          src={links.logo}
+          alt=""
+          className="community-image rel-mr-2"
+        />
 
-            {metadata.description && (
-              <Item.Description
-                as="p"
-                dangerouslySetInnerHTML={{
-                  __html: _truncate(metadata.description, { length: 50 }),
-                }}
-              />
-            )}
-            <Item.Extra>
+        <div>
+          <a href={links.self_html} className="ui small header truncate-lines-2">
+            {metadata.title}
+          </a>
+
+          {metadata.description && (
+            <p
+              className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1"
+              dangerouslySetInnerHTML={{
+                __html: _truncate(metadata.description, { length: 50 }),
+              }}
+            />
+          )}
+
+          {(result.access.visibility === "restricted" ||
+            communityType ||
+            extraLabels) && (
+            <div className="rel-mt-1">
               <RestrictedLabel access={access.visibility} />
               <CommunityTypeLabel type={communityType} />
               {extraLabels}
-            </Item.Extra>
-          </Item.Content>
-        </Grid.Column>
-        <Grid.Column width={5} verticalAlign="middle" align="right">
-          {showPermissionLabel && (
-            <Item.Content>
-              <Item.Meta>
-                {ui?.permissions?.can_include_directly && (
-                  <InvenioPopup
-                    popupId="direct-publish-info-popup"
-                    size="small"
-                    trigger={<Icon name="paper plane outline" size="large" />}
-                    ariaLabel={i18next.t("Submission information")}
-                    content={i18next.t(
-                      "Submission to this community does not require review, and will be published immediately."
-                    )}
-                  />
-                )}
-                {!ui?.permissions?.can_include_directly && (
-                  <InvenioPopup
-                    popupId="requires-review-popup"
-                    size="small"
-                    ariaLabel={i18next.t("Submission information")}
-                    trigger={
-                      <span>
-                        <Icon name="comments outline" size="large" />
-                        <Icon corner="top right" name="question" size="small" fitted />
-                      </span>
-                    }
-                    content={i18next.t(
-                      "Submission to this community requires review and will be published upon curator's approval."
-                    )}
-                  />
-                )}
-              </Item.Meta>
-            </Item.Content>
+            </div>
           )}
-        </Grid.Column>
-      </Grid>
-      <div className="flex align-items-center">{actions}</div>
-    </Item>
+        </div>
+      </div>
+
+      <div className="flex align-items-center justify-end">
+        {showPermissionLabel && (
+          <span className="rel-mr-1">
+            {ui?.permissions?.can_include_directly && (
+              <InvenioPopup
+                popupId="direct-publish-info-popup"
+                size="small"
+                trigger={<Icon name="paper plane outline neutral" size="large" />}
+                ariaLabel={i18next.t("Submission information")}
+                content={i18next.t(
+                  "Submission to this community does not require review, and will be published immediately."
+                )}
+              />
+            )}
+          </span>
+        )}
+        {actions}
+      </div>
+    </div>
   );
 };
 
