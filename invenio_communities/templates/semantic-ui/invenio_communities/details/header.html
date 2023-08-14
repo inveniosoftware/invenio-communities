@@ -139,7 +139,7 @@
     <div class="ui divider mobile only"></div>
     <div
       class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
-      {% for item in current_menu.submenu('communities').children if item.permissions == True or permissions[item.permissions] %}
+      {% for item in current_menu.submenu('communities').children if (item.permissions == True or permissions[item.permissions]) and item.visible %}
           <a
             class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}"
             href="{{ item.url }}"

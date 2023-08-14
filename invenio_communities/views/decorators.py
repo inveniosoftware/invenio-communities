@@ -10,7 +10,7 @@
 
 from functools import wraps
 
-from flask import g
+from flask import g, request
 
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
@@ -29,6 +29,7 @@ def pass_community(serialize):
                 id_=pid_value, identity=g.identity
             )
             kwargs["community"] = community
+            request.community = community.to_dict()
             if serialize:
                 community_ui = UICommunityJSONSerializer().dump_obj(community.to_dict())
                 kwargs["community_ui"] = community_ui
