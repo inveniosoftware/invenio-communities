@@ -16,6 +16,7 @@ from invenio_records_permissions.generators import (
     AnyUser,
     AuthenticatedUser,
     Disable,
+    IfConfig,
     SystemProcess,
 )
 from invenio_records_permissions.policies import BasePermissionPolicy
@@ -29,7 +30,6 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     GroupsEnabled,
-    IfConfig,
     IfPolicyClosed,
     IfRestricted,
 )

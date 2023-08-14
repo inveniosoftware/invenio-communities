@@ -12,7 +12,6 @@
 """Community permissions."""
 
 import operator
-from abc import abstractmethod
 from collections import namedtuple
 from functools import partial, reduce
 from itertools import chain
@@ -312,57 +311,3 @@ class GroupsEnabled(Generator):
                 ):
                     return [any_user]
         return []
-
-
-# TODO https://github.com/inveniosoftware/invenio-rdm-records/issues/1226
-class ConditionalGenerator(Generator):
-    """Generator that depends on whether a condition is true or not.
-
-    If...(
-        then_=[...],
-        else_=[...],
-    )
-    """
-
-    def __init__(self, then_, else_):
-        """Constructor."""
-        self.then_ = then_
-        self.else_ = else_
-
-    @abstractmethod
-    def _condition(self, **kwargs):
-        """Condition to choose generators set."""
-        raise NotImplementedError()
-
-    def _generators(self, record, **kwargs):
-        """Get the "then" or "else" generators."""
-        return self.then_ if self._condition(record=record, **kwargs) else self.else_
-
-    def needs(self, record=None, **kwargs):
-        """Set of Needs granting permission."""
-        needs = [
-            g.needs(record=record, **kwargs) for g in self._generators(record, **kwargs)
-        ]
-        return set(chain.from_iterable(needs))
-
-    def excludes(self, record=None, **kwargs):
-        """Set of Needs denying permission."""
-        excludes = [
-            g.excludes(record=record, **kwargs)
-            for g in self._generators(record, **kwargs)
-        ]
-        return set(chain.from_iterable(excludes))
-
-
-class IfConfig(ConditionalGenerator):
-    """Config-based conditional generator."""
-
-    def __init__(self, config_key, accept_values=[True], **kwargs):
-        """Initialize generator."""
-        self.accept_values = accept_values
-        self.config_key = config_key
-        super().__init__(**kwargs)
-
-    def _condition(self, **_):
-        """Check if the config value is truthy."""
-        return current_app.config.get(self.config_key) in self.accept_values
