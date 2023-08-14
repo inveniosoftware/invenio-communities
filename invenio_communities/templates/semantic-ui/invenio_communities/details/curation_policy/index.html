@@ -13,8 +13,7 @@
 
 {%- block page_body %}
   {{ super() }}
-  <div class="ui text container rel-m-2">
-    <h2 class="ui header rel-mt-2">{{ _("Curation policy") }}</h2>
+  <div class="ui text container rel-m-2 rel-pt-1">
     {{ community.metadata.curation_policy | safe }}
   </div>
 {%- endblock page_body -%}

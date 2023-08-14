@@ -12,7 +12,7 @@
 from datetime import datetime
 
 from babel.dates import format_datetime
-from flask import Blueprint, current_app, g, render_template
+from flask import Blueprint, current_app, g, render_template, request
 from flask_login import current_user
 from flask_menu import current_menu
 from invenio_i18n import lazy_gettext as _
@@ -63,6 +63,26 @@ def _can_create_community():
     """Function used to check if a user has permissions to create a community."""
     can_create = current_communities.service.check_permission(g.identity, "create")
     return can_create
+
+
+def _has_about_page_content():
+    """Function used to check if about page has content."""
+    community = request.community
+    if community and "metadata" in community and "page" in community["metadata"]:
+        return community["metadata"]["page"] != ""
+    return False
+
+
+def _has_curation_policy_page_content():
+    """Function used to check if curation policy page has content."""
+    community = request.community
+    if (
+        community
+        and "metadata" in community
+        and "curation_policy" in community["metadata"]
+    ):
+        return community["metadata"]["curation_policy"] != ""
+    return False
 
 
 #
@@ -141,12 +161,12 @@ def create_ui_blueprint(app):
         item = current_menu.submenu("main.communities")
         item.register(
             "invenio_communities.communities_frontpage",
-            "Communities",
+            _("Communities"),
             order=1,
         )
         current_menu.submenu("plus.community").register(
             "invenio_communities.communities_new",
-            "New community",
+            _("New community"),
             order=3,
             visible_when=_can_create_community,
         )
@@ -167,7 +187,6 @@ def create_ui_blueprint(app):
             expected_args=["pid_value"],
             **dict(icon="users", permissions="can_read")
         )
-
         communities.submenu("settings").register(
             "invenio_communities.communities_settings",
             text=_("Settings"),
@@ -179,6 +198,7 @@ def create_ui_blueprint(app):
             "invenio_communities.communities_curation_policy",
             text=_("Curation policy"),
             order=5,
+            visible_when=_has_curation_policy_page_content,
             expected_args=["pid_value"],
             **dict(icon="balance scale", permissions="can_read")
         )
@@ -186,6 +206,7 @@ def create_ui_blueprint(app):
             "invenio_communities.communities_about",
             text=_("About"),
             order=6,
+            visible_when=_has_about_page_content,
             expected_args=["pid_value"],
             **dict(icon="info", permissions="can_read")
         )
