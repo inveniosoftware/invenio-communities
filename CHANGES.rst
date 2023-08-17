@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.5.0 (released 2023-08-17)
+-----------------------------------
+
+- permissions: extract base permissions
+
 Version 7.4.0 (released 2023-08-09)
 -----------------------------------
 
