@@ -6,6 +6,6 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Communities user moderation."""
 
-from .actions import remove_communities, restore_communities
+from .actions import on_block, on_restore
 
-__all__ = ("remove_communities", "restore_communities")
+__all__ = ("on_block", "on_restore")
