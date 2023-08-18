@@ -7,11 +7,11 @@
 """Communities user moderation actions."""
 
 
-def remove_communities(user_id, **kwargs):
+def on_block(user_id, uow=None, **kwargs):
     """Removes communities that belong to a user."""
     pass
 
 
-def restore_communities(user_id, **kwargs):
+def on_restore(user_id, uow=None, **kwargs):
     """Restores communities that belong to a user."""
     pass
