@@ -73,6 +73,7 @@ class MemberMixin:
                 "preferences",
                 "active",
                 "confirmed",
+                "verified_at",
             ],
         ),
         group=ModelRelation(

@@ -19,11 +19,16 @@ from invenio_records_resources.records.systemfields import (
     PIDListRelation,
     PIDRelation,
 )
+from invenio_requests.records.dumpers import CalculatedFieldDumperExt
 from invenio_vocabularies.contrib.affiliations.api import Affiliation
 from invenio_vocabularies.contrib.awards.api import Award
 from invenio_vocabularies.contrib.funders.api import Funder
 from invenio_vocabularies.records.api import Vocabulary
 from invenio_vocabularies.records.systemfields.relations import CustomFieldsRelation
+
+from invenio_communities.communities.records.systemfields.is_verified import (
+    IsVerifiedField,
+)
 
 from ..dumpers.featured import FeaturedDumperExt
 from . import models
@@ -53,6 +58,7 @@ class Community(Record):
         extensions=[
             FeaturedDumperExt("featured"),
             RelationDumperExt("relations"),
+            CalculatedFieldDumperExt("is_verified"),
         ]
     )
 
@@ -101,6 +107,8 @@ class Community(Record):
         ),
         custom=CustomFieldsRelation("COMMUNITIES_CUSTOM_FIELDS"),
     )
+
+    is_verified = IsVerifiedField("is_verified")
 
 
 CommunityFile.record_cls = Community

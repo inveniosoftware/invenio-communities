@@ -125,6 +125,9 @@ COMMUNITIES_SEARCH = {
 }
 """Community search configuration (i.e list of communities)"""
 
+COMMUNITIES_SEARCH_SORT_BY_VERIFIED = False
+"""Sort communities by 'verified' first."""
+
 COMMUNITIES_REQUESTS_SEARCH = {
     "facets": ["type", "status"],
     "sort": ["bestmatch", "newest", "oldest"],

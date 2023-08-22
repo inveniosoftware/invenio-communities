@@ -46,6 +46,9 @@
           "confirmed": {
             "type": "boolean"
           },
+          "verified_at": {
+            "type": "date"
+          },
           "profile": {
             "properties": {
               "full_name": {
@@ -71,11 +74,11 @@
               },
               "locale": {
                 "type": "keyword",
-                "index":"false"
+                "index": "false"
               },
               "timezone": {
                 "type": "keyword",
-                "index":"false"
+                "index": "false"
               },
               "notifications": {
                 "properties": {

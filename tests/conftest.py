@@ -132,6 +132,10 @@ def app_config(app_config):
     ] = UserPreferencesNotificationsSchema()
     app_config["USERS_RESOURCES_SERVICE_SCHEMA"] = NotificationsUserSchema
 
+    # Users are verified by default. This will disable the automatic creation of moderation requests after publishing a record.
+    # When testing unverified users, there is a "unverified_user" fixture for that purpose.
+    app_config["ACCOUNTS_DEFAULT_USERS_VERIFIED"] = True
+
     return app_config
 
 

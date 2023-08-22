@@ -38,6 +38,7 @@ from marshmallow_utils.fields import (
     SanitizedHTML,
     SanitizedUnicode,
 )
+from marshmallow_utils.permissions import FieldPermissionsMixin
 
 
 def _not_blank(**kwargs):
@@ -128,13 +129,18 @@ class CommunityMetadataSchema(Schema):
     # domains = fields.List(fields.Str())
 
 
-class CommunitySchema(BaseRecordSchema):
+class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     """Schema for the community metadata."""
 
     class Meta:
         """Meta attributes for the schema."""
 
         unknown = EXCLUDE
+
+    field_dump_permissions = {
+        # hide 'is_verified' behind a permission
+        "is_verified": "moderate",
+    }
 
     id = fields.String(dump_only=True)
     slug = SanitizedUnicode(
@@ -155,6 +161,8 @@ class CommunitySchema(BaseRecordSchema):
     custom_fields = NestedAttribute(
         partial(CustomFieldsSchema, fields_var="COMMUNITIES_CUSTOM_FIELDS")
     )
+
+    is_verified = fields.Boolean(dump_only=True)
 
     @pre_load
     def initialize_custom_fields(self, data, **kwargs):
