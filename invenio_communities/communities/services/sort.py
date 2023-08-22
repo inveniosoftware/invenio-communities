@@ -8,6 +8,7 @@
 
 """Sort parameter interpreter API."""
 
+from flask import current_app
 from invenio_records_resources.services.records.params.sort import SortParam
 
 
@@ -20,7 +21,16 @@ class CommunitiesSortParam(SortParam):
         If sort is set to 'featured' then use the `config.sort_featured` property
         to bypass the sort options mechanism. This is done as the `featured` option
         is set internally in the service layer.
+
+        If `COMMUNITIES_SEARCH_SORT_BY_VERIFIED` is set, then show first the verified
+        communities.
         """
         if "featured" in params.get("sort", {}):
             return search.sort(*self.config.sort_featured["fields"])
+
+        if current_app.config["COMMUNITIES_SEARCH_SORT_BY_VERIFIED"]:
+            fields = self._compute_sort_fields(params)
+            fields.insert(0, "-is_verified")
+            return search.sort(*fields)
+
         return super(CommunitiesSortParam, self).apply(identity, search, params)

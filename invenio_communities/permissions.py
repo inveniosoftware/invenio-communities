@@ -147,6 +147,10 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_featured_update = [Administration(), SystemProcess()]
     can_featured_delete = [Administration(), SystemProcess()]
 
+    # Used to hide at the moment the `is_verified` field. It should be set to
+    # correct permissions based on which the field will be exposed only to moderators
+    can_moderate = [Disable()]
+
 
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""
