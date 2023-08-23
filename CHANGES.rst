@@ -9,6 +9,13 @@
 Changes
 =======
 
+
+Version 7.6.0 (released 2023-08-23)
+-----------------------------------
+
+- communities: add `is_verified` field to sort communities based on owner verified status
+- user-moderation: implement `on_approve` action to reindex user communities
+
 Version 7.5.0 (released 2023-08-17)
 -----------------------------------
 
