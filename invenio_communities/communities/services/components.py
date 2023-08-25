@@ -10,6 +10,7 @@
 
 """Components."""
 
+from flask import current_app
 from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
 from invenio_i18n import lazy_gettext as _
@@ -143,15 +144,12 @@ class FeaturedCommunityComponent(ServiceComponent):
 class OAISetComponent(ServiceComponent):
     """Service component for OAI set integration."""
 
-    _oai_sets_prefix = "community"
-
     def _retrieve_set(self, slug):
         return OAISet.query.filter(OAISet.spec == self._create_set_spec(slug)).first()
 
     def _create_set_spec(self, community_slug):
-        return "{prefix}-{slug}".format(
-            prefix=self._oai_sets_prefix, slug=community_slug
-        )
+        oai_sets_prefix = current_app.config["COMMUNITIES_OAI_SETS_PREFIX"]
+        return "{prefix}{slug}".format(prefix=oai_sets_prefix, slug=community_slug)
 
     def _create_set_description(self, community_title):
         # NOTE: Does not require translation since this description can also be changed by an admin

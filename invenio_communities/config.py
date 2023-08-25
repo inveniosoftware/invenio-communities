@@ -310,3 +310,5 @@ COMMUNITIES_IDENTITIES_CACHE_REDIS_URL = "redis://localhost:6379/4"
 COMMUNITIES_IDENTITIES_CACHE_HANDLER = (
     "invenio_communities.cache.redis:IdentityRedisCache"
 )
+
+COMMUNITIES_OAI_SETS_PREFIX = "community-"
