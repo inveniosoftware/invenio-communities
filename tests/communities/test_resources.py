@@ -871,6 +871,13 @@ def test_permissions_modify_community_visibility(
     res = client.put(f"/communities/{id_}", headers=headers, json=data)
     assert res.status_code == 403
 
+    # try to change other attributes but leave the visibility the same
+    # happens on community settings page
+    data["metadata"]["title"] = "New title 2"
+    data["access"]["visibility"] = "public"
+    res = client.put(f"/communities/{id_}", headers=headers, json=data)
+    assert res.status_code == 200
+
 
 def test_permissions_modify_community_to_public(
     app,
