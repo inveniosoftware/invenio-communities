@@ -8,10 +8,9 @@ import { FeatureModal } from "./FeatureModal";
 import React from "react";
 import ReactDOM from "react-dom";
 import _get from "lodash/get";
-import { OverridableContext, parametrize } from "react-overridable";
+import { OverridableContext, overrideStore } from "react-overridable";
 import { FeaturedEntries } from "./featured";
-import { AdminDetailsView, Edit, Delete } from "@js/invenio_administration";
-import { i18next } from "@translations/invenio_communities/i18next";
+import { AdminDetailsView } from "@js/invenio_administration";
 
 const domContainer = document.getElementById("invenio-details-config");
 const title = domContainer.dataset.title;
@@ -27,28 +26,19 @@ const listUIEndpoint = domContainer.dataset.listEndpoint;
 const resourceSchema = JSON.parse(domContainer.dataset.resourceSchema);
 const uiSchema = JSON.parse(domContainer.dataset?.uiConfig);
 const requestHeaders = JSON.parse(domContainer.dataset?.requestHeaders);
+const appName = JSON.parse(domContainer.dataset?.appId);
 
-const createdBySystem = (data) => data?.system_created;
-
-const overridenComponents = {
-  "InvenioAdministration.EditAction": parametrize(Edit, {
-    disable: createdBySystem,
-    disabledMessage: i18next.t(
-      "This set is not editable as it was created by the system."
-    ),
-  }),
-  "InvenioAdministration.DeleteAction": parametrize(Delete, {
-    disable: createdBySystem,
-    disabledMessage: i18next.t(
-      "This set is not deletable as it was created by the system."
-    ),
-  }),
-  "InvenioAdministration.ActionModal.layout": FeatureModal,
+const defaultComponents = {
+  [`${appName}.ActionModal.layout`]: FeatureModal,
 };
+
+const overriddenComponents = overrideStore.getAll();
 
 domContainer &&
   ReactDOM.render(
-    <OverridableContext.Provider value={overridenComponents}>
+    <OverridableContext.Provider
+      value={{ ...defaultComponents, ...overriddenComponents }}
+    >
       <AdminDetailsView
         title={title}
         actions={actions}
@@ -63,6 +53,7 @@ domContainer &&
         resourceSchema={resourceSchema}
         requestHeaders={requestHeaders}
         uiSchema={uiSchema}
+        appName={appName}
       >
         <FeaturedEntries />
       </AdminDetailsView>
