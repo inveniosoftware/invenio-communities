@@ -83,7 +83,7 @@ class CommunityAccessComponent(ServiceComponent):
         is_restricting = new_visibility == "restricted"
 
         if (
-            VisibilityEnum(record.access.visibility) != new_visibility
+            VisibilityEnum(record.access.visibility) != VisibilityEnum(new_visibility)
             and record_has_defined_access
         ):
             self.service.require_permission(identity, "manage_access", record=record)
