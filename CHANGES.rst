@@ -10,7 +10,14 @@ Changes
 =======
 
 
+Version 7.7.1 (released 2023-09-04)
+-----------------------------------
+
+- components: fix visibility permission check on edit
+
+
 Version 7.7.0 (released 2023-08-30)
+-----------------------------------
 
 - oai-pmh: take oai sets prefix from config
 
