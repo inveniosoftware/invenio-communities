@@ -41,6 +41,7 @@ const IdentifierField = ({ formConfig }) => {
   return (
     <TextField
       required
+      id="slug"
       label={
         <FieldLabel htmlFor="slug" icon="barcode" label={i18next.t("Identifier")} />
       }
@@ -137,6 +138,7 @@ class CommunityCreateForm extends Component {
                 <Grid.Column mobile={16} tablet={12} computer={8}>
                   <TextField
                     required
+                    id="metadata.title"
                     fluid
                     fieldPath="metadata.title"
                     // Prevent submitting before the value is updated:
