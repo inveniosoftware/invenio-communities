@@ -164,7 +164,13 @@ class CommunityService(RecordService):
             params,
             search_preference,
             permission_action=None,
-            extra_filter=dsl.Q("term", **{"receiver.community": community_id}),
+            extra_filter=dsl.Q(
+                "bool",
+                must=[
+                    dsl.Q("term", **{"receiver.community": community_id}),
+                    ~dsl.Q("term", **{"status": "created"}),
+                ],
+            ),
             **kwargs
         ).execute()
 
