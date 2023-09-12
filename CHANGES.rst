@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.7.2 (released 2023-09-12)
+-----------------------------------
+
+- service: exclude created requests from search
 
 Version 7.7.1 (released 2023-09-04)
 -----------------------------------
