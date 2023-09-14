@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.7.4 (released 2023-09-14)
+-----------------------------------
+
+- installation: bump invenio-vocabularies
+
 Version 7.7.3 (released 2023-09-14)
 -----------------------------------
 
