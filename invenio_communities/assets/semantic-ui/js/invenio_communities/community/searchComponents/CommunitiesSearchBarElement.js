@@ -28,12 +28,14 @@ export const CommunitiesSearchBarElement = withState(
     return (
       <Input
         action={{
-          icon: "search",
-          onClick: onBtnSearchClick,
-          className: "search",
+          "icon": "search",
+          "onClick": onBtnSearchClick,
+          "className": "search",
+          "aria-label": i18next.t("Search"),
         }}
         fluid
         placeholder={placeholder}
+        aria-label={placeholder}
         onChange={(event, { value }) => {
           onInputChange(value);
         }}
