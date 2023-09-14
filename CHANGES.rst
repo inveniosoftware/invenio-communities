@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 7.7.3 (released 2023-09-14)
+-----------------------------------
+
+- search bar: add aria-label
+- a11y: added ids to TextFields
+
 Version 7.7.2 (released 2023-09-12)
 -----------------------------------
 
