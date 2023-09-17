@@ -46,8 +46,8 @@ const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
     title: Yup.string().max(250, i18next.t("Maximum number of characters is 2000")),
     description: Yup.string().max(
-      2000,
-      i18next.t("Maximum number of characters is 2000")
+      250,
+      i18next.t("Maximum number of characters is 250")
     ),
     website: Yup.string().url(i18next.t("Must be a valid URL")),
     type: Yup.object().shape({

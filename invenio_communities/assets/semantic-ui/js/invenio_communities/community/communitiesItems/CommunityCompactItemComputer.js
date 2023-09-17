@@ -42,12 +42,9 @@ export const CommunityCompactItemComputer = ({
           </a>
 
           {metadata.description && (
-            <p
-              className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1"
-              dangerouslySetInnerHTML={{
-                __html: _truncate(metadata.description, { length: 50 }),
-              }}
-            />
+            <p className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1">
+              {_truncate(metadata.description, { length: 50 })}
+            </p>
           )}
 
           {(result.access.visibility === "restricted" ||
