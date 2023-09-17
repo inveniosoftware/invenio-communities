@@ -80,12 +80,7 @@ class CommunityCard extends Component {
           </Card.Header>
           {community.metadata.description && (
             <Card.Description>
-              <div
-                className="truncate-lines-2"
-                dangerouslySetInnerHTML={{
-                  __html: community.metadata.description,
-                }}
-              />
+              <div className="truncate-lines-2">{community.metadata.description}</div>
             </Card.Description>
           )}
         </Card.Content>

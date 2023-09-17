@@ -42,12 +42,9 @@ export const CommunityItemComputer = ({ result }) => {
               {result.metadata.title}
             </a>
             {result.metadata.description && (
-              <p
-                className="truncate-lines-1 text size small text-muted mt-5"
-                dangerouslySetInnerHTML={{
-                  __html: result.metadata.description,
-                }}
-              />
+              <p className="truncate-lines-1 text size small text-muted mt-5">
+                {result.metadata.description}
+              </p>
             )}
 
             {(communityType ||

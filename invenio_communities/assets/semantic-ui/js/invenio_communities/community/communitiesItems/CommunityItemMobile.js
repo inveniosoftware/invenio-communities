@@ -73,12 +73,9 @@ export const CommunityItemMobile = ({ result, index }) => {
       {result.metadata.description && (
         <Grid.Row className="pt-0">
           <Grid.Column width={16} className="pl-0 pr-0">
-            <p
-              className="truncate-lines-1 text size small text-muted mt-5"
-              dangerouslySetInnerHTML={{
-                __html: result.metadata.description,
-              }}
-            />
+            <p className="truncate-lines-1 text size small text-muted mt-5">
+              {result.metadata.description}
+            </p>
           </Grid.Column>
         </Grid.Row>
       )}
