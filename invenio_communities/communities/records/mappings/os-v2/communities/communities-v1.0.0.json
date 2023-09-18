@@ -44,6 +44,49 @@
       "slug": {
         "type": "keyword"
       },
+      "deletion_status": {
+        "type": "keyword"
+      },
+      "is_deleted": {
+        "type": "boolean"
+      },
+      "tombstone": {
+        "properties": {
+          "removal_reason": {
+            "properties": {
+              "@v": {
+                "type": "keyword"
+              },
+              "id": {
+                "type": "keyword"
+              },
+              "title": {
+                "type": "object",
+                "dynamic": true
+              }
+            }
+          },
+          "note": {
+            "type": "text"
+          },
+          "removed_by": {
+            "properties": {
+              "user": {
+                "type": "keyword"
+              }
+            }
+          },
+          "removal_date": {
+            "type": "date"
+          },
+          "citation_text": {
+            "type": "text"
+          },
+          "is_visible": {
+            "type": "boolean"
+          }
+        }
+      },
       "access": {
         "properties": {
           "visibility": {

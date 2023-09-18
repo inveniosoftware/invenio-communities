@@ -33,7 +33,9 @@ from invenio_communities.communities.records.systemfields.is_verified import (
 from ..dumpers.featured import FeaturedDumperExt
 from . import models
 from .systemfields.access import CommunityAccessField
+from .systemfields.deletion_status import CommunityDeletionStatusField
 from .systemfields.pidslug import PIDSlugField
+from .systemfields.tombstone import TombstoneField
 
 
 class CommunityFile(FileRecord):
@@ -105,10 +107,20 @@ class Community(Record):
             pid_field=Vocabulary.pid.with_type_ctx("communitytypes"),
             cache_key="communitytypes",
         ),
+        removal_reason=PIDRelation(
+            "tombstone.removal_reason",
+            keys=["title"],
+            pid_field=Vocabulary.pid.with_type_ctx("removalreasons"),
+            cache_key="removal_reason",
+        ),
         custom=CustomFieldsRelation("COMMUNITIES_CUSTOM_FIELDS"),
     )
 
     is_verified = IsVerifiedField("is_verified")
+
+    deletion_status = CommunityDeletionStatusField()
+
+    tombstone = TombstoneField()
 
 
 CommunityFile.record_cls = Community

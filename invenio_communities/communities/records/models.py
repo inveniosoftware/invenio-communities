@@ -17,7 +17,9 @@ from invenio_records.models import RecordMetadataBase, Timestamp
 from invenio_records_resources.records import FileRecordModelMixin
 from sqlalchemy.dialects import mysql
 from sqlalchemy.types import String
-from sqlalchemy_utils.types import UUIDType
+from sqlalchemy_utils.types import ChoiceType, UUIDType
+
+from .systemfields.deletion_status import CommunityDeletionStatusEnum
 
 
 class CommunityMetadata(db.Model, RecordMetadataBase):
@@ -29,6 +31,13 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
 
     bucket_id = db.Column(UUIDType, db.ForeignKey(Bucket.id))
     bucket = db.relationship(Bucket)
+
+    # The deletion status is stored in the model so that we can use it in SQL queries
+    deletion_status = db.Column(
+        ChoiceType(CommunityDeletionStatusEnum, impl=db.String(1)),
+        nullable=False,
+        default=CommunityDeletionStatusEnum.PUBLISHED.value,
+    )
 
 
 class CommunityFileMetadata(db.Model, RecordMetadataBase, FileRecordModelMixin):

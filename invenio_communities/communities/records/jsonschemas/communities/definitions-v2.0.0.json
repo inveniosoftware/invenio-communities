@@ -474,7 +474,17 @@
     "additionalProperties": false,
     "properties": {
       "user": {
-        "type": "integer"
+        "type": ["integer", "string"]
+      }
+    }
+  },
+  "removal_reason": {
+    "type": "object",
+    "additionalProperties": false,
+    "description": "Reason for the removal of a community.",
+    "properties": {
+      "id": {
+        "$ref": "local://definitions-v1.0.0.json#/identifier"
       }
     }
   }

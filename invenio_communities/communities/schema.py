@@ -28,12 +28,13 @@ from marshmallow import (
     Schema,
     ValidationError,
     fields,
+    post_dump,
     post_load,
     pre_load,
     validate,
 )
 from marshmallow_utils.fields import (
-    Links,
+    ISODateString,
     NestedAttribute,
     SanitizedHTML,
     SanitizedUnicode,
@@ -129,6 +130,36 @@ class CommunityMetadataSchema(Schema):
     # domains = fields.List(fields.Str())
 
 
+class AgentSchema(Schema):
+    """An agent schema, using a string for the ID to allow the "system" user."""
+
+    user = fields.String(required=True)
+
+
+class RemovalReasonSchema(VocabularySchema):
+    """Schema for the removal reason."""
+
+    id = fields.String(required=True)
+
+
+class TombstoneSchema(Schema):
+    """Schema for the record's tombstone."""
+
+    removal_reason = fields.Nested(RemovalReasonSchema)
+    note = SanitizedUnicode()
+    removed_by = fields.Nested(AgentSchema, dump_only=True)
+    removal_date = ISODateString(dump_only=True)
+    citation_text = SanitizedUnicode()
+    is_visible = fields.Boolean()
+
+
+class DeletionStatusSchema(Schema):
+    """Schema for the record deletion status."""
+
+    is_deleted = fields.Boolean(dump_only=True)
+    status = fields.String(dump_only=True)
+
+
 class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     """Schema for the community metadata."""
 
@@ -163,6 +194,20 @@ class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     )
 
     is_verified = fields.Boolean(dump_only=True)
+
+    tombstone = fields.Nested(TombstoneSchema, dump_only=True)
+    deletion_status = fields.Nested(DeletionStatusSchema, dump_only=True)
+
+    @post_dump
+    def post_dump(self, data, many, **kwargs):
+        """Hide tombstone info if the record isn't deleted and metadata if it is."""
+        is_deleted = (data.get("deletion_status") or {}).get("is_deleted", False)
+        tombstone_visible = (data.get("tombstone") or {}).get("is_visible", True)
+
+        if not is_deleted or not tombstone_visible:
+            data.pop("tombstone", None)
+
+        return data
 
     @pre_load
     def initialize_custom_fields(self, data, **kwargs):
