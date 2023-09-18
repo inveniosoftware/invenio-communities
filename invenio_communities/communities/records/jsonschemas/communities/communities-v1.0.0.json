@@ -144,6 +144,37 @@
           "description": "Set to false for metadata only records."
         }
       }
+    },
+    "tombstone": {
+      "type": "object",
+      "description": "Tombstone information for the community.",
+      "additionalProperties": false,
+      "properties": {
+        "removal_reason": {
+          "$ref": "local://communities/definitions-v2.0.0.json#/removal_reason",
+          "description": "Reason for record removal."
+        },
+        "note": {
+          "type": "string",
+          "description": "Public note about the removal."
+        },
+        "removed_by": {
+          "$ref": "local://communities/definitions-v2.0.0.json#/agent"
+        },
+        "removal_date": {
+          "type": "string",
+          "description": "ISO8601 formatted timestamp in UTC.",
+          "format": "date-time"
+        },
+        "citation_text": {
+          "type": "string",
+          "description": "The record citation text to be displayed on the tombstone page."
+        },
+        "is_visible": {
+          "type": "boolean",
+          "description": "Whether or not the tombstone page is publicly visible."
+        }
+      }
     }
   }
 }
