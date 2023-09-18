@@ -9,6 +9,15 @@
 Changes
 =======
 
+Version 7.8.0 (released 2023-09-18)
+-----------------------------------
+
+- github: drop python 3.7 as it has reached end of life
+- communities: add data model for community deletion
+- members: remove rendering of HTML for member description
+- ui: safely render community `description`
+- delete community modal: fix styling
+
 Version 7.7.4 (released 2023-09-14)
 -----------------------------------
 
