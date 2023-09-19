@@ -635,7 +635,7 @@ class CommunityService(RecordService):
         extra_filter=None,
         **kwargs,
     ):
-        """Search for published records matching the querystring."""
+        """Search for active communities matching the querystring."""
         status = CommunityDeletionStatusEnum.PUBLISHED.value
         search_filter = dsl.Q("term", **{"deletion_status": status})
         if extra_filter:
@@ -659,7 +659,7 @@ class CommunityService(RecordService):
         extra_filter=None,
         **kwargs,
     ):
-        """Search for all (published and deleted) records matching the querystring."""
+        """Search for all (active and deleted) communities matching the querystring."""
         self.require_permission(identity, "search_all")
 
         # exclude drafts filter (drafts have no deletion status)
