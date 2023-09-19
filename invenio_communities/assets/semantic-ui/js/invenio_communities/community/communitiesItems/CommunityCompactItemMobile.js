@@ -34,10 +34,17 @@ export const CommunityCompactItemMobile = ({
             className="community-image rel-mr-1"
           />
 
-          <div>
-            <a href={links.self_html} className="ui small header truncate-lines-2">
+          <div className="flex align-items-center rel-mb-1">
+            <a
+              href={links.self_html}
+              className="ui small header truncate-lines-2 m-0 mr-5"
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${metadata.title} (${i18next.t("opens in new tab")})`}
+            >
               {metadata.title}
             </a>
+            <i className="small icon external primary" aria-hidden="true" />
           </div>
         </div>
 
