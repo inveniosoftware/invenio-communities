@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 7.9.0 (released 2023-09-19)
+-----------------------------------
+
+- communities: implement service methods for deletion
+- CommunityCompactItem: add external icon and target blank
+- communities-profile: fix custom funding form
+
 Version 7.8.0 (released 2023-09-18)
 -----------------------------------
 
