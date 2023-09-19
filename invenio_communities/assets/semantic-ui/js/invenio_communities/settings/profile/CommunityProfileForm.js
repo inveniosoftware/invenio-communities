@@ -20,6 +20,7 @@ import _isNumber from "lodash/isNumber";
 import _isObject from "lodash/isObject";
 import _map from "lodash/map";
 import _mapValues from "lodash/mapValues";
+import _pick from "lodash/pick";
 import _pickBy from "lodash/pickBy";
 import _unset from "lodash/unset";
 import React, { Component } from "react";
@@ -218,7 +219,11 @@ class CommunityProfileForm extends Component {
         }
 
         // Record is a custom record, without explicit 'id'
-        const clonedValue = _cloneDeep(value);
+        let clonedValue = _cloneDeep(value);
+        // allowed keys
+        const allowedKeys = ["identifiers", "number", "title"];
+        clonedValue = _pick(clonedValue, allowedKeys);
+
         if (value.title) {
           clonedValue.title = {
             en: value.title,
