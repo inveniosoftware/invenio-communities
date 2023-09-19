@@ -30,6 +30,7 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     GroupsEnabled,
+    IfDeleted,
     IfPolicyClosed,
     IfRestricted,
 )
@@ -47,9 +48,13 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         SystemProcess(),
     ]
 
-    can_update = [CommunityOwners(), SystemProcess()]
+    can_update = [
+        IfDeleted(then_=[Disable()], else_=[CommunityOwners(), SystemProcess()])
+    ]
 
     can_delete = [CommunityOwners(), SystemProcess()]
+
+    can_purge = [CommunityOwners(), SystemProcess()]
 
     can_manage_access = [
         IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=can_update, else_=[]),

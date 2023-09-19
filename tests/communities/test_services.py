@@ -12,13 +12,20 @@ import time
 from copy import deepcopy
 from datetime import datetime, timedelta
 
+import arrow
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_cache import current_cache
 from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
 
-from invenio_communities.errors import CommunityFeaturedEntryDoesNotExistError
+from invenio_communities.communities.records.systemfields.deletion_status import (
+    CommunityDeletionStatusEnum,
+)
+from invenio_communities.errors import (
+    CommunityFeaturedEntryDoesNotExistError,
+    DeletionStatusError,
+)
 from invenio_communities.fixtures.tasks import reindex_featured_entries
 
 
@@ -391,3 +398,85 @@ def test_search_community_requests(
         community_service.search_community_requests(
             identity=anon_identity, community_id=community.id
         )
+
+
+#
+# Deletion workflows
+#
+
+
+def test_community_deletion(community_service, users, comm):
+    """Test simple community deletion of a community."""
+    user = users["owner"].user
+    community = comm
+
+    assert community._obj.deletion_status == CommunityDeletionStatusEnum.PUBLISHED
+
+    # delete the community
+    tombstone_info = {"note": "no specific reason, tbh"}
+    community = community_service.delete_community(
+        system_identity, community.id, tombstone_info
+    )
+    tombstone = community._obj.tombstone
+
+    # check if the tombstone information got added as expected
+    assert community._obj.deletion_status == CommunityDeletionStatusEnum.DELETED
+    assert tombstone.is_visible
+    assert tombstone.removed_by == {"user": "system"}
+    assert tombstone.removal_reason is None
+    assert tombstone.note == tombstone_info["note"]
+    assert isinstance(tombstone.citation_text, str)
+    assert arrow.get(tombstone.removal_date).date() == datetime.utcnow().date()
+
+    # mark the community for purge
+    community = community_service.mark_community_for_purge(
+        system_identity, community.id
+    )
+    assert community._obj.deletion_status == CommunityDeletionStatusEnum.MARKED
+    assert community._obj.deletion_status.is_deleted
+    assert community._obj.tombstone is not None
+
+    # remove the mark again, we don't wanna purge it after all
+    community = community_service.unmark_community_for_purge(
+        system_identity, community.id
+    )
+    assert community._obj.deletion_status == CommunityDeletionStatusEnum.DELETED
+    assert community._obj.deletion_status.is_deleted
+    assert community._obj.tombstone is not None
+
+    # restore the community, it wasn't so bad after all
+    community = community_service.restore_community(system_identity, community.id)
+    assert community._obj.deletion_status == CommunityDeletionStatusEnum.PUBLISHED
+    assert not community._obj.deletion_status.is_deleted
+    assert community._obj.tombstone is None
+
+
+def test_invalid_community_deletion_workflows(community_service, comm):
+    """Test the wrong order of deletion operations."""
+    assert comm._obj.deletion_status == CommunityDeletionStatusEnum.PUBLISHED
+
+    # we cannot restore a published community
+    with pytest.raises(DeletionStatusError):
+        community_service.restore_community(system_identity, comm.id)
+
+    # we cannot mark a published community for purge
+    with pytest.raises(DeletionStatusError):
+        community_service.mark_community_for_purge(system_identity, comm.id)
+
+    # we cannot unmark a published community
+    with pytest.raises(DeletionStatusError):
+        community_service.unmark_community_for_purge(system_identity, comm.id)
+
+    comm = community_service.delete_community(system_identity, comm.id, {})
+    assert comm._obj.deletion_status == CommunityDeletionStatusEnum.DELETED
+
+    # we cannot unmark a deleted community
+    with pytest.raises(DeletionStatusError):
+        community_service.unmark_community_for_purge(system_identity, comm.id)
+
+    comm = community_service.mark_community_for_purge(system_identity, comm.id)
+    assert comm._obj.deletion_status == CommunityDeletionStatusEnum.MARKED
+
+    # we cannot directly restore a community marked for purge
+    with pytest.raises(DeletionStatusError):
+        community_service.restore_community(system_identity, comm.id)

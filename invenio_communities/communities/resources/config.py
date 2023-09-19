@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
+# Copyright (C) 2023      TU Wien.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -14,6 +15,7 @@ from flask_resources import (
     ResponseHandler,
     create_error_handler,
 )
+from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.resources import RecordResourceConfig
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
@@ -22,6 +24,7 @@ from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
 )
 from invenio_communities.errors import (
+    CommunityDeletedError,
     CommunityFeaturedEntryDoesNotExistError,
     LogoSizeLimitError,
     OpenRequestsForCommunityDeletionError,
@@ -52,6 +55,17 @@ community_error_handlers.update(
             lambda e: HTTPJSONException(
                 code=400,
                 description=str(e),
+            )
+        ),
+        CommunityDeletedError: create_error_handler(
+            lambda e: (
+                HTTPJSONException(code=404, description=_("Community not found"))
+                if not e.community.tombstone.is_visible
+                else HTTPJSONException(
+                    code=410,
+                    description=_("Community deleted"),
+                    tombstone=e.community.tombstone.dump(),
+                )
             )
         ),
     }

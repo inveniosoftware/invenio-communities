@@ -19,7 +19,7 @@ from itertools import chain
 from flask import current_app
 from flask_principal import UserNeed
 from invenio_access.permissions import any_user, system_process
-from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.generators import ConditionalGenerator, Generator
 from invenio_search.engine import dsl
 
 from .proxies import current_roles
@@ -140,6 +140,19 @@ class IfPolicyClosed(IfRestrictedBase):
             then_,
             else_,
         )
+
+
+class IfDeleted(ConditionalGenerator):
+    """Conditional generator for deleted communities."""
+
+    def _condition(self, record=None, **kwargs):
+        """Check if the community is deleted."""
+        try:
+            return record.deletion_status.is_deleted
+
+        except AttributeError:
+            # if the community doesn't have the attribute, we assume it's not deleted
+            return False
 
 
 #

@@ -40,7 +40,7 @@ from invenio_communities.communities.services.results import (
 )
 
 from ...permissions import CommunityPermissionPolicy, can_perform_action
-from ..schema import CommunityFeaturedSchema, CommunitySchema
+from ..schema import CommunityFeaturedSchema, CommunitySchema, TombstoneSchema
 from .components import DefaultCommunityComponents
 from .links import CommunityLink
 from .sort import CommunitiesSortParam
@@ -95,6 +95,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     # Service schema
     schema = CommunitySchema
     schema_featured = CommunityFeaturedSchema
+    schema_tombstone = TombstoneSchema
 
     result_list_cls_featured = CommunityFeaturedList
     result_item_cls_featured = FeaturedCommunityItem

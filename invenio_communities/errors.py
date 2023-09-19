@@ -57,3 +57,21 @@ class OpenRequestsForCommunityDeletionError(CommunityError):
                 requests,
             )
         )
+
+
+class CommunityDeletedError(CommunityError):
+    """Error denoting that the community was deleted."""
+
+    def __init__(self, community, result_item=None):
+        """Constructor."""
+        self.community = community
+        self.result_item = result_item
+
+
+class DeletionStatusError(CommunityError):
+    """Indicator for the record being in the wrong deletion status for the action."""
+
+    def __init__(self, community, expected_status):
+        """Constructor."""
+        self.community = community
+        self.expected_status = expected_status
