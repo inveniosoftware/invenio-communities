@@ -37,10 +37,18 @@ export const CommunityCompactItemComputer = ({
         />
 
         <div>
-          <a href={links.self_html} className="ui small header truncate-lines-2">
-            {metadata.title}
-          </a>
-
+          <div className="flex align-items-center rel-mb-1">
+            <a
+              href={links.self_html}
+              className="ui small header truncate-lines-2 m-0 mr-5"
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${metadata.title} (${i18next.t("opens in new tab")})`}
+            >
+              {metadata.title}
+            </a>
+            <i className="small icon external primary" aria-hidden="true" />
+          </div>
           {metadata.description && (
             <p className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1">
               {_truncate(metadata.description, { length: 50 })}
