@@ -40,6 +40,9 @@ from invenio_communities.errors import (
 )
 from invenio_communities.generators import CommunityMembers
 
+from ...errors import CommunityDeletedError, DeletionStatusError
+from ..records.systemfields.deletion_status import CommunityDeletionStatusEnum
+
 
 class CommunityService(RecordService):
     """community Service."""
@@ -86,6 +89,11 @@ class CommunityService(RecordService):
         return ServiceSchemaWrapper(self, schema=self.config.schema_featured)
 
     @property
+    def schema_tombstone(self):
+        """Returns the tombstone data schema instance."""
+        return ServiceSchemaWrapper(self, schema=self.config.schema_tombstone)
+
+    @property
     def expandable_fields(self):
         """Get expandable fields."""
         return [
@@ -130,7 +138,7 @@ class CommunityService(RecordService):
             search_preference,
             permission_action=None,
             extra_filter=current_user_filter,
-            **kwargs
+            **kwargs,
         ).execute()
 
         return self.result_list(
@@ -151,7 +159,7 @@ class CommunityService(RecordService):
         params=None,
         search_preference=None,
         expand=False,
-        **kwargs
+        **kwargs,
     ):
         """Search for requests of a specific community."""
         self.require_permission(identity, "search_requests", community_id=community_id)
@@ -171,7 +179,7 @@ class CommunityService(RecordService):
                     ~dsl.Q("term", **{"status": "created"}),
                 ],
             ),
-            **kwargs
+            **kwargs,
         ).execute()
 
         return current_requests_service.result_list(
@@ -323,7 +331,7 @@ class CommunityService(RecordService):
                 ],
             ),
             permission_action="featured_search",
-            **kwargs
+            **kwargs,
         ).execute()
         return self.result_list(
             self,
@@ -450,6 +458,252 @@ class CommunityService(RecordService):
         uow.register(RecordIndexOp(record, indexer=self.indexer, index_refresh=True))
 
         return
+
+    #
+    # Deletion workflows
+    #
+    @unit_of_work()
+    def delete_community(self, identity, id_, data, expand=False, uow=None):
+        """(Soft) delete a published community."""
+        record = self.record_cls.pid.resolve(id_)
+        if record.deletion_status.is_deleted:
+            raise DeletionStatusError(record, CommunityDeletionStatusEnum.PUBLISHED)
+
+        # Check permissions
+        self.require_permission(identity, "delete", record=record)
+
+        # Load tombstone data with the schema
+        data, errors = self.schema_tombstone.load(
+            data,
+            context={
+                "identity": identity,
+                "pid": record.pid,
+                "record": record,
+            },
+            raise_errors=True,
+        )
+
+        # Run components
+        self.run_components(
+            "delete_community", identity, data=data, record=record, uow=uow
+        )
+
+        # Commit and reindex record
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            record,
+            links_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
+        )
+
+    @unit_of_work()
+    def update_tombstone(self, identity, id_, data, expand=False, uow=None):
+        """Update the tombstone information for the (soft) deleted community."""
+        record = self.record_cls.pid.resolve(id_)
+        if not record.deletion_status.is_deleted:
+            # strictly speaking, it's two expected statuses: DELETED or MARKED
+            raise DeletionStatusError(record, CommunityDeletionStatusEnum.DELETED)
+
+        # Check permissions
+        self.require_permission(identity, "delete", record=record)
+
+        # Load tombstone data with the schema and set it
+        data, errors = self.schema_tombstone.load(
+            data,
+            context={
+                "identity": identity,
+                "pid": record.pid,
+                "record": record,
+            },
+            raise_errors=True,
+        )
+
+        # Run components
+        self.run_components(
+            "update_tombstone", identity, data=data, record=record, uow=uow
+        )
+
+        # Commit and reindex record
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            record,
+            links_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
+        )
+
+    @unit_of_work()
+    def restore_community(self, identity, id_, expand=False, uow=None):
+        """Restore a record that has been (soft) deleted."""
+        record = self.record_cls.pid.resolve(id_)
+        if record.deletion_status != CommunityDeletionStatusEnum.DELETED:
+            raise DeletionStatusError(CommunityDeletionStatusEnum.DELETED, record)
+
+        # Check permissions
+        self.require_permission(identity, "delete", record=record)
+
+        # Run components
+        self.run_components("restore_community", identity, record=record, uow=uow)
+
+        # Commit and reindex record
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            record,
+            links_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
+        )
+
+    @unit_of_work()
+    def mark_community_for_purge(self, identity, id_, expand=False, uow=None):
+        """Mark a (soft) deleted record for purge."""
+        record = self.record_cls.pid.resolve(id_)
+        if record.deletion_status != CommunityDeletionStatusEnum.DELETED:
+            raise DeletionStatusError(record, CommunityDeletionStatusEnum.DELETED)
+
+        # Check permissions
+        self.require_permission(identity, "purge", record=record)
+
+        # Run components
+        self.run_components("mark_community", identity, record=record, uow=uow)
+
+        # Commit and reindex record
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            record,
+            links_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
+        )
+
+    @unit_of_work()
+    def unmark_community_for_purge(self, identity, id_, expand=False, uow=None):
+        """Remove the mark for deletion from a record, returning it to deleted state."""
+        record = self.record_cls.pid.resolve(id_)
+        if record.deletion_status != CommunityDeletionStatusEnum.MARKED:
+            raise DeletionStatusError(record, CommunityDeletionStatusEnum.MARKED)
+
+        # Check permissions
+        self.require_permission(identity, "purge", record=record)
+
+        # Run components
+        self.run_components("unmark_community", identity, record=record, uow=uow)
+
+        # Commit and reindex the record
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            record,
+            links_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
+        )
+
+    @unit_of_work()
+    def purge_community(self, identity, id_, uow=None):
+        """Purge a record that has been marked."""
+        record = self.record_cls.pid.resolve(id_)
+        if record.deletion_status != CommunityDeletionStatusEnum.MARKED:
+            raise DeletionStatusError(record, CommunityDeletionStatusEnum.MARKED)
+
+        raise NotImplementedError()
+
+    #
+    # Search functions
+    #
+    def search(
+        self,
+        identity,
+        params=None,
+        search_preference=None,
+        expand=False,
+        extra_filter=None,
+        **kwargs,
+    ):
+        """Search for published records matching the querystring."""
+        status = CommunityDeletionStatusEnum.PUBLISHED.value
+        search_filter = dsl.Q("term", **{"deletion_status": status})
+        if extra_filter:
+            search_filter = search_filter & extra_filter
+
+        return super().search(
+            identity,
+            params,
+            search_preference,
+            expand,
+            extra_filter=search_filter,
+            **kwargs,
+        )
+
+    def search_all(
+        self,
+        identity,
+        params=None,
+        search_preference=None,
+        expand=False,
+        extra_filter=None,
+        **kwargs,
+    ):
+        """Search for all (published and deleted) records matching the querystring."""
+        self.require_permission(identity, "search_all")
+
+        # exclude drafts filter (drafts have no deletion status)
+        search_filter = dsl.Q(
+            "terms",
+            **{"deletion_status": [v.value for v in CommunityDeletionStatusEnum]},
+        )
+        if extra_filter:
+            search_filter &= extra_filter
+        search_result = self._search(
+            "search_all",
+            identity,
+            params,
+            search_preference,
+            record_cls=self.draft_cls,
+            search_opts=self.config.search_all,
+            extra_filter=search_filter,
+            permission_action="read",  # TODO this probably should be read_deleted
+            **kwargs,
+        ).execute()
+
+        return self.result_list(
+            self,
+            identity,
+            search_result,
+            params,
+            links_tpl=LinksTemplate(self.config.links_search, context={"args": params}),
+            links_item_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+            expand=expand,
+        )
+
+    #
+    # Base methods, extended with handling of deleted records
+    #
+    def read(self, identity, id_, expand=False, with_deleted=False):
+        """Retrieve a record."""
+        record = self.record_cls.pid.resolve(id_)
+        result = super().read(identity, id_, expand=expand)
+
+        if record.deletion_status.is_deleted and not with_deleted:
+            raise CommunityDeletedError(record, result_item=result)
+
+        return result
 
     #
     # notification handlers

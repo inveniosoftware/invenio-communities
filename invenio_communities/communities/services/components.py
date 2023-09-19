@@ -14,6 +14,7 @@ from flask import current_app
 from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
 from invenio_i18n import lazy_gettext as _
+from invenio_i18n.proxies import current_i18n
 from invenio_oaiserver.models import OAISet
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.records.components import (
@@ -26,6 +27,7 @@ from marshmallow.exceptions import ValidationError
 from ...proxies import current_roles
 from ...utils import on_user_membership_change
 from ..records.systemfields.access import VisibilityEnum
+from ..records.systemfields.deletion_status import CommunityDeletionStatusEnum
 
 
 class PIDComponent(ServiceComponent):
@@ -232,6 +234,44 @@ class CustomFieldsComponent(ServiceComponent):
         record.custom_fields = data.get("custom_fields", {})
 
 
+class CommunityDeletionComponent(ServiceComponent):
+    """Service component for record deletion."""
+
+    def delete_community(self, identity, data=None, record=None, **kwargs):
+        """Set the community's deletion status and tombstone information."""
+        # Set the record's deletion status and tombstone information
+        record.deletion_status = CommunityDeletionStatusEnum.DELETED
+        record.tombstone = data
+
+        # Set `removed_by` information for the tombstone
+        record.tombstone.removed_by = identity.id
+
+    def update_tombstone(self, identity, data=None, record=None, **kwargs):
+        """Update the community's tombstone information."""
+        record.tombstone = data
+
+    def restore_community(self, identity, data=None, record=None, **kwargs):
+        """Reset the community's deletion status and tombstone information."""
+        record.deletion_status = CommunityDeletionStatusEnum.PUBLISHED
+
+        # Remove the tombstone information
+        record.tombstone = None
+
+        # Set a record to 'metadata only' if its files got cleaned up
+        if not record.files.entries:
+            record.files.enabled = False
+
+    def mark_community(self, identity, data=None, record=None, **kwargs):
+        """Mark the community for purge."""
+        record.deletion_status = CommunityDeletionStatusEnum.MARKED
+        record.tombstone = record.tombstone
+
+    def unmark_community(self, identity, data=None, record=None, **kwargs):
+        """Unmark the community for purge, resetting it to soft-deleted state."""
+        record.deletion_status = CommunityDeletionStatusEnum.DELETED
+        record.tombstone = record.tombstone
+
+
 DefaultCommunityComponents = [
     MetadataComponent,
     CustomFieldsComponent,
@@ -241,4 +281,5 @@ DefaultCommunityComponents = [
     OwnershipComponent,
     FeaturedCommunityComponent,
     OAISetComponent,
+    CommunityDeletionComponent,
 ]
