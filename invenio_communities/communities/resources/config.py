@@ -17,6 +17,7 @@ from flask_resources import (
 )
 from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.resources import RecordResourceConfig
+from invenio_records_resources.resources.records.headers import etag_headers
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
 
@@ -100,8 +101,8 @@ class CommunityResourceConfig(RecordResourceConfig, ConfiguratorMixin):
     request_community_requests_search_args = RequestSearchRequestArgsSchema
 
     response_handlers = {
-        "application/json": ResponseHandler(JSONSerializer()),
+        "application/json": ResponseHandler(JSONSerializer(), headers=etag_headers),
         "application/vnd.inveniordm.v1+json": ResponseHandler(
-            UICommunityJSONSerializer()
+            UICommunityJSONSerializer(), headers=etag_headers
         ),
     }
