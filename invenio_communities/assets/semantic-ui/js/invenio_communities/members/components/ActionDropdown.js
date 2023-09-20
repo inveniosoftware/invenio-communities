@@ -58,7 +58,7 @@ class ActionDropdown extends Component {
 
   render() {
     const { loading, actionSuccess, error } = this.state;
-    const { options, currentValue, optionsSerializer, disabled, direction, fluid } =
+    const { options, currentValue, optionsSerializer, disabled, direction, fluid, label } =
       this.props;
 
     return (
@@ -79,6 +79,7 @@ class ActionDropdown extends Component {
             openOnFocus={false}
             selectOnBlur={false}
             onChange={this.handleOnChange}
+            aria-label={label}
             disabled={disabled}
             direction={direction}
             fluid={fluid}
@@ -102,6 +103,7 @@ ActionDropdown.propTypes = {
   optionsSerializer: PropTypes.func,
   disabled: PropTypes.bool,
   direction: PropTypes.string,
+  label: PropTypes.string,
   resource: PropTypes.object.isRequired,
   fluid: PropTypes.bool,
 };

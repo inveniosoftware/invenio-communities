@@ -52,6 +52,7 @@ export const RoleDropdown = ({
   disabled,
   currentValue,
   resource,
+  label,
 }) => {
   return (
     <ActionDropdown
@@ -64,6 +65,7 @@ export const RoleDropdown = ({
       resource={resource}
       direction="left"
       fluid
+      label={label}
     />
   );
 };
@@ -97,6 +99,7 @@ export const VisibilityDropdown = ({
   disabled,
   currentValue,
   resource,
+  label,
 }) => {
   return (
     <ActionDropdown
@@ -111,6 +114,7 @@ export const VisibilityDropdown = ({
       resource={resource}
       direction="left"
       fluid
+      label={label}
     />
   );
 };
