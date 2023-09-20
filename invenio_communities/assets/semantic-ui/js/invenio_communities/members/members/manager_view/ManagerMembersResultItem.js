@@ -123,6 +123,7 @@ export class ManagerMembersResultItem extends Component {
               action={api.updateVisibility}
               currentValue={result.visible}
               resource={result}
+              label={i18next.t("Visibility")}
             />
           ) : result.visible ? (
             i18next.t("Public")
@@ -139,6 +140,7 @@ export class ManagerMembersResultItem extends Component {
               action={api.updateRole}
               currentValue={result.role}
               resource={result}
+              label={i18next.t("Role")}
             />
           ) : (
             _upperFirst(result.role)
