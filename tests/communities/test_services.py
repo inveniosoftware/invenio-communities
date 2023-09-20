@@ -414,9 +414,7 @@ def test_community_deletion(community_service, users, comm):
 
     # delete the community
     tombstone_info = {"note": "no specific reason, tbh"}
-    community = community_service.delete_community(
-        system_identity, community.id, tombstone_info
-    )
+    community = community_service.delete(system_identity, community.id, tombstone_info)
     tombstone = community._obj.tombstone
 
     # check if the tombstone information got added as expected
@@ -467,7 +465,7 @@ def test_invalid_community_deletion_workflows(community_service, comm):
     with pytest.raises(DeletionStatusError):
         community_service.unmark_community_for_purge(system_identity, comm.id)
 
-    comm = community_service.delete_community(system_identity, comm.id, {})
+    comm = community_service.delete(system_identity, comm.id, {})
     assert comm._obj.deletion_status == CommunityDeletionStatusEnum.DELETED
 
     # we cannot unmark a deleted community

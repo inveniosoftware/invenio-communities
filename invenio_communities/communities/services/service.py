@@ -101,23 +101,6 @@ class CommunityService(RecordService):
             EntityResolverExpandableField("receiver"),
         ]
 
-    def delete(self, identity, id_, revision_id=None):
-        """Delete a record from database and search indexes."""
-        # we assert that record exists
-        # when calling super() the method will resolve again the record. We take that
-        # compromisation as not resolving it here results to a permission error instead
-        # of not-found
-        record = self.record_cls.pid.resolve(id_)
-
-        # check if requests are open
-        requests = self.search_community_requests(
-            identity, record.id, {"is_open": True}
-        )
-        if len(requests) > 0:
-            raise OpenRequestsForCommunityDeletionError(len(requests))
-
-        return super().delete(identity, record.id, revision_id)
-
     def search_user_communities(
         self, identity, params=None, search_preference=None, extra_filter=None, **kwargs
     ):
@@ -127,7 +110,9 @@ class CommunityService(RecordService):
         # Prepare and execute the search
         params = params or {}
 
-        current_user_filter = CommunityMembers().query_filter(identity)
+        current_user_filter = CommunityMembers().query_filter(identity) & dsl.Q(
+            "term", **{"deletion_status": CommunityDeletionStatusEnum.PUBLISHED.value}
+        )
         if extra_filter:
             current_user_filter = current_user_filter & extra_filter
 
@@ -463,18 +448,27 @@ class CommunityService(RecordService):
     # Deletion workflows
     #
     @unit_of_work()
-    def delete_community(self, identity, id_, data, expand=False, uow=None):
+    def delete_community(
+        self, identity, id_, data=None, revision_id=None, expand=False, uow=None
+    ):
         """(Soft) delete a published community."""
         record = self.record_cls.pid.resolve(id_)
         if record.deletion_status.is_deleted:
             raise DeletionStatusError(record, CommunityDeletionStatusEnum.PUBLISHED)
+
+        # check if requests are open
+        requests = self.search_community_requests(
+            identity, record.id, {"is_open": True}
+        )
+        if len(requests) > 0:
+            raise OpenRequestsForCommunityDeletionError(len(requests))
 
         # Check permissions
         self.require_permission(identity, "delete", record=record)
 
         # Load tombstone data with the schema
         data, errors = self.schema_tombstone.load(
-            data,
+            data or {},
             context={
                 "identity": identity,
                 "pid": record.pid,
@@ -484,9 +478,7 @@ class CommunityService(RecordService):
         )
 
         # Run components
-        self.run_components(
-            "delete_community", identity, data=data, record=record, uow=uow
-        )
+        self.run_components("delete", identity, data=data, record=record, uow=uow)
 
         # Commit and reindex record
         uow.register(RecordCommitOp(record, indexer=self.indexer))
@@ -499,6 +491,13 @@ class CommunityService(RecordService):
             expandable_fields=self.expandable_fields,
             expand=expand,
         )
+
+    @unit_of_work()
+    def delete(
+        self, identity, id_, data=None, expand=False, revision_id=None, uow=None
+    ):
+        """Alias for ``delete_community()``."""
+        return self.delete_community(identity, id_, data, expand=expand, uow=uow)
 
     @unit_of_work()
     def update_tombstone(self, identity, id_, data, expand=False, uow=None):
@@ -550,7 +549,7 @@ class CommunityService(RecordService):
         self.require_permission(identity, "delete", record=record)
 
         # Run components
-        self.run_components("restore_community", identity, record=record, uow=uow)
+        self.run_components("restore", identity, record=record, uow=uow)
 
         # Commit and reindex record
         uow.register(RecordCommitOp(record, indexer=self.indexer))
@@ -575,7 +574,7 @@ class CommunityService(RecordService):
         self.require_permission(identity, "purge", record=record)
 
         # Run components
-        self.run_components("mark_community", identity, record=record, uow=uow)
+        self.run_components("mark", identity, record=record, uow=uow)
 
         # Commit and reindex record
         uow.register(RecordCommitOp(record, indexer=self.indexer))
@@ -600,7 +599,7 @@ class CommunityService(RecordService):
         self.require_permission(identity, "purge", record=record)
 
         # Run components
-        self.run_components("unmark_community", identity, record=record, uow=uow)
+        self.run_components("unmark", identity, record=record, uow=uow)
 
         # Commit and reindex the record
         uow.register(RecordCommitOp(record, indexer=self.indexer))
@@ -704,6 +703,28 @@ class CommunityService(RecordService):
             raise CommunityDeletedError(record, result_item=result)
 
         return result
+
+    @unit_of_work()
+    def update(self, identity, id_, data, revision_id=None, uow=None, expand=False):
+        """Replace a record."""
+        record = self.record_cls.pid.resolve(id_)
+
+        if record.deletion_status.is_deleted:
+            raise CommunityDeletedError(
+                record,
+                result_item=self.result_item(
+                    self,
+                    identity,
+                    record,
+                    links_tpl=self.links_item_tpl,
+                    expandable_fields=self.expandable_fields,
+                    expand=expand,
+                ),
+            )
+
+        return super().update(
+            identity, id_, data, revision_id=revision_id, uow=uow, expand=expand
+        )
 
     #
     # notification handlers

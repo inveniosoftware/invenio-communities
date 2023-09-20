@@ -237,7 +237,7 @@ class CustomFieldsComponent(ServiceComponent):
 class CommunityDeletionComponent(ServiceComponent):
     """Service component for record deletion."""
 
-    def delete_community(self, identity, data=None, record=None, **kwargs):
+    def delete(self, identity, data=None, record=None, **kwargs):
         """Set the community's deletion status and tombstone information."""
         # Set the record's deletion status and tombstone information
         record.deletion_status = CommunityDeletionStatusEnum.DELETED
@@ -250,23 +250,19 @@ class CommunityDeletionComponent(ServiceComponent):
         """Update the community's tombstone information."""
         record.tombstone = data
 
-    def restore_community(self, identity, data=None, record=None, **kwargs):
+    def restore(self, identity, data=None, record=None, **kwargs):
         """Reset the community's deletion status and tombstone information."""
         record.deletion_status = CommunityDeletionStatusEnum.PUBLISHED
 
         # Remove the tombstone information
         record.tombstone = None
 
-        # Set a record to 'metadata only' if its files got cleaned up
-        if not record.files.entries:
-            record.files.enabled = False
-
-    def mark_community(self, identity, data=None, record=None, **kwargs):
+    def mark(self, identity, data=None, record=None, **kwargs):
         """Mark the community for purge."""
         record.deletion_status = CommunityDeletionStatusEnum.MARKED
         record.tombstone = record.tombstone
 
-    def unmark_community(self, identity, data=None, record=None, **kwargs):
+    def unmark(self, identity, data=None, record=None, **kwargs):
         """Unmark the community for purge, resetting it to soft-deleted state."""
         record.deletion_status = CommunityDeletionStatusEnum.DELETED
         record.tombstone = record.tombstone

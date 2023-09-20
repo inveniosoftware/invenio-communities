@@ -50,12 +50,8 @@ class MemberResourceConfig(RecordResourceConfig):
         ),
         CommunityDeletedError: create_error_handler(
             lambda e: (
-                HTTPJSONException(code=404, description=_("Community not found"))
-                if not e.community.tombstone.is_visible
-                else HTTPJSONException(
-                    code=410,
-                    description=_("Community deleted"),
-                    tombstone=e.community.tombstone.dump(),
+                HTTPJSONException(
+                    code=410, description=_("The record has been deleted.")
                 )
             )
         ),
