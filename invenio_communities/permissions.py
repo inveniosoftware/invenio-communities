@@ -48,9 +48,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         SystemProcess(),
     ]
 
-    can_update = [
-        IfDeleted(then_=[Disable()], else_=[CommunityOwners(), SystemProcess()])
-    ]
+    can_update = [CommunityOwners(), SystemProcess()]
 
     can_delete = [CommunityOwners(), SystemProcess()]
 

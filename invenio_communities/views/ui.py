@@ -21,6 +21,7 @@ from invenio_records_resources.services.errors import PermissionDeniedError
 
 from invenio_communities.proxies import current_communities
 
+from ..errors import CommunityDeletedError
 from ..searchapp import search_app_context
 from .communities import (
     communities_about,
@@ -215,6 +216,7 @@ def create_ui_blueprint(app):
     blueprint.register_error_handler(
         PermissionDeniedError, record_permission_denied_error
     )
+    blueprint.register_error_handler(CommunityDeletedError, record_tombstone_error)
     blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
     blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
 
