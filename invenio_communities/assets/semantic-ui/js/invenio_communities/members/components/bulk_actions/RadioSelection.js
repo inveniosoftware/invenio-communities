@@ -30,6 +30,7 @@ export class RadioSelection extends Component {
                     <Radio
                       onClick={this.handleOnChange}
                       label={option.title}
+                      aria-label={option.title}
                       value={option.name}
                       checked={selected === option.name}
                       name="membersRoles"
