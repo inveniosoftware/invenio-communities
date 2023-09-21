@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.10.0 (released 2023-09-21)
+-----------------------------------
+
+- resources: add etag headers
+
 Version 7.9.0 (released 2023-09-19)
 -----------------------------------
 
