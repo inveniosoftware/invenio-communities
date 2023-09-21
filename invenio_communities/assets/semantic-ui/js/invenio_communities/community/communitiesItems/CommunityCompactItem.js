@@ -10,6 +10,7 @@ export function CommunityCompactItem({
   extraLabels,
   itemClassName,
   showPermissionLabel,
+  detailUrl,
 }) {
   return (
     <>
@@ -19,6 +20,7 @@ export function CommunityCompactItem({
         extraLabels={extraLabels}
         itemClassName={itemClassName}
         showPermissionLabel={showPermissionLabel}
+        detailUrl={detailUrl}
       />
       <CommunityCompactItemMobile
         result={result}
@@ -26,6 +28,7 @@ export function CommunityCompactItem({
         extraLabels={extraLabels}
         itemClassName={itemClassName}
         showPermissionLabel={showPermissionLabel}
+        detailUrl={detailUrl}
       />
     </>
   );
@@ -37,6 +40,7 @@ CommunityCompactItem.propTypes = {
   extraLabels: PropTypes.node,
   itemClassName: PropTypes.string,
   showPermissionLabel: PropTypes.bool,
+  detailUrl: PropTypes.string,
 };
 
 CommunityCompactItem.defaultProps = {
@@ -44,4 +48,5 @@ CommunityCompactItem.defaultProps = {
   extraLabels: undefined,
   itemClassName: "",
   showPermissionLabel: false,
+  detailUrl: undefined,
 };
