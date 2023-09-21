@@ -66,6 +66,7 @@ export class SearchResultsBulkActions extends Component {
             className="align-self-center mr-10"
             onChange={this.handleOnChange}
             checked={allSelectedChecked && allSelected}
+            aria-label={i18next.t("Select all members")}
           />
           <Dropdown
             className="align-self-center fluid-responsive"
