@@ -32,6 +32,7 @@ const ReviewPolicyField = ({ label, formConfig, ...props }) => {
             key={item.value}
             fieldPath="access.review_policy"
             label={item.text}
+            aria-label={item.text}
             labelIcon={item.icon}
             checked={_get(field.value, "access.review_policy") === item.value}
             value={item.value}

@@ -129,6 +129,7 @@ export class InvitationsMembersModal extends Component {
         onOpen={this.handleOpenModal}
         closeOnDimmerClick={false}
         open={open}
+        aria-label={i18next.t("Invite members")}
         trigger={
           <Button
             className="fluid-responsive"
@@ -151,6 +152,7 @@ export class InvitationsMembersModal extends Component {
           menu={{
             className: "rel-pl-2 rel-pt-2",
             tabular: true,
+            role:"tablist"
           }}
           activeIndex={activeIndex}
           panes={this.getPanes()}
