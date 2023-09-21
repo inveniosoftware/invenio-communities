@@ -19,6 +19,7 @@ export const CommunityCompactItemComputer = ({
   extraLabels,
   itemClassName,
   showPermissionLabel,
+  detailUrl,
 }) => {
   const { metadata, ui, links, access, id } = result;
   const communityType = ui?.type?.title_l10n;
@@ -39,7 +40,7 @@ export const CommunityCompactItemComputer = ({
         <div>
           <div className="flex align-items-center rel-mb-1">
             <a
-              href={links.self_html}
+              href={detailUrl || links.self_html}
               className="ui small header truncate-lines-2 m-0 mr-5"
               target="_blank"
               rel="noreferrer"
@@ -95,6 +96,7 @@ CommunityCompactItemComputer.propTypes = {
   extraLabels: PropTypes.node,
   itemClassName: PropTypes.string,
   showPermissionLabel: PropTypes.bool,
+  detailUrl: PropTypes.string,
 };
 
 CommunityCompactItemComputer.defaultProps = {
@@ -102,4 +104,5 @@ CommunityCompactItemComputer.defaultProps = {
   extraLabels: undefined,
   itemClassName: "",
   showPermissionLabel: false,
+  detailUrl: undefined,
 };

@@ -19,6 +19,7 @@ export const CommunityCompactItemMobile = ({
   extraLabels,
   itemClassName,
   showPermissionLabel,
+  detailUrl,
 }) => {
   const communityType = result.ui?.type?.title_l10n;
   const { metadata, ui, links, access, id } = result;
@@ -36,7 +37,7 @@ export const CommunityCompactItemMobile = ({
 
           <div className="flex align-items-center rel-mb-1">
             <a
-              href={links.self_html}
+              href={detailUrl || links.self_html}
               className="ui small header truncate-lines-2 m-0 mr-5"
               target="_blank"
               rel="noreferrer"
@@ -95,6 +96,7 @@ CommunityCompactItemMobile.propTypes = {
   itemClassName: PropTypes.string,
   showPermissionLabel: PropTypes.bool,
   actions: PropTypes.node,
+  detailUrl: PropTypes.string,
 };
 
 CommunityCompactItemMobile.defaultProps = {
@@ -102,4 +104,5 @@ CommunityCompactItemMobile.defaultProps = {
   extraLabels: undefined,
   itemClassName: "",
   showPermissionLabel: false,
+  detailUrl: undefined,
 };
