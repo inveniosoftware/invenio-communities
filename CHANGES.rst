@@ -9,6 +9,15 @@
 Changes
 =======
 
+Version 7.10.1 (released 2023-09-22)
+------------------------------------
+
+- ui: allow redirecting to another page when clicking on
+  the community's list item
+- fix an issue with wrongly updating users in the db when
+  fetching community's members
+
+
 Version 7.10.0 (released 2023-09-21)
 ------------------------------------
 
