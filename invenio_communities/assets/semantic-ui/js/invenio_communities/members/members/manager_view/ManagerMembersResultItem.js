@@ -61,7 +61,7 @@ export class ManagerMembersResultItem extends Component {
     const { config } = this.props;
     const { result } = this.state;
     const { api } = this.context;
-    const relativeTimestamp = timestampToRelativeTime(result.created)
+    const membershipRelativeTimestamp = timestampToRelativeTime(result.created)
     const memberVisibility = result.visible ? i18next.t(config.visibility[0].title) : i18next.t(config.visibility[1].title)
     
     return (
@@ -113,8 +113,8 @@ export class ManagerMembersResultItem extends Component {
           </Grid>
         </Table.Cell>
 
-        <Table.Cell aria-label={i18next.t("Member since")+ " " +relativeTimestamp} data-label={i18next.t("Member since")}>
-          {relativeTimestamp}
+        <Table.Cell aria-label={i18next.t("Member since")+ " " +membershipRelativeTimestamp} data-label={i18next.t("Member since")}>
+          {membershipRelativeTimestamp}
         </Table.Cell>
 
         <Table.Cell aria-label={i18next.t("Visibility")+ " " +memberVisibility} data-label={i18next.t("Visibility")}>

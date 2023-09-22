@@ -80,7 +80,11 @@ class RemoveMemberModal extends Component {
         closeModal={this.onCloseHandler}
         contentMap={this.contentMap}
       >
-        <Modal open={modalOpen}>
+        <Modal 
+        open={modalOpen} 
+        role="dialog"
+        aria-label={i18next.t("Remove user")}
+        >
           <Modal.Header>{content?.headerText}</Modal.Header>
           <Modal.Content>
             {content?.bodyText} <br />
