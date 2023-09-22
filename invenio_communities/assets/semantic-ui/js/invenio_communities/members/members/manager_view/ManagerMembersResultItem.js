@@ -118,14 +118,14 @@ export class ManagerMembersResultItem extends Component {
           aria-label={i18next.t("Member since") + " " + membershipRelativeTimestamp}
           data-label={i18next.t("Member since")}
         >
-        {membershipRelativeTimestamp}
+          {membershipRelativeTimestamp}
         </Table.Cell>
 
         <Table.Cell
           aria-label={i18next.t("Visibility") + " " + memberVisibility}
           data-label={i18next.t("Visibility")}
         >
-        {result.permissions.can_update_visible ? (
+          {result.permissions.can_update_visible ? (
             <VisibilityDropdown
               visibilityTypes={config.visibility}
               successCallback={this.updateMemberVisibility}
@@ -136,7 +136,7 @@ export class ManagerMembersResultItem extends Component {
             />
           ) : (
             memberVisibility
-            )}
+          )}
         </Table.Cell>
 
         <Table.Cell data-label={i18next.t("Role")}>
