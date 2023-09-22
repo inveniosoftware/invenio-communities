@@ -15,7 +15,7 @@ from .manager import CommunitiesRelationManager
 
 
 class CommunitiesField(SystemField):
-    """Communites system field for managing relations to communities."""
+    """Communities system field for managing relations to communities."""
 
     def __init__(
         self, m2m_model_cls, key="communities", context_cls=None, manager_cls=None
@@ -38,7 +38,7 @@ class CommunitiesField(SystemField):
     # Helpers
     #
     def obj(self, record):
-        """Get or crate the communities manager."""
+        """Get or create the communities manager."""
         # Check cache
         obj = self._get_cache(record)
         if obj is not None:
