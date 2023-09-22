@@ -118,8 +118,11 @@ class MemberMixin:
     def get_member_by_request(cls, request_id):
         """Get a membership by request id."""
         assert request_id is not None
-        obj = cls.model_cls.query.filter(cls.model_cls.request_id == request_id).one()
-        return cls(obj.data, model=obj)
+        with db.session.no_autoflush:
+            obj = cls.model_cls.query.filter(
+                cls.model_cls.request_id == request_id
+            ).one()
+            return cls(obj.data, model=obj)
 
     @classmethod
     def get_members(cls, community_id, members=None):
@@ -135,22 +138,22 @@ class MemberMixin:
             else:
                 raise InvalidMemberError(m)
 
-        # Query
-        q = cls.model_cls.query.filter(cls.model_cls.community_id == community_id)
+        with db.session.no_autoflush:
+            q = cls.model_cls.query.filter(cls.model_cls.community_id == community_id)
 
-        # Apply user and group query if applicable
-        user_q = cls.model_cls.user_id.in_(user_ids)
-        groups_q = cls.model_cls.group_id.in_(
-            db.session.query(Role.id).filter(Role.id.in_(group_ids))
-        )
-        if user_ids and group_ids:
-            q = q.filter(or_(user_q, groups_q))
-        elif user_ids:
-            q = q.filter(user_q)
-        elif group_ids:
-            q = q.filter(groups_q)
+            # Apply user and group query if applicable
+            user_q = cls.model_cls.user_id.in_(user_ids)
+            groups_q = cls.model_cls.group_id.in_(
+                db.session.query(Role.id).filter(Role.id.in_(group_ids))
+            )
+            if user_ids and group_ids:
+                q = q.filter(or_(user_q, groups_q))
+            elif user_ids:
+                q = q.filter(user_q)
+            elif group_ids:
+                q = q.filter(groups_q)
 
-        return [cls(obj.data, model=obj) for obj in q.all()]
+            return [cls(obj.data, model=obj) for obj in q.all()]
 
     @classmethod
     def has_members(cls, community_id, role=None):
