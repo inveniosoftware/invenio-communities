@@ -61,7 +61,9 @@ export class ManagerMembersResultItem extends Component {
     const { config } = this.props;
     const { result } = this.state;
     const { api } = this.context;
-
+    const relativeTimestamp = timestampToRelativeTime(result.created)
+    const memberVisibility = result.visible ? i18next.t(config.visibility[0].title) : i18next.t(config.visibility[1].title)
+    
     return (
       <Table.Row>
         <Table.Cell>
@@ -111,11 +113,11 @@ export class ManagerMembersResultItem extends Component {
           </Grid>
         </Table.Cell>
 
-        <Table.Cell data-label={i18next.t("Member since")}>
-          {timestampToRelativeTime(result.created)}
+        <Table.Cell aria-label={i18next.t("Member since")+ " " +relativeTimestamp} data-label={i18next.t("Member since")}>
+          {relativeTimestamp}
         </Table.Cell>
 
-        <Table.Cell data-label={i18next.t("Visibility")}>
+        <Table.Cell aria-label={i18next.t("Visibility")+ " " +memberVisibility} data-label={i18next.t("Visibility")}>
           {result.permissions.can_update_visible ? (
             <VisibilityDropdown
               visibilityTypes={config.visibility}
@@ -123,13 +125,10 @@ export class ManagerMembersResultItem extends Component {
               action={api.updateVisibility}
               currentValue={result.visible}
               resource={result}
-              label={i18next.t("Visibility")}
+              label={i18next.t("Visibility")+ " " +memberVisibility}
             />
-          ) : result.visible ? (
-            i18next.t("Public")
-          ) : (
-            i18next.t("Hidden")
-          )}
+          ) : memberVisibility
+          }
         </Table.Cell>
 
         <Table.Cell data-label={i18next.t("Role")}>
@@ -140,7 +139,7 @@ export class ManagerMembersResultItem extends Component {
               action={api.updateRole}
               currentValue={result.role}
               resource={result}
-              label={i18next.t("Role")}
+              label={i18next.t("Role")+ " " +result.role}
             />
           ) : (
             _upperFirst(result.role)
