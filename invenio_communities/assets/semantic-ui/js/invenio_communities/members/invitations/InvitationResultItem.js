@@ -71,10 +71,10 @@ export class InvitationResultItem extends Component {
         <Table.Cell data-label={i18next.t("Status")}>
           <RequestStatus status={request.status} />
         </Table.Cell>
-        <Table.Cell 
+        <Table.Cell
           aria-label={i18next.t("Expires") + " " + memberInvitationExpiration}
           data-label={i18next.t("Expires")}
-          >
+        >
           {memberInvitationExpiration}
         </Table.Cell>
         <Table.Cell data-label={i18next.t("Role")}>
@@ -85,7 +85,7 @@ export class InvitationResultItem extends Component {
             disabled={!invitation.permissions.can_update_role}
             currentValue={invitation.role}
             resource={invitation}
-            label={i18next.t("Role")+ " " +invitation.role}
+            label={i18next.t("Role") + " " + invitation.role}
           />
         </Table.Cell>
         <Table.Cell>
