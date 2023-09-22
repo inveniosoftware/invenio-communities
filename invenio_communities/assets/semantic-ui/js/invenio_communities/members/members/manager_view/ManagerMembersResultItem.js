@@ -64,7 +64,7 @@ export class ManagerMembersResultItem extends Component {
     const membershipRelativeTimestamp = timestampToRelativeTime(result.created);
     const memberVisibility = result.visible
       ? i18next.t(config.visibility[0].title)
-      : i18next.t(config.visibility[1].title);    
+      : i18next.t(config.visibility[1].title);
     return (
       <Table.Row>
         <Table.Cell>
@@ -117,14 +117,14 @@ export class ManagerMembersResultItem extends Component {
         <Table.Cell
           aria-label={i18next.t("Member since") + " " + membershipRelativeTimestamp}
           data-label={i18next.t("Member since")}
-          >
+        >
         {membershipRelativeTimestamp}
         </Table.Cell>
 
         <Table.Cell
           aria-label={i18next.t("Visibility") + " " + memberVisibility}
           data-label={i18next.t("Visibility")}
-          >
+        >
         {result.permissions.can_update_visible ? (
             <VisibilityDropdown
               visibilityTypes={config.visibility}
@@ -134,7 +134,9 @@ export class ManagerMembersResultItem extends Component {
               resource={result}
               label={i18next.t("Visibility") + " " + memberVisibility}
             />
-          ) : memberVisibility}
+          ) : (
+            memberVisibility
+            )}
         </Table.Cell>
 
         <Table.Cell data-label={i18next.t("Role")}>
