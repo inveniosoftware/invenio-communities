@@ -21,6 +21,8 @@ from invenio_records_resources.resources.records.headers import etag_headers
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
 
+from invenio_communities.communities.resources.args import \
+    CommunitiesSearchRequestArgsSchema
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
 )
@@ -85,7 +87,10 @@ class CommunityResourceConfig(RecordResourceConfig, ConfiguratorMixin):
         "featured-item": "/communities/<pid_value>/featured/<featured_id>",
         "user-communities": "/user/communities",
         "community-requests": "/communities/<pid_value>/requests",
+        "restore-community": "/communities/<pid_value>/restore",
     }
+
+    request_search_args = CommunitiesSearchRequestArgsSchema
 
     request_view_args = {
         **RecordResourceConfig.request_view_args,

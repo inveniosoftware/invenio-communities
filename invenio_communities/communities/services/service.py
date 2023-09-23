@@ -110,19 +110,23 @@ class CommunityService(RecordService):
         # Prepare and execute the search
         params = params or {}
 
-        current_user_filter = CommunityMembers().query_filter(identity) & dsl.Q(
+        current_user_filter = CommunityMembers().query_filter(identity)
+        undeleted_filter = dsl.Q(
             "term", **{"deletion_status": CommunityDeletionStatusEnum.PUBLISHED.value}
         )
+
+        search_filter = current_user_filter & undeleted_filter
+
         if extra_filter:
-            current_user_filter = current_user_filter & extra_filter
+            search_filter &= extra_filter
 
         search_result = self._search(
             "search",
             identity,
             params,
             search_preference,
-            permission_action=None,
-            extra_filter=current_user_filter,
+            extra_filter=search_filter,
+            permission_action="read",
             **kwargs,
         ).execute()
 
@@ -634,73 +638,36 @@ class CommunityService(RecordService):
         extra_filter=None,
         **kwargs,
     ):
-        """Search for active communities matching the querystring."""
-        status = CommunityDeletionStatusEnum.PUBLISHED.value
-        search_filter = dsl.Q("term", **{"deletion_status": status})
-        if extra_filter:
-            search_filter = search_filter & extra_filter
-
+        """Search for published communities matching the querystring."""
         return super().search(
             identity,
             params,
             search_preference,
             expand,
-            extra_filter=search_filter,
+            extra_filter=extra_filter,
+            # injects deleted records when user is permitted to see them
+            permission_action="read_deleted",
             **kwargs,
-        )
-
-    def search_all(
-        self,
-        identity,
-        params=None,
-        search_preference=None,
-        expand=False,
-        extra_filter=None,
-        **kwargs,
-    ):
-        """Search for all (active and deleted) communities matching the querystring."""
-        self.require_permission(identity, "search_all")
-
-        # exclude drafts filter (drafts have no deletion status)
-        search_filter = dsl.Q(
-            "terms",
-            **{"deletion_status": [v.value for v in CommunityDeletionStatusEnum]},
-        )
-        if extra_filter:
-            search_filter &= extra_filter
-        search_result = self._search(
-            "search_all",
-            identity,
-            params,
-            search_preference,
-            record_cls=self.draft_cls,
-            search_opts=self.config.search_all,
-            extra_filter=search_filter,
-            permission_action="read",  # TODO this probably should be read_deleted
-            **kwargs,
-        ).execute()
-
-        return self.result_list(
-            self,
-            identity,
-            search_result,
-            params,
-            links_tpl=LinksTemplate(self.config.links_search, context={"args": params}),
-            links_item_tpl=self.links_item_tpl,
-            expandable_fields=self.expandable_fields,
-            expand=expand,
         )
 
     #
     # Base methods, extended with handling of deleted records
     #
-    def read(self, identity, id_, expand=False, with_deleted=False):
+    def read(self, identity, id_, expand=False, include_deleted=False):
         """Retrieve a record."""
         record = self.record_cls.pid.resolve(id_)
         result = super().read(identity, id_, expand=expand)
 
-        if record.deletion_status.is_deleted and not with_deleted:
+        if not include_deleted and record.deletion_status.is_deleted:
             raise CommunityDeletedError(record, result_item=result)
+        if include_deleted and record.deletion_status.is_deleted:
+            can_read_deleted = self.check_permission(
+                identity, "read_deleted", record=record
+            )
+
+            if not can_read_deleted:
+                # displays tombstone
+                raise CommunityDeletedError(record, result_item=result)
 
         return result
 
