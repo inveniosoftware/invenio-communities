@@ -38,6 +38,7 @@ from invenio_communities.communities.services.results import (
     CommunityListResult,
     FeaturedCommunityItem,
 )
+from .search_params import IncludeDeletedCommunitiesParam, StatusParam
 
 from ...permissions import CommunityPermissionPolicy, can_perform_action
 from ..schema import CommunityFeaturedSchema, CommunitySchema, TombstoneSchema
@@ -66,6 +67,8 @@ class SearchOptions(SearchOptionsBase, SearchOptionsMixin):
         PaginationParam,
         CommunitiesSortParam,
         FacetsParam,
+        StatusParam,
+        IncludeDeletedCommunitiesParam,
     ]
 
 

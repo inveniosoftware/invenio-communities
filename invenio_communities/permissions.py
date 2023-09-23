@@ -20,6 +20,7 @@ from invenio_records_permissions.generators import (
     SystemProcess,
 )
 from invenio_records_permissions.policies import BasePermissionPolicy
+from invenio_users_resources.services.permissions import UserManager
 
 from .generators import (
     AllowedMemberTypes,
@@ -30,7 +31,7 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     GroupsEnabled,
-    IfDeleted,
+    IfCommunityDeleted,
     IfPolicyClosed,
     IfRestricted,
 )
@@ -46,6 +47,15 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_read = [
         IfRestricted("visibility", then_=[CommunityMembers()], else_=[AnyUser()]),
         SystemProcess(),
+    ]
+
+    # Used for search filtering of deleted records
+    # cannot be implemented inside can_read - otherwise permission will
+    # kick in before tombstone renders
+    can_read_deleted = [IfCommunityDeleted(
+        then_=[UserManager, SystemProcess()],
+        else_=can_read
+       )
     ]
 
     can_update = [CommunityOwners(), SystemProcess()]
