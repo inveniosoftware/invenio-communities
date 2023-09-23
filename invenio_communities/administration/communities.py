@@ -7,11 +7,14 @@
 # details.
 
 """Invenio administration OAI-PMH view module."""
-from flask import app, current_app, has_app_context
+from functools import partial
+
+from flask import current_app
 from invenio_administration.views.base import (
     AdminResourceDetailView,
     AdminResourceListView,
 )
+from invenio_search_ui.searchconfig import search_app_config
 
 from invenio_communities.communities.schema import CommunityFeaturedSchema
 
@@ -36,15 +39,12 @@ class CommunityListView(AdminResourceListView):
     display_edit = False
 
     item_field_list = {
-        "slug": {
-            "text": "Slug",
-            "order": 1,
-        },
-        "metadata.title": {"text": "Title", "order": 2},
+        "slug": {"text": "Slug", "order": 1, "width": 1},
+        "metadata.title": {"text": "Title", "order": 2, "width": 4},
         # This field is for display only, it won't work on forms
-        "ui.type.title_l10n": {"text": "Type", "order": 3},
-        "featured": {"text": "Featured", "order": 4},
-        "created": {"text": "Created", "order": 5},
+        "ui.type.title_l10n": {"text": "Type", "order": 3, "width": 2},
+        "featured": {"text": "Featured", "order": 4, "width": 1},
+        "created": {"text": "Created", "order": 5, "width": 2},
     }
 
     actions = {
@@ -52,11 +52,40 @@ class CommunityListView(AdminResourceListView):
             "text": "Feature",
             "payload_schema": CommunityFeaturedSchema,
             "order": 1,
-        }
+        },
+        # custom components in the UI
+        "delete": {
+            "text": "Delete",
+            "payload_schema": None,
+            "order": 2,
+        },
+        # custom components in the UI
+        "restore": {
+            "text": "Restore",
+            "payload_schema": None,
+            "order": 2,
+        },
     }
     search_config_name = "COMMUNITIES_SEARCH"
     search_facets_config_name = "COMMUNITIES_FACETS"
     search_sort_config_name = "COMMUNITIES_SORT_OPTIONS"
+
+    def init_search_config(self):
+        """Build search view config."""
+        return partial(
+            search_app_config,
+            config_name=self.get_search_app_name(),
+            available_facets=current_app.config.get(self.search_facets_config_name),
+            sort_options=current_app.config[self.search_sort_config_name],
+            endpoint=self.get_api_endpoint(),
+            headers=self.get_search_request_headers(),
+            initial_filters=[["status", "P"]],
+            hidden_params=[
+                ["include_deleted", "1"],
+            ],
+            page=1,
+            size=30,
+        )
 
     @staticmethod
     def disabled():

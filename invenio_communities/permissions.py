@@ -52,10 +52,8 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # Used for search filtering of deleted records
     # cannot be implemented inside can_read - otherwise permission will
     # kick in before tombstone renders
-    can_read_deleted = [IfCommunityDeleted(
-        then_=[UserManager, SystemProcess()],
-        else_=can_read
-       )
+    can_read_deleted = [
+        IfCommunityDeleted(then_=[UserManager, SystemProcess()], else_=can_read)
     ]
 
     can_update = [CommunityOwners(), SystemProcess()]

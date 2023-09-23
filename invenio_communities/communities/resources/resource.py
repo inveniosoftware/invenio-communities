@@ -137,7 +137,6 @@ class CommunityResource(RecordResource):
         )
         return item.to_dict(), 200
 
-
     #
     # Deletion workflows
     #
@@ -166,7 +165,6 @@ class CommunityResource(RecordResource):
         )
 
         return item.to_dict(), 200
-
 
     @request_view_args
     def delete_logo(self):

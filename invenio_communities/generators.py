@@ -22,8 +22,9 @@ from invenio_access.permissions import any_user, system_process
 from invenio_records_permissions.generators import ConditionalGenerator, Generator
 from invenio_search.engine import dsl
 
-from .communities.records.systemfields.deletion_status import \
-    CommunityDeletionStatusEnum
+from .communities.records.systemfields.deletion_status import (
+    CommunityDeletionStatusEnum,
+)
 from .proxies import current_roles
 
 _Need = namedtuple("Need", ["method", "value", "role"])
@@ -181,8 +182,7 @@ class IfCommunityDeleted(Generator):
         """Filters for current identity."""
         q_then = dsl.Q("match_all")
         q_else = dsl.Q(
-            "term", **{"deletion_status":
-                           CommunityDeletionStatusEnum.PUBLISHED.value}
+            "term", **{"deletion_status": CommunityDeletionStatusEnum.PUBLISHED.value}
         )
         then_query = self.make_query(self.then_, **kwargs)
         else_query = self.make_query(self.else_, **kwargs)
@@ -195,6 +195,7 @@ class IfCommunityDeleted(Generator):
             return q_else & else_query
         else:
             return q_else
+
 
 #
 # Community membership generators

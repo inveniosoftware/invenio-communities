@@ -21,8 +21,9 @@ from invenio_records_resources.resources.records.headers import etag_headers
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_requests.resources.requests.config import RequestSearchRequestArgsSchema
 
-from invenio_communities.communities.resources.args import \
-    CommunitiesSearchRequestArgsSchema
+from invenio_communities.communities.resources.args import (
+    CommunitiesSearchRequestArgsSchema,
+)
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
 )

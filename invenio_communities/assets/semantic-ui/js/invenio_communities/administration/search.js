@@ -6,9 +6,11 @@
 
 import { initDefaultSearchComponents } from "@js/invenio_administration";
 import { createSearchAppInit } from "@js/invenio_search_ui";
+import { RecordSearchLayout } from "./search/RecordSearchLayout";
 import { FeatureModal } from "./FeatureModal";
 import { parametrize } from "react-overridable";
 import { NotificationController, BoolFormatter } from "@js/invenio_administration";
+import { RecordResourceActions } from "./components/RecordResourceActions";
 
 const domContainer = document.getElementById("invenio-search-config");
 
@@ -21,7 +23,9 @@ const CustomBoolFormatter = parametrize(BoolFormatter, {
 const overridenComponents = {
   ...defaultComponents,
   "InvenioAdministration.BoolFormatter": CustomBoolFormatter,
-  "InvenioAdministration.ActionModal": FeatureModal,
+  "InvenioAdministration.ActionModal.feature": FeatureModal,
+  "InvenioAdministration.ResourceActions": RecordResourceActions,
+  "SearchApp.layout": RecordSearchLayout,
 };
 
 createSearchAppInit(
