@@ -9,6 +9,15 @@
 Changes
 =======
 
+Version 7.11.0 (released 2023-09-25)
+------------------------------------
+
+- services: add community deletion
+- moderation: delete communities of blocked user
+- administration: add community deletion and restore actions
+- resource: add revision check on delete header
+- ui: add accessibility attributes
+
 Version 7.10.1 (released 2023-09-22)
 ------------------------------------
 
