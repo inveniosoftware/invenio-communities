@@ -10,6 +10,7 @@
 from collections import defaultdict
 
 from invenio_access.permissions import Identity, system_identity
+from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_search.engine import dsl
 from invenio_vocabularies.proxies import current_service as vocab_service
@@ -68,7 +69,7 @@ def on_block(user_id, uow=None, **kwargs):
     of an HTTP request!
     """
     user_id = str(user_id)
-    tombstone_data = {"note": "User was blocked"}
+    tombstone_data = {"note": _("User was blocked")}
 
     # set the removal reason if the vocabulary item exists
     try:
@@ -80,7 +81,7 @@ def on_block(user_id, uow=None, **kwargs):
     except PIDDoesNotExistError:
         pass
 
-    # soft-delete all the published records of that user
+    # soft-delete all the communities of that user (only if they are the only owner)
     for comm in _get_communities_for_user(user_id):
         if not comm.deletion_status.is_deleted:
             current_communities.service.delete_community(
