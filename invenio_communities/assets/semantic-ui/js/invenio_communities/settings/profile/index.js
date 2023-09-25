@@ -17,6 +17,7 @@ const hasLogo = JSON.parse(domContainer.dataset.hasLogo);
 const types = JSON.parse(domContainer.dataset.types);
 const logoMaxSize = JSON.parse(domContainer.dataset.logoMaxSize);
 const customFields = JSON.parse(domContainer.dataset.customFields);
+const permissions = JSON.parse(domContainer.dataset.permissions);
 
 ReactDOM.render(
   <CommunityProfileForm
@@ -26,6 +27,7 @@ ReactDOM.render(
     types={types}
     logoMaxSize={logoMaxSize}
     customFields={customFields}
+    permissions={permissions}
   />,
   domContainer
 );
