@@ -457,6 +457,10 @@ class CommunityService(RecordService):
     ):
         """(Soft) delete a published community."""
         record = self.record_cls.pid.resolve(id_)
+        # Check permissions
+        self.require_permission(identity, "delete", record=record)
+        self.check_revision_id(record, revision_id)
+
         if record.deletion_status.is_deleted:
             raise DeletionStatusError(record, CommunityDeletionStatusEnum.PUBLISHED)
 
@@ -466,9 +470,6 @@ class CommunityService(RecordService):
         )
         if len(requests) > 0:
             raise OpenRequestsForCommunityDeletionError(len(requests))
-
-        # Check permissions
-        self.require_permission(identity, "delete", record=record)
 
         # Load tombstone data with the schema
         data, errors = self.schema_tombstone.load(
@@ -501,7 +502,9 @@ class CommunityService(RecordService):
         self, identity, id_, data=None, expand=False, revision_id=None, uow=None
     ):
         """Alias for ``delete_community()``."""
-        return self.delete_community(identity, id_, data, expand=expand, uow=uow)
+        return self.delete_community(
+            identity, id_, data, revision_id=revision_id, expand=expand, uow=uow
+        )
 
     @unit_of_work()
     def update_tombstone(self, identity, id_, data, expand=False, uow=None):

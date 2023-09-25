@@ -149,6 +149,7 @@ class CommunityResource(RecordResource):
             g.identity,
             resource_requestctx.view_args["pid_value"],
             resource_requestctx.data,
+            revision_id=resource_requestctx.headers.get("if_match"),
         )
 
         return "", 204
