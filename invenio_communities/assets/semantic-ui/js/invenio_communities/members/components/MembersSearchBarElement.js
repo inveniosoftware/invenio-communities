@@ -34,7 +34,7 @@ export const MembersSearchBarElement = withState(
           icon: "search",
           onClick: onBtnSearchClick,
           className: "search",
-          title:i18next.t("Search")
+          title: i18next.t("Search"),
         }}
         fluid
         placeholder={placeholder}

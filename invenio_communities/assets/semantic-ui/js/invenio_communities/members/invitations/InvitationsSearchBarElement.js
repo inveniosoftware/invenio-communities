@@ -25,7 +25,7 @@ export const InvitationsSearchBarElement = ({
         icon: "search",
         onClick: onBtnSearchClick,
         className: "search",
-        title:i18next.t("Search")
+        title: i18next.t("Search"),
       }}
       fluid
       placeholder={i18next.t("Search in invitations...")}

@@ -152,7 +152,7 @@ export class InvitationsMembersModal extends Component {
           menu={{
             className: "rel-pl-2 rel-pt-2",
             tabular: true,
-            role:"tablist"
+            role: "tablist",
           }}
           activeIndex={activeIndex}
           panes={this.getPanes()}

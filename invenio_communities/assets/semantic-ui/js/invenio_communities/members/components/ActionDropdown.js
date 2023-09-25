@@ -58,8 +58,15 @@ class ActionDropdown extends Component {
 
   render() {
     const { loading, actionSuccess, error } = this.state;
-    const { options, currentValue, optionsSerializer, disabled, direction, fluid, label } =
-      this.props;
+    const {
+      options,
+      currentValue,
+      optionsSerializer,
+      disabled,
+      direction,
+      fluid,
+      label,
+    } = this.props;
 
     return (
       <Overridable
