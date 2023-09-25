@@ -180,6 +180,8 @@ def communities_settings(pid_value, community, community_ui):
             "search_requests",
             "search_invites",
             "manage_access",
+            "rename",
+            "delete",
         ]
     )
     if not permissions["can_update"]:

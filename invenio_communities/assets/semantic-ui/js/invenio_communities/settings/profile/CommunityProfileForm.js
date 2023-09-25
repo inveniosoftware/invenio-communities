@@ -320,8 +320,15 @@ class CommunityProfileForm extends Component {
   };
 
   render() {
-    const { types, customFields, community, hasLogo, defaultLogo, logoMaxSize } =
-      this.props;
+    const {
+      types,
+      customFields,
+      community,
+      hasLogo,
+      defaultLogo,
+      logoMaxSize,
+      permissions,
+    } = this.props;
     const { error } = this.state;
     return (
       <Formik
@@ -587,7 +594,11 @@ class CommunityProfileForm extends Component {
               </Grid.Row>
               <Grid.Row className="danger-zone">
                 <Grid.Column as="section" width={16}>
-                  <DangerZone community={community} onError={this.setGlobalError} />
+                  <DangerZone
+                    community={community}
+                    onError={this.setGlobalError}
+                    permissions={permissions}
+                  />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -605,6 +616,7 @@ CommunityProfileForm.propTypes = {
   logoMaxSize: PropTypes.number.isRequired,
   customFields: PropTypes.object.isRequired,
   types: PropTypes.array.isRequired,
+  permissions: PropTypes.object.isRequired,
 };
 
 export default CommunityProfileForm;
