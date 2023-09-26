@@ -16,6 +16,7 @@ from invenio_db import db
 from invenio_records.api import Record
 
 from invenio_communities.communities.records.api import Community
+from invenio_communities.errors import SetDefaultCommunityError
 
 
 class CommunitiesRelationManager:
@@ -166,11 +167,8 @@ class CommunitiesRelationManager:
         not, then use ``.add(community, default=True)`` instead.
         """
         id_ = self._to_id(community_or_id)
-        if id_ not in self._communities_ids:
-            raise AttributeError(
-                "Cannot set community as the default. "
-                "The record has not been added to the community."
-            )
+        if id_ and id_ not in self._communities_ids:
+            raise SetDefaultCommunityError
         self._default_id = id_
 
     @default.deleter

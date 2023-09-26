@@ -75,3 +75,16 @@ class DeletionStatusError(CommunityError):
         """Constructor."""
         self.community = community
         self.expected_status = expected_status
+
+
+class SetDefaultCommunityError(CommunityError):
+    """Record is not part of a community that is being set as default."""
+
+    def __init__(self):
+        """Initialise error."""
+        super().__init__(
+            _(
+                "Cannot set community as the default. "
+                "The record has not been added to the community."
+            )
+        )

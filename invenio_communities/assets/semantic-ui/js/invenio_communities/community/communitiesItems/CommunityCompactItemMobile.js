@@ -10,7 +10,7 @@ import { RestrictedLabel } from "../labels";
 import _truncate from "lodash/truncate";
 import React from "react";
 import { Image, InvenioPopup } from "react-invenio-forms";
-import { Icon } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export const CommunityCompactItemMobile = ({
@@ -20,6 +20,7 @@ export const CommunityCompactItemMobile = ({
   itemClassName,
   showPermissionLabel,
   detailUrl,
+  isCommunityDefault,
 }) => {
   const communityType = result.ui?.type?.title_l10n;
   const { metadata, ui, links, access, id } = result;
@@ -76,15 +77,23 @@ export const CommunityCompactItemMobile = ({
           </p>
         )}
 
-        {(result.access.visibility === "restricted" ||
-          communityType ||
-          extraLabels) && (
-          <div className="rel-mt-1">
-            <RestrictedLabel access={access.visibility} />
-            <CommunityTypeLabel type={communityType} />
-            {extraLabels}
-          </div>
-        )}
+        <div className="rel-mt-1">
+          {(result.access.visibility === "restricted" ||
+            communityType ||
+            extraLabels) && (
+            <>
+              <RestrictedLabel access={access.visibility} />
+              <CommunityTypeLabel type={communityType} />
+              {extraLabels}
+            </>
+          )}
+          {isCommunityDefault && (
+            <Label color="purple" size="tiny">
+              <Icon name="paint brush" />
+              {i18next.t("Branding")}
+            </Label>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -97,6 +106,7 @@ CommunityCompactItemMobile.propTypes = {
   showPermissionLabel: PropTypes.bool,
   actions: PropTypes.node,
   detailUrl: PropTypes.string,
+  isCommunityDefault: PropTypes.bool.isRequired,
 };
 
 CommunityCompactItemMobile.defaultProps = {
