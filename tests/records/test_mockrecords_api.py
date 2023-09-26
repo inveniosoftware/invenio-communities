@@ -14,6 +14,7 @@ from mock_module.api import MockRecord
 from sqlalchemy.exc import IntegrityError
 
 from invenio_communities.communities.records.api import Community
+from invenio_communities.errors import SetDefaultCommunityError
 
 
 @pytest.fixture()
@@ -129,7 +130,7 @@ def test_change_default(db, record, c, c2):
     del record.communities.default
     assert record.communities.default is None
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(SetDefaultCommunityError):
         # record not part of c2, so will fail
         record.communities.default = c2
 

@@ -32,6 +32,7 @@ from invenio_communities.errors import (
     CommunityFeaturedEntryDoesNotExistError,
     LogoSizeLimitError,
     OpenRequestsForCommunityDeletionError,
+    SetDefaultCommunityError,
 )
 
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
@@ -66,6 +67,12 @@ community_error_handlers.update(
                 HTTPJSONException(
                     code=410, description=_("The record has been deleted.")
                 )
+            )
+        ),
+        SetDefaultCommunityError: create_error_handler(
+            lambda e: HTTPJSONException(
+                code=400,
+                description=str(e),
             )
         ),
     }
