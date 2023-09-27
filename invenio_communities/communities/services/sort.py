@@ -30,7 +30,6 @@ class CommunitiesSortParam(SortParam):
 
         if current_app.config["COMMUNITIES_SEARCH_SORT_BY_VERIFIED"]:
             fields = self._compute_sort_fields(params)
-            fields.insert(0, "-is_verified")
-            return search.sort(*fields)
+            return search.sort(*["-is_verified", *fields])
 
         return super(CommunitiesSortParam, self).apply(identity, search, params)
