@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.12.1 (released 2023-09-28)
+------------------------------------
+
+- fix service utility to cache community's slug
+
 Version 7.12.0 (released 2023-09-28)
 ------------------------------------
 
