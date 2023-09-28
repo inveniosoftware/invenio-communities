@@ -9,6 +9,7 @@
 """Test community service."""
 
 import time
+import uuid
 from copy import deepcopy
 from datetime import datetime, timedelta
 
@@ -16,12 +17,14 @@ import arrow
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_cache import current_cache
+from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
 
 from invenio_communities.communities.records.systemfields.deletion_status import (
     CommunityDeletionStatusEnum,
 )
+from invenio_communities.communities.services.service import get_cached_community_slug
 from invenio_communities.errors import (
     CommunityFeaturedEntryDoesNotExistError,
     DeletionStatusError,
@@ -478,3 +481,40 @@ def test_invalid_community_deletion_workflows(community_service, comm):
     # we cannot directly restore a community marked for purge
     with pytest.raises(DeletionStatusError):
         community_service.restore_community(system_identity, comm.id)
+
+
+def test_get_cached_community_slug(community_service, comm, db, search_clear):
+    """Test get_cached_community_slug."""
+    c1 = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "myslug"}
+    )
+    c2 = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "myslug2"}
+    )
+    # reset
+    get_cached_community_slug.cache_clear()
+    # cache miss
+    slug = get_cached_community_slug(c1.id, community_service.id)
+    assert slug == "myslug"
+    cache_info = get_cached_community_slug.cache_info()
+    assert cache_info.hits == 0
+    assert cache_info.misses == 1
+    assert cache_info.currsize == 1
+    # cache hit
+    slug = get_cached_community_slug(c1.id, community_service.id)
+    assert slug == "myslug"
+    cache_info = get_cached_community_slug.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 1
+    assert cache_info.currsize == 1
+    # cache miss
+    slug = get_cached_community_slug(c2.id, community_service.id)
+    assert slug == "myslug2"
+    cache_info = get_cached_community_slug.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 2
+    assert cache_info.currsize == 2
+
+    with pytest.raises(PIDDoesNotExistError):
+        random_uuid = uuid.uuid4()
+        get_cached_community_slug(random_uuid, community_service.id)
