@@ -721,14 +721,14 @@ class CommunityService(RecordService):
 def get_cached_community_slug(
     community_id,
     community_service_id="communities",
-    ttl_hash=round(time.time() / 60 * 60 * 24),
+    ttl_hash=None,
 ):
-    """Cache community's slug. The default cache expiration is 24h.
+    """Cache community's slug.
 
     :param community_id: the UUID of the community's record.
     :param community_service_id: the id of the service registered in the service
         register, in case it have been overridden.
-    :param ttl_hash: cache expiration, default 24 hours.
+    :param ttl_hash: hash to control cache expiration.
 
     Note: this by-passes any permission check, use it with caution!
 
