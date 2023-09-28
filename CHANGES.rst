@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 7.12.0 (released 2023-09-28)
+------------------------------------
+
+- add service utility to cache community's slug
+- service: fix sort param modifying sort options variable
+- community settings: toggle danger zone area based on permissions
+
 Version 7.11.0 (released 2023-09-25)
 ------------------------------------
 
