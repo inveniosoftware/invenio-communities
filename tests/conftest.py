@@ -38,6 +38,10 @@ from marshmallow import fields
 from invenio_communities.communities.records.api import Community
 from invenio_communities.members.records.api import Member
 from invenio_communities.notifications.builders import (
+    CommunityInvitationAcceptNotificationBuilder,
+    CommunityInvitationCancelNotificationBuilder,
+    CommunityInvitationDeclineNotificationBuilder,
+    CommunityInvitationExpireNotificationBuilder,
     CommunityInvitationSubmittedNotificationBuilder,
 )
 from invenio_communities.proxies import current_communities
@@ -115,7 +119,11 @@ def app_config(app_config):
 
     # Specifying dummy builders to avoid raising errors for most tests. Extend as needed.
     app_config["NOTIFICATIONS_BUILDERS"] = {
-        CommunityInvitationSubmittedNotificationBuilder.type: DummyNotificationBuilder,
+        CommunityInvitationAcceptNotificationBuilder.type: CommunityInvitationAcceptNotificationBuilder,
+        CommunityInvitationCancelNotificationBuilder.type: CommunityInvitationCancelNotificationBuilder,
+        CommunityInvitationDeclineNotificationBuilder.type: CommunityInvitationDeclineNotificationBuilder,
+        CommunityInvitationExpireNotificationBuilder.type: CommunityInvitationExpireNotificationBuilder,
+        CommunityInvitationSubmittedNotificationBuilder.type: CommunityInvitationSubmittedNotificationBuilder,
     }
 
     # Specifying default resolvers. Will only be used in specific test cases.
@@ -206,6 +214,20 @@ def users(UserFixture, app, database):
         u = UserFixture(
             email=f"{r}@{r}.org",
             password=r,
+            username=r,
+            user_profile={
+                "full_name": f"{r} {r}",
+                "affiliations": "CERN",
+            },
+            preferences={
+                "visibility": "public",
+                "email_visibility": "restricted",
+                "notifications": {
+                    "enabled": True,
+                },
+            },
+            active=True,
+            confirmed=True,
         )
         u.create(app, database)
         users[r] = u
@@ -316,6 +338,7 @@ def new_user(UserFixture, app, database):
     u = UserFixture(
         email=f"newuser@newuser.org",
         password="newuser",
+        username="newuser",
         user_profile={
             "full_name": "New User",
             "affiliations": "CERN",
@@ -333,6 +356,8 @@ def new_user(UserFixture, app, database):
     u.create(app, database)
     # when using `database` fixture (and not `db`), commit the creation of the
     # user because its implementation uses a nested session instead
+    current_users_service.indexer.process_bulk_queue()
+    current_users_service.record_cls.index.refresh()
     database.session.commit()
     return u
 
