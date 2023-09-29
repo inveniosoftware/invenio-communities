@@ -29,7 +29,6 @@ class CommunityMembersRecipient(RecipientGenerator):
     def __call__(self, notification, recipients: dict):
         """Fetch community and add members as recipients, based on roles."""
         community = dict_lookup(notification.context, self.key)
-
         filter_ = dsl.Q("terms", **{"role": self.roles}) if self.roles else None
 
         members = current_communities.service.members.scan(

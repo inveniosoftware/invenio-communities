@@ -1,0 +1,43 @@
+{% set invitation_request = notification.context.request %}
+{% set receiver = invitation_request.receiver %}
+{% set community = invitation_request.created_by %}
+{% set request_id = invitation_request.id %}
+
+{% set community_title = community.metadata.title %}
+{% set receiver_name = receiver.profile.full_name or receiver.username %}
+
+{# TODO: use request.links.self_html when issue issue is resolved: https://github.com/inveniosoftware/invenio-rdm-records/issues/1327 #}
+{% set request_link = "{ui}/me/requests/{id}".format(
+    ui=config.SITE_UI_URL, id=request_id
+    )
+%}
+
+{%- block subject -%}
+  {{ _("Community member invitation accepted") }}
+{%- endblock subject -%}
+
+{%- block html_body -%}
+<p>
+    {{ _("'{user_name}' accepted the invitation to join community '{community_title}'.").format(user_name=receiver_name, community_title=community_title) }}
+</p>
+
+<a href="{{ request_link }}" class="button"> {{ _("Check out the invitation") }}</a>
+{%- endblock html_body %}
+
+{%- block plain_body -%}
+{{ _("'{user_name}' accepted the invitation to join community '{community_title}'.").format(user_name=receiver_name, community_title=community_title) }}
+
+{{ _("Check out the invitation:") }} {{ request_link }}
+{%- endblock plain_body %}
+
+{# Markdown for Slack/Mattermost/chat #}
+{%- block md_body -%}
+{{ _("*{user_name}* accepted the invitation to join community *{community_title}*.").format(user_name=receiver_name, community_title=community_title) }}
+
+{%- if message %}
+    {{ _("Invitation message:") }}
+    {{ message }}
+{%- endif %}
+
+[{{ _("Check out the invitation") }}]({{ request_link }})
+{%- endblock md_body %}

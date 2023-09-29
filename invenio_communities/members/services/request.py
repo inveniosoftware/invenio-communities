@@ -11,7 +11,15 @@
 
 from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
+from invenio_notifications.services.uow import NotificationOp
 from invenio_requests.customizations import RequestType, actions
+
+from invenio_communities.notifications.builders import (
+    CommunityInvitationAcceptNotificationBuilder,
+    CommunityInvitationCancelNotificationBuilder,
+    CommunityInvitationDeclineNotificationBuilder,
+    CommunityInvitationExpireNotificationBuilder,
+)
 
 from ...proxies import current_communities
 
@@ -35,6 +43,11 @@ class AcceptAction(actions.AcceptAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().accept_invite(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationAcceptNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -44,6 +57,11 @@ class DeclineAction(actions.DeclineAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().decline_invite(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationDeclineNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -53,6 +71,11 @@ class CancelAction(actions.CancelAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().decline_invite(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationCancelNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -62,6 +85,11 @@ class ExpireAction(actions.ExpireAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().decline_invite(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationExpireNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
