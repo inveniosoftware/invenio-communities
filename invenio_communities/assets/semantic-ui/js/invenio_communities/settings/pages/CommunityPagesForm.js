@@ -96,7 +96,6 @@ export class CommunityPagesForm extends Component {
                 fluid
               />
             </AccordionField>
-            <Divider hidden className="rel-mt-5" />
             <AccordionField
               includesPaths={["metadata.page"]}
               label={i18next.t("About page")}
