@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 7.13.0 (released 2023-10-02)
+
+- notifications: add notifications on invitation actions
+- settings menu: rename curation policy menu item to review policy
+- settings: remove hidden divider from pages
+
 Version 7.12.1 (released 2023-09-28)
 ------------------------------------
 
