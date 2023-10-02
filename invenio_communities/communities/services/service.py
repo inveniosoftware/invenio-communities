@@ -10,10 +10,9 @@
 
 """Invenio Communities Service API."""
 
-import time
-from functools import lru_cache
 
 from flask import current_app
+from invenio_cache.decorators import cached_with_expiration
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import (
@@ -717,18 +716,16 @@ class CommunityService(RecordService):
         return True
 
 
-@lru_cache(maxsize=1024)
+@cached_with_expiration
 def get_cached_community_slug(
     community_id,
     community_service_id="communities",
-    ttl_hash=None,
 ):
     """Cache community's slug.
 
     :param community_id: the UUID of the community's record.
     :param community_service_id: the id of the service registered in the service
         register, in case it have been overridden.
-    :param ttl_hash: hash to control cache expiration.
 
     Note: this by-passes any permission check, use it with caution!
 

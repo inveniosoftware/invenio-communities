@@ -496,24 +496,18 @@ def test_get_cached_community_slug(community_service, comm, db, search_clear):
     # cache miss
     slug = get_cached_community_slug(c1.id, community_service.id)
     assert slug == "myslug"
-    cache_info = get_cached_community_slug.cache_info()
-    assert cache_info.hits == 0
-    assert cache_info.misses == 1
-    assert cache_info.currsize == 1
+    hits, misses = get_cached_community_slug.cache_info()
+    assert (hits, misses) == (0, 1)
     # cache hit
     slug = get_cached_community_slug(c1.id, community_service.id)
     assert slug == "myslug"
-    cache_info = get_cached_community_slug.cache_info()
-    assert cache_info.hits == 1
-    assert cache_info.misses == 1
-    assert cache_info.currsize == 1
+    hits, misses = get_cached_community_slug.cache_info()
+    assert (hits, misses) == (1, 1)
     # cache miss
     slug = get_cached_community_slug(c2.id, community_service.id)
     assert slug == "myslug2"
-    cache_info = get_cached_community_slug.cache_info()
-    assert cache_info.hits == 1
-    assert cache_info.misses == 2
-    assert cache_info.currsize == 2
+    hits, misses = get_cached_community_slug.cache_info()
+    assert (hits, misses) == (1, 2)
 
     with pytest.raises(PIDDoesNotExistError):
         random_uuid = uuid.uuid4()
