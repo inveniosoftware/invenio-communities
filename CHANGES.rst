@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.13.1 (released 2023-10-02)
+
+- communities: replace lru_cache with invenio_cache to ensure that cache expiration
+  using a TTL is correctly handled
+
 Version 7.13.0 (released 2023-10-02)
 
 - notifications: add notifications on invitation actions
