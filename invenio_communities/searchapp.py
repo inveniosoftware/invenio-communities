@@ -22,6 +22,7 @@ def search_app_context():
             available_facets=current_app.config["COMMUNITIES_FACETS"],
             sort_options=current_app.config["COMMUNITIES_SORT_OPTIONS"],
             headers={"Accept": "application/vnd.inveniordm.v1+json"},
+            pagination_options=(10, 20),
             endpoint="/api/communities",
         ),
         "search_app_communities_requests_config": partial(
