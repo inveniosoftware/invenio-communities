@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.14.0 (released 2023-10-04)
+
+- default community: add possibility to set to None
+- searchapp: reduce the pagination options to 10 and 20
+
 Version 7.13.1 (released 2023-10-02)
 
 - communities: replace lru_cache with invenio_cache to ensure that cache expiration
