@@ -182,6 +182,7 @@ def communities_settings(pid_value, community, community_ui):
             "manage_access",
             "rename",
             "delete",
+            "moderate",
         ]
     )
     if not permissions["can_update"]:
@@ -224,7 +225,7 @@ def communities_settings(pid_value, community, community_ui):
 def communities_requests(pid_value, community, community_ui):
     """Community requests page."""
     permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "search_invites"]
+        ["update", "read", "search_requests", "search_invites", "moderate"]
     )
     if not permissions["can_search_requests"]:
         raise PermissionDeniedError()
@@ -246,6 +247,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
             "search_requests",
             "search_invites",
             "manage_access",
+            "moderate",
         ]
     )
 
@@ -266,7 +268,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
 def communities_settings_curation_policy(pid_value, community, community_ui):
     """Community settings/curation-policy page."""
     permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "manage_access"]
+        ["update", "read", "search_requests", "manage_access", "moderate"]
     )
 
     if not permissions["can_update"]:
@@ -292,6 +294,7 @@ def communities_settings_pages(pid_value, community, community_ui):
             "search_requests",
             "search_invites",
             "manage_access",
+            "moderate",
         ]
     )
     if not permissions["can_update"]:
@@ -320,6 +323,7 @@ def members(pid_value, community, community_ui):
             "search_requests",
             "search_invites",
             "invite_owners",
+            "moderate",
         ]
     )
     if not permissions["can_read"]:
@@ -344,6 +348,7 @@ def invitations(pid_value, community, community_ui):
             "search_requests",
             "search_invites",
             "invite_owners",
+            "moderate",
         ]
     )
     if not permissions["can_search_invites"]:
@@ -364,6 +369,7 @@ def communities_about(pid_value, community, community_ui):
             "update",
             "read",
             "search_requests",
+            "moderate",
         ]
     )
     if not permissions["can_read"]:
@@ -384,6 +390,7 @@ def communities_curation_policy(pid_value, community, community_ui):
             "update",
             "read",
             "search_requests",
+            "moderate",
         ]
     )
     if not permissions["can_read"]:
