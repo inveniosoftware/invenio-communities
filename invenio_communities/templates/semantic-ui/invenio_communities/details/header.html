@@ -111,6 +111,14 @@
           <i class="upload icon" aria-hidden="true"></i>
           {{ _("New upload") }}
         </a>
+        {% if permissions.can_moderate %}
+          <a href="{{ url_for('administration.communities', q='slug:'+community.slug) }}"
+            class="ui button labeled icon rel-mt-1">
+            <i class="cog icon" aria-hidden="true"></i>
+            {{ _("Manage community") }}
+          </a>
+        {% endif %}
+
       </div>
 
 
