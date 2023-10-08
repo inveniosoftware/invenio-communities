@@ -71,7 +71,7 @@ export class DeleteCommunityModal extends Component {
       this.setState({
         loading: false,
         membersCount: membersResponse.data.hits.total,
-        recordsCount: recordsResponse.data.hits.total,
+        recordsCount: recordsResponse.data.length === 0 ? 0 :recordsResponse.data.hits.total,
       });
     } catch (error) {
       console.error(error);
@@ -270,8 +270,6 @@ export class DeleteCommunityModal extends Component {
             )}
             <Button
               onClick={this.closeConfirmModal}
-              disabled={loading}
-              loading={loading}
               floated="left"
             >
               {i18next.t("Cancel")}
@@ -279,8 +277,7 @@ export class DeleteCommunityModal extends Component {
             <Button
               negative
               onClick={() => this.handleDelete()}
-              loading={loading}
-              disabled={this.handleButtonDisabled(communitySlug) || loading}
+              disabled={this.handleButtonDisabled(communitySlug)}
             >
               {i18next.t("Permanently delete")}
             </Button>
