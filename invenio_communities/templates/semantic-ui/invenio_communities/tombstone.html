@@ -35,7 +35,12 @@
         <strong>{{ _("Reason for removal:") }}</strong> {{ removal_reason }}
       </p>
       <p>
-        <strong>{{ _("Removed by:") }}</strong> {{ record.ui.tombstone.removed_by }}
+        <strong>{{ _("Removed by:") }}</strong>
+        {% if is_user %}
+          User
+        {% else %}
+          Admin
+        {% endif %}   
       </p>
       {%- if record.ui.tombstone.note %}
       <p>
