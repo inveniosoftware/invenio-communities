@@ -71,7 +71,8 @@ export class DeleteCommunityModal extends Component {
       this.setState({
         loading: false,
         membersCount: membersResponse.data.hits.total,
-        recordsCount: recordsResponse.data.length === 0 ? 0 :recordsResponse.data.hits.total,
+        recordsCount:
+          recordsResponse.data.length === 0 ? 0 : recordsResponse.data.hits.total,
       });
     } catch (error) {
       console.error(error);
@@ -268,10 +269,7 @@ export class DeleteCommunityModal extends Component {
                 negative
               />
             )}
-            <Button
-              onClick={this.closeConfirmModal}
-              floated="left"
-            >
+            <Button onClick={this.closeConfirmModal} floated="left">
               {i18next.t("Cancel")}
             </Button>
             <Button
