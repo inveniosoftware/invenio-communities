@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.15.0 (released 2023-10-10)
+
+- header: add manage community button
+
 Version 7.14.0 (released 2023-10-04)
 
 - default community: add possibility to set to None
