@@ -29,7 +29,7 @@ from invenio_requests.services.results import EntityResolverExpandableField
 from invenio_search.engine import dsl
 from marshmallow.exceptions import ValidationError
 from sqlalchemy.orm.exc import NoResultFound
-from invenio_communities.members.records.api import Member
+
 from invenio_communities.communities.records.models import CommunityFeatured
 from invenio_communities.communities.services.links import CommunityLinksTemplate
 from invenio_communities.communities.services.uow import (
@@ -42,6 +42,7 @@ from invenio_communities.errors import (
     OpenRequestsForCommunityDeletionError,
 )
 from invenio_communities.generators import CommunityMembers
+from invenio_communities.members.records.api import Member
 
 from ...errors import CommunityDeletedError, DeletionStatusError
 from ..records.systemfields.deletion_status import CommunityDeletionStatusEnum
@@ -666,8 +667,13 @@ class CommunityService(RecordService):
         is_user = False
 
         if record.tombstone is not None:
-            owners = [m.dumps() for m in Member.get_members(record.id) if m.role == "owner"]
-            is_user = any(owner.get('user_id') == int(record.tombstone.removed_by.get('user')) for owner in owners)
+            owners = [
+                m.dumps() for m in Member.get_members(record.id) if m.role == "owner"
+            ]
+            is_user = any(
+                owner.get("user_id") == int(record.tombstone.removed_by.get("user"))
+                for owner in owners
+            )
         if not include_deleted and record.deletion_status.is_deleted:
             raise CommunityDeletedError(record, is_user, result_item=result)
         if include_deleted and record.deletion_status.is_deleted:
@@ -686,9 +692,11 @@ class CommunityService(RecordService):
         """Replace a record."""
         record = self.record_cls.pid.resolve(id_)
 
+        is_user = True
         if record.deletion_status.is_deleted:
             raise CommunityDeletedError(
                 record,
+                is_user,
                 result_item=self.result_item(
                     self,
                     identity,
