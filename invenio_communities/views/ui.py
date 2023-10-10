@@ -19,6 +19,9 @@ from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 
+from invenio_communities.communities.resources.serializer import (
+    UICommunityJSONSerializer,
+)
 from invenio_communities.proxies import current_communities
 
 from ..errors import CommunityDeletedError
@@ -49,7 +52,26 @@ def not_found_error(error):
 
 def record_tombstone_error(error):
     """Tombstone page."""
-    return render_template("invenio_communities/tombstone.html"), 410
+    is_user = getattr(error, "is_user", False)
+    record = getattr(error, "record", None)
+    if (record_ui := getattr(error, "result_item", None)) is not None:
+        if record is None:
+            record = record_ui._record
+        record_ui = UICommunityJSONSerializer().dump_obj(record_ui.to_dict())
+
+    # render a 404 page if the tombstone isn't visible
+    if not record.tombstone.is_visible:
+        return not_found_error(error)
+
+    # we only render a tombstone page if there is a record with a visible tombstone
+    return (
+        render_template(
+            "invenio_communities/tombstone.html",
+            record=record_ui,
+            is_user=is_user,
+        ),
+        410,
+    )
 
 
 def record_permission_denied_error(error):
@@ -179,21 +201,21 @@ def create_ui_blueprint(app):
             text=_("Requests"),
             order=2,
             expected_args=["pid_value"],
-            **dict(icon="inbox", permissions="can_search_requests")
+            **dict(icon="inbox", permissions="can_search_requests"),
         )
         communities.submenu("members").register(
             "invenio_communities.members",
             text=_("Members"),
             order=3,
             expected_args=["pid_value"],
-            **dict(icon="users", permissions="can_read")
+            **dict(icon="users", permissions="can_read"),
         )
         communities.submenu("settings").register(
             "invenio_communities.communities_settings",
             text=_("Settings"),
             order=4,
             expected_args=["pid_value"],
-            **dict(icon="settings", permissions="can_update")
+            **dict(icon="settings", permissions="can_update"),
         )
         communities.submenu("curation_policy").register(
             "invenio_communities.communities_curation_policy",
@@ -201,7 +223,7 @@ def create_ui_blueprint(app):
             order=5,
             visible_when=_has_curation_policy_page_content,
             expected_args=["pid_value"],
-            **dict(icon="balance scale", permissions="can_read")
+            **dict(icon="balance scale", permissions="can_read"),
         )
         communities.submenu("about").register(
             "invenio_communities.communities_about",
@@ -209,7 +231,7 @@ def create_ui_blueprint(app):
             order=6,
             visible_when=_has_about_page_content,
             expected_args=["pid_value"],
-            **dict(icon="info", permissions="can_read")
+            **dict(icon="info", permissions="can_read"),
         )
 
     # Register error handlers
