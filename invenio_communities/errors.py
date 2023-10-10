@@ -62,10 +62,9 @@ class OpenRequestsForCommunityDeletionError(CommunityError):
 class CommunityDeletedError(CommunityError):
     """Error denoting that the community was deleted."""
 
-    def __init__(self, community, is_user, result_item=None):
+    def __init__(self, community, result_item=None):
         """Constructor."""
         self.community = community
-        self.is_user = is_user
         self.result_item = result_item
 
 
