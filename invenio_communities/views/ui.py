@@ -52,7 +52,6 @@ def not_found_error(error):
 
 def record_tombstone_error(error):
     """Tombstone page."""
-    is_user = getattr(error, "is_user", False)
     record = getattr(error, "record", None)
     if (record_ui := getattr(error, "result_item", None)) is not None:
         if record is None:
@@ -68,7 +67,6 @@ def record_tombstone_error(error):
         render_template(
             "invenio_communities/tombstone.html",
             record=record_ui,
-            is_user=is_user,
         ),
         410,
     )
