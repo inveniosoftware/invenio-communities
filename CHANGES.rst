@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.15.2 (released 2023-10-13)
+
+- ui: allow trailing slashes
+
 Version 7.15.1 (released 2023-10-11)
 
 - community: fix deletion modal fields UI
