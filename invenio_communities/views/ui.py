@@ -124,11 +124,13 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["frontpage"],
         view_func=communities_frontpage,
+        strict_slashes=False,
     )
 
     blueprint.add_url_rule(
         routes["search"],
         view_func=communities_search,
+        strict_slashes=False,
     )
 
     blueprint.add_url_rule(
