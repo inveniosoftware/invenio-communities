@@ -1248,7 +1248,7 @@ def test_community_invitation_submit_notification(
         # role titles will be capitalized
         assert role.capitalize() in html
         assert "You have been invited to join" in html
-        assert "Invitation message" not in html
+        assert "with the following message:" not in html
         assert community["metadata"]["title"] in html
 
 
@@ -1300,8 +1300,9 @@ def test_community_invitation_accept_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "'{who}' accepted the invitation to join community '{title}'.".format(
-                who=new_user.user.user_profile.get("full_name"),
+            "<b>@{who}</b> accepted the invitation to join your community <b>{title}</b>".format(
+                who=new_user.user.username
+                or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],
             )
             in html
@@ -1337,6 +1338,7 @@ def test_community_invitation_cancel_notification(
         "members": [{"type": "user", "id": str(new_user.id)}],
         "role": role,
     }
+
     member_service.invite(owner.identity, community.id, data)
     res = member_service.search_invitations(owner.identity, community.id).to_dict()
     assert res["hits"]["total"] == 1
@@ -1353,8 +1355,10 @@ def test_community_invitation_cancel_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "The invitation to join community '{title}' was cancelled.".format(
-                title=community["metadata"]["title"]
+            "The invitation for <b>@{who}</b> to join community <b>{title}</b> was cancelled".format(
+                who=new_user.user.username
+                or new_user.user.user_profile.get("full_name"),
+                title=community["metadata"]["title"],
             )
             in html
         )
@@ -1408,8 +1412,9 @@ def test_community_invitation_decline_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "'{who}' declined the invitation to join community '{title}'.".format(
-                who=new_user.user.user_profile.get("full_name"),
+            "<b>@{who}</b> declined the invitation to join your community <b>{title}</b>".format(
+                who=new_user.user.username
+                or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],
             )
             in html
@@ -1462,8 +1467,9 @@ def test_community_invitation_expire_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "The invitation for '{who}' to join community '{title}' expired.".format(
-                who=new_user.user.user_profile.get("full_name"),
+            "The invitation for <b>@{who}</b> to join community <b>{title}</b> has expired.".format(
+                who=new_user.user.username
+                or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],
             )
             in html
