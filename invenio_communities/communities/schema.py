@@ -38,6 +38,7 @@ from marshmallow_utils.fields import (
     NestedAttribute,
     SanitizedHTML,
     SanitizedUnicode,
+    URL,
 )
 from marshmallow_utils.permissions import FieldPermissionsMixin
 
@@ -122,7 +123,7 @@ class CommunityMetadataSchema(Schema):
     page = SanitizedHTML(validate=no_longer_than(max=5000))
 
     type = fields.Nested(VocabularySchema, metadata={"type": "communitytypes"})
-    website = fields.Url(validate=_not_blank())
+    website = URL(validate=_not_blank())
     funding = fields.List(fields.Nested(FundingRelationSchema))
     organizations = fields.List(fields.Nested(AffiliationRelationSchema))
 
