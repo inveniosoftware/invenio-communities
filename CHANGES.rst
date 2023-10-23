@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.15.3 (released 2023-10-23)
+
+- schema: bump allowed curation policy and page length to 5k chars
+
 Version 7.15.2 (released 2023-10-13)
 
 - ui: allow trailing slashes
