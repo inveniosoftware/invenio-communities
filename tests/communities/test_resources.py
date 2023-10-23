@@ -221,27 +221,27 @@ def test_post_metadata_schema_validation(
     assert res.json["errors"][0]["field"] == "metadata.title"
     # assert res.json["errors"][0]['messages'] == ['Title is too long.']
 
-    # Description max 2000
+    # Description max 5000
     data["metadata"]["title"] = "New Title"
-    data["metadata"]["description"] = "x" * 2001
+    data["metadata"]["description"] = "x" * 5001
     res = client.post("/communities", headers=headers, json=data)
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."
     assert res.json["errors"][0]["field"] == "metadata.description"
     # assert res.json["errors"][0]['messages'] == ['Description is too long.']
 
-    # Curation policy max 2000
+    # Curation policy max 5000
     data["metadata"]["description"] = "basic description"
-    data["metadata"]["curation_policy"] = "x" * 2001
+    data["metadata"]["curation_policy"] = "x" * 5001
     res = client.post("/communities", headers=headers, json=data)
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."
     assert res.json["errors"][0]["field"] == "metadata.curation_policy"
     # assert res.json["errors"][0]['messages'] == ['Curation policy is too long.']
 
-    # Curation policy max 2000
+    # Curation policy max 5000
     data["metadata"]["curation_policy"] = "no policy"
-    data["metadata"]["page"] = "".join([str(i) for i in range(2001)])
+    data["metadata"]["page"] = "".join([str(i) for i in range(5001)])
     res = client.post("/communities", headers=headers, json=data)
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."

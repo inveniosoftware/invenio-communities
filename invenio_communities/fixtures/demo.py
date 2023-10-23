@@ -27,8 +27,8 @@ def create_fake_community(faker):
             "type": {
                 "id": random.choice(["organization", "event", "topic", "project"])
             },
-            "curation_policy": faker.text(max_nb_chars=2000),
-            "page": faker.text(max_nb_chars=2000),
+            "curation_policy": faker.text(max_nb_chars=5000),
+            "page": faker.text(max_nb_chars=5000),
             "website": "https://" + faker.domain_name(),  # fake.url()
             "organizations": [{"name": "CERN"}],
         },
