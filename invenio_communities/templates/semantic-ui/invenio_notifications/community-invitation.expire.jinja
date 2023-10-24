@@ -23,7 +23,7 @@
 {%- block html_body -%}
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
-        <td>{{ _("The invitation for <b>@{user_name}</b> to join community <b>{community_title}</b> has expired.").format(user_name=receiver_name, community_title=community_title) }}</td>
+        <td>{{ _("The invitation for '@{user_name}' to join community '{community_title}' has expired.").format(user_name=receiver_name, community_title=community_title) }}</td>
     </tr>
     <tr>
         <td><a href="{{ request_link }}" class="button">{{ _("Check out the invitation")}}</a></td>
