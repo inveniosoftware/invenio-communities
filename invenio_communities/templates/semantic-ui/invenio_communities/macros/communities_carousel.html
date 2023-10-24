@@ -13,7 +13,8 @@
     interval_delay="10000",
     animation_speed="300",
     items_per_page=1,
-    default_logo="/static/images/square-placeholder.png"
+    default_logo="/static/images/square-placeholder.png",
+    showUploadBtn=True
   )
 %}
   <div
@@ -24,6 +25,7 @@
     data-animation-speed="{{ animation_speed }}"
     data-default-logo="{{ default_logo }}"
     data-items-per-page="{{ items_per_page }}"
+    data-show-upload-btn="{{ showUploadBtn | tojson }}"
   >
     <div class="ui fluid container rel-pt-2 rel-pb-2 ml-0-mobile mr-0-mobile">
       <div class="ui container">

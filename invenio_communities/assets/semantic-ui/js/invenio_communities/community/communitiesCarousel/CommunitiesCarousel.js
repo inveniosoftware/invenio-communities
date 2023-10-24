@@ -6,23 +6,22 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { http } from "react-invenio-forms";
-import { withCancel } from "react-invenio-forms";
+import _isEmpty from "lodash/isEmpty";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { http, withCancel } from "react-invenio-forms";
+import Overridable from "react-overridable";
 import {
-  Transition,
   Container,
   Grid,
   Header,
-  Item,
   Icon,
+  Item,
   Placeholder,
+  Transition,
 } from "semantic-ui-react";
 import CarouselItem from "./CarouselItem";
-import Overridable from "react-overridable";
-import _isEmpty from "lodash/isEmpty";
 
 class CommunitiesCarousel extends Component {
   constructor(props) {
@@ -150,7 +149,7 @@ class CommunitiesCarousel extends Component {
 
   carouselSlides = () => {
     const { data, activeIndex } = this.state;
-    const { defaultLogo, itemsPerPage } = this.props;
+    const { defaultLogo, itemsPerPage, showUploadBtn } = this.props;
 
     const sliceEnd = parseInt(activeIndex) + parseInt(itemsPerPage);
 
@@ -161,6 +160,7 @@ class CommunitiesCarousel extends Component {
           community={community}
           defaultLogo={defaultLogo}
           key={community.id}
+          showUploadBtn={showUploadBtn}
         />
       ));
 
@@ -266,6 +266,11 @@ CommunitiesCarousel.propTypes = {
   animationSpeed: PropTypes.number.isRequired,
   defaultLogo: PropTypes.string.isRequired,
   itemsPerPage: PropTypes.string.isRequired,
+  showUploadBtn: PropTypes.bool,
+};
+
+CommunitiesCarousel.defaultProps = {
+  showUploadBtn: true,
 };
 
 export default Overridable.component(

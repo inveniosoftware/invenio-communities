@@ -16,7 +16,7 @@ import { Button, Grid, Header, Item } from "semantic-ui-react";
 
 class CarouselItem extends Component {
   render() {
-    const { community, defaultLogo, className } = this.props;
+    const { community, defaultLogo, className, showUploadBtn } = this.props;
 
     return (
       <Overridable
@@ -43,14 +43,16 @@ class CarouselItem extends Component {
                   href={community.links.self_html}
                   content={i18next.t("Browse")}
                 />
-                <Button
-                  size="mini"
-                  icon="upload"
-                  labelPosition="left"
-                  positive
-                  href={`/uploads/new?community=${community.slug}`}
-                  content={i18next.t("New upload")}
-                />
+                {showUploadBtn && (
+                  <Button
+                    size="mini"
+                    icon="upload"
+                    labelPosition="left"
+                    positive
+                    href={`/uploads/new?community=${community.slug}`}
+                    content={i18next.t("New upload")}
+                  />
+                )}
               </Grid.Column>
             </Item.Header>
             <Item.Description
@@ -67,10 +69,12 @@ CarouselItem.propTypes = {
   community: PropTypes.object.isRequired,
   defaultLogo: PropTypes.string.isRequired,
   className: PropTypes.string,
+  showUploadBtn: PropTypes.bool,
 };
 
 CarouselItem.defaultProps = {
   className: "",
+  showUploadBtn: true,
 };
 
 export default Overridable.component("InvenioCommunities.CarouselItem", CarouselItem);
