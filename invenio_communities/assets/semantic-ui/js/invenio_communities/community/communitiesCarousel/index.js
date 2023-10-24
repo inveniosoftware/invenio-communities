@@ -7,8 +7,8 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import CommunitiesCarousel from "./CommunitiesCarousel";
 import { OverridableContext, overrideStore } from "react-overridable";
+import CommunitiesCarousel from "./CommunitiesCarousel";
 
 const communitiesCarouselContainer = document.getElementById("communities-carousel");
 const title = communitiesCarouselContainer.dataset.title;
@@ -17,9 +17,11 @@ const intervalDelay = parseInt(communitiesCarouselContainer.dataset.intervalDela
 const animationSpeed = parseInt(communitiesCarouselContainer.dataset.animationSpeed);
 const defaultLogo = communitiesCarouselContainer.dataset.defaultLogo;
 const itemsPerPage = communitiesCarouselContainer.dataset.itemsPerPage;
+const showUploadBtn = JSON.parse(communitiesCarouselContainer.dataset.showUploadBtn);
 
 const overriddenComponents = overrideStore.getAll();
 
+console.log(showUploadBtn);
 ReactDOM.render(
   <OverridableContext.Provider value={overriddenComponents}>
     <CommunitiesCarousel
@@ -29,6 +31,7 @@ ReactDOM.render(
       animationSpeed={animationSpeed}
       defaultLogo={defaultLogo}
       itemsPerPage={itemsPerPage}
+      showUploadBtn={showUploadBtn}
     />
   </OverridableContext.Provider>,
   communitiesCarouselContainer
