@@ -1300,7 +1300,7 @@ def test_community_invitation_accept_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "<b>@{who}</b> accepted the invitation to join your community <b>{title}</b>".format(
+            "'@{who}' accepted the invitation to join your community '{title}'".format(
                 who=new_user.user.username
                 or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],
@@ -1355,7 +1355,7 @@ def test_community_invitation_cancel_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "The invitation for <b>@{who}</b> to join community <b>{title}</b> was cancelled".format(
+            "The invitation for '@{who}' to join community '{title}' was cancelled".format(
                 who=new_user.user.username
                 or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],
@@ -1412,7 +1412,7 @@ def test_community_invitation_decline_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "<b>@{who}</b> declined the invitation to join your community <b>{title}</b>".format(
+            "'@{who}' declined the invitation to join your community '{title}'".format(
                 who=new_user.user.username
                 or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],
@@ -1467,7 +1467,7 @@ def test_community_invitation_expire_notification(
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
         # role titles will be capitalized
         assert (
-            "The invitation for <b>@{who}</b> to join community <b>{title}</b> has expired.".format(
+            "The invitation for '@{who}' to join community '{title}' has expired.".format(
                 who=new_user.user.username
                 or new_user.user.user_profile.get("full_name"),
                 title=community["metadata"]["title"],

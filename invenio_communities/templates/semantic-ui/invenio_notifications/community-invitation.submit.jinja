@@ -24,7 +24,7 @@
 {%- block html_body -%}
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
-        <td>{{ _("You have been invited to join community <b>{community_title}</b> as <b>{role}</b>").format(community_title=community_title, role=role) }}
+        <td>{{ _("You have been invited to join community '{community_title}' as '{role}'").format(community_title=community_title, role=role) }}
         {% if message %} 
         {{ _(" with the following message:")}}
         {% endif %}
