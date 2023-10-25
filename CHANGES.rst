@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 7.16.0 (released 2023-10-25)
+
+- community-settings: use custom URL field
+- emails: removed html tags from strings
+- featured: make new upload btn optional
+
 Version 7.15.3 (released 2023-10-23)
 
 - schema: bump allowed curation policy and page length to 5k chars
