@@ -34,11 +34,11 @@ from marshmallow import (
     validate,
 )
 from marshmallow_utils.fields import (
+    URL,
     ISODateString,
     NestedAttribute,
     SanitizedHTML,
     SanitizedUnicode,
-    URL,
 )
 from marshmallow_utils.permissions import FieldPermissionsMixin
 
