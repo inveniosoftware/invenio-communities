@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.16.2 (released 2023-10-26)
+
+- community logo: fix rendering a placeholder
+
 Version 7.16.1 (released 2023-10-25)
 
 - community-settings: bump curation policy and page length to 5k chars
