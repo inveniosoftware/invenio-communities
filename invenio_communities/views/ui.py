@@ -15,7 +15,6 @@ from babel.dates import format_datetime
 from flask import Blueprint, current_app, g, render_template, request, url_for
 from flask_login import current_user
 from flask_menu import current_menu
-from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.proxies import current_service_registry
@@ -261,7 +260,7 @@ def create_ui_blueprint(app):
 
         try:
             community_service.read_logo(
-                identity=system_identity,
+                identity=g.identity,
                 id_=community_id,
             )
         except FileNotFoundError:
