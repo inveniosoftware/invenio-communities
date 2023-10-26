@@ -1,6 +1,7 @@
 ..
     This file is part of Invenio.
     Copyright (C) 2016-2021 CERN.
+    Copyright (C) 2023 Northwestern University.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -8,6 +9,11 @@
 
 Changes
 =======
+
+Version 4.2.0 (released 2023-10-26)
+-----------------------------------
+
+- backport: provide jinja filter to default community logo link to placeholder link
 
 Version 4.1.2 (released 2023-02-07)
 -----------------------------------
