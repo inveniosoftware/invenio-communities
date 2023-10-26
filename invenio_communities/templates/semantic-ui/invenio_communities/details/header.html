@@ -20,9 +20,9 @@
           <div class="two wide column">
             <div class="ui rounded image community-image mt-5 rel-mr-2">
               <img
-                src="{{ community.links.logo }}"
+                src="{{ community.links.logo | resolve_community_logo(community.id) }}"
                 alt=""
-                class="has-placeholder"
+                class="rel-mb-1"
               />
             </div>
           </div>
