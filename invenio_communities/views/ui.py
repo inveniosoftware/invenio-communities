@@ -12,11 +12,13 @@
 from datetime import datetime
 
 from babel.dates import format_datetime
-from flask import Blueprint, current_app, g, render_template, request
+from flask import Blueprint, current_app, g, render_template, request, url_for
 from flask_login import current_user
 from flask_menu import current_menu
+from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
+from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.errors import PermissionDeniedError
 
 from invenio_communities.communities.resources.serializer import (
@@ -251,5 +253,20 @@ def create_ui_blueprint(app):
         date = datetime.fromisoformat(value)
         locale_value = current_app.config.get("BABEL_DEFAULT_LOCALE")
         return format_datetime(date, locale=locale_value)
+
+    @blueprint.app_template_filter("resolve_community_logo")
+    def resolve_community_logo(logo_link, community_id):
+        """Returns placeholder image link if passed community doesn't have a logo."""
+        community_service = current_service_registry.get("communities")
+
+        try:
+            community_service.read_logo(
+                identity=system_identity,
+                id_=community_id,
+            )
+        except FileNotFoundError:
+            return url_for("static", filename="images/square-placeholder.png")
+
+        return logo_link
 
     return blueprint
