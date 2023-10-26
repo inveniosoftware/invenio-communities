@@ -20,9 +20,9 @@
           <div class="flex align-items-center">
             <div class="ui rounded image community-image mt-5 rel-mr-2">
               <img
-              src="{{ community.links.logo }}"
-              alt=""
-              class="has-placeholder rel-mb-1"
+                src="{{ community.links.logo | resolve_community_logo(community.id) }}"
+                alt=""
+                class="rel-mb-1"
               />
             </div>
 
