@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.16.3 (released 2023-10-27)
+
+- ui: fix identity in jinja filter
+
 Version 7.16.2 (released 2023-10-26)
 
 - community logo: fix rendering a placeholder
