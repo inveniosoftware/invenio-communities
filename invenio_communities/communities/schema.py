@@ -130,6 +130,11 @@ class CommunityMetadataSchema(Schema):
     # TODO: Add when general vocabularies are ready
     # domains = fields.List(fields.Str())
 
+    @post_dump
+    def remove_none_values(self, data, **kwargs):
+        """Remove none values."""
+        return {key: value for key, value in data.items() if value is not None}
+
 
 class AgentSchema(Schema):
     """An agent schema, using a string for the ID to allow the "system" user."""

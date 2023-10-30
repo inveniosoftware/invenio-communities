@@ -60,7 +60,7 @@
         },
         "description": {
           "description": "Community description.",
-          "type": "string"
+          "type": ["string", "null"]
         },
         "type": {
           "description": "Community type.",
