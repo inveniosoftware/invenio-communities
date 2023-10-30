@@ -42,6 +42,7 @@ import { CustomFieldSerializer } from "./CustomFieldSerializer";
 import PropTypes from "prop-types";
 import { default as DangerZone } from "./DangerZone";
 import { default as LogoUploader } from "./LogoUploader";
+import Overridable from 'react-overridable';
 
 const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
@@ -377,178 +378,191 @@ class CommunityProfileForm extends Component {
                           />
                         }
                       />
-                      <TextAreaField
-                        fieldPath="metadata.description"
-                        label={
-                          <FieldLabel
-                            htmlFor="metadata.description"
-                            icon="pencil"
-                            label={i18next.t("Short description")}
-                          />
-                        }
-                        fluid
-                      />
-                      <SelectField
-                        search
-                        clearable
-                        fieldPath="metadata.type.id"
-                        label={
-                          <FieldLabel
-                            htmlFor="metadata.type.id"
-                            icon="tag"
-                            label={i18next.t("Type")}
-                          />
-                        }
-                        options={types.map((ct) => {
-                          return {
-                            value: ct.id,
-                            text: ct?.title_l10n ?? ct.id,
-                          };
-                        })}
-                      />
-                      <TextField
-                        fieldPath="metadata.website"
-                        label={
-                          <FieldLabel
-                            htmlFor="metadata.website"
-                            icon="chain"
-                            label={i18next.t("Website")}
-                          />
-                        }
-                        fluid
-                      />
 
-                      <RemoteSelectField
-                        fieldPath="metadata.organizations"
-                        suggestionAPIUrl="/api/affiliations"
-                        suggestionAPIHeaders={{
-                          Accept: "application/json",
-                        }}
-                        placeholder={i18next.t("Search for an organization by name")}
-                        clearable
-                        multiple
-                        initialSuggestions={_get(
-                          community,
-                          "metadata.organizations",
-                          []
-                        )}
-                        serializeSuggestions={(organizations) =>
-                          _map(organizations, (organization) => {
-                            // eslint-disable-next-line no-prototype-builtins
-                            const isKnownOrg = this.knownOrganizations.hasOwnProperty(
-                              organization.name
-                            );
-                            if (!isKnownOrg) {
-                              this.knownOrganizations = {
-                                ...this.knownOrganizations,
-                                [organization.name]: organization.id,
-                              };
-                            }
+                      <Overridable id="CommunityProfileForm.Description" community={community}>
+                        <TextAreaField
+                          fieldPath="metadata.description"
+                          label={
+                            <FieldLabel
+                              htmlFor="metadata.description"
+                              icon="pencil"
+                              label={i18next.t("Short description")}
+                            />
+                          }
+                          fluid
+                        />
+                      </Overridable>
+
+                      <Overridable id="CommunityProfileForm.Type" community={community}>
+                        <SelectField
+                          search
+                          clearable
+                          fieldPath="metadata.type.id"
+                          label={
+                            <FieldLabel
+                              htmlFor="metadata.type.id"
+                              icon="tag"
+                              label={i18next.t("Type")}
+                            />
+                          }
+                          options={types.map((ct) => {
                             return {
-                              text: organization.name,
-                              value: organization.name,
-                              key: organization.name,
+                              value: ct.id,
+                              text: ct?.title_l10n ?? ct.id,
                             };
-                          })
-                        }
-                        label={
-                          <FieldLabel
-                            htmlFor="metadata.organizations"
-                            icon="group"
-                            label={i18next.t("Organizations")}
-                          />
-                        }
-                        noQueryMessage={i18next.t("Search for organizations...")}
-                        allowAdditions
-                        search={(filteredOptions, searchQuery) => filteredOptions}
-                      />
+                          })}
+                        />
+                      </Overridable>
+
+                      <Overridable id="CommunityProfileForm.Website" community={community}>
+                        <TextField
+                          fieldPath="metadata.website"
+                          label={
+                            <FieldLabel
+                              htmlFor="metadata.website"
+                              icon="chain"
+                              label={i18next.t("Website")}
+                            />
+                          }
+                          fluid
+                        />
+                      </Overridable>
+
+                      <Overridable id="CommunityProfileForm.Organizations" community={community}>
+                        <RemoteSelectField
+                          fieldPath="metadata.organizations"
+                          suggestionAPIUrl="/api/affiliations"
+                          suggestionAPIHeaders={{
+                            Accept: "application/json",
+                          }}
+                          placeholder={i18next.t("Search for an organization by name")}
+                          clearable
+                          multiple
+                          initialSuggestions={_get(
+                            community,
+                            "metadata.organizations",
+                            []
+                          )}
+                          serializeSuggestions={(organizations) =>
+                            _map(organizations, (organization) => {
+                              // eslint-disable-next-line no-prototype-builtins
+                              const isKnownOrg = this.knownOrganizations.hasOwnProperty(
+                                organization.name
+                              );
+                              if (!isKnownOrg) {
+                                this.knownOrganizations = {
+                                  ...this.knownOrganizations,
+                                  [organization.name]: organization.id,
+                                };
+                              }
+                              return {
+                                text: organization.name,
+                                value: organization.name,
+                                key: organization.name,
+                              };
+                            })
+                          }
+                          label={
+                            <FieldLabel
+                              htmlFor="metadata.organizations"
+                              icon="group"
+                              label={i18next.t("Organizations")}
+                            />
+                          }
+                          noQueryMessage={i18next.t("Search for organizations...")}
+                          allowAdditions
+                          search={(filteredOptions, searchQuery) => filteredOptions}
+                        />
+                      </Overridable>
                     </div>
                   </AccordionField>
 
-                  <AccordionField
-                    includesPaths={["metadata.funding"]}
-                    label={i18next.t("Funding information")}
-                    active
-                  >
-                    <div className="rel-ml-1 rel-mr-1">
-                      <FundingField
-                        fieldPath="metadata.funding"
-                        searchConfig={{
-                          searchApi: {
-                            axios: {
-                              headers: {
-                                Accept: "application/vnd.inveniordm.v1+json",
+                  <Overridable id="CommunityProfileForm.Funding" community={community}>
+                    <AccordionField
+                      includesPaths={["metadata.funding"]}
+                      label={i18next.t("Funding information")}
+                      active
+                    >
+                      <div className="rel-ml-1 rel-mr-1">
+                        <FundingField
+                          fieldPath="metadata.funding"
+                          searchConfig={{
+                            searchApi: {
+                              axios: {
+                                headers: {
+                                  Accept: "application/vnd.inveniordm.v1+json",
+                                },
+                                url: "/api/awards",
+                                withCredentials: false,
                               },
-                              url: "/api/awards",
-                              withCredentials: false,
                             },
-                          },
-                          initialQueryState: {
-                            sortBy: "bestmatch",
-                            sortOrder: "asc",
-                            layout: "list",
-                            page: 1,
-                            size: 5,
-                          },
-                        }}
-                        label={i18next.t("Awards")}
-                        labelIcon="money bill alternate outline"
-                        deserializeAward={(award) => {
-                          return {
-                            title: award.title_l10n,
-                            pid: award.pid,
-                            number: award.number,
-                            funder: award.funder ?? "",
-                            id: award.id,
-                            ...(award.identifiers && {
-                              identifiers: award.identifiers,
-                            }),
-                            ...(award.acronym && { acronym: award.acronym }),
-                          };
-                        }}
-                        deserializeFunder={(funder) => {
-                          return {
-                            id: funder.id,
-                            name: funder.name,
-                            ...(funder.title_l10n && { title: funder.title_l10n }),
-                            ...(funder.pid && { pid: funder.pid }),
-                            ...(funder.country && { country: funder.country }),
-                            ...(funder.identifiers && {
-                              identifiers: funder.identifiers,
-                            }),
-                          };
-                        }}
-                        computeFundingContents={(funding) => {
-                          let headerContent,
-                            descriptionContent = "";
-                          let awardOrFunder = "award";
-                          if (funding.award) {
-                            headerContent = funding.award.title;
-                          }
-
-                          if (funding.funder) {
-                            const funderName =
-                              funding.funder?.name ??
-                              funding.funder?.title ??
-                              funding.funder?.id ??
-                              "";
-                            descriptionContent = funderName;
-                            if (!headerContent) {
-                              awardOrFunder = "funder";
-                              headerContent = funderName;
+                            initialQueryState: {
+                              sortBy: "bestmatch",
+                              sortOrder: "asc",
+                              layout: "list",
+                              page: 1,
+                              size: 5,
+                            },
+                          }}
+                          label={i18next.t("Awards")}
+                          labelIcon="money bill alternate outline"
+                          deserializeAward={(award) => {
+                            return {
+                              title: award.title_l10n,
+                              pid: award.pid,
+                              number: award.number,
+                              funder: award.funder ?? "",
+                              id: award.id,
+                              ...(award.identifiers && {
+                                identifiers: award.identifiers,
+                              }),
+                              ...(award.acronym && { acronym: award.acronym }),
+                            };
+                          }}
+                          deserializeFunder={(funder) => {
+                            return {
+                              id: funder.id,
+                              name: funder.name,
+                              ...(funder.title_l10n && { title: funder.title_l10n }),
+                              ...(funder.pid && { pid: funder.pid }),
+                              ...(funder.country && { country: funder.country }),
+                              ...(funder.identifiers && {
+                                identifiers: funder.identifiers,
+                              }),
+                            };
+                          }}
+                          computeFundingContents={(funding) => {
+                            let headerContent,
                               descriptionContent = "";
+                            let awardOrFunder = "award";
+                            if (funding.award) {
+                              headerContent = funding.award.title;
                             }
-                          }
 
-                          return {
-                            headerContent,
-                            descriptionContent,
-                            awardOrFunder,
-                          };
-                        }}
-                      />
-                    </div>
-                  </AccordionField>
+                            if (funding.funder) {
+                              const funderName =
+                                funding.funder?.name ??
+                                funding.funder?.title ??
+                                funding.funder?.id ??
+                                "";
+                              descriptionContent = funderName;
+                              if (!headerContent) {
+                                awardOrFunder = "funder";
+                                headerContent = funderName;
+                                descriptionContent = "";
+                              }
+                            }
+
+                            return {
+                              headerContent,
+                              descriptionContent,
+                              awardOrFunder,
+                            };
+                          }}
+                        />
+                      </div>
+                    </AccordionField>
+                  </Overridable>
 
                   {!_isEmpty(customFields.ui) && (
                     <CustomFields
@@ -583,24 +597,28 @@ class CommunityProfileForm extends Component {
                   computer={4}
                   floated="right"
                 >
-                  <LogoUploader
-                    community={community}
-                    hasLogo={hasLogo}
-                    defaultLogo={defaultLogo}
-                    onError={this.setGlobalError}
-                    logoMaxSize={logoMaxSize}
-                  />
+                  <Overridable id="CommunityProfileForm.ProfilePicture" community={community}>
+                    <LogoUploader
+                      community={community}
+                      hasLogo={hasLogo}
+                      defaultLogo={defaultLogo}
+                      onError={this.setGlobalError}
+                      logoMaxSize={logoMaxSize}
+                    />
+                  </Overridable>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row className="danger-zone">
-                <Grid.Column as="section" width={16}>
-                  <DangerZone
-                    community={community}
-                    onError={this.setGlobalError}
-                    permissions={permissions}
-                  />
-                </Grid.Column>
-              </Grid.Row>
+              <Overridable id="CommunityProfileForm.DangerZone" community={community}>
+                <Grid.Row className="danger-zone">
+                  <Grid.Column as="section" width={16}>
+                    <DangerZone
+                      community={community}
+                      onError={this.setGlobalError}
+                      permissions={permissions}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+              </Overridable>
             </Grid>
           </Form>
         )}
