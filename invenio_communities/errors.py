@@ -52,8 +52,8 @@ class OpenRequestsForCommunityDeletionError(CommunityError):
         """Initialise error."""
         super().__init__(
             ngettext(
-                "There is %(count)s request open for this community. Please, resolve it before deleting this community.",
-                "There are %(count)s requests open for this community. Please, resolve all of them before deleting this community.",
+                "There is %(num)s request open for this community. Please, resolve it before deleting this community.",
+                "There are %(num)s requests open for this community. Please, resolve all of them before deleting this community.",
                 requests,
             )
         )
