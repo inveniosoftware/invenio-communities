@@ -42,7 +42,7 @@ import { CustomFieldSerializer } from "./CustomFieldSerializer";
 import PropTypes from "prop-types";
 import { default as DangerZone } from "./DangerZone";
 import { default as LogoUploader } from "./LogoUploader";
-import Overridable from 'react-overridable';
+import Overridable from "react-overridable";
 
 const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
@@ -379,7 +379,10 @@ class CommunityProfileForm extends Component {
                         }
                       />
 
-                      <Overridable id="CommunityProfileForm.Description" community={community}>
+                      <Overridable
+                        id="CommunityProfileForm.Description"
+                        community={community}
+                      >
                         <TextAreaField
                           fieldPath="metadata.description"
                           label={
@@ -414,7 +417,10 @@ class CommunityProfileForm extends Component {
                         />
                       </Overridable>
 
-                      <Overridable id="CommunityProfileForm.Website" community={community}>
+                      <Overridable
+                        id="CommunityProfileForm.Website"
+                        community={community}
+                      >
                         <TextField
                           fieldPath="metadata.website"
                           label={
@@ -428,7 +434,10 @@ class CommunityProfileForm extends Component {
                         />
                       </Overridable>
 
-                      <Overridable id="CommunityProfileForm.Organizations" community={community}>
+                      <Overridable
+                        id="CommunityProfileForm.Organizations"
+                        community={community}
+                      >
                         <RemoteSelectField
                           fieldPath="metadata.organizations"
                           suggestionAPIUrl="/api/affiliations"
@@ -597,7 +606,10 @@ class CommunityProfileForm extends Component {
                   computer={4}
                   floated="right"
                 >
-                  <Overridable id="CommunityProfileForm.ProfilePicture" community={community}>
+                  <Overridable
+                    id="CommunityProfileForm.ProfilePicture"
+                    community={community}
+                  >
                     <LogoUploader
                       community={community}
                       hasLogo={hasLogo}
