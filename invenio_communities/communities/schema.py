@@ -205,6 +205,9 @@ class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
         is_deleted = (data.get("deletion_status") or {}).get("is_deleted", False)
         tombstone_visible = (data.get("tombstone") or {}).get("is_visible", True)
 
+        if data.get("custom_fields") is None:
+            data.pop("custom_fields")
+
         if not is_deleted or not tombstone_visible:
             data.pop("tombstone", None)
 
