@@ -192,7 +192,6 @@ def create_ui_blueprint(app):
             "invenio_communities.communities_new",
             _("New community"),
             order=3,
-            visible_when=_can_create_community,
         )
 
         communities = current_menu.submenu("communities")
