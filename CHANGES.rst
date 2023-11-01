@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.16.4 (released 2023-11-01)
+
+- schema: avoid loading None value in custom fields
+- translation: fix ngettext function expected parameter
+
 Version 7.16.3 (released 2023-10-27)
 
 - ui: fix identity in jinja filter
