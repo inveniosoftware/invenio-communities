@@ -11,11 +11,11 @@
 from datetime import datetime
 
 from babel.dates import format_datetime
-from flask import Blueprint, current_app, g, render_template, request, url_for
+from flask import Blueprint, current_app, render_template, url_for
+from flask_babelex import lazy_gettext as _
 from flask_login import current_user
 from flask_menu import current_menu
 from invenio_access.permissions import system_identity
-from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.errors import PermissionDeniedError
