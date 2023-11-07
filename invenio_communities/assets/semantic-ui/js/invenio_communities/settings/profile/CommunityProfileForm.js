@@ -380,7 +380,7 @@ class CommunityProfileForm extends Component {
                       />
 
                       <Overridable
-                        id="CommunityProfileForm.Description"
+                        id="InvenioCommunities.CommunityProfileForm.TextAreaField.MetadataDescription"
                         community={community}
                       >
                         <TextAreaField
@@ -396,7 +396,10 @@ class CommunityProfileForm extends Component {
                         />
                       </Overridable>
 
-                      <Overridable id="CommunityProfileForm.Type" community={community}>
+                      <Overridable
+                        id="InvenioCommunities.CommunityProfileForm.SelectField.MetadataType"
+                        community={community}
+                      >
                         <SelectField
                           search
                           clearable
@@ -418,7 +421,7 @@ class CommunityProfileForm extends Component {
                       </Overridable>
 
                       <Overridable
-                        id="CommunityProfileForm.Website"
+                        id="InvenioCommunities.CommunityProfileForm.TextField.MetadataWebsite"
                         community={community}
                       >
                         <TextField
@@ -435,7 +438,7 @@ class CommunityProfileForm extends Component {
                       </Overridable>
 
                       <Overridable
-                        id="CommunityProfileForm.Organizations"
+                        id="InvenioCommunities.CommunityProfileForm.RemoteSelectField.MetadataOrganizations"
                         community={community}
                       >
                         <RemoteSelectField
@@ -486,7 +489,10 @@ class CommunityProfileForm extends Component {
                     </div>
                   </AccordionField>
 
-                  <Overridable id="CommunityProfileForm.Funding" community={community}>
+                  <Overridable
+                    id="InvenioCommunities.CommunityProfileForm.AccordionField.MetadataFunding"
+                    community={community}
+                  >
                     <AccordionField
                       includesPaths={["metadata.funding"]}
                       label={i18next.t("Funding information")}
@@ -607,7 +613,7 @@ class CommunityProfileForm extends Component {
                   floated="right"
                 >
                   <Overridable
-                    id="CommunityProfileForm.ProfilePicture"
+                    id="InvenioCommunities.CommunityProfileForm.LogoUploader.ProfilePicture"
                     community={community}
                   >
                     <LogoUploader
@@ -620,7 +626,10 @@ class CommunityProfileForm extends Component {
                   </Overridable>
                 </Grid.Column>
               </Grid.Row>
-              <Overridable id="CommunityProfileForm.DangerZone" community={community}>
+              <Overridable
+                id="InvenioCommunities.CommunityProfileForm.GridRow.DangerZone"
+                community={community}
+              >
                 <Grid.Row className="danger-zone">
                   <Grid.Column as="section" width={16}>
                     <DangerZone
