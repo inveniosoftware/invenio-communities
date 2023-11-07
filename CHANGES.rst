@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 7.16.5 (released 2023-11-07)
+
+- views: always show add community menu
+
 Version 7.16.4 (released 2023-11-01)
 
 - schema: avoid loading None value in custom fields
