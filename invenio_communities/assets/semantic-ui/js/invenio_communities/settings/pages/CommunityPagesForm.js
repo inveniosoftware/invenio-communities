@@ -19,8 +19,8 @@ import * as Yup from "yup";
 
 const COMMUNITY_PAGES_VALIDATION_SCHEMA = Yup.object({
   metadata: Yup.object({
-    curation_policy: Yup.string().max(5000, "Maximum number of characters is 5000"),
-    page: Yup.string().max(5000, "Maximum number of characters is 5000"),
+    curation_policy: Yup.string().max(50000, "Maximum number of characters is 50000"),
+    page: Yup.string().max(50000, "Maximum number of characters is 50000"),
   }),
 });
 

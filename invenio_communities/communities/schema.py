@@ -119,8 +119,8 @@ class CommunityMetadataSchema(Schema):
     title = SanitizedUnicode(required=True, validate=_not_blank(max=250))
     description = SanitizedUnicode(validate=_not_blank(max=250))
 
-    curation_policy = SanitizedHTML(validate=no_longer_than(max=5000))
-    page = SanitizedHTML(validate=no_longer_than(max=5000))
+    curation_policy = SanitizedHTML(validate=no_longer_than(max=50000))
+    page = SanitizedHTML(validate=no_longer_than(max=50000))
 
     type = fields.Nested(VocabularySchema, metadata={"type": "communitytypes"})
     website = URL(validate=_not_blank())
