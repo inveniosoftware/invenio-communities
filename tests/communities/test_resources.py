@@ -221,9 +221,9 @@ def test_post_metadata_schema_validation(
     assert res.json["errors"][0]["field"] == "metadata.title"
     # assert res.json["errors"][0]['messages'] == ['Title is too long.']
 
-    # Description max 5000
+    # Description max 250
     data["metadata"]["title"] = "New Title"
-    data["metadata"]["description"] = "x" * 5001
+    data["metadata"]["description"] = "x" * 251
     res = client.post("/communities", headers=headers, json=data)
     assert res.status_code == 400
     assert res.json["message"] == "A validation error occurred."
