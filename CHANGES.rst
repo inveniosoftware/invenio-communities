@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 7.17.0 (released 2023-11-10)
+
+- assets: add overridable id to profile form
+- assets: increase the char limit on community page description
+
 Version 7.16.5 (released 2023-11-07)
 
 - views: always show add community menu
