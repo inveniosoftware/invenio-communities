@@ -62,7 +62,8 @@
               "affiliations": {
                 "type": "text"
               }
-            }
+            },
+            "dynamic": true
           },
           "preferences": {
             "properties": {
