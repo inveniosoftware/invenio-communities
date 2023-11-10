@@ -11,7 +11,7 @@ import { Formik } from "formik";
 import _defaultsDeep from "lodash/defaultsDeep";
 import React, { Component } from "react";
 import { RichInputField, AccordionField } from "react-invenio-forms";
-import { Button, Form, Divider, Icon, Message } from "semantic-ui-react";
+import { Button, Form, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
 import { communityErrorSerializer } from "../../api/serializers";
 import PropTypes from "prop-types";
