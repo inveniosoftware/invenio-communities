@@ -5,9 +5,6 @@
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
-
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import CKEditor from "@ckeditor/ckeditor5-react";
 import { SelectedMembers } from "@js/invenio_communities/members/components/bulk_actions/SelectedMembers";
 import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
@@ -18,6 +15,7 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import { MembersSearchBar } from "./MemberSearchBar";
 import { GroupsApi } from "../../../api/GroupsApi";
 import { Trans } from "react-i18next";
+import { RichEditor } from "react-invenio-forms";
 
 export class GroupTabPane extends Component {
   constructor(props) {
@@ -94,7 +92,7 @@ export class GroupTabPane extends Component {
             <Form.Field disabled>
               <>
                 <label>{i18next.t("Message")}</label>
-                <CKEditor editor={ClassicEditor} />
+                <RichEditor />
               </>
             </Form.Field>
           </Form>
