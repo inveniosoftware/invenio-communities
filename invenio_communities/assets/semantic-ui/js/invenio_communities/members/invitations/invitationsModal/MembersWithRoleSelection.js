@@ -6,8 +6,6 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import CKEditor from "@ckeditor/ckeditor5-react";
 import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
 import { i18next } from "@translations/invenio_communities/i18next";
@@ -18,6 +16,7 @@ import { Button, Form, Modal } from "semantic-ui-react";
 import { UsersApi } from "../../../api/UsersApi";
 import { SelectedMembers } from "../../components/bulk_actions/SelectedMembers";
 import { MembersSearchBar } from "./MemberSearchBar";
+import { RichEditor } from "react-invenio-forms";
 
 export class MembersWithRoleSelection extends Component {
   constructor(props) {
@@ -100,26 +99,9 @@ export class MembersWithRoleSelection extends Component {
             <Form.Field>
               <>
                 <label>{i18next.t("Message")}</label>
-                <CKEditor
-                  editor={ClassicEditor}
-                  config={{
-                    toolbar: [
-                      "heading",
-                      "|",
-                      "bold",
-                      "italic",
-                      "link",
-                      "bulletedList",
-                      "numberedList",
-                      "Indent",
-                      "Outdent",
-                      "blockQuote",
-                      "Undo",
-                      "Redo",
-                    ],
-                  }}
+                <RichEditor
                   onBlur={(event, editor) => {
-                    this.updateMessage(editor.getData());
+                    this.updateMessage(editor.getContent());
                   }}
                 />
               </>
