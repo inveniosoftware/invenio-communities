@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
 # Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -83,8 +84,21 @@ def record_permission_denied_error(error):
 
 def _can_create_community():
     """Function used to check if a user has permissions to create a community."""
-    can_create = current_communities.service.check_permission(g.identity, "create")
-    return can_create
+    return current_communities.service.check_permission(g.identity, "create")
+
+
+def _show_create_community_link():
+    """
+    Determine if the 'New community' button should always be visible.
+
+    If the 'COMMUNITIES_ALWAYS_SHOW_CREATE_LINK' config is False,
+    check the user's permission to create a community link. If the config is
+    True, the button is always visible.
+    """
+    should_show = current_app.config.get("COMMUNITIES_ALWAYS_SHOW_CREATE_LINK", False)
+    if not should_show:  # show only when user can create
+        should_show = _can_create_community()
+    return should_show
 
 
 def _has_about_page_content():
@@ -192,6 +206,7 @@ def create_ui_blueprint(app):
             "invenio_communities.communities_new",
             _("New community"),
             order=3,
+            visible_when=_show_create_community_link,
         )
 
         communities = current_menu.submenu("communities")
