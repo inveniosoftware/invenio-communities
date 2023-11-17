@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2022 CERN.
 # Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -312,3 +313,6 @@ COMMUNITIES_IDENTITIES_CACHE_HANDLER = (
 )
 
 COMMUNITIES_OAI_SETS_PREFIX = "community-"
+
+COMMUNITIES_ALWAYS_SHOW_CREATE_LINK = False
+"""Controls visibility of 'New Community' btn based on user's permission when set to True."""
