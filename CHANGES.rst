@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 7.18.0 (released 2023-11-10)
+
+- split CommunitiesCardGroup definition and rendering
+- changed "featured-communities" id on communities frontpage to "new-communities".
+  WARNING: If you are overriding invenio-communities/frontpage.html, make that change in your template.
+
 Version 7.17.0 (released 2023-11-10)
 
 - assets: add overridable id to profile form
