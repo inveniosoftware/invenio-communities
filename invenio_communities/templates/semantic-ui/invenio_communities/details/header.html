@@ -16,7 +16,8 @@
     <div class="row pb-0">
       <div
         class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
-        <div class="community-header flex align-items-center column-mobile align-items-start-mobile">
+        <div
+          class="community-header flex align-items-center column-mobile align-items-start-mobile">
           <div class="flex align-items-center">
             <div class="ui rounded image community-image mt-5 rel-mr-2">
               <img
@@ -107,12 +108,13 @@
       <div
         class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
         <a href="/uploads/new?community={{ community.slug }}"
-           class="ui positive button labeled icon rel-mt-1">
+           class="ui positive button labeled icon rel-mt-1 theme-secondary">
           <i class="upload icon" aria-hidden="true"></i>
           {{ _("New upload") }}
         </a>
         {% if permissions.can_moderate %}
-          <a href="{{ url_for('administration.communities', q='slug:'+community.slug) }}"
+          <a
+            href="{{ url_for('administration.communities', q='slug:'+community.slug) }}"
             class="ui button labeled icon rel-mt-1">
             <i class="cog icon" aria-hidden="true"></i>
             {{ _("Manage community") }}
@@ -121,41 +123,21 @@
 
       </div>
 
-
-      {# TODO: Add proper statistics #}
-      <!-- <div class="two wide floated right column">
-        <div class="ui mini statistic">
-          <div class="value">
-            5,550
-          </div>
-          <div class="label">
-            Views
-          </div>
-        </div>
-      </div>
-      <div class="two wide floated right column">
-        <div class="ui mini statistic">
-          <div class=" value">
-            4,200
-          </div>
-          <div class="label">
-            Downloads
-          </div>
-        </div>
-      </div> -->
     </div>
     <div class="ui divider mobile only"></div>
     <div
-      class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0">
+      class="ui container secondary pointing stackable menu page-subheader pl-0 pr-0 theme-primary">
+      {% if community_menu_active %}
       {% for item in current_menu.submenu('communities').children if (item.permissions == True or permissions[item.permissions]) and item.visible %}
-          <a
-            class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}"
-            href="{{ item.url }}"
-          >
-            <i aria-hidden="true" class="{{ item.icon }} icon"></i>
-            {{ item.text }}
-          </a>
+        <a
+          class="item {{ 'active' if active_community_header_menu_item == item.name }} {{ 'disabled' if not item.url }}"
+          href="{{ item.url }}"
+        >
+          <i aria-hidden="true" class="{{ item.icon }} icon"></i>
+          {{ item.text }}
+        </a>
       {% endfor %}
+      {% endif %}
     </div>
   </div>
 </div>

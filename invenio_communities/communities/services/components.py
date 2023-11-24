@@ -268,8 +268,35 @@ class CommunityDeletionComponent(ServiceComponent):
         record.tombstone = record.tombstone
 
 
+class CommunityThemeComponent(ServiceComponent):
+    """Service component for Community theme."""
+
+    def update(self, identity, data=None, record=None, errors=None, **kwargs):
+        """Inject parsed theme to the record."""
+        stored_record_theme = record.get("theme")
+        if "theme" in data:
+            # if theme set to None then it is a delete operation
+            if data["theme"] is None:
+                if stored_record_theme is not None:
+                    self.service.require_permission(
+                        identity, "delete_theme", record=record
+                    )
+                    # delete theme from record and data
+                    record.pop("theme", None)
+                # We always pop the {theme: None} from the data so we don't store None
+                # value in the record
+                data.pop("theme", None)
+            elif data["theme"] != stored_record_theme:
+                # check update permissions for theme only if incoming theme is
+                # different from stored. Check is needed, so we don't apply the theme
+                # permission check when other community information is updated
+                self.service.require_permission(identity, "set_theme", record=record)
+                record["theme"] = data["theme"]
+
+
 DefaultCommunityComponents = [
     MetadataComponent,
+    CommunityThemeComponent,
     CustomFieldsComponent,
     PIDComponent,
     RelationsComponent,

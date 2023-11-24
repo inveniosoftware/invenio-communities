@@ -8,7 +8,9 @@
       },
       "ids": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": {
+          "type": "string"
+        },
         "uniqueItems": true
       }
     }
@@ -27,7 +29,9 @@
   },
   "affiliations": {
     "type": "array",
-    "items": {"$ref": "#/affiliation"},
+    "items": {
+      "$ref": "#/affiliation"
+    },
     "uniqueItems": true
   },
   "agent": {
@@ -455,7 +459,9 @@
   },
   "subjects": {
     "type": "array",
-    "items": {"$ref": "#/subject"},
+    "items": {
+      "$ref": "#/subject"
+    },
     "uniqueItems": true
   },
   "title_type": {
@@ -474,7 +480,10 @@
     "additionalProperties": false,
     "properties": {
       "user": {
-        "type": ["integer", "string"]
+        "type": [
+          "integer",
+          "string"
+        ]
       }
     }
   },

@@ -18,6 +18,7 @@ include babel.ini
 include docs/requirements.txt
 include LICENSE
 include pytest.ini
+include invenio_communities/templates/semantic-ui/invenio_communities/community_theme_template.css
 recursive-include docs *.bat
 recursive-include docs *.py
 recursive-include docs *.rst
@@ -30,6 +31,7 @@ recursive-include invenio_communities *.png
 recursive-include invenio_communities *.po *.pot *.mo
 recursive-include invenio_communities *.py
 recursive-include invenio_communities *.tpl
+recursive-include tests *.html
 recursive-include tests *.json
 recursive-include tests *.py
 include .git-blame-ignore-revs
