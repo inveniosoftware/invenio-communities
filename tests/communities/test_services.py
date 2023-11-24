@@ -512,3 +512,79 @@ def test_get_cached_community_slug(community_service, comm, db, search_clear):
     with pytest.raises(PIDDoesNotExistError):
         random_uuid = uuid.uuid4()
         get_cached_community_slug(random_uuid, community_service.id)
+
+
+def test_theme_updates(
+    app,
+    db,
+    search_clear,
+    location,
+    anon_identity,
+    community_service,
+    community,
+    members,
+    new_user,
+):
+    current_cache.clear()
+    owner = members["owner"]
+
+    theme_data = {
+        "theme": {
+            "config": {
+                "primaryColor": "#004494",
+                "tertiaryColor": "#e3eefd",
+                "secondaryColor": "#FFD617",
+                "primaryTextColor": "#FFFFFF",
+                "tertiaryTextColor": "#1c5694",
+                "secondaryTextColor": "#000000",
+                "mainHeaderBackgroundColor": "#FFFFFF",
+                "font": {"size": "16px", "family": "Arial, sans-serif", "weight": 600},
+            },
+            "brand": "horizon",
+        }
+    }
+
+    # Update theme
+    community_data = deepcopy(community.data)
+    community_data.update(theme_data)
+
+    # check if owner can update theme (early stage: it should not be possible)
+    with pytest.raises(PermissionDeniedError):
+        community_service.update(owner.identity, community.id, community_data)
+
+    # only system can update the theme
+    community_service.update(system_identity, community.id, community_data)
+    community_item = community_service.read(system_identity, community.id)
+    assert community_item.data["theme"]["brand"] == "horizon"
+
+    # Update community data without passing theme should keep the stored theme
+    community_data = deepcopy(community_item.data)
+    community_data.pop("theme")
+
+    community_service.update(system_identity, community.id, community_data)
+    community_item = community_service.read(system_identity, community.id)
+    assert community_item.data["theme"]["brand"] == "horizon"
+
+    # Delete theme by setting to None
+    community_data = deepcopy(community_item.data)
+    community_data["theme"] = None
+
+    # check if owner can delete theme (early stage: it should not be possible)
+    with pytest.raises(PermissionDeniedError):
+        community_service.update(owner.identity, community.id, community_data)
+
+    # only system can delete the theme
+    community_service.update(system_identity, community.id, community_data)
+    community_item = community_service.read(system_identity, community.id)
+    assert "theme" not in community_item.data
+
+    # Set {theme: None} to a community that doesn't have any stored theme should not
+    # store None value
+    community_data = deepcopy(community_item.data)
+    assert "theme" not in community_data
+    community_data["theme"] = None
+
+    # only system can update the theme
+    community_service.update(system_identity, community.id, community_data)
+    community_item = community_service.read(system_identity, community.id)
+    assert "theme" not in community_item.data

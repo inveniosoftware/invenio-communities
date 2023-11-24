@@ -22,6 +22,7 @@ from invenio_vocabularies.resources import VocabularyL10Schema
 from marshmallow import Schema, fields, post_dump
 from marshmallow_utils.fields import FormatEDTF as FormatEDTF_
 
+from invenio_communities.communities.schema import CommunityThemeSchema
 from invenio_communities.proxies import current_communities
 
 
@@ -91,6 +92,8 @@ class UICommunitySchema(BaseObjectSchema):
 
     tombstone = fields.Nested(TombstoneSchema, attribute="tombstone")
 
+    theme = fields.Nested(CommunityThemeSchema, dump_only=True, load_default={})
+
     # Custom fields
     custom_fields = fields.Nested(
         partial(CustomFieldsSchemaUI, fields_var="COMMUNITIES_CUSTOM_FIELDS")
@@ -109,12 +112,17 @@ class UICommunitySchema(BaseObjectSchema):
         return {"can_include_directly": can_include_directly, "can_update": can_update}
 
     @post_dump
-    def hide_tombstone(self, obj, **kwargs):
-        """Hide the tombstone information if it's not visible."""
-        if not obj.get("tombstone", {}).get("is_visible", False):
-            obj.pop("tombstone", None)
+    def post_dump(self, data, many, **kwargs):
+        """Pop theme field if None."""
+        is_deleted = (data.get("deletion_status") or {}).get("is_deleted", False)
+        tombstone_visible = (data.get("tombstone") or {}).get("is_visible", True)
 
-        return obj
+        if not is_deleted or not tombstone_visible:
+            data.pop("tombstone", None)
+
+        if data.get("theme") is None:
+            data.pop("theme", None)
+        return data
 
 
 class TypesSchema(Schema):

@@ -22,7 +22,7 @@
         'pages': (_('Pages'), url_for('invenio_communities.communities_settings_pages', pid_value=community.slug)),
       } %}
       <div class="sixteen wide mobile sixteen wide tablet three wide computer column">
-        <div role="tablist" class="ui vertical horizontal mobile tablet menu">
+        <div role="tablist" class="ui vertical horizontal mobile tablet menu theme-primary-menu">
           {% for menu_key, (menu_item, menu_link) in menu_items.items() %}
             {% if not (menu_key == 'privileges' and not permissions.can_manage_access) %}
               <a

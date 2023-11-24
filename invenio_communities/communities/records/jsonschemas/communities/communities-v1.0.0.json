@@ -145,6 +145,21 @@
         }
       }
     },
+    "theme": {
+      "type": "object",
+      "description": "Community theme settings.",
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "description": "Theme config.",
+          "type": "object"
+        },
+        "brand": {
+          "description": "Theme brand name.",
+          "type": "string"
+        }
+      }
+    },
     "tombstone": {
       "type": "object",
       "description": "Tombstone information for the community.",

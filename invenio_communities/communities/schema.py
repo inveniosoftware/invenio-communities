@@ -161,6 +161,13 @@ class DeletionStatusSchema(Schema):
     status = fields.String(dump_only=True)
 
 
+class CommunityThemeSchema(Schema):
+    """Community theme schema."""
+
+    config = fields.Dict()
+    brand = fields.Str()
+
+
 class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     """Schema for the community metadata."""
 
@@ -196,7 +203,10 @@ class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
 
     is_verified = fields.Boolean(dump_only=True)
 
+    theme = fields.Nested(CommunityThemeSchema, allow_none=True)
+
     tombstone = fields.Nested(TombstoneSchema, dump_only=True)
+
     deletion_status = fields.Nested(DeletionStatusSchema, dump_only=True)
 
     @post_dump
@@ -206,7 +216,10 @@ class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
         tombstone_visible = (data.get("tombstone") or {}).get("is_visible", True)
 
         if data.get("custom_fields") is None:
-            data.pop("custom_fields")
+            data.pop("custom_fields", None)
+
+        if data.get("theme") is None:
+            data.pop("theme", None)
 
         if not is_deleted or not tombstone_visible:
             data.pop("tombstone", None)

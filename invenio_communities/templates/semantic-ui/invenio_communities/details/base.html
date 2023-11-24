@@ -10,5 +10,6 @@
 {% extends "invenio_communities/base.html" %}
 
 {%- block page_body %}
+  {% set community_menu_active = True %}
   {% include "invenio_communities/details/header.html" %}
 {%- endblock page_body %}

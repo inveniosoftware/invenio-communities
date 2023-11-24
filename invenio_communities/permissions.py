@@ -162,6 +162,10 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # correct permissions based on which the field will be exposed only to moderators
     can_moderate = [Disable()]
 
+    # Permissions to crud community theming
+    can_set_theme = [SystemProcess()]
+    can_delete_theme = can_set_theme
+
 
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""
