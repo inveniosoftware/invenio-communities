@@ -1,14 +1,14 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2016-2022 CERN.
- * Copyright (C) 2021-2022 Northwestern University.
+ * Copyright (C) 2021-2023 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React from "react";
+import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import { humanReadableBytes } from "react-invenio-forms";
 import { Image } from "react-invenio-forms";
@@ -17,30 +17,37 @@ import { CommunityApi } from "../../api";
 import { DeleteButton } from "./DeleteButton";
 import PropTypes from "prop-types";
 
-/**
- * Remove empty fields from community
- * Copied from react-invenio-deposit
- * @method
- * @param {object} obj - potentially empty object
- * @returns {object} community - without empty fields
- */
+function noCacheUrl(url) {
+  const result = new URL(url);
+  const randomValue = new Date().getMilliseconds() * 5;
+  result.searchParams.set("no-cache", randomValue.toString());
+  return result.toString();
+}
 
 const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
-  const currentUrl = new URL(window.location.href);
+  /* State */
+  // props initilization is fine since original props don't change after
+  // initial mounting.
+  const [logoUrl, logoSetUrl] = useState(community.links.logo);
+  const [logoUpdated, logoSetUpdated] = useState(false);
+  const [logoExists, logoSetExists] = useState(hasLogo);
+
+  // Nicer naming
+  const logoDefault = defaultLogo;
+
   let dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: async (acceptedFiles) => {
       const file = acceptedFiles[0];
-      const formData = new FormData();
-      formData.append("file", file);
 
       try {
         const client = new CommunityApi();
         await client.updateLogo(community.id, file);
-        // set param that logo was updated
-        currentUrl.searchParams.set("updated", "true");
 
-        window.location.replace(currentUrl.href);
+        const logoUrlNoCache = noCacheUrl(logoUrl);
+        logoSetUrl(logoUrlNoCache);
+        logoSetUpdated(true);
+        logoSetExists(true);
       } catch (error) {
         onError(error);
       }
@@ -62,14 +69,12 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
   const deleteLogo = async () => {
     const client = new CommunityApi();
     await client.deleteLogo(community.id);
+
+    const logoUrlNoCache = noCacheUrl(logoUrl);
+    logoSetUrl(logoUrlNoCache);
+    logoSetUpdated(true);
+    logoSetExists(false);
   };
-
-  // when uploading a new logo, the previously cached logo will be displayed instead of the new one. Avoid it by randomizing the URL.
-  const logoURL = new URL(community.links.logo);
-  const noCacheRandomValue = new Date().getMilliseconds() * 5;
-  logoURL.searchParams.set("no-cache", noCacheRandomValue.toString());
-
-  const logoWasUpdated = currentUrl.searchParams.has("updated");
 
   return (
     <Dropzone {...dropzoneParams}>
@@ -81,8 +86,10 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
               {i18next.t("Profile picture")}
             </Header>
             <Image
-              src={logoURL}
-              fallbackSrc={defaultLogo}
+              /* Change in key will cause a remounting. */
+              key={logoUrl}
+              src={logoUrl}
+              fallbackSrc={logoDefault}
               loadFallbackFirst
               fluid
               wrapped
@@ -109,10 +116,9 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
               fileSize: humanReadableBytes(logoMaxSize, true),
             })}
           </label>
-          {hasLogo && (
+          {logoExists && (
             <DeleteButton
               label={i18next.t("Delete picture")}
-              redirectURL={`${community.links.self_html}/settings?updated=true`}
               confirmationMessage={
                 <Header as="h2" size="medium">
                   {i18next.t("Are you sure you want to delete this picture?")}
@@ -122,7 +128,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
               onError={onError}
             />
           )}
-          {logoWasUpdated && (
+          {logoUpdated && (
             <Message
               info
               icon="warning circle"
