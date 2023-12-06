@@ -118,6 +118,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
           </label>
           {logoExists && (
             <DeleteButton
+              id="delete-picture-button"
               label={i18next.t("Delete picture")}
               confirmationMessage={
                 <Header as="h2" size="medium">
