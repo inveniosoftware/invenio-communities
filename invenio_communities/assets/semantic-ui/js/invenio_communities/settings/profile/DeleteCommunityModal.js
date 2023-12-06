@@ -169,7 +169,7 @@ export class DeleteCommunityModal extends Component {
           aria-haspopup="dialog"
           aria-controls="warning-modal"
           aria-expanded={modalOpen}
-          id="delete-button"
+          id="delete-community-button"
         >
           <Icon name="trash" />
           {label}
@@ -178,7 +178,7 @@ export class DeleteCommunityModal extends Component {
         <Modal
           id="warning-modal"
           role="dialog"
-          aria-labelledby="delete-button"
+          aria-labelledby="delete-community-button"
           open={modalOpen}
           onClose={this.closeConfirmModal}
           size="tiny"
