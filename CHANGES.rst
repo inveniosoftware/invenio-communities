@@ -9,8 +9,9 @@
 Changes
 =======
 
-Version 7.18.0 (released 2023-11-10)
+Version 7.18.0 (released 2023-12-12)
 
+- replaced ckeditor with tinymce due to license issue
 - split CommunitiesCardGroup definition and rendering
 - changed "featured-communities" id on communities frontpage to "new-communities".
   WARNING: If you are overriding invenio-communities/frontpage.html, make that change in your template.
