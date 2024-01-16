@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2016-2023 CERN.
+    Copyright (C) 2016-2024 CERN.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -8,6 +8,14 @@
 
 Changes
 =======
+
+Version 8.0.0 (released 2024-01-16)
+
+- global: add support for community theming
+- adds new data field called `theme`
+- adds specific template loader that handles themed templates per community
+- enables feature only for system user at the moment programmtically
+- disables indexing of community theme information
 
 Version 7.18.0 (released 2023-12-12)
 
