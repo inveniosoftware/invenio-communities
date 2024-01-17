@@ -29,7 +29,7 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
 
     slug = db.Column(String(255), unique=True, nullable=True)
 
-    bucket_id = db.Column(UUIDType, db.ForeignKey(Bucket.id))
+    bucket_id = db.Column(UUIDType, db.ForeignKey(Bucket.id), index=True)
     bucket = db.relationship(Bucket)
 
     # The deletion status is stored in the model so that we can use it in SQL queries
