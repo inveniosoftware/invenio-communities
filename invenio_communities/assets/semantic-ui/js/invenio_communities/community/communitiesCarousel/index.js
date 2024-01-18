@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2016-2022 CERN.
+ * Copyright (C) 2024      KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -21,7 +22,6 @@ const showUploadBtn = JSON.parse(communitiesCarouselContainer.dataset.showUpload
 
 const overriddenComponents = overrideStore.getAll();
 
-console.log(showUploadBtn);
 ReactDOM.render(
   <OverridableContext.Provider value={overriddenComponents}>
     <CommunitiesCarousel
