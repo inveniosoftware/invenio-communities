@@ -478,14 +478,16 @@ class MemberService(RecordService):
             identity,
             search_result,
             params,
-            links_tpl=None
-            if scan
-            else LinksTemplate(
-                self.config.links_search,
-                context={
-                    "args": params,
-                    "community_id": community_id,
-                },
+            links_tpl=(
+                None
+                if scan
+                else LinksTemplate(
+                    self.config.links_search,
+                    context={
+                        "args": params,
+                        "community_id": community_id,
+                    },
+                )
             ),
             schema=schema,
         )

@@ -211,7 +211,7 @@ class CommunityService(RecordService):
             data,
             context={"identity": identity},
             raise_errors=raise_errors,  # if False, flow is continued with
-            schema_args={"partial": True}  # data only containing valid data,
+            schema_args={"partial": True},  # data only containing valid data,
             # but errors are reported
         )  # (as warnings)
 
