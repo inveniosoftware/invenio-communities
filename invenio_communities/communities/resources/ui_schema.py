@@ -28,9 +28,18 @@ from invenio_communities.proxies import current_communities
 
 def _community_permission_check(action, community, identity):
     """Check community permission for identity."""
+    try:
+        community_id = getattr(community, "id", community["id"])
+    except KeyError:
+        community_id = getattr(
+            community["processed"][0],
+            "community_id",
+            community["processed"][0]["community_id"],
+        )
+
     return current_communities.service.config.permission_policy_cls(
         action,
-        community_id=getattr(community, "id", community["id"]),
+        community_id=community_id,
         record=community,
     ).allows(identity)
 
@@ -103,6 +112,9 @@ class UICommunitySchema(BaseObjectSchema):
 
     def get_permissions(self, obj):
         """Get permission."""
+        if obj == {}:
+            return {}
+
         can_include_directly = _community_permission_check(
             "include_directly", community=obj, identity=g.identity
         )

@@ -57,3 +57,10 @@ class MemberResourceConfig(RecordResourceConfig):
             )
         ),
     }
+
+    response_handlers = {
+        "application/vnd.inveniordm.v1+json": RecordResourceConfig.response_handlers[
+            "application/json"
+        ],
+        **RecordResourceConfig.response_handlers,
+    }
