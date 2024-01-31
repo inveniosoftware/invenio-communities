@@ -132,10 +132,10 @@ class IfPolicyClosed(IfRestrictedBase):
     def __init__(self, field, then_, else_):
         """Initialize."""
         super().__init__(
-            lambda r: getattr(r.access, field, None)
-            if hasattr(r, "access")
-            else r.get("access", {}).get(
-                field
+            lambda r: (
+                getattr(r.access, field, None)
+                if hasattr(r, "access")
+                else r.get("access", {}).get(field)
             ),  # needed for running permission check at serialization time and avoid db query
             f"access.{field}",
             "closed",
