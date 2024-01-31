@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 9.0.0 (released 2024-01-31)
+
+- installation: bump dependencies
+
 Version 8.0.0 (released 2024-01-16)
 
 - global: add support for community theming
