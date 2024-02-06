@@ -15,6 +15,8 @@ from invenio_accounts.testutils import login_user_via_session
 from invenio_records_resources.proxies import current_service_registry
 from invenio_vocabularies.contrib.affiliations.api import Affiliation
 
+from invenio_communities.communities.records.api import Community
+
 
 @pytest.fixture()
 def affiliation(app, db, superuser_identity):
@@ -50,3 +52,25 @@ def client_with_login(client, users):
     login_user(user, remember=True)
     login_user_via_session(client, email=user.email)
     return client
+
+
+@pytest.fixture(scope="module")
+def parent_community(community_service, owner, minimal_community, location):
+    """A community."""
+    minimal_community["slug"] = "parent"
+    minimal_community["title"] = "Parent Community"
+    c = community_service.create(owner.identity, minimal_community)
+    Community.index.refresh()
+    owner.refresh()
+    return c._record
+
+
+@pytest.fixture(scope="module")
+def child_community(community_service, owner, minimal_community, location):
+    """A community."""
+    minimal_community["slug"] = "child"
+    minimal_community["title"] = "Child Community"
+    c = community_service.create(owner.identity, minimal_community)
+    Community.index.refresh()
+    owner.refresh()
+    return c._record

@@ -34,6 +34,7 @@ from ..dumpers.featured import FeaturedDumperExt
 from . import models
 from .systemfields.access import CommunityAccessField
 from .systemfields.deletion_status import CommunityDeletionStatusField
+from .systemfields.parent_community import ParentCommunityField
 from .systemfields.pidslug import PIDSlugField
 from .systemfields.tombstone import TombstoneField
 
@@ -51,6 +52,7 @@ class Community(Record):
     id = ModelField()
     slug = ModelField()
     pid = PIDSlugField("id", "slug")
+    parent = ParentCommunityField()
 
     schema = ConstantField("$schema", "local://communities/communities-v1.0.0.json")
 
