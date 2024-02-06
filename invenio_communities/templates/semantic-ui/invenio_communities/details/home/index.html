@@ -8,6 +8,8 @@
 #}
 
 {% extends "invenio_communities/details/base.html" %}
+{%- from "invenio_communities/macros/community_uploads.html" import community_uploads -%}
+
 {%- set title = community.metadata.title -%}
 {% set active_community_header_menu_item= 'home' %}
 
@@ -15,6 +17,7 @@
   {{ super() }}
   <div class="ui rel-m-2 rel-pt-1">
     {{hero_section(heading=community.theme.heading,subheading=community.theme.subheading)}}
+    {{ community_uploads() }}
     {{how_it_works()}}
   </div>
 {%- endblock page_body -%}
