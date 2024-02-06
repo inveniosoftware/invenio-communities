@@ -79,12 +79,12 @@ class DummyNotificationBuilder(NotificationBuilder):
 @pytest.fixture(scope="module")
 def app_config(app_config):
     """Override pytest-invenio app_config fixture."""
-    app_config["RECORDS_REFRESOLVER_CLS"] = (
-        "invenio_records.resolver.InvenioRefResolver"
-    )
-    app_config["RECORDS_REFRESOLVER_STORE"] = (
-        "invenio_jsonschemas.proxies.current_refresolver_store"
-    )
+    app_config[
+        "RECORDS_REFRESOLVER_CLS"
+    ] = "invenio_records.resolver.InvenioRefResolver"
+    app_config[
+        "RECORDS_REFRESOLVER_STORE"
+    ] = "invenio_jsonschemas.proxies.current_refresolver_store"
     # Variable not used. We set it to silent warnings
     app_config["JSONSCHEMAS_HOST"] = "not-used"
 
@@ -106,9 +106,9 @@ def app_config(app_config):
     app_config["COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"] = "redis://localhost:6379/4"
 
     # Cache handler
-    app_config["COMMUNITIES_IDENTITIES_CACHE_HANDLER"] = (
-        "invenio_communities.cache.redis:IdentityRedisCache"
-    )
+    app_config[
+        "COMMUNITIES_IDENTITIES_CACHE_HANDLER"
+    ] = "invenio_communities.cache.redis:IdentityRedisCache"
 
     app_config["MAIL_DEFAULT_SENDER"] = "test@invenio-rdm-records.org"
 
@@ -135,9 +135,9 @@ def app_config(app_config):
     ]
 
     # Extending preferences schemas, to include notification preferences. Should not matter for most test cases
-    app_config["ACCOUNTS_USER_PREFERENCES_SCHEMA"] = (
-        UserPreferencesNotificationsSchema()
-    )
+    app_config[
+        "ACCOUNTS_USER_PREFERENCES_SCHEMA"
+    ] = UserPreferencesNotificationsSchema()
     app_config["USERS_RESOURCES_SERVICE_SCHEMA"] = NotificationsUserSchema
 
     # Users are verified by default. This will disable the automatic creation of moderation requests after publishing a record.

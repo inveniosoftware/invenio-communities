@@ -32,7 +32,7 @@ jobs:
           python-version: [3.8, 3.9]
           requirements-level: [pypi]
           db-service: [postgresql14]
-          search-service: [opensearch2,elasticsearch7]
+          search-service: [opensearch2]
           include:
           - db-service: postgresql14
             DB_EXTRAS: "postgresql"
