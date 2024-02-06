@@ -145,6 +145,15 @@
         }
       }
     },
+    "parent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identifier of the parent community."
+        }
+      }
+    },
     "theme": {
       "type": "object",
       "description": "Community theme settings.",
