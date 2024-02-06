@@ -57,3 +57,13 @@ class CommunitiesField(SystemField):
         if record is None:
             return self._context_cls(self, owner)
         return self.obj(record)
+
+    def post_dump(self, record, data, dumper=None):
+        """Dump the communities field."""
+        comms = getattr(record, self.attr_name)
+        res = comms.to_dict()
+        res["entries"] = [
+            # TODO: Only keep fields we want to dump
+            comm.dumps() for comm in comms
+        ]
+        data[self.key] = res

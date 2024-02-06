@@ -147,6 +147,12 @@ class CommunitiesRelationManager:
         # Iterate (sort by identifier to ensure consistent results)
         return (self._communities_cache[c] for c in sorted(self._communities_ids))
 
+    def __getitem__(self, community_id):
+        """Get a community by ID."""
+        if community_id in self._communities_cache:
+            return self._communities_cache[community_id]
+        return self._lookup_community(self._to_id(community_id))
+
     @property
     def ids(self):
         """Get communities ids."""
