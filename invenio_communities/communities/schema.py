@@ -161,11 +161,25 @@ class DeletionStatusSchema(Schema):
     status = fields.String(dump_only=True)
 
 
+class CommunityThemeConfigSchema(Schema):
+    """Community Theme configuration schema."""
+
+    font = fields.Dict()
+    primaryColor = fields.Str()
+    secondaryColor = fields.Str()
+    tertiaryColor = fields.Str()
+    primaryTextColor = fields.Str()
+    secondaryTextColor = fields.Str()
+    tertiaryTextColor = fields.Str()
+    mainHeaderBackgroundColor = fields.Str()
+
+
+
 class CommunityThemeSchema(Schema):
     """Community theme schema."""
 
+    config = fields.Nested(CommunityThemeConfigSchema)
     enabled = fields.Boolean()
-    config = fields.Dict()
     brand = fields.Str()
 
 
