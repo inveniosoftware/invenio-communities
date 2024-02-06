@@ -174,7 +174,6 @@ class CommunityThemeConfigSchema(Schema):
     mainHeaderBackgroundColor = fields.Str()
 
 
-
 class CommunityThemeSchema(Schema):
     """Community theme schema."""
 
