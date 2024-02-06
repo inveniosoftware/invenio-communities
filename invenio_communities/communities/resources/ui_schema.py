@@ -113,15 +113,13 @@ class UICommunitySchema(BaseObjectSchema):
 
     @post_dump
     def post_dump(self, data, many, **kwargs):
-        """Pop theme field if None."""
+        """Pop tombstone field if not deleted/visible."""
         is_deleted = (data.get("deletion_status") or {}).get("is_deleted", False)
         tombstone_visible = (data.get("tombstone") or {}).get("is_visible", True)
 
         if not is_deleted or not tombstone_visible:
             data.pop("tombstone", None)
 
-        if data.get("theme") is None:
-            data.pop("theme", None)
         return data
 
 

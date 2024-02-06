@@ -164,6 +164,7 @@ class DeletionStatusSchema(Schema):
 class CommunityThemeSchema(Schema):
     """Community theme schema."""
 
+    enabled = fields.Boolean()
     config = fields.Dict()
     brand = fields.Str()
 

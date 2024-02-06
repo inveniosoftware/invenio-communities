@@ -30,7 +30,6 @@ from invenio_communities.communities.records.systemfields.is_verified import (
     IsVerifiedField,
 )
 
-from ..dumpers.community_theme import CommunityThemeDumperExt
 from ..dumpers.featured import FeaturedDumperExt
 from . import models
 from .systemfields.access import CommunityAccessField
@@ -59,7 +58,6 @@ class Community(Record):
 
     dumper = SearchDumper(
         extensions=[
-            CommunityThemeDumperExt("theme"),
             FeaturedDumperExt("featured"),
             RelationDumperExt("relations"),
             CalculatedFieldDumperExt("is_verified"),
@@ -72,6 +70,8 @@ class Community(Record):
 
     #: Custom fields system field.
     custom_fields = DictField(clear_none=True, create_if_missing=True)
+
+    theme = DictField(clear_none=True)
 
     bucket_id = ModelField(dump=False)
     bucket = ModelField(dump=False)

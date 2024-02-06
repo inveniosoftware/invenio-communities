@@ -271,6 +271,12 @@ class CommunityDeletionComponent(ServiceComponent):
 class CommunityThemeComponent(ServiceComponent):
     """Service component for Community theme."""
 
+    def create(self, identity, data=None, record=None, **kwargs):
+        """Inject parsed theme to the record."""
+        if "theme" in data:
+            self.service.require_permission(identity, "set_theme", record=record)
+            record["theme"] = data["theme"]
+
     def update(self, identity, data=None, record=None, errors=None, **kwargs):
         """Inject parsed theme to the record."""
         stored_record_theme = record.get("theme")
