@@ -166,6 +166,8 @@ class CommunityThemeSchema(Schema):
 
     config = fields.Dict()
     brand = fields.Str()
+    heading = fields.Str()
+    subheading = fields.Str()
 
 
 class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):

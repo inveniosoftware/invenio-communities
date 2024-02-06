@@ -157,6 +157,14 @@
         "brand": {
           "description": "Theme brand name.",
           "type": "string"
+        },
+        "heading": {
+          "description": "Theme brand heading.",
+          "type": "string"
+        },
+        "subheading": {
+          "description": "Theme brand subheading.",
+          "type": "string"
         }
       }
     },

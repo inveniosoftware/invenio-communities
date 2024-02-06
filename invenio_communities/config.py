@@ -29,6 +29,7 @@ COMMUNITIES_ROUTES = {
     "members": "/communities/<pid_value>/members",
     "invitations": "/communities/<pid_value>/invitations",
     "about": "/communities/<pid_value>/about",
+    "home": "/communities/<pid_value>/home",
     "curation_policy": "/communities/<pid_value>/curation-policy",
 }
 
