@@ -75,3 +75,7 @@ class ParentCommunityField(SystemField):
     def __set__(self, record, obj):
         """Set the records access object."""
         self.set_obj(record, obj)
+
+    def post_load(self, record, data, **kwargs):
+        """After loading, set the parent community."""
+        record["parent"] = record.parent
