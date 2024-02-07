@@ -161,7 +161,7 @@ class DeletionStatusSchema(Schema):
     status = fields.String(dump_only=True)
 
 
-class CommunityThemeConfigSchema(Schema):
+class CommunityThemeStyleSchema(Schema):
     """Community Theme configuration schema."""
 
     font = fields.Dict()
@@ -177,9 +177,9 @@ class CommunityThemeConfigSchema(Schema):
 class CommunityThemeSchema(Schema):
     """Community theme schema."""
 
-    config = fields.Nested(CommunityThemeConfigSchema)
-    enabled = fields.Boolean()
+    style = fields.Nested(CommunityThemeStyleSchema)
     brand = fields.Str()
+    enabled = fields.Boolean()
 
 
 class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):

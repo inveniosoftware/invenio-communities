@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import _truncate from "lodash/truncate";
 
 import { Image, InvenioPopup } from "react-invenio-forms";
-import { Icon, Label } from "semantic-ui-react";
+import { Icon, Label, Item } from "semantic-ui-react";
 import { CommunityTypeLabel, RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
@@ -25,19 +25,22 @@ export const CommunityCompactItemComputer = ({
   const { metadata, ui, links, access, id } = result;
   const communityType = ui?.type?.title_l10n;
   return (
-    <div
+
+    <Item
       key={id}
       className={`community-item tablet computer only display-grid auto-column-grid no-wrap ${itemClassName}`}
+
     >
+
       <div className="flex align-items-center">
         <Image
           wrapped
           size="tiny"
           src={links.logo}
           alt=""
+
           className="community-image rel-mr-2"
         />
-
         <div>
           <div className="flex align-items-center rel-mb-1">
             <a
@@ -95,7 +98,7 @@ export const CommunityCompactItemComputer = ({
         )}
         {actions}
       </div>
-    </div>
+    </Item>
   );
 };
 

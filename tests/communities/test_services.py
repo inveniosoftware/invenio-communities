@@ -530,7 +530,7 @@ def test_theme_updates(
 
     theme_data = {
         "theme": {
-            "config": {
+            "style": {
                 "primaryColor": "#004494",
                 "tertiaryColor": "#e3eefd",
                 "secondaryColor": "#FFD617",
