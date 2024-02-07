@@ -442,7 +442,7 @@ def communities_curation_policy(pid_value, community, community_ui):
 @pass_community(serialize=False)
 def community_theme_css_config(pid_value, revision, community):
     """Community brand theme view to serve css config."""
-    theme_config = community.data.get("theme", {}).get("config")
+    theme_config = community.data.get("theme", {}).get("style")
 
     if theme_config is None:
         template = ""

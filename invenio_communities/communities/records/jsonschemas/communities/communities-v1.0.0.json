@@ -150,8 +150,8 @@
       "description": "Community theme settings.",
       "additionalProperties": false,
       "properties": {
-        "config": {
-          "description": "Theme config.",
+        "style": {
+          "description": "Theme style.",
           "type": "object"
         },
         "brand": {
