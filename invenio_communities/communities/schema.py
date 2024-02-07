@@ -182,8 +182,8 @@ class CommunityThemeSchema(Schema):
     enabled = fields.Boolean()
 
 
-class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
-    """Schema for the community metadata."""
+class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
+    """Base schema for the community metadata."""
 
     class Meta:
         """Meta attributes for the schema."""
@@ -257,6 +257,20 @@ class CommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
         return in_data
 
 
+class CommunityParentSchema(BaseCommunitySchema):
+    """Community parent schema."""
+
+class CommunitySchema(BaseCommunitySchema):
+    """Community schema."""
+    parent = fields.Nested(CommunityParentSchema, dump_only=True)
+
+    @post_dump
+    def post_dump(self, data, many, **kwargs):
+        """Hide parent field if it's not present."""
+        if data.get("parent") is None:
+            data.pop("parent", None)
+        return data
+    
 class CommunityFeaturedSchema(Schema):
     """Community Featured schema."""
 
