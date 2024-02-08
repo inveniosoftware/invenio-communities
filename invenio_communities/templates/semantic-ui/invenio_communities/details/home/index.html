@@ -21,7 +21,7 @@
   {{ super() }}
   <div class="ui rel-m-2 rel-pt-1">
     {{hero_section(heading=community.theme.heading,subheading=community.theme.subheading)}}
-    {{ community_uploads() }}
+    {{ community_uploads(records=records) }}
     {{how_it_works()}}
   </div>
 {%- endblock page_body -%}
