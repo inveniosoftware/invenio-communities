@@ -25,20 +25,16 @@ export const CommunityCompactItemComputer = ({
   const { metadata, ui, links, access, id } = result;
   const communityType = ui?.type?.title_l10n;
   return (
-
     <Item
       key={id}
       className={`community-item tablet computer only display-grid auto-column-grid no-wrap ${itemClassName}`}
-
     >
-
       <div className="flex align-items-center">
         <Image
           wrapped
           size="tiny"
           src={links.logo}
           alt=""
-
           className="community-image rel-mr-2"
         />
         <div>

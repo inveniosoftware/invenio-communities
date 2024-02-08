@@ -116,18 +116,6 @@
       "custom_fields": {
         "type": "object"
       },
-      "theme": {
-        "enabled": false,
-        "type": "object",
-        "properties": {
-          "brand": {
-            "type": "keyword"
-          },
-          "style": {
-            "type": "object"
-          }
-        }
-      },
       "metadata": {
         "properties": {
           "title": {
@@ -252,7 +240,7 @@
           "brand": {
             "type": "keyword"
           },
-          "config": {
+          "style": {
             "type": "object",
             "enabled": false
           }
