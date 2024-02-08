@@ -157,6 +157,10 @@
         "brand": {
           "description": "Theme brand name.",
           "type": "string"
+        },
+        "enabled": {
+          "description": "Theme brand enabled flag.",
+          "type": "boolean"
         }
       }
     },

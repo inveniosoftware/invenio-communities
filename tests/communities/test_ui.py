@@ -35,7 +35,7 @@ def test_template_loader(theme_app):
     @theme_app.route("/community_theme")
     def community_theme():
         return render_community_theme_template(
-            "invenio_test/frontpage.html", theme_brand="horizon"
+            "invenio_test/frontpage.html", theme={"brand": "horizon", "enabled": True}
         )
 
     @theme_app.route("/")
