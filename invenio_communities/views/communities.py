@@ -20,6 +20,8 @@ from invenio_vocabularies.proxies import current_service as vocabulary_service
 from jinja2 import TemplateError
 
 from invenio_communities.proxies import current_communities
+from invenio_rdm_records.proxies import current_community_records_service
+from invenio_rdm_records.resources.serializers import UIJSONSerializer
 
 from ..communities.resources.ui_schema import TypesSchema
 from .decorators import pass_community
@@ -433,11 +435,28 @@ def communities_home(pid_value, community, community_ui):
     if not permissions["can_read"]:
         raise PermissionDeniedError()
 
+    recent_uploads = current_community_records_service.search(
+        community_id=pid_value,
+        identity=g.identity,
+        params={
+            "sort": "newest",
+            "size": 3,
+        },
+        expand=False,
+    )
+
+    records_ui = []
+
+    for record in recent_uploads:
+        record_ui = UIJSONSerializer().dump_obj(record)
+        records_ui.append(record_ui)
+
     return render_community_theme_template(
         "invenio_communities/details/home/index.html",
         theme=community_ui.get("theme", {}),
         community=community_ui,
         permissions=permissions,
+        records=records_ui,
     )
 
 
