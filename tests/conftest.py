@@ -466,9 +466,8 @@ def fake_communities(
     community_type_record,
     community_types,
 ):
-    """Fake Communities."""
-    data = deepcopy(minimal_community)
     """Multiple community created and posted to test search functionality."""
+    data = deepcopy(minimal_community)
     N = 4
 
     for type_, ind in itertools.product(community_types, list(range(N))):

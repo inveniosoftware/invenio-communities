@@ -86,7 +86,7 @@ class Community(Record):
         funding_award=PIDListRelation(
             "metadata.funding",
             relation_field="award",
-            keys=["number", "title"],
+            keys=["title", "number", "identifiers", "acronym", "program"],
             pid_field=Award.pid,
             cache_key="awards",
         ),

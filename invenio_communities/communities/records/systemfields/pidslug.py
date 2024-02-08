@@ -25,7 +25,7 @@ class PIDSlugFieldContext(SystemFieldContext):
             return value
         try:
             return UUID(value)
-        except (TypeError, ValueError) as e:
+        except (TypeError, ValueError):
             return value
 
     def resolve(self, pid_value, registered_only=True):
