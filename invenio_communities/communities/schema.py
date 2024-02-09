@@ -180,6 +180,8 @@ class CommunityThemeSchema(Schema):
     style = fields.Nested(CommunityThemeStyleSchema)
     brand = fields.Str()
     enabled = fields.Boolean()
+    heading = fields.Str()
+    subheading = fields.Str()
 
 
 class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
