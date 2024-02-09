@@ -20,7 +20,7 @@ COMMUNITIES_ROUTES = {
     "frontpage": "/communities",
     "search": "/communities/search",
     "new": "/communities/new",
-    "details": "/communities/<pid_value>/records",
+    "details": "/communities/<pid_value>",
     "upload": "/communities/<pid_value>/upload",
     "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
@@ -30,7 +30,6 @@ COMMUNITIES_ROUTES = {
     "members": "/communities/<pid_value>/members",
     "invitations": "/communities/<pid_value>/invitations",
     "about": "/communities/<pid_value>/about",
-    "home": "/communities/<pid_value>/",
     "curation_policy": "/communities/<pid_value>/curation-policy",
 }
 
