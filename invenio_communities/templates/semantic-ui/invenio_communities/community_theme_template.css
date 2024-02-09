@@ -43,3 +43,7 @@
   background-color: {{ theme.primaryColor }} !important;
   color: {{ theme.primaryTextColor }} !important;
 }
+
+.theme-font h1 {
+  font-weight: {{theme.font.weight}} !important;
+}

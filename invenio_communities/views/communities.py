@@ -420,6 +420,28 @@ def communities_about(pid_value, community, community_ui):
 
 
 @pass_community(serialize=True)
+def communities_home(pid_value, community, community_ui):
+    """Community home page."""
+    permissions = community.has_permissions_to(
+        [
+            "update",
+            "read",
+            "search_requests",
+            "moderate",
+        ]
+    )
+    if not permissions["can_read"]:
+        raise PermissionDeniedError()
+
+    return render_community_theme_template(
+        "invenio_communities/details/home/index.html",
+        theme=community_ui.get("theme", {}),
+        community=community_ui,
+        permissions=permissions,
+    )
+
+
+@pass_community(serialize=True)
 def communities_curation_policy(pid_value, community, community_ui):
     """Community curation policy page."""
     permissions = community.has_permissions_to(
