@@ -32,6 +32,7 @@ from .communities import (
     communities_about,
     communities_curation_policy,
     communities_frontpage,
+    communities_home,
     communities_new,
     communities_requests,
     communities_search,
@@ -110,6 +111,14 @@ def _has_about_page_content():
     return False
 
 
+def _is_branded_community():
+    """Function used to check if community is branded."""
+    community = request.community
+    if community.get("theme", {}).get("enabled", False):
+        return True
+    return False
+
+
 def _has_curation_policy_page_content():
     """Function used to check if curation policy page has content."""
     community = request.community
@@ -157,6 +166,11 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["about"],
         view_func=communities_about,
+    )
+
+    blueprint.add_url_rule(
+        routes["home"],
+        view_func=communities_home,
     )
 
     blueprint.add_url_rule(
@@ -212,37 +226,46 @@ def create_ui_blueprint(app):
         current_menu.submenu("plus.community").register(
             "invenio_communities.communities_new",
             _("New community"),
-            order=3,
+            order=2,
             visible_when=_show_create_community_link,
         )
 
         communities = current_menu.submenu("communities")
 
+        communities.submenu("home").register(
+            "invenio_communities.communities_home",
+            text=_("Home"),
+            order=1,
+            visible_when=_is_branded_community,
+            expected_args=["pid_value"],
+            **dict(icon="home", permissions="can_read"),
+        )
+
         communities.submenu("requests").register(
             "invenio_communities.communities_requests",
             text=_("Requests"),
-            order=2,
+            order=3,
             expected_args=["pid_value"],
             **dict(icon="inbox", permissions="can_search_requests"),
         )
         communities.submenu("members").register(
             "invenio_communities.members",
             text=_("Members"),
-            order=3,
+            order=4,
             expected_args=["pid_value"],
             **dict(icon="users", permissions="can_read"),
         )
         communities.submenu("settings").register(
             "invenio_communities.communities_settings",
             text=_("Settings"),
-            order=4,
+            order=5,
             expected_args=["pid_value"],
             **dict(icon="settings", permissions="can_update"),
         )
         communities.submenu("curation_policy").register(
             "invenio_communities.communities_curation_policy",
             text=_("Curation policy"),
-            order=5,
+            order=6,
             visible_when=_has_curation_policy_page_content,
             expected_args=["pid_value"],
             **dict(icon="balance scale", permissions="can_read"),
@@ -250,7 +273,7 @@ def create_ui_blueprint(app):
         communities.submenu("about").register(
             "invenio_communities.communities_about",
             text=_("About"),
-            order=6,
+            order=7,
             visible_when=_has_about_page_content,
             expected_args=["pid_value"],
             **dict(icon="info", permissions="can_read"),
