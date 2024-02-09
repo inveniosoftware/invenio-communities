@@ -32,7 +32,6 @@ from .communities import (
     communities_about,
     communities_curation_policy,
     communities_frontpage,
-    communities_home,
     communities_new,
     communities_requests,
     communities_search,
@@ -111,14 +110,6 @@ def _has_about_page_content():
     return False
 
 
-def _is_branded_community():
-    """Function used to check if community is branded."""
-    community = request.community
-    if community.get("theme", {}).get("enabled", False):
-        return True
-    return False
-
-
 def _has_curation_policy_page_content():
     """Function used to check if curation policy page has content."""
     community = request.community
@@ -166,11 +157,6 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["about"],
         view_func=communities_about,
-    )
-
-    blueprint.add_url_rule(
-        routes["home"],
-        view_func=communities_home,
     )
 
     blueprint.add_url_rule(
@@ -231,15 +217,6 @@ def create_ui_blueprint(app):
         )
 
         communities = current_menu.submenu("communities")
-
-        communities.submenu("home").register(
-            "invenio_communities.communities_home",
-            text=_("Home"),
-            order=1,
-            visible_when=_is_branded_community,
-            expected_args=["pid_value"],
-            **dict(icon="home", permissions="can_read"),
-        )
 
         communities.submenu("requests").register(
             "invenio_communities.communities_requests",

@@ -20,8 +20,6 @@ from invenio_vocabularies.proxies import current_service as vocabulary_service
 from jinja2 import TemplateError
 
 from invenio_communities.proxies import current_communities
-from invenio_rdm_records.proxies import current_community_records_service
-from invenio_rdm_records.resources.serializers import UIJSONSerializer
 
 from ..communities.resources.ui_schema import TypesSchema
 from .decorators import pass_community
@@ -418,41 +416,6 @@ def communities_about(pid_value, community, community_ui):
         community=community_ui,
         permissions=permissions,
         custom_fields_ui=load_custom_fields(dump_only_required=False)["ui"],
-    )
-
-
-@pass_community(serialize=True)
-def communities_home(pid_value, community, community_ui):
-    """Community home page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "moderate",
-        ]
-    )
-    if not permissions["can_read"]:
-        raise PermissionDeniedError()
-
-    recent_uploads = current_community_records_service.search(
-        community_id=pid_value,
-        identity=g.identity,
-        params={
-            "sort": "newest",
-            "size": 3,
-        },
-        expand=False,
-    )
-
-    records_ui = UIJSONSerializer().dump_list(recent_uploads.to_dict())["hits"]["hits"]
-
-    return render_community_theme_template(
-        "invenio_communities/details/home/index.html",
-        theme=community_ui.get("theme", {}),
-        community=community_ui,
-        permissions=permissions,
-        records=records_ui,
     )
 
 
