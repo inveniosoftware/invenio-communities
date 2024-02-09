@@ -155,7 +155,7 @@
       }
     },
     "theme": {
-      "type": "object",
+      "type": ["object", "null"],
       "description": "Community theme settings.",
       "additionalProperties": false,
       "properties": {

@@ -583,15 +583,12 @@ def test_theme_updates(
     # only system can delete the theme
     community_service.update(system_identity, community.id, community_data)
     community_item = community_service.read(system_identity, community.id)
-    assert "theme" not in community_item.data
+    assert community_item.data.get("theme") is None
 
     # Set {theme: None} to a community that doesn't have any stored theme should not
     # store None value
     community_data = deepcopy(community_item.data)
-    assert "theme" not in community_data
     community_data["theme"] = None
-
-    # only system can update the theme
     community_service.update(system_identity, community.id, community_data)
     community_item = community_service.read(system_identity, community.id)
-    assert "theme" not in community_item.data
+    assert community_item.data.get("theme") is None
