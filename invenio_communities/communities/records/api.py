@@ -74,7 +74,6 @@ class Community(Record):
     custom_fields = DictField(clear_none=True, create_if_missing=True)
     theme = DictField(clear_none=True)
 
-
     bucket_id = ModelField(dump=False)
     bucket = ModelField(dump=False)
     files = FilesField(

@@ -541,8 +541,6 @@ def test_theme_updates(
                 "font": {"size": "16px", "family": "Arial, sans-serif", "weight": 600},
             },
             "brand": "horizon",
-            "heading": "Trusted repository for Europead Research Projects",
-            "subheading": "Built in compliance with EU Open Science Policy",
         }
     }
 
