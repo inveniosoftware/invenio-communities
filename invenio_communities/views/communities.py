@@ -445,11 +445,7 @@ def communities_home(pid_value, community, community_ui):
         expand=False,
     )
 
-    records_ui = []
-
-    for record in recent_uploads:
-        record_ui = UIJSONSerializer().dump_obj(record)
-        records_ui.append(record_ui)
+    records_ui = UIJSONSerializer().dump_list(recent_uploads.to_dict())["hits"]["hits"]
 
     return render_community_theme_template(
         "invenio_communities/details/home/index.html",
