@@ -51,7 +51,7 @@ def _not_blank(**kwargs):
             "Field cannot be blank or longer than {max_} characters.".format(max_=max_)
         ),
         min=1,
-        **kwargs
+        **kwargs,
     )
 
 
@@ -60,7 +60,7 @@ def no_longer_than(max, **kwargs):
     return validate.Length(
         error=_("Field cannot be longer than {max} characters.".format(max=max)),
         max=max,
-        **kwargs
+        **kwargs,
     )
 
 
@@ -260,8 +260,10 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
 class CommunityParentSchema(BaseCommunitySchema):
     """Community parent schema."""
 
+
 class CommunitySchema(BaseCommunitySchema):
     """Community schema."""
+
     parent = fields.Nested(CommunityParentSchema, dump_only=True)
 
     @post_dump
@@ -270,7 +272,8 @@ class CommunitySchema(BaseCommunitySchema):
         if data.get("parent") is None:
             data.pop("parent", None)
         return data
-    
+
+
 class CommunityFeaturedSchema(Schema):
     """Community Featured schema."""
 
