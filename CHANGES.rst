@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 10.1.0 (released 2024-02-09)
+
+- parent_community: dereference parent community
+- parent: dereference in systemfield
+- theme: handle null values
+- parent_community: fix derefencing
+
 Version 10.0.0 (released 2024-02-09)
 
 - mappings: update to theme.style
