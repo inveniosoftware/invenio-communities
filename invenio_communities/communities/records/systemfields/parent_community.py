@@ -11,6 +11,7 @@ from uuid import UUID
 
 from invenio_records.systemfields import SystemField
 from sqlalchemy.orm.exc import NoResultFound
+from ....utils import filter_dict_keys
 
 
 def is_valid_uuid(value):
@@ -50,18 +51,22 @@ class ParentCommunityField(SystemField):
         if obj is None:
             record.pop("parent", None)
             return
-        if is_valid_uuid(obj):
+
+        if isinstance(obj, type(record)):
+            parent_community = obj
+        elif is_valid_uuid(obj):
             try:
                 # Attempt to retrieve the community to confirm its existence
                 parent_community = record.get_record(obj)
-                record["parent"] = {"id": str(parent_community.id)}
-                self._set_cache(record, parent_community)
             except NoResultFound as e:
                 raise ValueError("Community does not exist.") from e
-        elif isinstance(obj, type(record)):
-            record["parent"] = {"id": str(obj.id)}
         else:
             raise ValueError("Invalid parent community.")
+
+        # Store the community ID in the record JSON
+        record["parent"] = {"id": str(parent_community.id)}
+        # Cache the community object
+        self._set_cache(record, parent_community)
 
     def __get__(self, record, owner=None):
         """Get the record's access object."""
@@ -76,6 +81,31 @@ class ParentCommunityField(SystemField):
         """Set the records access object."""
         self.set_obj(record, obj)
 
+    def pre_dump(self, record, data, dumper=None):
+        """Before dumping, dereference the parent community."""
+        parent_community = getattr(record, self.attr_name)
+        if parent_community:
+            dump = parent_community.dumps()
+            data[self.key] = filter_dict_keys(
+                dump,
+                keys=[
+                    "uuid",
+                    "created",
+                    "updated",
+                    "id",
+                    "slug",
+                    "theme",
+                    "version_id",
+                    "metadata.title",
+                    "metadata.type",
+                    "metadata.website",
+                    "metadata.organizations",
+                    "metadata.funding",
+                ],
+            )
+
     def post_load(self, record, data, **kwargs):
-        """After loading, set the parent community."""
-        record["parent"] = record.parent
+        """After loading, cache the parent community."""
+        parent_community_data = data.pop(self.attr_name, None)
+        parent_community = record.loads(parent_community_data)
+        setattr(record, self.attr_name, parent_community)

@@ -114,8 +114,6 @@ class CommunityItem(RecordItem):
     def to_dict(self):
         """Get a dictionary for the community."""
         res = self.data
-        if self._record.parent:
-            res["parent"] = self._record.parent
         if self._errors:
             res["errors"] = self._errors
         return res
