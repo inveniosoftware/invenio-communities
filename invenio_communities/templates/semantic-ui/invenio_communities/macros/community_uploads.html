@@ -9,10 +9,8 @@ under the terms of the MIT License; see LICENSE file for more details.
 
 {% macro community_uploads(title="Recent uploads", records=None) %}
 {% if records %}
-<div id="records-list" data-fetch-url="{{ fetch_url }}" data-title="{{ title }}"
-  class="ui stackable container rel-mt-2">
-
-  <h2 class="ui header">{{ title }}</h2>
+<div class="ui container">
+  <h2>{{ title }}</h2>
   <div class="ui divider"></div>
 
   <div class="ui fluid equal width stackable grid">
