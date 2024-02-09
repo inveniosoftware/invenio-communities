@@ -11,6 +11,7 @@ from uuid import UUID
 
 from invenio_records.systemfields import SystemField
 from sqlalchemy.orm.exc import NoResultFound
+
 from ....utils import filter_dict_keys
 
 
@@ -103,9 +104,3 @@ class ParentCommunityField(SystemField):
                     "metadata.funding",
                 ],
             )
-
-    def post_load(self, record, data, **kwargs):
-        """After loading, cache the parent community."""
-        parent_community_data = data.pop(self.attr_name, None)
-        parent_community = record.loads(parent_community_data)
-        setattr(record, self.attr_name, parent_community)

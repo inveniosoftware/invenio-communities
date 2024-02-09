@@ -264,11 +264,12 @@ class CommunityParentSchema(BaseCommunitySchema):
 class CommunitySchema(BaseCommunitySchema):
     """Community schema."""
 
-    parent = fields.Nested(CommunityParentSchema, dump_only=True)
+    parent = NestedAttribute(CommunityParentSchema, dump_only=True)
 
     @post_dump
     def post_dump(self, data, many, **kwargs):
         """Hide parent field if it's not present."""
+        data = super().post_dump(data, many, **kwargs)
         if data.get("parent") is None:
             data.pop("parent", None)
         return data
