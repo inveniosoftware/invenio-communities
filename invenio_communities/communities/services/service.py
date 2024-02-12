@@ -714,6 +714,28 @@ class CommunityService(RecordService):
 
         return True
 
+    @unit_of_work()
+    def update_parent_community(self, identity, id_, parent_id, uow=None):
+        record = self.record_cls.pid.resolve(id_)
+
+        # Check permissions
+        self.require_permission(identity, "update_parent", record=record)
+
+        data = {"parent": parent_id} # TODO Update this based on whether to remove "update" action conflicts
+        # Run components
+        self.run_components("update_parent", identity, data=data, record=record, uow=uow)
+
+        # Commit and reindex the record
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
+
+        return self.result_item(
+            self,
+            identity,
+            record,
+            links_tpl=self.links_item_tpl,
+            expandable_fields=self.expandable_fields,
+        )
+
 
 @cached_with_expiration
 def get_cached_community_slug(
