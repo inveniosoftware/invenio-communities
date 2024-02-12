@@ -592,6 +592,7 @@ def test_theme_updates(
     community_service.update(system_identity, community.id, community_data)
     community_item = community_service.read(system_identity, community.id)
     assert community_item.data.get("theme") is None
+    assert "theme" not in community_item.data
 
 
 def test_children_updates(
@@ -627,3 +628,39 @@ def test_children_updates(
     community_service.update(owner.identity, community.id, community_data)
     # Refresh index
     community_service.record_cls.index.refresh()
+
+
+def test_update_parent_community(community_service, comm):
+    parent = comm
+    child = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "child"}
+    )
+
+    community_item = community_service.update_parent_community(
+        system_identity, child.id, parent.id
+    )
+    assert community_item._obj.parent
+    assert str(community_item._obj.parent.id) == parent.id
+
+
+def test_update_parent_community_not_exists(community_service, comm):
+    child = comm
+
+    with pytest.raises(ValidationError) as e:
+        community_service.update_parent_community(
+            system_identity, child.id, uuid.uuid4()
+        )
+
+
+def test_update_parent_community_parent_is_child(community_service, comm):
+    parent = comm
+    child = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "child2"}
+    )
+
+    # Make the child community parent of the test parent first
+    community_service.update_parent_community(system_identity, parent.id, child.id)
+
+    # ValidationError as the parent has parent (which is not allowed)
+    with pytest.raises(ValidationError) as e:
+        community_service.update_parent_community(system_identity, child.id, parent.id)
