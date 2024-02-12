@@ -51,6 +51,7 @@ class ParentCommunityField(SystemField):
         # Check if obj is None and remove 'parent' key from record
         if obj is None:
             record.pop("parent", None)
+            self._set_cache(record, None)
             return
 
         if isinstance(obj, type(record)):

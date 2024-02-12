@@ -265,10 +265,7 @@ class CommunitySchema(BaseCommunitySchema):
     """Community schema."""
 
     parent = NestedAttribute(CommunityParentSchema, dump_only=True)
-    # When loading the parent community we don't require any fields as we will only use the ID
-    id = fields.String(dump_only=False)
-    metadata = NestedAttribute(CommunityMetadataSchema, required=False) 
-    access = NestedAttribute(CommunityAccessSchema, required=False)
+
     
     @post_dump
     def post_dump(self, data, many, **kwargs):
