@@ -299,18 +299,19 @@ class CommunityThemeComponent(ServiceComponent):
                 self.service.require_permission(identity, "set_theme", record=record)
                 record["theme"] = data["theme"]
 
+
 class CommunityParentComponent(ServiceComponent):
     """Service Component for Community parent."""
 
     def update_parent(self, identity, data=None, record=None, **kwargs):
-        if "parent" in data:
-            try:
-                parent = self.service.record_cls.pid.resolve(data["parent"])
-                if parent.parent: # TODO Replace this check with communities which can be parents check
-                    raise ValidationError("Child community cannot be parent.")
-            except PIDDoesNotExistError:
-                raise ValidationError("Parent community does not exist.")
-            record.parent = data["parent"]
+        """Update parent community of a community."""
+        try:
+            parent = self.service.record_cls.pid.resolve(data)
+            if parent.parent:
+                raise ValidationError("Child community cannot be parent.")
+        except PIDDoesNotExistError:
+            raise ValidationError("Parent community does not exist.")
+        record.parent = parent
 
 
 class ChildrenComponent(ServiceComponent):
