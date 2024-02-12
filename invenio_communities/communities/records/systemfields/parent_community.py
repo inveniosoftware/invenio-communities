@@ -82,8 +82,8 @@ class ParentCommunityField(SystemField):
         """Set the records access object."""
         self.set_obj(record, obj)
 
-    def pre_dump(self, record, data, dumper=None):
-        """Before dumping, dereference the parent community."""
+    def post_dump(self, record, data, dumper=None):
+        """After dumping, dereference the parent community."""
         parent_community = getattr(record, self.attr_name)
         if parent_community:
             dump = parent_community.dumps()
@@ -104,3 +104,9 @@ class ParentCommunityField(SystemField):
                     "metadata.funding",
                 ],
             )
+    
+    def post_load(self, record, data, loader=None):
+        """Laod the parent community using the OS data (preventing a DB query)."""
+        if data.get("parent"):
+            record.parent = record.loads(data["parent"])
+    
