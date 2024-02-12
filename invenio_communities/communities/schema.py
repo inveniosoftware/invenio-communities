@@ -265,7 +265,11 @@ class CommunitySchema(BaseCommunitySchema):
     """Community schema."""
 
     parent = NestedAttribute(CommunityParentSchema, dump_only=True)
-
+    # When loading the parent community we don't require any fields as we will only use the ID
+    id = fields.String(dump_only=False)
+    metadata = NestedAttribute(CommunityMetadataSchema, required=False) 
+    access = NestedAttribute(CommunityAccessSchema, required=False)
+    
     @post_dump
     def post_dump(self, data, many, **kwargs):
         """Hide parent field if it's not present."""
@@ -273,6 +277,13 @@ class CommunitySchema(BaseCommunitySchema):
         if data.get("parent") is None:
             data.pop("parent", None)
         return data
+    
+    @post_load
+    def filter_parent_id(self, in_data, **kwargs):
+        """Simply keep the parent id."""
+        if in_data.get("parent"):
+            in_data["parent"] = dict(id=in_data.get("parent", {}).get("id"))
+
 
 
 class CommunityFeaturedSchema(Schema):
