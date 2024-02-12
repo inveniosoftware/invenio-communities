@@ -716,14 +716,16 @@ class CommunityService(RecordService):
 
     @unit_of_work()
     def update_parent_community(self, identity, id_, parent_id, uow=None):
+        """Update/Add a parent community to a community."""
         record = self.record_cls.pid.resolve(id_)
 
         # Check permissions
         self.require_permission(identity, "update_parent", record=record)
 
-        data = {"parent": parent_id} # TODO Update this based on whether to remove "update" action conflicts
         # Run components
-        self.run_components("update_parent", identity, data=data, record=record, uow=uow)
+        self.run_components(
+            "update_parent", identity, data=parent_id, record=record, uow=uow
+        )
 
         # Commit and reindex the record
         uow.register(RecordCommitOp(record, indexer=self.indexer))
