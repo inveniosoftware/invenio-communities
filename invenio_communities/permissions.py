@@ -169,6 +169,9 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # Permissions to set if communities can have children
     can_manage_children = [SystemProcess()]
 
+    # Permission for assinging a parent community
+    can_update_parent = [Administration(), SystemProcess()]
+
 
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""
