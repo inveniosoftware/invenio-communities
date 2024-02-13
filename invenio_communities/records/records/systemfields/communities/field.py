@@ -10,6 +10,7 @@
 
 from invenio_records.systemfields import SystemField
 
+from .....utils import filter_dict_keys
 from .context import CommunitiesFieldContext
 from .manager import CommunitiesRelationManager
 
@@ -57,3 +58,42 @@ class CommunitiesField(SystemField):
         if record is None:
             return self._context_cls(self, owner)
         return self.obj(record)
+
+    def post_dump(self, record, data, dumper=None):
+        """Dump the communities field."""
+        comms = getattr(record, self.attr_name)
+        res = comms.to_dict()
+        keep_fields = [
+            "uuid",
+            "created",
+            "updated",
+            "id",
+            "slug",
+            "theme",
+            "version_id",
+            "metadata.title",
+            "metadata.type",
+            "metadata.website",
+            "metadata.organizations",
+            "metadata.funding",
+            "parent.id",
+            "parent.slug",
+            "parent.theme",
+            "parent.metadata.title",
+            "parent.metadata.type",
+            "parent.metadata.website",
+            "parent.metadata.organizations",
+            "parent.metadata.funding",
+        ]
+        if res:
+            res["entries"] = [
+                filter_dict_keys(comm.dumps(), keep_fields) for comm in comms
+            ]
+            data[self.key] = res
+
+    def post_load(self, record, data, loader=None):
+        """Laod the parent community using the OS data (preventing a DB query)."""
+        comms = data.get("communities")
+        if comms:
+            obj = self._manager_cls(self._m2m_model_cls, record.id, comms)
+            self._set_cache(record, obj)
