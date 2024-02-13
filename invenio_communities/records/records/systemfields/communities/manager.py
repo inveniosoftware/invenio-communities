@@ -12,6 +12,8 @@ The manager provides the API to add, remove and iterate over communities
 associated with a record.
 """
 
+import uuid
+
 from invenio_db import db
 from invenio_records.api import Record
 
@@ -36,8 +38,8 @@ class CommunitiesRelationManager:
     #
     def _to_id(self, val):
         """Get the community id."""
-        if isinstance(val, str):
-            return val
+        if isinstance(val, (str, uuid.UUID)):
+            return str(val)
         elif isinstance(val, Record):
             return str(val.id)
         return None
@@ -159,6 +161,11 @@ class CommunitiesRelationManager:
             return self._lookup_community(self._default_id)
         return None
 
+    @property
+    def entries(self):
+        """Get community objects list."""
+        return list(self)
+
     @default.setter
     def default(self, community_or_id):
         """Set the default community.
@@ -194,4 +201,9 @@ class CommunitiesRelationManager:
         data = data or {}
         self._default_id = data.get("default", None)
         self._communities_ids = set(data.get("ids", []))
+        # Search results will have denormalized communities, so we can populate the
+        # cache from it.
+        entries = data.pop("entries", None)
+        if entries:
+            self._communities_cache = {c["id"]: Community.loads(c) for c in entries}
         return self
