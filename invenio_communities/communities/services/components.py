@@ -300,6 +300,23 @@ class CommunityThemeComponent(ServiceComponent):
                 record["theme"] = data["theme"]
 
 
+class ChildrenComponent(ServiceComponent):
+    """Service component for children integration."""
+
+    def create(self, identity, data=None, record=None, **kwargs):
+        """Create handler."""
+        if "children" in data:
+            self.service.require_permission(identity, "manage_children", record=record)
+            record.children = record.children.from_dict(data["children"])
+
+    def update(self, identity, data=None, record=None, **kwargs):
+        """Update handler."""
+        # We check if the children field is passed and it's different to the values stored
+        if "children" in data and data["children"] != record.get("children", {}):
+            self.service.require_permission(identity, "manage_children", record=record)
+            record.children = record.children.from_dict(data["children"])
+
+
 DefaultCommunityComponents = [
     MetadataComponent,
     CommunityThemeComponent,
@@ -311,4 +328,5 @@ DefaultCommunityComponents = [
     FeaturedCommunityComponent,
     OAISetComponent,
     CommunityDeletionComponent,
+    ChildrenComponent,
 ]

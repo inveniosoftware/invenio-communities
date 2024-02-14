@@ -105,9 +105,8 @@ class ParentCommunityField(SystemField):
                     "metadata.funding",
                 ],
             )
-    
+
     def post_load(self, record, data, loader=None):
         """Laod the parent community using the OS data (preventing a DB query)."""
         if data.get("parent"):
             record.parent = record.loads(data["parent"])
-    

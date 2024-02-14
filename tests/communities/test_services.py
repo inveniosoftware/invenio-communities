@@ -592,3 +592,38 @@ def test_theme_updates(
     community_service.update(system_identity, community.id, community_data)
     community_item = community_service.read(system_identity, community.id)
     assert community_item.data.get("theme") is None
+
+
+def test_children_updates(
+    app,
+    db,
+    search_clear,
+    location,
+    community_service,
+    community,
+    members,
+):
+    current_cache.clear()
+    owner = members["owner"]
+
+    # Update children
+    community_data = deepcopy(community.data)
+    community_data.update(dict(children=dict(allow=True)))
+
+    # check if owner can update the children
+    with pytest.raises(PermissionDeniedError):
+        community_service.update(owner.identity, community.id, community_data)
+
+    # only system can update the children
+    community_service.update(system_identity, community.id, community_data)
+    community_item = community_service.read(system_identity, community.id)
+    assert community_item.data["children"]["allow"] == True
+
+    # Update community data without passing children should keep the stored values
+    community_data = deepcopy(community_item.data)
+    community_data.pop("children")
+
+    # Owner should be able to perfrom this operation since is not changing the children
+    community_service.update(owner.identity, community.id, community_data)
+    # Refresh index
+    community_service.record_cls.index.refresh()

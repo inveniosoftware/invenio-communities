@@ -26,6 +26,7 @@ from invenio_vocabularies.contrib.funders.api import Funder
 from invenio_vocabularies.records.api import Vocabulary
 from invenio_vocabularies.records.systemfields.relations import CustomFieldsRelation
 
+from invenio_communities.communities.records.systemfields.children import ChildrenField
 from invenio_communities.communities.records.systemfields.is_verified import (
     IsVerifiedField,
 )
@@ -53,6 +54,7 @@ class Community(Record):
     slug = ModelField()
     pid = PIDSlugField("id", "slug")
     parent = ParentCommunityField()
+    children = ChildrenField()
 
     schema = ConstantField("$schema", "local://communities/communities-v1.0.0.json")
 

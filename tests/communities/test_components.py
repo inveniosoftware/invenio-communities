@@ -130,3 +130,17 @@ def test_oai_set_update(community_service, comm, comm_restricted):
     assert comm.data.get("slug") in oaiset.spec
     assert new_data.get("metadata", {}).get("title") in oaiset.description
     assert new_data.get("metadata", {}).get("title") in oaiset.name
+
+
+def test_children_component(community_service, parent_community, db):
+    """Test children component."""
+    # By default it's set to False
+    assert parent_community.children.allow is False
+
+    parent_community.children.allow = True
+    parent_community.commit()
+    db.session.commit()
+
+    comm = community_service.record_cls.get_record(str(parent_community.id))
+
+    assert comm.children.allow is True

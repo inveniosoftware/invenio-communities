@@ -262,6 +262,14 @@
           }
         }
       },
+      "children": {
+        "type": "object",
+        "properties": {
+          "allow": {
+            "type": "boolean"
+          }
+        }
+      },
       "parent": {
         "type": "object",
         "properties": {
