@@ -145,6 +145,16 @@
         }
       }
     },
+    "children":{
+      "type": "object",
+      "description": "Children communities.",
+      "properties": {
+        "allow": {
+          "type": "boolean",
+          "description": "Whether or not the community allows children."
+        }
+      }
+    },
     "parent": {
       "type": "object",
       "properties": {

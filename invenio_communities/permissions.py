@@ -166,6 +166,9 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_set_theme = [SystemProcess()]
     can_delete_theme = can_set_theme
 
+    # Permissions to set if communities can have children
+    can_manage_children = [SystemProcess()]
+
 
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""

@@ -182,6 +182,12 @@ class CommunityThemeSchema(Schema):
     enabled = fields.Boolean()
 
 
+class ChildrenSchema(Schema):
+    """Children schema."""
+
+    allow = fields.Boolean()
+
+
 class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     """Base schema for the community metadata."""
 
@@ -222,6 +228,8 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     tombstone = fields.Nested(TombstoneSchema, dump_only=True)
 
     deletion_status = fields.Nested(DeletionStatusSchema, dump_only=True)
+
+    children = NestedAttribute(ChildrenSchema)
 
     @post_dump
     def post_dump(self, data, many, **kwargs):
@@ -266,7 +274,6 @@ class CommunitySchema(BaseCommunitySchema):
 
     parent = NestedAttribute(CommunityParentSchema, dump_only=True)
 
-    
     @post_dump
     def post_dump(self, data, many, **kwargs):
         """Hide parent field if it's not present."""
@@ -274,13 +281,13 @@ class CommunitySchema(BaseCommunitySchema):
         if data.get("parent") is None:
             data.pop("parent", None)
         return data
-    
+
     @post_load
     def filter_parent_id(self, in_data, **kwargs):
         """Simply keep the parent id."""
         if in_data.get("parent"):
             in_data["parent"] = dict(id=in_data.get("parent", {}).get("id"))
-
+        return in_data
 
 
 class CommunityFeaturedSchema(Schema):
