@@ -248,31 +248,20 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
 
         return data
 
-    @pre_load
-    def initialize_custom_fields(self, data, **kwargs):
-        """Ensure custom fields are initialized.
-
-        We need to do that so that validation can take place in case a configured
-        field is marked as required.
-        """
-        data.setdefault("custom_fields", {})
-        return data
-
-    @post_load
-    def lowercase(self, in_data, **kwargs):
-        """Ensure slug is lowercase."""
-        in_data["slug"] = in_data["slug"].lower()
-        return in_data
-
 
 class CommunityParentSchema(BaseCommunitySchema):
     """Community parent schema."""
+
+    id = fields.String(required=True)
+    slug = SanitizedUnicode()
+    metadata = NestedAttribute(CommunityMetadataSchema)
+    access = NestedAttribute(CommunityAccessSchema)
 
 
 class CommunitySchema(BaseCommunitySchema):
     """Community schema."""
 
-    parent = NestedAttribute(CommunityParentSchema, dump_only=True)
+    parent = NestedAttribute(CommunityParentSchema)
 
     @post_dump
     def post_dump(self, data, many, **kwargs):
@@ -287,6 +276,22 @@ class CommunitySchema(BaseCommunitySchema):
         """Simply keep the parent id."""
         if in_data.get("parent"):
             in_data["parent"] = dict(id=in_data.get("parent", {}).get("id"))
+        return in_data
+
+    @pre_load
+    def initialize_custom_fields(self, data, **kwargs):
+        """Ensure custom fields are initialized.
+
+        We need to do that so that validation can take place in case a configured
+        field is marked as required.
+        """
+        data.setdefault("custom_fields", {})
+        return data
+
+    @post_load
+    def lowercase(self, in_data, **kwargs):
+        """Ensure slug is lowercase."""
+        in_data["slug"] = in_data["slug"].lower()
         return in_data
 
 
