@@ -221,28 +221,28 @@ def create_ui_blueprint(app):
         communities.submenu("requests").register(
             "invenio_communities.communities_requests",
             text=_("Requests"),
-            order=2,
+            order=3,
             expected_args=["pid_value"],
             **dict(icon="inbox", permissions="can_search_requests"),
         )
         communities.submenu("members").register(
             "invenio_communities.members",
             text=_("Members"),
-            order=3,
+            order=4,
             expected_args=["pid_value"],
             **dict(icon="users", permissions="can_read"),
         )
         communities.submenu("settings").register(
             "invenio_communities.communities_settings",
             text=_("Settings"),
-            order=4,
+            order=5,
             expected_args=["pid_value"],
             **dict(icon="settings", permissions="can_update"),
         )
         communities.submenu("curation_policy").register(
             "invenio_communities.communities_curation_policy",
             text=_("Curation policy"),
-            order=5,
+            order=6,
             visible_when=_has_curation_policy_page_content,
             expected_args=["pid_value"],
             **dict(icon="balance scale", permissions="can_read"),
@@ -250,7 +250,7 @@ def create_ui_blueprint(app):
         communities.submenu("about").register(
             "invenio_communities.communities_about",
             text=_("About"),
-            order=6,
+            order=7,
             visible_when=_has_about_page_content,
             expected_args=["pid_value"],
             **dict(icon="info", permissions="can_read"),
