@@ -12,7 +12,7 @@
   color: {{ theme.secondaryTextColor }} !important;
 }
 
-.theme-primary a, .theme-primary h1, .theme-primary h2 {
+.theme-primary a, .theme-primary h1, .theme-primary h2, .theme-primary p {
   color: {{ theme.primaryTextColor }} !important;
 }
 
@@ -32,6 +32,10 @@
 
 .theme-primary {
   background-color: {{ theme.primaryColor }} !important;
+}
+
+.theme-primary-text a {
+  color: {{ theme.primaryColor }} !important;
 }
 
 .theme-tertiary, .ui.tertiary.button {
