@@ -630,37 +630,69 @@ def test_children_updates(
     community_service.record_cls.index.refresh()
 
 
-def test_update_parent_community(community_service, comm):
+def test_parent_create(community_service, comm):
     parent = comm
     child = community_service.create(
-        identity=system_identity, data={**comm.data, "slug": "child"}
+        identity=system_identity,
+        data={**comm.data, "slug": "child", "parent": {"id": str(parent.id)}},
+    )
+    assert str(child._obj.parent.id) == parent.id
+
+
+def test_parent_update(community_service, comm):
+    parent = comm
+    child = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "child1"}
     )
 
-    community_item = community_service.update_parent_community(
-        system_identity, child.id, parent.id
+    child = community_service.update(
+        identity=system_identity,
+        id_=str(child.id),
+        data={**child.data, "parent": {"id": str(parent.id)}},
     )
-    assert community_item._obj.parent
-    assert str(community_item._obj.parent.id) == parent.id
+    assert str(child._obj.parent.id) == parent.id
+
+
+def test_parent_remove(community_service, comm):
+    parent = comm
+    child = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "child2"}
+    )
+
+    child = community_service.update(
+        identity=system_identity, id_=str(child.id), data={**child.data, "parent": None}
+    )
+    assert str(child._obj.parent.id) == parent.id
 
 
 def test_update_parent_community_not_exists(community_service, comm):
     child = comm
 
     with pytest.raises(ValidationError) as e:
-        community_service.update_parent_community(
-            system_identity, child.id, uuid.uuid4()
+        community_service.update(
+            identity=system_identity,
+            id_=str(child.id),
+            data={**child.data, "parent": {"id": str(uuid.uuid4())}},
         )
 
 
 def test_update_parent_community_parent_is_child(community_service, comm):
     parent = comm
     child = community_service.create(
-        identity=system_identity, data={**comm.data, "slug": "child2"}
+        identity=system_identity, data={**comm.data, "slug": "child3"}
     )
 
     # Make the child community parent of the test parent first
-    community_service.update_parent_community(system_identity, parent.id, child.id)
+    community_service.update(
+        identity=system_identity,
+        id_=str(parent.id),
+        data={**comm.data, "parent": {"id": str(child.id)}},
+    )
 
     # ValidationError as the parent has parent (which is not allowed)
     with pytest.raises(ValidationError) as e:
-        community_service.update_parent_community(system_identity, child.id, parent.id)
+        community_service.update(
+            identity=system_identity,
+            id_=str(child.id),
+            data={**comm.data, "parent": {"id": str(parent.id)}},
+        )
