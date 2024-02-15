@@ -656,13 +656,14 @@ def test_parent_update(community_service, comm):
 def test_parent_remove(community_service, comm):
     parent = comm
     child = community_service.create(
-        identity=system_identity, data={**comm.data, "slug": "child2"}
+        identity=system_identity,
+        data={**comm.data, "slug": "child2", "parent": {"id": str(parent.id)}},
     )
 
     child = community_service.update(
         identity=system_identity, id_=str(child.id), data={**child.data, "parent": None}
     )
-    assert str(child._obj.parent.id) == parent.id
+    assert child._obj.parent == None
 
 
 def test_update_parent_community_not_exists(community_service, comm):

@@ -261,7 +261,7 @@ class CommunityParentSchema(BaseCommunitySchema):
 class CommunitySchema(BaseCommunitySchema):
     """Community schema."""
 
-    parent = NestedAttribute(CommunityParentSchema)
+    parent = NestedAttribute(CommunityParentSchema, allow_none=True)
 
     @post_dump
     def post_dump(self, data, many, **kwargs):
