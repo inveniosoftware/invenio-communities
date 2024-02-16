@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 11.0.0 (released 2024-02-16)
+
+- systemfields: add children
+- systemfields: index communities in records
+- horizon: community home page (#1081)
+
 Version 10.1.0 (released 2024-02-09)
 
 - parent_community: dereference parent community
