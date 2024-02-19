@@ -62,7 +62,7 @@
               },
               "title": {
                 "type": "object",
-                "dynamic": true
+                "dynamic": "true"
               }
             }
           },
@@ -135,7 +135,7 @@
               },
               "title": {
                 "type": "object",
-                "dynamic": true,
+                "dynamic": "true",
                 "properties": {
                   "en": {
                     "type": "text"
@@ -177,7 +177,7 @@
                   },
                   "title": {
                     "type": "object",
-                    "dynamic": true
+                    "dynamic": "true"
                   },
                   "number": {
                     "type": "text",
@@ -306,7 +306,7 @@
               },
               "title": {
                 "type": "object",
-                "dynamic": true,
+                "dynamic": "true",
                 "properties": {
                   "en": {
                     "type": "text"
@@ -332,7 +332,7 @@
                   },
                   "title": {
                     "type": "object",
-                    "dynamic": true,
+                    "dynamic": "true",
                     "properties": {
                       "en": {
                         "type": "text"
@@ -371,7 +371,7 @@
                       },
                       "title": {
                         "type": "object",
-                        "dynamic": true
+                        "dynamic": "true"
                       },
                       "number": {
                         "type": "text",
