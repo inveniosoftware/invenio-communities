@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 11.1.0 (released 2024-02-19)
+
+- mappings: add parent.children
+- dump: add children allow
+- services: use update service method for setting the parent
+- mappings: fix parent.theme.style key
+- mappings: fix type mismatch for funding.award.number
+
 Version 11.0.0 (released 2024-02-16)
 
 - systemfields: add children
