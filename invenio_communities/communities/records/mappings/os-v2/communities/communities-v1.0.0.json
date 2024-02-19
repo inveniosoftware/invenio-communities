@@ -180,7 +180,12 @@
                     "dynamic": true
                   },
                   "number": {
-                    "type": "keyword"
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
                   },
                   "program": {
                     "type": "keyword"
