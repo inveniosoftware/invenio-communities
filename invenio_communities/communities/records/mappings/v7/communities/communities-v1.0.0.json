@@ -416,7 +416,7 @@
               "brand": {
                 "type": "keyword"
               },
-              "config": {
+              "style": {
                 "type": "object",
                 "enabled": false
               }
