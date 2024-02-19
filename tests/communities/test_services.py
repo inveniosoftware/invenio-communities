@@ -632,6 +632,11 @@ def test_children_updates(
 
 def test_parent_create(community_service, comm):
     parent = comm
+    community_service.update(
+        identity=system_identity,
+        id_=str(parent.id),
+        data={**parent.data, "children": {"allow": True}},
+    )
     child = community_service.create(
         identity=system_identity,
         data={**comm.data, "slug": "child", "parent": {"id": str(parent.id)}},
@@ -641,6 +646,11 @@ def test_parent_create(community_service, comm):
 
 def test_parent_update(community_service, comm):
     parent = comm
+    community_service.update(
+        identity=system_identity,
+        id_=str(parent.id),
+        data={**parent.data, "children": {"allow": True}},
+    )
     child = community_service.create(
         identity=system_identity, data={**comm.data, "slug": "child1"}
     )
@@ -655,6 +665,11 @@ def test_parent_update(community_service, comm):
 
 def test_parent_remove(community_service, comm):
     parent = comm
+    community_service.update(
+        identity=system_identity,
+        id_=str(parent.id),
+        data={**parent.data, "children": {"allow": True}},
+    )
     child = community_service.create(
         identity=system_identity,
         data={**comm.data, "slug": "child2", "parent": {"id": str(parent.id)}},
@@ -677,23 +692,41 @@ def test_update_parent_community_not_exists(community_service, comm):
         )
 
 
-def test_update_parent_community_parent_is_child(community_service, comm):
+def test_parent_update_parent_children_not_allowed(community_service, comm):
     parent = comm
+
     child = community_service.create(
-        identity=system_identity, data={**comm.data, "slug": "child3"}
+        identity=system_identity, data={**comm.data, "slug": "child4"}
     )
 
-    # Make the child community parent of the test parent first
-    community_service.update(
-        identity=system_identity,
-        id_=str(parent.id),
-        data={**comm.data, "parent": {"id": str(child.id)}},
-    )
-
-    # ValidationError as the parent has parent (which is not allowed)
     with pytest.raises(ValidationError) as e:
         community_service.update(
             identity=system_identity,
             id_=str(child.id),
-            data={**comm.data, "parent": {"id": str(parent.id)}},
+            data={**child.data, "parent": {"id": str(parent.id)}},
+        )
+
+
+def test_parent_update_child_children_are_allowed(community_service, comm):
+    parent = comm
+
+    child = community_service.create(
+        identity=system_identity, data={**comm.data, "slug": "child5"}
+    )
+    community_service.update(
+        identity=system_identity,
+        id_=str(parent.id),
+        data={**parent.data, "children": {"allow": True}},
+    )
+    child = community_service.update(
+        identity=system_identity,
+        id_=str(child.id),
+        data={**child.data, "children": {"allow": True}},
+    )
+
+    with pytest.raises(ValidationError) as e:
+        community_service.update(
+            identity=system_identity,
+            id_=str(child.id),
+            data={**child.data, "parent": {"id": str(parent.id)}},
         )

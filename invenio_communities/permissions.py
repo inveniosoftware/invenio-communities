@@ -170,7 +170,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_manage_children = [SystemProcess()]
 
     # Permission for assinging a parent community
-    can_update_parent = [Administration(), SystemProcess()]
+    can_manage_parent = [Administration(), SystemProcess()]
 
 
 def can_perform_action(community, context):

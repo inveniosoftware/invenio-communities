@@ -309,7 +309,13 @@ class CommunityParentComponent(ServiceComponent):
             return None
         try:
             parent = self.service.record_cls.pid.resolve(parent_data["id"])
-            if parent.parent:
+            if not parent.children.allow:
+                raise ValidationError("Assigned parent is not allowed to be a parent.")
+            elif child.children.allow:
+                raise ValidationError(
+                    "Community allowed to be a parent can't be a child."
+                )
+            elif parent.parent:
                 raise ValidationError(
                     "Assigned parent community cannot also have a parent."
                 )
@@ -324,14 +330,14 @@ class CommunityParentComponent(ServiceComponent):
     def create(self, identity, data=None, record=None, **kwargs):
         """Inject parsed theme to the record."""
         if "parent" in data:
-            self.service.require_permission(identity, "update_parent", record=record)
+            self.service.require_permission(identity, "manage_parent", record=record)
             parent = self._validate_and_get_parent(data["parent"], record)
             record.parent = parent
 
     def update(self, identity, data=None, record=None, **kwargs):
         """Update parent community of a community."""
         if "parent" in data:
-            self.service.require_permission(identity, "update_parent", record=record)
+            self.service.require_permission(identity, "manage_parent", record=record)
             parent = self._validate_and_get_parent(data["parent"], record)
             record.parent = parent
 
