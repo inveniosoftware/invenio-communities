@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 12.0.0 (released 2024-02-19)
+
+- major version bump on invenio-users-resources (through invenio-requests)
+
 Version 11.1.1 (released 2024-02-19)
 
 - mappings: change "dynamic" values to string
