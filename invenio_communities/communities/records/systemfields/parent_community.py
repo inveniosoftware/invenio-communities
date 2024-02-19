@@ -98,6 +98,7 @@ class ParentCommunityField(SystemField):
                     "slug",
                     "theme",
                     "version_id",
+                    "children.allow",
                     "metadata.title",
                     "metadata.type",
                     "metadata.website",
