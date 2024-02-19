@@ -436,6 +436,14 @@
                 "enabled": false
               }
             }
+          },
+          "children": {
+            "type": "object",
+            "properties": {
+              "allow": {
+                "type": "boolean"
+              }
+            }
           }
         }
       }
