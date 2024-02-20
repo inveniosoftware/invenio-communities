@@ -9,10 +9,9 @@
 """Community PID slug field."""
 from uuid import UUID
 
+from invenio_records.dictutils import filter_dict_keys
 from invenio_records.systemfields import SystemField
 from sqlalchemy.orm.exc import NoResultFound
-
-from ....utils import filter_dict_keys
 
 
 def is_valid_uuid(value):
