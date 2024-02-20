@@ -8,9 +8,9 @@
 
 """Communities system field."""
 
+from invenio_records.dictutils import filter_dict_keys
 from invenio_records.systemfields import SystemField
 
-from .....utils import filter_dict_keys
 from .context import CommunitiesFieldContext
 from .manager import CommunitiesRelationManager
 
