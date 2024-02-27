@@ -730,3 +730,35 @@ def test_parent_update_child_children_are_allowed(community_service, comm):
             id_=str(child.id),
             data={**child.data, "parent": {"id": str(parent.id)}},
         )
+
+
+def test_bulk_update_parent(
+    community_service, parent_community, comm, restricted_community
+):
+    """Test bulk add parent to children."""
+    children = [comm.id, restricted_community.id]
+    parent_community.children.allow = True
+    parent_community.commit()
+    community_service.bulk_update_parent(system_identity, children, parent_community.id)
+    for c_id in children:
+        c_comm = community_service.record_cls.pid.resolve(c_id)
+        assert str(c_comm.parent.id) == str(parent_community.id)
+
+
+def test_bulk_update_parent_overwrite(
+    community_service, parent_community, comm, restricted_community
+):
+    """Test bulk update parent of communities that are already parented."""
+    children = [comm.id]
+    parent_community.children.allow = True
+    parent_community.commit()
+    community_service.bulk_update_parent(system_identity, children, parent_community.id)
+    for c_id in children:
+        c_comm = community_service.record_cls.pid.resolve(c_id)
+        assert str(c_comm.parent.id) == str(parent_community.id)
+
+    children = [comm.id, restricted_community.id]
+    community_service.bulk_update_parent(system_identity, children, parent_community.id)
+    for c_id in children:
+        c_comm = community_service.record_cls.pid.resolve(c_id)
+        assert str(c_comm.parent.id) == str(parent_community.id)
