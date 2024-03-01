@@ -179,6 +179,19 @@ class CommunityProfileForm extends Component {
       };
     });
     const { customFields } = this.props;
+    const genericVocabFields = [];
+
+    if (customFields.ui && customFields.ui.length > 0) {
+      customFields.ui.forEach((section) => {
+        if (section.fields && section.fields.length > 0) {
+          section.fields.forEach((field) => {
+            if (field.isGenericVocabulary) {
+              genericVocabFields.push(field.field);
+            }
+          });
+        }
+      });
+    }
 
     // Deserialize custom fields
     initialValues = new CustomFieldSerializer({
@@ -186,6 +199,7 @@ class CommunityProfileForm extends Component {
       deserializedDefault: {},
       serializedDefault: {},
       vocabularyFields: customFields.vocabularies,
+      genericVocabularies: genericVocabFields,
     }).deserialize(initialValues);
 
     return {
