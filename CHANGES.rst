@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 12.0.1 (released 2024-03-04)
+
+- bump react-invenio-forms
+
 Version 12.0.0 (released 2024-02-19)
 
 - major version bump on invenio-users-resources (through invenio-requests)
