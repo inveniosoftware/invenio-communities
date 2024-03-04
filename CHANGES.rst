@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 12.0.1 (released 2024-03-04)
+
+- bump react-invenio-forms
+- reorder the community's menu items
+- move `filter_dict_keys` util to invenio-records
+
 Version 12.0.0 (released 2024-02-19)
 
 - major version bump on invenio-users-resources (through invenio-requests)
@@ -49,7 +55,6 @@ Version 10.0.0 (released 2024-02-09)
 - mappings: add "parent" community and normalize funding
 - global: always serialize Community.theme
 - models: add index on bucket_id
-
 
 Version 9.0.0 (released 2024-01-31)
 
