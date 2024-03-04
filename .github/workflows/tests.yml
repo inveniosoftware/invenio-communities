@@ -28,25 +28,23 @@ jobs:
   Tests:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
-          python-version: [3.8, 3.9]
-          requirements-level: [pypi]
-          db-service: [postgresql14]
-          search-service: [opensearch2]
-          include:
-          - db-service: postgresql14
-            DB_EXTRAS: "postgresql"
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+        db-service: [postgresql14]
+        search-service: [opensearch2]
+        include:
+        - db-service: postgresql14
+          DB_EXTRAS: "postgresql"
+
     env:
       DB: ${{ matrix.db-service }}
       SEARCH: ${{ matrix.search-service }}
       EXTRAS: tests,${{ matrix.search-service }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+        uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -56,24 +54,19 @@ jobs:
       - name: Run eslint test
         run: ./run-js-linter.sh -i
 
-      - name: Generate dependencies
-        run: |
-          pip install wheel requirements-builder
-          requirements-builder -e "$EXTRAS" --level=${{ matrix.requirements-level }} setup.py > .${{ matrix.requirements-level }}-${{ matrix.python-version }}-requirements.txt
-          cat .${{ matrix.requirements-level }}-${{ matrix.python-version }}-requirements.txt
-
-      - name: Cache pip
-        uses: actions/cache@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('.${{ matrix.requirements-level }}-${{ matrix.python-version }}-requirements.txt') }}
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: setup.cfg
+
       - name: Install dependencies
         run: |
-          pip install -r .${{ matrix.requirements-level }}-${{ matrix.python-version }}-requirements.txt
           pip install ".[$EXTRAS]"
           pip freeze
           docker --version
           docker-compose --version
+
       - name: Run tests
-        run: |
-          ./run-tests.sh
+        run: ./run-tests.sh
