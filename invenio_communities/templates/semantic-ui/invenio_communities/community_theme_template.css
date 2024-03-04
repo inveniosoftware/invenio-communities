@@ -34,7 +34,8 @@
   background-color: {{ theme.primaryColor }} !important;
 }
 
-.theme-primary-text a {
+.theme-primary-text a,
+.theme-primary-text h1 {
   color: {{ theme.primaryColor }} !important;
 }
 
