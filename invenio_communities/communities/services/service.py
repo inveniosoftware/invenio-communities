@@ -714,6 +714,25 @@ class CommunityService(RecordService):
 
         return True
 
+    @unit_of_work()
+    def bulk_update_parent(self, identity, community_ids, parent_id, uow=None):
+        """Bulk updates communities with a new parent.
+
+        :param identity: The identity of the user performing the action.
+        :param community_ids: The list of community IDs to add to the new parent.
+        :param parent_id: The ID of the new parent community.
+        """
+        parent = self.read(identity, parent_id)
+        for comm_id in community_ids:
+            child = self.read(identity, comm_id)
+            self.update(
+                identity,
+                comm_id,
+                data={**child.data, "parent": {"id": parent.id}},
+                uow=uow,
+            )
+        return True
+
 
 @cached_with_expiration
 def get_cached_community_slug(
