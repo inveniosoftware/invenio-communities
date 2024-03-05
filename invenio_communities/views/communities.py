@@ -42,6 +42,28 @@ VISIBILITY_FIELDS = [
     },
 ]
 
+MEMBERS_VISIBILITY_FIELDS = [
+    {
+        "text": "Public",
+        "value": "public",
+        "icon": "group",
+        "helpText": _(
+            "Members who have set their visibility to public are visible to anyone. "
+            "Members with hidden visibility are only visible to other members."
+        ),
+    },
+    {
+        "text": "Members-only",
+        "value": "restricted",
+        "icon": "lock",
+        "helpText": _(
+            "Members in your community are only visible to other members of the "
+            "community."
+        ),
+    },
+]
+
+
 REVIEW_POLICY_FIELDS = [
     {
         "text": "Review all submissions",
@@ -58,6 +80,28 @@ REVIEW_POLICY_FIELDS = [
         ),
     },
 ]
+
+
+HEADER_PERMISSIONS = {
+    "read",
+    "update",
+    "search_requests",
+    "members_search_public",
+    "moderate",
+}
+
+PRIVATE_PERMISSIONS = HEADER_PERMISSIONS | {
+    "manage_access",
+    "rename",
+    "delete",
+}
+
+MEMBERS_PERMISSIONS = PRIVATE_PERMISSIONS | {
+    "members_search",
+    "members_manage",
+    "invite_owners",
+    "search_invites",
+}
 
 
 def render_community_theme_template(template_name_or_list, theme=None, **context):
@@ -187,7 +231,9 @@ def communities_new():
     return render_template(
         "invenio_communities/new.html",
         form_config=dict(
-            access=dict(visibility=VISIBILITY_FIELDS),
+            access=dict(
+                visibility=VISIBILITY_FIELDS,
+            ),
             SITE_UI_URL=current_app.config["SITE_UI_URL"],
         ),
         custom_fields=load_custom_fields(
@@ -200,18 +246,7 @@ def communities_new():
 @pass_community(serialize=True)
 def communities_settings(pid_value, community, community_ui):
     """Community settings/profile page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "search_invites",
-            "manage_access",
-            "rename",
-            "delete",
-            "moderate",
-        ]
-    )
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
@@ -233,7 +268,7 @@ def communities_settings(pid_value, community, community_ui):
 
     logo_size_limit = 10**6
     max_size = current_app.config["COMMUNITIES_LOGO_MAX_FILE_SIZE"]
-    if type(max_size) is int and max_size > 0:
+    if isinstance(max_size, int) and max_size > 0:
         logo_size_limit = max_size
 
     return render_community_theme_template(
@@ -253,9 +288,7 @@ def communities_settings(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_requests(pid_value, community, community_ui):
     """Community requests page."""
-    permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "search_invites", "moderate"]
-    )
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
     if not permissions["can_search_requests"]:
         raise PermissionDeniedError()
 
@@ -270,17 +303,7 @@ def communities_requests(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_settings_privileges(pid_value, community, community_ui):
     """Community settings/privileges page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "search_invites",
-            "manage_access",
-            "moderate",
-        ]
-    )
-
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
     if not permissions["can_manage_access"]:
         raise PermissionDeniedError()
 
@@ -289,7 +312,10 @@ def communities_settings_privileges(pid_value, community, community_ui):
         theme=community_ui.get("theme", {}),
         community=community_ui,
         form_config=dict(
-            access=dict(visibility=VISIBILITY_FIELDS),
+            access=dict(
+                visibility=VISIBILITY_FIELDS,
+                members_visibility=MEMBERS_VISIBILITY_FIELDS,
+            ),
         ),
         permissions=permissions,
     )
@@ -298,10 +324,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_settings_curation_policy(pid_value, community, community_ui):
     """Community settings/curation-policy page."""
-    permissions = community.has_permissions_to(
-        ["update", "read", "search_requests", "manage_access", "moderate"]
-    )
-
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
@@ -319,16 +342,7 @@ def communities_settings_curation_policy(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_settings_pages(pid_value, community, community_ui):
     """Community settings/curation-policy page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "search_invites",
-            "manage_access",
-            "moderate",
-        ]
-    )
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
@@ -346,20 +360,8 @@ def communities_settings_pages(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def members(pid_value, community, community_ui):
     """Community members page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "members_search",
-            "members_search_public",
-            "members_manage",
-            "read",
-            "search_requests",
-            "search_invites",
-            "invite_owners",
-            "moderate",
-        ]
-    )
-    if not permissions["can_read"]:
+    permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
+    if not permissions["can_members_search_public"]:
         raise PermissionDeniedError()
 
     return render_community_theme_template(
@@ -375,16 +377,7 @@ def members(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def invitations(pid_value, community, community_ui):
     """Community invitations page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "search_invites",
-            "invite_owners",
-            "moderate",
-        ]
-    )
+    permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
     if not permissions["can_search_invites"]:
         raise PermissionDeniedError()
     return render_community_theme_template(
@@ -399,14 +392,7 @@ def invitations(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_about(pid_value, community, community_ui):
     """Community about page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "moderate",
-        ]
-    )
+    permissions = community.has_permissions_to(HEADER_PERMISSIONS)
     if not permissions["can_read"]:
         raise PermissionDeniedError()
 
@@ -422,14 +408,7 @@ def communities_about(pid_value, community, community_ui):
 @pass_community(serialize=True)
 def communities_curation_policy(pid_value, community, community_ui):
     """Community curation policy page."""
-    permissions = community.has_permissions_to(
-        [
-            "update",
-            "read",
-            "search_requests",
-            "moderate",
-        ]
-    )
+    permissions = community.has_permissions_to(HEADER_PERMISSIONS)
     if not permissions["can_read"]:
         raise PermissionDeniedError()
     return render_community_theme_template(

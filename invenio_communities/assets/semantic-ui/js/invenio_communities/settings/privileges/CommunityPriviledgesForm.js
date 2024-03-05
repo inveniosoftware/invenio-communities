@@ -46,11 +46,42 @@ VisibilityField.defaultProps = {
   label: "",
 };
 
+const MembersVisibilityField = ({ label, formConfig, ...props }) => {
+  const [field] = useField(props);
+  return (
+    <>
+      {formConfig.access.members_visibility.map((item) => (
+        <React.Fragment key={item.value}>
+          <RadioField
+            key={item.value}
+            fieldPath="access.members_visibility"
+            label={item.text}
+            labelIcon={item.icon}
+            checked={_get(field.value, "access.members_visibility") === item.value}
+            value={item.value}
+          />
+          <label className="helptext">{item.helpText}</label>
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
+
+MembersVisibilityField.propTypes = {
+  label: PropTypes.string,
+  formConfig: PropTypes.object.isRequired,
+};
+
+MembersVisibilityField.defaultProps = {
+  label: "",
+};
+
 class CommunityPrivilegesForm extends Component {
   getInitialValues = () => {
     return {
       access: {
         visibility: "public",
+        members_visibility: "public",
         // TODO: Re-enable once properly integrated to be displayed
         // member_policy: "open",
         // record_policy: "open",
@@ -65,10 +96,24 @@ class CommunityPrivilegesForm extends Component {
         initialValues={this.getInitialValues()}
         community={community}
       >
-        <Header as="h2" size="tiny">
+        <Header as="h2" size="small">
           {i18next.t("Community visibility")}
+          <Header.Subheader className="mt-5">
+            {i18next.t(
+              "Controls if the community is visible to anyone or to members only."
+            )}
+          </Header.Subheader>
         </Header>
         <VisibilityField formConfig={formConfig} />
+        <Header as="h2" size="small">
+          {i18next.t("Members visibility")}
+          <Header.Subheader className="mt-5">
+            {i18next.t(
+              "Controls if the members tab is visible to anyone or to members only."
+            )}
+          </Header.Subheader>
+        </Header>
+        <MembersVisibilityField formConfig={formConfig} />
         {/* TODO: Re-enable once properly integrated to be displayed */}
         {/*
               <Grid.Column width={6}>

@@ -192,7 +192,7 @@ def test_delete(client, headers, community_id, owner, public_reader):
 def extra_user(app, db, UserFixture, member_service, community):
     """Add a reader member with public visibility."""
     u = UserFixture(
-        email=f"extra@newuser.org",
+        email="extra@newuser.org",
         password="newuser",
         user_profile={
             "full_name": "Should be last",

@@ -95,6 +95,9 @@
           "member_policy": {
             "type": "keyword"
           },
+          "members_visibility": {
+            "type": "keyword"
+          },
           "record_policy": {
             "type": "keyword"
           },

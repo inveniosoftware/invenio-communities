@@ -40,12 +40,7 @@ from invenio_communities.communities.services.results import (
 )
 
 from ...permissions import CommunityPermissionPolicy, can_perform_action
-from ..schema import (
-    CommunityFeaturedSchema,
-    CommunitySchema,
-    CommunityThemeSchema,
-    TombstoneSchema,
-)
+from ..schema import CommunityFeaturedSchema, CommunitySchema, TombstoneSchema
 from .components import DefaultCommunityComponents
 from .links import CommunityLink
 from .search_params import IncludeDeletedCommunitiesParam, StatusParam

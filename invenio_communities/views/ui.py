@@ -230,7 +230,7 @@ def create_ui_blueprint(app):
             text=_("Members"),
             order=5,
             expected_args=["pid_value"],
-            **dict(icon="users", permissions="can_read"),
+            **dict(icon="users", permissions="can_members_search_public"),
         )
         communities.submenu("settings").register(
             "invenio_communities.communities_settings",

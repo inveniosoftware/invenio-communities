@@ -25,7 +25,6 @@ from invenio_records_resources.references.entity_resolvers import ServiceResultR
 from invenio_records_resources.services.custom_fields import TextCF
 from invenio_requests.proxies import current_events_service, current_requests_service
 from invenio_users_resources.proxies import current_users_service
-from invenio_users_resources.records import UserAggregate
 from invenio_users_resources.services.schemas import (
     NotificationPreferences,
     UserPreferencesSchema,
@@ -336,7 +335,7 @@ def superuser_role_need(db):
 def new_user(UserFixture, app, database):
     """A new user."""
     u = UserFixture(
-        email=f"newuser@newuser.org",
+        email="newuser@newuser.org",
         password="newuser",
         username="newuser",
         user_profile={
@@ -371,6 +370,7 @@ def minimal_community():
     return {
         "access": {
             "visibility": "public",
+            "members_visibility": "public",
             "record_policy": "open",
         },
         "slug": "public",
@@ -386,6 +386,7 @@ def minimal_restricted_community_1():
     return {
         "access": {
             "visibility": "restricted",
+            "members_visibility": "restricted",
             "record_policy": "closed",
         },
         "slug": "community1",
@@ -401,6 +402,7 @@ def minimal_restricted_community_2():
     return {
         "access": {
             "visibility": "restricted",
+            "members_visibility": "restricted",
             "record_policy": "closed",
         },
         "slug": "community2",
@@ -416,6 +418,7 @@ def full_community():
     return {
         "access": {
             "visibility": "public",
+            "members_visibility": "public",
             "member_policy": "open",
             "record_policy": "open",
         },
@@ -451,6 +454,17 @@ def restricted_community(community_service, owner, minimal_community, location):
     data = deepcopy(minimal_community)
     data["access"]["visibility"] = "restricted"
     data["slug"] = "restricted"
+    c = community_service.create(owner.identity, data)
+    owner.refresh()
+    return c
+
+
+@pytest.fixture(scope="module")
+def restricted_members_community(community_service, owner, minimal_community, location):
+    """A restricted members visibilty community."""
+    data = deepcopy(minimal_community)
+    data["access"]["members_visibility"] = "restricted"
+    data["slug"] = "members_restricted"
     c = community_service.create(owner.identity, data)
     owner.refresh()
     return c

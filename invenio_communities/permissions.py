@@ -127,7 +127,17 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
     can_members_search_public = [
-        IfRestricted("visibility", then_=[CommunityMembers()], else_=[AnyUser()]),
+        IfRestricted(
+            "visibility",
+            then_=[CommunityMembers()],
+            else_=[
+                IfRestricted(
+                    "members_visibility",
+                    then_=[CommunityMembers()],
+                    else_=[AnyUser()],
+                ),
+            ],
+        ),
         SystemProcess(),
     ]
 

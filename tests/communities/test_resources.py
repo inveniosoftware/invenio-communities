@@ -480,6 +480,7 @@ def test_simple_put_response(
 
     data["access"] = {
         "visibility": "restricted",
+        "members_visibility": "restricted",
         "member_policy": "closed",
         "record_policy": "closed",
     }
@@ -531,6 +532,7 @@ def test_update_renamed_record(
     renamed_id_ = renamed_community["id"]
     data["access"] = {
         "visibility": "restricted",
+        "members_visibility": "restricted",
         "member_policy": "closed",
         "record_policy": "closed",
     }

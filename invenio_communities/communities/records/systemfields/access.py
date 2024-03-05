@@ -36,6 +36,15 @@ class VisibilityEnum(AccessEnumMixin, Enum):
 
 
 @unique
+class MembersVisibilityEnum(AccessEnumMixin, Enum):
+    """Enum defining members visibility."""
+
+    PUBLIC = "public"
+
+    RESTRICTED = "restricted"
+
+
+@unique
 class MemberPolicyEnum(AccessEnumMixin, Enum):
     """Enum defining member policies."""
 
@@ -68,6 +77,7 @@ class CommunityAccess:
     def __init__(
         self,
         visibility=None,
+        members_visibility=None,
         member_policy=None,
         record_policy=None,
         review_policy=None,
@@ -77,6 +87,7 @@ class CommunityAccess:
         :param visibility: The visibility level.
         """
         self.visibility = visibility or VisibilityEnum.PUBLIC
+        self.members_visibility = members_visibility or MembersVisibilityEnum.PUBLIC
         self.member_policy = member_policy or MemberPolicyEnum.OPEN
         self.record_policy = record_policy or RecordPolicyEnum.OPEN
         self.review_policy = review_policy or ReviewPolicyEnum.CLOSED
@@ -86,6 +97,11 @@ class CommunityAccess:
     def validate_visibility_level(cls, level):
         """Validate the visibility level."""
         return VisibilityEnum.validate(level)
+
+    @classmethod
+    def validate_members_visibility_level(cls, level):
+        """Validate the visibility level."""
+        return MembersVisibilityEnum.validate(level)
 
     @classmethod
     def validate_member_policy_level(cls, level):
@@ -113,6 +129,18 @@ class CommunityAccess:
         if not self.validate_visibility_level(value):
             raise ValueError(f"Unknown visibility level: {value}")
         self._visibility = value
+
+    @property
+    def members_visibility(self):
+        """Get the members visibility level."""
+        return self._members_visibility
+
+    @members_visibility.setter
+    def members_visibility(self, value):
+        """Set the members visibility level."""
+        if not self.validate_members_visibility_level(value):
+            raise ValueError(f"Unknown members visibility level: {value}")
+        self._members_visibility = value
 
     @property
     def visibility_is_public(self):
@@ -164,6 +192,7 @@ class CommunityAccess:
         """Dump the field values as dictionary."""
         return {
             "visibility": str(self.visibility),
+            "members_visibility": str(self.members_visibility),
             "member_policy": str(self.member_policy),
             "record_policy": str(self.record_policy),
             "review_policy": str(self.review_policy),
@@ -173,6 +202,7 @@ class CommunityAccess:
         """Re-initialize the Access object with the data in the access_dict."""
         new_access = self.from_dict(access_dict)
         self.visibility = new_access.visibility
+        self.members_visibility = new_access.members_visibility
         self.member_policy = new_access.member_policy
         self.record_policy = new_access.record_policy
         self.review_policy = new_access.review_policy
@@ -191,6 +221,7 @@ class CommunityAccess:
 
         access = cls(
             visibility=access_dict.get("visibility"),
+            members_visibility=access_dict.get("members_visibility"),
             member_policy=access_dict.get("member_policy"),
             record_policy=access_dict.get("record_policy"),
             review_policy=access_dict.get("review_policy"),
@@ -201,7 +232,9 @@ class CommunityAccess:
     def __repr__(self):
         """Return repr(self)."""
         return (
-            f"<{type(self).__name__} (visibility: {str(self.visibility)}, "
+            f"<{type(self).__name__} ("
+            f"visibility: {str(self.visibility)}, "
+            f"members_visibility: {str(self.members_visibility)}, "
             f"member_policy: {str(self.member_policy)}, "
             f"record_policy: {str(self.record_policy)}, "
             f"review_policy: {str(self.review_policy)})>"

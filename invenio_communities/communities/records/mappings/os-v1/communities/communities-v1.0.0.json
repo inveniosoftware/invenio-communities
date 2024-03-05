@@ -92,6 +92,9 @@
           "visibility": {
             "type": "keyword"
           },
+          "members_visibility": {
+            "type": "keyword"
+          },
           "member_policy": {
             "type": "keyword"
           },

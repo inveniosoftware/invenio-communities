@@ -21,6 +21,13 @@
             "restricted"
           ]
         },
+        "members_visibility": {
+          "description": "Community members visibility.",
+          "enum": [
+            "public",
+            "restricted"
+          ]
+        },
         "member_policy": {
           "description": "Community member policy.",
           "enum": [

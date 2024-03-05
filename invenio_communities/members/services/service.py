@@ -393,9 +393,8 @@ class MemberService(RecordService):
         """Search public members matching the querystring."""
         # The search for members is split two methods (public, members) to
         # prevent leaking of information. E.g. the public serialization
-        # must now have all fields present.
-        # TODO: limit fields on which the query works on to avoid leaking
-        # information
+        # must not have all fields present.
+        # TODO: limit fields on which the query works on to avoid leaking information
         return self._members_search(
             identity,
             community_id,

@@ -380,7 +380,7 @@ def test_search_public_members(
     assert res.to_dict()["hits"]["total"] == 0
     # should get hits if using private search
     res = member_service.search(
-        owner.identity, community._record.id, q=f"newuser@newuser.org"
+        owner.identity, community._record.id, q="newuser@newuser.org"
     )
     assert res.to_dict()["hits"]["total"] == 1
 
@@ -390,6 +390,22 @@ def test_search_members_restricted(
 ):
     """Restricted communities can only be searched by members."""
     c = restricted_community
+
+    # Members can see all other members.
+    res = member_service.search(owner.identity, c._record.id)
+    assert res.to_dict()["hits"]["total"] == 1
+
+    # Anyone get permission denied.
+    pytest.raises(
+        PermissionDeniedError, member_service.search_public, anon_identity, c._record.id
+    )
+
+
+def test_search_members_visibility_restricted(
+    member_service, restricted_members_community, owner, anon_identity, clean_index
+):
+    """Restricted members communities can only be searched by members."""
+    c = restricted_members_community
 
     # Members can see all other members.
     res = member_service.search(owner.identity, c._record.id)
