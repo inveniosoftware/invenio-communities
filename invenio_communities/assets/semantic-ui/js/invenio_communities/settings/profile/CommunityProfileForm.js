@@ -1,6 +1,6 @@
 /*
  * This file is part of Invenio.
- * Copyright (C) 2016-2023 CERN.
+ * Copyright (C) 2016-2024 CERN.
  * Copyright (C) 2021-2022 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
