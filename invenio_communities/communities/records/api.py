@@ -27,8 +27,8 @@ from invenio_vocabularies.records.api import Vocabulary
 from invenio_vocabularies.records.systemfields.relations import CustomFieldsRelation
 
 from invenio_communities.communities.records.systemfields.children import ChildrenField
-from invenio_communities.communities.records.systemfields.is_verified import (
-    IsVerifiedField,
+from invenio_communities.communities.records.systemfields.is_safelisted import (
+    IsSafelistedField,
 )
 
 from ..dumpers.featured import FeaturedDumperExt
@@ -64,7 +64,7 @@ class Community(Record):
         extensions=[
             FeaturedDumperExt("featured"),
             RelationDumperExt("relations"),
-            CalculatedFieldDumperExt("is_verified"),
+            CalculatedFieldDumperExt("is_safelisted"),
         ]
     )
 
@@ -121,7 +121,9 @@ class Community(Record):
         custom=CustomFieldsRelation("COMMUNITIES_CUSTOM_FIELDS"),
     )
 
-    is_verified = IsVerifiedField("is_verified")
+    status = ModelField("status", dump_type=str)
+
+    is_safelisted = IsSafelistedField("is_safelisted")
 
     deletion_status = CommunityDeletionStatusField()
 

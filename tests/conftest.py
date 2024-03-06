@@ -12,7 +12,7 @@ import itertools
 from copy import deepcopy
 
 import pytest
-from flask_principal import AnonymousIdentity
+from flask_principal import AnonymousIdentity, Need
 from invenio_access.models import ActionRoles
 from invenio_access.permissions import any_user as any_user_need
 from invenio_access.permissions import superuser_access
@@ -249,6 +249,20 @@ def group(database):
 def owner(users):
     """Community owner user."""
     return users["owner"]
+
+
+@pytest.fixture()
+def unverified_user(UserFixture, app, db):
+    """User meant to test 'verified' property of records."""
+    u = UserFixture(
+        email="unverified@inveniosoftware.org",
+        password="testuser",
+    )
+    u.create(app, db)
+    u.user.verified_at = None
+    # Dumping `is_verified` requires authenticated user in tests
+    u.identity.provides.add(Need(method="system_role", value="authenticated_user"))
+    return u
 
 
 @pytest.fixture(scope="module")

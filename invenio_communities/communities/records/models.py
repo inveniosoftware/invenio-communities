@@ -8,7 +8,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Community database models."""
-
+import enum
 from datetime import datetime
 
 from invenio_db import db
@@ -20,6 +20,28 @@ from sqlalchemy.types import String
 from sqlalchemy_utils.types import ChoiceType, UUIDType
 
 from .systemfields.deletion_status import CommunityDeletionStatusEnum
+
+
+class CommunityStatusEnum(enum.Enum):
+    """Community status enum."""
+
+    NEW = "N"
+    VERIFIED = "V"
+    MODERATED = "M"
+
+    def __str__(self):
+        """Return its value."""
+        return self.value
+
+    def __eq__(self, __value) -> bool:
+        """Check if the value is equal to the enum value.
+
+        Supports comparison with string values.
+        """
+        if isinstance(__value, str):
+            return self.value == __value
+
+        return super().__eq__(__value)
 
 
 class CommunityMetadata(db.Model, RecordMetadataBase):
@@ -37,6 +59,12 @@ class CommunityMetadata(db.Model, RecordMetadataBase):
         ChoiceType(CommunityDeletionStatusEnum, impl=db.String(1)),
         nullable=False,
         default=CommunityDeletionStatusEnum.PUBLISHED.value,
+    )
+
+    status = db.Column(
+        ChoiceType(CommunityStatusEnum, impl=db.String(1)),
+        nullable=False,
+        default=CommunityStatusEnum.NEW.value,
     )
 
 

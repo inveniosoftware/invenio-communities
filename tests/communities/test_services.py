@@ -21,6 +21,7 @@ from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
 
+from invenio_communities.communities.records.models import CommunityStatusEnum
 from invenio_communities.communities.records.systemfields.deletion_status import (
     CommunityDeletionStatusEnum,
 )
@@ -762,3 +763,26 @@ def test_bulk_update_parent_overwrite(
     for c_id in children:
         c_comm = community_service.record_cls.pid.resolve(c_id)
         assert str(c_comm.parent.id) == str(parent_community.id)
+
+
+def test_status_new(community_service, minimal_community, location, es_clear, owner):
+    c_data = deepcopy(minimal_community)
+    c_data["slug"] = "test_status_new"
+    co = community_service.create(data=c_data, identity=owner.identity)
+    assert co._record.status == CommunityStatusEnum.NEW
+
+
+def test_status_permissions(
+    community_service, minimal_community, users, location, es_clear, owner
+):
+    """Test that search does not return the 'status' field to any user."""
+    c_data = deepcopy(minimal_community)
+    c_data["slug"] = "test_status_perms"
+    co = community_service.create(data=c_data, identity=owner.identity)
+    community_service.record_cls.index.refresh()
+    assert co._record.status == CommunityStatusEnum.NEW
+
+    for uname, u in users.items():
+        search = community_service.search(u.identity)
+        assert search.total == 1
+        assert not any("status" in hit for hit in search.hits)

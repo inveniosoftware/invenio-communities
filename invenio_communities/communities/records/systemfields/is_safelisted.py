@@ -8,8 +8,10 @@
 
 from invenio_records_resources.records.systemfields.calculated import CalculatedField
 
+from ..models import CommunityStatusEnum
 
-class IsVerifiedField(CalculatedField):
+
+class IsSafelistedField(CalculatedField):
     """Systemfield for calculating whether or not the request is expired."""
 
     def __init__(self, key=None):
@@ -17,15 +19,18 @@ class IsVerifiedField(CalculatedField):
         super().__init__(key=key, use_cache=False)
 
     def calculate(self, record):
-        """Calculate the ``is_verified`` property of the record."""
+        """Calculate the ``is_safelisted`` property of the record."""
         # import here due to circular import
         from invenio_communities.members.records.api import Member
 
-        community_verified = False
-        owners = [m.dumps() for m in Member.get_members(record.id) if m.role == "owner"]
-        for owner in owners:
-            # community is considered verified if at least one owner is verified
-            if owner["user"]["verified_at"] is not None:
-                community_verified = True
-                break
+        community_verified = record.status == CommunityStatusEnum.VERIFIED
+        if not community_verified:
+            owners = [
+                m.dumps() for m in Member.get_members(record.id) if m.role == "owner"
+            ]
+            for owner in owners:
+                # community is considered verified if at least one owner is verified
+                if owner["user"]["verified_at"] is not None:
+                    community_verified = True
+                    break
         return community_verified
