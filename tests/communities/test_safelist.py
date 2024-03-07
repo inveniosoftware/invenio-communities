@@ -10,15 +10,15 @@ from copy import deepcopy
 
 from invenio_db import db
 
-from invenio_communities.communities.records.models import CommunityStatusEnum
+from invenio_communities.communities.records.systemfields.community_status import (
+    CommunityStatusEnum,
+)
 
 
 def test_safelist_computed_by_verified_status(
     community_service, minimal_community, location, es_clear, unverified_user
 ):
-    """
-    Test that the safelist feature for communities is computed correctly based on the verified status.
-    """
+    """Test that the safelist feature for communities is computed correctly based on the verified status."""
     # Create a comunity
     # Flag it as "verified"
     # Validate that the computed field "is_verified" is set to "True"

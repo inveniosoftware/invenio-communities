@@ -21,7 +21,9 @@ from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_records_resources.services.errors import PermissionDeniedError
 from marshmallow import ValidationError
 
-from invenio_communities.communities.records.models import CommunityStatusEnum
+from invenio_communities.communities.records.systemfields.community_status import (
+    CommunityStatusEnum,
+)
 from invenio_communities.communities.records.systemfields.deletion_status import (
     CommunityDeletionStatusEnum,
 )
@@ -766,6 +768,7 @@ def test_bulk_update_parent_overwrite(
 
 
 def test_status_new(community_service, minimal_community, location, es_clear, owner):
+    """Test the status of a new community."""
     c_data = deepcopy(minimal_community)
     c_data["slug"] = "test_status_new"
     co = community_service.create(data=c_data, identity=owner.identity)

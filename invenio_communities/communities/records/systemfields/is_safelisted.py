@@ -8,7 +8,7 @@
 
 from invenio_records_resources.records.systemfields.calculated import CalculatedField
 
-from ..models import CommunityStatusEnum
+from ..systemfields.community_status import CommunityStatusEnum
 
 
 class IsSafelistedField(CalculatedField):

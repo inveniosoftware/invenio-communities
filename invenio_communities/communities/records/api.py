@@ -34,6 +34,7 @@ from invenio_communities.communities.records.systemfields.is_safelisted import (
 from ..dumpers.featured import FeaturedDumperExt
 from . import models
 from .systemfields.access import CommunityAccessField
+from .systemfields.community_status import CommunityStatusField
 from .systemfields.deletion_status import CommunityDeletionStatusField
 from .systemfields.parent_community import ParentCommunityField
 from .systemfields.pidslug import PIDSlugField
@@ -121,7 +122,7 @@ class Community(Record):
         custom=CustomFieldsRelation("COMMUNITIES_CUSTOM_FIELDS"),
     )
 
-    status = ModelField("status", dump_type=str)
+    status = CommunityStatusField("status")
 
     is_safelisted = IsSafelistedField("is_safelisted")
 
