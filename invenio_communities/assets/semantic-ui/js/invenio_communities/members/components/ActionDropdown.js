@@ -80,6 +80,7 @@ class ActionDropdown extends Component {
       >
         <div className="flex align-items-center members-dropdown-container">
           <Dropdown
+            className="action-menu-width"
             options={optionsSerializer(options)}
             loading={loading}
             value={currentValue}
@@ -121,6 +122,7 @@ ActionDropdown.defaultProps = {
   direction: "right",
   optionsSerializer: dropdownOptionsGenerator,
   fluid: false,
+  label: "",
 };
 
 export default Overridable.component("ActionDropdown", ActionDropdown);
