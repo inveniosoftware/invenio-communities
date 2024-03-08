@@ -186,6 +186,7 @@ class ManagerMemberBulkActionsCmp extends Component {
             <SelectedMembers
               updateSelectedMembers={this.updateSelectedMembers}
               selectedMembers={selectedMembers}
+              headerText={i18next.t("Selected members")}
             />
             {currentActionRender}
           </Modal.Content>
