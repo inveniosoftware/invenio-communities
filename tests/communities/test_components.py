@@ -13,6 +13,7 @@ from datetime import datetime
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_oaiserver.models import OAISet
+from invenio_records_resources.services.errors import PermissionDeniedError
 
 from invenio_communities.communities.services.components import OAISetComponent
 
@@ -25,24 +26,28 @@ def _retrieve_oaiset(service, community):
 
 
 @pytest.fixture()
-def comm(community_service, minimal_community, location):
+def comm(community_service, minimal_community, owner, location):
     """Create minimal public community."""
     c = deepcopy(minimal_community)
     c["slug"] = "public-{slug}".format(
         slug=str(datetime.utcnow().timestamp()).replace(".", "-")
     )
-    return community_service.create(data=c, identity=system_identity)
+    community = community_service.create(data=c, identity=owner.identity)
+    owner.refresh()
+    return community
 
 
 @pytest.fixture()
-def comm_restricted(community_service, minimal_community, location):
+def comm_restricted(community_service, minimal_community, owner, location):
     """Create minimal restricted community."""
     c = deepcopy(minimal_community)
     c["access"]["visibility"] = "restricted"
     c["slug"] = "restricted-{slug}".format(
         slug=str(datetime.utcnow().timestamp()).replace(".", "-")
     )
-    return community_service.create(data=c, identity=system_identity)
+    community = community_service.create(data=c, identity=owner.identity)
+    owner.refresh()
+    return community
 
 
 def test_oai_set_create_community(community_service, comm, comm_restricted):
@@ -144,3 +149,46 @@ def test_children_component(community_service, parent_community, db):
     comm = community_service.record_cls.get_record(str(parent_community.id))
 
     assert comm.children.allow is True
+
+
+def test_children_component_without_children(
+    community_service,
+    comm,
+    owner,
+    minimal_community,
+    db,
+):
+    """Test children component for communities without the "children" field."""
+    # Refetch and remove the "children" field
+    comm = community_service.record_cls.get_record(str(comm.id))
+    comm.pop("children", None)
+    comm.commit()
+    db.session.commit()
+
+    # update without modifying the children field...
+    data = deepcopy(comm.dumps())
+    res = community_service.update(identity=owner.identity, id_=comm.id, data=data)
+    assert not res.errors
+
+    comm = community_service.record_cls.get_record(str(comm.id))
+    # ...doesn't set the children field
+    assert "children" not in comm
+
+    # update with the default value (`allow: False`)...
+    data = deepcopy(comm.dumps())
+    data.update({"children": {"allow": False}})
+    res = community_service.update(identity=owner.identity, id_=comm.id, data=data)
+    assert not res.errors
+    comm = community_service.record_cls.get_record(str(comm.id))
+    # ...doesn't set the children field
+    assert "children" not in comm
+
+    # update with new non-default value (`allow: True`)...
+    data = deepcopy(comm.dumps())
+    data.update({"children": {"allow": True}})
+    # ...raises a permission error...
+    with pytest.raises(PermissionDeniedError):
+        community_service.update(identity=owner.identity, id_=comm.id, data=data)
+    comm = community_service.record_cls.get_record(str(comm.id))
+    # ...and doesn't set the children field
+    assert "children" not in comm
