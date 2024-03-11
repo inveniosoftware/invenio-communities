@@ -16,6 +16,7 @@ class Children:
 
     def __init__(self, allow=None):
         """Create a Children object."""
+        self.dirty = allow is not None
         self._allow = allow or False
 
     @property
@@ -29,6 +30,7 @@ class Children:
         if not isinstance(value, bool):
             raise ValueError("Invalid value for allow, it must be a boolean.")
         self._allow = value
+        self.dirty = True
 
     @classmethod
     def from_dict(cls, data):
@@ -93,7 +95,5 @@ class ChildrenField(SystemField):
     def pre_commit(self, record):
         """Dump the configured values before the record is committed."""
         obj = self.obj(record)
-        if obj is not None:
-            # only set the 'children' property if one was present in the
-            # record dict
+        if obj.dirty:
             record[self.key] = obj.dump()

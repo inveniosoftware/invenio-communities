@@ -14,7 +14,6 @@ from flask import current_app
 from invenio_access.permissions import system_identity, system_process
 from invenio_db import db
 from invenio_i18n import lazy_gettext as _
-from invenio_i18n.proxies import current_i18n
 from invenio_oaiserver.models import OAISet
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.services.records.components import (
@@ -345,18 +344,21 @@ class CommunityParentComponent(ServiceComponent):
 class ChildrenComponent(ServiceComponent):
     """Service component for children integration."""
 
-    def create(self, identity, data=None, record=None, **kwargs):
-        """Create handler."""
-        if "children" in data:
+    def _populate_and_validate(self, identity, data, record, **kwargs):
+        """Populate and validate the community's children field."""
+        # We check if data is passed and is different to the stored or default value
+        existing_value = record.children.dump()
+        if "children" in data and data["children"] != existing_value:
             self.service.require_permission(identity, "manage_children", record=record)
             record.children = record.children.from_dict(data["children"])
 
+    def create(self, identity, data=None, record=None, **kwargs):
+        """Create handler."""
+        self._populate_and_validate(identity, data, record, **kwargs)
+
     def update(self, identity, data=None, record=None, **kwargs):
         """Update handler."""
-        # We check if the children field is passed and it's different to the values stored
-        if "children" in data and data["children"] != record.get("children", {}):
-            self.service.require_permission(identity, "manage_children", record=record)
-            record.children = record.children.from_dict(data["children"])
+        self._populate_and_validate(identity, data, record, **kwargs)
 
 
 DefaultCommunityComponents = [
