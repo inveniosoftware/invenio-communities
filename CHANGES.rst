@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 12.1.1 (released 2024-03-12)
+
+- components: fix backwards compatibility with community children
+
 Version 12.1.0 (released 2024-03-06)
 
 - global: implement access.members_visibility field
