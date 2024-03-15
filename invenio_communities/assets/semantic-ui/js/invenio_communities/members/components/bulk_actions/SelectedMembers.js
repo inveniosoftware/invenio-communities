@@ -21,7 +21,7 @@ export class SelectedMembers extends Component {
   };
 
   render() {
-    const { selectedMembers, displayingGroups } = this.props;
+    const { selectedMembers, headerText } = this.props;
 
     return !_isEmpty(selectedMembers) ? (
       <Segment className="selected-members-header mb-20 mr-20">
@@ -45,11 +45,7 @@ export class SelectedMembers extends Component {
       </Segment>
     ) : (
       <Segment textAlign="center" className="selected-members-header mb-20" placeholder>
-        <Header disabled>
-          {displayingGroups
-            ? i18next.t("Selected groups")
-            : i18next.t("Selected members")}
-        </Header>
+        <Header disabled>{headerText}</Header>
       </Segment>
     );
   }
@@ -58,9 +54,9 @@ export class SelectedMembers extends Component {
 SelectedMembers.propTypes = {
   selectedMembers: PropTypes.object.isRequired,
   updateSelectedMembers: PropTypes.func.isRequired,
-  displayingGroups: PropTypes.bool,
+  headerText: PropTypes.string,
 };
 
 SelectedMembers.defaultProps = {
-  displayingGroups: false,
+  headerText: "",
 };
