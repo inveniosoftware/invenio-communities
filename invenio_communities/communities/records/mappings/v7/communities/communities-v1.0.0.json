@@ -38,13 +38,16 @@
       "id": {
         "type": "keyword"
       },
-      "is_verified": {
+      "is_safelisted": {
         "type": "boolean"
       },
       "slug": {
         "type": "keyword"
       },
       "deletion_status": {
+        "type": "keyword"
+      },
+      "status": {
         "type": "keyword"
       },
       "is_deleted": {

@@ -205,8 +205,9 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
         unknown = EXCLUDE
 
     field_dump_permissions = {
-        # hide 'is_verified' behind a permission
-        "is_verified": "moderate",
+        # hide 'is_safelisted' behind a permission
+        "is_safelisted": "moderate",
+        "status": "moderate",
     }
 
     id = fields.String(dump_only=True)
@@ -229,7 +230,9 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
         partial(CustomFieldsSchema, fields_var="COMMUNITIES_CUSTOM_FIELDS")
     )
 
-    is_verified = fields.Boolean(dump_only=True)
+    is_safelisted = fields.Boolean(dump_only=True)
+
+    status = fields.String(dump_only=True)
 
     theme = fields.Nested(CommunityThemeSchema, allow_none=True)
 

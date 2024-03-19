@@ -38,8 +38,11 @@
       "id": {
         "type": "keyword"
       },
-      "is_verified": {
+      "is_safelisted": {
         "type": "boolean"
+      },
+      "status": {
+        "type": "keyword"
       },
       "slug": {
         "type": "keyword"
