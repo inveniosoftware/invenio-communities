@@ -11,6 +11,7 @@
 """Invenio communities extension."""
 
 from flask import g
+from flask_menu import current_menu
 from flask_principal import identity_loaded
 from invenio_accounts.signals import datastore_post_commit
 from invenio_base.utils import load_or_import_from_config
@@ -129,20 +130,19 @@ def finalize_app(app):
 
 def register_menus(app):
     """Register community menu items."""
-    menu = app.extensions["menu"]
-    menu.submenu("main.communities").register(
+    current_menu.submenu("main.communities").register(
         endpoint="invenio_communities.communities_frontpage",
         text=_("Communities"),
         order=1,
     )
-    menu.submenu("plus.community").register(
+    current_menu.submenu("plus.community").register(
         endpoint="invenio_communities.communities_new",
         text=_("New community"),
         order=3,
         visible_when=_can_create_community,
     )
 
-    communities = menu.submenu("communities")
+    communities = current_menu.submenu("communities")
 
     communities.submenu("requests").register(
         endpoint="invenio_communities.communities_requests",
