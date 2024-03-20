@@ -13,25 +13,33 @@
 from datetime import datetime
 
 from babel.dates import format_datetime
-from flask import Blueprint, current_app, g, render_template, url_for
+from flask import Blueprint, current_app, g, render_template, request, url_for
 from flask_login import current_user
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.errors import PermissionDeniedError
 
-from invenio_communities.communities.resources.serializer import \
-    UICommunityJSONSerializer
+from invenio_communities.communities.resources.serializer import (
+    UICommunityJSONSerializer,
+)
+from invenio_communities.proxies import current_communities
 
 from ..errors import CommunityDeletedError
 from ..searchapp import search_app_context
-from .communities import (communities_about, communities_curation_policy,
-                          communities_frontpage, communities_new,
-                          communities_requests, communities_search,
-                          communities_settings,
-                          communities_settings_curation_policy,
-                          communities_settings_pages,
-                          communities_settings_privileges, invitations,
-                          members)
+from .communities import (
+    communities_about,
+    communities_curation_policy,
+    communities_frontpage,
+    communities_new,
+    communities_requests,
+    communities_search,
+    communities_settings,
+    communities_settings_curation_policy,
+    communities_settings_pages,
+    communities_settings_privileges,
+    invitations,
+    members,
+)
 
 
 #
@@ -70,6 +78,45 @@ def record_permission_denied_error(error):
         # trigger the flask-login unauthorized handler
         return current_app.login_manager.unauthorized()
     return render_template(current_app.config["THEME_403_TEMPLATE"]), 403
+
+
+def _can_create_community():
+    """Function used to check if a user has permissions to create a community."""
+    return current_communities.service.check_permission(g.identity, "create")
+
+
+def _show_create_community_link():
+    """
+    Determine if the 'New community' button should always be visible.
+
+    If the 'COMMUNITIES_ALWAYS_SHOW_CREATE_LINK' config is False,
+    check the user's permission to create a community link. If the config is
+    True, the button is always visible.
+    """
+    should_show = current_app.config.get("COMMUNITIES_ALWAYS_SHOW_CREATE_LINK", False)
+    if not should_show:  # show only when user can create
+        should_show = _can_create_community()
+    return should_show
+
+
+def _has_about_page_content():
+    """Function used to check if about page has content."""
+    community = request.community
+    if community and "metadata" in community and "page" in community["metadata"]:
+        return community["metadata"]["page"] != ""
+    return False
+
+
+def _has_curation_policy_page_content():
+    """Function used to check if curation policy page has content."""
+    community = request.community
+    if (
+        community
+        and "metadata" in community
+        and "curation_policy" in community["metadata"]
+    ):
+        return community["metadata"]["curation_policy"] != ""
+    return False
 
 
 #
