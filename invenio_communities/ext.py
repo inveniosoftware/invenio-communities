@@ -34,9 +34,9 @@ from invenio_communities.members import (
 
 from . import config
 from .cache.cache import IdentityCache
-from .proxies import current_communities
 from .roles import RoleRegistry
 from .utils import load_community_needs, on_datastore_post_commit
+from .views.ui import _can_create_community
 
 
 class InvenioCommunities(object):
@@ -109,12 +109,6 @@ class InvenioCommunities(object):
     def init_cache(self, app):
         """Initialize cache."""
         self.cache = self.cache_handler(app)
-
-
-def _can_create_community():
-    """Function used to check if a user has permissions to create a community."""
-    can_create = current_communities.service.check_permission(g.identity, "create")
-    return can_create
 
 
 def api_finalize_app(app):
