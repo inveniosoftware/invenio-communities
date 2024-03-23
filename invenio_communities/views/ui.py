@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
-# Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023-2024 Graz University of Technology.
 # Copyright (C) 2023 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -15,8 +15,6 @@ from datetime import datetime
 from babel.dates import format_datetime
 from flask import Blueprint, current_app, g, render_template, request, url_for
 from flask_login import current_user
-from flask_menu import current_menu
-from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.errors import PermissionDeniedError
@@ -39,7 +37,6 @@ from .communities import (
     communities_settings_curation_policy,
     communities_settings_pages,
     communities_settings_privileges,
-    community_theme_css_config,
     invitations,
     members,
 )
@@ -193,68 +190,6 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(routes["members"], view_func=members)
 
     blueprint.add_url_rule(routes["invitations"], view_func=invitations)
-
-    # theme injection view
-    blueprint.add_url_rule(
-        "/communities/<pid_value>/community-theme-<revision>.css",
-        view_func=community_theme_css_config,
-    )
-
-    @blueprint.before_app_first_request
-    def register_menus():
-        """Register community menu items."""
-        item = current_menu.submenu("main.communities")
-        item.register(
-            "invenio_communities.communities_frontpage",
-            _("Communities"),
-            order=1,
-        )
-        current_menu.submenu("plus.community").register(
-            "invenio_communities.communities_new",
-            _("New community"),
-            order=2,
-            visible_when=_show_create_community_link,
-        )
-
-        communities = current_menu.submenu("communities")
-
-        communities.submenu("requests").register(
-            "invenio_communities.communities_requests",
-            text=_("Requests"),
-            order=4,
-            expected_args=["pid_value"],
-            **dict(icon="inbox", permissions="can_search_requests"),
-        )
-        communities.submenu("members").register(
-            "invenio_communities.members",
-            text=_("Members"),
-            order=5,
-            expected_args=["pid_value"],
-            **dict(icon="users", permissions="can_members_search_public"),
-        )
-        communities.submenu("settings").register(
-            "invenio_communities.communities_settings",
-            text=_("Settings"),
-            order=6,
-            expected_args=["pid_value"],
-            **dict(icon="settings", permissions="can_update"),
-        )
-        communities.submenu("curation_policy").register(
-            "invenio_communities.communities_curation_policy",
-            text=_("Curation policy"),
-            order=7,
-            visible_when=_has_curation_policy_page_content,
-            expected_args=["pid_value"],
-            **dict(icon="balance scale", permissions="can_read"),
-        )
-        communities.submenu("about").register(
-            "invenio_communities.communities_about",
-            text=_("About"),
-            order=8,
-            visible_when=_has_about_page_content,
-            expected_args=["pid_value"],
-            **dict(icon="info", permissions="can_read"),
-        )
 
     # Register error handlers
     blueprint.register_error_handler(

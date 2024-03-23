@@ -3,15 +3,19 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2023-2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Invenio communities extension."""
 
+from flask import g
+from flask_menu import current_menu
 from flask_principal import identity_loaded
 from invenio_accounts.signals import datastore_post_commit
 from invenio_base.utils import load_or_import_from_config
+from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services import FileService
 
 from invenio_communities.communities import (
@@ -32,6 +36,7 @@ from . import config
 from .cache.cache import IdentityCache
 from .roles import RoleRegistry
 from .utils import load_community_needs, on_datastore_post_commit
+from .views.ui import _can_create_community
 
 
 class InvenioCommunities(object):
@@ -104,3 +109,91 @@ class InvenioCommunities(object):
     def init_cache(self, app):
         """Initialize cache."""
         self.cache = self.cache_handler(app)
+
+
+def api_finalize_app(app):
+    """Finalize app."""
+    init(app)
+
+
+def finalize_app(app):
+    """Finalize app."""
+    init(app)
+    register_menus(app)
+
+
+def register_menus(app):
+    """Register community menu items."""
+    current_menu.submenu("main.communities").register(
+        endpoint="invenio_communities.communities_frontpage",
+        text=_("Communities"),
+        order=1,
+    )
+    current_menu.submenu("plus.community").register(
+        endpoint="invenio_communities.communities_new",
+        text=_("New community"),
+        order=3,
+        visible_when=_can_create_community,
+    )
+
+    communities = current_menu.submenu("communities")
+
+    communities.submenu("requests").register(
+        endpoint="invenio_communities.communities_requests",
+        text=_("Requests"),
+        order=2,
+        expected_args=["pid_value"],
+        **{"icon": "comments", "permissions": "can_search_requests"}
+    )
+    communities.submenu("members").register(
+        endpoint="invenio_communities.members",
+        text=_("Members"),
+        order=3,
+        expected_args=["pid_value"],
+        **{"icon": "users", "permissions": "can_read"}
+    )
+
+    communities.submenu("settings").register(
+        endpoint="invenio_communities.communities_settings",
+        text=_("Settings"),
+        order=4,
+        expected_args=["pid_value"],
+        **{"icon": "settings", "permissions": "can_update"}
+    )
+    communities.submenu("curation_policy").register(
+        endpoint="invenio_communities.communities_curation_policy",
+        text=_("Curation policy"),
+        order=5,
+        expected_args=["pid_value"],
+        **{"icon": "balance scale", "permissions": "can_read"}
+    )
+    communities.submenu("about").register(
+        endpoint="invenio_communities.communities_about",
+        text=_("About"),
+        order=6,
+        expected_args=["pid_value"],
+        **{"icon": "info", "permissions": "can_read"}
+    )
+
+
+def init(app):
+    """Init app."""
+    # Register services - cannot be done in extension because
+    # Invenio-Records-Resources might not have been initialized.
+    rr_ext = app.extensions["invenio-records-resources"]
+    idx_ext = app.extensions["invenio-indexer"]
+    ext = app.extensions["invenio-communities"]
+
+    # services
+    rr_ext.registry.register(ext.service, service_id="communities")
+    rr_ext.registry.register(ext.service.members, service_id="members")
+
+    # indexers
+    idx_ext.registry.register(ext.service.indexer, indexer_id="communities")
+    idx_ext.registry.register(ext.service.members.indexer, indexer_id="members")
+    idx_ext.registry.register(
+        ext.service.members.archive_indexer, indexer_id="archived-invitations"
+    )
+
+    # change notification handlers
+    rr_ext.notification_registry.register("users", ext.service.on_relation_update)
