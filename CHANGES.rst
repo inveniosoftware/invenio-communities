@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 12.2.0 (released 2024-03-23)
+
+- application: fix before_first_request deprecation
+
 Version 12.1.1 (released 2024-03-12)
 
 - components: fix backwards compatibility with community children
