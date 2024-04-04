@@ -6,15 +6,15 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Record 'verified' system field."""
 
-from invenio_records_resources.records.systemfields.calculated import CalculatedField
+from invenio_records_resources.records.systemfields.calculated import CalculatedIndexedField
 
 
-class IsVerifiedField(CalculatedField):
+class IsVerifiedField(CalculatedIndexedField):
     """Systemfield for calculating whether or not the request is expired."""
 
-    def __init__(self, key=None):
+    def __init__(self, key=None, **kwargs):
         """Constructor."""
-        super().__init__(key=key, use_cache=False)
+        super().__init__(key=key, **kwargs)
 
     def calculate(self, record):
         """Calculate the ``is_verified`` property of the record."""

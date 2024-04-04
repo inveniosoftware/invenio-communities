@@ -70,6 +70,7 @@ class CommunitiesField(SystemField):
             "id",
             "slug",
             "theme",
+            "is_verified",
             "version_id",
             "metadata.title",
             "metadata.type",
@@ -84,6 +85,7 @@ class CommunitiesField(SystemField):
             "parent.updated",
             "parent.version_id",
             "parent.theme",
+            "parent.is_verified",
             "parent.children.allow",
             "parent.metadata.title",
             "parent.metadata.type",
@@ -98,7 +100,7 @@ class CommunitiesField(SystemField):
             data[self.key] = res
 
     def post_load(self, record, data, loader=None):
-        """Laod the parent community using the OS data (preventing a DB query)."""
+        """Load the parent community using the OS data (preventing a DB query)."""
         comms = data.get("communities")
         if comms:
             obj = self._manager_cls(self._m2m_model_cls, record.id, comms)
