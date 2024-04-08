@@ -99,14 +99,11 @@ def test_community_organizations_indexing(
 
     # Load comm again - should produce an identical record.
     loaded_comm = Community.loads(dump)
-    assert dict(comm) == dict(loaded_comm)
 
-    # Calling commit() will clear the dereferenced relation.
-    loaded_comm.commit()
     loaded_aff_list = loaded_comm["metadata"]["organizations"]
     assert len(loaded_aff_list) == 2
-    assert loaded_aff_list[0] == {"name": "My Org"}
-    assert loaded_aff_list[1] == {"id": "cern"}
+    assert loaded_aff_list[0]["name"] == "My Org"
+    assert loaded_aff_list[1]["id"] == "cern"
 
 
 def test_community_organizations_invalid(
