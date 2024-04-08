@@ -440,9 +440,17 @@ def test_search_members_restricted_as_group(
     assert res.total == 2
 
 
-def test_read_memberships(member_service, community, any_user, db, clean_index):
-    # empty at first
+def test_read_memberships(
+    member_service,
+    community,
+    any_user,
+    anon_identity,
+    db,
+    clean_index,
+):
+    # empty at first for both authenticated and anonymous user
     assert member_service.read_memberships(any_user.identity) == {"memberships": []}
+    assert member_service.read_memberships(anon_identity) == {"memberships": []}
     # add membership
     data = {
         "members": [{"type": "user", "id": str(any_user.id)}],
@@ -453,6 +461,8 @@ def test_read_memberships(member_service, community, any_user, db, clean_index):
     assert member_service.read_memberships(any_user.identity) == {
         "memberships": [(str(community._record.id), "reader")]
     }
+    # still empty for the anonynous user
+    assert member_service.read_memberships(anon_identity) == {"memberships": []}
 
 
 #
