@@ -6,7 +6,9 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Record 'verified' system field."""
 
-from invenio_records_resources.records.systemfields.calculated import CalculatedIndexedField
+from invenio_records_resources.records.systemfields.calculated import (
+    CalculatedIndexedField,
+)
 
 
 class IsVerifiedField(CalculatedIndexedField):
