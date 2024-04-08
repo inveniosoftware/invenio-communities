@@ -83,6 +83,11 @@ class BaseMemberModel(RecordMetadataBase):
     @classmethod
     def query_memberships(cls, user_id=None, group_ids=None, active=True):
         """Query for (community,role)-pairs."""
+        # We don't want to leak "all" memberships, so we require at least one of the
+        # filters to be set.
+        if user_id is None and not group_ids:
+            return []
+
         q = db.session.query(cls.community_id, cls.role).filter(cls.active == active)
 
         user_filter = cls.user_id == user_id
