@@ -220,6 +220,14 @@
           "description": "Whether or not the tombstone page is publicly visible."
         }
       }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "moderated",
+        "verified"
+      ]
     }
   }
 }
