@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 13.0.0 (released 2024-04-10)
+
+- ext: space-out community menu items
+- systemfields: dump `@v` field during indexing
+- members modal: generalise to be reusable
+- records: optimize performance of is_verified
+- models: fix memberships querying
+
 Version 12.2.0 (released 2024-03-23)
 
 - application: fix before_first_request deprecation
