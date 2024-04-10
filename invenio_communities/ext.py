@@ -141,14 +141,14 @@ def register_menus(app):
     communities.submenu("requests").register(
         endpoint="invenio_communities.communities_requests",
         text=_("Requests"),
-        order=2,
+        order=20,
         expected_args=["pid_value"],
         **{"icon": "comments", "permissions": "can_search_requests"}
     )
     communities.submenu("members").register(
         endpoint="invenio_communities.members",
         text=_("Members"),
-        order=3,
+        order=30,
         expected_args=["pid_value"],
         **{"icon": "users", "permissions": "can_read"}
     )
@@ -156,21 +156,21 @@ def register_menus(app):
     communities.submenu("settings").register(
         endpoint="invenio_communities.communities_settings",
         text=_("Settings"),
-        order=4,
+        order=40,
         expected_args=["pid_value"],
         **{"icon": "settings", "permissions": "can_update"}
     )
     communities.submenu("curation_policy").register(
         endpoint="invenio_communities.communities_curation_policy",
         text=_("Curation policy"),
-        order=5,
+        order=50,
         expected_args=["pid_value"],
         **{"icon": "balance scale", "permissions": "can_read"}
     )
     communities.submenu("about").register(
         endpoint="invenio_communities.communities_about",
         text=_("About"),
-        order=6,
+        order=60,
         expected_args=["pid_value"],
         **{"icon": "info", "permissions": "can_read"}
     )
