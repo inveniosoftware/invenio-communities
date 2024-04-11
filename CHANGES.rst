@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 12.1.2 (released 2024-04-11)
+
+- models: fix memberships querying
+
 Version 12.1.1 (released 2024-03-12)
 
 - components: fix backwards compatibility with community children
