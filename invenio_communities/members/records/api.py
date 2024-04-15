@@ -69,11 +69,18 @@ class MemberMixin:
             attrs=[
                 "email",
                 "username",
-                "profile",
-                "preferences",
                 "active",
                 "confirmed",
                 "verified_at",
+            ],
+            # Explicitly list common keys from fields that can be customizable
+            keys=[
+                "profile.affiliations",
+                "profile.full_name",
+                "preferences.locale",
+                "preferences.timezone",
+                "preferences.visibility",
+                "preferences.email_visibility",
             ],
         ),
         group=ModelRelation(
