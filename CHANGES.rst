@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 13.0.1 (released 2024-04-15)
+
+- fix: community theme and menus visibility
+
 Version 13.0.0 (released 2024-04-10)
 
 - ext: space-out community menu items
