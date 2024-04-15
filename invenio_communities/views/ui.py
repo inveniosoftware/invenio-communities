@@ -37,6 +37,7 @@ from .communities import (
     communities_settings_curation_policy,
     communities_settings_pages,
     communities_settings_privileges,
+    community_theme_css_config,
     invitations,
     members,
 )
@@ -190,6 +191,12 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(routes["members"], view_func=members)
 
     blueprint.add_url_rule(routes["invitations"], view_func=invitations)
+
+    # theme injection view
+    blueprint.add_url_rule(
+        "/communities/<pid_value>/community-theme-<revision>.css",
+        view_func=community_theme_css_config,
+    )
 
     # Register error handlers
     blueprint.register_error_handler(
