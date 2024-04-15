@@ -36,7 +36,11 @@ from . import config
 from .cache.cache import IdentityCache
 from .roles import RoleRegistry
 from .utils import load_community_needs, on_datastore_post_commit
-from .views.ui import _can_create_community
+from .views.ui import (
+    _has_about_page_content,
+    _has_curation_policy_page_content,
+    _show_create_community_link,
+)
 
 
 class InvenioCommunities(object):
@@ -132,8 +136,8 @@ def register_menus(app):
     current_menu.submenu("plus.community").register(
         endpoint="invenio_communities.communities_new",
         text=_("New community"),
-        order=3,
-        visible_when=_can_create_community,
+        order=2,
+        visible_when=_show_create_community_link,
     )
 
     communities = current_menu.submenu("communities")
@@ -143,14 +147,14 @@ def register_menus(app):
         text=_("Requests"),
         order=20,
         expected_args=["pid_value"],
-        **{"icon": "comments", "permissions": "can_search_requests"}
+        **{"icon": "inbox", "permissions": "can_search_requests"}
     )
     communities.submenu("members").register(
         endpoint="invenio_communities.members",
         text=_("Members"),
         order=30,
         expected_args=["pid_value"],
-        **{"icon": "users", "permissions": "can_read"}
+        **{"icon": "users", "permissions": "can_members_search_public"}
     )
 
     communities.submenu("settings").register(
@@ -160,10 +164,12 @@ def register_menus(app):
         expected_args=["pid_value"],
         **{"icon": "settings", "permissions": "can_update"}
     )
+
     communities.submenu("curation_policy").register(
         endpoint="invenio_communities.communities_curation_policy",
         text=_("Curation policy"),
         order=50,
+        visible_when=_has_curation_policy_page_content,
         expected_args=["pid_value"],
         **{"icon": "balance scale", "permissions": "can_read"}
     )
@@ -171,6 +177,7 @@ def register_menus(app):
         endpoint="invenio_communities.communities_about",
         text=_("About"),
         order=60,
+        visible_when=_has_about_page_content,
         expected_args=["pid_value"],
         **{"icon": "info", "permissions": "can_read"}
     )
