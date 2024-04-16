@@ -16,6 +16,7 @@ import { InvitationsContext } from "../../../api/invitations/InvitationsContextP
 import { GroupTabPane } from "./GroupTabPane";
 import { SearchWithRoleSelection } from "../../components/SearchWithRoleSelection";
 import { RichEditor, withCancel, http } from "react-invenio-forms";
+import { UsersApi } from "../../../api";
 
 export class InvitationsMembersModal extends Component {
   constructor(props) {
@@ -75,6 +76,7 @@ export class InvitationsMembersModal extends Component {
     const { activeIndex, message, existingIds } = this.state;
     const { api } = this.context;
     const userRoles = rolesCanInvite["user"];
+    const client = new UsersApi();
 
     const peopleTab = {
       menuItem: (
@@ -98,6 +100,8 @@ export class InvitationsMembersModal extends Component {
         >
           <SearchWithRoleSelection
             key="members-users"
+            searchType="user"
+            fetchMembers={client.getUsers}
             roleOptions={userRoles}
             modalClose={this.handleCloseModal}
             action={api.createInvite}
@@ -109,11 +113,11 @@ export class InvitationsMembersModal extends Component {
             doneButtonText={i18next.t("Invite")}
             doneButtonIcon="checkmark"
             radioLabel={i18next.t("Role")}
-            selectedItemsHeader={i18next.t("Selected members")}
+            selectedItemsHeader={i18next.t("No selected members")}
             message={message}
             messageComponent={
               <>
-                <label>{i18next.t("Message")}</label>
+                <label>{i18next.t("Invitation message")}</label>
                 <RichEditor
                   onBlur={(event, editor) => {
                     this.updateMessage(editor.getContent());
@@ -121,11 +125,13 @@ export class InvitationsMembersModal extends Component {
                 />
               </>
             }
-            doneButtonTip="You are about to invite"
+            doneButtonTip={i18next.t("You are about to invite")}
+            doneButtonTipType={i18next.t("users")}
             existingEntities={existingIds}
             existingEntitiesDescription={i18next.t(
               "Already a member or invitation pending"
             )}
+            searchBarPlaceholder={i18next.t("Search by email, full name or username")}
           />
         </Tab.Pane>
       ),

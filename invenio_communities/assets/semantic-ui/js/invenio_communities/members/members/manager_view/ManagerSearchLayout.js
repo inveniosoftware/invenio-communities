@@ -18,14 +18,8 @@ import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitati
 
 export class ManagerSearchLayout extends Component {
   render() {
-    const {
-      config,
-      roles,
-      rolesCanInvite,
-      community,
-      communityGroupsEnabled,
-      appName,
-    } = this.props;
+    const { config, roles, rolesCanInvite, community, groupsEnabled, appName } =
+      this.props;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getMembersFilters();
     return (
@@ -37,7 +31,7 @@ export class ManagerSearchLayout extends Component {
               <InvitationsContextProvider community={community}>
                 <InvitationsMembersModalWithSearchKit
                   rolesCanInvite={rolesCanInvite}
-                  groupsEnabled={communityGroupsEnabled}
+                  groupsEnabled={groupsEnabled}
                   community={community}
                 />
               </InvitationsContextProvider>
@@ -50,7 +44,7 @@ export class ManagerSearchLayout extends Component {
               <InvitationsContextProvider community={community}>
                 <InvitationsMembersModalWithSearchKit
                   rolesCanInvite={rolesCanInvite}
-                  groupsEnabled={communityGroupsEnabled}
+                  groupsEnabled={groupsEnabled}
                   community={community}
                 />
               </InvitationsContextProvider>
@@ -78,7 +72,7 @@ ManagerSearchLayout.propTypes = {
   roles: PropTypes.array.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
-  communityGroupsEnabled: PropTypes.bool.isRequired,
+  groupsEnabled: PropTypes.bool.isRequired,
   appName: PropTypes.string,
 };
 

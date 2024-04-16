@@ -20,6 +20,7 @@ from invenio_records_permissions.generators import (
     SystemProcess,
 )
 from invenio_records_permissions.policies import BasePermissionPolicy
+from invenio_users_resources.services.generators import GroupsEnabled
 from invenio_users_resources.services.permissions import UserManager
 
 from .generators import (
@@ -30,7 +31,6 @@ from .generators import (
     CommunityMembers,
     CommunityOwners,
     CommunitySelfMember,
-    GroupsEnabled,
     IfCommunityDeleted,
     IfPolicyClosed,
     IfRestricted,

@@ -13,14 +13,12 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
 import { Button, Form, Modal } from "semantic-ui-react";
-import { UsersApi } from "../../api/UsersApi";
 import { MembersSearchBar } from "../invitations/invitationsModal/MemberSearchBar";
 import { SelectedMembers } from "./bulk_actions/SelectedMembers";
 
 export class SearchWithRoleSelection extends Component {
   constructor(props) {
     super(props);
-    this.usersApi = new UsersApi();
     this.state = {
       role: undefined,
       selected: {},
@@ -69,8 +67,12 @@ export class SearchWithRoleSelection extends Component {
       messageComponent,
       existingEntities,
       existingEntitiesDescription,
+      fetchMembers,
+      searchType,
+      searchBarPlaceholder,
+      doneButtonTipType,
     } = this.props;
-    const { selected, loading, error } = this.state;
+    const { selected, loading, error, role } = this.state;
     const selectedCount = Object.keys(selected).length;
 
     return (
@@ -88,11 +90,11 @@ export class SearchWithRoleSelection extends Component {
               <MembersSearchBar
                 existingEntities={existingEntities}
                 existingEntitiesDescription={existingEntitiesDescription}
-                fetchMembers={this.usersApi.getUsers}
+                fetchMembers={fetchMembers}
                 selectedMembers={selected}
                 handleChange={this.addEntityToSelected}
-                searchType="user"
-                placeholder={i18next.t("Search by email, full name or username")}
+                searchType={searchType}
+                placeholder={searchBarPlaceholder}
               />
               <label className="helptext rel-mt-1">{searchBarTooltip}</label>
             </Form.Field>
@@ -102,7 +104,15 @@ export class SearchWithRoleSelection extends Component {
               onOptionChangeCallback={this.handleRoleUpdate}
               checked={false}
             />
-            <Form.Field>{messageComponent}</Form.Field>
+            {searchType === "group" || searchType === "role" ? (
+              <i>
+                {i18next.t(
+                  "Note: upon addition, selected groups will have access to the record without any kind of notification."
+                )}
+              </i>
+            ) : (
+              <Form.Field>{messageComponent}</Form.Field>
+            )}
           </Form>
         </Modal.Content>
         <Modal.Actions>
@@ -117,14 +127,14 @@ export class SearchWithRoleSelection extends Component {
           />
           {selectedCount > 0 && (
             <Trans key="entitiesSelected" count={selectedCount}>
-              {doneButtonTip} {{ selectedCount }} users
+              {doneButtonTip} {{ selectedCount }} {doneButtonTipType}
             </Trans>
           )}
           <Button
             content={doneButtonText}
             labelPosition="left"
             loading={loading}
-            disabled={loading || selectedCount === 0}
+            disabled={loading || selectedCount === 0 || role === undefined}
             icon={doneButtonIcon}
             primary
             onClick={this.handleActionClick}
@@ -142,9 +152,11 @@ SearchWithRoleSelection.propTypes = {
   onSuccessCallback: PropTypes.func.isRequired,
   searchBarTitle: PropTypes.object,
   searchBarTooltip: PropTypes.string,
+  searchBarPlaceholder: PropTypes.string,
   doneButtonText: PropTypes.string,
   doneButtonIcon: PropTypes.string,
   doneButtonTip: PropTypes.string,
+  doneButtonTipType: PropTypes.string,
   radioLabel: PropTypes.string,
   selectedItemsHeader: PropTypes.string,
   message: PropTypes.string,
@@ -152,6 +164,8 @@ SearchWithRoleSelection.propTypes = {
   notify: PropTypes.bool,
   existingEntities: PropTypes.array.isRequired,
   existingEntitiesDescription: PropTypes.string,
+  fetchMembers: PropTypes.func.isRequired,
+  searchType: PropTypes.oneOf(["group", "role", "user"]).isRequired,
 };
 
 SearchWithRoleSelection.defaultProps = {
@@ -160,6 +174,8 @@ SearchWithRoleSelection.defaultProps = {
   doneButtonText: "",
   doneButtonIcon: "",
   doneButtonTip: "",
+  doneButtonTipType: "",
+  searchBarPlaceholder: "",
   radioLabel: "",
   selectedItemsHeader: "",
   message: "",

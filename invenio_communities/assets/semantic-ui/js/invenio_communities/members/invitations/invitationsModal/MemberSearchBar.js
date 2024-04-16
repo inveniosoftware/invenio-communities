@@ -38,7 +38,9 @@ export class MembersSearchBar extends Component {
 
   serializeUsersForDropdown = (users) => {
     const { existingEntitiesDescription } = this.props;
-    return users.map((person) => {
+    // place available users on top of the list
+    const sortedUsers = users.sort((a, b) => ("disabled" in a) - ("disabled" in b));
+    return sortedUsers.map((person) => {
       return {
         text: person.id,
         value: person.id,
@@ -53,7 +55,7 @@ export class MembersSearchBar extends Component {
               <Header as="a" className={person?.disabled ? "no-text-decoration" : ""}>
                 {this.serializeMemberName(person)}
               </Header>
-              <Header.Subheader>{person.profile.affiliations}</Header.Subheader>
+              <Header.Subheader>{person.profile?.affiliations}</Header.Subheader>
             </Grid.Column>
             <Grid.Column width={6}>
               {person?.disabled && <p>{existingEntitiesDescription}</p>}
@@ -66,7 +68,9 @@ export class MembersSearchBar extends Component {
 
   serializeGroupsForDropdown = (groups) => {
     const { existingEntitiesDescription } = this.props;
-    return groups.map((group) => {
+    // place available groups on top of the list
+    const sortedGroups = groups.sort((a, b) => ("disabled" in a) - ("disabled" in b));
+    return sortedGroups.map((group) => {
       return {
         text: group.id,
         value: group.id,
@@ -98,8 +102,14 @@ export class MembersSearchBar extends Component {
     const { searchType } = this.props;
     const serializer = {
       user: this.serializeUsersForDropdown,
-      group: this.serializeGroupsForDropdown,
     };
+
+    if (searchType === "group") {
+      serializer["group"] = this.serializeGroupsForDropdown;
+    } else if (searchType === "role") {
+      serializer["role"] = this.serializeGroupsForDropdown;
+    }
+
     return serializer[searchType](suggestions);
   };
 
@@ -122,7 +132,7 @@ export class MembersSearchBar extends Component {
       avatar: newSelectedMember?.links?.avatar,
     };
 
-    if (searchType === "group") {
+    if (searchType === "group" || searchType === "role") {
       serializedSelectedMember["name"] = newSelectedMember.name; // The schema will pass the id if the name is missing
     } else {
       serializedSelectedMember["name"] = this.serializeMemberName(newSelectedMember);
@@ -202,7 +212,7 @@ MembersSearchBar.propTypes = {
   handleChange: PropTypes.func.isRequired,
   selectedMembers: PropTypes.object.isRequired,
   fetchMembers: PropTypes.func.isRequired,
-  searchType: PropTypes.oneOf(["group", "user"]).isRequired,
+  searchType: PropTypes.oneOf(["group", "role", "user"]).isRequired,
   placeholder: PropTypes.string,
   existingEntities: PropTypes.array.isRequired,
   existingEntitiesDescription: PropTypes.string,

@@ -33,7 +33,7 @@ const permissions = JSON.parse(dataAttr.permissions);
 
 const appName = "InvenioCommunities.InvitationsSearch";
 
-const communityGroupsEnabled = JSON.parse(dataAttr.communityGroupsEnabled);
+const groupsEnabled = JSON.parse(dataAttr.groupsEnabled);
 
 const InvitationResultItemWithConfig = parametrize(InvitationResultItem, {
   config: { rolesCanInvite: communitiesRolesCanInvite },
@@ -45,7 +45,7 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   rolesCanInvite: communitiesRolesCanInvite,
   community: community,
   permissions: permissions,
-  communityGroupsEnabled: communityGroupsEnabled,
+  groupsEnabled: groupsEnabled,
   appName: appName,
 });
 
@@ -56,12 +56,12 @@ const InvitationsContextProvider = parametrize(ContextProvider, {
 const InvitationsResultsContainerWithConfig = parametrize(InvitationsResultsContainer, {
   rolesCanInvite: communitiesRolesCanInvite,
   community: community,
-  communityGroupsEnabled: communityGroupsEnabled,
+  groupsEnabled: groupsEnabled,
 });
 
 const InvitationsEmptyResultsWithCommunity = parametrize(InvitationsEmptyResults, {
   community: community,
-  communityGroupsEnabled: communityGroupsEnabled,
+  groupsEnabled: groupsEnabled,
   rolesCanInvite: communitiesRolesCanInvite,
 });
 
