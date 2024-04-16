@@ -13,7 +13,7 @@ class ManagerEmptyResultsCmp extends Component {
       extraContent,
       queryString,
       community,
-      communityGroupsEnabled,
+      groupsEnabled,
       rolesCanInvite,
     } = this.props;
 
@@ -25,7 +25,7 @@ class ManagerEmptyResultsCmp extends Component {
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
-                groupsEnabled={communityGroupsEnabled}
+                groupsEnabled={groupsEnabled}
                 community={community}
               />
             </InvitationsContextProvider>
@@ -58,7 +58,7 @@ ManagerEmptyResultsCmp.propTypes = {
   queryString: PropTypes.string.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
-  communityGroupsEnabled: PropTypes.bool.isRequired,
+  groupsEnabled: PropTypes.bool.isRequired,
   extraContent: PropTypes.node,
 };
 

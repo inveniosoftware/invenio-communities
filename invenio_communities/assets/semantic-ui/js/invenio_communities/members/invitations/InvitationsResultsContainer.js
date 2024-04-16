@@ -17,7 +17,7 @@ export const InvitationsResultsContainer = ({
   results,
   rolesCanInvite,
   community,
-  communityGroupsEnabled,
+  groupsEnabled,
 }) => {
   return (
     <Table>
@@ -31,7 +31,7 @@ export const InvitationsResultsContainer = ({
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
-                groupsEnabled={communityGroupsEnabled}
+                groupsEnabled={groupsEnabled}
                 community={community}
                 triggerButtonSize="tiny"
               />
@@ -48,5 +48,5 @@ InvitationsResultsContainer.propTypes = {
   results: PropTypes.array.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
-  communityGroupsEnabled: PropTypes.bool.isRequired,
+  groupsEnabled: PropTypes.bool.isRequired,
 };

@@ -34,9 +34,6 @@ COMMUNITIES_ROUTES = {
 
 """Communities ui endpoints."""
 
-COMMUNITIES_GROUPS_ENABLED = True
-"""Config to allow invitation of groups."""
-
 COMMUNITIES_FACETS = {
     "type": {
         "facet": facets.type,

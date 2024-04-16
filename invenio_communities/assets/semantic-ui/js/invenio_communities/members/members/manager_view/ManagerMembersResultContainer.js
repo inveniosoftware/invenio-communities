@@ -16,7 +16,7 @@ import { ManagerMemberBulkActions } from "./ManagerMemberBulkActions";
 export const ManagerMembersResultsContainer = ({
   results,
   community,
-  communityGroupsEnabled,
+  groupsEnabled,
   rolesCanInvite,
   config,
 }) => {
@@ -39,7 +39,7 @@ export const ManagerMembersResultsContainer = ({
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
-                groupsEnabled={communityGroupsEnabled}
+                groupsEnabled={groupsEnabled}
                 community={community}
                 triggerButtonSize="tiny"
               />
@@ -56,6 +56,6 @@ ManagerMembersResultsContainer.propTypes = {
   results: PropTypes.array.isRequired,
   community: PropTypes.object.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
-  communityGroupsEnabled: PropTypes.bool.isRequired,
+  groupsEnabled: PropTypes.bool.isRequired,
   config: PropTypes.object.isRequired,
 };

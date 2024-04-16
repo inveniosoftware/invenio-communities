@@ -16,10 +16,9 @@ from collections import namedtuple
 from functools import partial, reduce
 from itertools import chain
 
-from flask import current_app
 from flask_principal import UserNeed
 from invenio_access.permissions import any_user, system_process
-from invenio_records_permissions.generators import ConditionalGenerator, Generator
+from invenio_records_permissions.generators import Generator
 from invenio_search.engine import dsl
 
 from .communities.records.systemfields.deletion_status import (
@@ -339,30 +338,5 @@ class AllowedMemberTypes(Generator):
         if member_types:
             for m in member_types:
                 if m not in self.allowed_member_types:
-                    return [any_user]
-        return []
-
-
-class GroupsEnabled(Generator):
-    """Generator to restrict if the groups are not enabled.
-
-    If the groups are not enabled, exclude any user for adding members of the
-    param member type.
-
-    A system process is allowed to do anything.
-    """
-
-    def __init__(self, *need_groups_enabled_types):
-        """Types that need the groups enabled."""
-        self.need_groups_enabled_types = need_groups_enabled_types
-
-    def excludes(self, member_types=None, **kwargs):
-        """Preventing needs."""
-        if member_types:
-            for m in member_types:
-                if (
-                    m in self.need_groups_enabled_types
-                    and not current_app.config["COMMUNITIES_GROUPS_ENABLED"]
-                ):
                     return [any_user]
         return []
