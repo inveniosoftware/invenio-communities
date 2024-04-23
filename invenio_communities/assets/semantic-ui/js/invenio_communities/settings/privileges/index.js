@@ -1,4 +1,4 @@
-import CommunityPrivilegesForm from "./CommunityPriviledgesForm";
+import CommunityPrivilegesForm from "./CommunityPrivilegesForm";
 import ReactDOM from "react-dom";
 import React from "react";
 
