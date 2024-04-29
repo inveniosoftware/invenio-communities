@@ -2,6 +2,7 @@
 
   This file is part of Invenio.
   Copyright (C) 2016-2020 CERN.
+  Copyright (C) 2024 Northwestern University.
 
   Invenio is free software; you can redistribute it and/or modify it
   under the terms of the MIT License; see LICENSE file for more details.
@@ -10,12 +11,25 @@
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
 {%- from "invenio_communities/details/macros/access-status-label.html" import access_status_label -%}
 
+{% macro button_to_request_membership(community) %}
+  {# TODO: replace by permission check when permissions implemented #}
+  {% if config.COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS %}
+  <div
+    id="request-membership-app"
+    data-community='{{ community | tojson }}'
+    class="display-inline-block"
+    >
+  </div>
+  {% endif %}
+{% endmacro %}
+
+
 <div
   class="ui container fluid page-subheader-outer with-submenu rel-pt-2 ml-0-mobile mr-0-mobile">
   <div class="ui container relaxed grid page-subheader mr-0-mobile ml-0-mobile">
     <div class="row pb-0">
       <div
-        class="sixteen wide mobile sixteen wide tablet thirteen wide computer column">
+        class="sixteen wide mobile sixteen wide tablet eleven wide computer column">
         <div
           class="community-header flex align-items-center column-mobile align-items-start-mobile">
           <div class="flex align-items-center">
@@ -105,7 +119,8 @@
         </div>
       </div>
       <div
-        class="sixteen wide mobile sixteen wide tablet three wide computer right aligned middle aligned column">
+        class="sixteen wide mobile sixteen wide tablet five wide computer right aligned middle aligned column">
+        {{ button_to_request_membership(community) }}
         {%- if not community_use_jinja_header %}
           <a href="/uploads/new?community={{ community.slug }}"
              class="ui positive button labeled icon rel-mt-1 theme-secondary">

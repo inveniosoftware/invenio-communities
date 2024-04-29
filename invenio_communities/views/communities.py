@@ -22,6 +22,7 @@ from jinja2 import TemplateError
 from invenio_communities.proxies import current_communities
 
 from ..communities.resources.ui_schema import TypesSchema
+from ..members.records.api import Member
 from .decorators import pass_community
 from .template_loader import CommunityThemeChoiceJinjaLoader
 
