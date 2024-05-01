@@ -12,23 +12,49 @@ import { Formik } from "formik";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { TextAreaField } from "react-invenio-forms";
-import { Button, Form, Modal } from "semantic-ui-react";
+import { Button, Form, Grid, Message, Modal } from "semantic-ui-react";
+
+import { CommunityMembershipRequestsApi } from "../../api/membershipRequests/api";
+import { communityErrorSerializer } from "../../api/serializers";
+import { RequestLinksExtractor } from "../../api/RequestLinksExtractor";
 
 export function RequestMembershipModal(props) {
-  const { isOpen, onClose } = props;
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const { community, isOpen, onClose } = props;
 
   const onSubmit = async (values, { setSubmitting, setFieldError }) => {
-    // TODO: implement me
-    console.log("RequestMembershipModal.onSubmit(args) called");
-    console.log("TODO: implement me", arguments);
-  };
+    /**Submit callback called from Formik. */
+    setSubmitting(true);
 
-  let confirmed = true;
+    const client = new CommunityMembershipRequestsApi(community);
+
+    try {
+      const response = await client.requestMembership(values);
+      const linksExtractor = new RequestLinksExtractor(response.data);
+      window.location.href = linksExtractor.userDiscussionUrl;
+    } catch (error) {
+      setSubmitting(false);
+
+      console.log("Error");
+      console.dir(error);
+
+      const { errors, message } = communityErrorSerializer(error);
+
+      if (message) {
+        setErrorMsg(message);
+      }
+
+      if (errors) {
+        errors.forEach(({ field, messages }) => setFieldError(field, messages[0]));
+      }
+    }
+  };
 
   return (
     <Formik
       initialValues={{
-        requestMembershipComment: "",
+        message: "",
       }}
       onSubmit={onSubmit}
     >
@@ -42,9 +68,17 @@ export function RequestMembershipModal(props) {
         >
           <Modal.Header>{i18next.t("Request Membership")}</Modal.Header>
           <Modal.Content>
+            <Message hidden={errorMsg === ""} negative className="flashed">
+              <Grid container>
+                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
+                  <strong>{errorMsg}</strong>
+                </Grid.Column>
+              </Grid>
+            </Message>
+
             <Form>
               <TextAreaField
-                fieldPath="requestMembershipComment"
+                fieldPath="message"
                 label={i18next.t("Message to managers (optional)")}
               />
             </Form>
@@ -54,12 +88,12 @@ export function RequestMembershipModal(props) {
               {i18next.t("Cancel")}
             </Button>
             <Button
-              onClick={(event) => {
-                // TODO: Implement me
-                console.log("RequestMembershipModal button clicked.");
-              }}
-              positive={confirmed}
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              onClick={handleSubmit}
+              positive
               primary
+              type="button"
             >
               {i18next.t("Request Membership")}
             </Button>
@@ -73,10 +107,12 @@ export function RequestMembershipModal(props) {
 RequestMembershipModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  community: PropTypes.object.isRequired,
 };
 
 export function RequestMembershipButton(props) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { community } = props;
 
   const handleClick = () => {
     setModalOpen(true);
@@ -97,8 +133,16 @@ export function RequestMembershipButton(props) {
         content={i18next.t("Request Membership")}
       />
       {isModalOpen && (
-        <RequestMembershipModal isOpen={isModalOpen} onClose={handleClose} />
+        <RequestMembershipModal
+          isOpen={isModalOpen}
+          onClose={handleClose}
+          community={community}
+        />
       )}
     </>
   );
 }
+
+RequestMembershipButton.propTypes = {
+  community: PropTypes.object.isRequired,
+};

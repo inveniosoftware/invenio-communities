@@ -16,6 +16,7 @@ import pytest
 from invenio_access.permissions import system_identity
 from invenio_requests.records.api import Request
 from invenio_search import current_search
+from invenio_users_resources.proxies import current_users_service
 
 from invenio_communities.members.records.api import ArchivedInvitation, Member
 
@@ -93,3 +94,17 @@ def invite_request_id(requests_service, invite_user):
         type="community-invitation",
     ).to_dict()
     return res["hits"]["hits"][0]["id"]
+
+
+@pytest.fixture(scope="function")
+def membership_request(member_service, community, create_user, db, search_clear):
+    """A membership request."""
+    user = create_user()
+    data = {
+        "message": "Can I join the club?",
+    }
+    return member_service.request_membership(
+        user.identity,
+        community._record.id,
+        data,
+    )
