@@ -843,7 +843,17 @@ class MemberService(RecordService):
         pass
 
     @unit_of_work()
-    def decline_membership_request(self, identity, request_id, uow=None):
-        """Decline membership request."""
-        # TODO: Implement me
-        pass
+    def close_membership_request(self, identity, request_id, uow=None):
+        """Close membership request.
+
+        Used for cancelling, declining, or expiring a membership request.
+
+        For now we just delete the "fake" member that was created in
+        request_membership. TODO: explore alternatives/ramifications at a
+        later point.
+        """
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))

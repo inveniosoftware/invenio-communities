@@ -371,7 +371,7 @@ def create_user(UserFixture, app, db):
     is essential for many tests.
     """
 
-    def _create_user(data):
+    def _create_user(data=None):
         """Create user."""
         default_data = dict(
             email="user@example.org",
@@ -391,6 +391,7 @@ def create_user(UserFixture, app, db):
             active=True,
             confirmed=True,
         )
+        data = data or {}
         actual_data = dict(default_data, **data)
         u = UserFixture(**actual_data)
         u.create(app, db)

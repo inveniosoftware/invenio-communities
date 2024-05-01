@@ -35,4 +35,12 @@ export class CommunityLinksExtractor {
     }
     return this.#urls.invitations;
   }
+
+  url(key) {
+    const urlOfKey = this.#urls[key];
+    if (!urlOfKey) {
+      throw TypeError(`"${key}" link missing from resource.`);
+    }
+    return urlOfKey;
+  }
 }
