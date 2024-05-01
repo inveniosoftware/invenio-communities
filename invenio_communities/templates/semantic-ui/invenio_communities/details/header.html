@@ -12,8 +12,8 @@
 {%- from "invenio_communities/details/macros/access-status-label.html" import access_status_label -%}
 
 {% macro button_to_request_membership(community) %}
-  {# TODO: replace by permission check when permissions implemented #}
-  {% if config.COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS %}
+  {% if permissions.can_request_membership %}
+  {# TODO: Add relation_to_community for other flows #}
   <div
     id="request-membership-app"
     data-community='{{ community | tojson }}'

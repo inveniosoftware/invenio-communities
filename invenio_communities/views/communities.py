@@ -107,6 +107,7 @@ HEADER_PERMISSIONS = {
     "search_requests",
     "members_search_public",
     "moderate",
+    "request_membership",
 }
 
 PRIVATE_PERMISSIONS = HEADER_PERMISSIONS | {
