@@ -1166,6 +1166,49 @@ def test_update_invalid_data(member_service, community, group):
 
 
 #
+# Membership requests
+# Just a few choice tests given it's similar to other requests, and permissions have
+# been tested elsewhere.
+#
+
+
+def test_request_cancel_request_flow(
+    member_service,
+    community,
+    create_user,
+    requests_service,
+    db,
+    search_clear,
+):
+    """Check creation of membership request after first creation closed.
+
+    This tests a temporary business rule that should be revisited later.
+    """
+    # Create membership request
+    user = create_user()
+    data = {
+        "message": "Can I join the club?",
+    }
+    membership_request = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        data,
+    )
+
+    # Close request - here via cancel
+    request = requests_service.execute_action(
+        user.identity, membership_request.id, "cancel"
+    ).to_dict()
+
+    # Should be possible to create a new one again
+    membership_request_2 = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        {"message": "Oops didn't mean to cancel. Oh well, I will request again."},
+    )
+
+
+#
 # Change notifications
 #
 def test_relation_update_propagation(

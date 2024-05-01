@@ -28,6 +28,10 @@ def service():
     """Service."""
     return current_communities.service.members
 
+#
+# CommunityInvitation: actions and request type
+#
+
 
 #
 # Actions
@@ -126,6 +130,21 @@ class CommunityInvitation(RequestType):
     }
 
 
+#
+# MembershipRequestRequestType: actions and request type
+#
+
+
+class CancelMembershipRequestAction(actions.CancelAction):
+    """Cancel membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_membership_request(system_identity, self.request.id, uow=uow)
+        # TODO: Investigate notifications
+        super().execute(identity, uow)
+
+
 class MembershipRequestRequestType(RequestType):
     """Request type for membership requests."""
 
@@ -135,6 +154,7 @@ class MembershipRequestRequestType(RequestType):
     create_action = "create"
     available_actions = {
         "create": actions.CreateAndSubmitAction,
+        "cancel": CancelMembershipRequestAction,
     }
 
     creator_can_be_none = False
