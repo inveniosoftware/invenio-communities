@@ -25,6 +25,7 @@ from invenio_users_resources.services.permissions import UserManager
 
 from .generators import (
     AllowedMemberTypes,
+    AuthenticatedButNotCommunityMembers,
     CommunityCurators,
     CommunityManagers,
     CommunityManagersForRole,
@@ -179,9 +180,25 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # Permissions to set if communities can have children
     can_manage_children = [SystemProcess()]
 
-    # Permission for assinging a parent community
+    # Permission for assigning a parent community
     can_manage_parent = [Administration(), SystemProcess()]
 
+    # request_membership permission is based on configuration, community settings and
+    # identity. Other factors (e.g., previous membership requests) are not under
+    # its purview and are dealt with elsewhere.
+    can_request_membership = [
+        IfConfig(
+            "COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS",
+            then_=[
+                IfPolicyClosed(
+                    "member_policy",
+                    then_=[Disable()],
+                    else_=[AuthenticatedButNotCommunityMembers()]
+                )
+            ],
+            else_=[Disable()]
+        ),
+    ]
 
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""

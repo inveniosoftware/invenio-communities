@@ -17,7 +17,7 @@ from functools import partial, reduce
 from itertools import chain
 
 from flask_principal import UserNeed
-from invenio_access.permissions import any_user, system_process
+from invenio_access.permissions import any_user, authenticated_user, system_process
 from invenio_records_permissions.generators import Generator
 from invenio_search.engine import dsl
 
@@ -199,6 +199,26 @@ class IfCommunityDeleted(Generator):
 #
 # Community membership generators
 #
+
+class AuthenticatedButNotCommunityMembers(Generator):
+    """Authenticated user not part of community."""
+
+    def needs(self, record=None, **kwargs):
+        """Required needs."""
+        return [authenticated_user]
+
+    def excludes(self, record=None, **kwargs):
+        """Exluding needs.
+
+        Excludes identities with a role in the community. This assumes all roles at
+        this point mean valid memberships. This is the same assumption as
+        `CommunityMembers` below.
+        """
+        if not record:
+            return []
+        community_id = str(record.id)
+        return [CommunityRoleNeed(community_id, r.name) for r in current_roles]
+
 class CommunityRoles(Generator):
     """Base class for community roles generators."""
 
