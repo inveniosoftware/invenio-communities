@@ -417,14 +417,7 @@ def test_error_handling_for_membership_requests(
     assert True
 
 
-# Is cancelling request purview of this?
-
-
 # TODO: search membership requests
 def test_get_membership_requests(client):
     # TODO: Implement me!
     assert True
-    #     RequestEvent.index.refresh()
-    #     r = client.get(f"/communities/{community_id}/membership-requests", headers=headers)
-    #     assert r.status_code == 200
-    #     request_id = r.json["hits"]["hits"][0]["request"]["id"]
