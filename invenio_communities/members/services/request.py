@@ -28,7 +28,6 @@ def service():
     """Service."""
     return current_communities.service.members
 
-
 #
 # CommunityInvitation: actions and request type
 #
