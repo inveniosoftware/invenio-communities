@@ -193,12 +193,13 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
                 IfPolicyClosed(
                     "member_policy",
                     then_=[Disable()],
-                    else_=[AuthenticatedButNotCommunityMembers()]
-                )
+                    else_=[AuthenticatedButNotCommunityMembers()],
+                ),
             ],
-            else_=[Disable()]
+            else_=[Disable()],
         ),
     ]
+
 
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""

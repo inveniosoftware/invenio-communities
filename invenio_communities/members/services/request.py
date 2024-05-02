@@ -124,3 +124,21 @@ class CommunityInvitation(RequestType):
             "manager",
         ]
     }
+
+
+class MembershipRequestRequestType(RequestType):
+    """Request type for membership requests."""
+
+    type_id = "community-membership-request"
+    name = _("Membership request")
+
+    create_action = "create"
+    available_actions = {
+        "create": actions.CreateAndSubmitAction,
+    }
+
+    creator_can_be_none = False
+    topic_can_be_none = False
+    allowed_creator_ref_types = ["user"]
+    allowed_receiver_ref_types = ["community"]
+    allowed_topic_ref_types = ["community"]

@@ -31,10 +31,11 @@ class MemberResource(RecordResource):
             route("DELETE", routes["members"], self.delete),
             route("PUT", routes["members"], self.update),
             route("GET", routes["members"], self.search),
-            route("POST", routes["invitations"], self.invite),
             route("GET", routes["publicmembers"], self.search_public),
+            route("POST", routes["invitations"], self.invite),
             route("PUT", routes["invitations"], self.update_invitations),
             route("GET", routes["invitations"], self.search_invitations),
+            route("POST", routes["membership_requests"], self.request_membership),
         ]
 
     @request_view_args
@@ -97,6 +98,17 @@ class MemberResource(RecordResource):
             resource_requestctx.data,
         )
         return "", 204
+
+    @request_view_args
+    @request_data
+    def request_membership(self):
+        """Request membership."""
+        request = self.service.request_membership(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            resource_requestctx.data,
+        )
+        return request.to_dict(), 201
 
     @request_view_args
     @request_extra_args
