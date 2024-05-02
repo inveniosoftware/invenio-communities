@@ -93,6 +93,12 @@ class DeleteBulkSchema(MembersSchema):
     """Delete bulk schema."""
 
 
+class RequestMembershipSchema(Schema):
+    """Schema used for requesting membership."""
+
+    message = SanitizedUnicode()
+
+
 #
 # Schemas used for dumping a single member
 #
