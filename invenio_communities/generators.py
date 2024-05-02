@@ -200,6 +200,7 @@ class IfCommunityDeleted(Generator):
 # Community membership generators
 #
 
+
 class AuthenticatedButNotCommunityMembers(Generator):
     """Authenticated user not part of community."""
 
@@ -218,6 +219,7 @@ class AuthenticatedButNotCommunityMembers(Generator):
             return []
         community_id = str(record.id)
         return [CommunityRoleNeed(community_id, r.name) for r in current_roles]
+
 
 class CommunityRoles(Generator):
     """Base class for community roles generators."""

@@ -40,7 +40,7 @@ from ...notifications.builders import CommunityInvitationSubmittedNotificationBu
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from ..records.api import ArchivedInvitation
-from .request import CommunityInvitation
+from .request import CommunityInvitation, MembershipRequestRequestType
 from .schemas import (
     AddBulkSchema,
     DeleteBulkSchema,
@@ -48,6 +48,7 @@ from .schemas import (
     InviteBulkSchema,
     MemberDumpSchema,
     PublicDumpSchema,
+    RequestMembershipSchema,
     UpdateBulkSchema,
 )
 
@@ -102,6 +103,11 @@ class MemberService(RecordService):
     def delete_schema(self):
         """Schema for bulk delete."""
         return ServiceSchemaWrapper(self, schema=DeleteBulkSchema)
+
+    @property
+    def request_membership_schema(self):
+        """Wrapped schema for request membership."""
+        return ServiceSchemaWrapper(self, schema=RequestMembershipSchema)
 
     @property
     def archive_indexer(self):
@@ -734,3 +740,110 @@ class MemberService(RecordService):
         self.archive_indexer.bulk_index([inv.id for inv in archived_invitations])
 
         return True
+
+    # Request membership
+    @unit_of_work()
+    def request_membership(self, identity, community_id, data, uow=None):
+        """Request membership to the community.
+
+        A user can only have one request per community.
+
+        All validations raise, so it's up to parent layer to handle them.
+        """
+        community = self.community_cls.get_record(community_id)
+
+        data, errors = self.request_membership_schema.load(
+            data,
+            context={"identity": identity},
+        )
+        message = data.get("message", "")
+
+        self.require_permission(
+            identity,
+            "request_membership",
+            record=community,
+        )
+
+        # Create request
+        title = _('Request to join "{community}"').format(
+            community=community.metadata["title"],
+        )
+        request_item = current_requests_service.create(
+            identity,
+            data={
+                "title": title,
+                # "description": description,
+            },
+            request_type=MembershipRequestRequestType,
+            receiver=community,
+            creator={"user": str(identity.user.id)},
+            topic=community,  # user instead?
+            # TODO: Consider expiration
+            # expires_at=invite_expires_at(),
+            uow=uow,
+        )
+
+        if message:
+            data = {"payload": {"content": message}}
+            current_events_service.create(
+                identity,
+                request_item.id,
+                data,
+                CommentEventType,
+                uow=uow,
+                notify=False,
+            )
+
+        # TODO: Add notification mechanism
+        # uow.register(
+        #     NotificationOp(
+        #         MembershipRequestSubmittedNotificationBuilder.build(
+        #             request=request_item._request,
+        #             # explicit string conversion to get the value of LazyText
+        #             role=str(role.title),
+        #             message=message,
+        #         )
+        #     )
+        # )
+
+        # Create an inactive member entry linked to the request.
+        self._add_factory(
+            identity,
+            community=community,
+            role=current_roles["reader"],
+            visible=False,
+            member={"type": "user", "id": str(identity.user.id)},
+            message=message,
+            uow=uow,
+            active=False,
+            request_id=request_item.id,
+        )
+
+        # No registered component with a request_membership method for now,
+        # so no run_components for now.
+
+        # Has to return the request so that frontend can redirect to it
+        return request_item
+
+    @unit_of_work()
+    def update_membership_request(self, identity, community_id, data, uow=None):
+        """Update membership request."""
+        # TODO: Implement me
+        pass
+
+    def search_membership_requests(self):
+        """Search membership requests."""
+        # TODO: Implement me
+        pass
+
+    @unit_of_work()
+    def accept_membership_request(self, identity, request_id, uow=None):
+        """Accept membership request."""
+        # TODO: Implement me
+        pass
+
+    @unit_of_work()
+    def decline_membership_request(self, identity, request_id, uow=None):
+        """Decline membership request."""
+        # TODO: Implement me
+        pass

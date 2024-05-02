@@ -143,6 +143,8 @@ def app_config(app_config):
     # When testing unverified users, there is a "unverified_user" fixture for that purpose.
     app_config["ACCOUNTS_DEFAULT_USERS_VERIFIED"] = True
 
+    app_config["COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS"] = True
+
     return app_config
 
 
@@ -359,6 +361,45 @@ def new_user(UserFixture, app, database):
     current_users_service.record_cls.index.refresh()
     database.session.commit()
     return u
+
+
+@pytest.fixture(scope="function")
+def create_user(UserFixture, app, db):
+    """Create user factory fixture.
+
+    It's function scope is key here as it guarantees a user devoid of any prior which
+    is essential for many tests.
+    """
+
+    def _create_user(data):
+        """Create user."""
+        default_data = dict(
+            email="user@example.org",
+            password="user",
+            username="user",
+            user_profile={
+                "full_name": "Created User",
+                "affiliations": "CERN",
+            },
+            preferences={
+                "visibility": "public",
+                "email_visibility": "restricted",
+                "notifications": {
+                    "enabled": True,
+                },
+            },
+            active=True,
+            confirmed=True,
+        )
+        actual_data = dict(default_data, **data)
+        u = UserFixture(**actual_data)
+        u.create(app, db)
+        current_users_service.indexer.process_bulk_queue()
+        current_users_service.record_cls.index.refresh()
+        db.session.commit()
+        return u
+
+    return _create_user
 
 
 #
