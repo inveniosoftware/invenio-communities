@@ -4,9 +4,9 @@ from invenio_records_resources.services.errors import PermissionDeniedError
 
 @pytest.fixture(scope="function")
 def groups_disabled(app):
-    app.config["COMMUNITIES_GROUPS_ENABLED"] = False
+    app.config["USERS_RESOURCES_GROUPS_ENABLED"] = False
     yield
-    app.config["COMMUNITIES_GROUPS_ENABLED"] = True
+    app.config["USERS_RESOURCES_GROUPS_ENABLED"] = True
 
 
 def test_invite_member_with_groups_disabled(
@@ -35,7 +35,7 @@ def test_invite_member_with_groups_disabled(
 def test_add_member_with_groups_disabled(
     member_service, community, members, group, actor, role, db, groups_disabled
 ):
-    """Test that the COMMUNITIES_GROUPS_ENABLED flag allows/forbids to add
+    """Test that the USERS_RESOURCES_GROUPS_ENABLED flag allows/forbids to add
     members.
     """
     data = {

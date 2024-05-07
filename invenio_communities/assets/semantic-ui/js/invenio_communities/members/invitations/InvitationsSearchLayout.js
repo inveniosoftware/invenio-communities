@@ -19,14 +19,8 @@ import { SearchFilters } from "@js/invenio_search_ui/components/SearchFilters";
 
 export class InvitationsSearchLayout extends Component {
   render() {
-    const {
-      config,
-      roles,
-      rolesCanInvite,
-      community,
-      communityGroupsEnabled,
-      appName,
-    } = this.props;
+    const { config, roles, rolesCanInvite, community, groupsEnabled, appName } =
+      this.props;
 
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getInvitationFilters();
@@ -42,7 +36,7 @@ export class InvitationsSearchLayout extends Component {
                 <InvitationsContextProvider community={community}>
                   <InvitationsMembersModalWithSearchKit
                     rolesCanInvite={rolesCanInvite}
-                    groupsEnabled={communityGroupsEnabled}
+                    groupsEnabled={groupsEnabled}
                     community={community}
                   />
                 </InvitationsContextProvider>
@@ -59,7 +53,7 @@ export class InvitationsSearchLayout extends Component {
               <InvitationsContextProvider community={community}>
                 <InvitationsMembersModalWithSearchKit
                   rolesCanInvite={rolesCanInvite}
-                  groupsEnabled={communityGroupsEnabled}
+                  groupsEnabled={groupsEnabled}
                   community={community}
                 />
               </InvitationsContextProvider>
@@ -86,7 +80,7 @@ InvitationsSearchLayout.propTypes = {
   roles: PropTypes.array.isRequired,
   rolesCanInvite: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
-  communityGroupsEnabled: PropTypes.bool.isRequired,
+  groupsEnabled: PropTypes.bool.isRequired,
   appName: PropTypes.string,
 };
 

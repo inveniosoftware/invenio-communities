@@ -24,7 +24,7 @@ const communitiesRolesCanUpdate = JSON.parse(dataAttr.communitiesRolesCanUpdate)
 const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
 const community = JSON.parse(dataAttr.community);
 const permissions = JSON.parse(dataAttr.permissions);
-const communityGroupsEnabled = JSON.parse(dataAttr.communityGroupsEnabled);
+const groupsEnabled = JSON.parse(dataAttr.groupsEnabled);
 const rolesCanInvite = JSON.parse(dataAttr.communitiesRolesCanInvite);
 const appName = "InvenioCommunities.ManagerSearch";
 
@@ -40,7 +40,7 @@ const ManagerMembersResultContainerWithCommunity = parametrize(
   ManagerMembersResultsContainer,
   {
     community: community,
-    communityGroupsEnabled: communityGroupsEnabled,
+    groupsEnabled: groupsEnabled,
     rolesCanInvite: rolesCanInvite,
     config: {
       roles: communitiesAllRoles,
@@ -56,7 +56,7 @@ const MembersSearchAppContext = parametrize(MembersSearchAppContextCmp, {
 
 const ManagerSearchLayoutWithConfig = parametrize(ManagerSearchLayout, {
   community: community,
-  communityGroupsEnabled: communityGroupsEnabled,
+  groupsEnabled: groupsEnabled,
   rolesCanInvite: rolesCanInvite,
   permissions: permissions,
   roles: communitiesAllRoles,
@@ -65,7 +65,7 @@ const ManagerSearchLayoutWithConfig = parametrize(ManagerSearchLayout, {
 
 const ManagerEmptyResultsWithCommunity = parametrize(ManagerEmptyResults, {
   community: community,
-  communityGroupsEnabled: communityGroupsEnabled,
+  groupsEnabled: groupsEnabled,
   rolesCanInvite: rolesCanInvite,
 });
 

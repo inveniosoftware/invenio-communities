@@ -15,7 +15,7 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import { MembersSearchBar } from "./MemberSearchBar";
 import { GroupsApi } from "../../../api/GroupsApi";
 import { Trans } from "react-i18next";
-import { RichEditor, http, withCancel } from "react-invenio-forms";
+import { http, withCancel } from "react-invenio-forms";
 
 export class GroupTabPane extends Component {
   constructor(props) {
@@ -79,7 +79,7 @@ export class GroupTabPane extends Component {
 
   render() {
     const { roleOptions, modalClose } = this.props;
-    const { selectedMembers, loading, error, existingIds } = this.state;
+    const { selectedMembers, loading, error, existingIds, role } = this.state;
     const selectedCount = Object.keys(selectedMembers).length;
     const client = new GroupsApi();
 
@@ -90,7 +90,7 @@ export class GroupTabPane extends Component {
           <SelectedMembers
             updateSelectedMembers={this.updateSelectedMembers}
             selectedMembers={selectedMembers}
-            headerText={i18next.t("Selected groups")}
+            headerText={i18next.t("No selected groups")}
           />
           <Form>
             <Form.Field>
@@ -112,12 +112,11 @@ export class GroupTabPane extends Component {
                 onOptionChangeCallback={this.handleRoleUpdate}
               />
             </Form.Field>
-            <Form.Field disabled>
-              <>
-                <label>{i18next.t("Message")}</label>
-                <RichEditor />
-              </>
-            </Form.Field>
+            <i>
+              {i18next.t(
+                "Note: upon addition, selected groups will become community members immediately without any kind of notification or invitation approval."
+              )}
+            </i>
           </Form>
         </div>
         <Modal.Actions>
@@ -140,7 +139,7 @@ export class GroupTabPane extends Component {
             content={i18next.t("Add")}
             labelPosition="left"
             loading={loading}
-            disabled={loading || selectedCount === 0}
+            disabled={loading || selectedCount === 0 || role === undefined}
             icon="checkmark"
             primary
             onClick={this.handleActionClick}
