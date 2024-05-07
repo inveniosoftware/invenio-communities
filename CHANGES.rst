@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 13.0.2 (released 2024-05-07)
+
+- groups: moved groups config and permission generator to invenio-users-resources
+
 Version 13.0.1 (released 2024-04-15)
 
 - fix: community theme and menus visibility
