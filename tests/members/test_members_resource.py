@@ -11,6 +11,7 @@
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_requests.records.api import RequestEvent
+from invenio_users_resources.proxies import current_users_service
 
 
 #
@@ -134,7 +135,7 @@ def test_invite_deny(client, headers, community_id, new_user, new_user_data, db)
 #
 # Update
 #
-def test_update(client, headers, community_id, owner, public_reader):
+def test_update(client, headers, community_id, owner, public_reader, db):
     """Test update of members."""
     client = owner.login(client)
     data = {
@@ -357,3 +358,66 @@ def test_search_invitation(
 # TODO: facet by role, facet by visibility, define sorts.
 # TODO: same user can be invited to two different communities
 # TODO: same user/group can be added to two different communities
+
+
+#
+# Membership request
+#
+
+
+def test_post_membership_requests(app, client, headers, community_id, create_user, db):
+    user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
+    client = user.login(client)
+
+    # Post membership request
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+    assert 201 == r.status_code
+
+    RequestEvent.index.refresh()
+
+    # Get links to check
+    url_of_request = r.json["links"]["self"].replace(app.config["SITE_API_URL"], "")
+    url_of_timeline = r.json["links"]["timeline"].replace(
+        app.config["SITE_API_URL"],
+        "",
+    )
+
+    # Check the request
+    r = client.get(url_of_request, headers=headers)
+    assert 200 == r.status_code
+    assert 'Request to join "My Community"' in r.json["title"]
+
+    # Check the timeline
+    r = client.get(url_of_timeline, headers=headers)
+    assert 200 == r.status_code
+    assert 1 == r.json["hits"]["total"]
+    msg = r.json["hits"]["hits"][0]["payload"]["content"]
+    assert "Can I join the club?" == msg
+
+
+def test_put_membership_requests(
+    client, headers, community_id, owner, new_user_data, db
+):
+    # update membership request
+    # TODO: Implement me!
+    assert True
+
+
+def test_error_handling_for_membership_requests(
+    client, headers, community_id, owner, new_user_data, db
+):
+    # TODO: Implement me!
+    # error handling registered
+    #   - permission handling registered
+    #   - duplicate handling registered
+    assert True
+
+
+# TODO: search membership requests
+def test_get_membership_requests(client):
+    # TODO: Implement me!
+    assert True

@@ -16,6 +16,7 @@ import pytest
 from invenio_access.permissions import system_identity
 from invenio_requests.records.api import Request
 from invenio_search import current_search
+from invenio_users_resources.proxies import current_users_service
 
 from invenio_communities.members.records.api import ArchivedInvitation, Member
 
@@ -93,3 +94,55 @@ def invite_request_id(requests_service, invite_user):
         type="community-invitation",
     ).to_dict()
     return res["hits"]["hits"][0]["id"]
+
+
+# The `new_user`` module fixture leaks identity across tests, so a pure new user for
+# each following test is the way to go.
+@pytest.fixture()
+def create_user(UserFixture, app, db, search_clear):
+    """Create user factory fixture."""
+
+    def _create_user(data=None):
+        """Create user."""
+        data = data or {}
+        default_data = dict(
+            email="user@example.org",
+            password="user",
+            username="user",
+            user_profile={
+                "full_name": "Created User",
+                "affiliations": "CERN",
+            },
+            preferences={
+                "visibility": "public",
+                "email_visibility": "restricted",
+                "notifications": {
+                    "enabled": True,
+                },
+            },
+            active=True,
+            confirmed=True,
+        )
+        actual_data = dict(default_data, **data)
+        u = UserFixture(**actual_data)
+        u.create(app, db)
+        current_users_service.indexer.process_bulk_queue()
+        current_users_service.record_cls.index.refresh()
+        db.session.commit()
+        return u
+
+    return _create_user
+
+
+@pytest.fixture(scope="function")
+def membership_request(member_service, community, create_user, db, search_clear):
+    """A membership request."""
+    user = create_user()
+    data = {
+        "message": "Can I join the club?",
+    }
+    return member_service.request_membership(
+        user.identity,
+        community._record.id,
+        data,
+    )
