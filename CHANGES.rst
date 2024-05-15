@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 13.0.3 (released 2024-05-15)
+
+- components: fix parent update permissions
+
 Version 13.0.2 (released 2024-05-07)
 
 - groups: moved groups config and permission generator to invenio-users-resources
