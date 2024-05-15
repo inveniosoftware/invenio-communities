@@ -335,7 +335,11 @@ class CommunityParentComponent(ServiceComponent):
 
     def update(self, identity, data=None, record=None, **kwargs):
         """Update parent community of a community."""
-        if "parent" in data:
+        if not data:
+            return
+        existing_parent_id = record.parent and str(record.parent.id)
+        new_parent_id = (data.get("parent") or {}).get("id")
+        if "parent" in data and new_parent_id != existing_parent_id:
             self.service.require_permission(identity, "manage_parent", record=record)
             parent = self._validate_and_get_parent(data["parent"], record)
             record.parent = parent
