@@ -111,11 +111,11 @@ class UICommunitySchema(BaseObjectSchema):
         )
         return {"can_include_directly": can_include_directly, "can_update": can_update}
 
-    @post_dump
-    def post_dump(self, data, many, **kwargs):
+    @post_dump(pass_original=True)
+    def post_dump(self, data, original, many, **kwargs):
         """Pop tombstone field if not deleted/visible."""
-        is_deleted = (data.get("deletion_status") or {}).get("is_deleted", False)
-        tombstone_visible = (data.get("tombstone") or {}).get("is_visible", True)
+        is_deleted = (original.get("deletion_status") or {}).get("is_deleted", False)
+        tombstone_visible = (original.get("tombstone") or {}).get("is_visible", True)
 
         if not is_deleted or not tombstone_visible:
             data.pop("tombstone", None)
