@@ -533,7 +533,7 @@ class CommunityProfileForm extends Component {
                               size: 5,
                             },
                           }}
-                          label={i18next.t("Awards")}
+                          label={i18next.t("Awards/Grants")}
                           labelIcon="money bill alternate outline"
                           deserializeAward={(award) => {
                             return {
