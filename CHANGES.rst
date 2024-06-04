@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 14.0.0 (released 2024-06-04)
+
+- installation: bump invenio-vocabularies
+
 Version 13.0.3 (released 2024-05-15)
 
 - components: fix parent update permissions
