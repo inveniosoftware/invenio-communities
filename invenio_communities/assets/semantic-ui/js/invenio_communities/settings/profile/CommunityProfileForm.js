@@ -459,7 +459,7 @@ class CommunityProfileForm extends Component {
                           fieldPath="metadata.organizations"
                           suggestionAPIUrl="/api/affiliations"
                           suggestionAPIHeaders={{
-                            Accept: "application/json",
+                            Accept: "application/vnd.inveniordm.v1+json",
                           }}
                           placeholder={i18next.t("Search for an organization by name")}
                           clearable
