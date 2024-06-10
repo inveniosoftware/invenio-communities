@@ -10,6 +10,16 @@
 Changes
 =======
 
+Version 4.2.2 (released 2024-06-10)
+-----------------------------------
+
+-  ui: remove usage of dangerouslySetInnerHTML
+
+Version 4.2.1 (released 2023-11-02)
+-----------------------------------
+
+- ui: fix imports on filter
+
 Version 4.2.0 (released 2023-10-26)
 -----------------------------------
 
