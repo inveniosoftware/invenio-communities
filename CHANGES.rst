@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 2.8.10 (released 2024-06-10)
+-----------------------------------
+- ui: fix html rendering
+
 Version 2.8.8 (released 2022-07-12)
 -----------------------------------
 - bugfix: display community logo in the header
