@@ -16,12 +16,7 @@ export function MembersResultsGridItem({ result }) {
       <Card.Content>
         <Card.Header>{result.member.name}</Card.Header>
         <Card.Description>
-          <div
-            className="truncate-lines-1"
-            dangerouslySetInnerHTML={{
-              __html: result.member.description,
-            }}
-          />
+          <div className="truncate-lines-1">{result.member.description}</div>
         </Card.Description>
       </Card.Content>
     </Card>

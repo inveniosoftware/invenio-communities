@@ -137,9 +137,7 @@ export const RequestsResultsGridItemTemplate = ({ result, community }) => {
     <Card fluid href={`/communities/${community.slug}/requests/${result.id}`}>
       <Card.Content>
         <Card.Header>{result.metadata.title}</Card.Header>
-        <Card.Description>
-          <div dangerouslySetInnerHTML={{ __html: result.metadata.description }} />
-        </Card.Description>
+        <Card.Description>{result.metadata.description}</Card.Description>
       </Card.Content>
     </Card>
   );
