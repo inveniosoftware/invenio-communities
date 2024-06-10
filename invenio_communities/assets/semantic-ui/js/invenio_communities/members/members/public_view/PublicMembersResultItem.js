@@ -30,12 +30,9 @@ class PublicMemberPublicViewResultItem extends Component {
                   </Item.Header>
                   {result.member.description && (
                     <Item.Meta>
-                      <div
-                        className="truncate-lines-1"
-                        dangerouslySetInnerHTML={{
-                          __html: result.member.description,
-                        }}
-                      />
+                      <div className="truncate-lines-1">
+                        {result.member.description}
+                      </div>
                     </Item.Meta>
                   )}
                 </Item.Content>
