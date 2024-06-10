@@ -59,12 +59,7 @@ export class InvitationResultItem extends Component {
                   </Item.Header>
                   {member.description && (
                     <Item.Meta>
-                      <div
-                        className="truncate-lines-1"
-                        dangerouslySetInnerHTML={{
-                          __html: member.description,
-                        }}
-                      />
+                      <div className="truncate-lines-1">{member.description}</div>
                     </Item.Meta>
                   )}
                 </Item.Content>
