@@ -243,6 +243,39 @@ def communities_new():
     )
 
 
+@login_required
+@pass_community(serialize=True)
+def communities_new_subcommunity(pid_value, community, community_ui):
+    """Subcommunities creation page."""
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
+    if not permissions["can_update"]:
+        raise PermissionDeniedError()
+
+    can_create = current_communities.service.check_permission(g.identity, "create")
+    if not can_create:
+        raise PermissionDeniedError()
+
+    can_create_restricted = current_communities.service.check_permission(
+        g.identity, "create_restricted"
+    )
+
+    return render_community_theme_template(
+        "invenio_communities/details/new_subcommunity.html",
+        theme=community_ui.get("theme", {}),
+        community=community,
+        community_ui=community_ui,
+        permissions=permissions,  # hide/show UI components
+        form_config=dict(
+            access=dict(visibility=VISIBILITY_FIELDS),
+            SITE_UI_URL=current_app.config["SITE_UI_URL"],
+        ),
+        custom_fields=load_custom_fields(
+            dump_only_required=True,
+        ),
+        can_create_restricted=can_create_restricted,
+    )
+
+
 @pass_community(serialize=True)
 def communities_settings(pid_value, community, community_ui):
     """Community settings/profile page."""
