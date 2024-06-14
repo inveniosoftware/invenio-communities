@@ -13,7 +13,6 @@ from invenio_requests.proxies import current_requests_service
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.proxies import current_communities
-from invenio_communities.subcommunities.services.request import SubCommunityRequest
 
 
 @pytest.fixture(scope="module")
@@ -56,10 +55,6 @@ def create_community(location, community_service):
         return c
 
     return _create_community
-
-
-def test_request():
-    assert True
 
 
 def test_service_join_already_existing(
@@ -149,3 +144,35 @@ def test_service_join_permissions(
             str(parent_community.id),
             payload,
         )
+
+
+# Resource tests
+def test_subcommunity_simple_flow(
+    app, curator, owner, create_community, minimal_community
+):
+    """Test the basic workflow for a subcommunity request."""
+    client = owner.login(app.test_client())
+    parent_community = create_community(owner, minimal_community, allow_children=True)
+    payload = {
+        "community": {
+            "title": "Test community",
+            "slug": "test-community",
+        }
+    }
+    # Create a request
+    res = client.post(
+        f"/communities/{str(parent_community.id)}/actions/join-request",
+        json=payload,
+        headers={"content-type": "application/json"},
+    )
+    assert res.status_code == 201
+
+    # Accept the request
+    request_id = res.json["id"]
+    res = client.post(
+        f"/requests/{request_id}/actions/accept",
+        headers={"content-type": "application/json"},
+    )
+    assert res.status_code == 200
+    assert res.json["status"] == "accepted"
+    # TODO created community ID is not returned in the response yet

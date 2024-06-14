@@ -32,6 +32,8 @@ from invenio_communities.members import (
     MemberServiceConfig,
 )
 from invenio_communities.subcommunities import (
+    SubcommunityRequestResource,
+    SubCommunityResourceConfig,
     SubCommunityService,
     SubCommunityServiceConfig,
 )
@@ -98,6 +100,11 @@ class InvenioCommunities(object):
         self.members_resource = MemberResource(
             MemberResourceConfig,
             self.service.members,
+        )
+
+        self.subcommunities_resource = SubcommunityRequestResource(
+            config=SubCommunityResourceConfig.build(app),
+            service=self.subcommunity_service,
         )
 
     def init_hooks(self, app):

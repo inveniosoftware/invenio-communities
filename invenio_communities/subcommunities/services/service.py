@@ -4,7 +4,7 @@
 #
 # Invenio-RDM-Records is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
-""" TODO """
+"""Subcommunities service."""
 
 from invenio_records_resources.services.base import LinksTemplate, Service
 from invenio_records_resources.services.records.schema import ServiceSchemaWrapper
@@ -42,6 +42,11 @@ class SubCommunityService(Service):
                 "permission_policy_cls": self.config.permission_policy_cls,
             },
         )
+
+    @property
+    def expandable_fields(self):
+        """Get expandable fields."""
+        return []
 
     @unit_of_work()
     def join(self, identity, id_, data, uow=None):
@@ -81,12 +86,14 @@ class SubCommunityService(Service):
             identity, {}, self.request_cls, receiver, creator, topic, uow=uow
         )
 
-        # TODO we want wrap the request result item in a new one to modify the links
+        # TODO if the user is the owner of both communities, accept the request automatically
+
+        # TODO add custom implementation for the result item
+        # # We want wrap the request result item in a new one to modify the links
         # return self.result_item(
         #     self,
         #     identity,
         #     request._record,
-        #     schema=request._record.type.marshmallow_schema(),
         #     links_tpl=self.links_item_tpl,
         #     expandable_fields=self.expandable_fields,
         #     expand=True,
