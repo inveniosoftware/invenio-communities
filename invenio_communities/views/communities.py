@@ -248,8 +248,6 @@ def communities_new():
 def communities_new_subcommunity(pid_value, community, community_ui):
     """Subcommunities creation page."""
     permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
-    if not permissions["can_update"]:
-        raise PermissionDeniedError()
 
     can_create = current_communities.service.check_permission(g.identity, "create")
     if not can_create:

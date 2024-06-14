@@ -17,9 +17,9 @@ import {
   CustomFields,
   FieldLabel,
   RadioField,
+  SelectField,
   TextField,
   withCancel,
-  SelectField,
 } from "react-invenio-forms";
 import { Button, Divider, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../api";
@@ -125,7 +125,7 @@ class CommunityCreateForm extends Component {
         }}
         onSubmit={this.onSubmit}
       >
-        {({ values, isSubmitting, handleSubmit }) => (
+        {({ values, isSubmitting, handleSubmit, setFieldValue }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
             <Message hidden={error === ""} negative className="flashed">
               <Grid container centered>
@@ -186,7 +186,7 @@ class CommunityCreateForm extends Component {
                       options={options}
                       selectOnBlur={false}
                       fieldPath="metadata.community"
-                    required
+                      required
                     />
                   )}
                   <TextField
@@ -205,8 +205,11 @@ class CommunityCreateForm extends Component {
                         label={i18next.t("EC Project")}
                       />
                     }
+                    onChange={(e, value) => {
+                      setFieldValue("metadata.title", value.value);
+                      setFieldValue("slug", value.value.toLowerCase().split(" ")[0]);
+                    }}
                   />
-
                   {!hasCommunity && (
                     <>
                       <TextField
