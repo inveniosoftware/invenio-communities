@@ -8,10 +8,12 @@
 
 import pytest
 from invenio_access.permissions import system_identity
+from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_requests.proxies import current_requests_service
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.proxies import current_communities
+from invenio_communities.subcommunities.services.request import SubCommunityRequest
 
 
 @pytest.fixture(scope="module")
@@ -24,6 +26,19 @@ def subcommunity_service():
 def curator(users):
     """Return the curator user."""
     return users["curator"]
+
+
+@pytest.fixture(scope="module")
+def reader(users):
+    """Return the reader user."""
+    return users["reader"]
+
+
+@pytest.fixture(scope="module")
+def full_community(full_community):
+    """Return a full community."""
+    del full_community["metadata"]["type"]
+    return full_community
 
 
 @pytest.fixture(scope="module")
@@ -52,6 +67,7 @@ def test_service_join_already_existing(
     db,
     curator,
     owner,
+    reader,
     create_community,
     subcommunity_service,
     minimal_community,
@@ -60,16 +76,16 @@ def test_service_join_already_existing(
     """Test joining a community with an existing subcommunity."""
     request_creator = curator
     request_receiver = owner
-    del full_community["metadata"]["type"]
 
     parent_community = create_community(
         request_receiver, full_community, allow_children=True
     )
-    child_community = create_community(request_creator, minimal_community)
+    child_community = create_community(curator, minimal_community)
+    payload = {"community_id": str(child_community.id)}
     result = subcommunity_service.join(
         request_creator.identity,
         str(parent_community.id),
-        {"community_id": str(child_community.id)},
+        payload,
     )
     request_obj = result._record
     assert request_obj.status == "submitted"
@@ -80,7 +96,56 @@ def test_service_join_already_existing(
     )
     req_read = current_requests_service.read(request_receiver.identity, request_obj.id)
     assert req_read._request.status == "accepted"
+    assert str(request_obj.topic.resolve().parent.id) == parent_community.id
 
 
-def test_service_join_with_new_community(parent_community, child_community, db):
-    assert True
+def test_service_join_with_new_community(
+    app,
+    db,
+    curator,
+    owner,
+    create_community,
+    full_community,
+):
+    """Test joining a community with a new subcommunity."""
+    request_creator = curator
+    request_receiver = owner
+    parent_community = create_community(
+        request_receiver, full_community, allow_children=True
+    )
+    payload = {
+        "community": {
+            "title": "Test community",
+            "slug": "test-community",
+        }
+    }
+    result = current_communities.subcommunity_service.join(
+        request_creator.identity,
+        str(parent_community.id),
+        payload,
+    )
+    request_obj = result._record
+    assert request_obj.status == "submitted"
+
+    # Test accept
+    current_requests_service.execute_action(
+        request_receiver.identity, id_=request_obj.id, action="accept"
+    )
+    req_read = current_requests_service.read(system_identity, request_obj.id)
+    assert req_read._request.status == "accepted"
+    assert str(request_obj.topic.resolve().parent.id) == parent_community.id
+
+
+def test_service_join_permissions(
+    app, db, owner, curator, reader, create_community, full_community, minimal_community
+):
+    """Test joining with a subcommunity not owned by the user."""
+    parent_community = create_community(curator, full_community, allow_children=True)
+    child_community = create_community(owner, minimal_community)
+    payload = {"community_id": str(child_community.id)}
+    with pytest.raises(PermissionDeniedError):
+        current_communities.subcommunity_service.join(
+            reader.identity,
+            str(parent_community.id),
+            payload,
+        )

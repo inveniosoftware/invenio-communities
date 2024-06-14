@@ -45,37 +45,43 @@ class SubCommunityService(Service):
 
     @unit_of_work()
     def join(self, identity, id_, data, uow=None):
-        """Request to join a subcommunity."""
+        """Request to join a subcommunity.
+
+        Permissions are delegated to the communities and requests services. E.g. the
+        request service will check if the user has the permission to act on behalf of the
+        community.
+
+        This method uses the unit of work pattern, therefore if any permission is
+        denied, the transaction will be rolled back.
+        """
         data_, errors = self.schema.load(
             data, context={"identity": identity}, raise_errors=True
         )
+
         community = None
         if "community_id" in data_:
-            community = community_service.read(identity, data_["community_id"])
+            community = community_service.record_cls.pid.resolve(data_["community_id"])
         else:
-            community = community_service.create(identity, data_["community"], uow=uow)
+            community = community_service.create(
+                identity, data_["community"], uow=uow
+            )._record
 
-        self.require_permission(identity, "request_join", record=community._record)
+        self.require_permission(identity, "request_join", record=community)
         # Sender is the community
         creator = {"community": str(community.id)}
 
         # Receiver is the parent community
         receiver = {"community": str(id_)}
 
-        # Topic is the new / fetched community
+        # Topic is the community
         topic = {"community": str(community.id)}
 
         # Create and submit the request
-        request = requests_service.create(
+        return requests_service.create(
             identity, {}, self.request_cls, receiver, creator, topic, uow=uow
         )
 
-        # Permission for identity might be denied on 'submit'
-        return requests_service.execute_action(
-            identity=identity, id_=request.id, action="submit", data={}, uow=uow
-        )
-
-        # We wrap the request result item in a new one to modify the links
+        # TODO we want wrap the request result item in a new one to modify the links
         # return self.result_item(
         #     self,
         #     identity,

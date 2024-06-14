@@ -5,11 +5,11 @@
 # Invenio-Requests is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunity request implementation."""
+from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
 from invenio_requests.customizations import RequestType, actions
 
 from invenio_communities.proxies import current_communities
-from invenio_access.permissions import system_identity
 
 
 class AcceptSubcommunity(actions.AcceptAction):
@@ -39,10 +39,16 @@ class SubCommunityRequest(RequestType):
 
     available_actions = {
         "delete": actions.DeleteAction,
-        "submit": actions.SubmitAction,
-        "create": actions.CreateAction,
+        "create": actions.CreateAndSubmitAction,
         "cancel": actions.CancelAction,
         # Custom implemented actions
         "accept": AcceptSubcommunity,
         "decline": actions.DeclineAction,
+    }
+
+    needs_context = {
+        "community_roles": [
+            "owner",
+            "manager",
+        ]
     }

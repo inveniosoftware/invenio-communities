@@ -7,8 +7,8 @@
 """Configurations for subcommunities service."""
 
 from invenio_records_permissions.generators import (
-    AnyUser,
     AuthenticatedUser,
+    ConditionalGenerator,
     Disable,
     SystemProcess,
 )
@@ -27,12 +27,16 @@ from .schema import SubcommunityRequestSchema
 
 
 class SubCommunityPermissionPolicy(BasePermissionPolicy):
+    """Configure permission policy for subcommunities."""
+
     can_request_join = [CommunityOwners()]
     can_read = [SystemProcess()]
-    can_create = [Disable()]  # create is not supported
-    can_search = [Disable()]  # search is not supported
-    can_update = [Disable()]  # update is not supported
-    can_delete = [Disable()]  # delete is not supported
+
+    # Not supported actions
+    can_create = [Disable()]
+    can_search = [Disable()]
+    can_update = [Disable()]
+    can_delete = [Disable()]
 
 
 class SubCommunityServiceConfig(ServiceConfig, ConfiguratorMixin):

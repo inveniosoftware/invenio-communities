@@ -14,6 +14,22 @@ class MinimalCommunitySchema(Schema):
     slug = fields.String(required=True)
     title = fields.String(required=True)
 
+    @post_load
+    def load_default(self, data, **kwargs):
+        """Load default values for a community."""
+        return {
+            "slug": data["slug"],
+            "metadata": {
+                "title": data["title"],
+            },
+            "access": {
+                "visibility": "public",
+                "members_visibility": "public",
+                "member_policy": "open",
+                "record_policy": "open",
+            },
+        }
+
 
 class SubcommunityRequestSchema(Schema):
     """Schema for subcommunity requests."""

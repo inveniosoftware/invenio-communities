@@ -23,6 +23,7 @@ from invenio_records_resources.services.records.components import (
 )
 from marshmallow.exceptions import ValidationError
 
+from ...generators import CommunityRoleNeed
 from ...proxies import current_roles
 from ...utils import on_user_membership_change
 from ..records.systemfields.access import VisibilityEnum
@@ -128,6 +129,11 @@ class OwnershipComponent(ServiceComponent):
         )
 
         # Invalidate the membership cache
+        # The identity is updated so it can be used immediately after the creation of the community
+        # Otherwise, the identity only gets updated in the next request
+        identity.provides.add(
+            CommunityRoleNeed(str(record.id), current_roles.owner_role.name)
+        )
         on_user_membership_change(identity=identity)
 
 
