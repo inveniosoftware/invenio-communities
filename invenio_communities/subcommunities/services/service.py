@@ -6,6 +6,7 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunities service."""
 
+from invenio_i18n import gettext as _
 from invenio_records_resources.services.base import LinksTemplate, Service
 from invenio_records_resources.services.records.schema import ServiceSchemaWrapper
 from invenio_records_resources.services.uow import unit_of_work
@@ -82,8 +83,13 @@ class SubCommunityService(Service):
         topic = {"community": str(community.id)}
 
         # Create and submit the request
+        request_data = {
+            "title": _('Inclusion of subcommunity "{community}"').format(
+                community=community.metadata["title"]
+            )
+        }
         return requests_service.create(
-            identity, {}, self.request_cls, receiver, creator, topic, uow=uow
+            identity, request_data, self.request_cls, receiver, creator, topic, uow=uow
         )
 
         # TODO if the user is the owner of both communities, accept the request automatically
