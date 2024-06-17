@@ -255,7 +255,7 @@ def owner(users):
 def any_user(UserFixture, app, database):
     """A user without privileges or memberships."""
     u = UserFixture(
-        email=f"anyuser@anyuser.org",
+        email="anyuser@anyuser.org",
         password="anyuser",
     )
     u.create(app, database)
