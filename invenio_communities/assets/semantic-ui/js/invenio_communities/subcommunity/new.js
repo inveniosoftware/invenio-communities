@@ -20,6 +20,7 @@ import {
   SelectField,
   TextField,
   withCancel,
+  http,
 } from "react-invenio-forms";
 import { Button, Divider, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../api";
@@ -34,18 +35,22 @@ const IdentifierField = ({ formConfig }) => {
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${values["slug"]}`}
+      {`${formConfig.SITE_UI_URL}/communities/${values["metadata"]["slug"]}`}
     </>
   );
 
   return (
     <TextField
       required
-      id="slug"
+      id="metadata.slug"
       label={
-        <FieldLabel htmlFor="slug" icon="barcode" label={i18next.t("Identifier")} />
+        <FieldLabel
+          htmlFor="metadata.slug"
+          icon="barcode"
+          label={i18next.t("Identifier")}
+        />
       }
-      fieldPath="slug"
+      fieldPath="metadata.slug"
       helpText={helpText}
       fluid
       className="text-muted"
@@ -65,7 +70,28 @@ class CommunityCreateForm extends Component {
   state = {
     error: "",
     hasCommunity: false,
+    communities: [{ value: "Loading..." }],
   };
+
+  componentDidMount() {
+    withCancel(
+      http
+        .get("/api/user/communities")
+        .then((response) => response.data)
+        .then((data) => {
+          this.setState({
+            communities: data?.hits?.hits.map((item) => ({
+              text: item.metadata.title,
+              value: item.metadata.title,
+              key: item.metadata.title,
+            })),
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    );
+  }
 
   componentWillUnmount() {
     this.cancellableCreate && this.cancellableCreate.cancel();
@@ -105,15 +131,7 @@ class CommunityCreateForm extends Component {
 
   render() {
     const { formConfig, canCreateRestricted } = this.props;
-    const { hasCommunity, error } = this.state;
-
-    const options = [
-      {
-        key: "HORIZON-ZEN",
-        text: "HORIZON-ZEN",
-        value: "HORIZON-ZEN",
-      },
-    ];
+    const { hasCommunity, communities, error } = this.state;
 
     return (
       <Formik
@@ -121,7 +139,9 @@ class CommunityCreateForm extends Component {
           access: {
             visibility: "public",
           },
-          slug: "",
+          metadata: {
+            slug: "",
+          },
         }}
         onSubmit={this.onSubmit}
       >
@@ -138,7 +158,7 @@ class CommunityCreateForm extends Component {
               <Grid.Row>
                 <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
                   <Header as="h1" className="rel-mt-2">
-                    {i18next.t("Setup new community for EU-funded project")}
+                    {i18next.t("Subcommunity request")}
                   </Header>
                   <Divider />
                 </Grid.Column>
@@ -148,7 +168,7 @@ class CommunityCreateForm extends Component {
                   <div className="field">
                     <Form.Field>
                       {i18next.t(
-                        "Do you already have an existing community on Zenodo for your EU-funded project?"
+                        "Do you already have an existing community on Zenodo?"
                       )}
                     </Form.Field>
                     {/* <Form.Group aria-labelledby="community-label"> */}
@@ -183,33 +203,12 @@ class CommunityCreateForm extends Component {
                           class="block"
                         />
                       }
-                      options={options}
-                      selectOnBlur={false}
                       fieldPath="metadata.community"
+                      options={communities}
                       required
+                      disabled={_isEmpty(communities)}
                     />
                   )}
-                  <TextField
-                    required
-                    id="metadata.project"
-                    fluid
-                    fieldPath="metadata.project"
-                    // Prevent submitting before the value is updated:
-                    onKeyDown={(e) => {
-                      e.key === "Enter" && e.preventDefault();
-                    }}
-                    label={
-                      <FieldLabel
-                        htmlFor="metadata.project"
-                        icon="group"
-                        label={i18next.t("EC Project")}
-                      />
-                    }
-                    onChange={(e, value) => {
-                      setFieldValue("metadata.title", value.value);
-                      setFieldValue("slug", value.value.toLowerCase().split(" ")[0]);
-                    }}
-                  />
                   {!hasCommunity && (
                     <>
                       <TextField
@@ -280,7 +279,9 @@ class CommunityCreateForm extends Component {
                     onClick={(event) => handleSubmit(event)}
                   >
                     <Icon name="plus" />
-                    {i18next.t("Create community")}
+                    {hasCommunity
+                      ? i18next.t("Create request")
+                      : i18next.t("Create community")}
                   </Button>
                 </Grid.Column>
               </Grid.Row>
