@@ -1,6 +1,24 @@
 {
   "mappings": {
     "dynamic": "strict",
+    "dynamic_templates": [
+      {
+        "user_profile": {
+          "path_match": "user.profile.*",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      },
+      {
+        "user_preferences": {
+          "path_match": "user.preferences.*",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      }
+    ],
     "properties": {
       "created": {
         "type": "date"
@@ -62,7 +80,8 @@
               "affiliations": {
                 "type": "text"
               }
-            }
+            },
+            "dynamic": true
           },
           "preferences": {
             "properties": {
@@ -87,7 +106,8 @@
                   }
                 }
               }
-            }
+            },
+            "dynamic": true
           }
         }
       },
