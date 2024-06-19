@@ -34,7 +34,7 @@ const IdentifierField = ({ formConfig }) => {
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${values["slug"]}`}
+      {`${formConfig.SITE_UI_URL}/communities/${values["slug"].toLowerCase()}`}
     </>
   );
 
