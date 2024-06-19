@@ -104,11 +104,22 @@ class CommunityCreateForm extends Component {
   onSubmit = async (values, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
     const client = new CommunityApi();
-    const payload = {
-      metadata: {},
-      ...values,
-    };
-    this.cancellableCreate = withCancel(client.create(payload));
+    const { hasCommunity } = this.state;
+    const { communityId } = this.props;
+    let payload = {};
+    if (hasCommunity) {
+      payload = { community_id: values["metadata"]["community"] };
+    } else {
+      payload = {
+        community: {
+          title: values["metadata"]["title"],
+          slug: values["metadata"]["slug"],
+        },
+      };
+    }
+    this.cancellableCreate = withCancel(
+      client.createSubcommunity(communityId, payload)
+    );
 
     try {
       const response = await this.cancellableCreate.promise;
@@ -145,7 +156,7 @@ class CommunityCreateForm extends Component {
         }}
         onSubmit={this.onSubmit}
       >
-        {({ values, isSubmitting, handleSubmit, setFieldValue }) => (
+        {({ values, isSubmitting, handleSubmit }) => (
           <Form onSubmit={handleSubmit} className="communities-creation">
             <Message hidden={error === ""} negative className="flashed">
               <Grid container centered>
@@ -296,18 +307,21 @@ class CommunityCreateForm extends Component {
 CommunityCreateForm.propTypes = {
   formConfig: PropTypes.object.isRequired,
   canCreateRestricted: PropTypes.bool.isRequired,
+  communityId: PropTypes.string.isRequired,
 };
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
 const customFields = JSON.parse(domContainer.dataset.customFields);
 const canCreateRestricted = JSON.parse(domContainer.dataset.canCreateRestricted);
+const communityId = domContainer.dataset.communityId;
 
 ReactDOM.render(
   <CommunityCreateForm
     formConfig={formConfig}
     customFields={customFields}
     canCreateRestricted={canCreateRestricted}
+    communityId={communityId}
   />,
   domContainer
 );

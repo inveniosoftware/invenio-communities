@@ -108,4 +108,21 @@ export class CommunityApi {
       ...options,
     });
   }
+
+  /**
+   * Create a new community.
+   *
+   * @param {object} payload - Serialized community
+   * @param {object} options - Custom options
+   */
+  async createSubcommunity(communityId, payload, options) {
+    options = options || {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    return http.post(`${this.baseUrl}/${communityId}/actions/join-request`, payload, {
+      headers: headers,
+      ...options,
+    });
+  }
 }
