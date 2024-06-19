@@ -217,7 +217,9 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
             validate.Regexp(
                 r"^[-\w]+$",
                 flags=re.ASCII,
-                error=_("The ID should contain only letters with numbers or dashes."),
+                error=_(
+                    "The identifier should contain only letters, numbers, or dashes."
+                ),
             ),
             is_not_uuid,
         ],

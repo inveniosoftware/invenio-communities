@@ -707,7 +707,7 @@ def test_invalid_community_ids_create(
     assert res.status_code == 400
     assert (
         res.json["errors"][0]["messages"][0]
-        == "The ID should contain only letters with numbers or dashes."
+        == "The identifier should contain only letters, numbers, or dashes."
     )
 
 
@@ -732,7 +732,7 @@ def test_invalid_community_ids(
     assert res.status_code == 400
     assert (
         res.json["errors"][0]["messages"][0]
-        == "The ID should contain only letters with numbers or dashes."
+        == "The identifier should contain only letters, numbers, or dashes."
     )
 
     data = copy.deepcopy(minimal_community)
