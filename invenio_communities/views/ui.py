@@ -31,6 +31,7 @@ from .communities import (
     communities_curation_policy,
     communities_frontpage,
     communities_new,
+    communities_new_subcommunity,
     communities_requests,
     communities_search,
     communities_settings,
@@ -160,6 +161,11 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["curation_policy"],
         view_func=communities_curation_policy,
+    )
+
+    blueprint.add_url_rule(
+        routes["new_subcommunity"],
+        view_func=communities_new_subcommunity,
     )
 
     # Settings tab routes
