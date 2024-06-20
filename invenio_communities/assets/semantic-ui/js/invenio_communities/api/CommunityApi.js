@@ -1,5 +1,5 @@
 // This file is part of Invenio-Communities
-// Copyright (C) 2021 CERN.
+// Copyright (C) 2021-2024 CERN.
 // Copyright (C) 2021 Northwestern University.
 //
 // Invenio-communities is free software; you can redistribute it and/or modify it

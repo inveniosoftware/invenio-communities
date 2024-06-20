@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version 14.1.0 (released 2024-06-20)
+
+- mappings: add dynamic mappings for user profiles and preferences
+- community-ui: improve creation UX
+    * cast slug to lowercase
+- subcommunities: initial minimal feature implementation
+- ui: fixed tombstone dumping
+
 Version 14.0.0 (released 2024-06-04)
 
 - installation: bump invenio-vocabularies
