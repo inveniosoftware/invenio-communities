@@ -178,9 +178,7 @@ class CommunityCreateForm extends Component {
                 <Grid.Column mobile={16} tablet={12} computer={8}>
                   <div className="field">
                     <Form.Field>
-                      {i18next.t(
-                        "Do you already have an existing community on Zenodo?"
-                      )}
+                      {i18next.t("Do you already have an existing community?")}
                     </Form.Field>
                     {/* <Form.Group aria-labelledby="community-label"> */}
                     <Form.Group>

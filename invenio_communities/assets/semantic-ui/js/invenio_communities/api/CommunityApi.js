@@ -112,6 +112,7 @@ export class CommunityApi {
   /**
    * Create a new community.
    *
+   * @param {string} communityId - Community UUID
    * @param {object} payload - Serialized community
    * @param {object} options - Custom options
    */
