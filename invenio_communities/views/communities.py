@@ -11,7 +11,7 @@
 
 from copy import deepcopy
 
-from flask import current_app, g, render_template
+from flask import abort, current_app, g, render_template
 from flask.templating import _render
 from flask_login import login_required
 from invenio_i18n import lazy_gettext as _
@@ -248,6 +248,9 @@ def communities_new():
 def communities_new_subcommunity(pid_value, community, community_ui):
     """Subcommunities creation page."""
     permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
+
+    if not community["children"]["allow"]:
+        abort(404)
 
     can_create = current_communities.service.check_permission(g.identity, "create")
     if not can_create:
