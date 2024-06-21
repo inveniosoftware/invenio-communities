@@ -7,12 +7,14 @@
 """Subcommunities service."""
 
 from invenio_i18n import gettext as _
+from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services.base import LinksTemplate, Service
 from invenio_records_resources.services.records.schema import ServiceSchemaWrapper
 from invenio_records_resources.services.uow import unit_of_work
 from invenio_requests.proxies import current_requests_service as requests_service
 from werkzeug.local import LocalProxy
 
+import invenio_communities.notifications.builders as notifications
 from invenio_communities.proxies import current_communities
 
 community_service = LocalProxy(lambda: current_communities.service)
@@ -88,9 +90,18 @@ class SubCommunityService(Service):
                 community=community.metadata["title"]
             )
         }
-        return requests_service.create(
+        request = requests_service.create(
             identity, request_data, self.request_cls, receiver, creator, topic, uow=uow
         )
+        uow.register(
+            NotificationOp(
+                notifications.SubCommunityCreate.build(
+                    identity=identity, request=request._request
+                )
+            )
+        )
+
+        return request
 
         # TODO if the user is the owner of both communities, accept the request automatically
 

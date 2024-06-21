@@ -7,19 +7,18 @@
 
 """Notification related utils for notifications."""
 
-from abc import ABC
-
 from invenio_notifications.models import Notification
 from invenio_notifications.registry import EntityResolverRegistry
 from invenio_notifications.services.builders import NotificationBuilder
 from invenio_notifications.services.generators import EntityResolve, UserEmailBackend
+from invenio_requests.notifications.filters import UserRecipientFilter
 from invenio_users_resources.notifications.filters import UserPreferencesRecipientFilter
 from invenio_users_resources.notifications.generators import UserRecipient
 
 from invenio_communities.notifications.generators import CommunityMembersRecipient
 
 
-class CommunityInvitationNotificationBuilder(NotificationBuilder):
+class BaseNotificationBuilder(NotificationBuilder):
     """Base notification builder for community invitation action."""
 
     context = [
@@ -35,6 +34,10 @@ class CommunityInvitationNotificationBuilder(NotificationBuilder):
     recipient_backends = [
         UserEmailBackend(),
     ]
+
+
+class CommunityInvitationNotificationBuilder(BaseNotificationBuilder):
+    """Base notification builder for community invitation action."""
 
 
 class CommunityInvitationSubmittedNotificationBuilder(
@@ -148,3 +151,68 @@ class CommunityInvitationExpireNotificationBuilder(
         CommunityMembersRecipient(key="request.created_by", roles=["owner", "manager"]),
         UserRecipient(key="request.receiver"),
     ]
+
+
+#
+# Subcommunity request
+#
+class SubCommunityBuilderBase(BaseNotificationBuilder):
+    """Base notification builder for subcommunity requests."""
+
+    type = "subcommunity-request"
+
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.topic"),
+        EntityResolve("request.receiver"),
+        EntityResolve("executing_user"),
+    ]
+
+    @classmethod
+    def build(cls, identity, request):
+        """Build notification with request context."""
+        return Notification(
+            type=cls.type,
+            context={
+                "request": EntityResolverRegistry.reference_entity(request),
+                "executing_user": EntityResolverRegistry.reference_identity(identity),
+            },
+        )
+
+    recipients = [
+        CommunityMembersRecipient("request.created_by", roles=["owner", "manager"]),
+        CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
+    ]
+
+    recipient_filters = [
+        UserPreferencesRecipientFilter(),
+        # Don't send notifications to the user performing the action
+        UserRecipientFilter("executing_user"),
+    ]
+
+
+class SubCommunityCreate(SubCommunityBuilderBase):
+    """Notification builder for subcommunity request creation."""
+
+    type = f"{SubCommunityBuilderBase.type}.create"
+
+    recipient_filters = [
+        UserPreferencesRecipientFilter(),
+        # TODO: We exceptionally DON'T filter out the executing user here, because we
+        # don't have a clear place where they can see the created request.
+        # See also: https://github.com/inveniosoftware/invenio-communities/issues/1158
+        # UserRecipientFilter("executing_user"),
+    ]
+
+
+class SubCommunityAccept(SubCommunityBuilderBase):
+    """Notification builder for subcommunity request accept."""
+
+    type = f"{SubCommunityBuilderBase.type}.accept"
+
+
+class SubCommunityDecline(SubCommunityBuilderBase):
+    """Notification builder for subcommunity request decline."""
+
+    type = f"{SubCommunityBuilderBase.type}.decline"
