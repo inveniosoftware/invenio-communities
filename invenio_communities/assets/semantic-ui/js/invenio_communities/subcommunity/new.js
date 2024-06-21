@@ -76,7 +76,7 @@ class CommunityCreateForm extends Component {
   componentDidMount() {
     withCancel(
       http
-        .get("/api/user/communities")
+        .get("/api/user/communities?sort=newest")
         .then((response) => response.data)
         .then((data) => {
           this.setState({
