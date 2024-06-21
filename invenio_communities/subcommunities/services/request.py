@@ -5,10 +5,13 @@
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunity request implementation."""
+
 from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
+from invenio_notifications.services.uow import NotificationOp
 from invenio_requests.customizations import RequestType, actions
 
+import invenio_communities.notifications.builders as notifications
 from invenio_communities.proxies import current_communities
 
 
@@ -21,6 +24,29 @@ class AcceptSubcommunity(actions.AcceptAction):
         move_to = self.request.receiver.resolve().id
         current_communities.service.bulk_update_parent(
             system_identity, [to_be_moved], parent_id=move_to, uow=uow
+        )
+        uow.register(
+            NotificationOp(
+                notifications.SubCommunityAccept.build(
+                    identity=identity, request=self.request
+                )
+            )
+        )
+        super().execute(identity, uow)
+
+
+class DeclineSubcommunity(actions.DeclineAction):
+    """Represents a decline action used to decline a subcommunity."""
+
+    def execute(self, identity, uow):
+        """Execute decline action."""
+        # We override just to send a notification
+        uow.register(
+            NotificationOp(
+                notifications.SubCommunityDecline.build(
+                    identity=identity, request=self.request
+                )
+            )
         )
         super().execute(identity, uow)
 
@@ -43,7 +69,7 @@ class SubCommunityRequest(RequestType):
         "cancel": actions.CancelAction,
         # Custom implemented actions
         "accept": AcceptSubcommunity,
-        "decline": actions.DeclineAction,
+        "decline": DeclineSubcommunity,
     }
 
     needs_context = {
