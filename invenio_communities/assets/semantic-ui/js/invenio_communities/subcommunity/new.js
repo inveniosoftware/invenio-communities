@@ -80,11 +80,14 @@ class CommunityCreateForm extends Component {
         .then((response) => response.data)
         .then((data) => {
           this.setState({
-            communities: data?.hits?.hits.map((item) => ({
-              text: item.metadata.title,
-              value: item.id,
-              key: item.id,
-            })),
+            communities: data?.hits?.hits
+              .filter((item) => !item?.parent?.id)
+              .filter((item) => !item?.children?.allow === true)
+              .map((item) => ({
+                text: item.metadata.title,
+                value: item.id,
+                key: item.id,
+              })),
           });
         })
         .catch((error) => {
