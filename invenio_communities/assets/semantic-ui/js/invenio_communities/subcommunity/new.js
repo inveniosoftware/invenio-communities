@@ -110,13 +110,16 @@ class CommunityCreateForm extends Component {
     const { hasCommunity } = this.state;
     const { communityId } = this.props;
     let payload = {};
+    let slug = "";
     if (hasCommunity) {
-      payload = { community_id: values["metadata"]["community"] };
+      slug = values["metadata"]["community"];
+      payload = { community_id: slug };
     } else {
+      slug = values["metadata"]["slug"];
       payload = {
         community: {
           title: values["metadata"]["title"],
-          slug: values["metadata"]["slug"],
+          slug: slug,
         },
       };
     }
@@ -127,7 +130,10 @@ class CommunityCreateForm extends Component {
     try {
       const response = await this.cancellableCreate.promise;
       setSubmitting(false);
-      window.location.href = response.data.links.settings_html;
+      const requestID = response.data.id;
+      // TODO this should redirect to the request page as returned by the API.
+      // TODO It is computed for now because the link contains references to two different entities (request and community), and that's not supported yet by the backend.
+      window.location.href = `/communities/${slug}/requests/${requestID}`;
     } catch (error) {
       if (error === "UNMOUNTED") return;
 
