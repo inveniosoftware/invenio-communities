@@ -85,8 +85,8 @@ class CommunityCreateForm extends Component {
               .filter((item) => !item?.children?.allow === true)
               .map((item) => ({
                 text: item.metadata.title,
-                value: item.metadata.title,
-                key: item.metadata.title,
+                value: item.id,
+                key: item.id,
               })),
           });
         })
