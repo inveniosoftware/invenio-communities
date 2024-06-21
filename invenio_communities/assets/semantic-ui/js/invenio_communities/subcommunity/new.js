@@ -82,8 +82,8 @@ class CommunityCreateForm extends Component {
           this.setState({
             communities: data?.hits?.hits.map((item) => ({
               text: item.metadata.title,
-              value: item.metadata.title,
-              key: item.metadata.title,
+              value: item.id,
+              key: item.id,
             })),
           });
         })
