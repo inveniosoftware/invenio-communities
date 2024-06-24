@@ -9,7 +9,7 @@
     "parent_community_id": parent_community.slug,
     "parent_community_title": parent_community.metadata.title,
     "request_id": request.id,
-    "username": user.username or user.profile.full_name
+    "username": user.username or user.profile.full_name,
     "ui": ui,
 } %}
 
@@ -24,7 +24,7 @@
 {%- block html_body -%}
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
-        <td>{{ _('The community manager @{username}" declined the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
+        <td>{{ _('The community manager @{username} declined the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
         </td>
     </tr>
     <tr>
@@ -40,7 +40,7 @@
 {%- endblock html_body %}
 
 {%- block plain_body -%}
-{{ _('The community manager @{username}" declined the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
+{{ _('The community manager @{username} declined the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
 
 {{ _("View the request at:") }} {{ request_link }}
 
@@ -50,7 +50,7 @@
 
 {# Markdown for Slack/Mattermost/chat #}
 {%- block md_body -%}
-{{ _('The community manager @{username}" declined the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
+{{ _('The community manager @{username} declined the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
 
 [{{ _("View the request") }}]({{ request_link }})
 
