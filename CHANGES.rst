@@ -9,6 +9,15 @@
 Changes
 =======
 
+Version 14.2.0 (released 2024-06-24)
+
+- subcommunities: fixed redirect url after new request
+- subcommunities: add notifications
+- subcommunities-ui: explicitly sort by newest first in form dropdown
+- bug: return 404 if community cannot have children
+- bug: filter out communities that have a parent or can have children (#1154)
+- bug: allow adding existing communities
+
 Version 14.1.0 (released 2024-06-20)
 
 - mappings: add dynamic mappings for user profiles and preferences
