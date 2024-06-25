@@ -25,6 +25,7 @@ import {
 import { Button, Divider, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../api";
 import { communityErrorSerializer } from "../api/serializers";
+import Overridable, { OverridableContext, overrideStore } from "react-overridable";
 
 const IdentifierField = ({ formConfig }) => {
   const { values } = useFormikContext();
@@ -150,163 +151,174 @@ class CommunityCreateForm extends Component {
   };
 
   render() {
-    const { formConfig, canCreateRestricted } = this.props;
+    const { formConfig, canCreateRestricted, customFields, communityId } = this.props;
     const { hasCommunity, communities, error } = this.state;
 
     return (
-      <Formik
-        initialValues={{
-          access: {
-            visibility: "public",
-          },
-          metadata: {
-            slug: "",
-          },
-        }}
-        onSubmit={this.onSubmit}
+      <Overridable
+        id="InvenioCommunities.CommunityCreateForm.layout"
+        formConfig={formConfig}
+        canCreateRestricted={canCreateRestricted}
+        error={error}
+        hasCommunity={hasCommunity}
+        communities={communities}
+        customFields={customFields}
+        communityId={communityId}
       >
-        {({ values, isSubmitting, handleSubmit }) => (
-          <Form onSubmit={handleSubmit} className="communities-creation">
-            <Message hidden={error === ""} negative className="flashed">
+        <Formik
+          initialValues={{
+            access: {
+              visibility: "public",
+            },
+            metadata: {
+              slug: "",
+            },
+          }}
+          onSubmit={this.onSubmit}
+        >
+          {({ values, isSubmitting, handleSubmit }) => (
+            <Form onSubmit={handleSubmit} className="communities-creation">
+              <Message hidden={error === ""} negative className="flashed">
+                <Grid container centered>
+                  <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
+                    <strong>{error}</strong>
+                  </Grid.Column>
+                </Grid>
+              </Message>
               <Grid container centered>
-                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="left">
-                  <strong>{error}</strong>
-                </Grid.Column>
-              </Grid>
-            </Message>
-            <Grid container centered>
-              <Grid.Row>
-                <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
-                  <Header as="h1" className="rel-mt-2">
-                    {i18next.t("Subcommunity request")}
-                  </Header>
-                  <Divider />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row textAlign="left">
-                <Grid.Column mobile={16} tablet={12} computer={8}>
-                  <div className="field">
-                    <Form.Field>
-                      {i18next.t("Do you already have an existing community?")}
-                    </Form.Field>
-                    {/* <Form.Group aria-labelledby="community-label"> */}
-                    <Form.Group>
-                      <RadioField
-                        label={i18next.t("Yes")}
-                        checked={hasCommunity === true}
-                        value={i18next.t("Yes")}
-                        onChange={() => {
-                          this.setState({ hasCommunity: true });
-                        }}
-                        fieldPath="metadata.hasCommunity"
-                      />
-                      <RadioField
-                        label={i18next.t("No")}
-                        checked={hasCommunity === false}
-                        value={i18next.t("No")}
-                        onChange={() => {
-                          this.setState({ hasCommunity: false });
-                        }}
-                        fieldPath="metadata.hasCommunity"
-                      />
-                    </Form.Group>
-                  </div>
-                  {hasCommunity && (
-                    <SelectField
-                      label={
-                        <FieldLabel
-                          icon="user"
-                          label={i18next.t("Community")}
-                          id="community-label"
-                          class="block"
+                <Grid.Row>
+                  <Grid.Column mobile={16} tablet={12} computer={8} textAlign="center">
+                    <Header as="h1" className="rel-mt-2">
+                      {i18next.t("Subcommunity request")}
+                    </Header>
+                    <Divider />
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row textAlign="left">
+                  <Grid.Column mobile={16} tablet={12} computer={8}>
+                    <div className="field">
+                      <Form.Field>
+                        {i18next.t("Do you already have an existing community?")}
+                      </Form.Field>
+                      {/* <Form.Group aria-labelledby="community-label"> */}
+                      <Form.Group>
+                        <RadioField
+                          label={i18next.t("Yes")}
+                          checked={hasCommunity === true}
+                          value={i18next.t("Yes")}
+                          onChange={() => {
+                            this.setState({ hasCommunity: true });
+                          }}
+                          fieldPath="metadata.hasCommunity"
                         />
-                      }
-                      fieldPath="metadata.community"
-                      options={communities}
-                      required
-                      disabled={_isEmpty(communities)}
-                    />
-                  )}
-                  {!hasCommunity && (
-                    <>
-                      <TextField
-                        required
-                        id="metadata.title"
-                        fluid
-                        fieldPath="metadata.title"
-                        // Prevent submitting before the value is updated:
-                        onKeyDown={(e) => {
-                          e.key === "Enter" && e.preventDefault();
-                        }}
+                        <RadioField
+                          label={i18next.t("No")}
+                          checked={hasCommunity === false}
+                          value={i18next.t("No")}
+                          onChange={() => {
+                            this.setState({ hasCommunity: false });
+                          }}
+                          fieldPath="metadata.hasCommunity"
+                        />
+                      </Form.Group>
+                    </div>
+                    {hasCommunity && (
+                      <SelectField
                         label={
                           <FieldLabel
-                            htmlFor="metadata.title"
-                            icon="book"
-                            label={i18next.t("Community name")}
+                            icon="user"
+                            label={i18next.t("Community")}
+                            id="community-label"
+                            class="block"
                           />
                         }
+                        fieldPath="metadata.community"
+                        options={communities}
+                        required
+                        disabled={_isEmpty(communities)}
                       />
-                      <IdentifierField formConfig={formConfig} />
-                    </>
-                  )}
-                  {!_isEmpty(customFields.ui) && (
-                    <CustomFields
-                      config={customFields.ui}
-                      templateLoaders={[
-                        (widget) => import(`@templates/custom_fields/${widget}.js`),
-                        (widget) => import(`react-invenio-forms`),
-                      ]}
-                      fieldPathPrefix="custom_fields"
-                    />
-                  )}
-                  {canCreateRestricted && (
-                    <>
-                      <Header as="h3">{i18next.t("Community visibility")}</Header>
-                      {formConfig.access.visibility.map((item) => (
-                        <React.Fragment key={item.value}>
-                          <RadioField
-                            key={item.value}
-                            fieldPath="access.visibility"
-                            label={item.text}
-                            labelIcon={item.icon}
-                            checked={_get(values, "access.visibility") === item.value}
-                            value={item.value}
-                            onChange={({ event, data, formikProps }) => {
-                              formikProps.form.setFieldValue(
-                                "access.visibility",
-                                item.value
-                              );
-                            }}
-                          />
-                          <label className="helptext">{item.helpText}</label>
-                        </React.Fragment>
-                      ))}
-                    </>
-                  )}
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column textAlign="center">
-                  <Button
-                    positive
-                    icon
-                    labelPosition="left"
-                    loading={isSubmitting}
-                    disabled={isSubmitting}
-                    type="button"
-                    onClick={(event) => handleSubmit(event)}
-                  >
-                    <Icon name="plus" />
-                    {hasCommunity
-                      ? i18next.t("Create request")
-                      : i18next.t("Create community")}
-                  </Button>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
+                    )}
+                    {!hasCommunity && (
+                      <>
+                        <TextField
+                          required
+                          id="metadata.title"
+                          fluid
+                          fieldPath="metadata.title"
+                          // Prevent submitting before the value is updated:
+                          onKeyDown={(e) => {
+                            e.key === "Enter" && e.preventDefault();
+                          }}
+                          label={
+                            <FieldLabel
+                              htmlFor="metadata.title"
+                              icon="book"
+                              label={i18next.t("Community name")}
+                            />
+                          }
+                        />
+                        <IdentifierField formConfig={formConfig} />
+                      </>
+                    )}
+                    {!_isEmpty(customFields.ui) && (
+                      <CustomFields
+                        config={customFields.ui}
+                        templateLoaders={[
+                          (widget) => import(`@templates/custom_fields/${widget}.js`),
+                          (widget) => import(`react-invenio-forms`),
+                        ]}
+                        fieldPathPrefix="custom_fields"
+                      />
+                    )}
+                    {canCreateRestricted && (
+                      <>
+                        <Header as="h3">{i18next.t("Community visibility")}</Header>
+                        {formConfig.access.visibility.map((item) => (
+                          <React.Fragment key={item.value}>
+                            <RadioField
+                              key={item.value}
+                              fieldPath="access.visibility"
+                              label={item.text}
+                              labelIcon={item.icon}
+                              checked={_get(values, "access.visibility") === item.value}
+                              value={item.value}
+                              onChange={({ event, data, formikProps }) => {
+                                formikProps.form.setFieldValue(
+                                  "access.visibility",
+                                  item.value
+                                );
+                              }}
+                            />
+                            <label className="helptext">{item.helpText}</label>
+                          </React.Fragment>
+                        ))}
+                      </>
+                    )}
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <Grid.Column textAlign="center">
+                    <Button
+                      positive
+                      icon
+                      labelPosition="left"
+                      loading={isSubmitting}
+                      disabled={isSubmitting}
+                      type="button"
+                      onClick={(event) => handleSubmit(event)}
+                    >
+                      <Icon name="plus" />
+                      {hasCommunity
+                        ? i18next.t("Create request")
+                        : i18next.t("Create community")}
+                    </Button>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
+      </Overridable>
     );
   }
 }
@@ -315,6 +327,7 @@ CommunityCreateForm.propTypes = {
   formConfig: PropTypes.object.isRequired,
   canCreateRestricted: PropTypes.bool.isRequired,
   communityId: PropTypes.string.isRequired,
+  customFields: PropTypes.object,
 };
 
 const domContainer = document.getElementById("app");
@@ -323,13 +336,16 @@ const customFields = JSON.parse(domContainer.dataset.customFields);
 const canCreateRestricted = JSON.parse(domContainer.dataset.canCreateRestricted);
 const communityId = domContainer.dataset.communityId;
 
+const overriddenComponents = overrideStore.getAll();
 ReactDOM.render(
-  <CommunityCreateForm
-    formConfig={formConfig}
-    customFields={customFields}
-    canCreateRestricted={canCreateRestricted}
-    communityId={communityId}
-  />,
+  <OverridableContext.Provider value={overriddenComponents}>
+    <CommunityCreateForm
+      formConfig={formConfig}
+      customFields={customFields}
+      canCreateRestricted={canCreateRestricted}
+      communityId={communityId}
+    />
+  </OverridableContext.Provider>,
   domContainer
 );
 export default CommunityCreateForm;
