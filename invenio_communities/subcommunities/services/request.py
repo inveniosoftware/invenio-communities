@@ -78,3 +78,16 @@ class SubCommunityRequest(RequestType):
             "manager",
         ]
     }
+
+
+def subcommunity_request_type(app):
+    """Return the subcommunity request type.
+
+    Since it can be overridden by the application, this function should be used
+    as the entry point for the request type.
+
+    It must return a class that inherits from `RequestType`.
+    """
+    if not app:
+        return
+    return app.config.get("COMMUNITIES_SUB_REQUEST_CLS", SubCommunityRequest)
