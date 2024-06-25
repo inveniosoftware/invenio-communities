@@ -26,6 +26,7 @@ communities = WebpackThemeBundle(
     themes={
         "semantic-ui": dict(
             entry={
+                "invenio-communities-header": "./js/invenio_communities/community/header/index.js",
                 "invenio-communities-new": "./js/invenio_communities/community/new.js",
                 "invenio-communities-privileges": "./js/invenio_communities/settings/privileges/index.js",
                 "invenio-communities-profile": "./js/invenio_communities/settings/profile/index.js",

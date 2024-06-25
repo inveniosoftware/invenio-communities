@@ -10,6 +10,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { CommunitySettingsForm } from "..//components/CommunitySettingsForm";
 import _get from "lodash/get";
+import _isEmpty from "lodash/isEmpty";
 import { useField } from "formik";
 import React, { Component } from "react";
 import { RadioField } from "react-invenio-forms";
@@ -18,17 +19,31 @@ import PropTypes from "prop-types";
 
 const VisibilityField = ({ label, formConfig, ...props }) => {
   const [field] = useField(props);
+  const fieldPath = "access.visibility";
+
+  function createHandleChange(radioValue) {
+    function handleChange({ event, data, formikProps }) {
+      formikProps.form.setFieldValue(fieldPath, radioValue);
+      // dependent fields
+      if (radioValue === "restricted") {
+        formikProps.form.setFieldValue("access.member_policy", "closed");
+      }
+    }
+    return handleChange;
+  }
+
   return (
     <>
       {formConfig.access.visibility.map((item) => (
         <React.Fragment key={item.value}>
           <RadioField
             key={item.value}
-            fieldPath="access.visibility"
+            fieldPath={fieldPath}
             label={item.text}
             labelIcon={item.icon}
-            checked={_get(field.value, "access.visibility") === item.value}
+            checked={_get(field.value, fieldPath) === item.value}
             value={item.value}
+            onChange={createHandleChange(item.value)}
           />
           <label className="helptext">{item.helpText}</label>
         </React.Fragment>
@@ -76,14 +91,47 @@ MembersVisibilityField.defaultProps = {
   label: "",
 };
 
+const MemberPolicyField = ({ label, formConfig, ...props }) => {
+  const [field] = useField(props);
+  const isDisabled = _get(field.value, "access.visibility") === "restricted";
+
+  return (
+    <>
+      {formConfig.access.member_policy.map((item) => (
+        <React.Fragment key={item.value}>
+          <RadioField
+            key={item.value}
+            fieldPath="access.member_policy"
+            label={item.text}
+            labelIcon={item.icon}
+            checked={item.value === _get(field.value, "access.member_policy")}
+            value={item.value}
+            disabled={isDisabled}
+          />
+          <label className="helptext">{item.helpText}</label>
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
+
+MemberPolicyField.propTypes = {
+  label: PropTypes.string,
+  formConfig: PropTypes.object.isRequired,
+};
+
+MemberPolicyField.defaultProps = {
+  label: "",
+};
+
 class CommunityPrivilegesForm extends Component {
   getInitialValues = () => {
     return {
       access: {
         visibility: "public",
         members_visibility: "public",
+        member_policy: "closed",
         // TODO: Re-enable once properly integrated to be displayed
-        // member_policy: "open",
         // record_policy: "open",
       },
     };
@@ -105,6 +153,7 @@ class CommunityPrivilegesForm extends Component {
           </Header.Subheader>
         </Header>
         <VisibilityField formConfig={formConfig} />
+
         <Header as="h2" size="small">
           {i18next.t("Members visibility")}
           <Header.Subheader className="mt-5">
@@ -114,6 +163,19 @@ class CommunityPrivilegesForm extends Component {
           </Header.Subheader>
         </Header>
         <MembersVisibilityField formConfig={formConfig} />
+
+        {!_isEmpty(formConfig.access.member_policy) && (
+          <>
+            <Header as="h2" size="small">
+              {i18next.t("Membership Policy")}
+              <Header.Subheader className="mt-5">
+                {i18next.t("Controls if anyone can request to join your community.")}
+              </Header.Subheader>
+            </Header>
+            <MemberPolicyField formConfig={formConfig} />
+          </>
+        )}
+
         {/* TODO: Re-enable once properly integrated to be displayed */}
         {/*
               <Grid.Column width={6}>

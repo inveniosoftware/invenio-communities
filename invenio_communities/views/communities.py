@@ -22,6 +22,7 @@ from jinja2 import TemplateError
 from invenio_communities.proxies import current_communities
 
 from ..communities.resources.ui_schema import TypesSchema
+from ..members.records.api import Member
 from .decorators import pass_community
 from .template_loader import CommunityThemeChoiceJinjaLoader
 
@@ -77,6 +78,24 @@ REVIEW_POLICY_FIELDS = [
         "icon": "group",
         "helpText": _(
             "Submissions to the community by default requires review, but curators, managers and owners can publish directly without review."
+        ),
+    },
+]
+
+
+MEMBER_POLICY_FIELDS = [
+    {
+        "text": "Open",
+        "value": "open",
+        "icon": "user plus",
+        "helpText": _("Users can request to join your community."),
+    },
+    {
+        "text": "Closed",
+        "value": "closed",
+        "icon": "user times",
+        "helpText": _(
+            "Users cannot request to join your community. Only invited users can become members of your community."
         ),
     },
 ]
@@ -341,6 +360,12 @@ def communities_settings_privileges(pid_value, community, community_ui):
     if not permissions["can_manage_access"]:
         raise PermissionDeniedError()
 
+    member_policy = (
+        MEMBER_POLICY_FIELDS
+        if current_app.config["COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS"]
+        else {}
+    )
+
     return render_community_theme_template(
         "invenio_communities/details/settings/privileges.html",
         theme=community_ui.get("theme", {}),
@@ -349,6 +374,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
             access=dict(
                 visibility=VISIBILITY_FIELDS,
                 members_visibility=MEMBERS_VISIBILITY_FIELDS,
+                member_policy=member_policy,
             ),
         ),
         permissions=permissions,
