@@ -14,7 +14,6 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import {
-  CustomFields,
   FieldLabel,
   RadioField,
   SelectField,
@@ -151,7 +150,7 @@ class CommunityCreateForm extends Component {
   };
 
   render() {
-    const { formConfig, canCreateRestricted, customFields, communityId } = this.props;
+    const { formConfig, canCreateRestricted, communityId } = this.props;
     const { hasCommunity, communities, error } = this.state;
 
     return (
@@ -160,10 +159,8 @@ class CommunityCreateForm extends Component {
         formConfig={formConfig}
         canCreateRestricted={canCreateRestricted}
         error={error}
-        hasCommunity={hasCommunity}
-        communities={communities}
-        customFields={customFields}
         communityId={communityId}
+        IdentifierField={IdentifierField}
       >
         <Formik
           initialValues={{
@@ -260,16 +257,6 @@ class CommunityCreateForm extends Component {
                         <IdentifierField formConfig={formConfig} />
                       </>
                     )}
-                    {!_isEmpty(customFields.ui) && (
-                      <CustomFields
-                        config={customFields.ui}
-                        templateLoaders={[
-                          (widget) => import(`@templates/custom_fields/${widget}.js`),
-                          (widget) => import(`react-invenio-forms`),
-                        ]}
-                        fieldPathPrefix="custom_fields"
-                      />
-                    )}
                     {canCreateRestricted && (
                       <>
                         <Header as="h3">{i18next.t("Community visibility")}</Header>
@@ -327,12 +314,10 @@ CommunityCreateForm.propTypes = {
   formConfig: PropTypes.object.isRequired,
   canCreateRestricted: PropTypes.bool.isRequired,
   communityId: PropTypes.string.isRequired,
-  customFields: PropTypes.object,
 };
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
-const customFields = JSON.parse(domContainer.dataset.customFields);
 const canCreateRestricted = JSON.parse(domContainer.dataset.canCreateRestricted);
 const communityId = domContainer.dataset.communityId;
 
@@ -341,7 +326,6 @@ ReactDOM.render(
   <OverridableContext.Provider value={overriddenComponents}>
     <CommunityCreateForm
       formConfig={formConfig}
-      customFields={customFields}
       canCreateRestricted={canCreateRestricted}
       communityId={communityId}
     />
