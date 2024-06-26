@@ -15,7 +15,7 @@ from invenio_requests.proxies import current_requests_service as requests_servic
 from werkzeug.local import LocalProxy
 
 import invenio_communities.notifications.builders as notifications
-from invenio_communities.proxies import current_communities
+from invenio_communities.proxies import current_communities, current_roles
 
 community_service = LocalProxy(lambda: current_communities.service)
 
@@ -50,6 +50,19 @@ class SubCommunityService(Service):
     def expandable_fields(self):
         """Get expandable fields."""
         return []
+
+    def _is_owner_of(self, identity, community):
+        """Check if the identity provides community ownership."""
+        return next(
+            (
+                x
+                for x in identity.provides
+                if x.method == "community"
+                and x.value == community
+                and x.role == current_roles.owner_role.name
+            ),
+            None,
+        )
 
     @unit_of_work()
     def join(self, identity, id_, data, uow=None):
@@ -100,6 +113,13 @@ class SubCommunityService(Service):
                 )
             )
         )
+
+        # Accept the request if the user is the owner of both communities
+        is_owner_child = self._is_owner_of(identity, str(community.id))
+
+        is_owner_parent = self._is_owner_of(identity, str(id_))
+        if is_owner_child and is_owner_parent:
+            request = requests_service.execute_action(identity, request.id, "accept")
 
         return request
 
