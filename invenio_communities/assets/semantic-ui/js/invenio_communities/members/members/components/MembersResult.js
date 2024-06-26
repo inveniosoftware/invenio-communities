@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022 CERN.
+ * Copyright (C) 2024 KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -47,6 +48,7 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
           </Grid.Column>
           <Grid.Column width={8} textAlign="center">
             <Pagination
+              showWhenOnlyOnePage={false}
               options={{
                 size: "mini",
                 showFirst: false,
