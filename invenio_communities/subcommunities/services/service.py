@@ -15,7 +15,6 @@ from invenio_requests.proxies import current_requests_service as requests_servic
 from werkzeug.local import LocalProxy
 
 import invenio_communities.notifications.builders as notifications
-from invenio_communities.communities.services.service import get_cached_community_slug
 from invenio_communities.proxies import current_communities, current_roles
 
 community_service = LocalProxy(lambda: current_communities.service)
@@ -76,10 +75,10 @@ class SubCommunityService(Service):
         This method uses the unit of work pattern, therefore if any permission is
         denied, the transaction will be rolled back.
         """
-        slug = get_cached_community_slug(id_, community_service.id)
+        parent_community = community_service.record_cls.pid.resolve(id_)
         data_, errors = self.schema.load(
             data,
-            context={"identity": identity, "community_slug": slug},
+            context={"identity": identity, "community": parent_community},
             raise_errors=True,
         )
 
