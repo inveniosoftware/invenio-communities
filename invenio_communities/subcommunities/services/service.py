@@ -17,6 +17,8 @@ from werkzeug.local import LocalProxy
 import invenio_communities.notifications.builders as notifications
 from invenio_communities.proxies import current_communities, current_roles
 
+from .errors import ParentChildrenNotAllowed
+
 community_service = LocalProxy(lambda: current_communities.service)
 
 
@@ -76,6 +78,12 @@ class SubCommunityService(Service):
         denied, the transaction will be rolled back.
         """
         parent_community = community_service.record_cls.pid.resolve(id_)
+
+        if not parent_community.children.allow:
+            raise ParentChildrenNotAllowed(
+                _("Parent community does not accept subcommunities.")
+            )
+
         data_, errors = self.schema.load(
             data,
             context={"identity": identity, "community": parent_community},
@@ -122,7 +130,9 @@ class SubCommunityService(Service):
 
         is_owner_parent = self._is_owner_of(identity, str(id_))
         if is_owner_child and is_owner_parent:
-            request = requests_service.execute_action(identity, request.id, "accept")
+            request = requests_service.execute_action(
+                identity, request.id, "accept", uow=uow
+            )
 
         return request
 

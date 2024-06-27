@@ -6,15 +6,19 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunity resource configuration."""
 from flask_resources import (
+    HTTPJSONException,
     JSONDeserializer,
     JSONSerializer,
     RequestBodyParser,
     ResourceConfig,
     ResponseHandler,
+    create_error_handler,
 )
 from invenio_records_resources.resources.records.headers import etag_headers
 from invenio_records_resources.services.base.config import ConfiguratorMixin
 from marshmallow import fields
+
+from ..services.errors import ParentChildrenNotAllowed
 
 
 class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
@@ -41,3 +45,14 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
         "application/json": ResponseHandler(JSONSerializer(), headers=etag_headers)
     }
     default_accept_mimetype = "application/json"
+
+    # Error handling
+    error_handlers = {
+        # Parent community does not allow children
+        ParentChildrenNotAllowed: create_error_handler(
+            lambda e: HTTPJSONException(
+                code=400,
+                description=str(e),
+            )
+        ),
+    }
