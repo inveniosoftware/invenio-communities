@@ -9,6 +9,15 @@
 Changes
 =======
 
+Version 14.3.0 (released 2024-06-27)
+
+- subcommunities: made the request form overridable
+- subcommunities: pass community object
+- subcommunities: added auto-accept to request
+- request: added subcommunity type as a function to entry point
+- profile: rename award label
+    * closes https://github.com/inveniosoftware/invenio-app-rdm/issues/2602
+
 Version 14.2.0 (released 2024-06-24)
 
 - subcommunities: fixed redirect url after new request
