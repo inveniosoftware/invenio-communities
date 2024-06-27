@@ -108,7 +108,7 @@ class CommunityCreateForm extends Component {
     setSubmitting(true);
     const client = new CommunityApi();
     const { hasCommunity } = this.state;
-    const { communityId } = this.props;
+    const { community } = this.props;
     let payload = {};
     let slug = "";
     if (hasCommunity) {
@@ -124,7 +124,7 @@ class CommunityCreateForm extends Component {
       };
     }
     this.cancellableCreate = withCancel(
-      client.createSubcommunity(communityId, payload)
+      client.createSubcommunity(community.id, payload)
     );
 
     try {
@@ -133,7 +133,7 @@ class CommunityCreateForm extends Component {
       const requestID = response.data.id;
       // TODO this should redirect to the request page as returned by the API.
       // TODO It is computed for now because the link contains references to two different entities (request and community), and that's not supported yet by the backend.
-      window.location.href = `/communities/${slug}/requests/${requestID}`;
+      window.location.href = `/communities/${community.slug}/requests/${requestID}`;
     } catch (error) {
       if (error === "UNMOUNTED") return;
 
@@ -150,7 +150,7 @@ class CommunityCreateForm extends Component {
   };
 
   render() {
-    const { formConfig, canCreateRestricted, communityId } = this.props;
+    const { formConfig, canCreateRestricted, community } = this.props;
     const { hasCommunity, communities, error } = this.state;
 
     return (
@@ -159,7 +159,7 @@ class CommunityCreateForm extends Component {
         formConfig={formConfig}
         canCreateRestricted={canCreateRestricted}
         error={error}
-        communityId={communityId}
+        community={community}
         IdentifierField={IdentifierField}
       >
         <Formik
@@ -313,13 +313,13 @@ class CommunityCreateForm extends Component {
 CommunityCreateForm.propTypes = {
   formConfig: PropTypes.object.isRequired,
   canCreateRestricted: PropTypes.bool.isRequired,
-  communityId: PropTypes.string.isRequired,
+  community: PropTypes.object.isRequired,
 };
 
 const domContainer = document.getElementById("app");
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
 const canCreateRestricted = JSON.parse(domContainer.dataset.canCreateRestricted);
-const communityId = domContainer.dataset.communityId;
+const community = JSON.parse(domContainer.dataset.community);
 
 const overriddenComponents = overrideStore.getAll();
 ReactDOM.render(
@@ -327,7 +327,7 @@ ReactDOM.render(
     <CommunityCreateForm
       formConfig={formConfig}
       canCreateRestricted={canCreateRestricted}
-      communityId={communityId}
+      community={community}
     />
   </OverridableContext.Provider>,
   domContainer
