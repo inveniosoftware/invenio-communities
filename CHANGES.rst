@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 14.5.1 (released 2024-06-28)
+
+- subcommunity: updated fieldpaths and error handling
+- subcommunity: updated error mapping in the ui
+
 Version 14.5.0 (released 2024-06-28)
 
 - subcommunities: pass "payload" to request creation
