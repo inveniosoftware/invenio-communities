@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version 14.4.0 (released 2024-06-28)
+
+- subcommunity: updated fieldpaths in the ui
+- subcommunities: fix request redirect url
+- errors: added subcommunities errors
+- subcommunities: check for parent children allow
+
 Version 14.3.0 (released 2024-06-27)
 
 - subcommunities: made the request form overridable
