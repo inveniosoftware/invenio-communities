@@ -35,22 +35,22 @@ const IdentifierField = ({ formConfig }) => {
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${values["metadata"]["slug"]}`}
+      {`${formConfig.SITE_UI_URL}/communities/${values["community"]["slug"]}`}
     </>
   );
 
   return (
     <TextField
       required
-      id="metadata.slug"
+      id="community.slug"
       label={
         <FieldLabel
-          htmlFor="metadata.slug"
+          htmlFor="community.slug"
           icon="barcode"
           label={i18next.t("Identifier")}
         />
       }
-      fieldPath="metadata.slug"
+      fieldPath="community.slug"
       helpText={helpText}
       fluid
       className="text-muted"
@@ -70,7 +70,7 @@ class CommunityCreateForm extends Component {
   state = {
     error: "",
     hasCommunity: false,
-    communities: [{ value: "Loading..." }],
+    communities: [],
   };
 
   componentDidMount() {
@@ -84,7 +84,7 @@ class CommunityCreateForm extends Component {
               .filter((item) => !item?.parent?.id)
               .filter((item) => !item?.children?.allow === true)
               .map((item) => ({
-                text: item.metadata.title,
+                text: item.community.title,
                 value: item.id,
                 key: item.id,
               })),
@@ -112,13 +112,12 @@ class CommunityCreateForm extends Component {
     let payload = {};
     let slug = "";
     if (hasCommunity) {
-      slug = values["metadata"]["community"];
-      payload = { community_id: slug };
+      payload = { community_id: values["community"]["community"] };
     } else {
-      slug = values["metadata"]["slug"];
+      slug = values["community"]["slug"];
       payload = {
         community: {
-          title: values["metadata"]["title"],
+          title: values["community"]["title"],
           slug: slug,
         },
       };
@@ -167,8 +166,9 @@ class CommunityCreateForm extends Component {
             access: {
               visibility: "public",
             },
-            metadata: {
+            community: {
               slug: "",
+              title: "",
             },
           }}
           onSubmit={this.onSubmit}
@@ -197,7 +197,6 @@ class CommunityCreateForm extends Component {
                       <Form.Field>
                         {i18next.t("Do you already have an existing community?")}
                       </Form.Field>
-                      {/* <Form.Group aria-labelledby="community-label"> */}
                       <Form.Group>
                         <RadioField
                           label={i18next.t("Yes")}
@@ -206,7 +205,7 @@ class CommunityCreateForm extends Component {
                           onChange={() => {
                             this.setState({ hasCommunity: true });
                           }}
-                          fieldPath="metadata.hasCommunity"
+                          fieldPath="community.hasCommunity"
                         />
                         <RadioField
                           label={i18next.t("No")}
@@ -215,7 +214,7 @@ class CommunityCreateForm extends Component {
                           onChange={() => {
                             this.setState({ hasCommunity: false });
                           }}
-                          fieldPath="metadata.hasCommunity"
+                          fieldPath="community.hasCommunity"
                         />
                       </Form.Group>
                     </div>
@@ -229,8 +228,9 @@ class CommunityCreateForm extends Component {
                             class="block"
                           />
                         }
-                        fieldPath="metadata.community"
+                        fieldPath="community.community"
                         options={communities}
+                        defaultValue="Loading..."
                         required
                         disabled={_isEmpty(communities)}
                       />
@@ -239,16 +239,16 @@ class CommunityCreateForm extends Component {
                       <>
                         <TextField
                           required
-                          id="metadata.title"
+                          id="community.title"
                           fluid
-                          fieldPath="metadata.title"
+                          fieldPath="community.title"
                           // Prevent submitting before the value is updated:
                           onKeyDown={(e) => {
                             e.key === "Enter" && e.preventDefault();
                           }}
                           label={
                             <FieldLabel
-                              htmlFor="metadata.title"
+                              htmlFor="community.title"
                               icon="book"
                               label={i18next.t("Community name")}
                             />
