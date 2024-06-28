@@ -42,15 +42,15 @@ const IdentifierField = ({ formConfig }) => {
   return (
     <TextField
       required
-      id="community.slug"
+      id="metadata.slug"
       label={
         <FieldLabel
-          htmlFor="community.slug"
+          htmlFor="metadata.slug"
           icon="barcode"
           label={i18next.t("Identifier")}
         />
       }
-      fieldPath="community.slug"
+      fieldPath="metadata.slug"
       helpText={helpText}
       fluid
       className="text-muted"
@@ -84,7 +84,7 @@ class CommunityCreateForm extends Component {
               .filter((item) => !item?.parent?.id)
               .filter((item) => !item?.children?.allow === true)
               .map((item) => ({
-                text: item.community.title,
+                text: item.metadata.title,
                 value: item.id,
                 key: item.id,
               })),
@@ -112,12 +112,12 @@ class CommunityCreateForm extends Component {
     let payload = {};
     let slug = "";
     if (hasCommunity) {
-      payload = { community_id: values["community"]["community"] };
+      payload = { community_id: values["metadata"]["community"] };
     } else {
-      slug = values["community"]["slug"];
+      slug = values["metadata"]["slug"];
       payload = {
         community: {
-          title: values["community"]["title"],
+          title: values["metadata"]["title"],
           slug: slug,
         },
       };
@@ -139,7 +139,9 @@ class CommunityCreateForm extends Component {
       const { errors, message } = communityErrorSerializer(error);
 
       if (message) {
-        this.setGlobalError("The form contains errors or missing fields. Please verify before submitting");
+        this.setGlobalError(
+          "The form contains errors or missing fields. Please verify before submitting"
+        );
       }
 
       if (errors) {
@@ -147,7 +149,7 @@ class CommunityCreateForm extends Component {
           // Check if the field is already prefixed with "metadata"
           if (!field.startsWith("metadata")) {
             // Add "metadata" prefix if not already present
-            field = `metadata.${field.split('.').pop()}`;
+            field = `metadata.${field.split(".").pop()}`;
           }
           setFieldError(field, messages[0]);
         });
@@ -212,7 +214,7 @@ class CommunityCreateForm extends Component {
                           onChange={() => {
                             this.setState({ hasCommunity: true });
                           }}
-                          fieldPath="community.hasCommunity"
+                          fieldPath="metadata.hasCommunity"
                         />
                         <RadioField
                           label={i18next.t("No")}
@@ -221,7 +223,7 @@ class CommunityCreateForm extends Component {
                           onChange={() => {
                             this.setState({ hasCommunity: false });
                           }}
-                          fieldPath="community.hasCommunity"
+                          fieldPath="metadata.hasCommunity"
                         />
                       </Form.Group>
                     </div>
@@ -235,7 +237,7 @@ class CommunityCreateForm extends Component {
                             class="block"
                           />
                         }
-                        fieldPath="community.community"
+                        fieldPath="metadata.community"
                         options={communities}
                         defaultValue="Loading..."
                         required
@@ -246,16 +248,16 @@ class CommunityCreateForm extends Component {
                       <>
                         <TextField
                           required
-                          id="community.title"
+                          id="metadata.title"
                           fluid
-                          fieldPath="community.title"
+                          fieldPath="metadata.title"
                           // Prevent submitting before the value is updated:
                           onKeyDown={(e) => {
                             e.key === "Enter" && e.preventDefault();
                           }}
                           label={
                             <FieldLabel
-                              htmlFor="community.title"
+                              htmlFor="metadata.title"
                               icon="book"
                               label={i18next.t("Community name")}
                             />
