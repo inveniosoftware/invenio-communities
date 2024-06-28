@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 14.5.0 (released 2024-06-28)
+
+- subcommunities: pass "payload" to request creation
+
 Version 14.4.0 (released 2024-06-28)
 
 - subcommunity: updated fieldpaths in the ui
