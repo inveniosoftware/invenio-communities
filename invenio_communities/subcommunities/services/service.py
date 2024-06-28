@@ -114,6 +114,9 @@ class SubCommunityService(Service):
                 community=community.metadata["title"]
             )
         }
+        request_payload = data.get("payload")
+        if request_payload:
+            request_data["payload"] = request_payload
         request = requests_service.create(
             identity, request_data, self.request_cls, receiver, creator, topic, uow=uow
         )
