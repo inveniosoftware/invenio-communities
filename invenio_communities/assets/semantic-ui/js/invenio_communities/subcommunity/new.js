@@ -35,7 +35,7 @@ const IdentifierField = ({ formConfig }) => {
         "This is your community's unique identifier. You will be able to access your community through the URL:"
       )}
       <br />
-      {`${formConfig.SITE_UI_URL}/communities/${values["community"]["slug"]}`}
+      {`${formConfig.SITE_UI_URL}/communities/${values["metadata"]["slug"]}`}
     </>
   );
 
@@ -139,11 +139,18 @@ class CommunityCreateForm extends Component {
       const { errors, message } = communityErrorSerializer(error);
 
       if (message) {
-        this.setGlobalError(message);
+        this.setGlobalError("The form contains errors or missing fields. Please verify before submitting");
       }
 
       if (errors) {
-        errors.map(({ field, messages }) => setFieldError(field, messages[0]));
+        errors.map(({ field, messages }) => {
+          // Check if the field is already prefixed with "metadata"
+          if (!field.startsWith("metadata")) {
+            // Add "metadata" prefix if not already present
+            field = `metadata.${field.split('.').pop()}`;
+          }
+          setFieldError(field, messages[0]);
+        });
       }
     }
   };
