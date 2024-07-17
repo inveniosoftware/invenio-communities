@@ -16,7 +16,7 @@
 {% set account_settings_link = "{ui}/account/settings/notifications".format(**msg_ctx) %}
 
 {%- block subject -%}
-{{ _('📬 Subcommunity request for "{community_title} to join "{parent_community_title}"').format(**msg_ctx) }}
+{{ _('📬 Subcommunity request for "{community_title}" to join "{parent_community_title}"').format(**msg_ctx) }}
 {%- endblock subject -%}
 
 {%- block html_body -%}
