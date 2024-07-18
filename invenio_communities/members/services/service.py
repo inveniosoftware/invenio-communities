@@ -87,7 +87,7 @@ class MemberService(RecordService):
 
     @property
     def membership_request_dump_schema(self):
-        """Schema for dumping a membership request to JSON."""
+        """Schema for dumping a membership request to REST API JSON."""
         return ServiceSchemaWrapper(self, schema=MembershipRequestDumpSchema)
 
     # Loading schemas
@@ -141,50 +141,8 @@ class MemberService(RecordService):
         )
 
     #
-    # Add and invite
+    # General
     #
-    @unit_of_work()
-    def add(self, identity, community_id, data, uow=None):
-        """Add group members.
-
-        The default permission policy only allow groups to be added. Users must
-        be invited.
-        """
-        ret = self._create(
-            identity,
-            community_id,
-            data,
-            self.add_schema,
-            "members_add",
-            self._add_factory,
-            uow,
-        )
-        # ensure index is refreshed to search for newly added members
-        uow.register(IndexRefreshOp(indexer=self.indexer))
-        return ret
-
-    @unit_of_work()
-    def invite(self, identity, community_id, data, uow=None):
-        """Invite group members.
-
-        Only users and email member types can be invited, and a member can only
-        have one invitation per community
-
-        Email member type is not yet supported.
-        """
-        ret = self._create(
-            identity,
-            community_id,
-            data,
-            self.invite_schema,
-            "members_invite",
-            self._invite_factory,
-            uow,
-        )
-
-        # ensure index is refreshed to search for newly added members
-        uow.register(IndexRefreshOp(indexer=self.indexer))
-        return ret
 
     def _create(self, identity, community_id, data, schema, action, factory, uow):
         """Internal method used for both adding and inviting users/groups.
@@ -279,182 +237,6 @@ class MemberService(RecordService):
         # instead of N single indexing requests.
         uow.register(RecordCommitOp(member, indexer=self.indexer))
 
-    def _invite_factory(self, identity, community, role, visible, member, message, uow):
-        """Invite a member to the community."""
-        if member["type"] == "group":
-            # Groups cannot be invited, because groups have no one who can
-            # accept an invitation.
-            raise InvalidMemberError(member)
-
-        # Add member entry
-        if member["type"] == "user":
-            # Create request
-            title = _('Invitation to join "{community}"').format(
-                community=community.metadata["title"],
-            )
-            description = _('You will join as "{role}".').format(role=role.title)
-
-            request_item = current_requests_service.create(
-                identity,
-                {
-                    "title": title,
-                    "description": description,
-                },
-                CommunityInvitation,
-                receiver={"user": member["id"]},
-                creator=community,
-                # TODO: perhaps topic should be the actual membership record
-                # instead
-                topic=community,
-                expires_at=invite_expires_at(),
-                uow=uow,
-            )
-
-            # message was provided.
-            if message:
-                data = {"payload": {"content": message}}
-                current_events_service.create(
-                    identity,
-                    request_item.id,
-                    data,
-                    CommentEventType,
-                    uow=uow,
-                    notify=False,
-                )
-
-            uow.register(
-                NotificationOp(
-                    CommunityInvitationSubmittedNotificationBuilder.build(
-                        request=request_item._request,
-                        # explicit string conversion to get the value of LazyText
-                        role=str(role.title),
-                        message=message,
-                    )
-                )
-            )
-
-            # Create an inactive member entry linked to the request.
-            self._add_factory(
-                identity,
-                community,
-                role,
-                visible,
-                member,
-                message,
-                uow,
-                active=False,
-                request_id=request_item.id,
-            )
-
-    def search(
-        self,
-        identity,
-        community_id,
-        params=None,
-        search_preference=None,
-        extra_filter=None,
-        **kwargs,
-    ):
-        """Search."""
-        # Apply extra filters
-        filter_ = dsl.Q("term", **{"active": True})
-        if extra_filter:
-            filter_ &= extra_filter
-
-        return self._members_search(
-            identity,
-            community_id,
-            "members_search",
-            self.member_dump_schema,
-            self.config.search,
-            extra_filter=filter_,
-            params=params,
-            search_preference=search_preference,
-            endpoint="members",
-            links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
-        )
-
-    def scan(
-        self,
-        identity,
-        community_id,
-        params=None,
-        search_preference=None,
-        extra_filter=None,
-        **kwargs,
-    ):
-        """Scan community members to retrieve all matching the query."""
-        # Apply extra filters
-        filter_ = dsl.Q("term", **{"active": True})
-        if extra_filter:
-            filter_ &= extra_filter
-
-        return self._members_search(
-            identity,
-            community_id,
-            "members_search",
-            self.member_dump_schema,
-            self.config.search,
-            extra_filter=filter_,
-            scan_params=params,
-            search_preference=search_preference,
-            scan=True,
-            # just in case scan becomes accessible through a resource URL
-            endpoint="members",
-            links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
-        )
-
-    def search_public(
-        self, identity, community_id, params=None, search_preference=None, **kwargs
-    ):
-        """Search public members matching the querystring."""
-        # The search for members is split two methods (public, members) to
-        # prevent leaking of information. E.g. the public serialization
-        # must not have all fields present.
-        # TODO: limit fields on which the query works on to avoid leaking information
-        return self._members_search(
-            identity,
-            community_id,
-            "members_search_public",
-            self.public_dump_schema,
-            self.config.search_public,
-            extra_filter=(
-                dsl.Q("term", **{"visible": True}) & dsl.Q("term", **{"active": True})
-            ),
-            params=params,
-            search_preference=search_preference,
-            endpoint="members",
-            links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
-        )
-
-    def search_invitations(
-        self, identity, community_id, params=None, search_preference=None, **kwargs
-    ):
-        """Search invitations."""
-        # The search for invitations used the ArchivedInvitation record class
-        # which will search over the "communitymembers" alias which include
-        # both current invitations and archived invitations.
-        return self._members_search(
-            identity,
-            community_id,
-            "search_invites",
-            self.invitation_dump_schema,
-            self.config.search_invitations,
-            record_cls=ArchivedInvitation,
-            extra_filter=(
-                dsl.Q("term", **{"active": False})
-                & dsl.Q("term", **{"request.type": CommunityInvitation.type_id})
-            ),
-            params=params,
-            search_preference=search_preference,
-            endpoint="invitations",
-            links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
-        )
-
     def _members_search(
         self,
         identity,
@@ -471,7 +253,7 @@ class MemberService(RecordService):
         links_item_tpl=None,
         **kwargs
     ):
-        """Members search."""
+        """General members search."""
         community = self.community_cls.get_record(community_id)
         self.require_permission(identity, permission_action, record=community)
 
@@ -522,16 +304,12 @@ class MemberService(RecordService):
             schema=schema,
         )
 
-    def read_memberships(self, identity):
-        """Searches the memberships of a specific user/identity."""
-        return {"memberships": self.config.record_cls.get_memberships(identity)}
-
     @unit_of_work()
     def update(self, identity, community_id, data, uow=None, refresh=False):
         """Bulk update.
 
-        Used to update both active members and active invitations. Archived
-        invitations cannot be updated.
+        Used to update members, invitations and membership requests. Archived
+        requests cannot be updated.
         """
         community = self.community_cls.get_record(community_id)
 
@@ -693,48 +471,6 @@ class MemberService(RecordService):
 
         return True
 
-    @unit_of_work()
-    def accept_invite(self, identity, request_id, uow=None):
-        """Accept an invitation."""
-        # Permissions are checked on the request action
-        assert identity == system_identity
-        member = self.record_cls.get_member_by_request(request_id)
-        assert member.active is False
-        archived_invitation = ArchivedInvitation.create_from_member(member)
-        member.active = True
-        # TODO: recompute permissions for member.
-        # Run components
-        self.run_components(
-            "accept_invite",
-            identity,
-            record=member,
-            errors=None,
-            uow=uow,
-        )
-
-        uow.register(RecordCommitOp(member, indexer=self.indexer))
-        uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
-        uow.register(IndexRefreshOp(indexer=self.indexer))
-
-    @unit_of_work()
-    def decline_invite(self, identity, request_id, uow=None):
-        """Decline an invitation."""
-        # Permissions are checked on the request action
-        assert identity == system_identity
-        member = self.record_cls.get_member_by_request(request_id)
-        assert member.active is False
-        archived_invitation = ArchivedInvitation.create_from_member(member)
-        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
-        uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
-        uow.register(
-            IndexRefreshOp(
-                # need to use an indexer with a diff index
-                # no access to invitations indexer
-                indexer=self.indexer,
-                index=ArchivedInvitation.index,
-            )
-        )
-
     def read_many(self, *args, **kwargs):
         """Not implemented."""
         raise NotImplementedError("Use search() or search_public()")
@@ -766,7 +502,285 @@ class MemberService(RecordService):
 
         return True
 
+    @unit_of_work()
+    def close_member_request(self, identity, request_id, uow=None):
+        """Close member request (invitation or membership request).
+
+        Used when cancelling, declining, or expiring.
+        """
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        archived_invitation = ArchivedInvitation.create_from_member(member)
+        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+        uow.register(RecordCommitOp(archived_invitation, indexer=self.archive_indexer))
+        uow.register(
+            IndexRefreshOp(
+                # need to use an indexer with a diff index
+                # no access to invitations indexer
+                indexer=self.indexer,
+                index=ArchivedInvitation.index,
+            )
+        )
+
+    @unit_of_work()
+    def accept_member_request(self, identity, request_id, uow=None):
+        """Accept a member request (invitation or membership request)."""
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        archived_request = ArchivedInvitation.create_from_member(member)
+        member.active = True
+        # TODO: recompute permissions for member.
+        # Run components
+        self.run_components(
+            "accept_member_request",
+            identity,
+            record=member,
+            errors=None,
+            uow=uow,
+        )
+        uow.register(RecordCommitOp(member, indexer=self.indexer))
+        uow.register(RecordCommitOp(archived_request, indexer=self.archive_indexer))
+        uow.register(IndexRefreshOp(indexer=self.indexer))
+
+    #
+    # Members
+    #
+
+    @unit_of_work()
+    def add(self, identity, community_id, data, uow=None):
+        """Add group members.
+
+        The default permission policy only allow groups to be added. Users must
+        be invited.
+        """
+        ret = self._create(
+            identity,
+            community_id,
+            data,
+            self.add_schema,
+            "members_add",
+            self._add_factory,
+            uow,
+        )
+        # ensure index is refreshed to search for newly added members
+        uow.register(IndexRefreshOp(indexer=self.indexer))
+        return ret
+
+    def search(
+        self,
+        identity,
+        community_id,
+        params=None,
+        search_preference=None,
+        extra_filter=None,
+        **kwargs
+    ):
+        """Search."""
+        # Apply extra filters
+        filter_ = dsl.Q("term", **{"active": True})
+        if extra_filter:
+            filter_ &= extra_filter
+
+        return self._members_search(
+            identity,
+            community_id,
+            "members_search",
+            self.member_dump_schema,
+            self.config.search,
+            extra_filter=filter_,
+            params=params,
+            search_preference=search_preference,
+            endpoint="members",
+            links_item_tpl=LinksTemplate(self.config.links_item),
+            **kwargs
+        )
+
+    def scan(
+        self,
+        identity,
+        community_id,
+        params=None,
+        search_preference=None,
+        extra_filter=None,
+        **kwargs
+    ):
+        """Scan community members to retrieve all matching the query."""
+        # Apply extra filters
+        filter_ = dsl.Q("term", **{"active": True})
+        if extra_filter:
+            filter_ &= extra_filter
+
+        return self._members_search(
+            identity,
+            community_id,
+            "members_search",
+            self.member_dump_schema,
+            self.config.search,
+            extra_filter=filter_,
+            scan_params=params,
+            search_preference=search_preference,
+            scan=True,
+            # just in case scan becomes accessible through a resource URL
+            endpoint="members",
+            links_item_tpl=LinksTemplate(self.config.links_item),
+            **kwargs
+        )
+
+    def search_public(
+        self, identity, community_id, params=None, search_preference=None, **kwargs
+    ):
+        """Search public members matching the querystring."""
+        # The search for members is split two methods (public, members) to
+        # prevent leaking of information. E.g. the public serialization
+        # must not have all fields present.
+        # TODO: limit fields on which the query works on to avoid leaking information
+        return self._members_search(
+            identity,
+            community_id,
+            "members_search_public",
+            self.public_dump_schema,
+            self.config.search_public,
+            extra_filter=(
+                dsl.Q("term", **{"visible": True}) & dsl.Q("term", **{"active": True})
+            ),
+            params=params,
+            search_preference=search_preference,
+            endpoint="members",
+            links_item_tpl=LinksTemplate(self.config.links_item),
+            **kwargs
+        )
+
+    def read_memberships(self, identity):
+        """Searches the memberships of a specific user/identity."""
+        return {"memberships": self.config.record_cls.get_memberships(identity)}
+
+    #
+    # Invitations
+    #
+
+    @unit_of_work()
+    def invite(self, identity, community_id, data, uow=None):
+        """Invite group members.
+
+        Only users and email member types can be invited, and a member can only
+        have one invitation per community
+
+        Email member type is not yet supported.
+        """
+        ret = self._create(
+            identity,
+            community_id,
+            data,
+            self.invite_schema,
+            "members_invite",
+            self._invite_factory,
+            uow,
+        )
+
+        # ensure index is refreshed to search for newly added members
+        uow.register(IndexRefreshOp(indexer=self.indexer))
+        return ret
+
+    def _invite_factory(self, identity, community, role, visible, member, message, uow):
+        """Invite a member to the community."""
+        if member["type"] == "group":
+            # Groups cannot be invited, because groups have no one who can
+            # accept an invitation.
+            raise InvalidMemberError(member)
+
+        # Add member entry
+        if member["type"] == "user":
+            # Create request
+            title = _('Invitation to join "{community}"').format(
+                community=community.metadata["title"],
+            )
+            description = _('You will join as "{role}".').format(role=role.title)
+
+            request_item = current_requests_service.create(
+                identity,
+                {
+                    "title": title,
+                    "description": description,
+                },
+                CommunityInvitation,
+                receiver={"user": member["id"]},
+                creator=community,
+                # TODO: perhaps topic should be the actual membership record
+                # instead
+                topic=community,
+                expires_at=invite_expires_at(),
+                uow=uow,
+            )
+
+            # message was provided.
+            if message:
+                data = {"payload": {"content": message}}
+                current_events_service.create(
+                    identity,
+                    request_item.id,
+                    data,
+                    CommentEventType,
+                    uow=uow,
+                    notify=False,
+                )
+
+            uow.register(
+                NotificationOp(
+                    CommunityInvitationSubmittedNotificationBuilder.build(
+                        request=request_item._request,
+                        # explicit string conversion to get the value of LazyText
+                        role=str(role.title),
+                        message=message,
+                    )
+                )
+            )
+
+            # Create an inactive member entry linked to the request.
+            self._add_factory(
+                identity,
+                community,
+                role,
+                visible,
+                member,
+                message,
+                uow,
+                active=False,
+                request_id=request_item.id,
+            )
+
+    def search_invitations(
+        self, identity, community_id, params=None, search_preference=None, **kwargs
+    ):
+        """Search invitations."""
+        # The search for invitations used the ArchivedInvitation record class
+        # which will search over the "communitymembers" alias which include
+        # both current invitations and archived invitations.
+        return self._members_search(
+            identity,
+            community_id,
+            "search_invites",
+            self.invitation_dump_schema,
+            self.config.search_invitations,
+            record_cls=ArchivedInvitation,
+            extra_filter=(
+                dsl.Q("term", **{"active": False})
+                & dsl.Q("term", **{"request.type": CommunityInvitation.type_id})
+            ),
+            params=params,
+            search_preference=search_preference,
+            endpoint="invitations",
+            links_item_tpl=LinksTemplate(self.config.links_item),
+            **kwargs
+        )
+
+    #
     # Request membership
+    #
+
     @unit_of_work()
     def request_membership(self, identity, community_id, data, uow=None):
         """Request membership to the community.
@@ -850,12 +864,6 @@ class MemberService(RecordService):
         # Has to return the request so that frontend can redirect to it
         return request_item
 
-    @unit_of_work()
-    def update_membership_request(self, identity, community_id, data, uow=None):
-        """Update membership request."""
-        # TODO: Implement me
-        pass
-
     def search_membership_requests(
         self, identity, community_id, params=None, search_preference=None, **kwargs
     ):
@@ -865,9 +873,8 @@ class MemberService(RecordService):
             community_id,
             "search_membership_requests",
             self.membership_request_dump_schema,
-            # Use same as invitations
-            self.config.search_invitations,  # TODO: Decision flow: Rename/merge ?
-            record_cls=ArchivedInvitation,  # TODO: Decision flow: merge or new?
+            self.config.search_membership_requests,
+            record_cls=ArchivedInvitation,
             extra_filter=(
                 dsl.Q("term", **{"active": False})
                 & dsl.Q(
@@ -880,28 +887,6 @@ class MemberService(RecordService):
             links_item_tpl=LinksTemplate(self.config.links_item),
             **kwargs
         )
-
-    @unit_of_work()
-    def accept_membership_request(self, identity, request_id, uow=None):
-        """Accept membership request."""
-        # TODO: Implement me
-        pass
-
-    @unit_of_work()
-    def close_membership_request(self, identity, request_id, uow=None):
-        """Close membership request.
-
-        Used for cancelling, declining, or expiring a membership request.
-
-        For now we just delete the "fake" member that was created in
-        request_membership. TODO: explore alternatives/ramifications at a
-        later point.
-        """
-        # Permissions are checked on the request action
-        assert identity == system_identity
-        member = self.record_cls.get_member_by_request(request_id)
-        assert member.active is False
-        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
 
     def get_pending_request_id_if_any(self, user_id, community_id):
         """Utility function to get associated active request id.

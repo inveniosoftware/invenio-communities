@@ -47,7 +47,7 @@ class AcceptAction(actions.AcceptAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().accept_invite(system_identity, self.request.id, uow=uow)
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationAcceptNotificationBuilder.build(self.request)
@@ -61,7 +61,7 @@ class DeclineAction(actions.DeclineAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationDeclineNotificationBuilder.build(self.request)
@@ -75,7 +75,7 @@ class CancelAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationCancelNotificationBuilder.build(self.request)
@@ -89,7 +89,7 @@ class ExpireAction(actions.ExpireAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationExpireNotificationBuilder.build(self.request)
@@ -141,18 +141,9 @@ class CancelMembershipRequestAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().close_membership_request(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         # TODO: Notification flow: Investigate notifications
         super().execute(identity, uow)
-
-
-class AcceptMembershipRequestAction(actions.AcceptAction):
-    """Accept membership request action."""
-
-    def execute(self, identity, uow):
-        """Execute action."""
-        # TODO: Decision flow: Implement me
-        pass
 
 
 class DeclineMembershipRequestAction(actions.DeclineAction):
@@ -160,8 +151,22 @@ class DeclineMembershipRequestAction(actions.DeclineAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        # TODO: Decision flow: Implement me
-        pass
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: Notification flow: Investigate notifications
+        super().execute(identity, uow)
+
+
+# TODO: Expiration flow: ExpireAction
+
+
+class AcceptMembershipRequestAction(actions.AcceptAction):
+    """Accept membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: Notification flow: Investigate notifications
+        super().execute(identity, uow)
 
 
 class MembershipRequestRequestType(RequestType):

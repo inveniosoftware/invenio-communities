@@ -229,9 +229,24 @@ class InvitationDumpSchema(MemberDumpSchema):
 
 
 class MembershipRequestDumpSchema(MemberDumpSchema):
-    """Schema for dumping membership requests.
-
-    TODO: Decision flow: Investigate if can be merged with InvitationDumpSchema
-    """
+    """Schema for dumping membership requests."""
 
     request = fields.Nested(RequestSchema)
+
+    def get_permissions(self, obj):
+        """Get permission.
+
+        Only permission to see if current identity can_update role is needed.
+
+        :param obj: api.Member
+        """
+        is_open = obj["request"]["is_open"]
+        permission_check = self.context["field_permission_check"]
+        can_update = permission_check(
+            "members_update",
+            community_id=obj.community_id,
+            member=obj,
+        )
+        return {
+            "can_update_role": is_open and can_update
+        }

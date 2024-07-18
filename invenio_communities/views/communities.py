@@ -466,7 +466,8 @@ def membership_requests(pid_value, community, community_ui):
         "invenio_communities/details/members/membership_requests.html",
         theme=community_ui.get("theme", {}),
         community=community_ui,
-        roles_can_assign=_get_roles_can_invite(community.id),  # TODO: Decision flow
+        # We use the same roles as the ones that can be invited
+        roles_can_assign=_get_roles_can_invite(community.id),
         permissions=permissions,
     )
 

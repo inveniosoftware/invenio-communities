@@ -182,6 +182,7 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     search = MemberSearchOptions
     search_public = PublicSearchOptions
     search_invitations = InvitationsSearchOptions
+    search_membership_requests = InvitationsSearchOptions  # Use same as invitations
 
     links_item = {
         "actions": LinksForActionsOfMember(

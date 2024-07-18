@@ -39,8 +39,6 @@ const dataAttr = document.getElementById(
 const community = JSON.parse(dataAttr.community);
 const communitiesAllRoles = JSON.parse(dataAttr.communitiesAllRoles);
 const communitiesRolesCanAssign = JSON.parse(dataAttr.communitiesRolesCanAssign);
-// TODO: Decision flow: do we need?
-// const permissions = JSON.parse(dataAttr.permissions);
 
 const appName = "InvenioCommunities.MembershipRequestsSearch";
 

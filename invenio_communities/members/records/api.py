@@ -204,7 +204,10 @@ class Member(Record, MemberMixin):
 
 
 class ArchivedInvitation(Record, MemberMixin):
-    """An archived invitation record.
+    """An archived invitation or membership request record.
+
+    The name is a historical legacy. It could be renamed in the future, but we don't
+    want to rename the index.
 
     We are using a record without using the actual JSON document and
     schema validation normally used in a record. The reason for using a record

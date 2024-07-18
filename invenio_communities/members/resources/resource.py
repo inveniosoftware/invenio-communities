@@ -39,6 +39,9 @@ class MemberResource(RecordResource):
             route(
                 "GET", routes["membership_requests"], self.search_membership_requests
             ),
+            route(
+                "PUT", routes["membership_requests"], self.update_membership_requests
+            ),
         ]
 
     @request_view_args
@@ -160,3 +163,14 @@ class MemberResource(RecordResource):
             search_preference=search_preference(),
         )
         return hits.to_dict(), 200
+
+    @request_view_args
+    @request_extra_args
+    @request_data
+    def update_membership_requests(self):
+        """Update membership request.
+
+        From the outside, a membership request is its own resource.
+        From the inside, it's just a member when it comes to update.
+        """
+        return self.update()

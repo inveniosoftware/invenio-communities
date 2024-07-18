@@ -30,6 +30,6 @@ class RequestTypeDumperExt(SearchDumperExt):
     def load(self, data, record_cls):
         """Load relations.request.type.
 
-        TODO: Works without it for now. Potentially revisit?
+        Works without implementation for now.
         """
         pass

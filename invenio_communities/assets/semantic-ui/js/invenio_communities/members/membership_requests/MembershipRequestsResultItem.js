@@ -15,8 +15,9 @@ import React, { Component } from "react";
 import { Image } from "react-invenio-forms";
 import { Grid, Item, Table } from "semantic-ui-react";
 
+import { MembershipRequestsContext } from "../../api/membershipRequests/MembershipRequestsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
-import { formattedTime } from "../utils";
+import { buildRequest, formattedTime } from "../utils";
 
 export class MembershipRequestsResultItem extends Component {
   constructor(props) {
@@ -24,6 +25,8 @@ export class MembershipRequestsResultItem extends Component {
     const { result } = this.props;
     this.state = { membershipRequest: result };
   }
+
+  static contextType = MembershipRequestsContext;
 
   update = (data, value) => {
     const { membershipRequest } = this.state;
@@ -39,13 +42,15 @@ export class MembershipRequestsResultItem extends Component {
     } = this.props;
 
     const {
-      membershipRequest: { member, request },
+      membershipRequest: { member },
       membershipRequest,
     } = this.state;
-    // TODO: Decision flow
-    // const { api: membershipRequestsApi } = this.context;
-    const rolesCanAssignByType = rolesCanAssign[member.type];
-    const membershipRequestExpiration = formattedTime(request.expires_at);
+
+    const request = buildRequest(membershipRequest, ["accept", "decline"]);
+    const { api: membershipRequestsApi } = this.context;
+    const roles = rolesCanAssign[member.type];
+    const expiration = formattedTime(request.expires_at);
+
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
@@ -73,17 +78,16 @@ export class MembershipRequestsResultItem extends Component {
           <RequestStatus status={request.status} />
         </Table.Cell>
         <Table.Cell
-          aria-label={i18next.t("Expires") + " " + membershipRequestExpiration}
+          aria-label={i18next.t("Expires") + " " + expiration}
           data-label={i18next.t("Expires")}
         >
-          {membershipRequestExpiration}
+          {expiration}
         </Table.Cell>
         <Table.Cell data-label={i18next.t("Role")}>
           <RoleDropdown
-            roles={rolesCanAssignByType}
+            roles={roles}
+            action={membershipRequestsApi.updateRole}
             successCallback={this.update}
-            // TODO: Decision flow
-            // action={membershipRequestsApi.updateRole}
             disabled={!membershipRequest.permissions.can_update_role}
             currentValue={membershipRequest.role}
             resource={membershipRequest}
@@ -92,9 +96,10 @@ export class MembershipRequestsResultItem extends Component {
         </Table.Cell>
         <Table.Cell data-label={i18next.t("Actions")}>
           <RequestActionController
-            request={membershipRequest}
-            // TODO: Decision flow
-            actionSuccessCallback={() => console.log("actionSuccessCallback called")}
+            request={request}
+            actionSuccessCallback={() => {
+              window.location.reload();
+            }}
           />
         </Table.Cell>
       </Table.Row>
