@@ -28,6 +28,7 @@ def service():
     """Service."""
     return current_communities.service.members
 
+
 #
 # CommunityInvitation: actions and request type
 #
@@ -141,8 +142,26 @@ class CancelMembershipRequestAction(actions.CancelAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().close_membership_request(system_identity, self.request.id, uow=uow)
-        # TODO: Investigate notifications
+        # TODO: Notification flow: Investigate notifications
         super().execute(identity, uow)
+
+
+class AcceptMembershipRequestAction(actions.AcceptAction):
+    """Accept membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        # TODO: Decision flow: Implement me
+        pass
+
+
+class DeclineMembershipRequestAction(actions.DeclineAction):
+    """Decline membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        # TODO: Decision flow: Implement me
+        pass
 
 
 class MembershipRequestRequestType(RequestType):
@@ -155,6 +174,8 @@ class MembershipRequestRequestType(RequestType):
     available_actions = {
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
+        "accept": AcceptMembershipRequestAction,
+        "decline": DeclineMembershipRequestAction,
     }
 
     creator_can_be_none = False
@@ -162,3 +183,14 @@ class MembershipRequestRequestType(RequestType):
     allowed_creator_ref_types = ["user"]
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
+
+    # This indicates what roles an identity must have within the receiving community
+    # in order to accept/decline. Although a pattern, it's ultimately a more hidden way
+    # to define permission than a permission policy. It repeats concept because it
+    # is subservient to the Request permission policy abstractions.
+    needs_context = {
+        "community_roles": [
+            "owner",
+            "manager",
+        ]
+    }

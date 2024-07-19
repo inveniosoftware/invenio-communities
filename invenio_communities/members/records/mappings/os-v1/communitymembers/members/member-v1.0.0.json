@@ -146,6 +146,9 @@
           },
           "is_open": {
             "type": "boolean"
+          },
+          "type": {
+            "type": "keyword"
           }
         }
       },

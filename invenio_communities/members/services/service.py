@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 
 from flask import current_app
 from invenio_access.permissions import system_identity
-from invenio_accounts.models import Role
 from invenio_i18n import gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services import LinksTemplate
@@ -33,13 +32,13 @@ from invenio_search.engine import dsl
 from kombu import Queue
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from ...notifications.builders import CommunityInvitationSubmittedNotificationBuilder
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from ..records.api import ArchivedInvitation
+from .links import MemberLinksTemplate
 from .request import CommunityInvitation, MembershipRequestRequestType
 from .schemas import (
     AddBulkSchema,
@@ -47,6 +46,7 @@ from .schemas import (
     InvitationDumpSchema,
     InviteBulkSchema,
     MemberDumpSchema,
+    MembershipRequestDumpSchema,
     PublicDumpSchema,
     RequestMembershipSchema,
     UpdateBulkSchema,
@@ -69,6 +69,8 @@ class MemberService(RecordService):
         """Return community class."""
         return self.config.community_cls
 
+    # Dumping schemas
+
     @property
     def member_dump_schema(self):
         """Schema for creation."""
@@ -83,6 +85,13 @@ class MemberService(RecordService):
     def invitation_dump_schema(self):
         """Schema for creation."""
         return ServiceSchemaWrapper(self, schema=InvitationDumpSchema)
+
+    @property
+    def membership_request_dump_schema(self):
+        """Schema for dumping a membership request to JSON."""
+        return ServiceSchemaWrapper(self, schema=MembershipRequestDumpSchema)
+
+    # Loading schemas
 
     @property
     def add_schema(self):
@@ -106,7 +115,7 @@ class MemberService(RecordService):
 
     @property
     def request_membership_schema(self):
-        """Wrapped schema for request membership."""
+        """Wrapped load schema for a membership request payload."""
         return ServiceSchemaWrapper(self, schema=RequestMembershipSchema)
 
     @property
@@ -293,7 +302,7 @@ class MemberService(RecordService):
                     "description": description,
                 },
                 CommunityInvitation,
-                {"user": member["id"]},
+                receiver={"user": member["id"]},
                 creator=community,
                 # TODO: perhaps topic should be the actual membership record
                 # instead
@@ -362,6 +371,8 @@ class MemberService(RecordService):
             extra_filter=filter_,
             params=params,
             search_preference=search_preference,
+            endpoint="members",
+            links_item_tpl=LinksTemplate(self.config.links_item),
             **kwargs
         )
 
@@ -390,6 +401,9 @@ class MemberService(RecordService):
             scan_params=params,
             search_preference=search_preference,
             scan=True,
+            # just in case scan becomes accessible through a resource URL
+            endpoint="members",
+            links_item_tpl=LinksTemplate(self.config.links_item),
             **kwargs
         )
 
@@ -412,6 +426,8 @@ class MemberService(RecordService):
             ),
             params=params,
             search_preference=search_preference,
+            endpoint="members",
+            links_item_tpl=LinksTemplate(self.config.links_item),
             **kwargs
         )
 
@@ -429,9 +445,16 @@ class MemberService(RecordService):
             self.invitation_dump_schema,
             self.config.search_invitations,
             record_cls=ArchivedInvitation,
-            extra_filter=dsl.Q("term", **{"active": False}),
+            extra_filter=(
+                dsl.Q("term", **{"active": False})
+                & dsl.Q("term", **{"request.type": CommunityInvitation.type_id})
+            ),
             params=params,
             search_preference=search_preference,
+            endpoint="invitations",
+            links_item_tpl=MemberLinksTemplate(
+                self.config.links_item, request_type=CommunityInvitation
+            ),
             **kwargs
         )
 
@@ -447,6 +470,8 @@ class MemberService(RecordService):
         search_preference=None,
         scan=False,
         scan_params=None,
+        endpoint="members",
+        links_item_tpl=None,
         **kwargs
     ):
         """Members search."""
@@ -460,7 +485,6 @@ class MemberService(RecordService):
 
         # Prepare and execute the search
         params = params or {}
-        scan_params = scan_params or {}
 
         search = self._search(
             "search_members",
@@ -472,28 +496,32 @@ class MemberService(RecordService):
             extra_filter=filter,
             **kwargs
         )
-        # scan has a default scroll timeout of 5 minutes
-        # https://github.com/opensearch-project/opensearch-py/blob/fe3b5a8922aa8eb04f735c74d127d7ea68a00bec/opensearchpy/helpers/actions.py#L492-L503
-        search_result = (
-            search.params(**scan_params).scan() if scan else search.execute()
-        )
+
+        if scan:
+            scan_params = scan_params or {}
+            # scan has a default scroll timeout of 5 minutes
+            # https://github.com/opensearch-project/opensearch-py/blob/fe3b5a8922aa8eb04f735c74d127d7ea68a00bec/opensearchpy/helpers/actions.py#L492-L503
+            search_result = search.params(**scan_params).scan()
+            links_tpl = None
+            links_item_tpl = None
+        else:
+            search_result = search.execute()
+            links_tpl = LinksTemplate(
+                self.config.links_search,
+                context={
+                    "args": params,
+                    "community_id": community_id,
+                    "endpoint": endpoint,
+                },
+            )
 
         return self.result_list(
             self,
             identity,
             search_result,
             params,
-            links_tpl=(
-                None
-                if scan
-                else LinksTemplate(
-                    self.config.links_search,
-                    context={
-                        "args": params,
-                        "community_id": community_id,
-                    },
-                )
-            ),
+            links_tpl=links_tpl,
+            links_item_tpl=links_item_tpl,
             schema=schema,
         )
 
@@ -778,7 +806,7 @@ class MemberService(RecordService):
             receiver=community,
             creator={"user": str(identity.user.id)},
             topic=community,  # user instead?
-            # TODO: Consider expiration
+            # TODO: Expiration flow: Consider expiration
             # expires_at=invite_expires_at(),
             uow=uow,
         )
@@ -794,7 +822,7 @@ class MemberService(RecordService):
                 notify=False,
             )
 
-        # TODO: Add notification mechanism
+        # TODO: Notification flow: Add notification mechanism
         # uow.register(
         #     NotificationOp(
         #         MembershipRequestSubmittedNotificationBuilder.build(
@@ -831,10 +859,32 @@ class MemberService(RecordService):
         # TODO: Implement me
         pass
 
-    def search_membership_requests(self):
+    def search_membership_requests(
+        self, identity, community_id, params=None, search_preference=None, **kwargs
+    ):
         """Search membership requests."""
-        # TODO: Implement me
-        pass
+        return self._members_search(
+            identity,
+            community_id,
+            "search_membership_requests",
+            self.membership_request_dump_schema,
+            # Use same as invitations
+            self.config.search_invitations,  # TODO: Decision flow: Rename/merge ?
+            record_cls=ArchivedInvitation,  # TODO: Decision flow: merge or new?
+            extra_filter=(
+                dsl.Q("term", **{"active": False})
+                & dsl.Q(
+                    "term", **{"request.type": MembershipRequestRequestType.type_id}
+                )
+            ),
+            params=params,
+            search_preference=search_preference,
+            endpoint="membership-requests",
+            links_item_tpl=MemberLinksTemplate(
+                self.config.links_item, request_type=MembershipRequestRequestType
+            ),
+            **kwargs
+        )
 
     @unit_of_work()
     def accept_membership_request(self, identity, request_id, uow=None):
@@ -857,3 +907,10 @@ class MemberService(RecordService):
         member = self.record_cls.get_member_by_request(request_id)
         assert member.active is False
         uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+
+    def get_pending_request_id_if_any(self, user_id, community_id):
+        """Utility function to get associated active request id.
+
+        Only pending members fit this. In other cases return None.
+        """
+        return self.record_cls.get_pending_request_id_if_any(user_id, community_id)

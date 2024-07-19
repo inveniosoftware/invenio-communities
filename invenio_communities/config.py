@@ -31,6 +31,7 @@ COMMUNITIES_ROUTES = {
     "invitations": "/communities/<pid_value>/invitations",
     "about": "/communities/<pid_value>/about",
     "curation_policy": "/communities/<pid_value>/curation-policy",
+    "membership_requests": "/communities/<pid_value>/membership-requests",
 }
 
 """Communities ui endpoints."""
@@ -201,6 +202,31 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 }
 """Definitions of available record sort options."""
 
+COMMUNITIES_MEMBERSHIP_REQUESTS_SEARCH = {
+    "facets": ["type", "status"],
+    "sort": ["bestmatch", "name", "newest", "oldest"],
+}
+"""Community membership requests search configuration."""
+
+COMMUNITIES_MEMBERSHIP_REQUESTS_SORT_OPTIONS = {
+    "bestmatch": dict(
+        title=_("Best match"),
+        fields=["_score"],  # ES defaults to desc on `_score` field
+    ),
+    "name": dict(
+        title=_("Name"),
+        fields=["user.profile.full_name.keyword"],
+    ),
+    "newest": dict(
+        title=_("Newest"),
+        fields=["-created"],
+    ),
+    "oldest": dict(
+        title=_("Oldest"),
+        fields=["created"],
+    ),
+}
+"""Available membership requests sort options."""
 
 COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
 """"Default amount of time before an invitation expires."""
@@ -315,5 +341,5 @@ COMMUNITIES_OAI_SETS_PREFIX = "community-"
 COMMUNITIES_ALWAYS_SHOW_CREATE_LINK = False
 """Controls visibility of 'New Community' btn based on user's permission when set to True."""
 
-COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
+COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = True
 """Feature flag for membership request."""
