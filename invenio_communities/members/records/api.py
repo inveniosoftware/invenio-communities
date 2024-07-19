@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2024 Northwestern University.
 # Copyright (C) 2022 CERN.
 # Copyright (C) 2022 Graz University of Technology.
 #
@@ -19,14 +19,16 @@ from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
 from invenio_requests.records.api import Request
 from invenio_users_resources.records.api import GroupAggregate, UserAggregate
-from sqlalchemy import or_
+from sqlalchemy import or_, select
 
 from ..errors import InvalidMemberError
+from .dumpers import RequestTypeDumperExt
 from .models import ArchivedInvitationModel, MemberModel
 
 relations_dumper = SearchDumper(
     extensions=[
         RelationDumperExt("relations"),
+        RequestTypeDumperExt(),
         IndexedAtDumperExt(),
     ]
 )
@@ -43,10 +45,10 @@ class MemberMixin:
     """The data-layer id of the user (or None)."""
 
     group_id = ModelField("group_id")
-    """The data-layer id of the user (or None)."""
+    """The data-layer id of the group (or None)."""
 
     request_id = ModelField("request_id")
-    """The data-layer id of the user (or None)."""
+    """The data-layer id of the request (or None)."""
 
     role = ModelField("role")
     """The role of the entity."""
@@ -86,7 +88,7 @@ class MemberMixin:
             Request,
             "request_id",
             "request",
-            attrs=["status", "expires_at", "is_open"],
+            attrs=["status", "expires_at", "is_open", "type"],
         ),
     )
 
@@ -159,6 +161,21 @@ class MemberMixin:
     def has_members(cls, community_id, role=None):
         """Get members of a community."""
         return cls.model_cls.count_members(community_id, role=role)
+
+    @classmethod
+    def get_pending_request_id_if_any(cls, user_id, community_id):
+        """Return request id of membership request/invitation still pending.
+
+        Return type UUID.
+        """
+        stmt = (
+            select(cls.model_cls.request_id)
+            .where(cls.model_cls.user_id == user_id)
+            .where(cls.model_cls.community_id == community_id)
+            .where(cls.model_cls.active == False)
+        )
+        request_id = db.session.scalars(stmt).one_or_none()
+        return request_id
 
 
 class Member(Record, MemberMixin):

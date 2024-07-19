@@ -67,6 +67,13 @@ class InvenioCommunities(object):
         self.init_hooks(app)
         self.init_cache(app)
 
+        # TMP ADDITIONS
+        @app.context_processor
+        def inject_variables():
+            # Get all variables in the template context
+            # variables = {key: value for key, value in g.items()}
+            return {'template_variables': app.jinja_env}
+
     def init_config(self, app):
         """Initialize configuration.
 

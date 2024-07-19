@@ -58,6 +58,7 @@ class RequestSchema(Schema):
     # because the relations field doesn't properly load data from the index
     # (it should have converted expires_at into a datetime object).
     expires_at = fields.String()
+    type = fields.String()
 
 
 #
@@ -225,3 +226,12 @@ class InvitationDumpSchema(MemberDumpSchema):
                 member=obj,
             ),
         }
+
+
+class MembershipRequestDumpSchema(MemberDumpSchema):
+    """Schema for dumping membership requests.
+
+    TODO: Decision flow: Investigate if can be merged with InvitationDumpSchema
+    """
+
+    request = fields.Nested(RequestSchema)

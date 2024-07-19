@@ -28,6 +28,7 @@ from ..records import Member
 from ..records.api import ArchivedInvitation
 from . import facets
 from .components import CommunityMemberCachingComponent
+from .links import LinksForActionsOfMember, LinksForRequestActionsOfMember
 from .schemas import MemberEntitySchema
 
 
@@ -182,11 +183,20 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     search_public = PublicSearchOptions
     search_invitations = InvitationsSearchOptions
 
-    # No links
-    links_item = {}
+    links_item = {
+        "actions": LinksForActionsOfMember(
+            [
+                LinksForRequestActionsOfMember(
+                    "{+api}/requests/{request_id}/actions/{action}"
+                ),
+            ]
+        )
+    }
 
     # ResultList configurations
-    links_search = pagination_links("{+api}/communities/{community_id}/members{?args*}")
+    links_search = pagination_links(
+        "{+api}/communities/{community_id}/{endpoint}{?args*}"
+    )
 
     # Service components
     components = [
