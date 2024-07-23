@@ -9,31 +9,12 @@
 
 from invenio_records_resources.services.base.links import Link, LinksTemplate
 from invenio_requests.customizations import RequestActions
-from invenio_requests.proxies import current_requests_service
+from invenio_requests.proxies import (
+    current_request_type_registry,
+    current_requests_service,
+)
 from invenio_requests.resolvers.registry import ResolverRegistry
 from uritemplate import URITemplate
-
-
-class MemberLinksTemplate(LinksTemplate):
-    """A links template that passes the request type in the context.
-
-    This template is useful to avoid having to dereference the request type into
-    members at the DB-level. It's legitimate (for now), because we know what
-    kind of request type we are dealing with at the service search method (e.g. when
-    searching for invitations we know the request type of requests associated with
-    Members is CommunityInvitation).
-    """
-
-    def __init__(self, links, context=None, request_type=None):
-        """Constructor.
-
-        :param links: a dict of Links (or objects that have same interface)
-        :param context: dict of context values
-        :param request_type: a RequestType
-        """
-        context = context or {}
-        context["request_type"] = request_type
-        super().__init__(links, context=context)
 
 
 class LinksForActionsOfMember:
@@ -88,8 +69,8 @@ class RequestLike:
         :param context: dict of context values
         """
         self.id = obj.request_id
-        self.type = context["request_type"]
         request_relation = obj["request"]
+        self.type = current_request_type_registry.lookup(request_relation["type"])
         self.status = request_relation["status"]
         self.created_by = self._get_created_by(obj)
         self.receiver = self._get_receiver(obj)
@@ -128,8 +109,6 @@ class RequestLike:
 
         receiver_ref_type = self.type.allowed_receiver_ref_types[0]
         return self._get_proxy_by_ref_type(receiver_ref_type, obj)
-
-    # assert 1 == len(self.type.allowed_topic_ref_types)
 
     def _get_proxy_by_ref_type(self, ref_type, obj):
         """Returns proxy for given ref type.
