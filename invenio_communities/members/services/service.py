@@ -38,7 +38,6 @@ from ...notifications.builders import CommunityInvitationSubmittedNotificationBu
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from ..records.api import ArchivedInvitation
-from .links import MemberLinksTemplate
 from .request import CommunityInvitation, MembershipRequestRequestType
 from .schemas import (
     AddBulkSchema,
@@ -452,9 +451,7 @@ class MemberService(RecordService):
             params=params,
             search_preference=search_preference,
             endpoint="invitations",
-            links_item_tpl=MemberLinksTemplate(
-                self.config.links_item, request_type=CommunityInvitation
-            ),
+            links_item_tpl=LinksTemplate(self.config.links_item),
             **kwargs
         )
 
@@ -880,9 +877,7 @@ class MemberService(RecordService):
             params=params,
             search_preference=search_preference,
             endpoint="membership-requests",
-            links_item_tpl=MemberLinksTemplate(
-                self.config.links_item, request_type=MembershipRequestRequestType
-            ),
+            links_item_tpl=LinksTemplate(self.config.links_item),
             **kwargs
         )
 
