@@ -4,6 +4,7 @@
 # Copyright (C) 2016-2024 CERN.
 # Copyright (C) 2021-2022 Northwestern University.
 # Copyright (C)      2022 Graz University of Technology.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -277,6 +278,8 @@ class CommunityService(RecordService):
         deleted_file = record.files.pop("logo", None)
         if deleted_file is None:
             raise FileNotFoundError()
+
+        deleted_file.delete(force=True)
 
         uow.register(RecordCommitOp(record))
 
