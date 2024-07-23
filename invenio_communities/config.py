@@ -228,8 +228,11 @@ COMMUNITIES_MEMBERSHIP_REQUESTS_SORT_OPTIONS = {
 }
 """Available membership requests sort options."""
 
-COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
-""""Default amount of time before an invitation expires."""
+COMMUNITIES_MEMBER_REQUESTS_EXPIRE_IN = timedelta(days=30)
+""""Default amount of time before a member request expires.
+
+Replaces COMMUNITIES_INVITATIONS_EXPIRES_IN .
+"""
 
 COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""

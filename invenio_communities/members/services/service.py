@@ -10,6 +10,7 @@
 """Members service."""
 
 from datetime import datetime, timezone
+from warnings import warn
 
 from flask import current_app
 from invenio_access.permissions import system_identity
@@ -52,12 +53,18 @@ from .schemas import (
 )
 
 
-def invite_expires_at():
-    """Get the invitation expiration date."""
-    return (
-        datetime.utcnow().replace(tzinfo=timezone.utc)
-        + current_app.config["COMMUNITIES_INVITATIONS_EXPIRES_IN"]
-    )
+def member_request_expires_at():
+    """Get the request expiration date."""
+    expires_in_delta = current_app.config.get("COMMUNITIES_INVITATIONS_EXPIRES_IN")
+    if expires_in_delta:
+        # Deprecated
+        # TODO: Remove deprecation warning in v14
+        warn(
+            "COMMUNITIES_INVITATIONS_EXPIRES_IN is deprecated. Use COMMUNITIES_MEMBER_REQUESTS_EXPIRE_IN instead.",  # noqa
+            DeprecationWarning,
+        )
+    expires_in_delta = current_app.config["COMMUNITIES_MEMBER_REQUESTS_EXPIRE_IN"]
+    return datetime.now(tz=timezone.utc) + expires_in_delta
 
 
 class MemberService(RecordService):
@@ -712,7 +719,7 @@ class MemberService(RecordService):
                 # TODO: perhaps topic should be the actual membership record
                 # instead
                 topic=community,
-                expires_at=invite_expires_at(),
+                expires_at=member_request_expires_at(),
                 uow=uow,
             )
 
@@ -811,14 +818,12 @@ class MemberService(RecordService):
             identity,
             data={
                 "title": title,
-                # "description": description,
             },
             request_type=MembershipRequestRequestType,
             receiver=community,
             creator={"user": str(identity.user.id)},
             topic=community,  # user instead?
-            # TODO: Expiration flow: Consider expiration
-            # expires_at=invite_expires_at(),
+            expires_at=member_request_expires_at(),
             uow=uow,
         )
 

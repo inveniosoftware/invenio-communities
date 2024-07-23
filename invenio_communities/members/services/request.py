@@ -156,7 +156,17 @@ class DeclineMembershipRequestAction(actions.DeclineAction):
         super().execute(identity, uow)
 
 
-# TODO: Expiration flow: ExpireAction
+class ExpireMembershipRequestAction(actions.ExpireAction):
+    """Expire membership request action.
+
+    Triggered by task in invenio-requests.
+    """
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: Notification flow: Investigate notifications
+        super().execute(identity, uow)
 
 
 class AcceptMembershipRequestAction(actions.AcceptAction):
@@ -181,6 +191,7 @@ class MembershipRequestRequestType(RequestType):
         "cancel": CancelMembershipRequestAction,
         "accept": AcceptMembershipRequestAction,
         "decline": DeclineMembershipRequestAction,
+        "expire": ExpireMembershipRequestAction,
     }
 
     creator_can_be_none = False

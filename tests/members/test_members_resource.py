@@ -467,6 +467,7 @@ def test_get_membership_requests(
     assert "id" in hit["request"]
     assert "status" in hit["request"]
     assert "expires_at" in hit["request"]
+    assert hit["request"]["expires_at"] is not None
     # hits > hit > links
     request_id = hit["request"]["id"]
     expected_links = {
@@ -478,6 +479,3 @@ def test_get_membership_requests(
     assert expected_links == hit["links"]
     # hits > hit > permissions
     assert hit["permissions"]["can_update_role"] is True
-
-    # TODO: Expiration flow : assess if expiration makes sense for membership requests.
-    # assert hit["request"]["expires_at"] is not None

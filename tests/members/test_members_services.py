@@ -1345,7 +1345,7 @@ def test_request_membership_accept_flow(
     request = requests_service.execute_action(
         owner.identity, membership_request.id, "accept"
     ).to_dict()
-    ArchivedInvitation.index.refresh()  # switch name?
+    ArchivedInvitation.index.refresh()
     Member.index.refresh()
 
     # Postconditions
@@ -1359,6 +1359,48 @@ def test_request_membership_accept_flow(
     assert 1 == hits["total"]
     hit = hits["hits"][0]
     assert "accepted" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+
+
+def test_request_membership_expire_flow(
+    member_service,
+    community,
+    owner,
+    create_user,
+    requests_service,
+    db,
+    clean_index,
+):
+    # Create membership request
+    user = create_user()
+    data = {
+        "message": "Can I join the club?",
+    }
+    community_uuid = community._record.id
+    membership_request = member_service.request_membership(
+        user.identity,
+        community_uuid,
+        data,
+    )
+
+    # Expire request
+    request = requests_service.execute_action(
+        system_identity, membership_request.id, "expire"
+    ).to_dict()
+    ArchivedInvitation.index.refresh()
+    Member.index.refresh()
+
+    # Postconditions
+    # 1 member, the owner
+    res = member_service.search(owner.identity, community_uuid)
+    assert 1 == res.to_dict()["hits"]["total"]
+
+    # 1 "request", the expired membership request
+    res = member_service.search_membership_requests(owner.identity, community_uuid)
+    hits = res.to_dict()["hits"]
+    assert 1 == hits["total"]
+    hit = hits["hits"][0]
+    assert "expired" == hit["request"]["status"]
     assert hit["request"]["is_open"] is False
 
 

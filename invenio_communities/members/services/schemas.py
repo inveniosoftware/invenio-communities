@@ -247,6 +247,4 @@ class MembershipRequestDumpSchema(MemberDumpSchema):
             community_id=obj.community_id,
             member=obj,
         )
-        return {
-            "can_update_role": is_open and can_update
-        }
+        return {"can_update_role": is_open and can_update}
