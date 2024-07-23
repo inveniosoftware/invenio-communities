@@ -18,6 +18,7 @@ from itertools import chain
 
 from flask_principal import UserNeed
 from invenio_access.permissions import any_user, authenticated_user, system_process
+from invenio_records.dictutils import dict_lookup
 from invenio_records_permissions.generators import Generator
 from invenio_search.engine import dsl
 
@@ -125,11 +126,40 @@ class IfRestricted(IfRestrictedBase):
         )
 
 
-class IfPolicyClosed(IfRestrictedBase):
+class ReviewPolicy(Generator):
     """If policy is closed."""
 
-    def __init__(self, field, then_, else_):
+    def __init__(self, closed_, open_, members_):
+        """Constructor."""
+        self.closed_ = closed_
+        self.open_ = open_
+        self.members_ = members_
+
+    def _generators(self, record, **kwargs):
+        """Get the generators."""
+        review_policy = dict_lookup(record, "access.review_policy")
+
+        if review_policy == "closed":
+            return self.closed_
+        elif review_policy == "open":
+            return self.open_
+        elif review_policy == "members":
+            return self.members_
+
+    def needs(self, record=None, **kwargs):
+        """Set of Needs granting permission."""
+        needs = [
+            g.needs(record=record, **kwargs) for g in self._generators(record, **kwargs)
+        ]
+        return set(chain.from_iterable(needs))
+
+
+class IfRecordPolicyClosed(IfRestrictedBase):
+    """If record policy is closed."""
+
+    def __init__(self, then_, else_):
         """Initialize."""
+        field = "record_policy"
         super().__init__(
             lambda r: (
                 getattr(r.access, field, None)

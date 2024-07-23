@@ -33,8 +33,9 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     IfCommunityDeleted,
-    IfPolicyClosed,
+    IfRecordPolicyClosed,
     IfRestricted,
+    ReviewPolicy,
 )
 
 
@@ -82,8 +83,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_rename = [CommunityOwners(), SystemProcess()]
 
     can_submit_record = [
-        IfPolicyClosed(
-            "record_policy",
+        IfRecordPolicyClosed(
             then_=[CommunityMembers(), SystemProcess()],
             else_=[
                 IfRestricted(
@@ -97,11 +97,11 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # who can include a record directly, without a review
     can_include_directly = [
-        IfPolicyClosed(
-            "review_policy",
-            then_=[Disable()],
-            else_=[CommunityCurators()],
-        ),
+        ReviewPolicy(
+            closed_=[Disable()],
+            open_=[CommunityCurators()],
+            members_=[CommunityMembers()],
+        )
     ]
 
     can_members_add = [

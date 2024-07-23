@@ -80,6 +80,14 @@ REVIEW_POLICY_FIELDS = [
             "Submissions to the community by default requires review, but curators, managers and owners can publish directly without review."
         ),
     },
+    {
+        "text": "Allow all members to publish without review",
+        "value": "members",
+        "icon": "lock open",
+        "helpText": _(
+            "Submissions to the community by default requires review, but all community members can publish directly without review."
+        ),
+    },
 ]
 
 
@@ -412,9 +420,6 @@ def communities_settings_pages(pid_value, community, community_ui):
         theme=community_ui.get("theme", {}),
         community=community_ui,
         permissions=permissions,
-        form_config=dict(
-            access=dict(review_policy=REVIEW_POLICY_FIELDS),
-        ),
     )
 
 

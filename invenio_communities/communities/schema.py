@@ -117,6 +117,7 @@ class CommunityAccessSchema(Schema):
             [
                 "open",
                 "closed",
+                "members",
             ]
         )
     )

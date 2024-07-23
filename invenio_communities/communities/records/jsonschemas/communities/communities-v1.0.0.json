@@ -47,7 +47,8 @@
           "description": "Community review policy.",
           "enum": [
             "open",
-            "closed"
+            "closed",
+            "members"
           ]
         }
       }

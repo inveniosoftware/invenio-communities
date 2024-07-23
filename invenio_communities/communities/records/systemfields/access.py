@@ -70,6 +70,8 @@ class ReviewPolicyEnum(AccessEnumMixin, Enum):
 
     CLOSED = "closed"
 
+    MEMBERS = "members"
+
 
 class CommunityAccess:
     """Access management per community."""
