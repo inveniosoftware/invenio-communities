@@ -1,4 +1,26 @@
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "edge_analyzer": {
+          "tokenizer": "letter",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "edgegrams"
+          ]
+        }
+      },
+      "filter": {
+        "edgegrams": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20,
+          "preserve_original": true
+        }
+      }
+    }
+  },
   "mappings": {
     "dynamic_templates": [
       {
@@ -122,7 +144,8 @@
       "metadata": {
         "properties": {
           "title": {
-            "type": "text"
+            "type": "text",
+            "analyzer": "edge_analyzer"
           },
           "description": {
             "type": "text"
