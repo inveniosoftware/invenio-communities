@@ -19,6 +19,10 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationCancelNotificationBuilder,
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
+    CommunityMembershipRequestAcceptNotificationBuilder,
+    CommunityMembershipRequestCancelNotificationBuilder,
+    CommunityMembershipRequestDeclineNotificationBuilder,
+    CommunityMembershipRequestExpireNotificationBuilder,
 )
 
 from ...proxies import current_communities
@@ -142,7 +146,11 @@ class CancelMembershipRequestAction(actions.CancelAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().close_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: Notification flow: Investigate notifications
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestCancelNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -152,7 +160,11 @@ class DeclineMembershipRequestAction(actions.DeclineAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().close_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: Notification flow: Investigate notifications
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestDeclineNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -165,7 +177,11 @@ class ExpireMembershipRequestAction(actions.ExpireAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().close_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: Notification flow: Investigate notifications
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestExpireNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -175,7 +191,11 @@ class AcceptMembershipRequestAction(actions.AcceptAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().accept_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: Notification flow: Investigate notifications
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestAcceptNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 

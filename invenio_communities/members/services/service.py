@@ -35,7 +35,10 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from werkzeug.local import LocalProxy
 
-from ...notifications.builders import CommunityInvitationSubmittedNotificationBuilder
+from ...notifications.builders import (
+    CommunityInvitationSubmittedNotificationBuilder,
+    CommunityMembershipRequestSubmittedNotificationBuilder,
+)
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from ..records.api import ArchivedInvitation
@@ -839,22 +842,23 @@ class MemberService(RecordService):
             )
 
         # TODO: Notification flow: Add notification mechanism
-        # uow.register(
-        #     NotificationOp(
-        #         MembershipRequestSubmittedNotificationBuilder.build(
-        #             request=request_item._request,
-        #             # explicit string conversion to get the value of LazyText
-        #             role=str(role.title),
-        #             message=message,
-        #         )
-        #     )
-        # )
+        role = current_roles["reader"]
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestSubmittedNotificationBuilder.build(
+                    request=request_item._record,
+                    # explicit string conversion to get the value of LazyText
+                    role=str(role.title),
+                    message=message,
+                )
+            )
+        )
 
         # Create an inactive member entry linked to the request.
         self._add_factory(
             identity,
             community=community,
-            role=current_roles["reader"],
+            role=role,
             visible=False,
             member={"type": "user", "id": str(identity.user.id)},
             message=message,

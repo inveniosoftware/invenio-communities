@@ -42,6 +42,7 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
     CommunityInvitationSubmittedNotificationBuilder,
+    CommunityMembershipRequestSubmittedNotificationBuilder,
 )
 from invenio_communities.proxies import current_communities
 
@@ -123,6 +124,7 @@ def app_config(app_config):
         CommunityInvitationDeclineNotificationBuilder.type: CommunityInvitationDeclineNotificationBuilder,
         CommunityInvitationExpireNotificationBuilder.type: CommunityInvitationExpireNotificationBuilder,
         CommunityInvitationSubmittedNotificationBuilder.type: CommunityInvitationSubmittedNotificationBuilder,
+        CommunityMembershipRequestSubmittedNotificationBuilder.type: CommunityMembershipRequestSubmittedNotificationBuilder,
     }
 
     # Specifying default resolvers. Will only be used in specific test cases.
@@ -144,6 +146,14 @@ def app_config(app_config):
     app_config["ACCOUNTS_DEFAULT_USERS_VERIFIED"] = True
 
     app_config["COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS"] = True
+
+    # The responsibility of defining requests routes is in invenio-app-rdm i.e.
+    # any app that uses this module, so fair to define in configuration.
+    app_config["RDM_REQUESTS_ROUTES"] = {
+        "user-dashboard-request-details": "/me/requests/<request_pid_value>",
+        "community-dashboard-request-details": "/communities/<pid_value>/requests/<request_pid_value>",
+        "community-dashboard-invitation-details": "/communities/<pid_value>/invitations/<request_pid_value>",
+    }
 
     return app_config
 
