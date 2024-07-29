@@ -92,10 +92,10 @@
           "visibility": {
             "type": "keyword"
           },
-          "members_visibility": {
+          "member_policy": {
             "type": "keyword"
           },
-          "member_policy": {
+          "members_visibility": {
             "type": "keyword"
           },
           "record_policy": {
@@ -297,26 +297,6 @@
           },
           "slug": {
             "type": "keyword"
-          },
-          "type": {
-            "type": "object",
-            "properties": {
-              "@v": {
-                "type": "keyword"
-              },
-              "id": {
-                "type": "keyword"
-              },
-              "title": {
-                "type": "object",
-                "dynamic": "true",
-                "properties": {
-                  "en": {
-                    "type": "text"
-                  }
-                }
-              }
-            }
           },
           "metadata": {
             "type": "object",
