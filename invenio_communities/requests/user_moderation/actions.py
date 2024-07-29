@@ -20,6 +20,8 @@ from invenio_communities.communities.records.systemfields.deletion_status import
 )
 from invenio_communities.proxies import current_communities
 
+from .tasks import delete_community, restore_community
+
 
 def _get_communities_for_user(user_id):
     """Helper function for getting all communities with the user as the sole owner.
@@ -83,13 +85,7 @@ def on_block(user_id, uow=None, **kwargs):
 
     # soft-delete all the communities of that user (only if they are the only owner)
     for comm in _get_communities_for_user(user_id):
-        if not comm.deletion_status.is_deleted:
-            current_communities.service.delete_community(
-                system_identity,
-                comm.pid.pid_value,
-                tombstone_data,
-                uow=uow,
-            )
+        delete_community.delay(comm.pid.pid_value, tombstone_data)
 
 
 def on_restore(user_id, uow=None, **kwargs):
@@ -103,12 +99,7 @@ def on_restore(user_id, uow=None, **kwargs):
 
     # restore all the deleted records of that user
     for comm in _get_communities_for_user(user_id):
-        if comm.deletion_status == CommunityDeletionStatusEnum.DELETED:
-            current_communities.service.restore_community(
-                system_identity,
-                comm.pid.pid_value,
-                uow=uow,
-            )
+        restore_community.delay(comm.pid.pid_value)
 
 
 def on_approve(user_id, uow=None, **kwargs):
