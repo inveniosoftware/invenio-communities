@@ -7,7 +7,6 @@
 
 """Registry and definition of community roles."""
 
-
 from dataclasses import dataclass, field
 
 

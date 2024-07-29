@@ -7,6 +7,7 @@
 # details.
 
 """Invenio communities tasks."""
+
 from celery import shared_task
 
 from invenio_communities.proxies import current_identities_cache

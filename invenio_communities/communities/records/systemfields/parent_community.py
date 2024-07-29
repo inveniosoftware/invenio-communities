@@ -7,6 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Community PID slug field."""
+
 from uuid import UUID
 
 from invenio_records.dictutils import filter_dict_keys

@@ -256,7 +256,7 @@ class MemberService(RecordService):
                 active=active,
                 visible=visible,
                 request_id=request_id,
-                **member_arg
+                **member_arg,
             )
         except IntegrityError as e:
             raise AlreadyMemberError() from e
@@ -339,7 +339,7 @@ class MemberService(RecordService):
         params=None,
         search_preference=None,
         extra_filter=None,
-        **kwargs
+        **kwargs,
     ):
         """Search."""
         # Apply extra filters
@@ -356,7 +356,7 @@ class MemberService(RecordService):
             extra_filter=filter_,
             params=params,
             search_preference=search_preference,
-            **kwargs
+            **kwargs,
         )
 
     def scan(
@@ -366,7 +366,7 @@ class MemberService(RecordService):
         params=None,
         search_preference=None,
         extra_filter=None,
-        **kwargs
+        **kwargs,
     ):
         """Scan community members to retrieve all matching the query."""
         # Apply extra filters
@@ -384,7 +384,7 @@ class MemberService(RecordService):
             scan_params=params,
             search_preference=search_preference,
             scan=True,
-            **kwargs
+            **kwargs,
         )
 
     def search_public(
@@ -406,7 +406,7 @@ class MemberService(RecordService):
             ),
             params=params,
             search_preference=search_preference,
-            **kwargs
+            **kwargs,
         )
 
     def search_invitations(
@@ -426,7 +426,7 @@ class MemberService(RecordService):
             extra_filter=dsl.Q("term", **{"active": False}),
             params=params,
             search_preference=search_preference,
-            **kwargs
+            **kwargs,
         )
 
     def _members_search(
@@ -441,7 +441,7 @@ class MemberService(RecordService):
         search_preference=None,
         scan=False,
         scan_params=None,
-        **kwargs
+        **kwargs,
     ):
         """Members search."""
         community = self.community_cls.get_record(community_id)
@@ -464,7 +464,7 @@ class MemberService(RecordService):
             search_opts=search_opts,
             permission_action=None,
             extra_filter=filter,
-            **kwargs
+            **kwargs,
         )
         # scan has a default scroll timeout of 5 minutes
         # https://github.com/opensearch-project/opensearch-py/blob/fe3b5a8922aa8eb04f735c74d127d7ea68a00bec/opensearchpy/helpers/actions.py#L492-L503

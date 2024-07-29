@@ -8,7 +8,6 @@
 
 """Members service."""
 
-
 from .config import MemberServiceConfig
 from .service import MemberService
 

@@ -6,6 +6,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Create indeces for bucket_id."""
+
 import sqlalchemy as sa
 from alembic import op
 

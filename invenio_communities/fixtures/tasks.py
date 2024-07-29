@@ -9,7 +9,6 @@
 
 """Celery tasks for fixtures."""
 
-
 from datetime import datetime
 
 from celery import shared_task

@@ -10,7 +10,6 @@
 
 """Invenio Communities Service API."""
 
-
 from flask import current_app
 from invenio_cache.decorators import cached_with_expiration
 from invenio_records_resources.proxies import current_service_registry

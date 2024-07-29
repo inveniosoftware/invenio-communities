@@ -8,7 +8,6 @@
 
 """Members Errors."""
 
-
 from ..errors import CommunityError
 
 

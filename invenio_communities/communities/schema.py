@@ -8,6 +8,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Community schema."""
+
 import re
 from functools import partial
 from uuid import UUID

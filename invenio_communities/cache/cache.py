@@ -7,6 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Abstract simple identity cache definition."""
+
 from abc import ABC, abstractmethod
 
 from flask import current_app

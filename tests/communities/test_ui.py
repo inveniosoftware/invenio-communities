@@ -6,6 +6,7 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 """Test community UI views."""
+
 import pytest
 from flask import Blueprint
 

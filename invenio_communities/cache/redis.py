@@ -7,6 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Implements a Redis cache."""
+
 from cachelib import RedisCache
 from flask import current_app
 from redis import StrictRedis

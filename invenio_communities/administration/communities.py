@@ -7,6 +7,7 @@
 # details.
 
 """Invenio administration OAI-PMH view module."""
+
 from functools import partial
 
 from flask import current_app

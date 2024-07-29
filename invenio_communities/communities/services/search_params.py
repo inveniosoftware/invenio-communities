@@ -7,6 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Invenio Communities search params module."""
+
 from invenio_records_resources.services.records.params import ParamInterpreter
 
 from invenio_communities.communities.records.systemfields.deletion_status import (
@@ -38,6 +39,6 @@ class IncludeDeletedCommunitiesParam(ParamInterpreter):
         if value is None:
             search = search.filter(
                 "term",
-                **{"deletion_status": CommunityDeletionStatusEnum.PUBLISHED.value}
+                **{"deletion_status": CommunityDeletionStatusEnum.PUBLISHED.value},
             )
         return search

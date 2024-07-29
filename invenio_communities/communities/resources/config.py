@@ -8,6 +8,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Invenio Communities Resource API config."""
+
 import marshmallow as ma
 from flask_resources import (
     HTTPJSONException,
