@@ -66,7 +66,7 @@ class Community(Record):
         ]
     )
 
-    index = IndexField("communities-communities-v1.0.0", search_alias="communities")
+    index = IndexField("communities-communities-v2.0.0", search_alias="communities")
 
     access = CommunityAccessField()
 

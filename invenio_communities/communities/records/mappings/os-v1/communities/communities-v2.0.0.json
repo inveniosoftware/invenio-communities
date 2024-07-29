@@ -1,4 +1,47 @@
 {
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "strip_special_chars": {
+          "type": "pattern_replace",
+          "pattern": "[\\p{Punct}\\p{S}]",
+          "replacement": ""
+        }
+      },
+      "analyzer": {
+        "accent_analyzer": {
+          "tokenizer": "standard",
+          "type": "custom",
+          "char_filter": ["strip_special_chars"],
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        },
+        "accent_edge_analyzer": {
+          "tokenizer": "standard",
+          "type": "custom",
+          "char_filter": ["strip_special_chars"],
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "edgegrams"
+          ]
+        }
+      },
+      "filter": {
+        "lowercase": {
+          "type": "lowercase",
+          "preserve_original": true
+        },
+        "edgegrams": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      }
+    }
+  },
   "mappings": {
     "dynamic_templates": [
       {
@@ -8,6 +51,8 @@
           "match_mapping_type": "object",
           "mapping": {
             "type": "text",
+            "analyzer": "accent_analyzer",
+            "search_analyzer": "accent_analyzer",
             "fields": {
               "keyword": {
                 "type": "keyword",
@@ -101,9 +146,6 @@
           "record_policy": {
             "type": "keyword"
           },
-          "record_submission_policy": {
-            "type": "keyword"
-          },
           "review_policy": {
             "type": "keyword"
           }
@@ -125,7 +167,9 @@
       "metadata": {
         "properties": {
           "title": {
-            "type": "text"
+            "type": "text",
+            "analyzer": "accent_edge_analyzer",
+            "search_analyzer": "accent_edge_analyzer"
           },
           "description": {
             "type": "text"
