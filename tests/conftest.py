@@ -42,6 +42,10 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
     CommunityInvitationSubmittedNotificationBuilder,
+    CommunityMembershipRequestAcceptNotificationBuilder,
+    CommunityMembershipRequestCancelNotificationBuilder,
+    CommunityMembershipRequestDeclineNotificationBuilder,
+    CommunityMembershipRequestExpireNotificationBuilder,
     CommunityMembershipRequestSubmittedNotificationBuilder,
 )
 from invenio_communities.proxies import current_communities
@@ -124,6 +128,10 @@ def app_config(app_config):
         CommunityInvitationDeclineNotificationBuilder.type: CommunityInvitationDeclineNotificationBuilder,
         CommunityInvitationExpireNotificationBuilder.type: CommunityInvitationExpireNotificationBuilder,
         CommunityInvitationSubmittedNotificationBuilder.type: CommunityInvitationSubmittedNotificationBuilder,
+        CommunityMembershipRequestAcceptNotificationBuilder.type: CommunityMembershipRequestAcceptNotificationBuilder,
+        CommunityMembershipRequestCancelNotificationBuilder.type: CommunityMembershipRequestCancelNotificationBuilder,
+        CommunityMembershipRequestDeclineNotificationBuilder.type: CommunityMembershipRequestDeclineNotificationBuilder,
+        CommunityMembershipRequestExpireNotificationBuilder.type: CommunityMembershipRequestExpireNotificationBuilder,
         CommunityMembershipRequestSubmittedNotificationBuilder.type: CommunityMembershipRequestSubmittedNotificationBuilder,
     }
 

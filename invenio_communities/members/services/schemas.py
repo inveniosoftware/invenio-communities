@@ -12,6 +12,7 @@
 from datetime import timezone
 from types import SimpleNamespace
 
+import arrow
 from invenio_i18n import lazy_gettext as _
 from invenio_users_resources.proxies import (
     current_groups_service,
@@ -54,11 +55,21 @@ class RequestSchema(Schema):
     id = fields.String()
     status = fields.String()
     is_open = fields.Boolean()
-    # TODO: expires_at is dumped in the index and thus a string. This is
-    # because the relations field doesn't properly load data from the index
-    # (it should have converted expires_at into a datetime object).
-    expires_at = fields.String()
+    expires_at = fields.Method(serialize="serialize_expires_at")
     type = fields.String()
+
+    def serialize_expires_at(self, obj):
+        """Makes sure that the expires_at datetime is serialized into a UTC offset str.
+
+        As of writing, the input `expires_at` is a naive datetime string because
+        relations field doesn't convert loaded data from the index. We want an aware
+        UTC timezoned datetime string in ISO format.
+
+        :param obj: Request dict
+        :return: ISO datetime string
+        """
+        aware = arrow.get(obj["expires_at"]).to(timezone.utc)
+        return aware.isoformat()
 
 
 #
