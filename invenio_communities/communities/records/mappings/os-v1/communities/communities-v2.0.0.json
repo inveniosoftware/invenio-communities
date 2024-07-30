@@ -9,15 +9,6 @@
         }
       },
       "analyzer": {
-        "accent_analyzer": {
-          "tokenizer": "standard",
-          "type": "custom",
-          "char_filter": ["strip_special_chars"],
-          "filter": [
-            "lowercase",
-            "asciifolding"
-          ]
-        },
         "accent_edge_analyzer": {
           "tokenizer": "standard",
           "type": "custom",
@@ -32,6 +23,10 @@
       "filter": {
         "lowercase": {
           "type": "lowercase",
+          "preserve_original": true
+        },
+        "asciifolding": {
+          "type": "asciifolding",
           "preserve_original": true
         },
         "edgegrams": {
@@ -51,8 +46,8 @@
           "match_mapping_type": "object",
           "mapping": {
             "type": "text",
-            "analyzer": "accent_analyzer",
-            "search_analyzer": "accent_analyzer",
+            "analyzer": "accent_edge_analyzer",
+            "search_analyzer": "accent_edge_analyzer",
             "fields": {
               "keyword": {
                 "type": "keyword",
@@ -344,26 +339,6 @@
           },
           "slug": {
             "type": "keyword"
-          },
-          "type": {
-            "type": "object",
-            "properties": {
-              "@v": {
-                "type": "keyword"
-              },
-              "id": {
-                "type": "keyword"
-              },
-              "title": {
-                "type": "object",
-                "dynamic": "true",
-                "properties": {
-                  "en": {
-                    "type": "text"
-                  }
-                }
-              }
-            }
           },
           "metadata": {
             "type": "object",
