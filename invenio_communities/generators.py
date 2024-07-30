@@ -161,16 +161,36 @@ class IfRecordPolicyClosed(IfRestrictedBase):
         """Initialize."""
         field = "record_policy"
         super().__init__(
-            lambda r: (
+            field_getter=lambda r: (
                 getattr(r.access, field, None)
                 if hasattr(r, "access")
                 else r.get("access", {}).get(field)
             ),  # needed for running permission check at serialization time and avoid db query
-            f"access.{field}",
-            "closed",
-            "open",
-            then_,
-            else_,
+            field_name=f"access.{field}",
+            then_value="closed",
+            else_value="open",
+            then_=then_,
+            else_=else_,
+        )
+
+
+class IfMemberPolicyClosed(IfRestrictedBase):
+    """If member policy is closed."""
+
+    def __init__(self, then_, else_):
+        """Initialize."""
+        field = "member_policy"
+        super().__init__(
+            field_getter=lambda r: (
+                getattr(r.access, field, None)
+                if hasattr(r, "access")
+                else r.get("access", {}).get(field)
+            ),  # needed for running permission check at serialization time and avoid db query
+            field_name=f"access.{field}",
+            then_value="closed",
+            else_value="open",
+            then_=then_,
+            else_=else_,
         )
 
 

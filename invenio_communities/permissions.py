@@ -33,6 +33,7 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     IfCommunityDeleted,
+    IfMemberPolicyClosed,
     IfRecordPolicyClosed,
     IfRestricted,
     ReviewPolicy,
@@ -190,8 +191,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         IfConfig(
             "COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS",
             then_=[
-                IfPolicyClosed(
-                    "member_policy",
+                IfMemberPolicyClosed(
                     then_=[Disable()],
                     else_=[AuthenticatedButNotCommunityMembers()],
                 ),
