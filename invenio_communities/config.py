@@ -344,5 +344,5 @@ COMMUNITIES_OAI_SETS_PREFIX = "community-"
 COMMUNITIES_ALWAYS_SHOW_CREATE_LINK = False
 """Controls visibility of 'New Community' btn based on user's permission when set to True."""
 
-COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = True
+COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 """Feature flag for membership request."""

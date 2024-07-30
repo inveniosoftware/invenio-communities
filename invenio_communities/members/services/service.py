@@ -261,7 +261,7 @@ class MemberService(RecordService):
         scan_params=None,
         endpoint="members",
         links_item_tpl=None,
-        **kwargs
+        **kwargs,
     ):
         """General members search."""
         community = self.community_cls.get_record(community_id)
