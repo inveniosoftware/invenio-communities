@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 13.0.4 (released 2024-07-30)
+
+- fix(logo): not fully deleted
+- fix(verified): the owner is not exclusively a user
+
 Version 13.0.3 (released 2024-05-15)
 
 - components: fix parent update permissions
