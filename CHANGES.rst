@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 13.0.5 (released 2024-07-30)
+
+-  profile: rename award label
+
 Version 13.0.4 (released 2024-07-30)
 
 - fix(logo): not fully deleted
