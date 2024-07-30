@@ -11,7 +11,10 @@ import { parametrize, overrideStore } from "react-overridable";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { DropdownSort } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { RequestAcceptButton, RequestDeclineButton } from "@js/invenio_requests/components/Buttons";
+import {
+  RequestAcceptButton,
+  RequestDeclineButton,
+} from "@js/invenio_requests/components/Buttons";
 import {
   RequestAcceptModalTrigger,
   RequestDeclineModalTrigger,

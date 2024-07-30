@@ -587,7 +587,7 @@ class MemberService(RecordService):
         params=None,
         search_preference=None,
         extra_filter=None,
-        **kwargs
+        **kwargs,
     ):
         """Search."""
         # Apply extra filters
@@ -606,7 +606,7 @@ class MemberService(RecordService):
             search_preference=search_preference,
             endpoint="members",
             links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
+            **kwargs,
         )
 
     def scan(
@@ -616,7 +616,7 @@ class MemberService(RecordService):
         params=None,
         search_preference=None,
         extra_filter=None,
-        **kwargs
+        **kwargs,
     ):
         """Scan community members to retrieve all matching the query."""
         # Apply extra filters
@@ -637,7 +637,7 @@ class MemberService(RecordService):
             # just in case scan becomes accessible through a resource URL
             endpoint="members",
             links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
+            **kwargs,
         )
 
     def search_public(
@@ -661,7 +661,7 @@ class MemberService(RecordService):
             search_preference=search_preference,
             endpoint="members",
             links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
+            **kwargs,
         )
 
     def read_memberships(self, identity):
@@ -784,7 +784,7 @@ class MemberService(RecordService):
             search_preference=search_preference,
             endpoint="invitations",
             links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
+            **kwargs,
         )
 
     #
@@ -894,7 +894,7 @@ class MemberService(RecordService):
             search_preference=search_preference,
             endpoint="membership-requests",
             links_item_tpl=LinksTemplate(self.config.links_item),
-            **kwargs
+            **kwargs,
         )
 
     def get_pending_request_id_if_any(self, user_id, community_id):

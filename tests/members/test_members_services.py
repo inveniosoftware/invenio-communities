@@ -1405,6 +1405,7 @@ def test_request_membership_expire_flow(
     # `expires_at`` is UTC-offset
     assert hit["request"]["expires_at"].endswith("+00:00")
 
+
 #
 # Change notifications
 #

@@ -220,6 +220,7 @@ class SubCommunityDecline(SubCommunityBuilderBase):
 
 class MembershipRequestBaseNotificationBuilder(BaseNotificationBuilder):
     """Base membership request notification builder."""
+
     type = "community-membership-request"
 
     @classmethod
@@ -233,7 +234,9 @@ class MembershipRequestBaseNotificationBuilder(BaseNotificationBuilder):
         )
 
 
-class CommunityMembershipRequestSubmittedNotificationBuilder(MembershipRequestBaseNotificationBuilder):
+class CommunityMembershipRequestSubmittedNotificationBuilder(
+    MembershipRequestBaseNotificationBuilder
+):
     """Notification builder for community membership request submission."""
 
     # identifier
