@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022-2024 CERN.
+ * Copyright (C) 2024      KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -119,6 +120,7 @@ export class InvitationsMembersModal extends Component {
               <>
                 <label>{i18next.t("Invitation message")}</label>
                 <RichEditor
+                  inputValue={() => message} // () => Needed to avoid re-rendering
                   onBlur={(event, editor) => {
                     this.updateMessage(editor.getContent());
                   }}
