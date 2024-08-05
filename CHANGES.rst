@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 13.0.6 (released 2024-08-05)
+
+- Invitation: Update RichEditor to use inputValue
+
 Version 13.0.5 (released 2024-07-30)
 
 -  profile: rename award label
