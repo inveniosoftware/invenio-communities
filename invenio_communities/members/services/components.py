@@ -52,8 +52,8 @@ class CommunityMemberCachingComponent(ServiceComponent):
         for user_id in user_ids:
             on_user_membership_change(Identity(user_id))
 
-    def accept_invite(self, identity, record=None, data=None, **kwargs):
-        """On accept invite."""
+    def accept_member_request(self, identity, record=None, data=None, **kwargs):
+        """Upon acceptance of a member request (invitation or membership request)."""
         self._member_changed(record)
 
     def members_add(self, identity, record=None, community=None, data=None, **kwargs):

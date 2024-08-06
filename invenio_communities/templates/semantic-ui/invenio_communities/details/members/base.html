@@ -18,6 +18,7 @@
     {%- set menu_items = {
       'members': (_('Members'), url_for('invenio_communities.members', pid_value=community.slug), permissions.can_read),
       'invitations': (_('Invitations'), url_for('invenio_communities.invitations', pid_value=community.slug), permissions.can_search_invites),
+      'membership_requests': (_('Membership Requests'), url_for('invenio_communities.membership_requests', pid_value=community.slug), permissions.can_search_membership_requests),
     } %}
     <div class="three wide computer sixteen wide tablet sixteen wide mobile column">
       <div class="ui vertical computer horizontal tablet horizontal mobile menu theme-primary-menu">

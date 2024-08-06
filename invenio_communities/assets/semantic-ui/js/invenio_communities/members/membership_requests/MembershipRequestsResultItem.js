@@ -8,49 +8,55 @@
  */
 
 import { RequestActionController } from "@js/invenio_requests/request/actions/RequestActionController";
+import RequestStatus from "@js/invenio_requests/request/RequestStatus";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Image } from "react-invenio-forms";
-import { Container, Grid, Item, Table } from "semantic-ui-react";
-import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
+import { Grid, Item, Table } from "semantic-ui-react";
+
+import { MembershipRequestsContext } from "../../api/membershipRequests/MembershipRequestsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
 import { buildRequest, formattedTime } from "../utils";
-import RequestStatus from "@js/invenio_requests/request/RequestStatus";
 
-export class InvitationResultItem extends Component {
+export class MembershipRequestsResultItem extends Component {
   constructor(props) {
     super(props);
     const { result } = this.props;
-    this.state = { invitation: result };
+    this.state = { membershipRequest: result };
   }
 
-  static contextType = InvitationsContext;
+  static contextType = MembershipRequestsContext;
 
-  updateInvitation = (data, value) => {
-    const { invitation } = this.state;
-    this.setState({ invitation: { ...invitation, ...{ role: value } } });
+  update = (data, value) => {
+    const { membershipRequest } = this.state;
+    this.setState({ membershipRequest: { ...membershipRequest, ...{ role: value } } });
   };
+
+  actionSuccessCallback = () => undefined;
 
   render() {
     const {
-      config: { rolesCanInvite },
+      config: { rolesCanAssign },
       community,
     } = this.props;
+
     const {
-      invitation: { member },
-      invitation,
+      membershipRequest: { member },
+      membershipRequest,
     } = this.state;
-    const request = buildRequest(invitation, ["cancel"]);
-    const { api: invitationsApi } = this.context;
-    const rolesCanInviteByType = rolesCanInvite[member.type];
+
+    const request = buildRequest(membershipRequest, ["accept", "decline"]);
+    const { api: membershipRequestsApi } = this.context;
+    const roles = rolesCanAssign[member.type];
     const expiration = formattedTime(request.expires_at);
+
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
           <Grid textAlign="left" verticalAlign="middle">
             <Grid.Column>
-              <Item className="flex align-items-center" key={invitation.id}>
+              <Item className="flex align-items-center" key={membershipRequest.id}>
                 <Image src={member.avatar} avatar circular className="mr-10" />
                 <Item.Content>
                   <Item.Header size="small" as="b">
@@ -79,34 +85,32 @@ export class InvitationResultItem extends Component {
         </Table.Cell>
         <Table.Cell data-label={i18next.t("Role")}>
           <RoleDropdown
-            roles={rolesCanInviteByType}
-            successCallback={this.updateInvitation}
-            action={invitationsApi.updateRole}
-            disabled={!invitation.permissions.can_update_role}
-            currentValue={invitation.role}
-            resource={invitation}
-            label={i18next.t("Role") + " " + invitation.role}
+            roles={roles}
+            action={membershipRequestsApi.updateRole}
+            successCallback={this.update}
+            disabled={!membershipRequest.permissions.can_update_role}
+            currentValue={membershipRequest.role}
+            resource={membershipRequest}
+            label={i18next.t("Role") + " " + membershipRequest.role}
           />
         </Table.Cell>
-        <Table.Cell>
-          <Container fluid textAlign="right">
-            <RequestActionController
-              request={request}
-              actionSuccessCallback={() => {
-                window.location.reload();
-              }}
-            />
-          </Container>
+        <Table.Cell data-label={i18next.t("Actions")}>
+          <RequestActionController
+            request={request}
+            actionSuccessCallback={() => {
+              window.location.reload();
+            }}
+          />
         </Table.Cell>
       </Table.Row>
     );
   }
 }
 
-InvitationResultItem.propTypes = {
+MembershipRequestsResultItem.propTypes = {
   result: PropTypes.object.isRequired,
   config: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
 };
 
-InvitationResultItem.defaultProps = {};
+MembershipRequestsResultItem.defaultProps = {};

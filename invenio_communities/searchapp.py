@@ -53,4 +53,14 @@ def search_app_context():
             initial_filters=[["is_open", "true"]],
             endpoint="/api/requests",
         ),
+        "search_app_communities_membership_requests_config": partial(
+            search_app_config,
+            config_name="COMMUNITIES_MEMBERSHIP_REQUESTS_SEARCH",
+            available_facets=current_app.config["REQUESTS_FACETS"],
+            sort_options=(
+                current_app.config["COMMUNITIES_MEMBERSHIP_REQUESTS_SORT_OPTIONS"]
+            ),
+            headers={"Accept": "application/json"},
+            initial_filters=[["is_open", "true"]],
+        ),
     }

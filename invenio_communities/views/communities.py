@@ -129,6 +129,7 @@ MEMBERS_PERMISSIONS = PRIVATE_PERMISSIONS | {
     "members_manage",
     "invite_owners",
     "search_invites",
+    "search_membership_requests",
 }
 
 
@@ -430,6 +431,8 @@ def members(pid_value, community, community_ui):
     if not permissions["can_members_search_public"]:
         raise PermissionDeniedError()
 
+    members_service = current_communities.service.members
+
     return render_community_theme_template(
         "invenio_communities/details/members/members.html",
         theme=community_ui.get("theme", {}),
@@ -437,6 +440,9 @@ def members(pid_value, community, community_ui):
         permissions=permissions,
         roles_can_update=_get_roles_can_update(community.id),
         roles_can_invite=_get_roles_can_invite(community.id),
+        associated_request_id=(
+            members_service.get_pending_request_id_if_any(g.identity.id, community.id)
+        ),
     )
 
 
@@ -456,11 +462,29 @@ def invitations(pid_value, community, community_ui):
 
 
 @pass_community(serialize=True)
+def membership_requests(pid_value, community, community_ui):
+    """Community membership requests page."""
+    permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
+    if not permissions["can_search_membership_requests"]:
+        raise PermissionDeniedError()
+    return render_community_theme_template(
+        "invenio_communities/details/members/membership_requests.html",
+        theme=community_ui.get("theme", {}),
+        community=community_ui,
+        # We use the same roles as the ones that can be invited
+        roles_can_assign=_get_roles_can_invite(community.id),
+        permissions=permissions,
+    )
+
+
+@pass_community(serialize=True)
 def communities_about(pid_value, community, community_ui):
     """Community about page."""
     permissions = community.has_permissions_to(HEADER_PERMISSIONS)
     if not permissions["can_read"]:
         raise PermissionDeniedError()
+
+    members_service = current_communities.service.members
 
     return render_community_theme_template(
         "invenio_communities/details/about/index.html",
@@ -468,6 +492,9 @@ def communities_about(pid_value, community, community_ui):
         community=community_ui,
         permissions=permissions,
         custom_fields_ui=load_custom_fields(dump_only_required=False)["ui"],
+        associated_request_id=(
+            members_service.get_pending_request_id_if_any(g.identity.id, community.id)
+        ),
     )
 
 
@@ -475,6 +502,7 @@ def communities_about(pid_value, community, community_ui):
 def communities_curation_policy(pid_value, community, community_ui):
     """Community curation policy page."""
     permissions = community.has_permissions_to(HEADER_PERMISSIONS)
+    members_service = current_communities.service.members
     if not permissions["can_read"]:
         raise PermissionDeniedError()
     return render_community_theme_template(
@@ -482,6 +510,9 @@ def communities_curation_policy(pid_value, community, community_ui):
         theme=community_ui.get("theme", {}),
         community=community_ui,
         permissions=permissions,
+        associated_request_id=(
+            members_service.get_pending_request_id_if_any(g.identity.id, community.id)
+        ),
     )
 
 

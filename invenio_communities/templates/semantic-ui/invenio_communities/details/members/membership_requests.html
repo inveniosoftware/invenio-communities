@@ -1,0 +1,37 @@
+{# -*- coding: utf-8 -*-
+
+  This file is part of Invenio.
+  Copyright (C) 2022 CERN.
+  Copyright (C) 2024 Northwestern University.
+
+  Invenio is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+#}
+
+{% extends "invenio_communities/details/members/base.html" %}
+
+{%- block javascript %}
+  {{ super() }}
+  {{ webpack['invenio-communities-membership-requests.js'] }}
+{%- endblock javascript %}
+
+{% set active_community_header_menu_item= 'members' %}
+{% set active_members_menu_item = 'membership_requests' %}
+
+{%- block settings_body %}
+
+  <div class="thirteen wide computer sixteen wide tablet sixteen wide mobile column">
+    <div
+      id="community-membership-requests-search-root"
+      data-community='{{ community | tojson }}'
+      data-communities-all-roles='{{ config.COMMUNITIES_ROLES | tojson }}'
+      data-communities-roles-can-assign='{{ roles_can_assign | tojson }}'
+      data-permissions='{{ permissions | tojson }}'
+      data-invenio-search-config='{{
+        search_app_communities_membership_requests_config(
+          app_id="InvenioCommunities.MembershipRequestsSearch",
+          endpoint=community["links"]["membership_requests"]) | tojson }}'>
+    </div>
+  </div>
+
+{%- endblock settings_body %}

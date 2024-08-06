@@ -1,0 +1,48 @@
+{% set request = notification.context.request %}
+{% set community = request.receiver %}
+{% set created_by = request.created_by %}
+{% set requester_name = created_by.username or created_by.profile.full_name %}
+{% set request_id = request.id %}
+{# Attention: Action-based notifications don't pass `message`, but a separate comment notification is sent so this is fine. #}
+{% set community_title = community.metadata.title %}
+
+{# WARNING: this uses a config set by invenio-app-rdm (not a dependency) to at least not hardcode the URL #}
+{# invenio-app-rdm should have been using REQUESTS_ROUTES a config of a dependency however. #}
+{% set request_link_path = config.RDM_REQUESTS_ROUTES["community-dashboard-request-details"].lstrip("/") %}
+{% set request_link_path = request_link_path.replace("<pid_value>", community.id).replace("<request_pid_value>", request_id) %}
+{% set request_link = "{ui}/{request_link_path}".format(ui=config.SITE_UI_URL, request_link_path=request_link_path) %}
+
+{%- block subject -%}
+{{ _("❌ Request for '@{requester_name}' to join the community '{community_title}' was cancelled").format(requester_name=requester_name, community_title=community_title) }}
+{%- endblock subject -%}
+
+{%- block html_body -%}
+<table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
+    <tr>
+        <td>{{ _("The membership request for '@{requester_name}' to join the community '{community_title}' was cancelled").format(requester_name=requester_name, community_title=community_title) }}.
+        </td>
+    </tr>
+    <tr>
+        <td><a href="{{ request_link }}" class="button">{{ _("Check out the membership request")}}</a></td>
+    </tr>
+    <tr>
+        <td><strong>_</strong></td>
+    </tr>
+    <tr>
+        <td style="font-size:smaller">{{ _("This is an auto-generated message. To manage notifications, visit your")}} <a href="{{account_settings_link}}">{{ _("account settings")}}</a>.</td>
+    </tr>
+</table>
+{%- endblock html_body %}
+
+{%- block plain_body -%}
+{{ _("The membership request for '@{requester_name}' to join the community '{community_title}' was cancelled").format(requester_name=requester_name, community_title=community_title) }}.
+
+{{ _("Check out the membership request:") }} {{ request_link }}
+{%- endblock plain_body %}
+
+{# Markdown for Slack/Mattermost/chat #}
+{%- block md_body -%}
+{{ _("The membership_request for *@{requester_name}* to join the community *{community_title}* was cancelled").format(requester_name=requester_name, community_title=community_title) }}.
+
+[{{ _("Check out the membership request") }}]({{ request_link }})
+{%- endblock md_body %}

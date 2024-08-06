@@ -199,6 +199,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
             else_=[Disable()],
         ),
     ]
+    can_search_membership_requests = [CommunityManagers(), SystemProcess()]
 
 
 def can_perform_action(community, context):

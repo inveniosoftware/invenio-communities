@@ -1,21 +1,14 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022 CERN.
+ * Copyright (C) 2024 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize, overrideStore } from "react-overridable";
-import { DropdownSort } from "@js/invenio_search_ui/components";
-import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
-import { InvitationResultItem } from "./InvitationResultItem";
-import { InvitationsResults } from "./InvitationsResults";
-import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
-import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
-import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
-import { InvitationsEmptyResults } from "./InvitationsEmptyResults";
+import { RequestCancelButton } from "@js/invenio_requests/components/Buttons";
+import { RequestCancelModalTrigger } from "@js/invenio_requests/components/ModalTriggers";
 import {
   SubmitStatus,
   DeleteStatus,
@@ -24,6 +17,20 @@ import {
   CancelStatus,
   ExpireStatus,
 } from "@js/invenio_requests/request";
+import { createSearchAppInit } from "@js/invenio_search_ui";
+import { DropdownSort } from "@js/invenio_search_ui/components";
+import { i18next } from "@translations/invenio_communities/i18next";
+import React from "react";
+import { Trans } from "react-i18next";
+import { parametrize, overrideStore } from "react-overridable";
+
+import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
+import { MemberRequestsSearchBarElement } from "../MemberRequestsSearchBarElement";
+import { InvitationsEmptyResults } from "./InvitationsEmptyResults";
+import { InvitationResultItem } from "./InvitationResultItem";
+import { InvitationsResults } from "./InvitationsResults";
+import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
+import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
 
 const dataAttr = document.getElementById("community-invitations-search-root").dataset;
 const community = JSON.parse(dataAttr.community);
@@ -49,6 +56,11 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   appName: appName,
 });
 
+const InvitationsSearchBarElement = parametrize(MemberRequestsSearchBarElement, {
+  className: "invitation-searchbar",
+  placeholder: i18next.t("Search in invitations..."),
+});
+
 const InvitationsContextProvider = parametrize(ContextProvider, {
   community: community,
 });
@@ -65,14 +77,25 @@ const InvitationsEmptyResultsWithCommunity = parametrize(InvitationsEmptyResults
   rolesCanInvite: communitiesRolesCanInvite,
 });
 
+const InvitationsRequestCancelButton = parametrize(RequestCancelButton, {
+  content: i18next.t("Cancel invitation"),
+});
+
+const InvitationsRequestActionModalCancelTitle = (props) => {
+  return <Trans defaults="{{action}} invitation" values={{ action: "cancel" }} />;
+};
+
 const defaultComponents = {
   [`${appName}.EmptyResults.element`]: InvitationsEmptyResultsWithCommunity,
-  [`${appName}.ResultsList.item`]: InvitationResultItemWithConfig,
   [`${appName}.SearchApp.layout`]: InvitationsSearchLayoutWithConfig,
   [`${appName}.SearchBar.element`]: InvitationsSearchBarElement,
-  [`${appName}.SearchApp.results`]: InvitationsResults,
-  [`${appName}.ResultsList.container`]: InvitationsResultsContainerWithConfig,
   [`${appName}.Sort.element`]: DropdownSort,
+  [`${appName}.ResultsList.container`]: InvitationsResultsContainerWithConfig,
+  [`${appName}.SearchApp.results`]: InvitationsResults,
+  [`${appName}.ResultsList.item`]: InvitationResultItemWithConfig,
+  "RequestActionModalTrigger.cancel": RequestCancelModalTrigger,
+  "RequestActionModal.title.cancel": InvitationsRequestActionModalCancelTitle,
+  "RequestActionButton.cancel": InvitationsRequestCancelButton,
   [`RequestStatus.layout.submitted`]: SubmitStatus,
   [`RequestStatus.layout.deleted`]: DeleteStatus,
   [`RequestStatus.layout.accepted`]: AcceptStatus,
