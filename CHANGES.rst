@@ -9,6 +9,16 @@
 Changes
 =======
 
+Version v14.5.2 (released 2024-08-07)
+
+- tests: replace docker-compose with docker compose
+- user_moderation: dispatch Celery tasks for each community operation
+- fix(logo): not fully deleted
+    * logo file hasn't been deleted. this prevented a new file upload,
+      because of an sqlalchemy.exc.IntegrityError:
+      (psycopg2.errors.UniqueViolation) error.
+- subcommunities: fix missing double-quote in email templates
+
 Version 14.5.1 (released 2024-06-28)
 
 - subcommunity: updated fieldpaths and error handling
