@@ -28,9 +28,18 @@ from invenio_communities.proxies import current_communities
 
 def _community_permission_check(action, community, identity):
     """Check community permission for identity."""
+    try:
+        community_id = getattr(community, "id", community["id"])
+    except KeyError:
+        community_id = getattr(
+            community["processed"][0],
+            "community_id",
+            community["processed"][0]["community_id"],
+        )
+
     return current_communities.service.config.permission_policy_cls(
         action,
-        community_id=getattr(community, "id", community["id"]),
+        community_id=community_id,
         record=community,
     ).allows(identity)
 
@@ -109,7 +118,14 @@ class UICommunitySchema(BaseObjectSchema):
         can_update = _community_permission_check(
             "update", community=obj, identity=g.identity
         )
-        return {"can_include_directly": can_include_directly, "can_update": can_update}
+        can_submit_record = _community_permission_check(
+            "submit_record", community=obj, identity=g.identity
+        )
+        return {
+            "can_include_directly": can_include_directly,
+            "can_update": can_update,
+            "can_submit_record": can_submit_record,
+        }
 
     @post_dump(pass_original=True)
     def post_dump(self, data, original, many, **kwargs):

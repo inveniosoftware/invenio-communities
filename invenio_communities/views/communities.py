@@ -64,6 +64,24 @@ MEMBERS_VISIBILITY_FIELDS = [
     },
 ]
 
+RECORDS_SUBMISSION_POLICY_FIELDS = [
+    {
+        "text": "Open",
+        "value": "open",
+        "icon": "lock open",
+        "helpText": _(
+            "All authenticated users can submit records to the community. "
+            "Note that in case community is restricted, then only members can submit records to it."
+        ),
+    },
+    {
+        "text": "Closed",
+        "value": "closed",
+        "icon": "lock",
+        "helpText": _("Only members can submit records to the community."),
+    },
+]
+
 
 REVIEW_POLICY_FIELDS = [
     {
@@ -116,6 +134,7 @@ HEADER_PERMISSIONS = {
     "members_search_public",
     "moderate",
     "request_membership",
+    "submit_record",
 }
 
 PRIVATE_PERMISSIONS = HEADER_PERMISSIONS | {
@@ -384,6 +403,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
                 visibility=VISIBILITY_FIELDS,
                 members_visibility=MEMBERS_VISIBILITY_FIELDS,
                 member_policy=member_policy,
+                submission_policy=RECORDS_SUBMISSION_POLICY_FIELDS,
             ),
         ),
         permissions=permissions,
