@@ -53,7 +53,7 @@ def _assert_optional_access_items_response(response):
     fields_to_check = [
         "visibility",
         "member_policy",
-        "record_policy",
+        "record_submission_policy",
     ]
 
     for field in fields_to_check:
@@ -482,7 +482,7 @@ def test_simple_put_response(
         "visibility": "restricted",
         "members_visibility": "restricted",
         "member_policy": "closed",
-        "record_policy": "closed",
+        "record_submission_policy": "closed",
     }
 
     res = client.put(f"/communities/{id_}", headers=headers, json=data)
@@ -534,7 +534,7 @@ def test_update_renamed_record(
         "visibility": "restricted",
         "members_visibility": "restricted",
         "member_policy": "closed",
-        "record_policy": "closed",
+        "record_submission_policy": "closed",
     }
     res = client.put(f"/communities/{renamed_id_}", headers=headers, json=data)
     assert res.status_code == 200

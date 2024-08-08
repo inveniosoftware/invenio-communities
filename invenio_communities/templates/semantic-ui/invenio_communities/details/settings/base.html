@@ -18,7 +18,7 @@
       {%- set menu_items = {
         'profile': (_('Profile'), url_for('invenio_communities.communities_settings', pid_value=community.slug)),
         'privileges': (_('Privileges'), url_for('invenio_communities.communities_settings_privileges', pid_value=community.slug)),
-        'curation_policy': (_('Review policy'), url_for('invenio_communities.communities_settings_curation_policy', pid_value=community.slug)),
+        'submission_policy': (_('Submission policy'), url_for('invenio_communities.communities_settings_submission_policy', pid_value=community.slug)),
         'pages': (_('Pages'), url_for('invenio_communities.communities_settings_pages', pid_value=community.slug)),
       } %}
       <div class="sixteen wide mobile sixteen wide tablet three wide computer column">

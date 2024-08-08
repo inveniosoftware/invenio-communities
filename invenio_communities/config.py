@@ -14,6 +14,9 @@ from datetime import timedelta
 
 from invenio_i18n import lazy_gettext as _
 
+from invenio_communities.communities.records.systemfields.access import (
+    RecordSubmissionPolicyEnum,
+)
 from invenio_communities.communities.services import facets
 
 COMMUNITIES_ROUTES = {
@@ -25,7 +28,7 @@ COMMUNITIES_ROUTES = {
     "requests": "/communities/<pid_value>/requests",
     "new_subcommunity": "/communities/<pid_value>/subcommunities/new",
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
-    "settings_curation_policy": "/communities/<pid_value>/settings/curation-policy",
+    "settings_submission_policy": "/communities/<pid_value>/settings/submission-policy",
     "settings_pages": "/communities/<pid_value>/settings/pages",
     "members": "/communities/<pid_value>/members",
     "invitations": "/communities/<pid_value>/invitations",
@@ -317,3 +320,6 @@ COMMUNITIES_ALWAYS_SHOW_CREATE_LINK = False
 
 COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 """Feature flag for membership request."""
+
+COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
+"""Default value of record submission policy community access setting."""

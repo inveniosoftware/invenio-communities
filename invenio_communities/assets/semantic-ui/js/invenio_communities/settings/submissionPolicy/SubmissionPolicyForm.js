@@ -14,13 +14,6 @@ import React, { Component } from "react";
 import { RadioField } from "react-invenio-forms";
 import { Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import * as Yup from "yup";
-
-const COMMUNITY_VALIDATION_SCHEMA = Yup.object({
-  metadata: Yup.object({
-    curation_policy: Yup.string().max(5000, "Maximum number of characters is 5000"),
-  }),
-});
 
 const ReviewPolicyField = ({ label, formConfig, ...props }) => {
   const [field] = useField(props);
@@ -53,14 +46,44 @@ ReviewPolicyField.defaultProps = {
   label: "",
 };
 
-export class CurationPolicyForm extends Component {
+const RecordSubmissionPolicyField = ({ label, formConfig, ...props }) => {
+  const [field] = useField(props);
+  const fieldPath = "access.record_submission_policy";
+  const { record_submission_policy: subPolicy } = formConfig.access;
+  return (
+    <>
+      {subPolicy.map((item) => (
+        <React.Fragment key={item.value}>
+          <RadioField
+            key={item.value}
+            fieldPath={fieldPath}
+            label={item.text}
+            labelIcon={item.icon}
+            checked={_get(field.value, fieldPath) === item.value}
+            value={item.value}
+          />
+          <label className="helptext">{item.helpText}</label>
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
+
+RecordSubmissionPolicyField.propTypes = {
+  label: PropTypes.string,
+  formConfig: PropTypes.object.isRequired,
+};
+
+RecordSubmissionPolicyField.defaultProps = {
+  label: "",
+};
+
+class SubmissionPolicyForm extends Component {
   getInitialValues = () => {
     return {
-      metadata: {
-        curation_policy: "",
-      },
       access: {
         review_policy: "closed",
+        record_submission_policy: "open",
       },
     };
   };
@@ -71,18 +94,30 @@ export class CurationPolicyForm extends Component {
       <CommunitySettingsForm
         initialValues={this.getInitialValues()}
         community={community}
-        validationSchema={COMMUNITY_VALIDATION_SCHEMA}
       >
-        <Header size="tiny" className="mt-0">
-          {i18next.t("Submission review policy")}
+        <Header as="h2" size="small">
+          {i18next.t("Review policy")}
+          <Header.Subheader className="mt-5">
+            {i18next.t("Controls who can publish records directly without review.")}
+          </Header.Subheader>
         </Header>
         <ReviewPolicyField formConfig={formConfig} />
+
+        <Header as="h2" size="small">
+          {i18next.t("Records submission policy")}
+          <Header.Subheader className="mt-5">
+            {i18next.t("Controls who can submit records to the community.")}
+          </Header.Subheader>
+        </Header>
+        <RecordSubmissionPolicyField formConfig={formConfig} />
       </CommunitySettingsForm>
     );
   }
 }
 
-CurationPolicyForm.propTypes = {
+SubmissionPolicyForm.propTypes = {
   community: PropTypes.object.isRequired,
   formConfig: PropTypes.object.isRequired,
 };
+
+export default SubmissionPolicyForm;

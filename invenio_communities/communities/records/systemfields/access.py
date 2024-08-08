@@ -10,6 +10,7 @@
 
 from enum import Enum, unique
 
+from flask import current_app
 from invenio_records.systemfields import SystemField
 
 
@@ -54,8 +55,8 @@ class MemberPolicyEnum(AccessEnumMixin, Enum):
 
 
 @unique
-class RecordPolicyEnum(AccessEnumMixin, Enum):
-    """Enum defining record policies."""
+class RecordSubmissionPolicyEnum(AccessEnumMixin, Enum):
+    """Enum defining record submission policies."""
 
     OPEN = "open"
 
@@ -81,7 +82,7 @@ class CommunityAccess:
         visibility=None,
         members_visibility=None,
         member_policy=None,
-        record_policy=None,
+        record_submission_policy=None,
         review_policy=None,
     ):
         """Create a new CommunityAccess object.
@@ -91,7 +92,10 @@ class CommunityAccess:
         self.visibility = visibility or VisibilityEnum.PUBLIC
         self.members_visibility = members_visibility or MembersVisibilityEnum.PUBLIC
         self.member_policy = member_policy or MemberPolicyEnum.OPEN
-        self.record_policy = record_policy or RecordPolicyEnum.OPEN
+        self.record_submission_policy = (
+            record_submission_policy
+            or current_app.config["COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY"]
+        )
         self.review_policy = review_policy or ReviewPolicyEnum.CLOSED
         self.errors = []
 
@@ -111,9 +115,9 @@ class CommunityAccess:
         return MemberPolicyEnum.validate(level)
 
     @classmethod
-    def validate_record_policy_level(cls, level):
-        """Validate the record policy level."""
-        return RecordPolicyEnum.validate(level)
+    def validate_record_submission_policy_level(cls, level):
+        """Validate the record submission policy level."""
+        return RecordSubmissionPolicyEnum.validate(level)
 
     @classmethod
     def validate_review_policy_level(cls, level):
@@ -167,16 +171,16 @@ class CommunityAccess:
         self._member_policy = value
 
     @property
-    def record_policy(self):
-        """Get the record policy level."""
-        return self._record_policy
+    def record_submission_policy(self):
+        """Get the record submission policy level."""
+        return self._record_submission_policy
 
-    @record_policy.setter
-    def record_policy(self, value):
-        """Set the record policy level."""
-        if not self.validate_record_policy_level(value):
-            raise ValueError(f"Unknown record policy level: {value}")
-        self._record_policy = value
+    @record_submission_policy.setter
+    def record_submission_policy(self, value):
+        """Set the record submission policy level."""
+        if not self.validate_record_submission_policy_level(value):
+            raise ValueError(f"Unknown record submission policy level: {value}")
+        self._record_submission_policy = value
 
     @property
     def review_policy(self):
@@ -196,7 +200,7 @@ class CommunityAccess:
             "visibility": str(self.visibility),
             "members_visibility": str(self.members_visibility),
             "member_policy": str(self.member_policy),
-            "record_policy": str(self.record_policy),
+            "record_submission_policy": str(self.record_submission_policy),
             "review_policy": str(self.review_policy),
         }
 
@@ -206,7 +210,7 @@ class CommunityAccess:
         self.visibility = new_access.visibility
         self.members_visibility = new_access.members_visibility
         self.member_policy = new_access.member_policy
-        self.record_policy = new_access.record_policy
+        self.record_submission_policy = new_access.record_submission_policy
         self.review_policy = new_access.review_policy
 
     @classmethod
@@ -225,7 +229,7 @@ class CommunityAccess:
             visibility=access_dict.get("visibility"),
             members_visibility=access_dict.get("members_visibility"),
             member_policy=access_dict.get("member_policy"),
-            record_policy=access_dict.get("record_policy"),
+            record_submission_policy=access_dict.get("record_submission_policy"),
             review_policy=access_dict.get("review_policy"),
         )
         access.errors = errors
@@ -238,7 +242,7 @@ class CommunityAccess:
             f"visibility: {str(self.visibility)}, "
             f"members_visibility: {str(self.members_visibility)}, "
             f"member_policy: {str(self.member_policy)}, "
-            f"record_policy: {str(self.record_policy)}, "
+            f"record_submission_policy: {str(self.record_submission_policy)}, "
             f"review_policy: {str(self.review_policy)})>"
         )
 

@@ -30,7 +30,7 @@ communities = WebpackThemeBundle(
                 "invenio-communities-new": "./js/invenio_communities/community/new.js",
                 "invenio-communities-privileges": "./js/invenio_communities/settings/privileges/index.js",
                 "invenio-communities-profile": "./js/invenio_communities/settings/profile/index.js",
-                "invenio-communities-curation-policy": "./js/invenio_communities/settings/curationPolicy/index.js",
+                "invenio-communities-submission-policy": "./js/invenio_communities/settings/submissionPolicy/index.js",
                 "invenio-communities-settings-pages": "./js/invenio_communities/settings/pages/index.js",
                 "invenio-communities-requests": "./js/invenio_communities/requests/index.js",
                 "invenio-communities-frontpage": "./js/invenio_communities/community/frontpage.js",

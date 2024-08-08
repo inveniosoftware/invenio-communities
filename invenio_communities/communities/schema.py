@@ -112,6 +112,15 @@ class CommunityAccessSchema(Schema):
             ]
         )
     )
+    record_submission_policy = fields.Str(
+        validate=validate.OneOf(
+            [
+                "open",
+                "closed",
+                "restricted",
+            ]
+        )
+    )
     review_policy = fields.Str(
         validate=validate.OneOf(
             [
