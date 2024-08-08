@@ -36,7 +36,15 @@
           ]
         },
         "record_policy": {
-          "description": "Community record policy.",
+          "description": "Deprecated field. Please use record_submission_policy instead.",
+          "enum": [
+            "open",
+            "closed",
+            "restricted"
+          ]
+        },
+        "record_submission_policy": {
+          "description": "Community record submission policy.",
           "enum": [
             "open",
             "closed",

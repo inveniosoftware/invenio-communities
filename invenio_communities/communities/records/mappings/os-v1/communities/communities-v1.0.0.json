@@ -101,6 +101,9 @@
           "record_policy": {
             "type": "keyword"
           },
+          "record_submission_policy": {
+            "type": "keyword"
+          },
           "review_policy": {
             "type": "keyword"
           }

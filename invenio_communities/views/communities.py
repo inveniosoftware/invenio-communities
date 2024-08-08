@@ -64,6 +64,24 @@ MEMBERS_VISIBILITY_FIELDS = [
     },
 ]
 
+RECORDS_SUBMISSION_POLICY_FIELDS = [
+    {
+        "text": "Open",
+        "value": "open",
+        "icon": "lock open",
+        "helpText": _(
+            "All authenticated users can submit records to the community. "
+            "If the community is restricted, then only members can submit records to it."
+        ),
+    },
+    {
+        "text": "Closed",
+        "value": "closed",
+        "icon": "lock",
+        "helpText": _("Only members can submit records to the community."),
+    },
+]
+
 
 REVIEW_POLICY_FIELDS = [
     {
@@ -116,6 +134,7 @@ HEADER_PERMISSIONS = {
     "members_search_public",
     "moderate",
     "request_membership",
+    "submit_record",
 }
 
 PRIVATE_PERMISSIONS = HEADER_PERMISSIONS | {
@@ -391,19 +410,22 @@ def communities_settings_privileges(pid_value, community, community_ui):
 
 
 @pass_community(serialize=True)
-def communities_settings_curation_policy(pid_value, community, community_ui):
-    """Community settings/curation-policy page."""
+def communities_settings_submission_policy(pid_value, community, community_ui):
+    """Community settings/submission-policy page."""
     permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
     return render_community_theme_template(
-        "invenio_communities/details/settings/curation_policy.html",
+        "invenio_communities/details/settings/submission_policy.html",
         theme=community_ui.get("theme", {}),
         community=community_ui,
         permissions=permissions,
         form_config=dict(
-            access=dict(review_policy=REVIEW_POLICY_FIELDS),
+            access=dict(
+                review_policy=REVIEW_POLICY_FIELDS,
+                record_submission_policy=RECORDS_SUBMISSION_POLICY_FIELDS,
+            ),
         ),
     )
 

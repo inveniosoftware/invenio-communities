@@ -27,7 +27,7 @@ class MinimalCommunitySchema(Schema):
                 "visibility": "public",
                 "members_visibility": "public",
                 "member_policy": "open",
-                "record_policy": "open",
+                "record_submission_policy": "open",
             },
         }
 

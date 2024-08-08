@@ -11,10 +11,10 @@
 
 {%- block javascript %}
 {{ super() }}
-{{ webpack['invenio-communities-curation-policy.js'] }}
+{{ webpack['invenio-communities-submission-policy.js'] }}
 {%- endblock javascript %}
 
-{% set active_settings_menu_item = 'curation_policy' %}
+{% set active_settings_menu_item = 'submission_policy' %}
 {% set active_community_header_menu_item = 'settings' %}
 
 {%- block settings_body %}

@@ -34,7 +34,7 @@ from .generators import (
     CommunitySelfMember,
     IfCommunityDeleted,
     IfMemberPolicyClosed,
-    IfRecordPolicyClosed,
+    IfRecordSubmissionPolicyClosed,
     IfRestricted,
     ReviewPolicy,
 )
@@ -84,7 +84,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_rename = [CommunityOwners(), SystemProcess()]
 
     can_submit_record = [
-        IfRecordPolicyClosed(
+        IfRecordSubmissionPolicyClosed(
             then_=[CommunityMembers(), SystemProcess()],
             else_=[
                 IfRestricted(

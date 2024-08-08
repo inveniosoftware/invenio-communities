@@ -117,7 +117,11 @@ class IfRestricted(IfRestrictedBase):
     def __init__(self, field, then_, else_):
         """Initialize."""
         super().__init__(
-            lambda r: getattr(r.access, field, None),
+            lambda r: (
+                getattr(r.access, field, None)
+                if hasattr(r, "access")
+                else r.get("access", {}).get(field)
+            ),  # needed for running permission check at serialization time and avoid db query
             f"access.{field}",
             "restricted",
             "public",
@@ -162,12 +166,12 @@ class ReviewPolicy(Generator):
         return set(chain.from_iterable(needs))
 
 
-class IfRecordPolicyClosed(IfRestrictedBase):
-    """If record policy is closed."""
+class IfRecordSubmissionPolicyClosed(IfRestrictedBase):
+    """If record submission policy is closed."""
 
     def __init__(self, then_, else_):
         """Initialize."""
-        field = "record_policy"
+        field = "record_submission_policy"
         super().__init__(
             field_getter=lambda r: (
                 getattr(r.access, field, None)

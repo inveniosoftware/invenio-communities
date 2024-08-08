@@ -18,7 +18,7 @@ def create_fake_community(faker):
         "access": {
             "visibility": random.choice(["public", "restricted"]),
             "member_policy": random.choice(["open", "closed"]),
-            "record_policy": random.choice(["open", "closed"]),
+            "record_submission_policy": random.choice(["open", "closed"]),
         },
         "slug": faker.unique.domain_word(),
         "metadata": {

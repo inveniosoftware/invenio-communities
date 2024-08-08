@@ -35,9 +35,9 @@ from .communities import (
     communities_requests,
     communities_search,
     communities_settings,
-    communities_settings_curation_policy,
     communities_settings_pages,
     communities_settings_privileges,
+    communities_settings_submission_policy,
     community_theme_css_config,
     invitations,
     members,
@@ -185,8 +185,8 @@ def create_ui_blueprint(app):
     )
 
     blueprint.add_url_rule(
-        routes["settings_curation_policy"],
-        view_func=communities_settings_curation_policy,
+        routes["settings_submission_policy"],
+        view_func=communities_settings_submission_policy,
     )
 
     blueprint.add_url_rule(
