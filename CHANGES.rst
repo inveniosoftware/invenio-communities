@@ -9,6 +9,16 @@
 Changes
 =======
 
+Version 14.6.0 (released 2024-08-09)
+
+- settings-ui: [#855] set membership policy
+- fix(logo): not fully deleted
+- user_moderation: dispatch Celery tasks for each community operation
+- review policy: allow all community members to submit records to community without review
+- permissions: add member policy generator
+- invitation: Update RichEditor to use inputValue
+- services: use and adjust vnd.inveniordm.v1+json http accept header
+
 Version 14.5.1 (released 2024-06-28)
 
 - subcommunity: updated fieldpaths and error handling
