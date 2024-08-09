@@ -153,16 +153,18 @@ class CommunitiesCarousel extends Component {
 
     const sliceEnd = parseInt(activeIndex) + parseInt(itemsPerPage);
 
-    const carouselSlides = data.hits
-      ?.slice(activeIndex, sliceEnd)
-      .map((community) => (
+    const carouselSlides = data.hits?.slice(activeIndex, sliceEnd).map((community) => {
+      const canSubmitRecord = community.ui.permissions.can_submit_record;
+      return (
         <CarouselItem
           community={community}
           defaultLogo={defaultLogo}
           key={community.id}
           showUploadBtn={showUploadBtn}
+          canSubmitRecord={canSubmitRecord}
         />
-      ));
+      );
+    });
 
     return carouselSlides;
   };

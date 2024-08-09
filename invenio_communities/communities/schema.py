@@ -103,7 +103,7 @@ class CommunityAccessSchema(Schema):
             ]
         )
     )
-    record_policy = fields.Str(
+    submission_policy = fields.Str(
         validate=validate.OneOf(
             [
                 "open",

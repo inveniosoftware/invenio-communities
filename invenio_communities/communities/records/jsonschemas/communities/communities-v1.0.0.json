@@ -35,8 +35,8 @@
             "closed"
           ]
         },
-        "record_policy": {
-          "description": "Community record policy.",
+        "submission_policy": {
+          "description": "Community record submission policy.",
           "enum": [
             "open",
             "closed",

@@ -124,6 +124,36 @@ MemberPolicyField.defaultProps = {
   label: "",
 };
 
+const SubmissionPolicyField = ({ label, formConfig, ...props }) => {
+  const [field] = useField(props);
+  return (
+    <>
+      {formConfig.access.submission_policy.map((item) => (
+        <React.Fragment key={item.value}>
+          <RadioField
+            key={item.value}
+            fieldPath="access.submission_policy"
+            label={item.text}
+            labelIcon={item.icon}
+            checked={_get(field.value, "access.submission_policy") === item.value}
+            value={item.value}
+          />
+          <label className="helptext">{item.helpText}</label>
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
+
+SubmissionPolicyField.propTypes = {
+  label: PropTypes.string,
+  formConfig: PropTypes.object.isRequired,
+};
+
+SubmissionPolicyField.defaultProps = {
+  label: "",
+};
+
 class CommunityPrivilegesForm extends Component {
   getInitialValues = () => {
     return {
@@ -131,8 +161,7 @@ class CommunityPrivilegesForm extends Component {
         visibility: "public",
         members_visibility: "public",
         member_policy: "closed",
-        // TODO: Re-enable once properly integrated to be displayed
-        // record_policy: "open",
+        submission_policy: "open",
       },
     };
   };
@@ -176,32 +205,13 @@ class CommunityPrivilegesForm extends Component {
           </>
         )}
 
-        {/* TODO: Re-enable once properly integrated to be displayed */}
-        {/*
-              <Grid.Column width={6}>
-                <Header as="h3">Records permissions</Header>
-                <p>This is a text explaining about the permission</p>
-                <SelectField
-                  fieldPath="access.record_policy"
-                  options={this.props.formConfig.access.record_policy}
-                />
-                <Button compact primary icon labelPosition="left">
-                  <Icon name="save"></Icon>Save
-                </Button>
-              </Grid.Column>
-              <Grid.Column width={10} />
-              <Grid.Column width={6}>
-                <Header as="h3">Members permission policy</Header>
-                <p>This is a text explaining about the permission</p>
-                <SelectField
-                  fieldPath="access.member_policy"
-                  options={this.props.formConfig.access.member_policy}
-                />
-                <Button compact primary icon labelPosition="left">
-                  <Icon name="save"></Icon>Save
-                </Button>
-              </Grid.Column>
-              <Grid.Column width={10} /> */}
+        <Header as="h2" size="small">
+          {i18next.t("Records submission policy")}
+          <Header.Subheader className="mt-5">
+            {i18next.t("Controls who can submit records to the community.")}
+          </Header.Subheader>
+        </Header>
+        <SubmissionPolicyField formConfig={formConfig} />
       </CommunitySettingsForm>
     );
   }

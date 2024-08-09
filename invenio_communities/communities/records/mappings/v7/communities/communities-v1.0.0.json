@@ -98,7 +98,7 @@
           "members_visibility": {
             "type": "keyword"
           },
-          "record_policy": {
+          "submission_policy": {
             "type": "keyword"
           },
           "review_policy": {

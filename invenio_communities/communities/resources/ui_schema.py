@@ -121,7 +121,14 @@ class UICommunitySchema(BaseObjectSchema):
         can_update = _community_permission_check(
             "update", community=obj, identity=g.identity
         )
-        return {"can_include_directly": can_include_directly, "can_update": can_update}
+        can_submit_record = _community_permission_check(
+            "submit_record", community=obj, identity=g.identity
+        )
+        return {
+            "can_include_directly": can_include_directly,
+            "can_update": can_update,
+            "can_submit_record": can_submit_record,
+        }
 
     @post_dump(pass_original=True)
     def post_dump(self, data, original, many, **kwargs):

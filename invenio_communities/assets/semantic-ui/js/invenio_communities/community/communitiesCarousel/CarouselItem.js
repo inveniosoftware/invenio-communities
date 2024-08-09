@@ -10,14 +10,14 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import _truncate from "lodash/truncate";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Image } from "react-invenio-forms";
+import { Image, InvenioPopup } from "react-invenio-forms";
 import Overridable from "react-overridable";
-import { Button, Grid, Header, Item } from "semantic-ui-react";
+import { Button, Grid, Header, Item, Icon } from "semantic-ui-react";
 
 class CarouselItem extends Component {
   render() {
-    const { community, defaultLogo, className, showUploadBtn } = this.props;
-
+    const { community, defaultLogo, className, showUploadBtn, canSubmitRecord } =
+      this.props;
     return (
       <Overridable
         id="InvenioCommunities.CarouselItem.layout"
@@ -44,14 +44,34 @@ class CarouselItem extends Component {
                   content={i18next.t("Browse")}
                 />
                 {showUploadBtn && (
-                  <Button
-                    size="mini"
-                    icon="upload"
-                    labelPosition="left"
-                    positive
-                    href={`/uploads/new?community=${community.slug}`}
-                    content={i18next.t("New upload")}
-                  />
+                  <>
+                    <Button
+                      size="mini"
+                      icon="upload"
+                      labelPosition="left"
+                      positive
+                      href={`/uploads/new?community=${community.slug}`}
+                      content={i18next.t("New upload")}
+                      disabled={!canSubmitRecord}
+                    />
+                    {!canSubmitRecord && (
+                      <InvenioPopup
+                        popupId="community-inclusion-info-popup"
+                        size="small"
+                        trigger={
+                          <Icon
+                            className="mb-5"
+                            color="grey"
+                            name="question circle outline"
+                          />
+                        }
+                        ariaLabel={i18next.t("Community submission policy information")}
+                        content={i18next.t(
+                          "Submission to this community is only allowed to community members."
+                        )}
+                      />
+                    )}
+                  </>
                 )}
               </Grid.Column>
             </Item.Header>
@@ -70,11 +90,13 @@ CarouselItem.propTypes = {
   defaultLogo: PropTypes.string.isRequired,
   className: PropTypes.string,
   showUploadBtn: PropTypes.bool,
+  canSubmitRecord: PropTypes.bool,
 };
 
 CarouselItem.defaultProps = {
   className: "",
   showUploadBtn: true,
+  canSubmitRecord: false,
 };
 
 export default Overridable.component("InvenioCommunities.CarouselItem", CarouselItem);

@@ -98,7 +98,7 @@
           "member_policy": {
             "type": "keyword"
           },
-          "record_policy": {
+          "submission_policy": {
             "type": "keyword"
           },
           "review_policy": {
