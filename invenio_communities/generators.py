@@ -153,6 +153,14 @@ class ReviewPolicy(Generator):
         ]
         return set(chain.from_iterable(needs))
 
+    def excludes(self, record=None, **kwargs):
+        """Set of Needs denying permission."""
+        needs = [
+            g.excludes(record=record, **kwargs)
+            for g in self._generators(record, **kwargs)
+        ]
+        return set(chain.from_iterable(needs))
+
 
 class IfRecordPolicyClosed(IfRestrictedBase):
     """If record policy is closed."""
