@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 14.6.1 (released 2024-08-09)
+
+- permissions: implement missing excludes clause in ReviewPolicy generator
+
 Version 14.6.0 (released 2024-08-09)
 
 - settings-ui: [#855] set membership policy
