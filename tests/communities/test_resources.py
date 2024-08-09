@@ -400,6 +400,12 @@ def test_simple_search_response(
     assert res.json["hits"]["total"] == total
     assert len(res.json["hits"]["hits"]) == 5
 
+    # Test search for prefix
+    res = client.get(f"/communities", query_string={"q": "Comm"}, headers=headers)
+    assert res.status_code == 200
+    _assert_single_item_search(res)
+    assert res.json["hits"]["total"] == total  # they all have the name "My Community"
+
 
 def test_simple_get_response(
     client,
