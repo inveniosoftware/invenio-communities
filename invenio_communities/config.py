@@ -225,7 +225,7 @@ For example:
 
 """
 
-COMMUNITIES_CUSTOM_FIELDS = {}
+COMMUNITIES_CUSTOM_FIELDS = []
 """Communities custom fields definition.
 
 Of the shape:
@@ -248,7 +248,7 @@ For example:
     ]
 """
 
-COMMUNITIES_CUSTOM_FIELDS_UI = {}
+COMMUNITIES_CUSTOM_FIELDS_UI = []
 """Communities custom fields UI configuration.
 
 Of the shape:
