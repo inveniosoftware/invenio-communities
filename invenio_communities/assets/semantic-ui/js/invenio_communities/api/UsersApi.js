@@ -14,4 +14,8 @@ export class UsersApi {
   getUsers = async (query) => {
     return await http.get(`${this.endpoint}?q=${query}`);
   };
+
+  suggestUsers = async (query) => {
+    return await http.get(`${this.endpoint}?suggest=${query}`);
+  };
 }

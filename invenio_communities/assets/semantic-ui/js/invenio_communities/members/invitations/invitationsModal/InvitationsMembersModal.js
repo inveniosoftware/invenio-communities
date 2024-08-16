@@ -102,7 +102,7 @@ export class InvitationsMembersModal extends Component {
           <SearchWithRoleSelection
             key="members-users"
             searchType="user"
-            fetchMembers={client.getUsers}
+            fetchMembers={client.suggestUsers}
             roleOptions={userRoles}
             modalClose={this.handleCloseModal}
             action={api.createInvite}
