@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v14.5.3 (released 2024-08-21)
+
+- http headers: use and adjust vnd.inveniordm.v1+json http accept header
+
 Version v14.5.2 (released 2024-08-07)
 
 - tests: replace docker-compose with docker compose

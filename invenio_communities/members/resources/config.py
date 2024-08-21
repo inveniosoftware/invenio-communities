@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 KTH Royal Institute of Technology
 # Copyright (C) 2022 Northwestern University.
-# Copyright (C) 2022 CERN.
+# Copyright (C) 2022-2024 CERN.
 # Copyright (C) 2023 TU Wien.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
