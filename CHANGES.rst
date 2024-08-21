@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v14.5.4 (released 2024-08-21)
+
+- package: bump react-invenio-forms
+
 Version v14.5.3 (released 2024-08-21)
 
 - http headers: use and adjust vnd.inveniordm.v1+json http accept header
