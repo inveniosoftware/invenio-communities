@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v14.8.0 (released 2024-08-22)
+
+- bump invenio-requests
+
 Version v14.7.0 (released 2024-08-22)
 
 - package: bump react-invenio-forms
