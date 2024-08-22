@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v14.7.0 (released 2024-08-22)
+
+- package: bump react-invenio-forms
+
 Version 14.6.1 (released 2024-08-09)
 
 - permissions: implement missing excludes clause in ReviewPolicy generator
