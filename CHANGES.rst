@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version v14.10.0 (released 2024-08-26)
+
+- fixes defaults for COMMUNITIES_CUSTOM_FIELDS
+- deprecated record_policy in favour of record_submission_policy
+- add new policy to allow only members of a community to submit records 
+
 Version v14.9.0 (released 2024-08-22)
 
 - bump invenio-vocabularies
