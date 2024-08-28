@@ -36,6 +36,9 @@ def _community_permission_check(action, community, identity):
             "community_id",
             community["processed"][0]["community_id"],
         )
+        community = current_communities.service.read(
+            id_=community_id, identity=identity
+        ).to_dict()
 
     return current_communities.service.config.permission_policy_cls(
         action,
