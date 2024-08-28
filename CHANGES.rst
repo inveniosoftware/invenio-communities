@@ -9,7 +9,12 @@
 Changes
 =======
 
+Version v15.0.1 (released 2024-08-28)
+
+- fix community permission check
+
 Version v15.0.0 (released 2024-08-26)
+
 - improve communities mapping with edge_ngram analyzer and accent analyzer
 
 Version v14.10.0 (released 2024-08-26)
