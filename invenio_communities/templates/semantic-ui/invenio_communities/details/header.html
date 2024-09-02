@@ -94,8 +94,6 @@
                       <i class="building outline icon" aria-hidden="true"></i>
                     {% endif %}
 
-                    {{ name }}
-
                     {% if ror_id %}
                       <a
                         href="https://ror.org/{{ ror_id }}"
@@ -103,6 +101,7 @@
                         title="{{ name }}'s ROR {{ _('profile') }}"
                         target="_blank"
                       >
+                        {{ name }}
                         <img
                           class="inline-id-icon"
                           src="{{ url_for('static', filename='images/ror-icon.svg') }}"
