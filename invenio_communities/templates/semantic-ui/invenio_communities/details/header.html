@@ -106,10 +106,11 @@
                           class="inline-id-icon"
                           src="{{ url_for('static', filename='images/ror-icon.svg') }}"
                           alt=""
-                        />
-                      </a>
+                        /></a>
+                    {%- else %}
+                      {{ name -}}
                     {% endif %}
-                    {{ ", " if not loop.last }}
+                    {{- ", " if not loop.last }}
                   </div>
                 {% endfor %}
               {% endif %}
