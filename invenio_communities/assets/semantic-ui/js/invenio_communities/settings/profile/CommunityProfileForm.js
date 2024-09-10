@@ -18,7 +18,6 @@ import _isEmpty from "lodash/isEmpty";
 import _isNull from "lodash/isNull";
 import _isNumber from "lodash/isNumber";
 import _isObject from "lodash/isObject";
-import _map from "lodash/map";
 import _mapValues from "lodash/mapValues";
 import _pick from "lodash/pick";
 import _pickBy from "lodash/pickBy";
@@ -335,10 +334,6 @@ class CommunityProfileForm extends Component {
     }
   };
 
-  serializeAffiliations = (organizations) => {
-    return AffiliationsSuggestions(organizations, true, false);
-  };
-
   render() {
     const {
       types,
@@ -474,7 +469,9 @@ class CommunityProfileForm extends Component {
                             "metadata.organizations",
                             []
                           )}
-                          serializeSuggestions={this.serializeAffiliations}
+                          serializeSuggestions={(organizations) => {
+                            return AffiliationsSuggestions(organizations, true);
+                          }}
                           label={
                             <FieldLabel
                               htmlFor="metadata.organizations"
