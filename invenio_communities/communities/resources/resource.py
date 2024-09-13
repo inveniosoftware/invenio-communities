@@ -189,7 +189,6 @@ class CommunityResource(RecordResource):
 
     @request_headers
     @request_view_args
-    @response_handler()
     def featured_list(self):
         """List featured entries for a community."""
         items = self.service.featured_list(
@@ -201,7 +200,6 @@ class CommunityResource(RecordResource):
     @request_headers
     @request_view_args
     @request_data
-    @response_handler()
     def featured_create(self):
         """Create a featured community entry."""
         item = self.service.featured_create(
@@ -214,7 +212,6 @@ class CommunityResource(RecordResource):
     @request_headers
     @request_view_args
     @request_data
-    @response_handler()
     def featured_update(self):
         """Update a featured community entry."""
         item = self.service.featured_update(
