@@ -382,6 +382,25 @@ def communities_requests(pid_value, community, community_ui):
 
 
 @pass_community(serialize=True)
+def communities_browse(pid_value, community, community_ui):
+    """Community browse page."""
+    permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
+
+    conf = current_app.config
+    if not conf.get("COMMUNITIES_SHOW_BROWSE_PAGE", False):
+        abort(404)
+
+    return render_community_theme_template(
+        "invenio_communities/details/browse/index.html",
+        theme=community_ui.get("theme", {}),
+        community=community_ui,
+        permissions=permissions,
+        roles_can_update=_get_roles_can_update(community.id),
+        roles_can_invite=_get_roles_can_invite(community.id),
+    )
+
+
+@pass_community(serialize=True)
 def communities_settings_privileges(pid_value, community, community_ui):
     """Community settings/privileges page."""
     permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)

@@ -156,6 +156,13 @@ def register_menus(app):
 
     communities = current_menu.submenu("communities")
 
+    communities.submenu("browse").register(
+        endpoint="invenio_communities.communities_browse",
+        text=_("Browse"),
+        order=15,
+        expected_args=["pid_value"],
+        **{"icon": "list", "permissions": "can_read"},
+    )
     communities.submenu("requests").register(
         endpoint="invenio_communities.communities_requests",
         text=_("Requests"),
