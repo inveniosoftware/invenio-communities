@@ -26,6 +26,7 @@ COMMUNITIES_ROUTES = {
     "upload": "/communities/<pid_value>/upload",
     "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
+    "browse": "/communities/<pid_value>/browse",
     "new_subcommunity": "/communities/<pid_value>/subcommunities/new",
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
     "settings_submission_policy": "/communities/<pid_value>/settings/submission-policy",
