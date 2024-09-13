@@ -26,6 +26,7 @@ COMMUNITIES_ROUTES = {
     "upload": "/communities/<pid_value>/upload",
     "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
+    "browse": "/communities/<pid_value>/browse",
     "new_subcommunity": "/communities/<pid_value>/subcommunities/new",
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
     "settings_submission_policy": "/communities/<pid_value>/settings/submission-policy",
@@ -323,3 +324,6 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
+
+COMMUNITIES_SHOW_BROWSE_PAGE = False
+"""Whether the browse page is enabled for communities"""
