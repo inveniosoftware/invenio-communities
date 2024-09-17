@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 13.0.8 (released 2024-09-17)
+
+- Members search: fix negative paging on empty search
+- v13.0.7 to ignore
+
 Version 13.0.6 (released 2024-08-05)
 
 - Invitation: Update RichEditor to use inputValue
