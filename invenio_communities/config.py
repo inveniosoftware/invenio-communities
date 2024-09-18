@@ -324,3 +324,6 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
+
+COMMUNITIES_SHOW_BROWSE_PAGE = False
+"""Whether the browse page is enabled for communities"""

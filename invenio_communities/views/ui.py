@@ -180,7 +180,6 @@ def create_ui_blueprint(app):
         view_func=communities_requests,
     )
 
-
     blueprint.add_url_rule(
         routes["browse"],
         view_func=communities_browse,

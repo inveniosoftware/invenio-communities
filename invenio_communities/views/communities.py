@@ -386,6 +386,10 @@ def communities_browse(pid_value, community, community_ui):
     """Community browse page."""
     permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
 
+    conf = current_app.config
+    if not conf.get("COMMUNITIES_SHOW_BROWSE_PAGE", False):
+        abort(404)
+
     return render_community_theme_template(
         "invenio_communities/details/browse/index.html",
         theme=community_ui.get("theme", {}),
