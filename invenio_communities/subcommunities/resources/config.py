@@ -15,6 +15,12 @@ from flask_resources import (
     ResponseHandler,
     create_error_handler,
 )
+from invenio_communities.communities.resources.args import (
+    CommunitiesSearchRequestArgsSchema,
+)
+from invenio_communities.communities.resources.serializer import (
+    UICommunityJSONSerializer,
+)
 from invenio_records_resources.resources.records.headers import etag_headers
 from invenio_records_resources.services.base.config import ConfiguratorMixin
 from marshmallow import fields
@@ -32,6 +38,7 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
     url_prefix = ""
     routes = {
         "join": "/communities/<pid_value>/actions/join-request",
+        "list": "/communities/<pid_value>/subcommunities",
     }
     request_view_args = {
         "pid_value": fields.UUID(),
@@ -43,10 +50,14 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
     request_body_parsers = {"application/json": RequestBodyParser(JSONDeserializer())}
     default_content_type = "application/json"
 
+    request_search_args = CommunitiesSearchRequestArgsSchema
+
     # Response handling
     response_handlers = {
         "application/json": json_response_handler,
-        "application/vnd.inveniordm.v1+json": json_response_handler,
+        "application/vnd.inveniordm.v1+json": ResponseHandler(
+            UICommunityJSONSerializer(), headers=etag_headers
+        ),
     }
     default_accept_mimetype = "application/json"
 

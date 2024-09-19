@@ -276,6 +276,15 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
     assert res.status_code == 200
     assert res.json["parent"]["id"] == str(parent_community.id)
 
+    Community.index.refresh()
+
+    res = client.get(
+        f"/communities/{parent_community.id}/subcommunities",
+        headers={"content-type": "application/json"},
+    )
+    assert res.status_code == 200
+    assert res.json["hits"]["total"] == 1
+
 
 def test_subcommunity_existing_child_flow(
     app, curator, owner, parent_community, child_community

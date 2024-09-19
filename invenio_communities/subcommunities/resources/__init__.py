@@ -7,6 +7,6 @@
 """Subcommunity resource."""
 
 from .config import SubCommunityResourceConfig
-from .resource import SubcommunityRequestResource
+from .resource import SubCommunityResource
 
-__all__ = ("SubcommunityRequestResource", "SubCommunityResourceConfig")
+__all__ = ("SubCommunityResource", "SubCommunityResourceConfig")
