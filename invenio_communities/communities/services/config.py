@@ -114,6 +114,10 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "invitations": CommunityLink("{+api}/communities/{id}/invitations"),
         "requests": CommunityLink("{+api}/communities/{id}/requests"),
         "records": CommunityLink("{+api}/communities/{id}/records"),
+        "subcommunities": CommunityLink(
+            "{+api}/communities/{id}/subcommunities",
+            when=lambda record, _: record.children.allow,
+        ),
         "membership_requests": CommunityLink(
             "{+api}/communities/{id}/membership-requests"
         ),

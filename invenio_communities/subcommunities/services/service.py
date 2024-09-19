@@ -9,9 +9,11 @@
 from invenio_i18n import gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services.base import LinksTemplate, Service
+from invenio_records_resources.services.records.links import pagination_links
 from invenio_records_resources.services.records.schema import ServiceSchemaWrapper
 from invenio_records_resources.services.uow import unit_of_work
 from invenio_requests.proxies import current_requests_service as requests_service
+from invenio_search.engine import dsl
 from werkzeug.local import LocalProxy
 
 import invenio_communities.notifications.builders as notifications
@@ -23,10 +25,7 @@ community_service = LocalProxy(lambda: current_communities.service)
 
 
 class SubCommunityService(Service):
-    """Subcommunities service.
-
-    This service is in charge of managing the requests for subcommunities.
-    """
+    """Subcommunities service."""
 
     @property
     def request_cls(self):
@@ -65,6 +64,22 @@ class SubCommunityService(Service):
             ),
             None,
         )
+
+    def search(self, identity, id_, **kwargs):
+        """Return list of subcommunities."""
+        subcommunities = community_service.search(
+            identity,
+            extra_filter=dsl.query.Bool(
+                "must", must=[dsl.Q("term", **{"parent.id": id_})]
+            ),
+            **kwargs
+        )
+        self_link = LinksTemplate(
+            pagination_links("{+api}/communities/{community_id}/subcommunities/{args}"),
+            context={"community_id": id_},
+        )
+        subcommunities._links_tpl = self_link
+        return subcommunities
 
     @unit_of_work()
     def join(self, identity, id_, data, uow=None):

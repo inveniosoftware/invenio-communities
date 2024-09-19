@@ -32,7 +32,7 @@ from invenio_communities.members import (
     MemberServiceConfig,
 )
 from invenio_communities.subcommunities import (
-    SubcommunityRequestResource,
+    SubCommunityResource,
     SubCommunityResourceConfig,
     SubCommunityService,
     SubCommunityServiceConfig,
@@ -102,7 +102,7 @@ class InvenioCommunities(object):
             self.service.members,
         )
 
-        self.subcommunities_resource = SubcommunityRequestResource(
+        self.subcommunities_resource = SubCommunityResource(
             config=SubCommunityResourceConfig.build(app),
             service=self.subcommunity_service,
         )

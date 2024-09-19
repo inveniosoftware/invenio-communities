@@ -6,11 +6,11 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunities module."""
 
-from .resources import SubcommunityRequestResource, SubCommunityResourceConfig
+from .resources import SubCommunityResource, SubCommunityResourceConfig
 from .services import SubCommunityService, SubCommunityServiceConfig
 
 __all__ = (
-    "SubcommunityRequestResource",
+    "SubCommunityResource",
     "SubCommunityResourceConfig",
     "SubCommunityService",
     "SubCommunityServiceConfig",
