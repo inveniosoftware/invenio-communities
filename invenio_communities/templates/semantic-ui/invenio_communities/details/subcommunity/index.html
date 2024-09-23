@@ -1,0 +1,33 @@
+{# -*- coding: utf-8 -*-
+
+    This file is part of Invenio.
+    Copyright (C) 2024 CERN.
+
+    Invenio is free software; you can redistribute it and/or modify it
+    under the terms of the MIT License; see LICENSE file for more details.
+#}
+
+{% extends "invenio_communities/details/base.html" %}
+
+{% set active_community_header_menu_item= 'browse' %}
+{% set search_endpoint = community["links"]["subcommunities"] %}
+{%- set title = community.metadata.title + _(" subcommunities") -%}
+
+{%- block javascript %}
+    {{ super() }}
+    {{ webpack['invenio-communities-subcommunities.js'] }}
+{%- endblock %}
+
+{%- block page_body %}
+{{ super() }}
+<div class="ui container fluid rel-mt-3 rel-mb-2 compact ml-0-mobile mr-0-mobile">
+  <div class="ui container community-search page-subheader flex align-items-center justify-space-between">
+    <h1 class="ui large header m-0">{{_("Subcommunities")}}</h1>
+  </div>
+</div>
+<div id="communities-search" class="rel-mt-2"
+    data-invenio-search-config='{{search_app_communities_subcommunities_config(app_id="InvenioSubCommunities.Search", endpoint=search_endpoint) | tojson }}'
+    data-permissions='{{ permissions | tojson }}'
+    >
+</div>
+{%- endblock page_body %}

@@ -28,7 +28,6 @@ from ..errors import CommunityDeletedError
 from ..searchapp import search_app_context
 from .communities import (
     communities_about,
-    communities_browse,
     communities_curation_policy,
     communities_frontpage,
     communities_new,
@@ -39,6 +38,7 @@ from .communities import (
     communities_settings_pages,
     communities_settings_privileges,
     communities_settings_submission_policy,
+    communities_subcommunities,
     community_theme_css_config,
     invitations,
     members,
@@ -169,6 +169,11 @@ def create_ui_blueprint(app):
         view_func=communities_new_subcommunity,
     )
 
+    blueprint.add_url_rule(
+        routes["subcommunities"],
+        view_func=communities_subcommunities,
+    )
+
     # Settings tab routes
     blueprint.add_url_rule(
         routes["settings"],
@@ -178,11 +183,6 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["requests"],
         view_func=communities_requests,
-    )
-
-    blueprint.add_url_rule(
-        routes["browse"],
-        view_func=communities_browse,
     )
 
     blueprint.add_url_rule(

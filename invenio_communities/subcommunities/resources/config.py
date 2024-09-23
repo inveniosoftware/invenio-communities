@@ -15,15 +15,16 @@ from flask_resources import (
     ResponseHandler,
     create_error_handler,
 )
+from invenio_records_resources.resources.records.headers import etag_headers
+from invenio_records_resources.services.base.config import ConfiguratorMixin
+from marshmallow import fields
+
 from invenio_communities.communities.resources.args import (
     CommunitiesSearchRequestArgsSchema,
 )
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
 )
-from invenio_records_resources.resources.records.headers import etag_headers
-from invenio_records_resources.services.base.config import ConfiguratorMixin
-from marshmallow import fields
 
 from ..services.errors import ParentChildrenNotAllowed
 

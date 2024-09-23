@@ -43,6 +43,7 @@ communities = WebpackThemeBundle(
                 "invenio-communities-admin-search": "./js/invenio_communities/administration/search.js",
                 "invenio-communities-featured": "./js/invenio_communities/community/featuredCommunities/index.js",
                 "invenio-communities-admin-featured": "./js/invenio_communities/administration/details.js",
+                "invenio-communities-subcommunities": "./js/invenio_communities/subcommunity/search.js",
                 "invenio-communities-subcommunities-new": "./js/invenio_communities/subcommunity/new.js",
             },
             dependencies={

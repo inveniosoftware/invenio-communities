@@ -26,7 +26,7 @@ COMMUNITIES_ROUTES = {
     "upload": "/communities/<pid_value>/upload",
     "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
-    "browse": "/communities/<pid_value>/browse",
+    "subcommunities": "/communities/<pid_value>/browse/subcommunities",
     "new_subcommunity": "/communities/<pid_value>/subcommunities/new",
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
     "settings_submission_policy": "/communities/<pid_value>/settings/submission-policy",
@@ -54,6 +54,10 @@ COMMUNITIES_FACETS = {
     },
 }
 """Available facets defined for this module."""
+
+
+COMMUNITIES_SUBCOMMUNITIES_FACETS = COMMUNITIES_FACETS
+
 
 COMMUNITIES_SORT_OPTIONS = {
     "bestmatch": dict(
@@ -130,6 +134,12 @@ COMMUNITIES_SEARCH = {
 
 COMMUNITIES_SEARCH_SORT_BY_VERIFIED = False
 """Sort communities by 'verified' first."""
+
+COMMUNITIES_SUBCOMMUNITIES_SEARCH = {
+    "facets": ["type"],
+    "sort": ["bestmatch", "newest", "oldest"],
+}
+"""Community search configuration (i.e list of communities)"""
 
 COMMUNITIES_REQUESTS_SEARCH = {
     "facets": ["type", "status"],
@@ -324,6 +334,3 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
-
-COMMUNITIES_SHOW_BROWSE_PAGE = False
-"""Whether the browse page is enabled for communities"""
