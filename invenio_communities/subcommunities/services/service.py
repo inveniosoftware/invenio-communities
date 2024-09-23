@@ -75,7 +75,7 @@ class SubCommunityService(Service):
             **kwargs
         )
         self_link = LinksTemplate(
-            pagination_links("{+api}/communities/{community_id}/subcommunities/{args}"),
+            pagination_links("{+api}/communities/{community_id}/subcommunities{args}"),
             context={"community_id": id_},
         )
         subcommunities._links_tpl = self_link

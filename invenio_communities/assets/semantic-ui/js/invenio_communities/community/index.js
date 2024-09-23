@@ -4,4 +4,5 @@ export { default as FeaturedCommunities } from "./featuredCommunities/FeaturedCo
 export { default as FeaturedCommunity } from "./featuredCommunities/FeaturedCommunity";
 export { CommunityItem } from "./communitiesItems/CommunityItem";
 export { CommunityCompactItem } from "./communitiesItems/CommunityCompactItem";
+export { default as CommunitiesCardGroup } from "./CommunitiesCardGroup";
 export * from "./searchComponents";
