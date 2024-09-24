@@ -43,6 +43,7 @@ from .communities import (
     invitations,
     members,
 )
+from .decorators import warn_deprecation
 
 
 #
@@ -150,8 +151,25 @@ def create_ui_blueprint(app):
     )
 
     blueprint.add_url_rule(
+        routes["deprecated_search"],
+        endpoint="deprecated_communities_search",
+        view_func=warn_deprecation(routes["deprecated_search"], routes["search"])(
+            communities_search
+        ),
+        strict_slashes=False,
+    )
+
+    blueprint.add_url_rule(
         routes["new"],
         view_func=communities_new,
+    )
+
+    blueprint.add_url_rule(
+        routes["deprecated_new"],
+        endpoint="deprecated_communities_new",
+        view_func=warn_deprecation(routes["deprecated_new"], routes["new"])(
+            communities_new
+        ),
     )
 
     blueprint.add_url_rule(
