@@ -9,6 +9,7 @@
 """Decorators."""
 
 from functools import wraps
+from warnings import warn
 
 from flask import g, request
 
@@ -34,6 +35,25 @@ def pass_community(serialize):
                 community_ui = UICommunityJSONSerializer().dump_obj(community.to_dict())
                 kwargs["community_ui"] = community_ui
 
+            return f(**kwargs)
+
+        return view
+
+    return decorator
+
+
+def warn_deprecation(deprecated_route, new_route):
+    """Decorator to log warnings for deprecated routes."""
+
+    def decorator(f):
+        @wraps(f)
+        def view(**kwargs):
+            warn(
+                f"The '{deprecated_route}' route is deprecated and will be removed in future releases. "
+                f"Please update to use '{new_route}' instead. If you want to keep using the old endpoint, then you can set up redirection separately.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
             return f(**kwargs)
 
         return view

@@ -22,7 +22,7 @@
     <h1 class="ui large header m-0">{{_("Communities")}}</h1>
 
     {% if permissions.can_create %}
-      <a class="ui button positive left labeled icon m-0" href="/communities/new">
+      <a class="ui button positive left labeled icon m-0" href="{{ config.COMMUNITIES_ROUTES['new'] }}">
         <i class="plus icon" aria-hidden="true"></i>
         {{ _('New community') }}
       </a>
