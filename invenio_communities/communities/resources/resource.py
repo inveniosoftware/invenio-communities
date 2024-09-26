@@ -126,7 +126,6 @@ class CommunityResource(RecordResource):
 
     @request_view_args
     @request_stream
-    @response_handler()
     def update_logo(self):
         """Upload logo content."""
         item = self.service.update_logo(
