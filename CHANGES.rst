@@ -9,6 +9,15 @@
 Changes
 =======
 
+Version v15.1.0 (released 2024-09-26)
+
+- subcommunities: handle vnd.inveniordm.v1+json
+- resource: remove response handler from featured communities
+- members-search: fix negative paging
+    * closes https://github.com/inveniosoftware/invenio-communities/issues/1136
+- bug: fix display of non-ROR orgs and fix commas
+- UX: link org name to ROR
+
 Version v15.0.0 (released 2024-08-26)
 - improve communities mapping with edge_ngram analyzer and accent analyzer
 
@@ -16,7 +25,7 @@ Version v14.10.0 (released 2024-08-26)
 
 - fixes defaults for COMMUNITIES_CUSTOM_FIELDS
 - deprecated record_policy in favour of record_submission_policy
-- add new policy to allow only members of a community to submit records 
+- add new policy to allow only members of a community to submit records
 
 Version v14.9.0 (released 2024-08-22)
 
