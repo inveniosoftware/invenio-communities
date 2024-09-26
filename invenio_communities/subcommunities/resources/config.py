@@ -21,6 +21,8 @@ from marshmallow import fields
 
 from ..services.errors import ParentChildrenNotAllowed
 
+json_response_handler = ResponseHandler(JSONSerializer(), headers=etag_headers)
+
 
 class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
     """Subcommunity resource configuration."""
@@ -43,7 +45,8 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
 
     # Response handling
     response_handlers = {
-        "application/json": ResponseHandler(JSONSerializer(), headers=etag_headers)
+        "application/json": json_response_handler,
+        "application/vnd.inveniordm.v1+json": json_response_handler,
     }
     default_accept_mimetype = "application/json"
 
