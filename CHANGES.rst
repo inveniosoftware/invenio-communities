@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v15.1.1 (released 2024-09-26)
+
+* Return raw JSON instead of doing content negotiation for logo update responses.
+
 Version v15.1.0 (released 2024-09-26)
 
 - subcommunities: handle vnd.inveniordm.v1+json
