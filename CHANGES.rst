@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v15.2.0 (released 2024-09-27)
+
+- Added subcommunities endpoint and page
+
 Version v15.1.1 (released 2024-09-26)
 
 * Return raw JSON instead of doing content negotiation for logo update responses.
