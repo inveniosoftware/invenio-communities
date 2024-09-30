@@ -9,6 +9,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 import CommunitiesCardGroup from "./CommunitiesCardGroup";
 
@@ -19,7 +20,7 @@ if (userCommunitiesContainer) {
   ReactDOM.render(
     <CommunitiesCardGroup
       fetchDataUrl="/api/user/communities?q=&sort=newest&page=1&size=5"
-      emptyMessage="You are not a member of any community."
+      emptyMessage={i18next.t("You are not a member of any community.")}
       defaultLogo="/static/images/square-placeholder.png"
     />,
     userCommunitiesContainer
@@ -30,7 +31,7 @@ if (newCommunitiesContainer) {
   ReactDOM.render(
     <CommunitiesCardGroup
       fetchDataUrl="/api/communities?q=&sort=newest&page=1&size=5"
-      emptyMessage="There are no new communities."
+      emptyMessage={i18next.t("There are no new communities.")}
       defaultLogo="/static/images/square-placeholder.png"
     />,
     newCommunitiesContainer
