@@ -72,6 +72,17 @@ class SearchOptions(SearchOptionsBase, SearchOptionsMixin):
     ]
 
 
+def children_allowed(record, _):
+    """Determine if children are allowed."""
+    try:
+        return getattr(record.children, "allow", False)
+    except AttributeError:
+        # This is needed because a types.SimpleNamespace object can be passed by
+        # the entity_resolver when generating the logo which does not have
+        # `children` and fails
+        return False
+
+
 class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     """Communities service configuration."""
 
@@ -116,7 +127,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "records": CommunityLink("{+api}/communities/{id}/records"),
         "subcommunities": CommunityLink(
             "{+api}/communities/{id}/subcommunities",
-            when=lambda record, _: record.children.allow,
+            when=children_allowed,
         ),
         "membership_requests": CommunityLink(
             "{+api}/communities/{id}/membership-requests"
