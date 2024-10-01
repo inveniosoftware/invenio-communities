@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v15.2.1 (released 2024-10-01)
+
+- subcommunities: fix error getting whether children allowed
+- subcommunities: added i18n translate messages
+
 Version v15.2.0 (released 2024-09-27)
 
 - Added subcommunities endpoint and page
