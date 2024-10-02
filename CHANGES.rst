@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v15.2.2 (unreleased)
+
+- subcommunities: temporary fix for self link
+
 Version v15.2.1 (released 2024-10-01)
 
 - subcommunities: fix error getting whether children allowed
