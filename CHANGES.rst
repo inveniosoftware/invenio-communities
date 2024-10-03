@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v16.0.0 (released 2024-10-04)
+
+- installation: bump invenio-vocabularies
+
 Version v15.2.2 (released 2024-10-04)
 
 - subcommunities: temporary fix for self link
