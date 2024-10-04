@@ -9,7 +9,7 @@
 Changes
 =======
 
-Version v15.2.2 (unreleased)
+Version v15.2.2 (released 2024-10-04)
 
 - subcommunities: temporary fix for self link
 
