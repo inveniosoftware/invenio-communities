@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.0.0 (released 2024-10-08)
+
+- mappings: updated awards with subj and orgs
+
 Version v16.0.0 (released 2024-10-04)
 
 - installation: bump invenio-vocabularies
