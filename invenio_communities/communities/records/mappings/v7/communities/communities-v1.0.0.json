@@ -204,6 +204,39 @@
                       }
                     }
                   },
+                  "subjects": {
+                    "properties": {
+                      "@v": {
+                        "type": "keyword"
+                      },
+                      "id": {
+                        "type": "keyword"
+                      },
+                      "subject": {
+                        "type": "keyword"
+                      },
+                      "scheme": {
+                        "type": "keyword"
+                      },
+                      "props": {
+                        "type": "object",
+                        "dynamic": "true"
+                      }
+                    }
+                  },
+                  "organizations": {
+                    "properties": {
+                      "scheme": {
+                        "type": "keyword"
+                      },
+                      "id": {
+                        "type": "keyword"
+                      },
+                      "organization": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
                   "identifiers": {
                     "properties": {
                       "identifier": {
@@ -375,6 +408,39 @@
                         "fields": {
                           "text": {
                             "type": "text"
+                          }
+                        }
+                      },
+                      "subjects": {
+                        "properties": {
+                          "@v": {
+                            "type": "keyword"
+                          },
+                          "id": {
+                            "type": "keyword"
+                          },
+                          "subject": {
+                            "type": "keyword"
+                          },
+                          "scheme": {
+                            "type": "keyword"
+                          },
+                          "props": {
+                            "type": "object",
+                            "dynamic": "true"
+                          }
+                        }
+                      },
+                      "organizations": {
+                        "properties": {
+                          "scheme": {
+                            "type": "keyword"
+                          },
+                          "id": {
+                            "type": "keyword"
+                          },
+                          "organization": {
+                            "type": "keyword"
                           }
                         }
                       },
