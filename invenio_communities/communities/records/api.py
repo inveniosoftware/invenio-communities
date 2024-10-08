@@ -17,11 +17,13 @@ from invenio_records_resources.records.systemfields import (
     FilesField,
     IndexField,
     PIDListRelation,
+    PIDNestedListRelation,
     PIDRelation,
 )
 from invenio_vocabularies.contrib.affiliations.api import Affiliation
 from invenio_vocabularies.contrib.awards.api import Award
 from invenio_vocabularies.contrib.funders.api import Funder
+from invenio_vocabularies.contrib.subjects.api import Subject
 from invenio_vocabularies.records.api import Vocabulary
 from invenio_vocabularies.records.systemfields.relations import CustomFieldsRelation
 
@@ -87,9 +89,24 @@ class Community(Record):
         funding_award=PIDListRelation(
             "metadata.funding",
             relation_field="award",
-            keys=["title", "number", "identifiers", "acronym", "program"],
+            keys=[
+                "title",
+                "number",
+                "identifiers",
+                "acronym",
+                "program",
+                "subjects",
+                "organizations",
+            ],
             pid_field=Award.pid,
             cache_key="awards",
+        ),
+        funding_award_subjects=PIDNestedListRelation(
+            "metadata.funding",
+            relation_field="award.subjects",
+            keys=["subject", "scheme", "props"],
+            pid_field=Subject.pid,
+            cache_key="subjects",
         ),
         funding_funder=PIDListRelation(
             "metadata.funding",
