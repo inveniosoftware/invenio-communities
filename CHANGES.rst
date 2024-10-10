@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.1.0 (released 2024-10-10)
+
+- webpack: update axios and react-searchkit (due to axios upgrade) major versions
+
 Version v17.0.0 (released 2024-10-08)
 
 - mappings: updated awards with subj and orgs
