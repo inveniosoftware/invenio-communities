@@ -97,6 +97,7 @@ class CommunityResourceConfig(RecordResourceConfig, ConfiguratorMixin):
         "user-communities": "/user/communities",
         "community-requests": "/communities/<pid_value>/requests",
         "restore-community": "/communities/<pid_value>/restore",
+        "list-subcommunities": "/communities/<pid_value>/subcommunities",
     }
 
     request_search_args = CommunitiesSearchRequestArgsSchema

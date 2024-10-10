@@ -735,6 +735,35 @@ class CommunityService(RecordService):
             )
         return True
 
+    def search_subcommunities(self, identity, id_, params=None, **kwargs):
+        """Search for subcommunities of a community."""
+        community = self.record_cls.pid.resolve(id_)
+        self.require_permission(identity, "search", record=community)
+
+        params = params or {}
+        search_result = self._search(
+            "search",
+            identity,
+            params=params,
+            extra_filter=dsl.query.Bool(
+                "must", must=[dsl.Q("term", **{"parent.id": str(community.id)})]
+            ),
+            permission_action="read",
+            **kwargs,
+        ).execute()
+
+        return self.result_list(
+            self,
+            identity,
+            search_result,
+            params,
+            links_tpl=LinksTemplate(
+                self.config.links_subcommunities_search,
+                context={"community_id": id_, "args": params},
+            ),
+            links_item_tpl=self.links_item_tpl,
+        )
+
 
 @cached_with_expiration
 def get_cached_community_slug(

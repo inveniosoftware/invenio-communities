@@ -65,23 +65,6 @@ class SubCommunityService(Service):
             None,
         )
 
-    def search(self, identity, id_, **kwargs):
-        """Return list of subcommunities."""
-        subcommunities = community_service.search(
-            identity,
-            extra_filter=dsl.query.Bool(
-                "must", must=[dsl.Q("term", **{"parent.id": id_})]
-            ),
-            **kwargs
-        )
-        self_link = LinksTemplate(
-            # https://github.com/inveniosoftware/invenio-communities/issues/1218
-            # pagination_links("{+api}/communities/{community_id}/subcommunities{?args*}"),
-            pagination_links("{+api}/communities/{community_id}/subcommunities"),
-            context={"community_id": id_},
-        )
-        subcommunities._links_tpl = self_link
-        return subcommunities
 
     @unit_of_work()
     def join(self, identity, id_, data, uow=None):
