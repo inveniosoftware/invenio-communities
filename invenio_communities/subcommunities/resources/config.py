@@ -39,7 +39,6 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
     url_prefix = ""
     routes = {
         "join": "/communities/<pid_value>/actions/join-request",
-        "list": "/communities/<pid_value>/subcommunities",
     }
     request_view_args = {
         "pid_value": fields.UUID(),
@@ -56,9 +55,6 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
     # Response handling
     response_handlers = {
         "application/json": json_response_handler,
-        "application/vnd.inveniordm.v1+json": ResponseHandler(
-            UICommunityJSONSerializer(), headers=etag_headers
-        ),
     }
     default_accept_mimetype = "application/json"
 
