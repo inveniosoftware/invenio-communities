@@ -65,7 +65,6 @@ class SubCommunityService(Service):
             None,
         )
 
-
     @unit_of_work()
     def join(self, identity, id_, data, uow=None):
         """Request to join a subcommunity.
