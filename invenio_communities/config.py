@@ -21,8 +21,8 @@ from invenio_communities.communities.services import facets
 
 COMMUNITIES_ROUTES = {
     "frontpage": "/communities",
-    "search": "/communities/search",
-    "new": "/communities/new",
+    "search": "/search/communities/all",
+    "new": "/new/communities/create",
     "upload": "/communities/<pid_value>/upload",
     "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
