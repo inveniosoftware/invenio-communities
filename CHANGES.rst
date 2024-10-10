@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.1.1 (released 2024-10-10)
+
+- setup: bump invenio-search-ui to fix dependency installation
+
 Version v17.1.0 (released 2024-10-10)
 
 - webpack: update axios and react-searchkit (due to axios upgrade) major versions
