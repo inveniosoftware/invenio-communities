@@ -144,6 +144,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     links_community_requests_search = pagination_links(
         "{+api}/communities/{community_id}/requests{?args*}"
     )
+    links_subcommunities_search = pagination_links(
+        "{+api}/communities/{community_id}/subcommunities{?args*}"
+    )
 
     available_actions = [
         {"action_name": "featured", "action_permission": "featured_create"}

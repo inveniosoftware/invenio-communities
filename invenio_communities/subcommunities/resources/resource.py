@@ -31,7 +31,6 @@ class SubCommunityResource(ErrorHandlersMixin, Resource):
         routes = self.config.routes
         url_rules = [
             route("POST", routes["join"], self.join),
-            route("GET", routes["list"], self.search),
         ]
         return url_rules
 
@@ -46,18 +45,3 @@ class SubCommunityResource(ErrorHandlersMixin, Resource):
             data=resource_requestctx.data,
         )
         return result.to_dict(), 201
-
-    @request_view_args
-    @response_handler(many=True)
-    @request_extra_args
-    @request_search_args
-    def search(self):
-        """List subcommunities."""
-        result = self.service.search(
-            identity=g.identity,
-            id_=resource_requestctx.view_args["pid_value"],
-            params=resource_requestctx.args,
-            search_preference=search_preference(),
-            expand=resource_requestctx.args.get("expand", False),
-        )
-        return result.to_dict(), 200

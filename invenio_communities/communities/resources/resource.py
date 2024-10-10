@@ -60,6 +60,7 @@ class CommunityResource(RecordResource):
             route("DELETE", routes["featured-item"], self.featured_delete),
             route("GET", routes["community-requests"], self.search_community_requests),
             route("POST", routes["restore-community"], self.restore_community),
+            route("GET", routes["list-subcommunities"], self.search_subcommunities),
         ]
 
     @request_search_args
@@ -230,3 +231,18 @@ class CommunityResource(RecordResource):
             featured_id=resource_requestctx.view_args["featured_id"],
         )
         return "", 204
+
+    @request_view_args
+    @response_handler(many=True)
+    @request_extra_args
+    @request_search_args
+    def search_subcommunities(self):
+        """List subcommunities."""
+        result = self.service.search_subcommunities(
+            identity=g.identity,
+            id_=resource_requestctx.view_args["pid_value"],
+            params=resource_requestctx.args,
+            search_preference=search_preference(),
+            expand=resource_requestctx.args.get("expand", False),
+        )
+        return result.to_dict(), 200
