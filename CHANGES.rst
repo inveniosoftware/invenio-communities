@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v17.1.2 (released 2024-10-11)
+
+- chore: fix tests
+- subcommunities: moved endpoint to communities resource
+
 Version v17.1.1 (released 2024-10-10)
 
 - setup: bump invenio-search-ui to fix dependency installation
