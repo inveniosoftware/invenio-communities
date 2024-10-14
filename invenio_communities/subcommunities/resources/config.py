@@ -55,6 +55,7 @@ class SubCommunityResourceConfig(ConfiguratorMixin, ResourceConfig):
     # Response handling
     response_handlers = {
         "application/json": json_response_handler,
+        "application/vnd.inveniordm.v1+json": json_response_handler,
     }
     default_accept_mimetype = "application/json"
 
