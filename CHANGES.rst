@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version 17.1.3 (released 2024-10-15)
+
+- subcommunities: revert UI serializer config change
+
 Version v17.1.2 (released 2024-10-11)
 
 - chore: fix tests
