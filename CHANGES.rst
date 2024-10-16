@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.2.0 (released 2024-10-16)
+
+- subcommunities: updated page layout
+
 Version 17.1.3 (released 2024-10-15)
 
 - subcommunities: revert UI serializer config change
