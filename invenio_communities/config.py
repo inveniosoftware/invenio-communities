@@ -2,8 +2,8 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
-# Copyright (C) 2023 Graz University of Technology.
-# Copyright (C) 2023 KTH Royal Institute of Technology.
+# Copyright (C) 2023      Graz University of Technology.
+# Copyright (C) 2023-2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -334,3 +334,6 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
+
+COMMUNITIES_CREATOR_ROLE = "community-creator"
+"""Depends on 'RDM_COMMUNITY_REQUIRED_TO_PUBLISH' set to True."""
