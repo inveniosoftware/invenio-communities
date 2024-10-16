@@ -7,15 +7,16 @@
  */
 
 import ReactDOM from "react-dom";
-
 import React from "react";
 
 import { RequestMembershipButton } from "./RequestMembershipButton";
 
 const domContainer = document.getElementById("request-membership-app");
 
-const community = JSON.parse(domContainer.dataset.community);
+const community = domContainer.dataset.community;
 
-if (domContainer) {
+const permission = JSON.parse(domContainer.dataset.permission);
+
+if (domContainer && permission) {
   ReactDOM.render(<RequestMembershipButton community={community} />, domContainer);
 }
