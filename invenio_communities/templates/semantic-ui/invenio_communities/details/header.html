@@ -12,15 +12,14 @@
 {%- from "invenio_communities/details/macros/access-status-label.html" import access_status_label -%}
 
 {% macro button_to_request_membership(community) %}
-  {% if permissions.can_request_membership %}
   {# TODO: Add relation_to_community for other flows #}
   <div
     id="request-membership-app"
-    data-community='{{ community | tojson }}'
+    data-community="{{ community }}"
+    data-permission="{{ permissions.can_request_membership | tojson }}"
     class="display-inline-block"
     >
   </div>
-  {% endif %}
 {% endmacro %}
 
 
