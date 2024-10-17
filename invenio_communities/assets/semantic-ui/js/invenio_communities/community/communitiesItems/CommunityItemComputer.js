@@ -9,7 +9,7 @@ import { CommunityTypeLabel } from "../labels";
 import { RestrictedLabel } from "../labels";
 import React from "react";
 import { Image } from "react-invenio-forms";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Grid, Icon, Popup, Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import OrganizationsList from "../../organizations/OrganizationsList";
 
@@ -39,13 +39,32 @@ export const CommunityItemComputer = ({ result }) => {
                 <RestrictedLabel access={result.access.visibility} />
               </div>
             )}
-            <a className="ui medium header mb-0" href={result.links.self_html}>
+            <Header as="a" className="ui medium header" href={result.links.self_html}>
               {result.metadata.title}
-            </a>
+              {result.is_verified && (
+                <p className="ml-5 display-inline-block">
+                  <Popup
+                    content="Verified community"
+                    trigger={
+                      <Icon size="small" color="green" name="check circle outline" />
+                    }
+                    position="top center"
+                  />
+                </p>
+              )}
+            </Header>
             {result.metadata.description && (
               <p className="truncate-lines-1 text size small text-muted mt-5">
                 {result.metadata.description}
               </p>
+            )}
+            {result.parent && (
+              <div className="sub header">
+                Part of{" "}
+                <a href={`/communities/${result.parent.slug}`}>
+                  {result.parent.metadata.title}
+                </a>
+              </div>
             )}
 
             {(communityType ||

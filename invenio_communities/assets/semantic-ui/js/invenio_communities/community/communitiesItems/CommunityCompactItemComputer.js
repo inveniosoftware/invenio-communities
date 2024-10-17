@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import _truncate from "lodash/truncate";
 
 import { Image, InvenioPopup } from "react-invenio-forms";
-import { Icon, Label, Item } from "semantic-ui-react";
+import { Icon, Label, Item, Popup } from "semantic-ui-react";
 import { CommunityTypeLabel, RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
@@ -46,7 +46,18 @@ export const CommunityCompactItemComputer = ({
               rel="noreferrer"
               aria-label={`${metadata.title} (${i18next.t("opens in new tab")})`}
             >
-              {metadata.title}
+              {metadata.title}{" "}
+              {result.is_verified && (
+                <p className="ml-5 display-inline-block">
+                  <Popup
+                    content="Verified community"
+                    trigger={
+                      <Icon size="small" color="green" name="check circle outline" />
+                    }
+                    position="top center"
+                  />
+                </p>
+              )}
             </a>
             <i className="small icon external primary" aria-hidden="true" />
           </div>
