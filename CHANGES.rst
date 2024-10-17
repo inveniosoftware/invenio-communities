@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.3.0 (released 2024-10-17)
+
+- Added verified icon and parent community
+
 Version v17.2.0 (released 2024-10-16)
 
 - subcommunities: updated page layout
