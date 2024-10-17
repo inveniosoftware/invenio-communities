@@ -5,6 +5,7 @@
 # Copyright (C) 2021 Graz University of Technology.
 # Copyright (C) 2021 TU Wien.
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -26,6 +27,7 @@ from invenio_users_resources.services.permissions import UserManager
 from .generators import (
     AllowedMemberTypes,
     AuthenticatedButNotCommunityMembers,
+    CommunityCreator,
     CommunityCurators,
     CommunityManagers,
     CommunityManagersForRole,
@@ -45,7 +47,15 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     """Permissions for Community CRUD operations."""
 
     # Community
-    can_create = [AuthenticatedUser(), SystemProcess()]
+    _can_create = [AuthenticatedUser(), SystemProcess()]
+
+    can_create = [
+        IfConfig(
+            "RDM_COMMUNITY_REQUIRED_TO_PUBLISH",
+            then_=[CommunityCreator(), Administration(), SystemProcess()],
+            else_=_can_create,
+        )
+    ]
 
     can_read = [
         IfRestricted("visibility", then_=[CommunityMembers()], else_=[AnyUser()]),
