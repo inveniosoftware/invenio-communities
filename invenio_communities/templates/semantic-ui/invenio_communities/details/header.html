@@ -76,7 +76,7 @@
               {% endif %}          
               {% if community.parent %}
                 <div class="inline-computer mt-5 rel-mr-1">              
-                  <i class="sitemap icon" aria-hidden="true"></i>
+                  <span class="ui tiny header">Part of </span>
                   <a
                   href="{{ url_for('invenio_app_rdm_communities.communities_home', pid_value=community.parent.slug) }}">
                   {{community.parent.metadata.title}}
