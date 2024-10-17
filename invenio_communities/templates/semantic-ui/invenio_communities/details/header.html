@@ -23,6 +23,18 @@
   {% endif %}
 {% endmacro %}
 
+{% macro community_title(community) %}
+  <div class="ui small header">
+    <a href="{{ url_for('invenio_app_rdm_communities.communities_detail', pid_value=community.slug) }}" class="ui small header">
+      {{ community.metadata.title }}
+    </a>
+    {% if community.is_verified %}
+      <p class="ml-2 mb-0 display-inline-block">
+        <i class="green check circle outline icon"></i>
+      </p>
+    {% endif %}
+  </div>
+{% endmacro %}
 
 <div
   class="ui container fluid page-subheader-outer with-submenu rel-pt-2 ml-0-mobile mr-0-mobile">
@@ -41,17 +53,14 @@
               />
             </div>
 
-            <div class="mobile only">
-              <h1 class="ui medium header mb-5">
-                {{ community.metadata.title }}
-              </h1>
+            <div class="mobile only">           
+              {{community_title(community)}}
             </div>
           </div>
 
           <div>
             <div class="flex align-items-center mb-5 tablet computer only">
-              <h1 class="ui medium header mb-0">{{ community.metadata.title }}</h1>
-
+              {{community_title(community)}}
               {% if community.access.visibility == 'restricted' %}
                 <div class="rel-ml-1">
                   {{ access_status_label() }}
@@ -63,6 +72,15 @@
               {% if community.access.visibility == 'restricted' %}
                 <div class="mobile only rel-mb-1">
                   {{ access_status_label() }}
+                </div>
+              {% endif %}          
+              {% if community.parent %}
+                <div class="inline-computer mt-5 rel-mr-1">              
+                  <i class="sitemap icon" aria-hidden="true"></i>
+                  <a
+                  href="{{ url_for('invenio_app_rdm_communities.communities_home', pid_value=community.parent.slug) }}">
+                  {{community.parent.metadata.title}}
+                  </a>
                 </div>
               {% endif %}
 
