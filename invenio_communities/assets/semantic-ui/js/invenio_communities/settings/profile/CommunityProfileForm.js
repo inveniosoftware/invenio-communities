@@ -18,7 +18,6 @@ import _isEmpty from "lodash/isEmpty";
 import _isNull from "lodash/isNull";
 import _isNumber from "lodash/isNumber";
 import _isObject from "lodash/isObject";
-import _map from "lodash/map";
 import _mapValues from "lodash/mapValues";
 import _pick from "lodash/pick";
 import _pickBy from "lodash/pickBy";
@@ -33,6 +32,7 @@ import {
   SelectField,
   TextField,
   TextAreaField,
+  AffiliationsSuggestions,
 } from "react-invenio-forms";
 import { Button, Form, Grid, Icon, Message, Divider } from "semantic-ui-react";
 import * as Yup from "yup";
@@ -469,25 +469,9 @@ class CommunityProfileForm extends Component {
                             "metadata.organizations",
                             []
                           )}
-                          serializeSuggestions={(organizations) =>
-                            _map(organizations, (organization) => {
-                              // eslint-disable-next-line no-prototype-builtins
-                              const isKnownOrg = this.knownOrganizations.hasOwnProperty(
-                                organization.name
-                              );
-                              if (!isKnownOrg) {
-                                this.knownOrganizations = {
-                                  ...this.knownOrganizations,
-                                  [organization.name]: organization.id,
-                                };
-                              }
-                              return {
-                                text: organization.name,
-                                value: organization.name,
-                                key: organization.name,
-                              };
-                            })
-                          }
+                          serializeSuggestions={(organizations) => {
+                            return AffiliationsSuggestions(organizations, true);
+                          }}
                           label={
                             <FieldLabel
                               htmlFor="metadata.organizations"
