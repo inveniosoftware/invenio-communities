@@ -85,34 +85,7 @@
               {% endif %}
 
               {% if community.metadata.organizations %}
-                {% for org in community.metadata.organizations %}
-                  {% set ror_id = org.id %}
-                  {% set name = org.name %}
-
-                  <div class="inline-computer mt-5">
-                    {% if loop.index == 1 %}
-                      <i class="building outline icon" aria-hidden="true"></i>
-                    {% endif %}
-
-                    {% if ror_id %}
-                      <a
-                        href="https://ror.org/{{ ror_id }}"
-                        aria-label="{{ name }}'s ROR {{ _('profile') }}"
-                        title="{{ name }}'s ROR {{ _('profile') }}"
-                        target="_blank"
-                      >
-                        {{ name }}
-                        <img
-                          class="inline-id-icon"
-                          src="{{ url_for('static', filename='images/ror-icon.svg') }}"
-                          alt=""
-                        /></a>
-                    {%- else %}
-                      {{ name -}}
-                    {% endif %}
-                    {{- ", " if not loop.last }}
-                  </div>
-                {% endfor %}
+                    <div class="inline-computer" id="organizations-list" data-organizations='{{ community.metadata.organizations|tojson }}'></div>
               {% endif %}
             </div>
           </div>

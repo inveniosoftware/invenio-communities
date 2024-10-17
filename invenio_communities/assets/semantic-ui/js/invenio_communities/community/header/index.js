@@ -7,10 +7,20 @@
  */
 
 import ReactDOM from "react-dom";
-
+import OrganizationsList from "../../organizations/OrganizationsList";
 import React from "react";
 
 import { RequestMembershipButton } from "./RequestMembershipButton";
+
+const organizationsContainer = document.getElementById("organizations-list");
+const organizations = JSON.parse(organizationsContainer.dataset.organizations);
+
+if (organizationsContainer) {
+  ReactDOM.render(
+    <OrganizationsList organizations={organizations} />,
+    organizationsContainer
+  );
+}
 
 const domContainer = document.getElementById("request-membership-app");
 

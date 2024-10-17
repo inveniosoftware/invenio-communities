@@ -11,6 +11,7 @@ import React from "react";
 import { Image } from "react-invenio-forms";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
+import OrganizationsList from "../../organizations/OrganizationsList";
 
 export const CommunityItemComputer = ({ result }) => {
   const communityType = result.ui?.type?.title_l10n;
@@ -70,34 +71,7 @@ export const CommunityItemComputer = ({ result }) => {
                 )}
 
                 {result.metadata.organizations && (
-                  <div>
-                    <Icon name="building outline" />
-                    {result.metadata.organizations.map((org, index) => {
-                      const separator = (index > 0 && ", ") || "";
-
-                      return (
-                        <span className="text-muted" key={org.name}>
-                          {separator}
-                          {org.name}
-                          {org.id && (
-                            <a
-                              href={`https://ror.org/${org.id}`}
-                              aria-label={`${org.name}'s ROR ${i18next.t("profile")}`}
-                              title={`${org.name}'s ROR ${i18next.t("profile")}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <img
-                                className="inline-id-icon ml-5"
-                                src="/static/images/ror-icon.svg"
-                                alt=""
-                              />
-                            </a>
-                          )}
-                        </span>
-                      );
-                    })}
-                  </div>
+                  <OrganizationsList organizations={result.metadata.organizations} />
                 )}
               </div>
             )}
