@@ -13,9 +13,9 @@ import React from "react";
 import { RequestMembershipButton } from "./RequestMembershipButton";
 
 const organizationsContainer = document.getElementById("organizations-list");
-const organizations = JSON.parse(organizationsContainer.dataset.organizations);
 
 if (organizationsContainer) {
+  const organizations = JSON.parse(organizationsContainer.dataset.organizations);
   ReactDOM.render(
     <OrganizationsList organizations={organizations} />,
     organizationsContainer
@@ -24,8 +24,7 @@ if (organizationsContainer) {
 
 const domContainer = document.getElementById("request-membership-app");
 
-const community = JSON.parse(domContainer.dataset.community);
-
 if (domContainer) {
+  const community = JSON.parse(domContainer.dataset.community);
   ReactDOM.render(<RequestMembershipButton community={community} />, domContainer);
 }
