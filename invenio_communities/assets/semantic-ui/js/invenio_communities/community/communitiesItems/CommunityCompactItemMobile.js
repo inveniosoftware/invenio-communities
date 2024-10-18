@@ -44,8 +44,9 @@ export const CommunityCompactItemMobile = ({
               rel="noreferrer"
               aria-label={`${metadata.title} (${i18next.t("opens in new tab")})`}
             >
-              {metadata.title}{" "}
-              {result.parent?.is_verified && (
+              {metadata.title}
+              {/* Show the icon for subcommunities */}
+              {result.parent && (
                 <p className="ml-5 display-inline-block">
                   <Popup
                     content="Verified community"

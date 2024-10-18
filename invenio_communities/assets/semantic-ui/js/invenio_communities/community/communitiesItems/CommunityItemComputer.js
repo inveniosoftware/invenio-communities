@@ -41,7 +41,8 @@ export const CommunityItemComputer = ({ result }) => {
             )}
             <Header as="a" className="ui medium header" href={result.links.self_html}>
               {result.metadata.title}
-              {result.parent?.is_verified && (
+              {/* Show the icon for subcommunities */}
+              {result.parent && (
                 <p className="ml-5 display-inline-block">
                   <Popup
                     content="Verified community"
