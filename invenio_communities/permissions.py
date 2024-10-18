@@ -107,11 +107,19 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
     # who can include a record directly, without a review
-    can_include_directly = [
+    _can_include_directly = [
         ReviewPolicy(
             closed_=[Disable()],
             open_=[CommunityCurators()],
             members_=[CommunityMembers()],
+        )
+    ]
+
+    can_include_directly = [
+        IfConfig(
+            "RDM_COMMUNITY_REQUIRED_TO_PUBLISH",
+            then_=[Disable()],
+            else_=_can_include_directly,
         )
     ]
 
