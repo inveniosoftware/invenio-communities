@@ -28,7 +28,7 @@
     <a href="{{ url_for('invenio_app_rdm_communities.communities_detail', pid_value=community.slug) }}" class="ui small header">
       {{ community.metadata.title }}
     </a>
-    {% if community.is_verified %}
+    {% if community.parent and community.parent.is_verified %}
       <p class="ml-2 mb-0 display-inline-block">
         <i class="green check circle outline icon"></i>
       </p>
@@ -53,7 +53,7 @@
               />
             </div>
 
-            <div class="mobile only">           
+            <div class="mobile only">
               {{community_title(community)}}
             </div>
           </div>
@@ -73,9 +73,9 @@
                 <div class="mobile only rel-mb-1">
                   {{ access_status_label() }}
                 </div>
-              {% endif %}          
+              {% endif %}
               {% if community.parent %}
-                <div class="inline-computer mt-5 rel-mr-1">              
+                <div class="inline-computer mt-5 rel-mr-1">
                   <span class="ui tiny header">Part of </span>
                   <a
                   href="{{ url_for('invenio_app_rdm_communities.communities_home', pid_value=community.parent.slug) }}">
