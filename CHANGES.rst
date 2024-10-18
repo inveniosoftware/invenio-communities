@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v17.3.2 (released 2024-10-18)
+
+- ui: avoid exceptions if organizations list and request membership are not defined
+- ui: verified icon display logic change
+
 Version v17.3.1 (released 2024-10-18)
 
 - communities-ui: make verified icon display depend on parent community
