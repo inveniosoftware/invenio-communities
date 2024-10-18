@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.3.1 (released 2024-10-18)
+
+- communities-ui: make verified icon display depend on parent community
+
 Version v17.3.0 (released 2024-10-17)
 
 - Added verified icon and parent community
