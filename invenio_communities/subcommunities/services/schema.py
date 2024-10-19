@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2024 CERN.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunities service schemas."""
 
+from invenio_i18n import lazy_gettext as _
 from marshmallow import Schema, ValidationError, fields, post_load, pre_load
 
 
@@ -45,6 +47,6 @@ class SubcommunityRequestSchema(Schema):
         """Validate that either community_id or community is provided."""
         if "community_id" not in data and "community" not in data:
             raise ValidationError(
-                "Either community_id or community should be provided."
+                _("Either community_id or community should be provided.")
             )
         return data

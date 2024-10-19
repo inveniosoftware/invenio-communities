@@ -4,6 +4,7 @@
 # Copyright (C) 2016-2024 CERN.
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022-2023 Graz University of Technology.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -160,7 +161,7 @@ class OAISetComponent(ServiceComponent):
 
     def _create_set_description(self, community_title):
         # NOTE: Does not require translation since this description can also be changed by an admin
-        return "Records belonging to the community '{title}'".format(
+        return _("Records belonging to the community '{title}'").format(
             title=community_title
         )
 
@@ -173,7 +174,7 @@ class OAISetComponent(ServiceComponent):
         community_set.system_created = True
         community_set.description = self._create_set_description(community_title)
         community_set.spec = self._create_set_spec(community_slug)
-        community_set.search_pattern = "parent.communities.ids:{id}".format(
+        community_set.search_pattern = _("parent.communities.ids:{id}").format(
             id=record.id
         )
 
@@ -315,21 +316,23 @@ class CommunityParentComponent(ServiceComponent):
         try:
             parent = self.service.record_cls.pid.resolve(parent_data["id"])
             if not parent.children.allow:
-                raise ValidationError("Assigned parent is not allowed to be a parent.")
+                raise ValidationError(
+                    _("Assigned parent is not allowed to be a parent.")
+                )
             elif child.children.allow:
                 raise ValidationError(
-                    "Community allowed to be a parent can't be a child."
+                    _("Community allowed to be a parent can't be a child.")
                 )
             elif parent.parent:
                 raise ValidationError(
-                    "Assigned parent community cannot also have a parent."
+                    _("Assigned parent community cannot also have a parent.")
                 )
             elif child.id == parent.id:
                 raise ValidationError(
-                    "Assigned parent community cannot be the same as child."
+                    _("Assigned parent community cannot be the same as child.")
                 )
         except PIDDoesNotExistError:
-            raise ValidationError("Assigned parent community does not exist.")
+            raise ValidationError(_("Assigned parent community does not exist."))
         return parent
 
     def create(self, identity, data=None, record=None, **kwargs):
