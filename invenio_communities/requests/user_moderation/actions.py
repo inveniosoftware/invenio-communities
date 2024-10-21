@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2023-2024 CERN.
 # Copyright (C) 2023 TU Wien.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,7 @@
 from collections import defaultdict
 
 from invenio_access.permissions import Identity, system_identity
+from invenio_db import db
 from invenio_i18n import lazy_gettext as _
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_search.engine import dsl
@@ -41,7 +43,9 @@ def _get_communities_for_user(user_id):
     comm_owners = defaultdict(list)
     for comm_owner in [
         mem_cls(m.data, model=m)
-        for m in mem_model_cls.query.filter(mem_model_cls.role == "owner").all()
+        for m in db.session.query(mem_model_cls)
+        .filter(mem_model_cls.role == "owner")
+        .all()
     ]:
         comm_owners[comm_owner.community_id].append(comm_owner)
 
@@ -55,9 +59,9 @@ def _get_communities_for_user(user_id):
     # resolve the communities in question
     communities = [
         comm_cls(m.data, model=m)
-        for m in comm_model_cls.query.filter(
-            comm_model_cls.id.in_(relevant_comm_ids)
-        ).all()
+        for m in db.session.query(comm_model_cls)
+        .filter(comm_model_cls.id.in_(relevant_comm_ids))
+        .all()
     ]
 
     return communities

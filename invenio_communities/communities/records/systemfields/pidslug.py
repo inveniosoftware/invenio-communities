@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -41,9 +42,11 @@ class PIDSlugFieldContext(SystemFieldContext):
                 raise PIDDoesNotExistError("comid", "")
 
         with db.session.no_autoflush:  # avoid flushing the current session
-            model = self.record_cls.model_cls.query.filter_by(
-                **{field_name: pid_value}
-            ).one_or_none()
+            model = (
+                db.session.query(self.record_cls.model_cls)
+                .filter_by(**{field_name: pid_value})
+                .one_or_none()
+            )
             if model is None:
                 raise PIDDoesNotExistError("comid", str(pid_value))
             record = self.record_cls(model.data, model=model)

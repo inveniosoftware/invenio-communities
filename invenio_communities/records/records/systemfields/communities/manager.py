@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2021-2024 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -89,9 +90,11 @@ class CommunitiesRelationManager:
         community_id = self._to_id(community_or_id)
 
         # Delete M2M row.
-        res = self._m2m_model_cls.query.filter_by(
-            community_id=community_id, record_id=self._record_id
-        ).delete()
+        res = (
+            db.session.query(self._m2m_model_cls)
+            .filter_by(community_id=community_id, record_id=self._record_id)
+            .delete()
+        )
         if res != 1:
             raise ValueError("The record has not been added to the community.")
 
@@ -105,7 +108,9 @@ class CommunitiesRelationManager:
     def clear(self):
         """Clear all communities from the record."""
         # Remove all associations
-        res = self._m2m_model_cls.query.filter_by(record_id=self._record_id).delete()
+        db.session.query(self._m2m_model_cls).filter_by(
+            record_id=self._record_id
+        ).delete()
         self._communities_ids = set()
         self._default_id = None
         self._communities_cache = {}

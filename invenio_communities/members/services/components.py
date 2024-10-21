@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +10,7 @@
 
 from flask_principal import Identity
 from invenio_accounts.models import Role
+from invenio_db import db
 from invenio_records_resources.services.records.components import ServiceComponent
 
 from invenio_communities.members.records.api import MemberMixin
@@ -59,7 +60,7 @@ class CommunityMemberCachingComponent(ServiceComponent):
     def members_add(self, identity, record=None, community=None, data=None, **kwargs):
         """On member add (only for groups)."""
         if record["type"] == "group":
-            role = Role.query.filter_by(id=record["id"]).one_or_none()
+            role = db.session.query(Role).filter_by(id=record["id"]).one_or_none()
             if role.is_managed:
                 users = role.users.all()
                 for user in users:

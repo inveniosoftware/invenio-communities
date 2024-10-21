@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2021 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -8,6 +9,7 @@
 
 """Field context."""
 
+from invenio_db import db
 from invenio_records.systemfields import SystemFieldContext
 
 
@@ -25,4 +27,6 @@ class CommunitiesFieldContext(SystemFieldContext):
 
     def query_by_community(self, community_or_id):
         """Query community-record relations for a given community."""
-        return self.field._m2m_model_class.query.filter(community_id=community_or_id)
+        return db.session.query(self.field._m2m_model_class).filter(
+            community_id=community_or_id
+        )

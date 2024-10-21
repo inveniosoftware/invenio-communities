@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022-2024 CERN.
-# Copyright (C) 2022-2023 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from flask import current_app
 from invenio_access.permissions import system_identity
 from invenio_accounts.models import Role
+from invenio_db import db
 from invenio_i18n import gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services import LinksTemplate
@@ -533,6 +534,7 @@ class MemberService(RecordService):
 
         # Perform updates (and check permissions)
         for m in members:
+            print(f"MemberService.update m: {m}")
             self._update(identity, community, m, role, visible, uow)
 
         # Make sure we're not left owner-less if a role was changed.
@@ -731,12 +733,18 @@ class MemberService(RecordService):
 
         Note: Skips (soft) deleted records.
         """
-        members = self.record_cls.model_cls.query.filter_by(is_deleted=False).all()
+        members = (
+            db.session.query(self.record_cls.model_cls)
+            .filter_by(is_deleted=False)
+            .all()
+        )
         self.indexer.bulk_index([member.id for member in members])
 
-        archived_invitations = ArchivedInvitation.model_cls.query.filter_by(
-            is_deleted=False
-        ).all()
+        archived_invitations = (
+            db.session.query(ArchivedInvitation.model_cls)
+            .filter_by(is_deleted=False)
+            .all()
+        )
         self.archive_indexer.bulk_index([inv.id for inv in archived_invitations])
 
         return True

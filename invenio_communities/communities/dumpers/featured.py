@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -14,6 +14,7 @@ search body.
 
 from datetime import datetime
 
+from invenio_db import db
 from invenio_records.dumpers import SearchDumperExt
 
 from invenio_communities.communities.records.models import CommunityFeatured
@@ -30,7 +31,8 @@ class FeaturedDumperExt(SearchDumperExt):
         """Dump featured entries."""
         now_ = datetime.utcnow()
         future_entries = (
-            CommunityFeatured.query.filter(
+            db.session.query(CommunityFeatured)
+            .filter(
                 CommunityFeatured.community_id == record.id,
                 CommunityFeatured.start_date > now_,
             )
@@ -39,7 +41,8 @@ class FeaturedDumperExt(SearchDumperExt):
         )
 
         past_entries = (
-            CommunityFeatured.query.filter(
+            db.session.query(CommunityFeatured)
+            .filter(
                 CommunityFeatured.community_id == record.id,
                 CommunityFeatured.start_date <= now_,
             )

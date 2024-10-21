@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -105,7 +105,7 @@ class MemberMixin:
     def get_memberships(cls, identity):
         """Get community memberships for a given identity."""
         group_ids = []
-        user = User.query.filter(User.id == identity.id).one_or_none()
+        user = db.session.query(User).filter(User.id == identity.id).one_or_none()
         if user:
             group_ids = [r.id for r in user.roles]
 
@@ -119,9 +119,11 @@ class MemberMixin:
         """Get a membership by request id."""
         assert request_id is not None
         with db.session.no_autoflush:
-            obj = cls.model_cls.query.filter(
-                cls.model_cls.request_id == request_id
-            ).one()
+            obj = (
+                db.session.query(cls.model_cls)
+                .filter(cls.model_cls.request_id == request_id)
+                .one()
+            )
             return cls(obj.data, model=obj)
 
     @classmethod
@@ -139,7 +141,9 @@ class MemberMixin:
                 raise InvalidMemberError(m)
 
         with db.session.no_autoflush:
-            q = cls.model_cls.query.filter(cls.model_cls.community_id == community_id)
+            q = db.session.query(cls.model_cls).filter(
+                cls.model_cls.community_id == community_id
+            )
 
             # Apply user and group query if applicable
             user_q = cls.model_cls.user_id.in_(user_ids)

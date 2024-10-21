@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022-2024 CERN.
-# Copyright (C) 2022-2023 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -111,6 +111,7 @@ def test_add_invalid_member_type(member_service, community, owner, new_user, db)
         "members": [{"type": "user", "id": str(new_user.id)}],
         "role": "reader",
     }
+
     assert pytest.raises(
         PermissionDeniedError,
         member_service.add,
@@ -618,7 +619,14 @@ def test_invite_actions_permissions(
 #
 # Leave community
 #
-@pytest.mark.parametrize("role", ["manager", "curator", "reader"])
+@pytest.mark.parametrize(
+    "role",
+    [
+        "curator",
+        "manager",
+        "reader",
+    ],
+)
 def test_leave_allowed(member_service, community, members, role):
     """Managers, curators and readers can leave."""
     user = members[role]
@@ -888,7 +896,9 @@ def test_update_public_visibility_of_group_allowed(
         "members": [{"type": "group", "id": str(group.name)}],
         "role": "reader",
     }
+
     member_service.add(system_identity, community._record.id, data)
+
     # Update the member
     data = {
         "members": [{"type": "group", "id": str(group.name)}],

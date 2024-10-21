@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2022 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -12,6 +13,7 @@ from flask import session
 from flask_principal import Identity
 from invenio_accounts.models import Role
 from invenio_accounts.proxies import current_db_change_history
+from invenio_db import db
 
 from .generators import CommunityRoleNeed
 from .proxies import current_communities, current_identities_cache
@@ -105,7 +107,7 @@ def on_datastore_post_commit(sender, session):
             on_user_membership_change(Identity(user_id))
 
         for role_id in current_db_change_history.sessions[sid].deleted_roles:
-            role = Role.query.filter_by(id=role_id).one_or_none()
+            role = db.session.query(Role).filter_by(id=role_id).one_or_none()
             users = role.users.all()
             for user in users:
                 on_user_membership_change(Identity(user.id))

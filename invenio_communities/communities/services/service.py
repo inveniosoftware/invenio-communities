@@ -13,6 +13,7 @@
 
 from flask import current_app
 from invenio_cache.decorators import cached_with_expiration
+from invenio_db import db
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import (
@@ -295,7 +296,9 @@ class CommunityService(RecordService):
         """Retrieve featured entry based on provided arguments."""
         errors = []
         try:
-            featured_entry = CommunityFeatured.query.filter_by(**kwargs).one()
+            featured_entry = (
+                db.session.query(CommunityFeatured).filter_by(**kwargs).one()
+            )
         except NoResultFound as e:
             if raise_error:
                 raise CommunityFeaturedEntryDoesNotExistError(kwargs)
@@ -345,10 +348,14 @@ class CommunityService(RecordService):
         # Permissions
         self.require_permission(identity, "featured_list", record=record)
 
-        featured_entries = CommunityFeatured.query.filter(
-            CommunityFeatured.community_id == record.id,
-        ).paginate(
-            per_page=1000,
+        featured_entries = (
+            db.session.query(CommunityFeatured)
+            .filter(
+                CommunityFeatured.community_id == record.id,
+            )
+            .paginate(
+                per_page=1000,
+            )
         )
 
         return self.config.result_list_cls_featured(

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -12,6 +12,7 @@ from datetime import datetime
 
 import pytest
 from invenio_access.permissions import system_identity
+from invenio_db import db
 from invenio_oaiserver.models import OAISet
 from invenio_records_resources.services.errors import PermissionDeniedError
 
@@ -20,9 +21,11 @@ from invenio_communities.communities.services.components import OAISetComponent
 
 def _retrieve_oaiset(service, community):
     comp = OAISetComponent(service)
-    return OAISet.query.filter(
-        OAISet.spec == comp._create_set_spec(community.get("slug"))
-    ).first()
+    return (
+        db.session.query(OAISet)
+        .filter(OAISet.spec == comp._create_set_spec(community.get("slug")))
+        .first()
+    )
 
 
 @pytest.fixture()

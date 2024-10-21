@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022-2024 CERN.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -105,7 +105,9 @@ class BaseMemberModel(RecordMetadataBase):
     @classmethod
     def count_members(cls, community_id, role=None, active=True):
         """Count number of members."""
-        q = cls.query.filter(cls.community_id == community_id, cls.active == active)
+        q = db.session.query(cls).filter(
+            cls.community_id == community_id, cls.active == active
+        )
         if role is not None:
             q = q.filter(cls.role == role)
         return q.count()

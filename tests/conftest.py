@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -238,12 +239,11 @@ def users(UserFixture, app, database):
     return users
 
 
-@pytest.fixture(scope="module")
-def group(database):
+@pytest.fixture(scope="function")
+def group(db):
     """Group."""
     r = Role(id="it-dep", name="it-dep")
-    database.session.add(r)
-    database.session.commit()
+    db.session.add(r)
     return r
 
 
@@ -261,9 +261,6 @@ def any_user(UserFixture, app, database):
         password="anyuser",
     )
     u.create(app, database)
-    # when using `database` fixture (and not `db`), commit the creation of the
-    # user because its implementation uses a nested session instead
-    database.session.commit()
     u.identity  # compute identity
     return u
 
@@ -308,8 +305,6 @@ def admin_role_need(db):
     action_role = ActionRoles.create(action=action_admin_access, role=role)
     db.session.add(action_role)
 
-    db.session.commit()
-
     return action_role.need
 
 
@@ -328,13 +323,11 @@ def superuser_role_need(db):
     action_role = ActionRoles.create(action=superuser_access, role=role)
     db.session.add(action_role)
 
-    db.session.commit()
-
     return action_role.need
 
 
-@pytest.fixture(scope="module")
-def new_user(UserFixture, app, database):
+@pytest.fixture(scope="function")
+def new_user(UserFixture, app, db):
     """A new user."""
     u = UserFixture(
         email="newuser@newuser.org",
@@ -354,12 +347,9 @@ def new_user(UserFixture, app, database):
         active=True,
         confirmed=True,
     )
-    u.create(app, database)
-    # when using `database` fixture (and not `db`), commit the creation of the
-    # user because its implementation uses a nested session instead
+    u.create(app, db)
     current_users_service.indexer.process_bulk_queue()
     current_users_service.record_cls.index.refresh()
-    database.session.commit()
     return u
 
 
@@ -397,7 +387,6 @@ def create_user(UserFixture, app, db):
         u.create(app, db)
         current_users_service.indexer.process_bulk_queue()
         current_users_service.record_cls.index.refresh()
-        db.session.commit()
         return u
 
     return _create_user
@@ -604,7 +593,6 @@ def members(member_service, community, users, db):
     # reindexing users to make sure the user service is up-to-date
     current_users_service.indexer.process_bulk_queue()
     current_users_service.record_cls.index.refresh()
-    db.session.commit()
     return users
 
 
