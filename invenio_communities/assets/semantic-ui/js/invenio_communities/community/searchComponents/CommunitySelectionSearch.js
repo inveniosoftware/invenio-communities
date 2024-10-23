@@ -1,8 +1,7 @@
 // This file is part of Invenio-RDM-Records
-// Copyright (C) 2020-2024 CERN.
-// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2024 CERN.
 //
-// Invenio-RDM-Records is free software; you can redistribute it and/or modify it
+// Invenio-communities is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_rdm_records/i18next";
