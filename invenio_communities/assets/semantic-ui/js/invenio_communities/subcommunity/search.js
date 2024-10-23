@@ -6,47 +6,51 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { createSearchAppInit } from "@js/invenio_search_ui";
+import React from "react";
+import ReactDOM from "react-dom";
 import {
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
   ContribSearchAppFacets,
 } from "@js/invenio_search_ui/components";
-import { overrideStore, parametrize } from "react-overridable";
+import { parametrize } from "react-overridable";
 import {
   CommunitiesResults,
   CommunitiesSearchBarElement,
-  CommunitiesSearchLayout,
   CommunityItem,
   ResultsGridItemTemplate,
+  CommunitySelectionSearch,
 } from "../community";
 
-const appName = "InvenioSubCommunities.Search";
+import { Container } from "semantic-ui-react";
+import { SubcommunityResults } from "./SubcommunityResults";
 
 const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
   help: false,
 });
 
-const CommunitiesSearchLayoutConfig = parametrize(CommunitiesSearchLayout, {
-  appName: appName,
-});
-
-export const defaultComponents = {
-  [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
-  [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
-  [`${appName}.SearchApp.facets`]: ContribSearchAppFacetsWithConfig,
-  [`${appName}.ResultsList.item`]: CommunityItem,
-  [`${appName}.ResultsGrid.item`]: ResultsGridItemTemplate,
-  [`${appName}.SearchApp.layout`]: CommunitiesSearchLayoutConfig,
-  [`${appName}.SearchBar.element`]: CommunitiesSearchBarElement,
-  [`${appName}.SearchApp.results`]: CommunitiesResults,
+export const overriddenComponents = {
+  [`BucketAggregation.element`]: ContribBucketAggregationElement,
+  [`BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
+  [`SearchApp.facets`]: ContribSearchAppFacetsWithConfig,
+  [`ResultsList.item`]: CommunityItem,
+  [`ResultsGrid.item`]: ResultsGridItemTemplate,
+  [`SearchBar.element`]: CommunitiesSearchBarElement,
+  [`SearchApp.results`]: SubcommunityResults,
 };
 
-const overriddenComponents = overrideStore.getAll();
-// Auto-initialize search app
-createSearchAppInit(
-  { ...defaultComponents, ...overriddenComponents },
-  true,
-  "invenio-search-config",
-  true
+const domContainer = document.getElementById("communities-search");
+const config = JSON.parse(domContainer.dataset?.invenioSearchConfig);
+const userAnonymous = JSON.parse(domContainer.dataset?.userAnonymous);
+console.log(userAnonymous);
+// eslint-disable-next-line react/no-deprecated
+ReactDOM.render(
+  <Container>
+    <CommunitySelectionSearch
+      overriddenComponents={overriddenComponents}
+      config={config}
+      userAnonymous={userAnonymous}
+    />
+  </Container>,
+  domContainer
 );

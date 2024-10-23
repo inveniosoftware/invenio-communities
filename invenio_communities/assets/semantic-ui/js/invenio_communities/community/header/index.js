@@ -25,6 +25,7 @@ if (organizationsContainer) {
 const domContainer = document.getElementById("request-membership-app");
 
 if (domContainer) {
+  console.log(domContainer.dataset.community);
   const community = JSON.parse(domContainer.dataset.community);
   ReactDOM.render(<RequestMembershipButton community={community} />, domContainer);
 }
