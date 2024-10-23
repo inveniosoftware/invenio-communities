@@ -15,7 +15,6 @@ import {
 } from "@js/invenio_search_ui/components";
 import { parametrize } from "react-overridable";
 import {
-  CommunitiesResults,
   CommunitiesSearchBarElement,
   CommunityItem,
   ResultsGridItemTemplate,
@@ -42,7 +41,6 @@ export const overriddenComponents = {
 const domContainer = document.getElementById("communities-search");
 const config = JSON.parse(domContainer.dataset?.invenioSearchConfig);
 const userAnonymous = JSON.parse(domContainer.dataset?.userAnonymous);
-console.log(userAnonymous);
 // eslint-disable-next-line react/no-deprecated
 ReactDOM.render(
   <Container>
