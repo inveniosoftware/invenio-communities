@@ -1,6 +1,14 @@
+// This file is part of InvenioRDM
+// Copyright (C) 2024 CERN.
+// Copyright (C) 2024 KTH Royal Institute of Technology.
+//
+// Invenio App RDM is free software; you can redistribute it and/or modify it
+// under the terms of the MIT License; see LICENSE file for more details.
+
 import React from "react";
 import PropTypes from "prop-types";
 import { Popup } from "semantic-ui-react";
+import { i18next } from "@translations/invenio_app_rdm/i18next";
 
 const OrganizationsList = ({ organizations }) => {
   const handleClick = (e) => {
@@ -16,8 +24,12 @@ const OrganizationsList = ({ organizations }) => {
             {organizations[0].id ? (
               <a
                 href={`https://ror.org/${organizations[0].id}`}
-                aria-label={`${organizations[0].name}'s ROR profile`}
-                title={`${organizations[0].name}'s ROR profile`}
+                aria-label={i18next.t("{{name}}'s ROR profile", {
+                  name: organizations[0].name,
+                })}
+                title={i18next.t("{{name}}'s ROR profile", {
+                  name: organizations[0].name,
+                })}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -26,7 +38,9 @@ const OrganizationsList = ({ organizations }) => {
                 <img
                   className="inline-id-icon"
                   src="/static/images/ror-icon.svg"
-                  alt={`${organizations[0].name}'s ROR profile`}
+                  alt={i18next.t("{{name}}'s ROR profile", {
+                    name: organizations[0].name,
+                  })}
                 />
               </a>
             ) : (
@@ -35,11 +49,13 @@ const OrganizationsList = ({ organizations }) => {
           </span>
           {organizations.length > 1 && (
             <span className="ml-1">
-              &nbsp;and&nbsp;
+              &nbsp;{i18next.t("and")}&nbsp;
               <Popup
                 trigger={
                   <a href="#!" onClick={handleClick}>
-                    {`${organizations.length - 1} more organizations`}
+                    {i18next.t("{{count}} more organizations", {
+                      count: organizations.length - 1,
+                    })}
                   </a>
                 }
                 size="small"
@@ -51,8 +67,12 @@ const OrganizationsList = ({ organizations }) => {
                         {org.id ? (
                           <a
                             href={`https://ror.org/${org.id}`}
-                            aria-label={`${org.name}'s ROR profile`}
-                            title={`${org.name}'s ROR profile`}
+                            aria-label={i18next.t("{{name}}'s ROR profile", {
+                              name: org.name,
+                            })}
+                            title={i18next.t("{{name}}'s ROR profile", {
+                              name: org.name,
+                            })}
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -61,7 +81,9 @@ const OrganizationsList = ({ organizations }) => {
                             <img
                               className="inline-id-icon"
                               src="/static/images/ror-icon.svg"
-                              alt={`${organizations[0].name}'s ROR profile`}
+                              alt={i18next.t("{{name}}'s ROR profile", {
+                                name: org.name,
+                              })}
                             />
                           </a>
                         ) : (
