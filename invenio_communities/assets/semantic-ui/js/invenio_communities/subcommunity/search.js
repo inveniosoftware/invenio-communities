@@ -12,6 +12,7 @@ import {
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
   ContribSearchAppFacets,
+  SearchResultsBox,
 } from "@js/invenio_search_ui/components";
 import { parametrize } from "react-overridable";
 import {
@@ -22,7 +23,6 @@ import {
 } from "../community";
 
 import { Container } from "semantic-ui-react";
-import { SubcommunityResults } from "./SubcommunityResults";
 
 const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
   help: false,
@@ -35,7 +35,7 @@ export const overriddenComponents = {
   [`ResultsList.item`]: CommunityItem,
   [`ResultsGrid.item`]: ResultsGridItemTemplate,
   [`SearchBar.element`]: CommunitiesSearchBarElement,
-  [`SearchApp.results`]: SubcommunityResults,
+  [`SearchApp.results`]: SearchResultsBox,
 };
 
 const domContainer = document.getElementById("communities-search");
