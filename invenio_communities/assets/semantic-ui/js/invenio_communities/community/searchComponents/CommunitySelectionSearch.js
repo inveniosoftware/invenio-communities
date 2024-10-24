@@ -1,4 +1,4 @@
-// This file is part of Invenio-RDM-Records
+// This file is part of Invenio-RDM
 // Copyright (C) 2024 CERN.
 //
 // Invenio-communities is free software; you can redistribute it and/or modify it
@@ -16,6 +16,7 @@ import {
   SearchAppResultsPane,
 } from "@js/invenio_search_ui/components";
 import { GridResponsiveSidebarColumn, InvenioPopup } from "react-invenio-forms";
+import { CommunitiesStatusFilter } from "./CommunitiesStatusFilter";
 
 export class CommunitySelectionSearch extends Component {
   constructor(props) {
@@ -30,6 +31,11 @@ export class CommunitySelectionSearch extends Component {
     };
   }
 
+  /**
+   * Namespaces each component object with the specified appID.
+   * This is needed since the `CommunitySelectionSearch` component
+   * uses two search applications with distinct configs (e.g. to search in "All" or "My" communities)
+   */
   prefixAppID(components, appID) {
     // iterate components and prefix them with ".appID"
     return Object.fromEntries(
@@ -57,7 +63,6 @@ export class CommunitySelectionSearch extends Component {
     } = this.props;
 
     const searchApi = new InvenioSearchApi(selectedSearchApi);
-    console.log(selectedSearchApi);
 
     const validatedComponents = this.prefixAppID(overriddenComponents, selectedAppId);
 
@@ -85,7 +90,7 @@ export class CommunitySelectionSearch extends Component {
           >
             <Grid className="m-0 pb-0 centered" relaxed padded>
               <Grid.Row className="p-3">
-                {/* Start burguer menu for mobile and tablet only */}
+                {/* Start burger menu for mobile and tablet only */}
                 <Grid.Column only="mobile tablet" mobile={3} tablet={1}>
                   <Button
                     basic
@@ -95,7 +100,7 @@ export class CommunitySelectionSearch extends Component {
                     aria-label={i18next.t("Filter results")}
                     className="rel-mb-1"
                   />
-                  {/* End burguer menu */}
+                  {/* End burger menu */}
                 </Grid.Column>
                 <Grid.Column
                   mobile={13}
@@ -104,60 +109,20 @@ export class CommunitySelectionSearch extends Component {
                   floated="right"
                   className="text-align-right-mobile"
                 >
-                  <Menu role="tablist" className="theme-primary-menu" compact>
-                    <Menu.Item
-                      as="button"
-                      role="tab"
-                      id="all-communities-tab"
-                      aria-selected={selectedAppId === allCommunities.appId}
-                      aria-controls={allCommunities.appId}
-                      name="All"
-                      active={selectedAppId === allCommunities.appId}
-                      onClick={() =>
-                        this.setState({
-                          selectedConfig: allCommunities,
-                        })
-                      }
-                    >
-                      {i18next.t("All")}
-                    </Menu.Item>
-                    <Menu.Item
-                      as="button"
-                      role="tab"
-                      id="my-communities-tab"
-                      aria-selected={selectedAppId === myCommunities.appId}
-                      aria-controls={myCommunities.appId}
-                      name="My communities"
-                      active={selectedAppId === myCommunities.appId}
-                      disabled={userAnonymous}
-                      onClick={() =>
-                        this.setState({
-                          selectedConfig: myCommunities,
-                        })
-                      }
-                    >
-                      {i18next.t("My communities")}
-                      {userAnonymous && (
-                        <InvenioPopup
-                          popupId="disabled-my-communities-popup"
-                          size="small"
-                          trigger={
-                            <Icon
-                              className="mb-5 ml-5"
-                              color="grey"
-                              name="question circle outline"
-                            />
-                          }
-                          ariaLabel={i18next.t(
-                            "You must be logged in to filter by your communities."
-                          )}
-                          content={i18next.t(
-                            "You must be logged in to filter by your communities."
-                          )}
-                        />
-                      )}
-                    </Menu.Item>
-                  </Menu>
+                  <CommunitiesStatusFilter
+                    myCommunitiesOnClick={() => {
+                      this.setState({
+                        selectedConfig: myCommunities,
+                      });
+                    }}
+                    allCommunitiesOnClick={() => {
+                      this.setState({
+                        selectedConfig: allCommunities,
+                      });
+                    }}
+                    appID={selectedAppId}
+                    allCommunitiesSelected={selectedAppId === allCommunities.appId}
+                  />
                 </Grid.Column>
                 <Grid.Column
                   mobile={16}
