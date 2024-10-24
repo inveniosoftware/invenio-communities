@@ -47,7 +47,7 @@ ReactDOM.render(
     <CommunitySelectionSearch
       overriddenComponents={overriddenComponents}
       config={config}
-      userAnonymous={userAnonymous}
+      communitiesStatusFilterEnabled={!userAnonymous}
     />
   </Container>,
   domContainer

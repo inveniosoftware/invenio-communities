@@ -8,14 +8,14 @@ import { i18next } from "@translations/invenio_rdm_records/i18next";
 import React, { Component } from "react";
 import { OverridableContext } from "react-overridable";
 import { InvenioSearchApi, ReactSearchKit, SearchBar, buildUID } from "react-searchkit";
-import { Button, Grid, Icon, Menu } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import {
   SearchConfigurationContext,
   SearchAppFacets,
   SearchAppResultsPane,
 } from "@js/invenio_search_ui/components";
-import { GridResponsiveSidebarColumn, InvenioPopup } from "react-invenio-forms";
+import { GridResponsiveSidebarColumn } from "react-invenio-forms";
 import { CommunitiesStatusFilter } from "./CommunitiesStatusFilter";
 
 export class CommunitySelectionSearch extends Component {
@@ -57,9 +57,9 @@ export class CommunitySelectionSearch extends Component {
     const {
       apiConfigs: { allCommunities, myCommunities },
       autofocus,
-      overriddenComponents,
+      communitiesStatusFilterEnabled,
       config,
-      userAnonymous,
+      overriddenComponents,
     } = this.props;
 
     const searchApi = new InvenioSearchApi(selectedSearchApi);
@@ -88,10 +88,10 @@ export class CommunitySelectionSearch extends Component {
             initialQueryState={selectedInitialQueryState}
             defaultSortingOnEmptyQueryString={{ sortBy: "bestmatch" }}
           >
-            <Grid className="m-0 pb-0 centered" relaxed padded>
-              <Grid.Row className="p-3">
+            <Grid padded>
+              <Grid.Row>
                 {/* Start burger menu for mobile and tablet only */}
-                <Grid.Column only="mobile tablet" mobile={3} tablet={1}>
+                <Grid.Column only="mobile tablet" mobile={4} tablet={1}>
                   <Button
                     basic
                     size="medium"
@@ -102,33 +102,37 @@ export class CommunitySelectionSearch extends Component {
                   />
                   {/* End burger menu */}
                 </Grid.Column>
-                <Grid.Column
-                  mobile={13}
-                  tablet={4}
-                  computer={3}
-                  floated="right"
-                  className="text-align-right-mobile"
-                >
-                  <CommunitiesStatusFilter
-                    myCommunitiesOnClick={() => {
-                      this.setState({
-                        selectedConfig: myCommunities,
-                      });
-                    }}
-                    allCommunitiesOnClick={() => {
-                      this.setState({
-                        selectedConfig: allCommunities,
-                      });
-                    }}
-                    appID={selectedAppId}
-                    allCommunitiesSelected={selectedAppId === allCommunities.appId}
-                  />
-                </Grid.Column>
+                {config.aggs && <Grid.Column computer={4} />}
+                {communitiesStatusFilterEnabled && (
+                  <Grid.Column
+                    mobile={8}
+                    tablet={4}
+                    computer={4}
+                    floated="right"
+                    className="text-align-right-mobile"
+                  >
+                    <CommunitiesStatusFilter
+                      myCommunitiesOnClick={() => {
+                        this.setState({
+                          selectedConfig: myCommunities,
+                        });
+                      }}
+                      allCommunitiesOnClick={() => {
+                        this.setState({
+                          selectedConfig: allCommunities,
+                        });
+                      }}
+                      appID={selectedAppId}
+                      allCommunitiesSelected={selectedAppId === allCommunities.appId}
+                    />
+                  </Grid.Column>
+                )}
                 <Grid.Column
                   mobile={16}
                   tablet={11}
-                  computer={9}
+                  computer={communitiesStatusFilterEnabled ? 8 : 12}
                   verticalAlign="middle"
+                  floated="right"
                 >
                   <SearchBar
                     placeholder={toggleText}
@@ -183,7 +187,7 @@ CommunitySelectionSearch.propTypes = {
   autofocus: PropTypes.bool,
   overriddenComponents: PropTypes.object,
   config: PropTypes.object.isRequired,
-  userAnonymous: PropTypes.bool,
+  communitiesStatusFilterEnabled: PropTypes.bool,
 };
 
 CommunitySelectionSearch.defaultProps = {
@@ -213,5 +217,5 @@ CommunitySelectionSearch.defaultProps = {
     },
   },
   overriddenComponents: {},
-  userAnonymous: true,
+  communitiesStatusFilterEnabled: true,
 };
