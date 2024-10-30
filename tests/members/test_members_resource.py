@@ -238,6 +238,10 @@ def test_search(
     assert r.status_code == 200
     data = r.json
     assert data["sortBy"] == "name"
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
     assert data["hits"]["total"] == 3
     assert "role" in data["aggregations"]
     assert "visibility" in data["aggregations"]
@@ -300,6 +304,10 @@ def test_search_public(
     assert r.status_code == 200
     data = r.json
     assert data["sortBy"] == "name"
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
     assert data["hits"]["total"] == 1
     hit = data["hits"]["hits"][0]
     # Public view has no facets (because that would leak information on
@@ -350,9 +358,15 @@ def test_search_invitation(
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_cancel"] is True
 
+    request_id = hit["request"]["id"]
+    expected_links = {
+        "actions": {
+            "cancel": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/cancel",
+        },
+    }
+    assert expected_links == hit["links"]
 
-# TODO: member serialization/links
-# TODO: request serialization/links
+
 # TODO: community member can see info
 # TODO: community non-member can't see info
 # TODO: facet by role, facet by visibility, define sorts.
@@ -375,9 +389,8 @@ def test_post_membership_requests(app, client, headers, community_id, create_use
         headers=headers,
         json={"message": "Can I join the club?"},
     )
-    assert 201 == r.status_code
-
     RequestEvent.index.refresh()
+    assert 201 == r.status_code
 
     # Get links to check
     url_of_request = r.json["links"]["self"].replace(app.config["SITE_API_URL"], "")
@@ -399,25 +412,70 @@ def test_post_membership_requests(app, client, headers, community_id, create_use
     assert "Can I join the club?" == msg
 
 
-def test_put_membership_requests(
-    client, headers, community_id, owner, new_user_data, db
-):
-    # update membership request
-    # TODO: Implement me!
-    assert True
-
-
 def test_error_handling_for_membership_requests(
-    client, headers, community_id, owner, new_user_data, db
+    client, create_user, headers, community_id, owner, new_user_data, db
 ):
-    # TODO: Implement me!
-    # error handling registered
-    #   - permission handling registered
-    #   - duplicate handling registered
-    assert True
+    user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
+    client = user.login(client)
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+    assert 201 == r.status_code
+
+    # Error if duplicate posting
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club again?"},
+    )
+    assert 400 == r.status_code
 
 
-# TODO: search membership requests
-def test_get_membership_requests(client):
-    # TODO: Implement me!
-    assert True
+def test_get_membership_requests(
+    client, headers, community_id, owner, membership_request, db, clean_index
+):
+    """Search membership requests."""
+    client = owner.login(client)
+
+    r = client.get(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+    )
+
+    assert r.status_code == 200
+    data = r.json
+    # aggregations
+    assert "role" in data["aggregations"]
+    assert "status" in data["aggregations"]
+    # links
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/membership-requests?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
+    # hits > hit
+    assert data["hits"]["total"] == 1
+    hit = data["hits"]["hits"][0]
+    assert "role" in hit
+    assert "visible" in hit
+    assert "created" in hit
+    assert "updated" in hit
+    assert "revision_id" in hit
+    # hits > hit > request
+    assert "request" in hit
+    assert "id" in hit["request"]
+    assert "status" in hit["request"]
+    assert "expires_at" in hit["request"]
+    assert hit["request"]["expires_at"] is not None
+    # hits > hit > links
+    request_id = hit["request"]["id"]
+    expected_links = {
+        "actions": {
+            "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",
+            "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",
+        },
+    }
+    assert expected_links == hit["links"]
+    # hits > hit > permissions
+    assert hit["permissions"]["can_update_role"] is True

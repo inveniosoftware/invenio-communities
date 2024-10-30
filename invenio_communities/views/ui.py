@@ -42,6 +42,7 @@ from .communities import (
     community_theme_css_config,
     invitations,
     members,
+    membership_requests,
 )
 
 
@@ -203,6 +204,8 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(routes["members"], view_func=members)
 
     blueprint.add_url_rule(routes["invitations"], view_func=invitations)
+
+    blueprint.add_url_rule(routes["membership_requests"], view_func=membership_requests)
 
     # theme injection view
     blueprint.add_url_rule(

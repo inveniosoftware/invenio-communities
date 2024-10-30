@@ -9,26 +9,16 @@
 
 """Test community member service."""
 
-from unittest.mock import MagicMock
-
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
 from invenio_cache import current_cache
-from invenio_notifications.proxies import current_notifications_manager
 from invenio_records_resources.services.errors import PermissionDeniedError
-from invenio_requests.records.api import RequestEvent
+from invenio_requests.records.api import Request, RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
 from invenio_communities.members.records.api import ArchivedInvitation, Member
-from invenio_communities.notifications.builders import (
-    CommunityInvitationAcceptNotificationBuilder,
-    CommunityInvitationCancelNotificationBuilder,
-    CommunityInvitationDeclineNotificationBuilder,
-    CommunityInvitationExpireNotificationBuilder,
-    CommunityInvitationSubmittedNotificationBuilder,
-)
 from invenio_communities.proxies import current_identities_cache
 
 
@@ -346,7 +336,10 @@ def test_search_members(
 # Scan members
 #
 def test_scan_members(member_service, community, owner, clean_index):
-    """Scan should work the same as search."""
+    """Scan should work the same as search.
+
+    ... well except for list and item links.
+    """
     res_search = member_service.search(owner.identity, community._record.id)
 
     # scan members (pagination not possible with scan)
@@ -354,6 +347,7 @@ def test_scan_members(member_service, community, owner, clean_index):
     scan_hits = res_scan.to_dict()["hits"]["hits"]
     assert len(scan_hits) == res_search.total
     for index, hit in enumerate(res_search.to_dict()["hits"]["hits"]):
+        hit.pop("links", None)
         assert scan_hits[index] == hit
 
 
@@ -672,7 +666,7 @@ def test_leave_owner_allowed(member_service, community, owner, group, db):
     member_service.add(owner.identity, community._record.id, data)
 
     # Leave
-    data = {"members": [{"type": "user", "id": str(owner.id)}]}
+    data = {"members": [{"type": "group", "id": group.name}]}
     assert member_service.delete(owner.identity, community._record.id, data)
 
 
@@ -1172,13 +1166,71 @@ def test_update_invalid_data(member_service, community, group):
 #
 
 
-def test_request_cancel_request_flow(
+def test_get_pending_request_id_if_any(
     member_service,
     community,
+    owner,
     create_user,
     requests_service,
     db,
-    search_clear,
+    clean_index,
+):
+    user = create_user()
+
+    # Case no membership (no associated request id)
+    request_id = member_service.get_pending_request_id_if_any(
+        user.id, community._record.id
+    )
+    assert request_id is None
+
+    # Case pending membership (associated request id)
+    membership_request = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        {"message": "Can I join the club?"},
+    )
+    request_id = member_service.get_pending_request_id_if_any(
+        user.id, community._record.id
+    )
+    assert membership_request.id == str(request_id)
+
+    # Case (sanity check) pending membership from invitation (associated request id)
+    requests_service.execute_action(user.identity, membership_request.id, "cancel")
+    data = {
+        "members": [{"type": "user", "id": str(user.id)}],
+        "role": "reader",
+        "message": "Welcome to the club!",
+    }
+    member_service.invite(owner.identity, community._record.id, data)
+    # get invitation_request_id
+    Request.index.refresh()
+    results = requests_service.search(
+        user.identity,
+        receiver={"user": user.id},
+        type="community-invitation",
+    ).to_dict()
+    invitation_request_id = results["hits"]["hits"][0]["id"]
+    request_id = member_service.get_pending_request_id_if_any(
+        user.id, community._record.id
+    )
+    assert invitation_request_id == str(request_id)
+
+    # Case membership established (associated request id but not pending)
+    requests_service.execute_action(user.identity, invitation_request_id, "accept")
+    request_id = member_service.get_pending_request_id_if_any(
+        user.id, community._record.id
+    )
+    assert request_id is None
+
+
+def test_request_membership_cancel_request_flow(
+    member_service,
+    community,
+    owner,
+    create_user,
+    requests_service,
+    db,
+    clean_index,
 ):
     """Check creation of membership request after first creation closed.
 
@@ -1195,17 +1247,163 @@ def test_request_cancel_request_flow(
         data,
     )
 
-    # Close request - here via cancel
+    # Cancel request
     request = requests_service.execute_action(
         user.identity, membership_request.id, "cancel"
     ).to_dict()
+    ArchivedInvitation.index.refresh()  # switch name? needed?
+
+    # 1 "request", the cancelled membership request
+    res = member_service.search_membership_requests(
+        owner.identity, community._record.id
+    )
+    hits = res.to_dict()["hits"]
+    assert 1 == hits["total"]
+    hit = hits["hits"][0]
+    assert "cancelled" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
 
     # Should be possible to create a new one again
-    membership_request_2 = member_service.request_membership(
+    member_service.request_membership(
         user.identity,
         community._record.id,
         {"message": "Oops didn't mean to cancel. Oh well, I will request again."},
     )
+
+
+def test_request_membership_decline_flow(
+    create_user,
+    community,
+    member_service,
+    requests_service,
+    owner,
+    db,
+    clean_index,
+):
+    # Create membership request
+    user = create_user()
+    data = {"message": "Can I join the club?"}
+    community_uuid = community._record.id
+    membership_request = member_service.request_membership(
+        user.identity,
+        community_uuid,
+        data,
+    )
+    Member.index.refresh()
+
+    # Preconditions
+    # 1 member, the owner
+    res = member_service.search(owner.identity, community_uuid)
+    assert 1 == res.to_dict()["hits"]["total"]
+    # 1 "request", the membership request
+    res = member_service.search_membership_requests(owner.identity, community_uuid)
+    assert 1 == res.to_dict()["hits"]["total"]
+
+    # Decline request
+    request = requests_service.execute_action(
+        owner.identity, membership_request.id, "decline"
+    ).to_dict()
+    ArchivedInvitation.index.refresh()  # switch name?
+    Member.index.refresh()
+
+    # Postconditions
+    # 1 member, the owner
+    res = member_service.search(owner.identity, community_uuid)
+    assert 1 == res.to_dict()["hits"]["total"]
+    # 1 "request", the declined membership_request
+    res = member_service.search_membership_requests(owner.identity, community_uuid)
+    hits = res.to_dict()["hits"]
+    assert 1 == hits["total"]
+    hit = hits["hits"][0]
+    assert "declined" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+
+
+def test_request_membership_accept_flow(
+    create_user,
+    community,
+    member_service,
+    requests_service,
+    owner,
+    invite_user,
+    invite_request_id,
+    db,
+    clean_index,
+):
+    # Create membership request
+    user = create_user()
+    data = {"message": "Can I join the club?"}
+    community_uuid = community._record.id
+    membership_request = member_service.request_membership(
+        user.identity,
+        community_uuid,
+        data,
+    )
+    Member.index.refresh()
+
+    # Accept request
+    request = requests_service.execute_action(
+        owner.identity, membership_request.id, "accept"
+    ).to_dict()
+    ArchivedInvitation.index.refresh()
+    Member.index.refresh()
+
+    # Postconditions
+    # 2 members, the owner + requester
+    res = member_service.search(owner.identity, community_uuid)
+    assert 2 == res.to_dict()["hits"]["total"]
+
+    # 1 "request", the accepted one
+    res = member_service.search_membership_requests(owner.identity, community_uuid)
+    hits = res.to_dict()["hits"]
+    assert 1 == hits["total"]
+    hit = hits["hits"][0]
+    assert "accepted" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+
+
+def test_request_membership_expire_flow(
+    member_service,
+    community,
+    owner,
+    create_user,
+    requests_service,
+    db,
+    clean_index,
+):
+    # Create membership request
+    user = create_user()
+    data = {
+        "message": "Can I join the club?",
+    }
+    community_uuid = community._record.id
+    membership_request = member_service.request_membership(
+        user.identity,
+        community_uuid,
+        data,
+    )
+
+    # Expire request
+    request = requests_service.execute_action(
+        system_identity, membership_request.id, "expire"
+    ).to_dict()
+    ArchivedInvitation.index.refresh()
+    Member.index.refresh()
+
+    # Postconditions
+    # 1 member, the owner
+    res = member_service.search(owner.identity, community_uuid)
+    assert 1 == res.to_dict()["hits"]["total"]
+
+    # 1 "request", the expired membership request
+    res = member_service.search_membership_requests(owner.identity, community_uuid)
+    hits = res.to_dict()["hits"]
+    assert 1 == hits["total"]
+    hit = hits["hits"][0]
+    assert "expired" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+    # `expires_at`` is UTC-offset
+    assert hit["request"]["expires_at"].endswith("+00:00")
 
 
 #

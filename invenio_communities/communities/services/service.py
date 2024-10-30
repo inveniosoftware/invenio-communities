@@ -169,6 +169,8 @@ class CommunityService(RecordService):
                 must=[
                     dsl.Q("term", **{"receiver.community": community_id}),
                     ~dsl.Q("term", **{"status": "created"}),
+                    # Excluding explicitly for now
+                    ~dsl.Q("term", **{"type": "community-membership-request"}),
                 ],
             ),
             **kwargs,

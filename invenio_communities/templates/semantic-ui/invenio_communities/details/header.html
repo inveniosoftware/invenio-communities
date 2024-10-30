@@ -11,15 +11,23 @@
 {%- from "invenio_theme/macros/truncate.html" import truncate_text %}
 {%- from "invenio_communities/details/macros/access-status-label.html" import access_status_label -%}
 
-{% macro button_to_request_membership(community) %}
-  {% if permissions.can_request_membership %}
-  {# TODO: Add relation_to_community for other flows #}
-  <div
-    id="request-membership-app"
-    data-community='{{ community | tojson }}'
-    class="display-inline-block"
+{% macro button_for_membership(community) %}
+  {# check if current user has membership (invitation or membership request) pending #}
+  {% if associated_request_id is defined and associated_request_id %}
+    <a href="{{ url_for('invenio_app_rdm_requests.user_dashboard_request_view', request_pid_value=associated_request_id) }}"
+      class="ui button labeled icon rel-mt-1 theme-secondary">
+      <i class="sign-in icon" aria-hidden="true"></i>
+      {{ _("Membership discussion") }}
+    </a>
+  {% elif permissions.can_request_membership %}
+    <div
+      id="request-membership-app"
+      data-community='{{ community | tojson }}'
+      class="display-inline-block"
     >
-  </div>
+    </div>
+  {% else %}
+    {# show nothing #}
   {% endif %}
 {% endmacro %}
 
@@ -112,7 +120,7 @@
       </div>
       <div
         class="sixteen wide mobile sixteen wide tablet five wide computer right aligned middle aligned column">
-        {{ button_to_request_membership(community) }}
+        {{ button_for_membership(community) }}
         {%- if not community_use_jinja_header %}
           {%- if not permissions.can_submit_record %}
             <div class="ui icon inline-block" data-tooltip="{{_('Submission to this community is only allowed to community members.')}}">

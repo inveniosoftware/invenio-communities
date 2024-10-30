@@ -49,6 +49,12 @@ export class Filters {
     return { ...rolesFilters, ...statusFilters };
   }
 
+  getMembershipRequestFilters() {
+    const statusFilters = this.getStatus();
+    const rolesFilters = this.getRoles();
+    return { ...rolesFilters, ...statusFilters };
+  }
+
   getMembersFilters() {
     const visibilityFilters = this.getVisibility();
     const rolesFilters = this.getRoles();

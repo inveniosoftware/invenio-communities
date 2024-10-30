@@ -19,6 +19,10 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationCancelNotificationBuilder,
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
+    CommunityMembershipRequestAcceptNotificationBuilder,
+    CommunityMembershipRequestCancelNotificationBuilder,
+    CommunityMembershipRequestDeclineNotificationBuilder,
+    CommunityMembershipRequestExpireNotificationBuilder,
 )
 
 from ...proxies import current_communities
@@ -47,7 +51,7 @@ class AcceptAction(actions.AcceptAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().accept_invite(system_identity, self.request.id, uow=uow)
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationAcceptNotificationBuilder.build(self.request)
@@ -61,7 +65,7 @@ class DeclineAction(actions.DeclineAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationDeclineNotificationBuilder.build(self.request)
@@ -75,7 +79,7 @@ class CancelAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationCancelNotificationBuilder.build(self.request)
@@ -89,7 +93,7 @@ class ExpireAction(actions.ExpireAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationExpireNotificationBuilder.build(self.request)
@@ -141,8 +145,57 @@ class CancelMembershipRequestAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().close_membership_request(system_identity, self.request.id, uow=uow)
-        # TODO: Investigate notifications
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestCancelNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
+
+
+class DeclineMembershipRequestAction(actions.DeclineAction):
+    """Decline membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestDeclineNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
+
+
+class ExpireMembershipRequestAction(actions.ExpireAction):
+    """Expire membership request action.
+
+    Triggered by task in invenio-requests.
+    """
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestExpireNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
+
+
+class AcceptMembershipRequestAction(actions.AcceptAction):
+    """Accept membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestAcceptNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -156,6 +209,9 @@ class MembershipRequestRequestType(RequestType):
     available_actions = {
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
+        "accept": AcceptMembershipRequestAction,
+        "decline": DeclineMembershipRequestAction,
+        "expire": ExpireMembershipRequestAction,
     }
 
     creator_can_be_none = False
@@ -163,3 +219,14 @@ class MembershipRequestRequestType(RequestType):
     allowed_creator_ref_types = ["user"]
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
+
+    # This indicates what roles an identity must have within the receiving community
+    # in order to accept/decline. Although a pattern, it's ultimately a more hidden way
+    # to define permission than a permission policy. It repeats concept because it
+    # is subservient to the Request permission policy abstractions.
+    needs_context = {
+        "community_roles": [
+            "owner",
+            "manager",
+        ]
+    }
