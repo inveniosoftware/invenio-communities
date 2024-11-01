@@ -84,8 +84,8 @@ class CommunityListView(AdminResourceListView):
             hidden_params=[
                 ["include_deleted", "1"],
             ],
-            page=1,
-            size=30,
+            pagination_options=(20, 50),
+            default_size=20,
         )
 
     @staticmethod
