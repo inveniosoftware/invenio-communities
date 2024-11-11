@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v17.4.0 (released 2024-11-11)
+
+- admin: change default number of results from 10 to 20
+- UI/UX: improve display of ROR information in select field
+
 Version v17.3.2 (released 2024-10-18)
 
 - ui: avoid exceptions if organizations list and request membership are not defined
