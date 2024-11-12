@@ -389,7 +389,7 @@ class CommunitySelfMember(Generator):
     def needs(self, member=None, **kwargs):
         """Enabling needs."""
         if member is not None and member.user_id is not None:
-            return [UserNeed(member.user_id)]
+            return [UserNeed(int(member.user_id))]
         return []
 
     def query_filter(self, identity=None, **kwargs):
