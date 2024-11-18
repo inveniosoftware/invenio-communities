@@ -6,7 +6,7 @@
  * // under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import { i18next } from "@translations/invenio_requests/i18next";
+import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { withState } from "react-searchkit";
