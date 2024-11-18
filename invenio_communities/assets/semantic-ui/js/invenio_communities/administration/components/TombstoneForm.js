@@ -10,7 +10,7 @@ import RemovalReasonsSelect from "./RemovalReasonsSelect";
 import { InvenioAdministrationCommunitiesApi } from "../api";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import {
   withCancel,

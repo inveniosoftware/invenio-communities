@@ -10,7 +10,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Dropdown, http, withCancel } from "react-invenio-forms";
 import { Dropdown as SUIDropdown } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 export default class RemovalReasonsSelect extends Component {
   constructor(props) {

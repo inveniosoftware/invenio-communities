@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { NotificationContext } from "@js/invenio_administration";
 import { withCancel, ErrorMessage } from "react-invenio-forms";
 import { Button, Modal } from "semantic-ui-react";
-import { i18next } from "@translations/invenio_app_rdm/i18next";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 export class RestoreConfirmation extends Component {
   constructor(props) {
