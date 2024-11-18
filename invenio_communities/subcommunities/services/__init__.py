@@ -8,5 +8,10 @@
 
 from .config import SubCommunityServiceConfig
 from .service import SubCommunityService
+from .request import SubCommunityInvitationRequest
 
-__all__ = ("SubCommunityService", "SubCommunityServiceConfig")
+__all__ = (
+    "SubCommunityService",
+    "SubCommunityServiceConfig",
+    "SubCommunityInvitationRequest",
+)

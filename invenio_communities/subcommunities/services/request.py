@@ -52,13 +52,42 @@ class DeclineSubcommunity(actions.DeclineAction):
 
 
 class SubCommunityRequest(RequestType):
-    """Request to add a subcommunity to a community."""
+    """Request to join a parent community as a subcommunity."""
 
     type_id = "subcommunity"
-    name = _("Subcommunity Request")
+    name = _("Subcommunity request")
 
     creator_can_be_none = False
     topic_can_be_none = False
+    allowed_creator_ref_types = ["community"]
+    allowed_receiver_ref_types = ["community"]
+    allowed_topic_ref_types = ["community"]
+
+    available_actions = {
+        "delete": actions.DeleteAction,
+        "create": actions.CreateAndSubmitAction,
+        "cancel": actions.CancelAction,
+        # Custom implemented actions
+        "accept": AcceptSubcommunity,
+        "decline": DeclineSubcommunity,
+    }
+
+    needs_context = {
+        "community_roles": [
+            "owner",
+            "manager",
+        ]
+    }
+
+
+class SubCommunityInvitationRequest(RequestType):
+    """Request from a parent community to community to join."""
+
+    type_id = "subcommunity-invitation"
+    name = _("Subcommunity invitation")
+
+    creator_can_be_none = False
+    topic_can_be_none = True
     allowed_creator_ref_types = ["community"]
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
@@ -91,3 +120,16 @@ def subcommunity_request_type(app):
     if not app:
         return
     return app.config.get("COMMUNITIES_SUB_REQUEST_CLS", SubCommunityRequest)
+
+
+def subcommunity_invitation_request_type(app):
+    """Return the subcommunity request type.
+
+    Since it can be overridden by the application, this function should be used
+    as the entry point for the request type.
+
+    It must return a class that inherits from `RequestType`.
+    """
+    if not app:
+        return
+    return app.config.get("COMMUNITIES_SUB_INVITATION_REQUEST_CLS", SubCommunityInvitationRequest)
