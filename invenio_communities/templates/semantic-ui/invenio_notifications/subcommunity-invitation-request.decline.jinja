@@ -18,7 +18,7 @@
 {% set account_settings_link = "{ui}/account/settings/notifications".format(**msg_ctx) %}
 
 {%- block subject -%}
-{{ _('⛔️ Subcommunity invitation declined for "{community_title}" to join "{parent_community_title}"').format(**msg_ctx) }}
+{{ _('⛔️ Subcommunity invitation declined for {community_title} to join the {parent_community_title} community').format(**msg_ctx) }}
 {%- endblock subject -%}
 
 {%- block html_body -%}
