@@ -10,6 +10,7 @@ from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_requests.customizations import RequestType, actions
+from marshmallow.exceptions import ValidationError
 
 import invenio_communities.notifications.builders as notifications
 from invenio_communities.proxies import current_communities
@@ -80,6 +81,53 @@ class SubCommunityRequest(RequestType):
     }
 
 
+class CreateSubcommunityInvitation(actions.CreateAndSubmitAction):
+    """Represents an accept action used to accept a subcommunity."""
+
+    def execute(self, identity, uow):
+        """Execute approve action."""
+        parent = self.request.created_by.resolve()
+        if not parent.children.allow:
+            raise ValidationError("Assigned parent is not allowed to be a parent.")
+        super().execute(identity, uow)
+
+
+class AcceptSubcommunityInvitation(actions.AcceptAction):
+    """Represents an accept action used to accept a subcommunity."""
+
+    def execute(self, identity, uow):
+        """Execute approve action."""
+        child = self.request.receiver.resolve().id
+        parent = self.request.created_by.resolve().id
+        current_communities.service.bulk_update_parent(
+            system_identity, [child], parent_id=parent, uow=uow
+        )
+        uow.register(
+            NotificationOp(
+                notifications.SubComInvitationAccept.build(
+                    identity=identity, request=self.request
+                )
+            )
+        )
+        super().execute(identity, uow)
+
+
+class DeclineSubcommunityInvitation(actions.DeclineAction):
+    """Represents a decline action used to decline a subcommunity."""
+
+    def execute(self, identity, uow):
+        """Execute decline action."""
+        # We override just to send a notification
+        uow.register(
+            NotificationOp(
+                notifications.SubComInvitationDecline.build(
+                    identity=identity, request=self.request
+                )
+            )
+        )
+        super().execute(identity, uow)
+
+
 class SubCommunityInvitationRequest(RequestType):
     """Request from a parent community to community to join."""
 
@@ -94,11 +142,11 @@ class SubCommunityInvitationRequest(RequestType):
 
     available_actions = {
         "delete": actions.DeleteAction,
-        "create": actions.CreateAndSubmitAction,
         "cancel": actions.CancelAction,
         # Custom implemented actions
-        "accept": AcceptSubcommunity,
-        "decline": DeclineSubcommunity,
+        "create": CreateSubcommunityInvitation,
+        "accept": AcceptSubcommunityInvitation,
+        "decline": DeclineSubcommunityInvitation,
     }
 
     needs_context = {

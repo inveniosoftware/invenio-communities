@@ -1,0 +1,49 @@
+{% set request = notification.context.request %}
+{% set parent_community = request.created_by %}
+{% set community = request.receiver %}
+{% set ui = config.SITE_UI_URL %}
+{% set msg_ctx = {
+    "community_id": community.slug,
+    "community_title": community.metadata.title,
+    "parent_community_title": parent_community.metadata.title,
+    "request_id": request.id,
+    "ui": ui,
+} %}
+
+{# TODO: use request.links.self_html when issue issue is resolved: https://github.com/inveniosoftware/invenio-rdm-records/issues/1327 #}
+{% set request_link = "{ui}/communities/{community_id}/requests/{request_id}".format(**msg_ctx) %}
+{% set account_settings_link = "{ui}/account/settings/notifications".format(**msg_ctx) %}
+
+{%- block subject -%}
+  {{ _("⌛️ The invitation for {community_title} to join the '{parent_community_title}' community expired").format(**msg_ctx) }}
+{%- endblock subject -%}
+
+{%- block html_body -%}
+<table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
+    <tr>
+        <td>{{ _("The invitation for '{community_title}' to join the '{parent_community_title}' community has expired.").format(**msg_ctx) }}</td>
+    </tr>
+    <tr>
+        <td><a href="{{ request_link }}" class="button">{{ _("Check out the invitation")}}</a></td>
+    </tr>
+    <tr>
+        <td><strong>_</strong></td>
+    </tr>
+    <tr>
+        <td style="font-size:smaller">{{ _("This is an auto-generated message. To manage notifications, visit your")}} <a href="{{account_settings_link}}">{{ _("account settings")}}</a>.</td>
+    </tr>
+</table>
+{%- endblock html_body %}
+
+{%- block plain_body -%}
+{{ _("The invitation for {community_title} to join the '{parent_community_title}' community has expired.").format(**msg_ctx) }}
+
+{{ _("Check out the invitation:") }} {{ request_link }}
+{%- endblock plain_body %}
+
+{# Markdown for Slack/Mattermost/chat #}
+{%- block md_body -%}
+{{ _("The invitation for *{community_title}* to join community *{parent_community_title}* has expired.").format(**msg_ctx) }}
+
+[{{ _("Check out the invitation") }}]({{ request_link }})
+{%- endblock md_body %}

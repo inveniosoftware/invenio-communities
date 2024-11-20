@@ -224,13 +224,6 @@ class SubComInvitationBuilderBase(SubCommunityBuilderBase):
 
     type = "subcommunity-invitation-request"
 
-    context = [
-        EntityResolve("request"),
-        EntityResolve("request.created_by"),
-        EntityResolve("request.receiver"),
-        # EntityResolve("executing_user") executing via script only for now
-    ]
-
     recipients = [
         CommunityMembersRecipient("request.created_by", roles=["owner", "manager"]),
         CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
@@ -241,6 +234,13 @@ class SubComInvitationCreate(SubComInvitationBuilderBase):
     """Notification builder for subcommunity request creation."""
 
     type = f"{SubComInvitationBuilderBase.type}.create"
+
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.receiver"),
+        # EntityResolve("executing_user") creating via script only for now
+    ]
 
     recipient_filters = [
         UserPreferencesRecipientFilter(),
@@ -254,10 +254,36 @@ class SubComInvitationCreate(SubComInvitationBuilderBase):
 class SubComInvitationAccept(SubComInvitationBuilderBase):
     """Notification builder for subcommunity request accept."""
 
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.receiver"),
+        EntityResolve("executing_user"),
+    ]
+
     type = f"{SubComInvitationBuilderBase.type}.accept"
 
 
 class SubComInvitationDecline(SubComInvitationBuilderBase):
     """Notification builder for subcommunity request decline."""
 
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.receiver"),
+        EntityResolve("executing_user"),
+    ]
+
     type = f"{SubComInvitationBuilderBase.type}.decline"
+
+
+class SubComInvitationExpire(SubComInvitationBuilderBase):
+    """Notification builder for subcommunity invitation expire."""
+
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.receiver"),
+    ]
+
+    type = f"{SubComInvitationBuilderBase.type}.expire"
