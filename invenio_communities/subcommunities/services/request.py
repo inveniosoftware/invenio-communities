@@ -132,4 +132,6 @@ def subcommunity_invitation_request_type(app):
     """
     if not app:
         return
-    return app.config.get("COMMUNITIES_SUB_INVITATION_REQUEST_CLS", SubCommunityInvitationRequest)
+    return app.config.get(
+        "COMMUNITIES_SUB_INVITATION_REQUEST_CLS", SubCommunityInvitationRequest
+    )

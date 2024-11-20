@@ -7,8 +7,8 @@
 """Subcommunities module service."""
 
 from .config import SubCommunityServiceConfig
-from .service import SubCommunityService
 from .request import SubCommunityInvitationRequest
+from .service import SubCommunityService
 
 __all__ = (
     "SubCommunityService",

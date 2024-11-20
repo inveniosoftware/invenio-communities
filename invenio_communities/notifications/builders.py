@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright (C) 2024 CERN.
 # Copyright (C) 2023 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
@@ -216,3 +217,47 @@ class SubCommunityDecline(SubCommunityBuilderBase):
     """Notification builder for subcommunity request decline."""
 
     type = f"{SubCommunityBuilderBase.type}.decline"
+
+
+class SubComInvitationBuilderBase(SubCommunityBuilderBase):
+    """Base notification builder for subcommunity invitation requests."""
+
+    type = "subcommunity-invitation-request"
+
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.receiver"),
+        # EntityResolve("executing_user") executing via script only for now
+    ]
+
+    recipients = [
+        CommunityMembersRecipient("request.created_by", roles=["owner", "manager"]),
+        CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
+    ]
+
+
+class SubComInvitationCreate(SubComInvitationBuilderBase):
+    """Notification builder for subcommunity request creation."""
+
+    type = f"{SubComInvitationBuilderBase.type}.create"
+
+    recipient_filters = [
+        UserPreferencesRecipientFilter(),
+        # TODO: We exceptionally DON'T filter out the executing user here, because we
+        # don't have a clear place where they can see the created request.
+        # See also: https://github.com/inveniosoftware/invenio-communities/issues/1158
+        # UserRecipientFilter("executing_user"),
+    ]
+
+
+class SubComInvitationAccept(SubComInvitationBuilderBase):
+    """Notification builder for subcommunity request accept."""
+
+    type = f"{SubComInvitationBuilderBase.type}.accept"
+
+
+class SubComInvitationDecline(SubComInvitationBuilderBase):
+    """Notification builder for subcommunity request decline."""
+
+    type = f"{SubComInvitationBuilderBase.type}.decline"
