@@ -22,7 +22,7 @@ from jinja2 import TemplateError
 from invenio_communities.proxies import current_communities
 
 from ..communities.resources.ui_schema import TypesSchema
-from ..members.records.api import Member
+from ..errors import LogoNotFoundError
 from .decorators import pass_community
 from .template_loader import CommunityThemeChoiceJinjaLoader
 
@@ -360,7 +360,7 @@ def communities_settings(pid_value, community, community_ui):
     try:
         current_communities.service.read_logo(g.identity, pid_value)
         logo = True
-    except FileNotFoundError:
+    except LogoNotFoundError:
         logo = False
 
     logo_size_limit = 10**6

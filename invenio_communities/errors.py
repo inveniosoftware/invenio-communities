@@ -31,6 +31,14 @@ class CommunityFeaturedEntryDoesNotExistError(CommunityError):
         )
 
 
+class LogoNotFoundError(CommunityError):
+    """The logo was not found."""
+
+    def __init__(self):
+        """Initialise error."""
+        super().__init__(_("No logo exists for this community."))
+
+
 class LogoSizeLimitError(CommunityError):
     """The provided logo size exceeds limit."""
 

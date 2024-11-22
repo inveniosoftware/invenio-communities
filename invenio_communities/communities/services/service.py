@@ -38,6 +38,7 @@ from invenio_communities.communities.services.uow import (
 )
 from invenio_communities.errors import (
     CommunityFeaturedEntryDoesNotExistError,
+    LogoNotFoundError,
     LogoSizeLimitError,
     OpenRequestsForCommunityDeletionError,
 )
@@ -235,7 +236,7 @@ class CommunityService(RecordService):
         self.require_permission(identity, "read", record=record)
         logo_file = record.files.get("logo")
         if logo_file is None:
-            raise FileNotFoundError()
+            raise LogoNotFoundError()
         return self.files.file_result_item(
             self.files,
             identity,
@@ -277,7 +278,7 @@ class CommunityService(RecordService):
         self.require_permission(identity, "update", record=record)
         deleted_file = record.files.pop("logo", None)
         if deleted_file is None:
-            raise FileNotFoundError()
+            raise LogoNotFoundError()
 
         deleted_file.delete(force=True)
 
