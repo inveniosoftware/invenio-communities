@@ -89,6 +89,15 @@ class CreateSubcommunityInvitation(actions.CreateAndSubmitAction):
         parent = self.request.created_by.resolve()
         if not parent.children.allow:
             raise ValidationError("Assigned parent is not allowed to be a parent.")
+
+        uow.register(
+            NotificationOp(
+                notifications.SubComInvitationCreate.build(
+                    identity=identity, request=self.request
+                )
+            )
+        )
+
         super().execute(identity, uow)
 
 

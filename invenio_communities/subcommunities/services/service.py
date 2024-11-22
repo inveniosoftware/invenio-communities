@@ -6,20 +6,22 @@
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Subcommunities service."""
 
+from datetime import datetime, timedelta, timezone
+
 from invenio_i18n import gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services.base import LinksTemplate, Service
-from invenio_records_resources.services.records.links import pagination_links
 from invenio_records_resources.services.records.schema import ServiceSchemaWrapper
 from invenio_records_resources.services.uow import unit_of_work
+from invenio_requests import current_request_type_registry
 from invenio_requests.proxies import current_requests_service as requests_service
-from invenio_search.engine import dsl
 from werkzeug.local import LocalProxy
 
 import invenio_communities.notifications.builders as notifications
 from invenio_communities.proxies import current_communities, current_roles
 
 from .errors import ParentChildrenNotAllowed
+from .request import SubCommunityInvitationRequest
 
 community_service = LocalProxy(lambda: current_communities.service)
 
@@ -150,3 +152,25 @@ class SubCommunityService(Service):
         #     expandable_fields=self.expandable_fields,
         #     expand=True,
         # )
+
+    @unit_of_work()
+    def create_subcommunity_invitation_request(
+        self, identity, parent_community_id, child_community_id, uow=None
+    ):
+        """Create and submit a SubCommunityInvitation request."""
+        type_ = current_request_type_registry.lookup(
+            SubCommunityInvitationRequest.type_id
+        )
+        parent_community = community_service.record_cls.pid.resolve(parent_community_id)
+        child_community = community_service.record_cls.pid.resolve(child_community_id)
+        expires_at = datetime.now(timezone.utc) + timedelta(days=30)
+
+        requests_service.create(
+            identity,
+            {},
+            type_,
+            creator=parent_community,
+            receiver=child_community,
+            expires_at=expires_at,
+            uow=uow,
+        )
