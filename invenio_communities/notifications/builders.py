@@ -224,6 +224,13 @@ class SubComInvitationBuilderBase(SubCommunityBuilderBase):
 
     type = "subcommunity-invitation-request"
 
+    context = [
+        EntityResolve("request"),
+        EntityResolve("request.created_by"),
+        EntityResolve("request.receiver"),
+        EntityResolve("executing_user"),
+    ]
+
     recipients = [
         CommunityMembersRecipient("request.created_by", roles=["owner", "manager"]),
         CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
@@ -242,48 +249,46 @@ class SubComInvitationCreate(SubComInvitationBuilderBase):
         # EntityResolve("executing_user") creating via script only for now
     ]
 
-    recipient_filters = [
-        UserPreferencesRecipientFilter(),
-        # TODO: We exceptionally DON'T filter out the executing user here, because we
-        # don't have a clear place where they can see the created request.
-        # See also: https://github.com/inveniosoftware/invenio-communities/issues/1158
-        # UserRecipientFilter("executing_user"),
+    recipients = [
+        CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
     ]
 
 
 class SubComInvitationAccept(SubComInvitationBuilderBase):
     """Notification builder for subcommunity request accept."""
 
-    context = [
-        EntityResolve("request"),
-        EntityResolve("request.created_by"),
-        EntityResolve("request.receiver"),
-        EntityResolve("executing_user"),
-    ]
-
     type = f"{SubComInvitationBuilderBase.type}.accept"
+
+    recipient_filters = [
+        UserPreferencesRecipientFilter(),
+        # Don't send notifications to the user performing the action
+        UserRecipientFilter("executing_user"),
+    ]
 
 
 class SubComInvitationDecline(SubComInvitationBuilderBase):
     """Notification builder for subcommunity request decline."""
 
-    context = [
-        EntityResolve("request"),
-        EntityResolve("request.created_by"),
-        EntityResolve("request.receiver"),
-        EntityResolve("executing_user"),
-    ]
-
     type = f"{SubComInvitationBuilderBase.type}.decline"
+
+    recipient_filters = [
+        UserPreferencesRecipientFilter(),
+        # Don't send notifications to the user performing the action
+        UserRecipientFilter("executing_user"),
+    ]
 
 
 class SubComInvitationExpire(SubComInvitationBuilderBase):
     """Notification builder for subcommunity invitation expire."""
 
+    type = f"{SubComInvitationBuilderBase.type}.expire"
+
     context = [
         EntityResolve("request"),
         EntityResolve("request.created_by"),
         EntityResolve("request.receiver"),
     ]
 
-    type = f"{SubComInvitationBuilderBase.type}.expire"
+    recipients = [
+        CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
+    ]
