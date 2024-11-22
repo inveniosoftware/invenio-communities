@@ -24,7 +24,7 @@ from invenio_communities.communities.resources.serializer import (
 )
 from invenio_communities.proxies import current_communities
 
-from ..errors import CommunityDeletedError
+from ..errors import CommunityDeletedError, LogoNotFoundError
 from ..searchapp import search_app_context
 from .communities import (
     communities_about,
@@ -256,7 +256,7 @@ def create_ui_blueprint(app):
                 identity=g.identity,
                 id_=community_id,
             )
-        except FileNotFoundError:
+        except LogoNotFoundError:
             return url_for("static", filename="images/square-placeholder.png")
 
         return logo_link

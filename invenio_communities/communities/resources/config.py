@@ -31,6 +31,7 @@ from invenio_communities.communities.resources.serializer import (
 from invenio_communities.errors import (
     CommunityDeletedError,
     CommunityFeaturedEntryDoesNotExistError,
+    LogoNotFoundError,
     LogoSizeLimitError,
     OpenRequestsForCommunityDeletionError,
     SetDefaultCommunityError,
@@ -39,7 +40,7 @@ from invenio_communities.errors import (
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update(
     {
-        FileNotFoundError: create_error_handler(
+        LogoNotFoundError: create_error_handler(
             HTTPJSONException(
                 code=404,
                 description="No logo exists for this community.",
