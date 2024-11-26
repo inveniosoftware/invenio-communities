@@ -8,6 +8,7 @@
     "parent_community_id": parent_community.slug,
     "parent_community_title": parent_community.metadata.title,
     "request_id": request.id,
+    "expires_at": request.expires_at | from_isodatetime | dateformat(format="long"),
     "ui": ui,
 } %}
 
@@ -29,6 +30,9 @@
         <td><a href="{{ request_link }}" class="button">{{ _("View the request")}}</a></td>
     </tr>
     <tr>
+        <td>{{ _('This invitation will expire on {expires_at}.').format(**msg_ctx) }}</td>
+    </tr>
+    <tr>
         <td><strong>—<strong></td>
     </tr>
     <tr>
@@ -42,6 +46,7 @@
 
 {{ _("View the request at:") }} {{ request_link }}
 
+{{ _('This invitation will expire on {expires_at}.').format(**msg_ctx) }}
 —
 {{ _("This is an auto-generated message. To manage notifications, visit your account settings at: ") }}{{ account_settings_link }}
 {%- endblock plain_body %}
@@ -52,6 +57,7 @@
 
 [{{ _("View the request") }}]({{ request_link }})
 
+{{ _('This invitation will expire on {expires_at}.').format(**msg_ctx) }}
 —
 {{ _("This is an auto-generated message. To manage notifications, visit your") }} [{{ _("account settings") }}]({{ account_settings_link }}).
 {%- endblock md_body %}
