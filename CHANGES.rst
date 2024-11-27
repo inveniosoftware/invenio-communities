@@ -9,6 +9,14 @@
 Changes
 =======
 
+Version v17.5.0 (released 2024-11-27)
+
+- subcommunities: implement invitation request
+    * Allows parent communities to create requests to invite other
+      communities as their children.
+- config: add LogoNotFoundError
+- communities: config: Update static page URLs to prevent name collisions
+
 Version v17.4.0 (released 2024-11-11)
 
 - admin: change default number of results from 10 to 20
