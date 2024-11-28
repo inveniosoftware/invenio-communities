@@ -123,7 +123,7 @@ def test_simple_flow(
     assert res.json["id"] == id_
 
     # Search for created community
-    res = client.get(f"/communities", query_string={"q": f"id:{id_}"}, headers=headers)
+    res = client.get("/communities", query_string={"q": f"id:{id_}"}, headers=headers)
     assert res.status_code == 200
     assert res.json["hits"]["total"] == 1
     assert res.json["hits"]["hits"][0]["metadata"] == created_community["metadata"]
@@ -139,7 +139,7 @@ def test_simple_flow(
     Community.index.refresh()
 
     # Search for updated commmunity
-    res = client.get(f"/communities", query_string={"q": f"id:{id_}"}, headers=headers)
+    res = client.get("/communities", query_string={"q": f"id:{id_}"}, headers=headers)
     assert res.status_code == 200
     assert res.json["hits"]["total"] == 1
     assert res.json["hits"]["hits"][0]["metadata"] == updated_community["metadata"]
@@ -368,7 +368,7 @@ def test_simple_search_response(
     slug_oldest, slug_newest, num_each, total = fake_communities
 
     # Search for any commmunity, default order newest
-    res = client.get(f"/communities", query_string={"q": f""}, headers=headers)
+    res = client.get("/communities", query_string={"q": ""}, headers=headers)
     assert res.status_code == 200
     _assert_single_item_search(res)
     assert res.json["hits"]["total"] == total
@@ -377,7 +377,7 @@ def test_simple_search_response(
 
     # Search filter for the second commmunity
     res = client.get(
-        f"/communities", query_string={"q": "metadata.type.id:project"}, headers=headers
+        "/communities", query_string={"q": "metadata.type.id:project"}, headers=headers
     )
     assert res.status_code == 200
     _assert_single_item_search(res)
@@ -385,14 +385,14 @@ def test_simple_search_response(
 
     # Sort results by oldest
     res = client.get(
-        f"/communities", query_string={"q": "", "sort": "oldest"}, headers=headers
+        "/communities", query_string={"q": "", "sort": "oldest"}, headers=headers
     )
     assert res.status_code == 200
     assert res.json["hits"]["hits"][0]["slug"] == slug_oldest
 
     # Test for page and size
     res = client.get(
-        f"/communities",
+        "/communities",
         query_string={"q": "", "size": "5", "page": "2"},
         headers=headers,
     )
@@ -401,7 +401,7 @@ def test_simple_search_response(
     assert len(res.json["hits"]["hits"]) == 5
 
     # Test search for prefix
-    res = client.get(f"/communities", query_string={"q": "Comm"}, headers=headers)
+    res = client.get("/communities", query_string={"q": "Comm"}, headers=headers)
     assert res.status_code == 200
     _assert_single_item_search(res)
     assert res.json["hits"]["total"] == total  # they all have the name "My Community"
@@ -760,11 +760,10 @@ def test_invalid_community_ids(
 
 
 def test_featured_communities(
-    client, location, minimal_community, headers, db, search_clear, admin
+    client, location, minimal_community, headers, db, search_clear, owner, admin
 ):
     """Test featured communities endpoints."""
-    client = admin.login(client)
-
+    client = owner.login(client)
     minimal_community["slug"] = "comm_id"
     res = client.post("/communities", headers=headers, json=minimal_community)
     assert res.status_code == 201
@@ -779,20 +778,38 @@ def test_featured_communities(
     assert res.json["hits"]["total"] == 0
     _assert_single_item_search(res)
 
-    # Other endpoints are currently only accessible with superuser-access
-    # At least we know if the endpoints are accessible and params are provided
+    # Feature action is only allowed for admin
+    res = client.post(
+        f"/communities/{c_id_}/featured",
+        headers=headers,
+        json={"start_date": "2024-11-28T12:03:53"},
+    )
+    assert res.status_code == 403
+    owner.logout(client)
+
+    # Other endpoints are currently only accessible with admin-access
+    client = admin.login(client)
     res = client.get(f"/communities/{c_id_}/featured", headers=headers)
-    assert res.status_code == 403
+    assert res.status_code == 200
 
-    res = client.post(f"/communities/{c_id_}/featured", headers=headers, json={})
-    assert res.status_code == 403
+    res = client.post(
+        f"/communities/{c_id_}/featured",
+        headers=headers,
+        json={"start_date": "2024-11-28T12:03:53"},
+    )
+    assert res.status_code == 201
+    feat_id = res.json["id"]
 
-    # featured entry does not exist
-    res = client.put(f"/communities/{c_id_}/featured/0", headers=headers, json={})
-    assert res.status_code == 404
+    # update featured entry
+    res = client.put(
+        f"/communities/{c_id_}/featured/{feat_id}",
+        headers=headers,
+        json={"start_date": "2024-12-01T12:03:58"},
+    )
+    assert res.status_code == 200
 
-    res = client.delete(f"/communities/{c_id_}/featured/0", headers=headers)
-    assert res.status_code == 404
+    res = client.delete(f"/communities/{c_id_}/featured/{feat_id}", headers=headers)
+    assert res.status_code == 204
 
 
 def test_simple_flow_restricted_community(

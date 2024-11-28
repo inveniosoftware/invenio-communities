@@ -17,7 +17,7 @@ from invenio_access.models import ActionRoles
 from invenio_access.permissions import any_user as any_user_need
 from invenio_access.permissions import superuser_access
 from invenio_accounts.models import Role
-from invenio_admin.permissions import action_admin_access
+from invenio_administration.permissions import administration_access_action
 from invenio_app.factory import create_api
 from invenio_notifications.backends import EmailNotificationBackend
 from invenio_notifications.services.builders import NotificationBuilder
@@ -278,9 +278,7 @@ def admin(UserFixture, app, db, admin_role_need):
     u.create(app, db)
 
     datastore = app.extensions["security"].datastore
-    _, role = datastore._prepare_role_modify_args(u.user, "admin-access")
-
-    datastore.add_role_to_user(u.user, role)
+    datastore.add_role_to_user(u.user, "admin-access")
     datastore.commit()
     return u
 
@@ -305,7 +303,7 @@ def admin_role_need(db):
     role = Role(id="admin-access", name="admin-access")
     db.session.add(role)
 
-    action_role = ActionRoles.create(action=action_admin_access, role=role)
+    action_role = ActionRoles.create(action=administration_access_action, role=role)
     db.session.add(action_role)
 
     db.session.commit()
