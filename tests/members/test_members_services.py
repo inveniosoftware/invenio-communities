@@ -9,26 +9,16 @@
 
 """Test community member service."""
 
-from unittest.mock import MagicMock
-
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
 from invenio_cache import current_cache
-from invenio_notifications.proxies import current_notifications_manager
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_requests.records.api import RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
 from invenio_communities.members.records.api import ArchivedInvitation, Member
-from invenio_communities.notifications.builders import (
-    CommunityInvitationAcceptNotificationBuilder,
-    CommunityInvitationCancelNotificationBuilder,
-    CommunityInvitationDeclineNotificationBuilder,
-    CommunityInvitationExpireNotificationBuilder,
-    CommunityInvitationSubmittedNotificationBuilder,
-)
 from invenio_communities.proxies import current_identities_cache
 
 
@@ -331,13 +321,13 @@ def test_search_members(
     assert res.to_dict()["hits"]["total"] == 2
     # search on the affiliation (tests query expansion)
     res = member_service.search(
-        owner.identity, community._record.id, q=f"affiliation:CERN"
+        owner.identity, community._record.id, q="affiliation:CERN"
     )
     assert res.to_dict()["hits"]["total"] == 2
-    res = member_service.search(owner.identity, community._record.id, q=f"name:New")
+    res = member_service.search(owner.identity, community._record.id, q="name:New")
     assert res.to_dict()["hits"]["total"] == 1
     res = member_service.search(
-        owner.identity, community._record.id, q=f"email:newuser@newuser.org"
+        owner.identity, community._record.id, q="email:newuser@newuser.org"
     )
     assert res.to_dict()["hits"]["total"] == 1
 
@@ -366,16 +356,16 @@ def test_search_public_members(
     assert res.to_dict()["hits"]["total"] == 1
     # search on the affiliation (tests query expansion)
     res = member_service.search_public(
-        owner.identity, community._record.id, q=f"affiliation:CERN"
+        owner.identity, community._record.id, q="affiliation:CERN"
     )
     assert res.to_dict()["hits"]["total"] == 1
     res = member_service.search_public(
-        owner.identity, community._record.id, q=f"name:New"
+        owner.identity, community._record.id, q="name:New"
     )
     assert res.to_dict()["hits"]["total"] == 1
     # search on private fields should not get hits
     res = member_service.search_public(
-        owner.identity, community._record.id, q=f"newuser@newuser.org"
+        owner.identity, community._record.id, q="newuser@newuser.org"
     )
     assert res.to_dict()["hits"]["total"] == 0
     # should get hits if using private search

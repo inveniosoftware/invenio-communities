@@ -14,7 +14,6 @@ from invenio_communities.permissions import CommunityPermissionPolicy
 def test_can_request_membership(
     app, community, owner, anon_identity, any_user, superuser_identity
 ):
-
     policy = CommunityPermissionPolicy
     community_record = community._record
     authenticated_identity = any_user.identity
