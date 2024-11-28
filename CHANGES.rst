@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version v17.5.1 (released 2024-11-28)
+
+- settings-ui: fix organizations metadata payload
+    * Fixes a bug where organizations selected from the search in the
+      profile form, should also submit the `id` so that it's linked to the
+      affiliation vocabulary entry.
+
 Version v17.5.0 (released 2024-11-27)
 
 - subcommunities: implement invitation request
