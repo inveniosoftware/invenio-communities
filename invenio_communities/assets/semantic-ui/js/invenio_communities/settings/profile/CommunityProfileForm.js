@@ -470,6 +470,19 @@ class CommunityProfileForm extends Component {
                             []
                           )}
                           serializeSuggestions={(organizations) => {
+                            // Add organization IDs to known organizations
+                            organizations.forEach((organization) => {
+                              // eslint-disable-next-line no-prototype-builtins
+                              const isKnownOrg = this.knownOrganizations.hasOwnProperty(
+                                organization.name
+                              );
+                              if (!isKnownOrg) {
+                                this.knownOrganizations = {
+                                  ...this.knownOrganizations,
+                                  [organization.name]: organization.id,
+                                };
+                              }
+                            });
                             return AffiliationsSuggestions(organizations, true);
                           }}
                           label={
