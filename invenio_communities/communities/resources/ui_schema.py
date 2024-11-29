@@ -118,7 +118,7 @@ class UICommunitySchema(BaseObjectSchema):
         organizations = obj.get("metadata", {}).get("organizations", [])
 
         for org in organizations:
-            if org["identifiers"]:
+            if "id" in org:
                 scheme = detect_identifier_schemes(org["id"])[0]
                 org["icon"] = f"/static/images/{scheme}-icon.svg"
                 org["url"] = to_url(org["id"], scheme)
