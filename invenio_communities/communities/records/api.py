@@ -117,7 +117,7 @@ class Community(Record):
         ),
         organizations=PIDListRelation(
             "metadata.organizations",
-            keys=["name"],
+            keys=["name", "identifiers"],
             pid_field=Affiliation.pid,
             cache_key="affiliations",
         ),

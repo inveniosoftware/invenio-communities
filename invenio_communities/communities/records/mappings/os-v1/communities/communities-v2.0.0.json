@@ -13,11 +13,7 @@
           "tokenizer": "standard",
           "type": "custom",
           "char_filter": ["strip_special_chars"],
-          "filter": [
-            "lowercase",
-            "asciifolding",
-            "edgegrams"
-          ]
+          "filter": ["lowercase", "asciifolding", "edgegrams"]
         }
       },
       "filter": {
@@ -209,6 +205,21 @@
               },
               "name": {
                 "type": "text"
+              },
+              "identifiers": {
+                "properties": {
+                  "identifier": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "scheme": {
+                    "type": "keyword"
+                  }
+                }
               }
             }
           },
