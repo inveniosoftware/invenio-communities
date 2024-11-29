@@ -13,6 +13,7 @@ from functools import partial
 
 from flask import g
 from flask_resources import BaseObjectSchema
+from idutils import detect_identifier_schemes, to_url
 from invenio_i18n import get_locale
 from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services.custom_fields import CustomFieldsSchemaUI
@@ -101,6 +102,8 @@ class UICommunitySchema(BaseObjectSchema):
 
     tombstone = fields.Nested(TombstoneSchema, attribute="tombstone")
 
+    organizations = fields.Method("get_organizations", dump_only=True)
+
     theme = fields.Nested(CommunityThemeSchema, dump_only=True, load_default={})
 
     # Custom fields
@@ -109,6 +112,19 @@ class UICommunitySchema(BaseObjectSchema):
     )
 
     permissions = fields.Method("get_permissions", dump_only=True)
+
+    def get_organizations(self, obj):
+        """Get organizations with metadata."""
+        organizations = obj.get("metadata", {}).get("organizations", [])
+
+        for org in organizations:
+            if "id" in org:
+                scheme = detect_identifier_schemes(org["id"])[0]
+                org["icon"] = f"/static/images/{scheme}-icon.svg"
+                org["url"] = to_url(org["id"], scheme)
+                org["label"] = scheme
+
+        return organizations
 
     def get_permissions(self, obj):
         """Get permission."""
