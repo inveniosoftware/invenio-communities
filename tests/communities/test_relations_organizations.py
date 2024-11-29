@@ -91,6 +91,10 @@ def test_community_organizations_indexing(
         {
             "id": "cern",
             "name": "CERN",
+            "identifiers": [
+                {"scheme": "ror", "identifier": "01ggx4157"},
+                {"scheme": "isni", "identifier": "000000012156142X"},
+            ],
             "@v": dump["metadata"]["organizations"][1]["@v"],
         },
     ]
