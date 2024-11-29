@@ -15,9 +15,9 @@ const OrganizationsList = ({ organizations }) => {
             <i className="building outline icon" aria-hidden="true" />
             {organizations[0].id ? (
               <a
-                href={`https://ror.org/${organizations[0].id}`}
-                aria-label={`${organizations[0].name}'s ROR profile`}
-                title={`${organizations[0].name}'s ROR profile`}
+                href={organizations[0].url}
+                aria-label={`${organizations[0].name}'s ${organizations[0].label} profile`}
+                title={`${organizations[0].name}'s ${organizations[0].label} profile`}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -25,8 +25,8 @@ const OrganizationsList = ({ organizations }) => {
                 <span>&nbsp;</span>
                 <img
                   className="inline-id-icon"
-                  src="/static/images/ror-icon.svg"
-                  alt={`${organizations[0].name}'s ROR profile`}
+                  src={organizations[0].icon}
+                  alt={`${organizations[0].name}'s ${organizations[0].label} profile`}
                 />
               </a>
             ) : (
@@ -50,9 +50,9 @@ const OrganizationsList = ({ organizations }) => {
                       <div key={org.id || org.name} className="inline-computer mt-5">
                         {org.id ? (
                           <a
-                            href={`https://ror.org/${org.id}`}
-                            aria-label={`${org.name}'s ROR profile`}
-                            title={`${org.name}'s ROR profile`}
+                            href={org.url}
+                            aria-label={`${org.name}'s ${org.label} profile`}
+                            title={`${org.name}'s ${org.label} profile`}
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -60,8 +60,8 @@ const OrganizationsList = ({ organizations }) => {
                             <span>&nbsp;</span>
                             <img
                               className="inline-id-icon"
-                              src="/static/images/ror-icon.svg"
-                              alt={`${organizations[0].name}'s ROR profile`}
+                              src={org.icon}
+                              alt={`${org.name}'s ${org.label} profile`}
                             />
                           </a>
                         ) : (
@@ -89,6 +89,9 @@ OrganizationsList.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      icon: PropTypes.string,
+      url: PropTypes.string,
     })
   ).isRequired,
 };
