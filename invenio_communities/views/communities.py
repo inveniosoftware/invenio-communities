@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
 # Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -432,6 +433,15 @@ def communities_settings_submission_policy(pid_value, community, community_ui):
     if not permissions["can_update"]:
         raise PermissionDeniedError()
 
+    if current_app.config.get("RDM_COMMUNITY_REQUIRED_TO_PUBLISH", False):
+        # Restrict review policies when publishing with community is required
+        available_review_policies = [
+            policy for policy in REVIEW_POLICY_FIELDS if policy["value"] == "closed"
+        ]
+
+    else:
+        available_review_policies = REVIEW_POLICY_FIELDS
+
     return render_community_theme_template(
         "invenio_communities/details/settings/submission_policy.html",
         theme=community_ui.get("theme", {}),
@@ -439,7 +449,7 @@ def communities_settings_submission_policy(pid_value, community, community_ui):
         permissions=permissions,
         form_config=dict(
             access=dict(
-                review_policy=REVIEW_POLICY_FIELDS,
+                review_policy=available_review_policies,
                 record_submission_policy=RECORDS_SUBMISSION_POLICY_FIELDS,
             ),
         ),
