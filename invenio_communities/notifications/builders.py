@@ -231,11 +231,6 @@ class SubComInvitationBuilderBase(SubCommunityBuilderBase):
         EntityResolve("executing_user"),
     ]
 
-    recipients = [
-        CommunityMembersRecipient("request.created_by", roles=["owner", "manager"]),
-        CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
-    ]
-
 
 class SubComInvitationCreate(SubComInvitationBuilderBase):
     """Notification builder for subcommunity request creation."""
@@ -292,3 +287,47 @@ class SubComInvitationExpire(SubComInvitationBuilderBase):
     recipients = [
         CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
     ]
+
+
+#
+# Comments
+#
+class SubComCommentNotificationBuilderBase(SubCommunityBuilderBase):
+    """Notification builder for comment request event creation."""
+
+    context = [
+        EntityResolve(key="request"),
+        EntityResolve(key="request.created_by"),
+        EntityResolve(key="request.receiver"),
+        EntityResolve(key="request_event"),
+        EntityResolve(key="request_event.created_by"),
+    ]
+
+    @classmethod
+    def build(cls, request, request_event):
+        """Build notification with request context."""
+        return Notification(
+            type=cls.type,
+            context={
+                "request": EntityResolverRegistry.reference_entity(request),
+                "request_event": EntityResolverRegistry.reference_entity(request_event),
+            },
+        )
+
+    recipient_filters = [
+        # do not send notification to user creating the comment
+        UserRecipientFilter(key="request_event.created_by"),
+        UserPreferencesRecipientFilter(),
+    ]
+
+
+class SubComReqCommentNotificationBuilder(SubComCommentNotificationBuilderBase):
+    """Notification builder for comment request event creation."""
+
+    type = f"comment-{SubCommunityBuilderBase.type}.create"
+
+
+class SubComInvCommentNotificationBuilder(SubComCommentNotificationBuilderBase):
+    """Notification builder for comment request event creation."""
+
+    type = f"comment-{SubComInvitationBuilderBase.type}.create"

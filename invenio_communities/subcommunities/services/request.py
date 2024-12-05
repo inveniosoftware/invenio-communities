@@ -15,6 +15,11 @@ from marshmallow.exceptions import ValidationError
 import invenio_communities.notifications.builders as notifications
 from invenio_communities.proxies import current_communities
 
+from ...notifications.builders import (
+    SubComInvCommentNotificationBuilder,
+    SubComReqCommentNotificationBuilder,
+)
+
 
 class AcceptSubcommunity(actions.AcceptAction):
     """Represents an accept action used to accept a subcommunity."""
@@ -63,6 +68,8 @@ class SubCommunityRequest(RequestType):
     allowed_creator_ref_types = ["community"]
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
+
+    comment_notification_builder = SubComReqCommentNotificationBuilder
 
     available_actions = {
         "delete": actions.DeleteAction,
@@ -148,6 +155,8 @@ class SubCommunityInvitationRequest(RequestType):
     allowed_creator_ref_types = ["community"]
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
+
+    comment_notification_builder = SubComInvCommentNotificationBuilder
 
     available_actions = {
         "delete": actions.DeleteAction,
