@@ -163,7 +163,7 @@ class SubCommunityService(Service):
         )
         parent_community = community_service.record_cls.pid.resolve(parent_community_id)
         child_community = community_service.record_cls.pid.resolve(child_community_id)
-        expires_at = datetime.now(timezone.utc) + timedelta(days=30)
+        expires_at = datetime.now(timezone.utc) + timedelta(days=45)
 
         requests_service.create(
             identity=identity,
