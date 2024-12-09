@@ -19,6 +19,7 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationCancelNotificationBuilder,
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
+    CommunityInvitationCommentNotificationBuilder,
 )
 
 from ...proxies import current_communities
@@ -117,6 +118,8 @@ class CommunityInvitation(RequestType):
         "expire": ExpireAction,
     }
 
+    comment_notification_builder = CommunityInvitationCommentNotificationBuilder
+
     creator_can_be_none = False
     topic_can_be_none = False
     allowed_creator_ref_types = ["community"]
@@ -157,6 +160,8 @@ class MembershipRequestRequestType(RequestType):
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
     }
+
+    comment_notification_builder = CommunityInvitationCommentNotificationBuilder
 
     creator_can_be_none = False
     topic_can_be_none = False

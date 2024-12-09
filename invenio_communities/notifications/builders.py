@@ -40,13 +40,15 @@ class BaseNotificationBuilder(NotificationBuilder):
 class CommunityInvitationNotificationBuilder(BaseNotificationBuilder):
     """Base notification builder for community invitation action."""
 
+    type = "community-invitation"
+
 
 class CommunityInvitationSubmittedNotificationBuilder(
     CommunityInvitationNotificationBuilder
 ):
     """Notification builder for community invitation submit action."""
 
-    type = "community-invitation.submit"
+    type = f"{CommunityInvitationNotificationBuilder.type}.submit"
 
     @classmethod
     def build(cls, request, role, message=None):
@@ -70,7 +72,7 @@ class CommunityInvitationAcceptNotificationBuilder(
 ):
     """Notification builder for community invitation accept action."""
 
-    type = "community-invitation.accept"
+    type = f"{CommunityInvitationNotificationBuilder.type}.accept"
 
     @classmethod
     def build(cls, request):
@@ -92,7 +94,7 @@ class CommunityInvitationCancelNotificationBuilder(
 ):
     """Notification builder for community invitation cancel action."""
 
-    type = "community-invitation.cancel"
+    type = f"{CommunityInvitationNotificationBuilder.type}.cancel"
 
     @classmethod
     def build(cls, request):
@@ -114,7 +116,7 @@ class CommunityInvitationDeclineNotificationBuilder(
 ):
     """Notification builder for community invitation decline action."""
 
-    type = "community-invitation.decline"
+    type = f"{CommunityInvitationNotificationBuilder.type}.decline"
 
     @classmethod
     def build(cls, request):
@@ -136,7 +138,7 @@ class CommunityInvitationExpireNotificationBuilder(
 ):
     """Notification builder for community invitation expire action."""
 
-    type = "community-invitation.expire"
+    type = f"{CommunityInvitationNotificationBuilder.type}.expire"
 
     @classmethod
     def build(cls, request):
@@ -292,7 +294,7 @@ class SubComInvitationExpire(SubComInvitationBuilderBase):
 #
 # Comments
 #
-class SubComCommentNotificationBuilderBase(SubCommunityBuilderBase):
+class CommunityCommentNotificationBuilderBase(SubCommunityBuilderBase):
     """Notification builder for comment request event creation."""
 
     context = [
@@ -321,13 +323,21 @@ class SubComCommentNotificationBuilderBase(SubCommunityBuilderBase):
     ]
 
 
-class SubComReqCommentNotificationBuilder(SubComCommentNotificationBuilderBase):
+class CommunityInvitationCommentNotificationBuilder(
+    CommunityCommentNotificationBuilderBase
+):
+    """Notification builder for comment request event creation."""
+
+    type = f"comment-{CommunityInvitationNotificationBuilder.type}.create"
+
+
+class SubComReqCommentNotificationBuilder(CommunityCommentNotificationBuilderBase):
     """Notification builder for comment request event creation."""
 
     type = f"comment-{SubCommunityBuilderBase.type}.create"
 
 
-class SubComInvCommentNotificationBuilder(SubComCommentNotificationBuilderBase):
+class SubComInvCommentNotificationBuilder(CommunityCommentNotificationBuilderBase):
     """Notification builder for comment request event creation."""
 
     type = f"comment-{SubComInvitationBuilderBase.type}.create"
