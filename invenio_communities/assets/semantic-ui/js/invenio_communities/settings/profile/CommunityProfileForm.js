@@ -117,12 +117,14 @@ class CommunityProfileForm extends Component {
     // create a map with all organizations that are not custom (part of the
     // vocabulary), so that on form submission, newly custom organization input
     // by the user can be identified and correctly sent to the backend.
-    const organizationsNames = initialValues.metadata.organizations.map((org) => {
+    const organizations = initialValues.metadata.organizations.map((org) => {
       const isNonCustomOrganization = org.id;
       if (isNonCustomOrganization) {
-        this.knownOrganizations[org.name] = org.id;
+        this.knownOrganizations[org.id] = org.name;
+        return org.id; // For known organizations, return the id
+      } else {
+        return org.name; // For custom organizations, return the name
       }
-      return org.name;
     });
 
     _unset(initialValues, "metadata.type.title");
@@ -206,7 +208,7 @@ class CommunityProfileForm extends Component {
       ...initialValues,
       metadata: {
         ...initialValues.metadata,
-        organizations: organizationsNames,
+        organizations: organizations,
         funding,
       },
     };
@@ -270,13 +272,11 @@ class CommunityProfileForm extends Component {
     // Serialize organisations. If it is known and has an id, serialize a pair 'id/name'. Otherwise use 'name' only
     const organizations = submittedCommunity.metadata.organizations.map(
       (organization) => {
-        const orgID = this.knownOrganizations[organization];
-        return {
-          ...(orgID && { id: orgID }),
-          name: organization,
-        };
+        const orgName = this.knownOrganizations[organization];
+        return orgName ? { id: organization, name: orgName } : { name: organization };
       }
     );
+
     // Serialize each funding record, award being optional.
     const funding = submittedCommunity.metadata?.funding?.map((fund) => {
       return {
@@ -474,12 +474,12 @@ class CommunityProfileForm extends Component {
                             organizations.forEach((organization) => {
                               // eslint-disable-next-line no-prototype-builtins
                               const isKnownOrg = this.knownOrganizations.hasOwnProperty(
-                                organization.name
+                                organization.id
                               );
                               if (!isKnownOrg) {
                                 this.knownOrganizations = {
                                   ...this.knownOrganizations,
-                                  [organization.name]: organization.id,
+                                  [organization.id]: organization.name,
                                 };
                               }
                             });
