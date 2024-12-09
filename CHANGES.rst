@@ -9,6 +9,18 @@
 Changes
 =======
 
+Version v17.6.0 (released 2024-12-09)
+
+- notifications: add comment notification for subcoms
+    fix new subcommunity title
+- ui: refactored and generalized OrganizationsList
+- affiliations: added identifiers in orgs
+- schema: added  orgs in ui schema
+- fix: extend invitation request expiry
+- tests: remove invenio-admin dependence
+    * Removes the dependence on the invenio-admin action need.
+    * Adds some more test cases for featured communities.
+
 Version v17.5.1 (released 2024-11-28)
 
 - settings-ui: fix organizations metadata payload
