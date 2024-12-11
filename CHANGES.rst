@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v17.6.1 (released 2024-12-11)
+
+- mappings: add `identifiers` to parent organizations
+    * Adds the missing `identifiers` property to parent communities.
+
 Version v17.6.0 (released 2024-12-09)
 
 - notifications: add comment notification for subcoms
