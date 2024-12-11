@@ -155,7 +155,13 @@ class SubCommunityService(Service):
 
     @unit_of_work()
     def create_subcommunity_invitation_request(
-        self, identity, parent_community_id, child_community_id, data, uow=None
+        self,
+        identity,
+        parent_community_id,
+        child_community_id,
+        data,
+        expires_at=None,
+        uow=None,
     ):
         """Create and submit a SubCommunityInvitation request."""
         type_ = current_request_type_registry.lookup(
@@ -163,7 +169,9 @@ class SubCommunityService(Service):
         )
         parent_community = community_service.record_cls.pid.resolve(parent_community_id)
         child_community = community_service.record_cls.pid.resolve(child_community_id)
-        expires_at = datetime.now(timezone.utc) + timedelta(days=45)
+
+        if not expires_at:
+            expires_at = datetime.now(timezone.utc) + timedelta(days=45)
 
         requests_service.create(
             identity=identity,
