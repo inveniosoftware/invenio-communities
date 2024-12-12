@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -11,9 +11,13 @@ name: CI
 
 on:
   push:
-    branches: master
+    branches:
+      - master
+      - "feature/*"
   pull_request:
-    branches: master
+    branches:
+      - master
+      - "feature/*"
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron:  '0 3 * * 6'
@@ -26,47 +30,4 @@ on:
 
 jobs:
   Tests:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
-        db-service: [postgresql14]
-        search-service: [opensearch2]
-        include:
-        - db-service: postgresql14
-          DB_EXTRAS: "postgresql"
-
-    env:
-      DB: ${{ matrix.db-service }}
-      SEARCH: ${{ matrix.search-service }}
-      EXTRAS: tests,${{ matrix.search-service }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Run eslint test
-        run: ./run-js-linter.sh -i
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
-          cache-dependency-path: setup.cfg
-
-      - name: Install dependencies
-        run: |
-          pip install ".[$EXTRAS]"
-          pip freeze
-          docker --version
-          docker compose version
-
-      - name: Run tests
-        run: ./run-tests.sh
+    uses: inveniosoftware/workflows/.github/workflows/tests-python.yml@master
