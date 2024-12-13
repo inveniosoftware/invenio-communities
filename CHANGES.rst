@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.7.1 (released 2024-12-13)
+
+- schema: skip unknown fields when loading organizations
+
 Version v17.7.0 (released 2024-12-13)
 
 - service: allow passing custom expires_at
