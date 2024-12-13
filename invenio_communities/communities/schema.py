@@ -19,7 +19,9 @@ from invenio_records_resources.services.records.schema import (
     BaseGhostSchema,
     BaseRecordSchema,
 )
-from invenio_vocabularies.contrib.affiliations.schema import AffiliationRelationSchema
+from invenio_vocabularies.contrib.affiliations.schema import (
+    AffiliationRelationSchema as BaseAffiliationRelationSchema,
+)
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
 from invenio_vocabularies.services.schema import (
     VocabularyRelationSchema as VocabularySchema,
@@ -130,6 +132,16 @@ class CommunityAccessSchema(Schema):
             ]
         )
     )
+
+
+# TODO: Probably this should be the default behavior for all relations
+class AffiliationRelationSchema(BaseAffiliationRelationSchema):
+    """Relaxed affiliation relation schema."""
+
+    class Meta:
+        """Meta attributes for the schema."""
+
+        unknown = EXCLUDE
 
 
 class CommunityMetadataSchema(Schema):
