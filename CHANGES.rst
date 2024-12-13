@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v17.7.0 (released 2024-12-13)
+
+- service: allow passing custom expires_at
+
 Version v17.6.1 (released 2024-12-11)
 
 - mappings: add `identifiers` to parent organizations
