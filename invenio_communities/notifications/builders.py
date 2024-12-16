@@ -13,6 +13,7 @@ from invenio_notifications.registry import EntityResolverRegistry
 from invenio_notifications.services.builders import NotificationBuilder
 from invenio_notifications.services.generators import EntityResolve, UserEmailBackend
 from invenio_requests.notifications.filters import UserRecipientFilter
+from invenio_requests.notifications.generators import RequestParticipantsRecipient
 from invenio_users_resources.notifications.filters import UserPreferencesRecipientFilter
 from invenio_users_resources.notifications.generators import UserRecipient
 
@@ -40,13 +41,15 @@ class BaseNotificationBuilder(NotificationBuilder):
 class CommunityInvitationNotificationBuilder(BaseNotificationBuilder):
     """Base notification builder for community invitation action."""
 
+    type = "community-invitation"
+
 
 class CommunityInvitationSubmittedNotificationBuilder(
     CommunityInvitationNotificationBuilder
 ):
     """Notification builder for community invitation submit action."""
 
-    type = "community-invitation.submit"
+    type = f"{CommunityInvitationNotificationBuilder.type}.submit"
 
     @classmethod
     def build(cls, request, role, message=None):
@@ -70,7 +73,7 @@ class CommunityInvitationAcceptNotificationBuilder(
 ):
     """Notification builder for community invitation accept action."""
 
-    type = "community-invitation.accept"
+    type = f"{CommunityInvitationNotificationBuilder.type}.accept"
 
     @classmethod
     def build(cls, request):
@@ -92,7 +95,7 @@ class CommunityInvitationCancelNotificationBuilder(
 ):
     """Notification builder for community invitation cancel action."""
 
-    type = "community-invitation.cancel"
+    type = f"{CommunityInvitationNotificationBuilder.type}.cancel"
 
     @classmethod
     def build(cls, request):
@@ -114,7 +117,7 @@ class CommunityInvitationDeclineNotificationBuilder(
 ):
     """Notification builder for community invitation decline action."""
 
-    type = "community-invitation.decline"
+    type = f"{CommunityInvitationNotificationBuilder.type}.decline"
 
     @classmethod
     def build(cls, request):
@@ -136,7 +139,7 @@ class CommunityInvitationExpireNotificationBuilder(
 ):
     """Notification builder for community invitation expire action."""
 
-    type = "community-invitation.expire"
+    type = f"{CommunityInvitationNotificationBuilder.type}.expire"
 
     @classmethod
     def build(cls, request):
@@ -292,7 +295,7 @@ class SubComInvitationExpire(SubComInvitationBuilderBase):
 #
 # Comments
 #
-class SubComCommentNotificationBuilderBase(SubCommunityBuilderBase):
+class CommunityCommentNotificationBuilderBase(SubCommunityBuilderBase):
     """Notification builder for comment request event creation."""
 
     context = [
@@ -321,13 +324,47 @@ class SubComCommentNotificationBuilderBase(SubCommunityBuilderBase):
     ]
 
 
-class SubComReqCommentNotificationBuilder(SubComCommentNotificationBuilderBase):
+class CommunityRequestCommentNotificationBuilder(
+    CommunityCommentNotificationBuilderBase
+):
+    """Notification builder for community membership request comment creation.
+
+    The CommunityRequest notification builders are shared with CommunityInvitation,
+    but here we have different handlers for comments as the receiver/creator are
+    different in each case.
+
+    Requests go to a community and invitations go to a user. CommunityMembersRecipient
+    doesn't allow you to pass a user object, so we manually set which party is the community.
+    """
+
+    type = f"comment-community-request.create"
+
+    recipients = [
+        RequestParticipantsRecipient(key="request"),
+        CommunityMembersRecipient("request.receiver", roles=["owner", "manager"]),
+    ]
+
+
+class CommunityInvitationCommentNotificationBuilder(
+    CommunityCommentNotificationBuilderBase
+):
+    """Notification builder for community membership invitation comment creation."""
+
+    type = f"comment-{CommunityInvitationNotificationBuilder.type}.create"
+
+    recipients = [
+        RequestParticipantsRecipient(key="request"),
+        CommunityMembersRecipient("request.created_by", roles=["owner", "manager"]),
+    ]
+
+
+class SubComReqCommentNotificationBuilder(CommunityCommentNotificationBuilderBase):
     """Notification builder for comment request event creation."""
 
     type = f"comment-{SubCommunityBuilderBase.type}.create"
 
 
-class SubComInvCommentNotificationBuilder(SubComCommentNotificationBuilderBase):
+class SubComInvCommentNotificationBuilder(CommunityCommentNotificationBuilderBase):
     """Notification builder for comment request event creation."""
 
     type = f"comment-{SubComInvitationBuilderBase.type}.create"
