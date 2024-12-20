@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 # Copyright (C) 2022 Northwestern University.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
@@ -11,7 +11,7 @@
 import time
 import uuid
 from copy import deepcopy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import arrow
 import pytest
@@ -37,7 +37,7 @@ def comm(community_service, minimal_community, location):
     """Create minimal public community."""
     c = deepcopy(minimal_community)
     c["slug"] = "{slug}".format(
-        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+        slug=str(datetime.now(timezone.utc).timestamp()).replace(".", "-")
     )
     return community_service.create(data=c, identity=system_identity)
 
@@ -47,7 +47,7 @@ def comm_restricted(community_service, minimal_community, location):
     """Create minimal restricted community."""
     c = deepcopy(minimal_community)
     c["slug"] = "{slug}".format(
-        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+        slug=str(datetime.now(timezone.utc).timestamp()).replace(".", "-")
     )
     c["access"]["visibility"] = "restricted"
     return community_service.create(data=c, identity=system_identity)
@@ -56,10 +56,10 @@ def comm_restricted(community_service, minimal_community, location):
 def test_search_featured(community_service, comm, db, search_clear):
     """Test that featured entries are indexed and returned correctly."""
     data = {
-        "start_date": datetime.utcnow().isoformat(),
+        "start_date": datetime.now(timezone.utc).isoformat(),
     }
     future_data = {
-        "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
+        "start_date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(),
     }
 
     # no featured entries -> no featured communities
@@ -97,7 +97,7 @@ def test_search_featured(community_service, comm, db, search_clear):
     assert hits[0]["id"] == comm.data["id"]
 
     # adding past featured entry to new community. first community should show up first
-    data["start_date"] = (datetime.utcnow() - timedelta(days=1)).isoformat()
+    data["start_date"] = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
     community_service.featured_create(
         identity=system_identity, community_id=c2.data["id"], data=data
     ).to_dict()
@@ -110,7 +110,7 @@ def test_search_featured(community_service, comm, db, search_clear):
     assert hits[1]["id"] == c2.data["id"]
 
     # adding more current past featured entry to new community. new community should show up first
-    data["start_date"] = datetime.utcnow().isoformat()
+    data["start_date"] = datetime.now(timezone.utc).isoformat()
     community_service.featured_create(
         identity=system_identity, community_id=c2.data["id"], data=data
     ).to_dict()
@@ -126,7 +126,7 @@ def test_search_featured(community_service, comm, db, search_clear):
 def test_reindex_featured_entries_task(community_service, comm, db, search_clear):
     """Test that reindexing task works."""
     tomorrow = {
-        "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
+        "start_date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(),
     }
     c2 = community_service.create(
         identity=system_identity, data={**comm.data, "slug": "c2-id"}
@@ -138,7 +138,7 @@ def test_reindex_featured_entries_task(community_service, comm, db, search_clear
     near_future_difference = 2
     near_future = {
         "start_date": (
-            datetime.utcnow() + timedelta(seconds=near_future_difference)
+            datetime.now(timezone.utc) + timedelta(seconds=near_future_difference)
         ).isoformat(),
     }
     community_service.featured_create(
@@ -165,7 +165,7 @@ def test_reindex_featured_entries_task(community_service, comm, db, search_clear
 def test_create_featured(community_service, comm, comm_restricted):
     """Test that a featured entry can be created."""
     data = {
-        "start_date": datetime.utcnow().isoformat(),
+        "start_date": datetime.now(timezone.utc).isoformat(),
     }
 
     f = community_service.featured_create(
@@ -190,10 +190,10 @@ def test_create_featured(community_service, comm, comm_restricted):
 def test_get_featured(community_service, comm):
     """Test that featured entries are indexed and returned correctly."""
     data = {
-        "start_date": datetime.utcnow().isoformat(),
+        "start_date": datetime.now(timezone.utc).isoformat(),
     }
     future_data = {
-        "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
+        "start_date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(),
     }
 
     community_service.featured_create(
@@ -213,10 +213,10 @@ def test_get_featured(community_service, comm):
 def test_delete_featured(community_service, comm):
     """Test that featured entries are deleted correctly."""
     data = {
-        "start_date": datetime.utcnow().isoformat(),
+        "start_date": datetime.now(timezone.utc).isoformat(),
     }
     future_data = {
-        "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
+        "start_date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(),
     }
 
     past_entry = community_service.featured_create(
@@ -260,10 +260,10 @@ def test_delete_featured(community_service, comm):
 def test_update_featured(community_service, comm):
     """Test that featured entries are indexed and returned correctly."""
     data = {
-        "start_date": datetime.utcnow().isoformat(),
+        "start_date": datetime.now(timezone.utc).isoformat(),
     }
     future_data = {
-        "start_date": (datetime.utcnow() + timedelta(days=1)).isoformat(),
+        "start_date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(),
     }
 
     past_entry = community_service.featured_create(
@@ -427,7 +427,7 @@ def test_community_deletion(community_service, users, comm):
     assert tombstone.removal_reason is None
     assert tombstone.note == tombstone_info["note"]
     assert isinstance(tombstone.citation_text, str)
-    assert arrow.get(tombstone.removal_date).date() == datetime.utcnow().date()
+    assert arrow.get(tombstone.removal_date).date() == datetime.now(timezone.utc).date()
 
     # mark the community for purge
     community = community_service.mark_community_for_purge(
