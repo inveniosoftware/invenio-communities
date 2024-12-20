@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022-2024 CERN.
-# Copyright (C) 2022-2023 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -54,7 +54,7 @@ from .schemas import (
 def invite_expires_at():
     """Get the invitation expiration date."""
     return (
-        datetime.utcnow().replace(tzinfo=timezone.utc)
+        datetime.now(timezone.utc)
         + current_app.config["COMMUNITIES_INVITATIONS_EXPIRES_IN"]
     )
 
