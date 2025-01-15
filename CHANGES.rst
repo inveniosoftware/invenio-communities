@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v17.8.0 (released 2025-01-15)
+
+- organizations: updated knownOrganizations to use id
+- notifications: add comment notification for record and membership
+
 Version v17.7.1 (released 2024-12-13)
 
 - schema: skip unknown fields when loading organizations
