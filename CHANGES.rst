@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version v17.8.1 (released 2025-01-16)
+
+- Revert "notifications: add comment notification for record and membership"
+    * This is actually a breaking change since it introduces a new
+      set of notification templates that will potentialy not be
+      styled if overridden in an instance's overlay.
+
 Version v17.8.0 (released 2025-01-15)
 
 - organizations: updated knownOrganizations to use id
