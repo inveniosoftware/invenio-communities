@@ -10,7 +10,9 @@
 Changes
 =======
 
-Version 18.0.0.dev1 (released 2024-12-12)
+Version v18.0.0.dev2 (released 2025-01-23)
+
+Version v18.0.0.dev1 (released 2024-12-12)
 
 - setup: change to reusable workflows
 - setup: bump major dependencies
