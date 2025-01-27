@@ -179,6 +179,9 @@ class CommunityCreateForm extends Component {
               slug: "",
               title: "",
             },
+            metadata: {
+              slug: "",
+            }
           }}
           onSubmit={this.onSubmit}
         >
