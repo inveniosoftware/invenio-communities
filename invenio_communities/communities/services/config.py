@@ -19,7 +19,9 @@ from invenio_records_resources.services.base.config import (
     SearchOptionsMixin,
 )
 from invenio_records_resources.services.files.links import FileLink
-from invenio_records_resources.services.records.config import RecordServiceConfig
+from invenio_records_resources.services.records.config import (
+    RecordServiceConfig,
+)
 from invenio_records_resources.services.records.config import (
     SearchOptions as SearchOptionsBase,
 )
