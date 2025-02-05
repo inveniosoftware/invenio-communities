@@ -8,6 +8,8 @@
 
 """Utilities."""
 
+from decimal import ROUND_HALF_UP, Decimal
+
 from flask import session
 from flask_principal import Identity
 from invenio_accounts.models import Role
@@ -109,3 +111,14 @@ def on_datastore_post_commit(sender, session):
             users = role.users.all()
             for user in users:
                 on_user_membership_change(Identity(user.id))
+
+
+def humanize_byte_size(size):
+    """Converts bytes to largest unit (e.g., KB, MB, GB)."""
+    BYTES_PER_UNIT = 1000
+    s = Decimal(size)
+    q = Decimal("0.00")
+    for unit in ["B", "KB", "MB", "GB", "TB", "PB"]:
+        if s < BYTES_PER_UNIT:
+            return s.quantize(q, rounding=ROUND_HALF_UP), unit
+        s /= BYTES_PER_UNIT
