@@ -46,9 +46,8 @@ class CommunityMemberCachingComponent(ServiceComponent):
                 return
         else:
             raise TypeError(
-                _("Member must be 'MemberMixin' or 'dict' but was {type}").format(
-                    type=type(member)
-                )
+                _("Member must be 'MemberMixin' or 'dict' but was %(type)s")
+                % {"type": type(member)}
             )
 
         for user_id in user_ids:

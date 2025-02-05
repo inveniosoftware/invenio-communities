@@ -161,9 +161,9 @@ class OAISetComponent(ServiceComponent):
 
     def _create_set_description(self, community_title):
         # NOTE: Does not require translation since this description can also be changed by an admin
-        return _("Records belonging to the community '{title}'").format(
-            title=community_title
-        )
+        return _("Records belonging to the community '%(title)s'") % {
+            "title": str(community_title)
+        }
 
     def _create_set_from_community(self, record):
         community_slug = record.slug
@@ -174,9 +174,9 @@ class OAISetComponent(ServiceComponent):
         community_set.system_created = True
         community_set.description = self._create_set_description(community_title)
         community_set.spec = self._create_set_spec(community_slug)
-        community_set.search_pattern = _("parent.communities.ids:{id}").format(
-            id=record.id
-        )
+        community_set.search_pattern = _("parent.communities.ids:%(id)s") % {
+            "id": record.id
+        }
 
         return community_set
 
