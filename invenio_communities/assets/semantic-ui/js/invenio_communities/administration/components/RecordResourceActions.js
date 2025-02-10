@@ -25,7 +25,10 @@ export class RecordResourceActions extends Component {
     };
   }
 
-  onModalTriggerClick = (e, { payloadSchema, dataName, dataActionKey }) => {
+  onModalTriggerClick = (
+    e,
+    { payloadSchema, dataName, dataActionKey, actionConfig }
+  ) => {
     const { resource } = this.props;
 
     if (dataActionKey === "delete") {
@@ -63,6 +66,7 @@ export class RecordResourceActions extends Component {
             actionSuccessCallback={this.handleSuccess}
             actionCancelCallback={this.closeModal}
             resource={resource}
+            actionConfig={actionConfig}
           />
         ),
       });
@@ -106,7 +110,7 @@ export class RecordResourceActions extends Component {
                 labelPosition="left"
               >
                 <Icon name="trash alternate" />
-                {actionConfig.text}
+                {actionConfig.text}...
               </Element>
             );
           } else if (actionKey === "restore" && resource.deletion_status.is_deleted) {
@@ -122,19 +126,21 @@ export class RecordResourceActions extends Component {
                 labelPosition="left"
               >
                 <Icon name="undo" />
-                {actionConfig.text}
+                {actionConfig.text}...
               </Element>
             );
           } else if (!resource.deletion_status.is_deleted && actionKey !== "restore") {
             return (
               <Element
                 key={actionKey}
-                onClick={this.onModalTriggerClick}
+                onClick={(e, data) =>
+                  this.onModalTriggerClick(e, { ...data, actionConfig: actionConfig })
+                }
                 payloadSchema={actionConfig.payload_schema}
                 dataName={actionConfig.text}
                 dataActionKey={actionKey}
               >
-                {actionConfig.text}
+                {actionConfig.text}...
               </Element>
             );
           }
