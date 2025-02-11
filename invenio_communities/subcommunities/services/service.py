@@ -111,9 +111,8 @@ class SubCommunityService(Service):
 
         # Create and submit the request
         request_data = {
-            "title": _('Inclusion of subcommunity "{community}"').format(
-                community=community.metadata["title"]
-            )
+            "title": _('Inclusion of subcommunity "%(community)s"')
+            % {"community": community.metadata["title"]}
         }
         request_payload = data.get("payload")
         if request_payload:
