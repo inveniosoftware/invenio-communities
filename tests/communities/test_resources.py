@@ -689,6 +689,9 @@ def test_logo_max_content_length(
         data=BytesIO(logo_data),
     )
     assert res.status_code == 400
+    assert (
+        res.json["message"] == "Logo size limit exceeded. Limit: 1.00 MB Given: 4.00 MB"
+    )
 
     # Update logo with small content
     logo_data = b"logo"

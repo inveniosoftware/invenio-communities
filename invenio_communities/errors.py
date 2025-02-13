@@ -12,6 +12,8 @@ from math import ceil
 from flask_babel import ngettext
 from invenio_i18n import gettext as _
 
+from .utils import humanize_byte_size
+
 
 class CommunityError(Exception):
     """Base exception for community errors."""
@@ -44,10 +46,15 @@ class LogoSizeLimitError(CommunityError):
 
     def __init__(self, limit, file_size):
         """Initialise error."""
+        limit_value, limit_unit = humanize_byte_size(limit)
+        file_size_value, file_size_unit = humanize_byte_size(file_size)
         super().__init__(
             _(
-                "Logo size limit exceeded. Limit: {limit} bytes Given: {file_size} bytes".format(
-                    limit=ceil(limit), file_size=ceil(file_size)
+                "Logo size limit exceeded. Limit: {limit_value} {limit_unit} Given: {file_size_value} {file_size_unit}".format(
+                    limit_value=limit_value,
+                    limit_unit=limit_unit,
+                    file_size_value=file_size_value,
+                    file_size_unit=file_size_unit,
                 )
             )
         )
