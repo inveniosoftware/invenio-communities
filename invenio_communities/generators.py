@@ -5,6 +5,7 @@
 # Copyright (C) 2021 Graz University of Technology.
 # Copyright (C) 2021 TU Wien.
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -16,7 +17,8 @@ from collections import namedtuple
 from functools import partial, reduce
 from itertools import chain
 
-from flask_principal import UserNeed
+from flask import current_app
+from flask_principal import RoleNeed, UserNeed
 from invenio_access.permissions import any_user, authenticated_user, system_process
 from invenio_records.dictutils import dict_lookup
 from invenio_records_permissions.generators import Generator
@@ -340,6 +342,17 @@ class CommunityManagers(CommunityRoles):
     def roles(self, **kwargs):
         """Roles."""
         return [r.name for r in current_roles.can("manage")]
+
+
+class CommunityCreator(Generator):
+    """Allows users with the "trusted-user" role."""
+
+    def needs(self, **kwargs):
+        """Enabling Needs."""
+        role_name = current_app.config.get(
+            "COMMUNITIES_CREATOR_ROLE", "community-creator"
+        )
+        return [RoleNeed(role_name)]
 
 
 class CommunityManagersForRole(CommunityRoles):
