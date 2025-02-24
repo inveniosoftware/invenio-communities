@@ -184,7 +184,7 @@ class CommunityService(RecordService):
             params,
             links_tpl=LinksTemplate(
                 self.config.links_community_requests_search,
-                context={"args": params, "community_id": community_id},
+                context={"args": params, "pid_value": community_id},
             ),
             links_item_tpl=current_requests_service.links_item_tpl,
             expandable_fields=self.expandable_fields,
@@ -762,7 +762,7 @@ class CommunityService(RecordService):
             params,
             links_tpl=LinksTemplate(
                 self.config.links_subcommunities_search,
-                context={"community_id": id_, "args": params},
+                context={"pid_value": id_, "args": params},
             ),
             links_item_tpl=self.links_item_tpl,
         )
