@@ -490,7 +490,7 @@ class MemberService(RecordService):
                     self.config.links_search,
                     context={
                         "args": params,
-                        "community_id": community_id,
+                        "pid_value": community_id,
                     },
                 )
             ),

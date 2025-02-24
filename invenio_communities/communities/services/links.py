@@ -8,7 +8,7 @@
 
 """Utility for rendering URI template links."""
 
-from invenio_records_resources.services.base.links import Link, LinksTemplate
+from invenio_records_resources.services.base.links import Link, Link2, LinksTemplate
 
 
 class CommunityLinksTemplate(LinksTemplate):
@@ -42,6 +42,24 @@ class CommunityLinksTemplate(LinksTemplate):
                 links[key] = link.expand(community, ctx)
 
         return links
+
+
+class CommunityLink2(Link2):
+    """Rendering of community API link with relevant variables expansion."""
+
+    @staticmethod
+    def vars(record, vars):
+        """Variables for generation of the url."""
+        vars.update({"pid_value": record.id})
+
+
+class CommunityUILink2(Link2):
+    """Rendering of community UI link with relevant variables expansion."""
+
+    @staticmethod
+    def vars(record, vars):
+        """Variables for generation of the url."""
+        vars.update({"pid_value": record.slug})
 
 
 class CommunityLink(Link):
