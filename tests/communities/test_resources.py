@@ -333,7 +333,6 @@ def test_post_self_links(
     created_community = res.json
     id_ = created_community["id"]
     slug = created_community["slug"]
-    # assert '/'.join(created_community['links']['self'].split('/')[-2:]) == f'communities/{id_}'
     assert (
         created_community["links"]["self"]
         == f"https://127.0.0.1:5000/api/communities/{id_}"
