@@ -15,7 +15,8 @@ fixtures are available.
 import pytest
 from invenio_app.factory import create_api
 from invenio_indexer.api import RecordIndexer
-from mock_module.api import MockRecord
+
+from tests.records.mock_module.api import MockRecord
 
 
 @pytest.fixture(scope="module")
@@ -23,13 +24,13 @@ def extra_entry_points():
     """Extra entry points to load the mock_module features."""
     return {
         "invenio_db.model": [
-            "mock_module = mock_module.models",
+            "mock_module = tests.records.mock_module.models",
         ],
         "invenio_jsonschemas.schemas": [
-            "mock_module = mock_module.jsonschemas",
+            "mock_module = tests.records.mock_module.jsonschemas",
         ],
         "invenio_search.mappings": [
-            "mocks = mock_module.mappings",
+            "mocks = tests.records.mock_module.mappings",
         ],
     }
 
