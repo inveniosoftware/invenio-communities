@@ -10,11 +10,11 @@
 
 import pytest
 from jsonschema import ValidationError
-from mock_module.api import MockRecord
 from sqlalchemy.exc import IntegrityError
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.errors import SetDefaultCommunityError
+from tests.records.mock_module.api import MockRecord
 
 
 @pytest.fixture()
