@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 13.0.10 (released 2025-03-03)
+
+- remove dependency on invenio-admin in tests
+- bug: humanize byte size error on community image upload
+- Include missing JS on admin community_search.html
+
 Version 13.0.9 (released 2024-09-18)
 
 - mappings: add dynamic mappings for user profiles and preferences
