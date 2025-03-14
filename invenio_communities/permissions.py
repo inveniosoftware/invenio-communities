@@ -85,7 +85,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_submit_record = [
         IfRecordSubmissionPolicyClosed(
-            then_=[CommunityMembers(), SystemProcess()],
+            then_=[CommunityMembers()],
             else_=[
                 IfRestricted(
                     "visibility",
@@ -94,6 +94,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
                 ),
             ],
         ),
+        SystemProcess(),
     ]
 
     # who can include a record directly, without a review
@@ -102,7 +103,8 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
             closed_=[Disable()],
             open_=[CommunityCurators()],
             members_=[CommunityMembers()],
-        )
+        ),
+        SystemProcess(),
     ]
 
     can_members_add = [

@@ -37,17 +37,20 @@ class CommunityMembersRecipient(RecipientGenerator):
             extra_filter=filter_,
         )
 
-        user_ids = []
+        user_ids = set()
         for m in members:
             # TODO: add support for groups
             if m["member"]["type"] != "user":
                 continue
-            user_ids.append(m["member"]["id"])
+            user_ids.add(m["member"]["id"])
+
+        # remove system_user_id if present
+        user_ids.discard(system_identity.id)
 
         if not user_ids:
             return recipients
 
-        filter_ = dsl.Q("terms", **{"id": user_ids})
+        filter_ = dsl.Q("terms", **{"id": list(user_ids)})
         users = current_users_service.scan(system_identity, extra_filter=filter_)
         for u in users:
             recipients[u["id"]] = Recipient(data=u)
