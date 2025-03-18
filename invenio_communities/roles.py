@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022 CERN.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -9,6 +10,8 @@
 
 
 from dataclasses import dataclass, field
+
+from invenio_i18n import lazy_gettext as _
 
 
 @dataclass(frozen=True)
@@ -59,9 +62,9 @@ class RoleRegistry:
 
         for r in self._roles:
             if r.is_owner:
-                assert self._owner is None, "Only one role be defined as owner."
+                assert self._owner is None, _("Only one role be defined as owner.")
                 self._owner = r
-        assert self._owner is not None, "One role must be defined as owner."
+        assert self._owner is not None, _("One role must be defined as owner.")
 
     def __contains__(self, key):
         """Determine if key is a valid role id."""

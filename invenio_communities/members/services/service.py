@@ -275,10 +275,10 @@ class MemberService(RecordService):
         # Add member entry
         if member["type"] == "user":
             # Create request
-            title = _('Invitation to join "{community}"').format(
-                community=community.metadata["title"],
-            )
-            description = _('You will join as "{role}".').format(role=role.title)
+            title = _('Invitation to join "%(community)s"') % {
+                "community": community.metadata["title"]
+            }
+            description = _('You will join as "%(role)s".') % {"role": role.title}
 
             request_item = current_requests_service.create(
                 identity,
@@ -581,11 +581,9 @@ class MemberService(RecordService):
                 data = {
                     "payload": {
                         "content": _(
-                            'You will join as "{role}" (changed from: "{previous}").'
-                        ).format(
-                            role=role.title,
-                            previous=member.role,
-                        ),
+                            'You will join as "%(role)s" (changed from: "%(previous)s").'
+                        )
+                        % {"role": role.title, "previous": member.role},
                     }
                 }
                 current_events_service.create(
