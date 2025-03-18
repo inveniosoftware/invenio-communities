@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 13.0.11 (released 2025-03-18)
+
+- i18n: add missing translations for community settings
+- i18n: include jinja file encoding in babel.ini
+- i18h: fix translation only applied on app start
+
 Version 13.0.10 (released 2025-03-03)
 
 - remove dependency on invenio-admin in tests
