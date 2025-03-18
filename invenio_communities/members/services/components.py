@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,7 @@
 
 from flask_principal import Identity
 from invenio_accounts.models import Role
+from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services.records.components import ServiceComponent
 
 from invenio_communities.members.records.api import MemberMixin
@@ -29,7 +31,7 @@ class CommunityMemberCachingComponent(ServiceComponent):
                 user_ids = [member.user_id]
             elif member.group_id:
                 if not community:
-                    raise TypeError("Community must be defined.")
+                    raise TypeError(_("Community must be defined."))
                 on_group_membership_change(str(community.id))
             else:
                 return
@@ -38,15 +40,14 @@ class CommunityMemberCachingComponent(ServiceComponent):
                 user_ids = [member["id"]]
             elif member.get("type") == "group":
                 if not community:
-                    raise TypeError("Community must be defined.")
+                    raise TypeError(_("Community must be defined."))
                 on_group_membership_change(str(community.id))
             else:
                 return
         else:
             raise TypeError(
-                "Member must be 'MemberMixin' or 'dict' but was {type}".format(
-                    type=type(member)
-                )
+                _("Member must be 'MemberMixin' or 'dict' but was %(type)s")
+                % {"type": type(member)}
             )
 
         for user_id in user_ids:

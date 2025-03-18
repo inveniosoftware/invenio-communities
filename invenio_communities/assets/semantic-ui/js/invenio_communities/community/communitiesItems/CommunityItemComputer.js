@@ -1,5 +1,6 @@
 // This file is part of InvenioRDM
 // Copyright (C) 2022-2024 CERN.
+// Copyright (C) 2024 KTH Royal Institute of Technology.
 //
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -45,7 +46,7 @@ export const CommunityItemComputer = ({ result }) => {
               {result.parent && (
                 <p className="ml-5 display-inline-block">
                   <Popup
-                    content="Verified community"
+                    content={i18next.t("Verified community")}
                     trigger={
                       <Icon size="small" color="green" name="check circle outline" />
                     }
@@ -61,7 +62,7 @@ export const CommunityItemComputer = ({ result }) => {
             )}
             {result.parent && (
               <div className="sub header">
-                Part of{" "}
+                {i18next.t("Part of")}{" "}
                 <a href={`/communities/${result.parent.slug}`}>
                   {result.parent.metadata.title}
                 </a>

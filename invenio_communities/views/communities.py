@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
 # Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -28,7 +29,7 @@ from .template_loader import CommunityThemeChoiceJinjaLoader
 
 VISIBILITY_FIELDS = [
     {
-        "text": "Public",
+        "text": _("Public"),
         "value": "public",
         "icon": "group",
         "helpText": _(
@@ -36,7 +37,7 @@ VISIBILITY_FIELDS = [
         ),
     },
     {
-        "text": "Restricted",
+        "text": _("Restricted"),
         "value": "restricted",
         "icon": "lock",
         "helpText": _("Your community is restricted to users" " with access."),
@@ -45,7 +46,7 @@ VISIBILITY_FIELDS = [
 
 MEMBERS_VISIBILITY_FIELDS = [
     {
-        "text": "Public",
+        "text": _("Public"),
         "value": "public",
         "icon": "group",
         "helpText": _(
@@ -54,7 +55,7 @@ MEMBERS_VISIBILITY_FIELDS = [
         ),
     },
     {
-        "text": "Members-only",
+        "text": _("Members-only"),
         "value": "restricted",
         "icon": "lock",
         "helpText": _(
@@ -66,7 +67,7 @@ MEMBERS_VISIBILITY_FIELDS = [
 
 RECORDS_SUBMISSION_POLICY_FIELDS = [
     {
-        "text": "Open",
+        "text": _("Open"),
         "value": "open",
         "icon": "lock open",
         "helpText": _(
@@ -75,23 +76,22 @@ RECORDS_SUBMISSION_POLICY_FIELDS = [
         ),
     },
     {
-        "text": "Closed",
+        "text": _("Closed"),
         "value": "closed",
         "icon": "lock",
         "helpText": _("Only members can submit records to the community."),
     },
 ]
 
-
 REVIEW_POLICY_FIELDS = [
     {
-        "text": "Review all submissions",
+        "text": _("Review all submissions"),
         "value": "closed",
         "icon": "lock",
         "helpText": _("All submissions to the community must be reviewed."),
     },
     {
-        "text": "Allow curators, managers and owners to publish without review",
+        "text": _("Allow curators, managers and owners to publish without review"),
         "value": "open",
         "icon": "group",
         "helpText": _(
@@ -99,7 +99,7 @@ REVIEW_POLICY_FIELDS = [
         ),
     },
     {
-        "text": "Allow all members to publish without review",
+        "text": _("Allow all members to publish without review"),
         "value": "members",
         "icon": "lock open",
         "helpText": _(
@@ -108,16 +108,15 @@ REVIEW_POLICY_FIELDS = [
     },
 ]
 
-
 MEMBER_POLICY_FIELDS = [
     {
-        "text": "Open",
+        "text": _("Open"),
         "value": "open",
         "icon": "user plus",
         "helpText": _("Users can request to join your community."),
     },
     {
-        "text": "Closed",
+        "text": _("Closed"),
         "value": "closed",
         "icon": "user times",
         "helpText": _(

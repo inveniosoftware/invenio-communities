@@ -1,6 +1,14 @@
+// This file is part of InvenioRDM
+// Copyright (C) 2024 CERN.
+// Copyright (C) 2024 KTH Royal Institute of Technology.
+//
+// Invenio App RDM is free software; you can redistribute it and/or modify it
+// under the terms of the MIT License; see LICENSE file for more details.
+
 import React from "react";
 import PropTypes from "prop-types";
 import { Popup } from "semantic-ui-react";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 const OrganizationsList = ({ organizations }) => {
   const handleClick = (e) => {
@@ -35,11 +43,13 @@ const OrganizationsList = ({ organizations }) => {
           </span>
           {organizations.length > 1 && (
             <span className="ml-1">
-              &nbsp;and&nbsp;
+              &nbsp;{i18next.t("and")}&nbsp;
               <Popup
                 trigger={
                   <a href="#!" onClick={handleClick}>
-                    {`${organizations.length - 1} more organizations`}
+                    {i18next.t("{{count}} more organizations", {
+                      count: organizations.length - 1,
+                    })}
                   </a>
                 }
                 size="small"
