@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2022 CERN.
 # Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -41,4 +42,4 @@ class RoleField(fields.Str):
         elif isinstance(value, str):
             if value in current_roles:
                 return value
-        raise RuntimeError("Not a valid role to serialize.")
+        raise RuntimeError(_("Not a valid role to serialize."))

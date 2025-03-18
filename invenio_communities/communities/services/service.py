@@ -5,6 +5,7 @@
 # Copyright (C) 2021-2022 Northwestern University.
 # Copyright (C)      2022 Graz University of Technology.
 # Copyright (C) 2024 Graz University of Technology.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -14,6 +15,7 @@
 
 from flask import current_app
 from invenio_cache.decorators import cached_with_expiration
+from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.base import LinksTemplate
 from invenio_records_resources.services.records import (
@@ -204,7 +206,7 @@ class CommunityService(RecordService):
 
         if "slug" not in data:
             raise ValidationError(
-                "Missing data for required field.",
+                _("Missing data for required field."),
                 field_name="slug",
             )
 
