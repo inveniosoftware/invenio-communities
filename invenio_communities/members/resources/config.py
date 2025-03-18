@@ -4,6 +4,7 @@
 # Copyright (C) 2022-2024 Northwestern University.
 # Copyright (C) 2022 CERN.
 # Copyright (C) 2023 TU Wien.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -40,13 +41,13 @@ class MemberResourceConfig(RecordResourceConfig):
         InvalidMemberError: create_error_handler(
             HTTPJSONException(
                 code=400,
-                description="Invalid member specified.",
+                description=_("Invalid member specified."),
             )
         ),
         AlreadyMemberError: create_error_handler(
             HTTPJSONException(
                 code=400,
-                description="A member was already added or invited.",
+                description=_("A member was already added or invited."),
             )
         ),
         CommunityDeletedError: create_error_handler(

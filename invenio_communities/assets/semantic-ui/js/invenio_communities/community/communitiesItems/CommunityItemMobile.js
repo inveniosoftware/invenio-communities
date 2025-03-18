@@ -1,5 +1,6 @@
 // This file is part of InvenioRDM
 // Copyright (C) 2022-2024 CERN.
+// Copyright (C) 2024 KTH Royal Institute of Technology.
 //
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -91,7 +92,7 @@ export const CommunityItemMobile = ({ result, index }) => {
       )}
       {result.parent && (
         <div className="pl-0 sub header">
-          Part of{" "}
+          {i18next.t("Part of")}{" "}
           <a href={`/communities/${result.parent.slug}`}>
             {result.parent.metadata.title}
           </a>
