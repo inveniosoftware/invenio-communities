@@ -63,6 +63,11 @@ export class ManagerMembersResultItem extends Component {
     const { api } = this.context;
     const membershipRelativeTimestamp = timestampToRelativeTime(result.created);
     const memberVisibility = result.visible ? i18next.t("Public") : i18next.t("Hidden");
+
+    const roleTitle =
+      config?.allRoles?.find((role) => role.name === result.role)?.title ||
+      _upperFirst(result.role);
+
     return (
       <Table.Row>
         <Table.Cell>
@@ -148,7 +153,7 @@ export class ManagerMembersResultItem extends Component {
               label={i18next.t("Role") + " " + result.role}
             />
           ) : (
-            _upperFirst(result.role)
+            roleTitle
           )}
         </Table.Cell>
 
