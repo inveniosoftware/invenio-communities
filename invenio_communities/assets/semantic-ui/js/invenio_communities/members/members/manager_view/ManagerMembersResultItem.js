@@ -148,6 +148,7 @@ export class ManagerMembersResultItem extends Component {
               label={i18next.t("Role") + " " + result.role}
             />
           ) : (
+            config?.allRoles?.find((role) => role.name === result.role)?.title ||
             _upperFirst(result.role)
           )}
         </Table.Cell>
