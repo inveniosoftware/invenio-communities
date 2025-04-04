@@ -31,6 +31,7 @@ const ManagerMembersResultItemWithConfig = parametrize(ManagerMembersResultItem,
     rolesCanUpdate: communitiesRolesCanUpdate,
     visibility: memberVisibilityTypes,
     permissions: permissions,
+    allRoles: communitiesAllRoles,
   },
 });
 
