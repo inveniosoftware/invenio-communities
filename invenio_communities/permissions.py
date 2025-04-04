@@ -174,7 +174,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Used to hide at the moment the `is_verified` field. It should be set to
     # correct permissions based on which the field will be exposed only to moderators
-    can_moderate = [Disable()]
+    can_moderate = [SystemProcess()]
 
     # Permissions to crud community theming
     can_set_theme = [SystemProcess()]
@@ -194,11 +194,11 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
             "COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS",
             then_=[
                 IfMemberPolicyClosed(
-                    then_=[Disable()],
+                    then_=[SystemProcess()],
                     else_=[AuthenticatedButNotCommunityMembers()],
                 ),
             ],
-            else_=[Disable()],
+            else_=[SystemProcess()],
         ),
     ]
 

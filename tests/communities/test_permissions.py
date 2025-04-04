@@ -22,9 +22,14 @@ def test_can_request_membership(
 
     # Case - feature disabled
     app.config["COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS"] = False
+    # superuser can
+    assert policy(action="request_membership", record=community_record).allows(
+        superuser_identity
+    )
+    # authenticated cannot
     assert not (
         policy(action="request_membership", record=community_record).allows(
-            superuser_identity
+            authenticated_identity
         )
     )
 
@@ -32,9 +37,14 @@ def test_can_request_membership(
 
     # Case - setting disabled
     community_record.access.member_policy = "closed"
+    # superuser can
+    assert policy(action="request_membership", record=community_record).allows(
+        superuser_identity
+    )
+    # authenticated cannot
     assert not (
         policy(action="request_membership", record=community_record).allows(
-            superuser_identity
+            authenticated_identity
         )
     )
 
