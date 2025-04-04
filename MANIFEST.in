@@ -9,6 +9,7 @@
 include .dockerignore
 include .editorconfig
 include .prettierrc
+include .readthedocs.yaml
 include .tx/config
 include *.rst
 include *.sh
