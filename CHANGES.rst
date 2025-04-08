@@ -10,6 +10,12 @@
 Changes
 =======
 
+Version v18.1.0 (released 2025-04-08)
+
+- bug: humanize byte size error on community image upload
+- assets: include missing JS on admin community_search.html closes #910
+- notifs: exclude system_user
+
 Version v18.0.0 (released 2025-02-13)
 
 - Promote to stable release
