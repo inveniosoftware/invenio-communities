@@ -762,3 +762,39 @@ def test_bulk_update_parent_overwrite(
     for c_id in children:
         c_comm = community_service.record_cls.pid.resolve(c_id)
         assert str(c_comm.parent.id) == str(parent_community.id)
+
+
+def test_links_with_custom_routes(community_service, db, comm, app, search_clear):
+    """Test that links pick up custom routes from config."""
+
+    # test without custom routes configured
+    get_result = community_service.read(system_identity, comm.id)
+    assert (
+        get_result.data["links"]["self_html"]
+        == f"https://127.0.0.1:5000/communities/{comm['slug']}"
+    )
+    assert (
+        get_result.data["links"]["settings_html"]
+        == f"https://127.0.0.1:5000/communities/{comm['slug']}/settings"
+    )
+
+    # test with custom routes configured
+    default_routes = {**app.config["COMMUNITIES_ROUTES"]}
+    app.config["COMMUNITIES_ROUTES"].update(
+        {
+            "self": "/collections/<pid_value>",
+            "settings": "/collections/<pid_value>/settings",
+        }
+    )
+    get_result = community_service.read(system_identity, comm.id)
+    assert (
+        get_result.data["links"]["self_html"]
+        == f"https://127.0.0.1:5000/collections/{comm['slug']}"
+    )
+    assert (
+        get_result.data["links"]["settings_html"]
+        == f"https://127.0.0.1:5000/collections/{comm['slug']}/settings"
+    )
+
+    # reset routes to default
+    app.config["COMMUNITIES_ROUTES"] = default_routes

@@ -66,7 +66,7 @@ class CommunityService(RecordService):
     def links_item_tpl(self):
         """Item links template."""
         return CommunityLinksTemplate(
-            self.config.links_item,
+            self.config.links_item(),
             self.config.action_link,
             self.config.available_actions,
             context={

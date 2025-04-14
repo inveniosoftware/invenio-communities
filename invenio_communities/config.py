@@ -37,6 +37,7 @@ COMMUNITIES_ROUTES = {
     "invitations": "/communities/<pid_value>/invitations",
     "about": "/communities/<pid_value>/about",
     "curation_policy": "/communities/<pid_value>/curation-policy",
+    "self": "/communities/<pid_value>",
 }
 
 """Communities ui endpoints."""
