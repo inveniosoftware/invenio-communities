@@ -145,11 +145,25 @@ def app_config(app_config):
 
     app_config["COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS"] = True
 
+    app_config["THEME_FRONTPAGE"] = False
+    app_config["NOTIFICATIONS_SETTINGS_VIEW_FUNCTION"] = lambda: "<notification view>"
+
     return app_config
 
 
 @pytest.fixture(scope="module")
-def create_app(instance_path):
+def extra_entry_points():
+    """Extra entry points to load the mock_module features."""
+    return {
+        "invenio_base.blueprints": [
+            "invenio_app_rdm_communities = tests.mock_module:create_invenio_app_rdm_communities_blueprint",  # noqa
+            "invenio_rdm_community_records = tests.mock_module:create_community_records_blueprint",  # noqa
+        ],
+    }
+
+
+@pytest.fixture(scope="module")
+def create_app(instance_path, entry_points):
     """Application factory fixture."""
     return create_api
 

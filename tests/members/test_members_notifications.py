@@ -78,6 +78,7 @@ def test_community_invitation_submit_notification(
         html = outbox[0].html
         # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
         assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        assert "/account/settings/notifications" in html
         # role titles will be capitalized
         assert role.capitalize() in html
         assert "You have been invited to join" in html
