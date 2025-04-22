@@ -13,10 +13,12 @@ from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services import (
     RecordServiceConfig,
     SearchOptions,
-    pagination_links,
 )
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_records_resources.services.records.components import MetadataComponent
+from invenio_records_resources.services.records.links import (
+    pagination_endpoint_links,
+)
 from invenio_records_resources.services.records.queryparser import (
     QueryParser,
     SearchFieldTransformer,
@@ -186,7 +188,9 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     links_item = {}
 
     # ResultList configurations
-    links_search = pagination_links("{+api}/communities/{community_id}/members{?args*}")
+    links_search = pagination_endpoint_links(
+        "community_members.search", params=["pid_value"]
+    )
 
     # Service components
     components = [

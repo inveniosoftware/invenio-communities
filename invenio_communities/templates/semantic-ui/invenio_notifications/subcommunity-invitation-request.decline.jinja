@@ -15,7 +15,7 @@
 
 {# TODO: use request.links.self_html when issue issue is resolved: https://github.com/inveniosoftware/invenio-rdm-records/issues/1327 #}
 {% set request_link = "{ui}/communities/{community_id}/requests/{request_id}".format(**msg_ctx) %}
-{% set account_settings_link = "{ui}/account/settings/notifications".format(**msg_ctx) %}
+{% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
 
 {%- block subject -%}
 {{ _('⛔️ Subcommunity invitation declined for {community_title} to join the {parent_community_title} community').format(**msg_ctx) }}
