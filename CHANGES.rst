@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v18.2.0 (released 2025-04-22)
+
+- urls: integrate invenio_url_for
+
 Version v18.1.0 (released 2025-04-08)
 
 - bug: humanize byte size error on community image upload
