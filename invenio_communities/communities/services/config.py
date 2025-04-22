@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
-# Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022-2025 Northwestern University.
 # Copyright (C) 2023 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -18,14 +18,16 @@ from invenio_records_resources.services.base.config import (
     FromConfigSearchOptions,
     SearchOptionsMixin,
 )
-from invenio_records_resources.services.files.links import FileLink
+from invenio_records_resources.services.files.links import FileEndpointLink
 from invenio_records_resources.services.records.config import (
     RecordServiceConfig,
 )
 from invenio_records_resources.services.records.config import (
     SearchOptions as SearchOptionsBase,
 )
-from invenio_records_resources.services.records.links import pagination_links
+from invenio_records_resources.services.records.links import (
+    pagination_endpoint_links,
+)
 from invenio_records_resources.services.records.params import (
     FacetsParam,
     PaginationParam,
@@ -44,7 +46,7 @@ from invenio_communities.communities.services.results import (
 from ...permissions import CommunityPermissionPolicy, can_perform_action
 from ..schema import CommunityFeaturedSchema, CommunitySchema, TombstoneSchema
 from .components import DefaultCommunityComponents
-from .links import CommunityLink
+from .links import CommunityEndpointLink, CommunityUIEndpointLink
 from .search_params import IncludeDeletedCommunitiesParam, StatusParam
 from .sort import CommunitiesSortParam
 
@@ -117,37 +119,56 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     result_item_cls_featured = FeaturedCommunityItem
 
     links_item = {
-        "self": CommunityLink("{+api}/communities/{id}"),
-        "self_html": CommunityLink("{+ui}/communities/{slug}"),
-        "settings_html": CommunityLink("{+ui}/communities/{slug}/settings"),
-        "logo": CommunityLink("{+api}/communities/{id}/logo"),
-        "rename": CommunityLink("{+api}/communities/{id}/rename"),
-        "members": CommunityLink("{+api}/communities/{id}/members"),
-        "public_members": CommunityLink("{+api}/communities/{id}/members/public"),
-        "invitations": CommunityLink("{+api}/communities/{id}/invitations"),
-        "requests": CommunityLink("{+api}/communities/{id}/requests"),
-        "records": CommunityLink("{+api}/communities/{id}/records"),
-        "subcommunities": CommunityLink(
-            "{+api}/communities/{id}/subcommunities",
-            when=children_allowed,
+        "self": CommunityEndpointLink("communities.read", params=["pid_value"]),
+        "self_html": CommunityUIEndpointLink(
+            "invenio_app_rdm_communities.communities_home", params=["pid_value"]
         ),
-        "membership_requests": CommunityLink(
-            "{+api}/communities/{id}/membership-requests"
+        "settings_html": CommunityUIEndpointLink(
+            "invenio_communities.communities_settings", params=["pid_value"]
+        ),
+        "logo": CommunityEndpointLink("communities.read_logo", params=["pid_value"]),
+        "rename": CommunityEndpointLink("communities.rename", params=["pid_value"]),
+        "members": CommunityEndpointLink(
+            "community_members.search", params=["pid_value"]
+        ),
+        "public_members": CommunityEndpointLink(
+            "community_members.search_public", params=["pid_value"]
+        ),
+        "invitations": CommunityEndpointLink(
+            "community_members.invite", params=["pid_value"]
+        ),
+        "requests": CommunityEndpointLink(
+            "communities.search_community_requests", params=["pid_value"]
+        ),
+        "records": CommunityEndpointLink(
+            "community-records.search", params=["pid_value"]
+        ),
+        "subcommunities": CommunityEndpointLink(
+            "communities.search_subcommunities",
+            when=children_allowed,
+            params=["pid_value"],
+        ),
+        "membership_requests": CommunityEndpointLink(
+            "community_members.request_membership", params=["pid_value"]
         ),
     }
 
-    action_link = CommunityLink(
-        "{+api}/communities/{id}/{action_name}", when=can_perform_action
+    action_link = CommunityEndpointLink(
+        "communities.featured_create",  # This works because only 1 action
+        when=can_perform_action,
+        params=["pid_value"],
     )
 
-    links_search = pagination_links("{+api}/communities{?args*}")
-    links_featured_search = pagination_links("{+api}/communities/featured{?args*}")
-    links_user_search = pagination_links("{+api}/user/communities{?args*}")
-    links_community_requests_search = pagination_links(
-        "{+api}/communities/{community_id}/requests{?args*}"
+    links_search = pagination_endpoint_links("communities.search")
+    links_featured_search = pagination_endpoint_links(
+        "communities.featured_communities_search"
     )
-    links_subcommunities_search = pagination_links(
-        "{+api}/communities/{community_id}/subcommunities{?args*}"
+    links_user_search = pagination_endpoint_links("communities.search_user_communities")
+    links_community_requests_search = pagination_endpoint_links(
+        "communities.search_community_requests", params=["pid_value"]
+    )
+    links_subcommunities_search = pagination_endpoint_links(
+        "communities.search_subcommunities", params=["pid_value"]
     )
 
     available_actions = [
@@ -168,5 +189,5 @@ class CommunityFileServiceConfig(FileServiceConfig, ConfiguratorMixin):
         "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy
     )
     file_links_item = {
-        "self": FileLink("{+api}/communities/{id}/logo"),
+        "self": FileEndpointLink("communities.read_logo", params=["pid_value"]),
     }

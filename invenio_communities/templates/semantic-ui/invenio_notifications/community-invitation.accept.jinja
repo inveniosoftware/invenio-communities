@@ -11,10 +11,7 @@
     ui=config.SITE_UI_URL, id=request_id
     )
 %}
-{% set account_settings_link = "{ui}/account/settings/notifications".format(
-    ui=config.SITE_UI_URL
-    )
-%}
+{% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
 
 {%- block subject -%}
    {{ _("✅ @{user_name} accepted the invitation to join community '{community_title}'.").format(user_name=receiver_name, community_title=community_title) }}
@@ -24,13 +21,13 @@
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
         <td>{{ _("'@{user_name}' accepted the invitation to join your community '{community_title}'").format(user_name=receiver_name,community_title=community_title) }}
-        {% if message %} 
+        {% if message %}
         {{ _(" with the following message:")}}
         {% endif %}
         </td>
     </tr>
     <tr>
-        {% if message %} 
+        {% if message %}
         <td><em>"{{message}}"</em></td>
         {% endif %}
     </tr>
@@ -49,7 +46,7 @@
 {%- block plain_body -%}
 {{ _("@{user_name} accepted the invitation to join your community '{community_title}'").format(user_name=receiver_name,community_title=community_title) }}
 
-{% if message %} 
+{% if message %}
 {{ _("with the following message:")}}
 {{message}}
 {% endif %}
@@ -61,7 +58,7 @@
 {%- block md_body -%}
 {{ _("*@{user_name}* accepted the invitation to join your community *{community_title}*").format(user_name=receiver_name,community_title=community_title) }}
 
-{% if message %} 
+{% if message %}
 {{ _("with the following message:")}}
 {{message}}
 {% endif %}

@@ -13,10 +13,7 @@
     ui=config.SITE_UI_URL, parent_community=parent_community, request_id=request_id
     )
 %}
-{% set account_settings_link = "{ui}/account/settings/notifications".format(
-    ui=config.SITE_UI_URL
-    )
-%}
+{% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
 
 {%- block subject -%}
 {{ _("💬 New comment on '{request_title}'").format(request_title=request_title) }}
