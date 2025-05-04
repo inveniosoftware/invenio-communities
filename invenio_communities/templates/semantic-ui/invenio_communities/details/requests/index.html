@@ -2,6 +2,7 @@
 
   This file is part of Invenio.
   Copyright (C) 2022 CERN.
+  Copyright (C) 2025 Graz University of Technology.
 
   Invenio is free software; you can redistribute it and/or modify it
   under the terms of the MIT License; see LICENSE file for more details.
@@ -9,7 +10,7 @@
 
 {% extends "invenio_communities/details/base.html" %}
 
-{%- set title = community.metadata.title + _(" requests") -%}
+{%- set title = community_ui["metadata"]["title"] + _(" requests") -%}
 {% set active_community_header_menu_item = 'requests' %}
 
 {%- block javascript %}
@@ -24,8 +25,8 @@
   <div
     id="communities-request-search-root"
     class="rel-m-2"
-    data-community='{{ community | tojson }}'
-    data-invenio-search-config='{{ search_app_communities_requests_config(app_id="InvenioCommunities.RequestSearch", endpoint=community.links.requests) | tojson }}'>
+    data-community='{{ community_ui | tojson }}'
+    data-invenio-search-config='{{ search_app_communities_requests_config(app_id="InvenioCommunities.RequestSearch", endpoint=community_ui["links"]["requests"]) | tojson }}'>
   </div>
   {%- endblock requests_body %}
 {%- endblock page_body %}

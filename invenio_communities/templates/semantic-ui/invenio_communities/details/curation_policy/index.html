@@ -2,6 +2,7 @@
 
   This file is part of Invenio.
   Copyright (C) 2023 CERN.
+  Copyright (C) 2025 Graz University of Technology.
 
   Invenio is free software; you can redistribute it and/or modify it
   under the terms of the MIT License; see LICENSE file for more details.
@@ -14,6 +15,6 @@
 {%- block page_body %}
   {{ super() }}
   <div class="ui text container rich-input-content rel-m-2 rel-pt-1">
-    {{ community.metadata.curation_policy | safe }}
+    {{ community_ui["metadata"]["curation_policy"] | safe }}
   </div>
 {%- endblock page_body -%}

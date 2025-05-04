@@ -2,6 +2,7 @@
 
   This file is part of Invenio.
   Copyright (C) 2023 CERN.
+  Copyright (C) 2025 Graz University of Technology.
 
   Invenio is free software; you can redistribute it and/or modify it
   under the terms of the MIT License; see LICENSE file for more details.
@@ -15,11 +16,11 @@
   {{ super() }}
   <div class="ui text container rel-m-2 rel-pt-1">
     {{ community.metadata.page | safe }}
-    {% if community.ui.funding|length %}
+    {% if community_ui["ui"]["funding"]|length %}
       <h3 class="ui header">{{ _("Awards") }}</h3>
       <dl class="ui list">
 
-        {% for funding in community.ui.funding %}
+        {% for funding in community_ui["ui"]["funding"] %}
           <div class="item rel-mb-1">
             {% if funding.award %}
               <dd class="header">
@@ -53,7 +54,7 @@
     {% endif %}
 
 
-    {% set custom_fields = community.ui.custom_fields %}
+    {% set custom_fields = community_ui["ui"]["custom_fields"] %}
 
     {% for section_cfg in custom_fields_ui if custom_fields %}
       {% set section_fields = section_cfg.fields %}
