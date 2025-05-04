@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
-# Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023-2025 Graz University of Technology.
 # Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -309,7 +309,6 @@ def communities_new_subcommunity(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/new_subcommunity.html",
         theme=community_ui.get("theme", {}),
-        community=community,
         community_ui=community_ui,
         permissions=permissions,  # hide/show UI components
         form_config=dict(
@@ -334,7 +333,7 @@ def communities_subcommunities(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/subcommunity/index.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
     )
 
@@ -370,7 +369,6 @@ def communities_settings(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/settings/profile.html",
         theme=community_ui.get("theme", {}),
-        community=community,
         community_ui=community_ui,
         has_logo=True if logo else False,
         logo_quota=logo_size_limit,
@@ -391,7 +389,7 @@ def communities_requests(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/requests/index.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
     )
 
@@ -412,7 +410,7 @@ def communities_settings_privileges(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/settings/privileges.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         form_config=dict(
             access=dict(
                 visibility=VISIBILITY_FIELDS,
@@ -434,7 +432,7 @@ def communities_settings_submission_policy(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/settings/submission_policy.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
         form_config=dict(
             access=dict(
@@ -455,7 +453,7 @@ def communities_settings_pages(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/settings/pages.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
     )
 
@@ -470,7 +468,7 @@ def members(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/members/members.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
         roles_can_update=_get_roles_can_update(community.id),
         roles_can_invite=_get_roles_can_invite(community.id),
@@ -486,7 +484,7 @@ def invitations(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/members/invitations.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         roles_can_invite=_get_roles_can_invite(community.id),
         permissions=permissions,
     )
@@ -502,7 +500,7 @@ def communities_about(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/about/index.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
         custom_fields_ui=load_custom_fields(dump_only_required=False)["ui"],
     )
@@ -517,7 +515,7 @@ def communities_curation_policy(pid_value, community, community_ui):
     return render_community_theme_template(
         "invenio_communities/details/curation_policy/index.html",
         theme=community_ui.get("theme", {}),
-        community=community_ui,
+        community_ui=community_ui,
         permissions=permissions,
     )
 
