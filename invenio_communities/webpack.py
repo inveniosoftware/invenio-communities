@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2022 CERN.
+# Copyright (C) 2025 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -9,7 +10,7 @@
 """JS/CSS bundles for communities.
 
 You include one of the bundles in a page like the example below (using
-``comunities`` bundle as an example):
+``communities`` bundle as an example):
 
 .. code-block:: html
 
@@ -47,7 +48,7 @@ communities = WebpackThemeBundle(
                 "@semantic-ui-react/css-patch": "^1.0.0",
                 "react-router-dom": "^6.3.0",
                 "react-invenio-forms": "^3.0.0",
-                "axios": "^0.21.0",
+                "axios": "^1.8.2",
                 "formik": "^2.1.0",
                 "i18next": "^20.3.0",
                 "@tinymce/tinymce-react": "^4.3.0",
