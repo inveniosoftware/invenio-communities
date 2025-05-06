@@ -2,6 +2,7 @@
     This file is part of Invenio.
     Copyright (C) 2016-2024 CERN.
     Copyright (C) 2025 Graz University of Technology.
+    Copyright (C) 2025 KTH Royal Institute of Technology.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -9,6 +10,12 @@
 
 Changes
 =======
+
+Version 13.1.1 (released 2025-05-06)
+
+- dependencies: update axios to version 1.8.2
+- installation: add records-resources to requirements
+- tests: disable warnings entirely in logs
 
 Version 13.1.0 (released 2025-04-29)
 
