@@ -11,6 +11,10 @@
 Changes
 =======
 
+Version 13.1.2 (released 2025-05-07)
+
+- i18n: compile js translations
+
 Version 13.1.1 (released 2025-05-06)
 
 - dependencies: update axios to version 1.8.2
