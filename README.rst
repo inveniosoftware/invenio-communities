@@ -23,9 +23,7 @@
         :target: https://github.com/inveniosoftware/invenio-communities/blob/master/LICENSE
 
 
-Invenio module that adds support for communities.
-
-*This is an experimental developer preview release.*
+Invenio module that adds support for communities, which enable users to organize and curate records.
 
 * Free software: MIT license
 * Documentation: https://invenio-communities.readthedocs.io/
