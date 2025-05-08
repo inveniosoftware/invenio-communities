@@ -10,6 +10,13 @@
 Changes
 =======
 
+Version v18.3.0 (released 2025-05-08)
+
+- services: include Opensearch meta in the results
+- dependencies: depend explicitly on invenio-records-resources
+- fix: rename community variable in templates
+- requests views: add community objects to template context
+
 Version v18.2.0 (released 2025-04-22)
 
 - urls: integrate invenio_url_for
