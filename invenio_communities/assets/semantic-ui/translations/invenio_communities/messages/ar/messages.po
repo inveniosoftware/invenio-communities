@@ -126,7 +126,7 @@ msgid "Search communities..."
 msgstr "البحث في المجتمعات..."
 
 msgid "Restore community"
-msgstr ""
+msgstr "استعادة المجتمع"
 
 msgid "Unavailability statement"
 msgstr "بيان عدم التوفر"
@@ -135,22 +135,22 @@ msgid "Success"
 msgstr "نجاح العمليّة"
 
 msgid "Community {{id}} was restored."
-msgstr ""
+msgstr "تمت استعادة {{id}} المجتمع ."
 
 msgid "Unable to restore."
 msgstr "الإسترجاع غير ممكن"
 
 msgid "Are you sure you want to restore community #{{id}}"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد إسترجاع #{{id}}"
 
 msgid "Close"
 msgstr "غلق"
 
 msgid "Community {{id}} was deleted."
-msgstr ""
+msgstr "تمت حذف {{id}} المجتمع ."
 
 msgid "Unable to delete"
-msgstr "الفسخ غير ممكن"
+msgstr "الحذف غير ممكن"
 
 msgid "Public"
 msgstr "مشاع"
@@ -194,10 +194,10 @@ msgid "This set is not deletable as it was created by the system."
 msgstr "غير قابلة للحذف حيث تم إنشاؤها بواسطة النظام."
 
 msgid "Planned features"
-msgstr ""
+msgstr "الميزات المخطط لها"
 
 msgid "Start date"
-msgstr ""
+msgstr "تاريخ البداية"
 
 msgid "Active"
 msgstr "مفعٌل"
@@ -218,33 +218,33 @@ msgid "Browse"
 msgstr "تصفح"
 
 msgid "New upload"
-msgstr "إيداع جديد"
+msgstr "تحميل جديد"
 
 msgid "Previous slide"
-msgstr ""
+msgstr "الصفحة السابقة"
 
 msgid "Next slide"
-msgstr ""
+msgstr "الصفحة الموالية:"
 
 msgid "opens in new tab"
-msgstr ""
+msgstr "فتح في تبويبة جديدة"
 
 msgid "Branding"
-msgstr ""
+msgstr "الوسام"
 
 msgid "Submission information"
-msgstr ""
+msgstr "معلومات حول الإيداع"
 
 msgid ""
 "Submission to this community does not require review, and will be published "
 "immediately."
-msgstr ""
+msgstr "لا يتطلب الإداع إلى هذا المجتمع أي مراجعة، وسيتم نشره على الفور."
 
 msgid "profile"
 msgstr "الملف الشّخصي"
 
 msgid "An error occurred."
-msgstr ""
+msgstr "حدث خطأ."
 
 msgid "Restricted"
 msgstr "مقيّد"
@@ -264,13 +264,13 @@ msgid "Filter results"
 msgstr "تصفية النتائج "
 
 msgid "Select all members"
-msgstr ""
+msgstr "حدد جميع الأعضاء"
 
 msgid "bulk actions"
 msgstr "إجراءات بالجملة"
 
 msgid "Select member"
-msgstr ""
+msgstr "حدد عضوا"
 
 msgid "remove {{name}}"
 msgstr "حذف {{name}}"
@@ -303,6 +303,8 @@ msgid ""
 "Note: upon addition, selected groups will have access to the record without "
 "any kind of notification."
 msgstr ""
+"ملاحظة: عند الإضافة، سيكون لدى المجموعات المحددة إمكانية الوصول إلى السجل "
+"دون أي نوع من الإشعارات."
 
 msgid "Submitted"
 msgstr "تم الإيداع"
@@ -341,12 +343,14 @@ msgid "Search for groups"
 msgstr "البحث في المجموعات"
 
 msgid "Already a member"
-msgstr ""
+msgstr "عضو بالفعل"
 
 msgid ""
 "Note: upon addition, selected groups will become community members "
 "immediately without any kind of notification or invitation approval."
 msgstr ""
+"ملاحظة: عند الإضافة، ستصبح المجموعات المحددة أعضاء في المجتمع على الفور دون "
+"أي نوع من الإشعار أو الموافقة على الدعوة."
 
 msgid "Add"
 msgstr "إضافة"
@@ -357,24 +361,26 @@ msgstr "الشعب"
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
 msgstr ""
+"ابحث عن المستخدمين الذين تريد دعوتهم (يمكن دعوة المستخدمين الذين لديهم ملف "
+"تعريف مشاع فقط)"
 
 msgid "Invite"
 msgstr "دعوة"
 
 msgid "No selected members"
-msgstr ""
+msgstr "لا يوجد أعضاء مختارين"
 
 msgid "Invitation message"
-msgstr ""
+msgstr "رسالة الدعوة"
 
 msgid "You are about to invite"
-msgstr ""
+msgstr "أنت على وشك دعوة"
 
 msgid "users"
 msgstr "المستخدمين"
 
 msgid "Already a member or invitation pending"
-msgstr ""
+msgstr "هل أنت عضو بالفعل أو لديك دعوة معلقة؟"
 
 msgid "Search by email, full name or username"
 msgstr "البحث عبر عنوان البيريد اﻹلكتروني، الإسم الكلمل او إسم المستخدم"
@@ -389,7 +395,7 @@ msgid "Invite members"
 msgstr "إستدعاء أعضاء"
 
 msgid "Invite..."
-msgstr ""
+msgstr "دعوة"
 
 msgid "Add groups"
 msgstr "أضف مجموعات"
@@ -444,66 +450,67 @@ msgid "Search members..."
 msgstr "البحث في الأعضاء..."
 
 msgid "Submission review policy"
-msgstr ""
+msgstr "سياسة مراجعة الإيداع"
 
 msgid "Curation policy"
-msgstr ""
+msgstr "سياسة المعالجة"
 
 msgid "About page"
-msgstr ""
+msgstr "بخصوص الصفحة"
 
 msgid "Controls if the community is visible to anyone or to members only."
-msgstr ""
+msgstr "يتحكم فيما إذا كان المجتمع مرئيًا لأي شخص أو للأعضاء فقط."
 
 msgid "Members visibility"
-msgstr ""
+msgstr "مرئية المجتمع"
 
 msgid "Controls if the members tab is visible to anyone or to members only."
 msgstr ""
+"يتحكم في ما إذا كانت علامة تبويب الأعضاء مرئية لأي شخص أو للأعضاء فقط."
 
 msgid "Maximum number of characters is 250"
-msgstr ""
+msgstr "الحد الأقصى لعدد الأحرف هو 250"
 
 msgid "Basic information"
 msgstr "المعلومات الأساسية"
 
 msgid "Short description"
-msgstr ""
+msgstr "وصف مختصر"
 
 msgid "Funding information"
-msgstr ""
+msgstr "معلومات حول التمويل"
 
 msgid "Awards/Grants"
 msgstr "الجوائز/المنح"
 
 msgid "Permanently delete community"
-msgstr ""
+msgstr "حذف المجتمع بشكل دائم"
 
 msgid "This action CANNOT be undone!"
-msgstr ""
+msgstr "لا يمكن التراجع عن هذا الإجراء!"
 
 msgid "Permanently delete"
-msgstr ""
+msgstr "حذف بشكل دائم"
 
 msgid "Are you <1>absolutely sure</1> you want to delete the community?"
-msgstr ""
+msgstr "هل أنت <1>متأكد تمامًا</1> أنك تريد حذف المجتمع؟"
 
 msgid "<0> members</0> will be removed from the community."
-msgstr ""
+msgstr "سيتم إزالة <0>الأعضاء</0> من المجتمع."
 
 msgid "<0> records</0> will be removed from the community."
-msgstr ""
+msgstr "سيتم إزالة <0> التسجيلات</0> من المجتمع."
 
 msgid ""
 "You <1>CANNOT</1> reuse the community identifier "
 "\"<3>{{communitySlug}}</3>\"."
-msgstr ""
+msgstr "لا <1>يمكنك</1> إعادة استخدام معرف المجتمع \"<3>{{communitySlug}}</3>\"."
 
 msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
-msgstr ""
+msgstr "الرجاء كتابة <1><0>{{communitySlug}}</0></1> للتأكيد."
 
 msgid "File must be smaller than {{fileSize}}"
-msgstr ""
+msgstr "يجب أن يكون حجم الملف أصغر من {{fileSize}}"
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr "مرئية التغييرات في كل مكان ستتطلب بعض الوقت"

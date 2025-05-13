@@ -116,6 +116,8 @@ msgid ""
 "Logo size limit exceeded. Limit: {limit_value} {limit_unit} Given: "
 "{file_size_value} {file_size_unit}"
 msgstr ""
+"Se superó el tamaño máximo del logotipo. Límite:  {limit_value} {limit_unit}"
+" Dado: {file_size_value} {file_size_unit}"
 
 #: invenio_communities/errors.py:62
 #, python-format
@@ -180,11 +182,11 @@ msgstr "Acerca de"
 
 #: invenio_communities/roles.py:65
 msgid "Only one role be defined as owner."
-msgstr ""
+msgstr "Solo será definido un rol como propietario."
 
 #: invenio_communities/roles.py:67
 msgid "One role must be defined as owner."
-msgstr ""
+msgstr "Se debe definir un rol como propietario."
 
 #: invenio_communities/communities/schema.py:52
 #, python-brace-format
@@ -206,11 +208,11 @@ msgstr "El ID debe contener solo letras con números o guiones."
 
 #: invenio_communities/communities/schema.py:312
 msgid "start date"
-msgstr ""
+msgstr "fecha de inicio"
 
 #: invenio_communities/communities/schema.py:313
 msgid "Accepted format: YYYY-MM-DD hh:mm"
-msgstr ""
+msgstr "Formato válido: YYYY-MM-DD hh:mm"
 
 #: invenio_communities/communities/schema.py:324
 msgid "Deleted community"
@@ -256,7 +258,7 @@ msgstr "La comunidad no es pública."
 #: invenio_communities/communities/services/components.py:171
 #, python-format
 msgid "parent.communities.ids:%(id)s"
-msgstr ""
+msgstr "parent.communities.ids:%(id)s"
 
 #: invenio_communities/communities/services/components.py:314
 msgid "Assigned parent is not allowed to be a parent."
