@@ -113,6 +113,8 @@ msgid ""
 "Logo size limit exceeded. Limit: {limit_value} {limit_unit} Given: "
 "{file_size_value} {file_size_unit}"
 msgstr ""
+"تجاوز للحد الاقصى لحجم الترخيمة.  Limit: {limit_value} {limit_unit} Given: "
+"{file_size_value} {file_size_unit}"
 
 #: invenio_communities/errors.py:62
 #, python-format
@@ -123,17 +125,24 @@ msgid_plural ""
 "There are %(num)s requests open for this community. Please, resolve all of "
 "them before deleting this community."
 msgstr[0] ""
+"هناك%(num)s طلب مفتوح لهذا المجتمع. يُرجى حلّها جميعًا قبل حذف هذا المجتمع."
 msgstr[1] ""
+"هناك %(num)s طلب مفتوح لهذا المجتمع. يُرجى حلّها جميعًا قبل حذف هذا المجتمع."
 msgstr[2] ""
+"هناك %(num)s طلب مفتوح لهذا المجتمع. يُرجى حلّها جميعًا قبل حذف هذا المجتمع."
 msgstr[3] ""
+"هناك %(num)s طلب مفتوح لهذا المجتمع. يُرجى حلّها جميعًا قبل حذف هذا المجتمع."
 msgstr[4] ""
+"هناك %(num)s طلب مفتوح لهذا المجتمع. يُرجى حلّها جميعًا قبل حذف هذا المجتمع."
 msgstr[5] ""
+"هناك %(num)s طلبات مفتوحة لهذا المجتمع. يُرجى حلّها جميعًا قبل حذف هذا "
+"المجتمع."
 
 #: invenio_communities/errors.py:94
 msgid ""
 "Cannot set community as the default. The record has not been added to the "
 "community."
-msgstr ""
+msgstr "لا يمكن تعيين المجتمع تلقائيا. لم تتم إضافة التسجيلة إلى المجتمع."
 
 #: invenio_communities/ext.py:133
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:13
@@ -164,19 +173,19 @@ msgstr "إعدادات"
 
 #: invenio_communities/ext.py:170
 msgid "Curation policy"
-msgstr ""
+msgstr "سياسة المعالجة"
 
 #: invenio_communities/ext.py:178
 msgid "About"
-msgstr ""
+msgstr "بخصوص"
 
 #: invenio_communities/roles.py:65
 msgid "Only one role be defined as owner."
-msgstr ""
+msgstr "يجب تحديد دور واحد فقط في دور المالك."
 
 #: invenio_communities/roles.py:67
 msgid "One role must be defined as owner."
-msgstr ""
+msgstr "يجب تحديد دور واحد كمالك."
 
 #: invenio_communities/communities/schema.py:52
 #, python-brace-format
@@ -186,7 +195,7 @@ msgstr "لا يمكن أن يكون الحقل فارغًا أوان يزيد ط
 #: invenio_communities/communities/schema.py:62
 #, python-brace-format
 msgid "Field cannot be longer than {max} characters."
-msgstr ""
+msgstr "لا يمكن أن يكون الحقل أطول من {max} حرف."
 
 #: invenio_communities/communities/schema.py:73
 msgid "The ID must not be an Universally Unique IDentifier (UUID)."
@@ -198,19 +207,19 @@ msgstr "يجب أن يتكون المعرف ID فقط من حروف  اضافة 
 
 #: invenio_communities/communities/schema.py:312
 msgid "start date"
-msgstr ""
+msgstr "تاريخ البداية"
 
 #: invenio_communities/communities/schema.py:313
 msgid "Accepted format: YYYY-MM-DD hh:mm"
-msgstr ""
+msgstr "التنسيق المعتمد : YYYY-MM-DD hh:mm"
 
 #: invenio_communities/communities/schema.py:324
 msgid "Deleted community"
-msgstr ""
+msgstr "المجتمع محذوف"
 
 #: invenio_communities/communities/schema.py:325
 msgid "The community was deleted."
-msgstr ""
+msgstr "تم حذف المجتمع."
 
 #: invenio_communities/communities/resources/config.py:68
 #: invenio_communities/members/resources/config.py:55
@@ -223,11 +232,11 @@ msgstr "غير معلوم"
 
 #: invenio_communities/communities/resources/ui_schema.py:47
 msgid "System (automatic)"
-msgstr ""
+msgstr "النظام (تلقائي)"
 
 #: invenio_communities/communities/resources/ui_schema.py:49
 msgid "Admin"
-msgstr ""
+msgstr "مدير"
 
 #: invenio_communities/communities/services/components.py:39
 msgid "A community with this identifier already exists."
@@ -248,27 +257,30 @@ msgstr "المجموعة ليست عامة."
 #: invenio_communities/communities/services/components.py:171
 #, python-format
 msgid "parent.communities.ids:%(id)s"
-msgstr ""
+msgstr "parent.communities.ids:%(id)s"
 
 #: invenio_communities/communities/services/components.py:314
 msgid "Assigned parent is not allowed to be a parent."
-msgstr ""
+msgstr "هيكليا لا يجوز لـ parent المعين أن يكون parent ."
 
 #: invenio_communities/communities/services/components.py:318
 msgid "Community allowed to be a parent can't be a child."
-msgstr ""
+msgstr "المجتمع الذي يُسمح له بأن يكون parent لا يمكنه أن يكون child."
 
 #: invenio_communities/communities/services/components.py:322
 msgid "Assigned parent community cannot also have a parent."
 msgstr ""
+"لا يمكن للمجتمع الرئيسي parent community المعين أن يكون له أيضًا a parent."
 
 #: invenio_communities/communities/services/components.py:326
 msgid "Assigned parent community cannot be the same as child."
 msgstr ""
+"لا يمكن للمجتمع الرئيسي parent community المعين أن يكون هو نفسه المجتمع "
+"الفرعي child."
 
 #: invenio_communities/communities/services/components.py:329
 msgid "Assigned parent community does not exist."
-msgstr ""
+msgstr "المجتمع الرئيسي المعين parent community غير موجود."
 
 #: invenio_communities/communities/services/config.py:56
 msgid "Featured"
@@ -326,21 +338,21 @@ msgstr "معطيات منقوصة لحقل وجوبي."
 
 #: invenio_communities/members/resources/config.py:43
 msgid "Invalid member specified."
-msgstr ""
+msgstr "تم تحديد عضو غير صالح."
 
 #: invenio_communities/members/resources/config.py:49
 msgid "A member was already added or invited."
-msgstr ""
+msgstr "لقد تمت إضافة عضو أو دعوته بالفعل."
 
 #: invenio_communities/members/services/components.py:34
 #: invenio_communities/members/services/components.py:43
 msgid "Community must be defined."
-msgstr ""
+msgstr "يجب تعريف المجتمع."
 
 #: invenio_communities/members/services/components.py:49
 #, python-format
 msgid "Member must be 'MemberMixin' or 'dict' but was %(type)s"
-msgstr ""
+msgstr "يجب أن يكون العضو 'MemberMixin' أو 'dict' ولكن كان %(type)s"
 
 #: invenio_communities/members/services/facets.py:18
 msgid "Role"
@@ -385,7 +397,7 @@ msgstr "دور خاطئ."
 
 #: invenio_communities/members/services/fields.py:45
 msgid "Not a valid role to serialize."
-msgstr ""
+msgstr "ليس دورًا صالحًا للتسلسل."
 
 #: invenio_communities/members/services/request.py:103
 msgid "Community invitation"
@@ -410,12 +422,12 @@ msgstr "نوع العضوية خاطئ: البريد الإلكتروني"
 #: invenio_communities/members/services/service.py:278
 #, python-format
 msgid "Invitation to join \"%(community)s\""
-msgstr ""
+msgstr "دعوة للانضمام \"%(community)s\""
 
 #: invenio_communities/members/services/service.py:281
 #, python-format
 msgid "You will join as \"%(role)s\"."
-msgstr ""
+msgstr "سوف تنضم كـ \"%(role)s\"."
 
 #: invenio_communities/members/services/service.py:538
 #: invenio_communities/members/services/service.py:658
@@ -433,11 +445,11 @@ msgstr "يمكنك فقط تبيان مرئية عامة على عضويتك."
 #: invenio_communities/members/services/service.py:584
 #, python-format
 msgid "You will join as \"%(role)s\" (changed from: \"%(previous)s\")."
-msgstr ""
+msgstr "سوف تنضم كـ \"%(role)s\" (تم التغيير من: \"%(previous)s\")."
 
 #: invenio_communities/requests/user_moderation/actions.py:72
 msgid "User was blocked"
-msgstr ""
+msgstr "وقع حظر المستخدم"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:31
 msgid ""
@@ -484,6 +496,10 @@ msgid ""
 "        The community you are trying to access was removed from %(sitename)s. The\n"
 "        metadata of the community is kept for archival purposes."
 msgstr ""
+"\n"
+"    تمت إزالة المجموعة التي تحاول الوصول إليها من %(sitename)s.  تم الابقاء على\n"
+"    الميتاداتا للمجموعة لأغراض الأرشفة والحفظ.\n"
+"  "
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:34
 msgid "Reason for removal:"
@@ -512,15 +528,15 @@ msgstr "إيداع جديد"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:121
 msgid "Manage community"
-msgstr ""
+msgstr "إدارة المجتمع"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:19
 msgid "Awards"
-msgstr ""
+msgstr "جوائز"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:35
 msgid "Visit external website"
-msgstr ""
+msgstr "زيارة موقع واب خارجي"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:36
 msgid "Opens in new tab"
@@ -560,7 +576,7 @@ msgstr "الامتيازات"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:21
 msgid "Review policy"
-msgstr ""
+msgstr "مراجعة السياسة"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:22
 msgid "Pages"
@@ -568,28 +584,28 @@ msgstr "صفحات:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/macros/communities_carousel.html:11
 msgid "Featured communities"
-msgstr ""
+msgstr "المجتمعات المميزة"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:20
 #, python-brace-format
 msgid ""
 "✅ @{user_name} accepted the invitation to join community "
 "'{community_title}'."
-msgstr ""
+msgstr "✅ @{user_name} قبل الدعوة للانضمام إلى المجتمع '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:26
 #, python-brace-format
 msgid ""
 "'@{user_name}' accepted the invitation to join your community "
 "'{community_title}'"
-msgstr ""
+msgstr "'@{user_name}' قبل الدعوة للانضمام إلى المجتمع '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:28
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:28
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:28
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:29
 msgid " with the following message:"
-msgstr ""
+msgstr "مع الرسالة التالية:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:38
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:70
@@ -602,7 +618,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:39
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:70
 msgid "Check out the invitation"
-msgstr ""
+msgstr "تحقق من الدعوة"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:44
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:44
@@ -610,7 +626,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:35
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:45
 msgid "This is an auto-generated message. To manage notifications, visit your"
-msgstr ""
+msgstr "هذه رسالة حررت آليا. لإدارة الإشعارات، تفضل بزيارة"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:44
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:44
@@ -618,14 +634,14 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:35
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:45
 msgid "account settings"
-msgstr ""
+msgstr "إعدادات الحساب"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:50
 #, python-brace-format
 msgid ""
 "@{user_name} accepted the invitation to join your community "
 "'{community_title}'"
-msgstr ""
+msgstr "'@{user_name}' قبل الدعوة للانضمام إلى مجتمعك '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:53
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:65
@@ -636,7 +652,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:66
 msgid "with the following message:"
-msgstr ""
+msgstr "مع الرسالة التالية:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:57
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:57
@@ -644,19 +660,19 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:43
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:58
 msgid "Check out the invitation:"
-msgstr ""
+msgstr "تحقق من الدعوة:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:62
 #, python-brace-format
 msgid ""
 "*@{user_name}* accepted the invitation to join your community "
 "*{community_title}*"
-msgstr ""
+msgstr "'@{user_name}' قبل الدعوة للانضمام إلى مجتمعك '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:20
 #, python-brace-format
 msgid "❌ Community member invitation cancelled for @{user_name}"
-msgstr ""
+msgstr "❌ تم إلغاء دعوة عضو المجتمع لـ @{user_name}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:26
 #, python-brace-format
@@ -664,6 +680,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' was "
 "cancelled"
 msgstr ""
+"تم إلغاء الدعوة الموجهة إلى '@{user_name}' للانضمام إلى المجتمع "
+"'{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:50
 #, python-brace-format
@@ -671,6 +689,8 @@ msgid ""
 "The invitation for @{user_name} to join your community '{community_title}' "
 "was cancelled"
 msgstr ""
+"تم إلغاء الدعوة الموجهة إلى '@{user_name}' للانضمام إلى مجتمعك "
+"'{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:62
 #, python-brace-format
@@ -678,32 +698,34 @@ msgid ""
 "The invitation for *@{user_name}* to join your community "
 "*'{community_title}'* was cancelled"
 msgstr ""
+"ألغيت الدعوة الموجهة إلى '@{user_name}' للانضمام إلى مجتمعك "
+"'{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:20
 #, python-brace-format
 msgid "⛔️ @{user_name} declined the invitation to join '{community_title}'"
-msgstr ""
+msgstr "⛔️ @{user_name} رفض الدعوة للانضمام إلى '{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:26
 #, python-brace-format
 msgid ""
 "'@{user_name}' declined the invitation to join your community "
 "'{community_title}'"
-msgstr ""
+msgstr "'@{user_name}' رفض الدعوة للانضمام إلى '{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:50
 #, python-brace-format
 msgid ""
 "@{user_name} declined the invitation to join your community "
 "{community_title}"
-msgstr ""
+msgstr "'@{user_name}' رفض الدعوة للانضمام إلى مجتمعك {community_title}."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:62
 #, python-brace-format
 msgid ""
 "*@{user_name}* declined the invitation to join your community "
 "*{community_title}*"
-msgstr ""
+msgstr "*@{user_name}* رفض الدعوة للانضمام إلى مجتمعك *{community_title}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:20
 #, python-brace-format
@@ -711,6 +733,7 @@ msgid ""
 "⌛️ The invitation for @{user_name} to join community '{community_title}' "
 "expired"
 msgstr ""
+"⌛️ انتهت صلاحية دعوة @{user_name} للانضمام إلى المجتمع '{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:26
 #, python-brace-format
@@ -718,6 +741,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' has "
 "expired."
 msgstr ""
+"انتهت صلاحية الدعوة الخاصة بـ '@{user_name}' للانضمام إلى المجتمع "
+"'{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:41
 #, python-brace-format
@@ -725,6 +750,7 @@ msgid ""
 "The invitation for @{user_name} to join community '{community_title}' has "
 "expired."
 msgstr ""
+"انتهت صلاحية دعوة @{user_name} للانضمام إلى المجتمع '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:48
 #, python-brace-format
@@ -732,11 +758,12 @@ msgid ""
 "The invitation for *@{user_name}* to join community *{community_title}* has "
 "expired."
 msgstr ""
+"انتهت صلاحية دعوة *@{user_name}* للانضمام إلى المجتمع *{community_title}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:21
 #, python-brace-format
 msgid "📬 New invitation to join the community '{community_title}' as '{role}'"
-msgstr ""
+msgstr "📬 دعوة جديدة للانضمام إلى المجتمع '{community_title}' كـ '{role}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:51
@@ -744,12 +771,13 @@ msgstr ""
 msgid ""
 "You have been invited to join community '{community_title}' as '{role}'"
 msgstr ""
+"لقد تمت دعوتك للانضمام إلى المجتمع '{community_title}' باعتبارك '{role}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:63
 #, python-brace-format
 msgid ""
 "You have been invited to join community *{community_title}* as *{role}*"
-msgstr ""
+msgstr "لقد تمت دعوتك للانضمام إلى المجتمع *{community_title}* بصفتك *{role}*"
 
 #: invenio_communities/views/communities.py:35
 msgid "Your community is publicly accessible and shows up in search results."
@@ -764,31 +792,35 @@ msgid ""
 "Members who have set their visibility to public are visible to anyone. "
 "Members with hidden visibility are only visible to other members."
 msgstr ""
+"الأعضاء الذين جعلوا ظهورهم عامًا مرئيًا للجميع. الأعضاء الذين أخفوا ظهورهم؛ "
+"مرئيون فقط للأعضاء الآخرين."
 
 #: invenio_communities/views/communities.py:57
 msgid "Members-only"
-msgstr ""
+msgstr "للأعضاء فقط"
 
 #: invenio_communities/views/communities.py:61
 msgid ""
 "Members in your community are only visible to other members of the "
 "community."
-msgstr ""
+msgstr "الأعضاء في مجتمعك مرئيون فقط لأعضاء المجتمع الآخرين."
 
 #: invenio_communities/views/communities.py:70
 msgid "Review all submissions"
-msgstr ""
+msgstr "مراجعة جميع الأيداعات"
 
 #: invenio_communities/views/communities.py:73
 msgid "All submissions to the community must be reviewed."
-msgstr ""
+msgstr "يجب مراجعة جميع الإيداعات المقدمة للمجتمع."
 
 #: invenio_communities/views/communities.py:76
 msgid "Allow curators, managers and owners to publish without review"
-msgstr ""
+msgstr "السماح للمشرفين والمديرين والمالكين بالنشر دون مراجعة"
 
 #: invenio_communities/views/communities.py:80
 msgid ""
 "Submissions to the community by default requires review, but curators, "
 "managers and owners can publish directly without review."
 msgstr ""
+"تتطلب الإيداعات إلى المجتمع المراجعة بشكل تلقائي، ولكن يمكن للمنسقين "
+"والمديرين والمالكين النشر مباشرة دون مراجعة."
