@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
-# Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023-2025 Graz University of Technology.
 # Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -334,9 +334,11 @@ class CommunityFeaturedSchema(Schema):
     id = fields.Int(dump_only=True)
     start_date = fields.DateTime(
         required=True,
-        title=_("start date"),
-        description=_("Accepted format: YYYY-MM-DD hh:mm"),
-        placeholder="YYYY-MM-DD hh:mm",
+        metadata={
+            "title": _("start date"),
+            "description": _("Accepted format: YYYY-MM-DD hh:mm"),
+            "placeholder": "YYYY-MM-DD hh:mm",
+        },
     )
 
 
