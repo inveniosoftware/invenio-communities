@@ -25,8 +25,8 @@ export class Filters {
 
   getVisibility() {
     const values = [
-      { key: "true", label: "Public" },
-      { key: "false", label: "Hidden" },
+      { key: "true", label: i18next.t("Public") },
+      { key: "false", label: i18next.t("Hidden") },
     ];
     return this.serializeFilter("visibility", "Visibility", values);
   }
@@ -56,7 +56,7 @@ export class Filters {
   }
 
   getHumanReadableVisibility(value) {
-    return value === "true" ? "Public" : "Hidden";
+    return value === "true" ? i18next.t("Public") : i18next.t("Hidden");
   }
 
   getDisplayValue(filter) {
