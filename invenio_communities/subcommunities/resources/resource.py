@@ -11,11 +11,8 @@ from flask_resources import Resource, resource_requestctx, response_handler, rou
 from invenio_records_resources.resources.errors import ErrorHandlersMixin
 from invenio_records_resources.resources.records.resource import (
     request_data,
-    request_extra_args,
-    request_search_args,
     request_view_args,
 )
-from invenio_records_resources.resources.records.utils import search_preference
 
 
 class SubCommunityResource(ErrorHandlersMixin, Resource):

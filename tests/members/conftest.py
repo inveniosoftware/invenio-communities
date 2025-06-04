@@ -16,7 +16,6 @@ import pytest
 from invenio_access.permissions import system_identity
 from invenio_requests.records.api import Request
 from invenio_search import current_search
-from invenio_users_resources.proxies import current_users_service
 
 from invenio_communities.members.records.api import ArchivedInvitation, Member
 

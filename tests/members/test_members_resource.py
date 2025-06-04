@@ -11,7 +11,6 @@
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_requests.records.api import RequestEvent
-from invenio_users_resources.proxies import current_users_service
 
 
 #
