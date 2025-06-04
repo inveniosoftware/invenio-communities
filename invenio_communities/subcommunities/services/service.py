@@ -104,7 +104,7 @@ class SubCommunityService(Service):
         creator = {"community": str(community.id)}
 
         # Receiver is the parent community
-        receiver = {"community": str(id_)}
+        receiver = {"community": str(parent_community.id)}
 
         # Topic is the community
         topic = {"community": str(community.id)}
@@ -131,7 +131,7 @@ class SubCommunityService(Service):
         # Accept the request if the user is the owner of both communities
         is_owner_child = self._is_owner_of(identity, str(community.id))
 
-        is_owner_parent = self._is_owner_of(identity, str(id_))
+        is_owner_parent = self._is_owner_of(identity, str(parent_community.id))
         if is_owner_child and is_owner_parent:
             request = requests_service.execute_action(
                 identity, request.id, "accept", uow=uow
