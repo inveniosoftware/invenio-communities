@@ -10,7 +10,6 @@
 
 """Invenio communities extension."""
 
-from flask import g
 from flask_menu import current_menu
 from flask_principal import identity_loaded
 from invenio_accounts.signals import datastore_post_commit

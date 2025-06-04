@@ -22,9 +22,6 @@ from marshmallow import fields
 from invenio_communities.communities.resources.args import (
     CommunitiesSearchRequestArgsSchema,
 )
-from invenio_communities.communities.resources.serializer import (
-    UICommunityJSONSerializer,
-)
 
 from ..services.errors import ParentChildrenNotAllowed
 
