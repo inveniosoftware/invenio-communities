@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2022-2024 CERN.
 # Copyright (C) 2023 TU Wien.
+# Copyright (C) 2025 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -29,6 +30,10 @@ from invenio_communities.proxies import current_communities
 
 def _community_permission_check(action, community, identity):
     """Check community permission for identity."""
+    if isinstance(community, dict) and community.keys() == {"errors"}:
+        # if RDM_COMMUNITY_REQUIRED_TO_PUBLISH=True
+        # and Attempt to remove the last community
+        return False
     try:
         community_id = getattr(community, "id", community["id"])
     except KeyError:
