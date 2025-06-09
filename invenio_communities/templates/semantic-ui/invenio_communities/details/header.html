@@ -113,7 +113,8 @@
       </div>
       <div
         class="sixteen wide mobile sixteen wide tablet five wide computer right aligned middle aligned column">
-        {{ button_to_request_membership(community_ui) }}
+        {# Button to request membership is fully disabled until feature completely merged in v14. #}
+        {# {{ button_to_request_membership(community) }} #}
         {%- if not community_use_jinja_header %}
           {%- if not permissions.can_submit_record %}
             <div class="ui icon inline-block" data-tooltip="{{_('Submission to this community is only allowed to community members.')}}">
