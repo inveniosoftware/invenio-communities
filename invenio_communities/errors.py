@@ -7,7 +7,6 @@
 
 """Community base error."""
 
-from math import ceil
 
 from flask_babel import ngettext
 from invenio_i18n import gettext as _

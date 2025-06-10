@@ -15,9 +15,6 @@ from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_search.engine import dsl
 from invenio_vocabularies.proxies import current_service as vocab_service
 
-from invenio_communities.communities.records.systemfields.deletion_status import (
-    CommunityDeletionStatusEnum,
-)
 from invenio_communities.proxies import current_communities
 
 from .tasks import delete_community, restore_community

@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 
 from flask import current_app
 from invenio_access.permissions import system_identity
-from invenio_accounts.models import Role
 from invenio_i18n import gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_records_resources.services import LinksTemplate
@@ -33,7 +32,6 @@ from invenio_search.engine import dsl
 from kombu import Queue
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from ...notifications.builders import CommunityInvitationSubmittedNotificationBuilder
