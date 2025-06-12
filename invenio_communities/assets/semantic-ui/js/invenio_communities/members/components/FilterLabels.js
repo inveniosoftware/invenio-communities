@@ -28,15 +28,15 @@ export class FilterLabelsComponent extends Component {
   };
 
   render() {
-    const { currentQueryState, updateQueryState } = this.props;
+    const { currentQueryState, updateQueryState, roles } = this.props;
     const currentFilters = this.filterCurrentFilters(currentQueryState.filters);
-
     return (
       <>
         {currentFilters.map((filter) => {
           return (
             <FilterLabel
-              key={filter[0]}
+              roles={roles}
+              key={`${filter[0]}-${filter[1]}`}
               filter={filter}
               currentQueryState={currentQueryState}
               updateQueryState={updateQueryState}
@@ -65,10 +65,12 @@ FilterLabelsComponent.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
   ignoreFilters: PropTypes.array,
+  roles: PropTypes.array,
 };
 
 FilterLabelsComponent.defaultProps = {
   ignoreFilters: [],
+  roles: [],
 };
 
 export const FilterLabels = withState(FilterLabelsComponent);

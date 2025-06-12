@@ -8,10 +8,9 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
+import { SearchAppResultsPane, SearchFilters } from "@js/invenio_search_ui/components";
 import { Filters } from "../../Filters";
 import { FilterLabels } from "../../components/FilterLabels";
-import { SearchFilters } from "@js/invenio_search_ui/components";
 import { SearchBar, Sort } from "react-searchkit";
 import { InvitationsContextProvider } from "../../../api/invitations/InvitationsContextProvider";
 import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitationsModal/InvitationsMembersModal";
@@ -58,7 +57,7 @@ export class ManagerSearchLayout extends Component {
         </div>
 
         <div className="rel-mb-1">
-          <FilterLabels />
+          <FilterLabels roles={roles} />
         </div>
 
         <SearchAppResultsPane layoutOptions={config.layoutOptions} appName={appName} />

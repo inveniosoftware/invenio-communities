@@ -17,10 +17,10 @@ export class Filters {
 
   getRoles() {
     const values = [];
-    this.configRoles.forEach((role) => {
+    this.configRoles?.forEach((role) => {
       values.push({ key: role.name, label: role.title });
     });
-    return this.serializeFilter("role", "Role", values);
+    return this.serializeFilter("role", i18next.t("Role"), values);
   }
 
   getVisibility() {
@@ -28,7 +28,7 @@ export class Filters {
       { key: "true", label: i18next.t("Public") },
       { key: "false", label: i18next.t("Hidden") },
     ];
-    return this.serializeFilter("visibility", "Visibility", values);
+    return this.serializeFilter("visibility", i18next.t("Visibility"), values);
   }
 
   getStatus() {
@@ -37,10 +37,10 @@ export class Filters {
       { key: "submitted", label: i18next.t("Submitted") },
       { key: "accepted", label: i18next.t("Accepted") },
       { key: "declined", label: i18next.t("Declined") },
-      { key: "cancel", label: i18next.t("Cancel") },
+      { key: "cancelled", label: i18next.t("Cancelled") },
       { key: "expired", label: i18next.t("Expired") },
     ];
-    return this.serializeFilter("status", "Status", values);
+    return this.serializeFilter("status", i18next.t("Status"), values);
   }
 
   getInvitationFilters() {
@@ -60,11 +60,25 @@ export class Filters {
   }
 
   getDisplayValue(filter) {
-    const filterType = _upperFirst(filter[0]);
-    let filterValue = _upperFirst(filter[1]);
-    if (filter[0] === "visibility") {
-      filterValue = this.getHumanReadableVisibility(filter[1]);
+    let filterInformation;
+    switch (filter[0]) {
+      case "role":
+        filterInformation = this.getRoles()[filter[0]];
+        break;
+      case "visibility":
+        filterInformation = this.getVisibility()[filter[0]];
+        break;
+      case "status":
+        filterInformation = this.getStatus()[filter[0]];
+        break;
+      default:
+        filterInformation = null;
     }
-    return `${filterType}: ${filterValue}`;
+    // use localized values if available, otherwise fallback to previous behavior
+    const filterLabel = filterInformation?.label || filter[0];
+    const filterValue =
+      filterInformation?.buckets?.find((bucket) => bucket.key === filter[1])?.label ||
+      _upperFirst(filter[1]);
+    return `${filterLabel}: ${filterValue}`;
   }
 }
