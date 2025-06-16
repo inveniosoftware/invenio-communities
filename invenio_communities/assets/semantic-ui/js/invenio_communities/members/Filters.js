@@ -20,7 +20,7 @@ export class Filters {
     this.configRoles.forEach((role) => {
       values.push({ key: role.name, label: role.title });
     });
-    return this.serializeFilter("role", "Role", values);
+    return this.serializeFilter("role", i18next.t("Role"), values);
   }
 
   getVisibility() {
@@ -28,7 +28,7 @@ export class Filters {
       { key: "true", label: i18next.t("Public") },
       { key: "false", label: i18next.t("Hidden") },
     ];
-    return this.serializeFilter("visibility", "Visibility", values);
+    return this.serializeFilter("visibility", i18next.t("Visibility"), values);
   }
 
   getStatus() {
@@ -40,7 +40,7 @@ export class Filters {
       { key: "cancel", label: i18next.t("Cancel") },
       { key: "expired", label: i18next.t("Expired") },
     ];
-    return this.serializeFilter("status", "Status", values);
+    return this.serializeFilter("status", i18next.t("Status"), values);
   }
 
   getInvitationFilters() {
