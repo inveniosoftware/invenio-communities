@@ -37,7 +37,7 @@ export class Filters {
       { key: "submitted", label: i18next.t("Submitted") },
       { key: "accepted", label: i18next.t("Accepted") },
       { key: "declined", label: i18next.t("Declined") },
-      { key: "cancel", label: i18next.t("Cancel") },
+      { key: "cancelled", label: i18next.t("Cancelled") },
       { key: "expired", label: i18next.t("Expired") },
     ];
     return this.serializeFilter("status", "Status", values);
