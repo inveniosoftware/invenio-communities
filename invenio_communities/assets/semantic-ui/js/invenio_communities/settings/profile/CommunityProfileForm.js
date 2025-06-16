@@ -456,6 +456,7 @@ class CommunityProfileForm extends Component {
                         community={community}
                       >
                         <RemoteSelectField
+                          additionLabel={i18next.t("Add organization: ")}
                           fieldPath="metadata.organizations"
                           suggestionAPIUrl="/api/affiliations"
                           suggestionAPIHeaders={{
