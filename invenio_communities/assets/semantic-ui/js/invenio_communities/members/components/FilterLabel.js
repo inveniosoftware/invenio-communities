@@ -13,9 +13,9 @@ import { Filters } from "../Filters";
 
 class FilterLabel extends Component {
   render() {
-    const { filter, currentQueryState, updateQueryState } = this.props;
+    const { filter, currentQueryState, updateQueryState, roles } = this.props;
     const currentFilters = currentQueryState.filters;
-    const filtersClass = new Filters();
+    const filtersClass = new Filters(roles);
     const displayValue = filtersClass.getDisplayValue(filter);
     return (
       <Label className="rel-mr-1 rel-mt-1">
@@ -37,6 +37,11 @@ FilterLabel.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
   filter: PropTypes.array.isRequired,
+  roles: PropTypes.array,
+};
+
+FilterLabel.defaultProps = {
+  roles: [],
 };
 
 export default FilterLabel;

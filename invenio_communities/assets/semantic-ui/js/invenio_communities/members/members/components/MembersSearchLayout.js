@@ -31,7 +31,7 @@ export class MembersSearchLayout extends Component {
         </div>
 
         <div className="rel-mb-1">
-          <FilterLabels />
+          <FilterLabels roles={roles} />
         </div>
 
         <SearchAppResultsPane layoutOptions={config.layoutOptions} appName={appName} />
