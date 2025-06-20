@@ -88,11 +88,6 @@ class CommunityListView(AdminResourceListView):
             default_size=20,
         )
 
-    @staticmethod
-    def disabled():
-        """Disable the view on demand."""
-        return current_app.config["COMMUNITIES_ADMINISTRATION_DISABLED"]
-
 
 class CommunityDetailView(AdminResourceDetailView):
     """Admin community detail view."""
