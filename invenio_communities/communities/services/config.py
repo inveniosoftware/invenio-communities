@@ -97,7 +97,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy
     )
     # Record specific configuration
-    record_cls = Community
+    record_cls = FromConfig("COMMUNITIES_COMMUNITY_CLS", default=Community)
     result_item_cls = CommunityItem
     result_list_cls = CommunityListResult
     indexer_queue_name = "communities"
@@ -111,7 +111,7 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     )
 
     # Service schema
-    schema = CommunitySchema
+    schema = FromConfig("COMMUNITIES_COMMUNITY_SCHEMA", default=CommunitySchema)
     schema_featured = CommunityFeaturedSchema
     schema_tombstone = TombstoneSchema
 
