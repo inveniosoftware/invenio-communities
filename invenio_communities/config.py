@@ -11,9 +11,11 @@ from datetime import timedelta
 from invenio_i18n import lazy_gettext as _
 from invenio_requests.services.requests import facets as facets_for_requests
 
+from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.records.systemfields.access import (
     RecordSubmissionPolicyEnum,
 )
+from invenio_communities.communities.schema import CommunitySchema
 from invenio_communities.communities.services import facets
 from invenio_communities.permissions import CommunityPermissionPolicy
 
@@ -369,4 +371,10 @@ COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
 
 COMMUNITIES_COLLECTIONS_ENABLED = False
-"""Feature flag to enable/disable collections feature."""
+"""Fe cvature flag to enable/disable collections feature."""
+
+COMMUNITIES_COMMUNITY_CLS = Community
+"""Community record class."""
+
+COMMUNITIES_COMMUNITY_SCHEMA = CommunitySchema
+"""Community schema."""
