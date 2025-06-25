@@ -1,15 +1,16 @@
 # 
 # Translators:
 # Ivan Masár <helix84@centrum.sk>, 2022
-# Jiří Kunčar <jiri.kuncar@gmail.com>, 2022
-# Tibor Simko <tibor.simko@cern.ch>, 2022
+# Tibor Simko <tibor.simko@cern.ch>, 2024
+# Mirek Simek <miroslav.simek@gmail.com>, 2024
+# Jiří Kunčar <jiri.kuncar@gmail.com>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
+"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2022\n"
+"Last-Translator: Jiří Kunčar <jiri.kuncar@gmail.com>, 2025\n"
 "Language-Team: Czech (https://app.transifex.com/inveniosoftware/teams/23537/cs/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "mime-version: 1.0\n"
 
-msgid "Description"
-msgstr "Popis"
-
 msgid "Search for organizations..."
-msgstr ""
+msgstr "Hledat organizace..."
+
+msgid "Edit"
+msgstr "Upravit"
 
 msgid "Delete"
 msgstr "Smazat"
@@ -30,374 +31,499 @@ msgid "Remove"
 msgstr "Odstranit"
 
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Stornovat"
 
 msgid "Maximum number of characters is 2000"
-msgstr ""
+msgstr "Maximální počet znaků je 2000"
 
 msgid "Must be a valid URL"
-msgstr ""
+msgstr "Musí být platné URL"
 
 msgid "Profile picture"
-msgstr ""
+msgstr "Profilový obrázek"
 
 msgid "Upload new picture"
-msgstr ""
+msgstr "Nahrát nový obrázek"
 
 msgid "Delete picture"
-msgstr ""
+msgstr "Smazat obrázek"
 
 msgid "Are you sure you want to delete this picture?"
-msgstr ""
+msgstr "Opravdu chcete smazat tento obrázek?"
 
 msgid "Danger zone"
-msgstr ""
+msgstr "Nebezpečná zóna"
 
 msgid "Change identifier"
-msgstr ""
+msgstr "Změnit identifikátor"
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
 msgstr ""
+"Změna identifikátoru komunity může mít za následek nechtěné vedlejší účinky."
 
 msgid "Delete community"
-msgstr ""
+msgstr "Smazat komunitu"
 
 msgid "Once deleted, it will be gone forever. Please be certain."
 msgstr ""
-
-msgid "Are you sure you want to delete this community?"
-msgstr ""
+"V okamžiku, když bude komunita smazána, nebude možné ji vrátit zpět. Prosím,"
+" ujistěte se, že to opravdu chcete udělat."
 
 msgid "Community name"
-msgstr ""
+msgstr "Název komunity"
 
 msgid "Type"
 msgstr "Typ"
 
 msgid "Website"
-msgstr ""
+msgstr "Webové stránky"
 
 msgid "Search for an organization by name"
-msgstr ""
+msgstr "Hledat organizaci dle jména"
 
 msgid "Organizations"
-msgstr ""
+msgstr "Organizace"
 
 msgid "Save"
 msgstr "Uložit"
 
 msgid "Change"
-msgstr ""
+msgstr "Změnit"
 
 msgid "Saved"
-msgstr ""
+msgstr "Uloženo"
 
 msgid "Member"
-msgstr ""
+msgstr "Člen"
 
 msgid "Members"
 msgstr "Členové"
 
 msgid "Role"
-msgstr ""
+msgstr "Role"
 
 msgid "Setup your new community"
-msgstr ""
+msgstr "Nastavení Vaší nové komunity"
 
 msgid "Identifier"
 msgstr "Identifikátor"
 
 msgid "Community visibility"
-msgstr ""
+msgstr "Viditelnost komunity"
 
 msgid "Create community"
-msgstr ""
-
-msgid "Message"
-msgstr "Zpráva"
+msgstr "Vytvořit komunitu"
 
 msgid "View"
 msgstr "Zobrazit"
 
-msgid "{{total}} result(s) found"
-msgstr ""
-
 msgid "Sort by"
-msgstr ""
-
-msgid "results per page"
-msgstr ""
+msgstr "Řadit podle"
 
 msgid "Search"
-msgstr "Hledej"
+msgstr "Hledat"
 
 msgid "Search communities..."
-msgstr ""
+msgstr "Hledat komunity..."
 
-msgid "New community"
-msgstr "Nová komunita"
+msgid "Restore community"
+msgstr "Obnovit komunitu"
 
-msgid "Uploaded on"
-msgstr ""
+msgid "Unavailability statement"
+msgstr "Prohlášení o nedostupnosti"
 
-msgid "Search guide"
-msgstr ""
+msgid "Success"
+msgstr "Úspěch"
 
-msgid "We couldn't find any matches for "
-msgstr ""
+msgid "Community {{id}} was restored."
+msgstr "Komunita {{id}} byla obnovena."
 
-msgid "your search"
-msgstr ""
+msgid "Unable to restore."
+msgstr "Nelze obnovit."
 
-msgid "Start over"
-msgstr ""
+msgid "Are you sure you want to restore community #{{id}}"
+msgstr "Opravdu chcete obnovit komunitu {{id}}"
 
-msgid "ProTip"
-msgstr ""
+msgid "Close"
+msgstr "Zavřít"
 
-msgid "will give you all the publications from 2017 until today"
-msgstr ""
+msgid "Community {{id}} was deleted."
+msgstr "Komunita {{id}} byla zmazána."
 
-msgid "For more tips, check out our "
-msgstr ""
-
-msgid " for defining advanced search queries"
-msgstr ""
-
-msgid "ORCID profile"
-msgstr ""
-
-msgid "ROR profile"
-msgstr ""
-
-msgid "Filter results"
-msgstr ""
-
-msgid "search guide"
-msgstr ""
-
-msgid "members selected"
-msgstr ""
-
-msgid "Leave community"
-msgstr ""
-
-msgid "Leave"
-msgstr "Opustit"
-
-msgid "Remove user"
-msgstr ""
-
-msgid "This action cannot be undone."
-msgstr ""
-
-msgid "Clear all filters"
-msgstr ""
-
-msgid "Group"
-msgstr "Skupina"
-
-msgid "Search for groups"
-msgstr ""
-
-msgid "Add"
-msgstr "Přidat"
-
-msgid "People"
-msgstr ""
-
-msgid "Groups"
-msgstr "Skupiny"
-
-msgid "Invite groups"
-msgstr ""
-
-msgid "Invite members"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr ""
-
-msgid "Invite"
-msgstr "Pozvat"
-
-msgid "You are about to invite <1>{{selectedCount}}</1> users"
-msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-msgid "Name"
-msgstr "Název"
-
-msgid "Status"
-msgstr "Stav"
-
-msgid "Expires"
-msgstr ""
-
-msgid "result(s) found"
-msgstr ""
-
-msgid "Member since"
-msgstr ""
-
-msgid "Visibility"
-msgstr ""
-
-msgid "Search members..."
-msgstr ""
+msgid "Unable to delete"
+msgstr "Nelze smazat"
 
 msgid "Public"
 msgstr "Veřejný"
 
 msgid "Hidden"
+msgstr "Skrytý"
+
+msgid ""
+"The tombstone is set to hidden but your record is public. Best practice is "
+"to provide a public tombstone when deactivating public records."
 msgstr ""
+"Náhrobek je nastaven na skrytý, ale Váš záznam je veřejný. Doporučuje se "
+"poskytnout veřejný náhrobek při deaktivaci veřejných záznamů."
 
-msgid "Change roles"
+msgid ""
+"RISK INFORMATION LEAKAGE: The tombstone is set to public but your record is "
+"restricted. Please make sure no restricted information is shared in the "
+"tombstone below."
 msgstr ""
+"RIZIKO ÚNIKU INFORMACÍ: Náhrobek je nastaven na veřejný, ale Váš záznam je s"
+" omezeným přístupem. Ujistěte se, že v náhrobku níže nejsou sdíleny žádné "
+"neveřejné informace."
 
-msgid "Change visibilities"
+msgid "Bibliographic citation"
+msgstr "Bibliografická citace"
+
+msgid ""
+"Input citation text. Blank field will be filled with APA citation by "
+"default."
 msgstr ""
+"Zadejte text citace. Prázdné pole bude automaticky vyplněno citací APA."
 
-msgid "Remove from community"
+msgid "Note"
+msgstr "Poznámka"
+
+msgid "Delete record"
+msgstr "Smazat záznam"
+
+msgid "This set is not editable as it was created by the system."
+msgstr "Tuto množina není možno editovat, protože byla vytvořena systémem."
+
+msgid "This set is not deletable as it was created by the system."
+msgstr "Tuto množina není možno smazat, protože byla vytvořena systémem."
+
+msgid "Planned features"
+msgstr "Plánované funkce"
+
+msgid "Start date"
+msgstr "Datum začátku"
+
+msgid "Active"
+msgstr "Aktivní"
+
+msgid "Actions"
+msgstr "Akce"
+
+msgid "Published"
+msgstr "Publikováno"
+
+msgid "Deleted"
+msgstr "Smazaný"
+
+msgid "Scheduled for purge"
+msgstr "Naplánováno k úplnému vymazání"
+
+msgid "Browse"
+msgstr "Procházet"
+
+msgid "New upload"
+msgstr "Nový záznam"
+
+msgid "Previous slide"
+msgstr "Předchozí strana"
+
+msgid "Next slide"
+msgstr "Následující strana"
+
+msgid "opens in new tab"
+msgstr "otevře se v nové záložce"
+
+msgid "Branding"
+msgstr "Vizuální identita"
+
+msgid "Submission information"
+msgstr "Informace o vložení"
+
+msgid ""
+"Submission to this community does not require review, and will be published "
+"immediately."
 msgstr ""
+"Vložení záznamu do této komunity nevyžaduje schválení a bude zveřejněno "
+"okamžitě."
 
-msgid "You have selected <1>{{selectedCount}}</1> users"
-msgid_plural "You have selected <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgid "profile"
+msgstr "profil"
 
-msgid "You"
-msgstr ""
+msgid "An error occurred."
+msgstr "Stala se chyba."
 
-msgid "Leave..."
-msgstr ""
-
-msgid "Remove..."
-msgstr ""
-
-msgid "Open"
-msgstr "Otevřít"
-
-msgid "Closed"
-msgstr "Zavřený"
-
-msgid "Search requests..."
-msgstr ""
-
-msgid "All done!"
-msgstr ""
-
-msgid "You've caught up with all open requests."
-msgstr ""
-
-msgid "No requests found!"
-msgstr ""
-
-msgid "Reset search"
-msgstr ""
-
-msgid "Search records in community..."
-msgstr ""
+msgid "Restricted"
+msgstr "Omezený"
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
+"Toto je unikátní identifikátor Vaší komunity. Můžete ke komunitě přistupovat"
+" skrz URL:"
+
+msgid "No communities found!"
+msgstr "Nenalezeny žádné komunity!"
+
+msgid "Reset search"
+msgstr "Zrušit filtr"
+
+msgid "Filter results"
+msgstr "Filtrovat výsledky"
+
+msgid "Select all members"
+msgstr "Vybrat všechny členy"
 
 msgid "bulk actions"
-msgstr ""
+msgstr "hromadné akce"
+
+msgid "Select member"
+msgstr "Vybrat člena"
 
 msgid "remove {{name}}"
-msgstr ""
+msgstr "odstranit {{name}}"
 
-msgid "Submitted"
-msgstr ""
-
-msgid "Accepted"
-msgstr ""
-
-msgid "Declined"
-msgstr ""
-
-msgid "Expired"
-msgstr ""
-
-msgid "Search in invitations..."
-msgstr ""
-
-msgid "This community has no public members."
-msgstr ""
-
-msgid "No matching members found."
-msgstr ""
-
-msgid "Actions"
-msgstr "Akce"
-
-msgid "Add groups"
-msgstr ""
-
-msgid "Restricted"
-msgstr "Omezené"
-
-msgid "Search records..."
-msgstr ""
-
-msgid "Selected groups"
-msgstr ""
-
-msgid "Selected members"
-msgstr ""
+msgid "Clear all filters"
+msgstr "Smazat všechny filtry"
 
 msgid "Search in members ..."
-msgstr ""
+msgstr "Hledat ve členech…"
+
+msgid "Leave community"
+msgstr "Opustit komunitu"
 
 msgid "You are about to leave this community."
-msgstr ""
+msgstr "Chystáte se opustit tuto komunitu."
+
+msgid "Leave"
+msgstr "Opustit"
+
+msgid "Remove user"
+msgstr "Odebrat uživatele"
 
 msgid "You are about to remove this user from this community."
-msgstr ""
+msgstr "Chystáte se odebrat tohoto uživatele z této komunity."
 
-msgid "You are about to add <1>{{selectedCount}}</1> groups."
-msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-msgid "Search..."
-msgstr ""
+msgid "This action cannot be undone."
+msgstr "Tato akce nemůže být vzata zpět."
 
 msgid ""
-"Users must set profile visibility to \"Public\" in order to be invited to a "
-"community."
+"Note: upon addition, selected groups will have access to the record without "
+"any kind of notification."
 msgstr ""
+"Poznámka: Po přidání budou mít vybrané skupiny přístup k záznamu bez "
+"jakéhokoliv upozornění."
+
+msgid "Submitted"
+msgstr "Odeslána"
+
+msgid "Accepted"
+msgstr "Přijata"
+
+msgid "Declined"
+msgstr "Zamítnuto"
+
+msgid "Expired"
+msgstr "Vypršený"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Expires"
+msgstr "Vypršení platnosti"
+
+msgid "No matching members found."
+msgstr "Nenalezeni členové vyhovující dotazu."
+
+msgid "Current search"
+msgstr "Aktuální hledání"
+
+msgid "Clear query"
+msgstr "Smazat dotaz"
+
+msgid "No selected groups"
+msgstr "Žádné vybrané skupiny"
+
+msgid "Group"
+msgstr "Skupina"
+
+msgid "Search for groups"
+msgstr "Hledat skupiny"
+
+msgid "Already a member"
+msgstr "Již je členem"
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of notification or invitation approval."
+msgstr ""
+"Poznámka: Po přidání se vybrané skupiny okamžitě stanou členy komunity bez "
+"jakéhokoli upozornění nebo schválení pozvánky."
+
+msgid "Add"
+msgstr "Přidat"
+
+msgid "People"
+msgstr "Osoby"
+
+msgid ""
+"Search for users to invite (only users with a public profile can be invited)"
+msgstr ""
+"Vyhledat uživatele k pozvání (pozváni mohou být pouze uživatelé s veřejným "
+"profilem)"
+
+msgid "Invite"
+msgstr "Pozvat"
+
+msgid "No selected members"
+msgstr "Žádní vybraní členové"
+
+msgid "Invitation message"
+msgstr "Pozvánka"
+
+msgid "You are about to invite"
+msgstr "Chystáte se pozvat "
+
+msgid "users"
+msgstr "uživatelé"
+
+msgid "Already a member or invitation pending"
+msgstr "Již je členem nebo má vytvořenou pozvánku."
+
+msgid "Search by email, full name or username"
+msgstr "Hledat podle emailu, plného jména nebo uživatelského jména"
+
+msgid "Groups"
+msgstr "Skupiny"
+
+msgid "Invite groups"
+msgstr "Pozvat skupiny"
+
+msgid "Invite members"
+msgstr "Pozvat členy"
+
+msgid "Invite..."
+msgstr "Pozvat..."
+
+msgid "Add groups"
+msgstr "Přidat skupiny"
+
+msgid "Search..."
+msgstr "Hledat..."
+
+msgid "Name"
+msgstr "Jméno"
+
+msgid "Search in invitations..."
+msgstr "Hledat v pozvánkách..."
+
+msgid "This community has no public members."
+msgstr "Komunita nemá žádné veřejné členy."
+
+msgid "result(s) found"
+msgstr "výsledků"
+
+msgid "Member since"
+msgstr "Člen od"
+
+msgid "Visibility"
+msgstr "Viditelnost"
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "Vaše členství v komunitě je všemi viditelné."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
-msgstr ""
+msgstr "Vaše členství v komunitě je viditelné pouze členům komunity."
 
-msgid "Opened {{difference}} by"
-msgstr ""
+msgid "Change roles"
+msgstr "Změnit role"
 
-msgid "Expires at:"
-msgstr ""
+msgid "Change visibilities"
+msgstr "Změnit viditelnost"
 
-msgid "File must be smaller than "
+msgid "Remove from community"
+msgstr "Odebrat z komunity"
+
+msgid "You"
+msgstr "Vy"
+
+msgid "Leave..."
+msgstr "Opustit..."
+
+msgid "Remove..."
+msgstr "Odebrat..."
+
+msgid "Search members..."
+msgstr "Hledat členy..."
+
+msgid "Submission review policy"
+msgstr "Politika schvalování záznamu"
+
+msgid "Curation policy"
+msgstr "Politika správy obsahu"
+
+msgid "About page"
+msgstr "Stránka \"o\""
+
+msgid "Controls if the community is visible to anyone or to members only."
+msgstr "Určuje, zda je komunita viditelná pro kohokoli nebo pouze pro členy."
+
+msgid "Members visibility"
+msgstr "Viditelnost členů"
+
+msgid "Controls if the members tab is visible to anyone or to members only."
 msgstr ""
+"Určuje, zda je záložka členů viditelná pro kohokoli nebo pouze pro členy."
+
+msgid "Maximum number of characters is 250"
+msgstr "Maximální počet znaků je 250"
+
+msgid "Basic information"
+msgstr "Základní informace"
+
+msgid "Short description"
+msgstr "Krátký popis"
+
+msgid "Funding information"
+msgstr "Informace o financování"
+
+msgid "Awards/Grants"
+msgstr "Ocenění/Granty"
+
+msgid "Permanently delete community"
+msgstr "Trvale smazat komunitu"
+
+msgid "This action CANNOT be undone!"
+msgstr "Tuto akci NELZE vrátit zpět!"
+
+msgid "Permanently delete"
+msgstr "Trvale smazat"
+
+msgid "Are you <1>absolutely sure</1> you want to delete the community?"
+msgstr "Jste si <1>naprosto jist</1>, že chcete smazat tuto komunitu?"
+
+msgid "<0> members</0> will be removed from the community."
+msgstr "<0>členové</0> budou smazáni z této komunity."
+
+msgid "<0> records</0> will be removed from the community."
+msgstr "<0>záznamy</0> budou smazány z této komunity."
+
+msgid ""
+"You <1>CANNOT</1> reuse the community identifier "
+"\"<3>{{communitySlug}}</3>\"."
+msgstr ""
+"Identifikátor komunity „<3>{{communitySlug}}</3>“ <1>NELZE</1> znovu použít."
+
+msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
+msgstr "Pro potvrzení prosím napište <1><0>{{communitySlug}}</0></1>."
+
+msgid "File must be smaller than {{fileSize}}"
+msgstr "Soubor musí být menší než {{fileSize}}"
 
 msgid "It may take a few moments for changes to be visible everywhere"
-msgstr ""
+msgstr "Bude chvíli trvat, než se změny všude projeví"
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "Nový unikátní identifikátor komunity"

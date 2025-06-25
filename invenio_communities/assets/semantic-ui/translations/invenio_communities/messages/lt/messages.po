@@ -1,13 +1,13 @@
 # 
 # Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2022
+# Tibor Simko <tibor.simko@cern.ch>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
+"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2022\n"
+"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2024\n"
 "Language-Team: Lithuanian (https://app.transifex.com/inveniosoftware/teams/23537/lt/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);\n"
 "mime-version: 1.0\n"
 
-msgid "Description"
-msgstr "Aprašymas"
-
 msgid "Search for organizations..."
 msgstr ""
+
+msgid "Edit"
+msgstr "Redaguoti"
 
 msgid "Delete"
 msgstr "Ištrinti"
@@ -63,9 +63,6 @@ msgid "Delete community"
 msgstr ""
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
-
-msgid "Are you sure you want to delete this community?"
 msgstr ""
 
 msgid "Community name"
@@ -113,19 +110,10 @@ msgstr ""
 msgid "Create community"
 msgstr ""
 
-msgid "Message"
-msgstr "Žinutė"
-
 msgid "View"
 msgstr ""
 
-msgid "{{total}} result(s) found"
-msgstr ""
-
 msgid "Sort by"
-msgstr ""
-
-msgid "results per page"
 msgstr ""
 
 msgid "Search"
@@ -134,119 +122,31 @@ msgstr "Ieškoti"
 msgid "Search communities..."
 msgstr ""
 
-msgid "New community"
+msgid "Restore community"
 msgstr ""
 
-msgid "Uploaded on"
+msgid "Unavailability statement"
 msgstr ""
 
-msgid "Search guide"
+msgid "Success"
 msgstr ""
 
-msgid "We couldn't find any matches for "
+msgid "Community {{id}} was restored."
 msgstr ""
 
-msgid "your search"
+msgid "Unable to restore."
 msgstr ""
 
-msgid "Start over"
+msgid "Are you sure you want to restore community #{{id}}"
 msgstr ""
 
-msgid "ProTip"
+msgid "Close"
 msgstr ""
 
-msgid "will give you all the publications from 2017 until today"
+msgid "Community {{id}} was deleted."
 msgstr ""
 
-msgid "For more tips, check out our "
-msgstr ""
-
-msgid " for defining advanced search queries"
-msgstr ""
-
-msgid "ORCID profile"
-msgstr ""
-
-msgid "ROR profile"
-msgstr ""
-
-msgid "Filter results"
-msgstr ""
-
-msgid "search guide"
-msgstr ""
-
-msgid "members selected"
-msgstr ""
-
-msgid "Leave community"
-msgstr ""
-
-msgid "Leave"
-msgstr ""
-
-msgid "Remove user"
-msgstr ""
-
-msgid "This action cannot be undone."
-msgstr ""
-
-msgid "Clear all filters"
-msgstr ""
-
-msgid "Group"
-msgstr "Grupė"
-
-msgid "Search for groups"
-msgstr ""
-
-msgid "Add"
-msgstr "Pridėti"
-
-msgid "People"
-msgstr ""
-
-msgid "Groups"
-msgstr "Grupės"
-
-msgid "Invite groups"
-msgstr ""
-
-msgid "Invite members"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr ""
-
-msgid "Invite"
-msgstr ""
-
-msgid "You are about to invite <1>{{selectedCount}}</1> users"
-msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-msgid "Name"
-msgstr "Pavadinimas"
-
-msgid "Status"
-msgstr "Statusas"
-
-msgid "Expires"
-msgstr ""
-
-msgid "result(s) found"
-msgstr ""
-
-msgid "Member since"
-msgstr ""
-
-msgid "Visibility"
-msgstr ""
-
-msgid "Search members..."
+msgid "Unable to delete"
 msgstr ""
 
 msgid "Public"
@@ -255,53 +155,91 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-msgid "Change roles"
+msgid ""
+"The tombstone is set to hidden but your record is public. Best practice is "
+"to provide a public tombstone when deactivating public records."
 msgstr ""
 
-msgid "Change visibilities"
+msgid ""
+"RISK INFORMATION LEAKAGE: The tombstone is set to public but your record is "
+"restricted. Please make sure no restricted information is shared in the "
+"tombstone below."
 msgstr ""
 
-msgid "Remove from community"
+msgid "Bibliographic citation"
 msgstr ""
 
-msgid "You have selected <1>{{selectedCount}}</1> users"
-msgid_plural "You have selected <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-msgid "You"
+msgid ""
+"Input citation text. Blank field will be filled with APA citation by "
+"default."
 msgstr ""
 
-msgid "Leave..."
+msgid "Note"
+msgstr "Pastaba"
+
+msgid "Delete record"
 msgstr ""
 
-msgid "Remove..."
+msgid "This set is not editable as it was created by the system."
 msgstr ""
 
-msgid "Open"
+msgid "This set is not deletable as it was created by the system."
 msgstr ""
 
-msgid "Closed"
+msgid "Planned features"
 msgstr ""
 
-msgid "Search requests..."
+msgid "Start date"
 msgstr ""
 
-msgid "All done!"
+msgid "Active"
 msgstr ""
 
-msgid "You've caught up with all open requests."
+msgid "Actions"
+msgstr "Veiksmai"
+
+msgid "Published"
 msgstr ""
 
-msgid "No requests found!"
+msgid "Deleted"
 msgstr ""
 
-msgid "Reset search"
+msgid "Scheduled for purge"
 msgstr ""
 
-msgid "Search records in community..."
+msgid "Browse"
+msgstr "Naršyti"
+
+msgid "New upload"
+msgstr ""
+
+msgid "Previous slide"
+msgstr ""
+
+msgid "Next slide"
+msgstr ""
+
+msgid "opens in new tab"
+msgstr ""
+
+msgid "Branding"
+msgstr ""
+
+msgid "Submission information"
+msgstr ""
+
+msgid ""
+"Submission to this community does not require review, and will be published "
+"immediately."
+msgstr ""
+
+msgid "profile"
+msgstr ""
+
+msgid "An error occurred."
+msgstr ""
+
+msgid "Restricted"
 msgstr ""
 
 msgid ""
@@ -309,10 +247,54 @@ msgid ""
 "community through the URL:"
 msgstr ""
 
+msgid "No communities found!"
+msgstr ""
+
+msgid "Reset search"
+msgstr ""
+
+msgid "Filter results"
+msgstr ""
+
+msgid "Select all members"
+msgstr ""
+
 msgid "bulk actions"
 msgstr ""
 
+msgid "Select member"
+msgstr ""
+
 msgid "remove {{name}}"
+msgstr ""
+
+msgid "Clear all filters"
+msgstr ""
+
+msgid "Search in members ..."
+msgstr ""
+
+msgid "Leave community"
+msgstr ""
+
+msgid "You are about to leave this community."
+msgstr ""
+
+msgid "Leave"
+msgstr ""
+
+msgid "Remove user"
+msgstr ""
+
+msgid "You are about to remove this user from this community."
+msgstr ""
+
+msgid "This action cannot be undone."
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will have access to the record without "
+"any kind of notification."
 msgstr ""
 
 msgid "Submitted"
@@ -327,55 +309,103 @@ msgstr ""
 msgid "Expired"
 msgstr ""
 
+msgid "Status"
+msgstr "Statusas"
+
+msgid "Expires"
+msgstr ""
+
+msgid "No matching members found."
+msgstr ""
+
+msgid "Current search"
+msgstr ""
+
+msgid "Clear query"
+msgstr ""
+
+msgid "No selected groups"
+msgstr ""
+
+msgid "Group"
+msgstr "Grupė"
+
+msgid "Search for groups"
+msgstr ""
+
+msgid "Already a member"
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of notification or invitation approval."
+msgstr ""
+
+msgid "Add"
+msgstr "Pridėti"
+
+msgid "People"
+msgstr ""
+
+msgid ""
+"Search for users to invite (only users with a public profile can be invited)"
+msgstr ""
+
+msgid "Invite"
+msgstr ""
+
+msgid "No selected members"
+msgstr ""
+
+msgid "Invitation message"
+msgstr ""
+
+msgid "You are about to invite"
+msgstr ""
+
+msgid "users"
+msgstr ""
+
+msgid "Already a member or invitation pending"
+msgstr ""
+
+msgid "Search by email, full name or username"
+msgstr ""
+
+msgid "Groups"
+msgstr "Grupės"
+
+msgid "Invite groups"
+msgstr ""
+
+msgid "Invite members"
+msgstr ""
+
+msgid "Invite..."
+msgstr ""
+
+msgid "Add groups"
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "Name"
+msgstr "Pavadinimas"
+
 msgid "Search in invitations..."
 msgstr ""
 
 msgid "This community has no public members."
 msgstr ""
 
-msgid "No matching members found."
+msgid "result(s) found"
 msgstr ""
 
-msgid "Actions"
-msgstr "Veiksmai"
-
-msgid "Add groups"
+msgid "Member since"
 msgstr ""
 
-msgid "Restricted"
-msgstr ""
-
-msgid "Search records..."
-msgstr ""
-
-msgid "Selected groups"
-msgstr ""
-
-msgid "Selected members"
-msgstr ""
-
-msgid "Search in members ..."
-msgstr ""
-
-msgid "You are about to leave this community."
-msgstr ""
-
-msgid "You are about to remove this user from this community."
-msgstr ""
-
-msgid "You are about to add <1>{{selectedCount}}</1> groups."
-msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-msgid "Search..."
-msgstr ""
-
-msgid ""
-"Users must set profile visibility to \"Public\" in order to be invited to a "
-"community."
+msgid "Visibility"
 msgstr ""
 
 msgid "Your community membership is visible to everyone."
@@ -385,13 +415,87 @@ msgid ""
 "Your community membership is only visible to other members of the community."
 msgstr ""
 
-msgid "Opened {{difference}} by"
+msgid "Change roles"
 msgstr ""
 
-msgid "Expires at:"
+msgid "Change visibilities"
 msgstr ""
 
-msgid "File must be smaller than "
+msgid "Remove from community"
+msgstr ""
+
+msgid "You"
+msgstr ""
+
+msgid "Leave..."
+msgstr ""
+
+msgid "Remove..."
+msgstr ""
+
+msgid "Search members..."
+msgstr ""
+
+msgid "Submission review policy"
+msgstr ""
+
+msgid "Curation policy"
+msgstr ""
+
+msgid "About page"
+msgstr ""
+
+msgid "Controls if the community is visible to anyone or to members only."
+msgstr ""
+
+msgid "Members visibility"
+msgstr ""
+
+msgid "Controls if the members tab is visible to anyone or to members only."
+msgstr ""
+
+msgid "Maximum number of characters is 250"
+msgstr ""
+
+msgid "Basic information"
+msgstr ""
+
+msgid "Short description"
+msgstr ""
+
+msgid "Funding information"
+msgstr ""
+
+msgid "Awards/Grants"
+msgstr ""
+
+msgid "Permanently delete community"
+msgstr ""
+
+msgid "This action CANNOT be undone!"
+msgstr ""
+
+msgid "Permanently delete"
+msgstr ""
+
+msgid "Are you <1>absolutely sure</1> you want to delete the community?"
+msgstr ""
+
+msgid "<0> members</0> will be removed from the community."
+msgstr ""
+
+msgid "<0> records</0> will be removed from the community."
+msgstr ""
+
+msgid ""
+"You <1>CANNOT</1> reuse the community identifier "
+"\"<3>{{communitySlug}}</3>\"."
+msgstr ""
+
+msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
+msgstr ""
+
+msgid "File must be smaller than {{fileSize}}"
 msgstr ""
 
 msgid "It may take a few moments for changes to be visible everywhere"
