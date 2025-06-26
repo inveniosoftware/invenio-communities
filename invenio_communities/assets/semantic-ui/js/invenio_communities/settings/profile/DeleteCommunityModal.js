@@ -18,7 +18,6 @@ import {
   Input,
 } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import { Trans } from "react-i18next";
 import { communityErrorSerializer } from "../../api/serializers";
 import { ErrorMessage, http, withCancel } from "react-invenio-forms";
 
@@ -189,10 +188,7 @@ export class DeleteCommunityModal extends Component {
           {loading && <Loader active={loading} />}
           <Modal.Content>
             <p>
-              <Trans>
-                Are you <strong>absolutely sure</strong> you want to delete the
-                community?
-              </Trans>
+              {i18next.t("Are you absolutely sure you want to delete the community?")}
             </p>
 
             <Message negative>
@@ -206,10 +202,8 @@ export class DeleteCommunityModal extends Component {
                   ref={this.checkboxRef}
                   label={
                     <label htmlFor="members-confirm">
-                      <Trans>
-                        <strong>{`${membersCount}`} members</strong> will be removed
-                        from the community.
-                      </Trans>
+                      <strong>{membersCount}</strong>{" "}
+                      {i18next.t("members will be removed from the community.")}
                     </label>
                   }
                   checked={checkboxMembers}
@@ -220,10 +214,8 @@ export class DeleteCommunityModal extends Component {
                   id="records-confirm"
                   label={
                     <label htmlFor="records-confirm">
-                      <Trans>
-                        <strong>{`${recordsCount}`} records</strong> will be removed
-                        from the community.
-                      </Trans>
+                      <strong>{recordsCount}</strong>{" "}
+                      {i18next.t("records will be removed from the community.")}
                     </label>
                   }
                   checked={checkboxRecords}
@@ -234,10 +226,10 @@ export class DeleteCommunityModal extends Component {
                   id="slug-confirm"
                   label={
                     <label htmlFor="slug-confirm">
-                      <Trans>
-                        You <strong>CANNOT</strong> reuse the community identifier "
-                        {{ communitySlug }}".
-                      </Trans>
+                      {i18next.t("You")} <strong>{i18next.t("CANNOT")}</strong>{" "}
+                      {i18next.t('reuse the community identifier "{{slug}}".', {
+                        slug: communitySlug,
+                      })}
                     </label>
                   }
                   checked={checkboxSlug}
@@ -248,9 +240,8 @@ export class DeleteCommunityModal extends Component {
             </Message>
 
             <label htmlFor="confirm-delete">
-              <Trans>
-                Please type <strong>{{ communitySlug }}</strong> to confirm.
-              </Trans>
+              {i18next.t("Please type")} <strong>{communitySlug}</strong>{" "}
+              {i18next.t("to confirm.")}
             </label>
             <Input
               id="confirm-delete"
