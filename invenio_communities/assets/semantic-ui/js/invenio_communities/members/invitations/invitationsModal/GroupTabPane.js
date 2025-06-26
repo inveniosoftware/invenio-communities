@@ -14,7 +14,6 @@ import { Modal, Form, Button } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { MembersSearchBar } from "./MemberSearchBar";
 import { GroupsApi } from "../../../api/GroupsApi";
-import { Trans } from "react-i18next";
 import { http, withCancel } from "react-invenio-forms";
 
 export class GroupTabPane extends Component {
@@ -130,9 +129,11 @@ export class GroupTabPane extends Component {
             onClick={modalClose}
           />
           {selectedCount > 0 && (
-            <Trans key="communityInviteMembersSelected" count={selectedCount}>
-              You are about to add {{ selectedCount }} groups.
-            </Trans>
+            <>
+              {i18next.t("You are about to add {{count}} groups.", {
+                count: selectedCount,
+              })}
+            </>
           )}
 
           <Button
