@@ -11,7 +11,6 @@ import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMe
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Trans } from "react-i18next";
 import { Button, Form, Modal } from "semantic-ui-react";
 import { MembersSearchBar } from "../invitations/invitationsModal/MemberSearchBar";
 import { SelectedMembers } from "./bulk_actions/SelectedMembers";
@@ -126,9 +125,9 @@ export class SearchWithRoleSelection extends Component {
             onClick={modalClose}
           />
           {selectedCount > 0 && (
-            <Trans key="entitiesSelected" count={selectedCount}>
-              {doneButtonTip} {{ selectedCount }} {doneButtonTipType}
-            </Trans>
+            <>
+              {doneButtonTip} {selectedCount} {doneButtonTipType}
+            </>
           )}
           <Button
             content={doneButtonText}
