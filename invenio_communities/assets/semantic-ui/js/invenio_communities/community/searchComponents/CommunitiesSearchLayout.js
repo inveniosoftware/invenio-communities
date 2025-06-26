@@ -36,10 +36,9 @@ export const CommunitiesSearchLayout = ({ config, appName }) => {
               <Sort
                 values={config.sortOptions}
                 label={(cmp) => (
-                  <>
-                    <label className="mr-10">{i18next.t("Sort by")}</label>
-                    {cmp}
-                  </>
+                  <label className="mr-10">
+                    {i18next.t("Sort by")} {cmp}
+                  </label>
                 )}
               />
             )}
@@ -58,10 +57,9 @@ export const CommunitiesSearchLayout = ({ config, appName }) => {
               <Sort
                 values={config.sortOptions}
                 label={(cmp) => (
-                  <>
-                    <label className="mr-10">{i18next.t("Sort by")}</label>
-                    {cmp}
-                  </>
+                  <label className="mr-10">
+                    {i18next.t("Sort by")} {cmp}
+                  </label>
                 )}
               />
             )}
