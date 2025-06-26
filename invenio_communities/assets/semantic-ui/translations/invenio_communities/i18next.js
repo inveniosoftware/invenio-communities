@@ -1,4 +1,5 @@
-// This file is part of React-Invenio-Deposit
+// This file is part of invenio-communities.
+// Copyright (C) 2025 CERN.
 // Copyright (C) 2021-2022 Graz University of Technology.
 //
 // Invenio-communities is free software; you can redistribute it and/or modify it

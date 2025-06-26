@@ -1,3 +1,12 @@
+/*
+ * This file is part of Invenio.
+ * Copyright (C) 2022 CERN.
+ * Copyright (C) 2025 KTH Royal Institute of Technology.
+ *
+ * Invenio is free software; you can redistribute it and/or modify it
+ * under the terms of the MIT License; see LICENSE file for more details.
+ */
+
 import { SearchResultsBulkActions } from "@js/invenio_communities/members/components/bulk_actions/SearchResultsBulkActions";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
 import { CommunityMembersApi } from "../../../api/members/api";
@@ -9,7 +18,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Button, Form, Modal } from "semantic-ui-react";
-import { Trans } from "react-i18next";
 import { withState } from "react-searchkit";
 import { withCancel } from "react-invenio-forms";
 
@@ -200,9 +208,7 @@ class ManagerMemberBulkActionsCmp extends Component {
               floated="left"
               onClick={this.handleModalClose}
             />
-            <Trans key="communityInviteMembersSelected" count={selectedCount}>
-              You have selected {{ selectedCount }} users
-            </Trans>
+            {i18next.t("You have selected {{selectedCount}} users", { selectedCount })}
             <Button
               content={currentActionText}
               labelPosition="left"

@@ -1,3 +1,12 @@
+/*
+ * This file is part of Invenio.
+ * Copyright (C) 2022 CERN.
+ * Copyright (C) 2025 KTH Royal Institute of Technology.
+ *
+ * Invenio is free software; you can redistribute it and/or modify it
+ * under the terms of the MIT License; see LICENSE file for more details.
+ */
+
 import {
   SearchAppFacets,
   SearchAppResultsPane,
@@ -36,10 +45,9 @@ export const CommunitiesSearchLayout = ({ config, appName }) => {
               <Sort
                 values={config.sortOptions}
                 label={(cmp) => (
-                  <>
-                    <label className="mr-10">{i18next.t("Sort by")}</label>
-                    {cmp}
-                  </>
+                  <label className="mr-10">
+                    {i18next.t("Sort by")} {cmp}
+                  </label>
                 )}
               />
             )}
@@ -58,10 +66,9 @@ export const CommunitiesSearchLayout = ({ config, appName }) => {
               <Sort
                 values={config.sortOptions}
                 label={(cmp) => (
-                  <>
-                    <label className="mr-10">{i18next.t("Sort by")}</label>
-                    {cmp}
-                  </>
+                  <label className="mr-10">
+                    {i18next.t("Sort by")} {cmp}
+                  </label>
                 )}
               />
             )}

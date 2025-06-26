@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022 CERN.
+ * Copyright (C) 2025 KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +11,7 @@ import React from "react";
 import { Grid } from "semantic-ui-react";
 import { ResultsPerPage, Pagination, ResultsList } from "react-searchkit";
 import PropTypes from "prop-types";
-import { Trans } from "react-i18next";
+import { i18next } from "@translations/invenio_communities/i18next";
 
 export const InvitationsResults = ({ paginationOptions, currentResultsState }) => {
   const { total } = currentResultsState.data;
@@ -36,9 +37,9 @@ export const InvitationsResults = ({ paginationOptions, currentResultsState }) =
             <ResultsPerPage
               values={paginationOptions.resultsPerPage}
               label={(cmp) => (
-                <Trans key="communitiesInvitationsResult" count={cmp}>
-                  {cmp} results per page
-                </Trans>
+                <>
+                  {cmp} {i18next.t("results per page")}
+                </>
               )}
             />
           </Grid.Column>

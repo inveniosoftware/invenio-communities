@@ -1,14 +1,15 @@
 # 
 # Translators:
-# Alizee Pace <alizee.pace@gmail.com>, 2022
-# Tibor Simko <tibor.simko@cern.ch>, 2022
+# Tibor Simko <tibor.simko@cern.ch>, 2024
+# Keziah Okyere, 2024
+# Alizee Pace <alizee.pace@gmail.com>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
+"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2022\n"
+"Last-Translator: Alizee Pace <alizee.pace@gmail.com>, 2025\n"
 "Language-Team: French (https://app.transifex.com/inveniosoftware/teams/23537/fr/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 "mime-version: 1.0\n"
 
-msgid "Description"
-msgstr "Description"
-
 msgid "Search for organizations..."
-msgstr ""
+msgstr "Recherche d'organisations..."
+
+msgid "Edit"
+msgstr "Éditer"
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -32,368 +33,507 @@ msgid "Cancel"
 msgstr "Annuler"
 
 msgid "Maximum number of characters is 2000"
-msgstr ""
+msgstr "Le nombre maximum de caractères est de 2000"
 
 msgid "Must be a valid URL"
-msgstr ""
+msgstr "Doit être une URL valide"
 
 msgid "Profile picture"
-msgstr ""
+msgstr "Image de profil"
 
 msgid "Upload new picture"
-msgstr ""
+msgstr "Télécharger une nouvelle image"
 
 msgid "Delete picture"
-msgstr ""
+msgstr "Supprimer l'image"
 
 msgid "Are you sure you want to delete this picture?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer cette image?"
 
 msgid "Danger zone"
-msgstr ""
+msgstr "Zone de danger"
 
 msgid "Change identifier"
-msgstr ""
+msgstr "Changer l'identifiant"
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
 msgstr ""
+"Changer l'identifiant unique de votre communauté peut avoir des effets "
+"secondaires inattendus."
 
 msgid "Delete community"
-msgstr ""
+msgstr "Supprimer la communauté"
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
-
-msgid "Are you sure you want to delete this community?"
-msgstr ""
+msgstr "Une fois supprimé, il sera parti pour toujours. Soyez certain."
 
 msgid "Community name"
-msgstr ""
+msgstr "Nom de la communauté"
 
 msgid "Type"
 msgstr "Type"
 
 msgid "Website"
-msgstr ""
+msgstr "Site"
 
 msgid "Search for an organization by name"
-msgstr ""
+msgstr "Rechercher une organisation par nom"
 
 msgid "Organizations"
-msgstr ""
+msgstr "Organisations"
 
 msgid "Save"
 msgstr "Enregistrer"
 
 msgid "Change"
-msgstr ""
+msgstr "Changer"
 
 msgid "Saved"
-msgstr ""
+msgstr "Sauvé"
 
 msgid "Member"
-msgstr ""
+msgstr "Membre"
 
 msgid "Members"
 msgstr "Membres"
 
 msgid "Role"
-msgstr ""
+msgstr "Rôle"
 
 msgid "Setup your new community"
-msgstr ""
+msgstr "Configurez votre nouvelle communauté"
 
 msgid "Identifier"
 msgstr "Identifiant"
 
 msgid "Community visibility"
-msgstr ""
+msgstr "Visibilité communautaire"
 
 msgid "Create community"
-msgstr ""
-
-msgid "Message"
-msgstr "Message"
+msgstr "Créer une communauté"
 
 msgid "View"
 msgstr "Affichage"
 
-msgid "{{total}} result(s) found"
-msgstr ""
-
 msgid "Sort by"
-msgstr ""
-
-msgid "results per page"
-msgstr ""
+msgstr "Trier par"
 
 msgid "Search"
 msgstr "Recherche"
 
 msgid "Search communities..."
-msgstr ""
+msgstr "Rechercher des communautés.."
 
-msgid "New community"
-msgstr "Nouvelle communauté"
+msgid "Restore community"
+msgstr "Restaurer la communauté"
 
-msgid "Uploaded on"
-msgstr ""
+msgid "Unavailability statement"
+msgstr "Déclaration d'indisponibilité"
 
-msgid "Search guide"
-msgstr ""
+msgid "Success"
+msgstr "Succès"
 
-msgid "We couldn't find any matches for "
-msgstr ""
+msgid "Community {{id}} was restored."
+msgstr "La communauté {{id}} a été restaurée."
 
-msgid "your search"
-msgstr ""
+msgid "Unable to restore."
+msgstr "Impossible de restaurer."
 
-msgid "Start over"
-msgstr ""
+msgid "Are you sure you want to restore community #{{id}}"
+msgstr "Êtes-vous sûr de vouloir restaurer la communauté #{{id}}"
 
-msgid "ProTip"
-msgstr ""
+msgid "Close"
+msgstr "Fermer"
 
-msgid "will give you all the publications from 2017 until today"
-msgstr ""
+msgid "Community {{id}} was deleted."
+msgstr "La communauté {{id}} a été supprimée."
 
-msgid "For more tips, check out our "
-msgstr ""
-
-msgid " for defining advanced search queries"
-msgstr ""
-
-msgid "ORCID profile"
-msgstr ""
-
-msgid "ROR profile"
-msgstr ""
-
-msgid "Filter results"
-msgstr ""
-
-msgid "search guide"
-msgstr ""
-
-msgid "members selected"
-msgstr ""
-
-msgid "Leave community"
-msgstr ""
-
-msgid "Leave"
-msgstr "Quitter"
-
-msgid "Remove user"
-msgstr ""
-
-msgid "This action cannot be undone."
-msgstr ""
-
-msgid "Clear all filters"
-msgstr ""
-
-msgid "Group"
-msgstr "Groupe"
-
-msgid "Search for groups"
-msgstr ""
-
-msgid "Add"
-msgstr "Ajouter"
-
-msgid "People"
-msgstr ""
-
-msgid "Groups"
-msgstr "Groupes"
-
-msgid "Invite groups"
-msgstr ""
-
-msgid "Invite members"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr ""
-
-msgid "Invite"
-msgstr "Inviter"
-
-msgid "You are about to invite <1>{{selectedCount}}</1> users"
-msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "Name"
-msgstr "Nom"
-
-msgid "Status"
-msgstr "Statut"
-
-msgid "Expires"
-msgstr ""
-
-msgid "result(s) found"
-msgstr ""
-
-msgid "Member since"
-msgstr ""
-
-msgid "Visibility"
-msgstr ""
-
-msgid "Search members..."
-msgstr ""
+msgid "Unable to delete"
+msgstr "Impossible de supprimer"
 
 msgid "Public"
 msgstr "Public"
 
 msgid "Hidden"
+msgstr "Caché"
+
+msgid ""
+"The tombstone is set to hidden but your record is public. Best practice is "
+"to provide a public tombstone when deactivating public records."
 msgstr ""
+"La pierre tombale est cachée mais votre dossier est public. La meilleure "
+"pratique consiste à fournir une pierre tombale publique lors de la "
+"désactivation des documents publics."
 
-msgid "Change roles"
+msgid ""
+"RISK INFORMATION LEAKAGE: The tombstone is set to public but your record is "
+"restricted. Please make sure no restricted information is shared in the "
+"tombstone below."
 msgstr ""
+"FUITE D'INFORMATIONS SUR LES RISQUES: La pierre tombale est rendue publique,"
+" mais votre dossier est restreint. Veuillez vous assurer qu'aucune "
+"information restreinte n'est partagée dans la pierre tombale ci-dessous."
 
-msgid "Change visibilities"
+msgid "Bibliographic citation"
+msgstr "Bibliographie citation"
+
+msgid ""
+"Input citation text. Blank field will be filled with APA citation by "
+"default."
 msgstr ""
+"Texte de citation. Le champ vide sera rempli avec la citation APA par "
+"défaut."
 
-msgid "Remove from community"
+msgid "Note"
+msgstr "Note"
+
+msgid "Delete record"
+msgstr "Supprimer l'enregistrement"
+
+msgid "This set is not editable as it was created by the system."
+msgstr "Cet ensemble n'est pas modifiable car il a été créé par le système."
+
+msgid "This set is not deletable as it was created by the system."
+msgstr "Cet ensemble n'est pas supprimable car il a été créé par le système."
+
+msgid "Planned features"
+msgstr "Les fonctionnalités prévues"
+
+msgid "Start date"
+msgstr "Date de début"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Published"
+msgstr "Publié"
+
+msgid "Deleted"
+msgstr "Supprimé"
+
+msgid "Scheduled for purge"
+msgstr "Prévu pour purge"
+
+msgid "Browse"
+msgstr "Liste"
+
+msgid "New upload"
+msgstr "Nouveau téléchargement"
+
+msgid "Previous slide"
+msgstr "La diapositive précédente"
+
+msgid "Next slide"
+msgstr "La diapositive suivante"
+
+msgid "opens in new tab"
+msgstr "s'ouvre dans un nouvel onglet"
+
+msgid "Branding"
+msgstr "Branding"
+
+msgid "Submission information"
+msgstr "Informations de soumission"
+
+msgid ""
+"Submission to this community does not require review, and will be published "
+"immediately."
 msgstr ""
+"La soumission à cette communauté ne nécessite pas d'examen et sera publiée "
+"immédiatement."
 
-msgid "You have selected <1>{{selectedCount}}</1> users"
-msgid_plural "You have selected <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgid "profile"
+msgstr "profil"
 
-msgid "You"
-msgstr ""
+msgid "An error occurred."
+msgstr "Une erreur s'est produite."
 
-msgid "Leave..."
-msgstr ""
-
-msgid "Remove..."
-msgstr ""
-
-msgid "Open"
-msgstr "Ouvrir"
-
-msgid "Closed"
-msgstr "Fermé"
-
-msgid "Search requests..."
-msgstr ""
-
-msgid "All done!"
-msgstr ""
-
-msgid "You've caught up with all open requests."
-msgstr ""
-
-msgid "No requests found!"
-msgstr ""
-
-msgid "Reset search"
-msgstr ""
-
-msgid "Search records in community..."
-msgstr ""
+msgid "Restricted"
+msgstr "Restreint"
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
+"C'est l'identifiant unique de votre communauté. Vous pourrez accéder à votre"
+" communauté via l'URL:"
+
+msgid "No communities found!"
+msgstr "Aucune communauté trouvée!"
+
+msgid "Reset search"
+msgstr "Réinitialiser la recherche"
+
+msgid "Filter results"
+msgstr "Filtrer les résultats"
+
+msgid "Select all members"
+msgstr "Sélectionnez tous les membres"
 
 msgid "bulk actions"
-msgstr ""
+msgstr "actions en vrac"
+
+msgid "Select member"
+msgstr "Sélectionnez membre"
 
 msgid "remove {{name}}"
-msgstr ""
+msgstr "supprimer {{name}}"
 
-msgid "Submitted"
-msgstr ""
-
-msgid "Accepted"
-msgstr ""
-
-msgid "Declined"
-msgstr ""
-
-msgid "Expired"
-msgstr ""
-
-msgid "Search in invitations..."
-msgstr ""
-
-msgid "This community has no public members."
-msgstr ""
-
-msgid "No matching members found."
-msgstr ""
-
-msgid "Actions"
-msgstr "Actions"
-
-msgid "Add groups"
-msgstr ""
-
-msgid "Restricted"
-msgstr "Restreint"
-
-msgid "Search records..."
-msgstr ""
-
-msgid "Selected groups"
-msgstr ""
-
-msgid "Selected members"
-msgstr ""
+msgid "Clear all filters"
+msgstr "Effacer tous les filtres"
 
 msgid "Search in members ..."
-msgstr ""
+msgstr "Recherche dans les membres ..."
+
+msgid "Leave community"
+msgstr "Quitter la communauté"
 
 msgid "You are about to leave this community."
-msgstr ""
+msgstr "Vous êtes sur le point de quitter cette communauté."
+
+msgid "Leave"
+msgstr "Quitter"
+
+msgid "Remove user"
+msgstr "Supprimer l'utilisateur"
 
 msgid "You are about to remove this user from this community."
 msgstr ""
+"Vous êtes sur le point de supprimer cet utilisateur de cette communauté."
 
-msgid "You are about to add <1>{{selectedCount}}</1> groups."
-msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "Search..."
-msgstr ""
+msgid "This action cannot be undone."
+msgstr "Cette action ne peut être annulée."
 
 msgid ""
-"Users must set profile visibility to \"Public\" in order to be invited to a "
-"community."
+"Note: upon addition, selected groups will have access to the record without "
+"any kind of notification."
 msgstr ""
+"Remarque: lors de l'ajout, les groupes sélectionnés auront accès à "
+"l'enregistrement sans aucune sorte de notification."
+
+msgid "Submitted"
+msgstr "Soumis"
+
+msgid "Accepted"
+msgstr "Accepté"
+
+msgid "Declined"
+msgstr "Décliné"
+
+msgid "Expired"
+msgstr "Expiré"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Expires"
+msgstr "Expire"
+
+msgid "No matching members found."
+msgstr "Aucun membre correspondant trouvé."
+
+msgid "Current search"
+msgstr "Recherche actuelle"
+
+msgid "Clear query"
+msgstr "Effacer la requête"
+
+msgid "No selected groups"
+msgstr "Aucun groupe sélectionné"
+
+msgid "Group"
+msgstr "Groupe"
+
+msgid "Search for groups"
+msgstr "Recherche de groupes"
+
+msgid "Already a member"
+msgstr "Déjà membre"
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of notification or invitation approval."
+msgstr ""
+"Remarque: lors de l'ajout, les groupes sélectionnés deviendront des membres "
+"de la communauté immédiatement sans aucune sorte de notification ou "
+"d'approbation d'invitation."
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "People"
+msgstr "Personnes"
+
+msgid ""
+"Search for users to invite (only users with a public profile can be invited)"
+msgstr ""
+"Rechercher des utilisateurs à inviter (seuls les utilisateurs ayant un "
+"profil public peuvent être invités)"
+
+msgid "Invite"
+msgstr "Inviter"
+
+msgid "No selected members"
+msgstr "Aucun membre sélectionné"
+
+msgid "Invitation message"
+msgstr "Message d'invitation"
+
+msgid "You are about to invite"
+msgstr "Vous êtes sur le point d'inviter"
+
+msgid "users"
+msgstr "utilisateurs"
+
+msgid "Already a member or invitation pending"
+msgstr "Déjà membre ou invitation en attente"
+
+msgid "Search by email, full name or username"
+msgstr "Recherche par email, nom complet ou nom d'utilisateur"
+
+msgid "Groups"
+msgstr "Groupes"
+
+msgid "Invite groups"
+msgstr "Inviter des groupes"
+
+msgid "Invite members"
+msgstr "Invitez des membres"
+
+msgid "Invite..."
+msgstr "Inviter..."
+
+msgid "Add groups"
+msgstr "Ajouter des groupes"
+
+msgid "Search..."
+msgstr "Recherche..."
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Search in invitations..."
+msgstr "Rechercher dans invitations..."
+
+msgid "This community has no public members."
+msgstr "Cette communauté n'a pas de membres publics."
+
+msgid "result(s) found"
+msgstr "résultat(s) trouvé"
+
+msgid "Member since"
+msgstr "Membre depuis"
+
+msgid "Visibility"
+msgstr "Visibilité"
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "Votre adhésion à la communauté est visible par tous."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
 msgstr ""
+"Votre adhésion à la communauté n'est visible que par les autres membres de "
+"la communauté."
 
-msgid "Opened {{difference}} by"
-msgstr ""
+msgid "Change roles"
+msgstr "Changer les rôles"
 
-msgid "Expires at:"
-msgstr ""
+msgid "Change visibilities"
+msgstr "Changer de visibilités"
 
-msgid "File must be smaller than "
+msgid "Remove from community"
+msgstr "Retirer de la communauté"
+
+msgid "You"
+msgstr "Vous"
+
+msgid "Leave..."
+msgstr "Laisser."
+
+msgid "Remove..."
+msgstr "Retirer..."
+
+msgid "Search members..."
+msgstr "Rechercher des membres..."
+
+msgid "Submission review policy"
+msgstr "Politique d'examen des soumissions"
+
+msgid "Curation policy"
+msgstr "Politique de curation"
+
+msgid "About page"
+msgstr "À propos de la page"
+
+msgid "Controls if the community is visible to anyone or to members only."
 msgstr ""
+"Contrôle si la communauté est visible par n'importe qui ou par les membres "
+"seulement."
+
+msgid "Members visibility"
+msgstr "Visibilité des membres"
+
+msgid "Controls if the members tab is visible to anyone or to members only."
+msgstr ""
+"Contrôle si l'onglet membres est visible par n'importe qui ou uniquement par"
+" les membres."
+
+msgid "Maximum number of characters is 250"
+msgstr "Le nombre maximum de caractères est de 250"
+
+msgid "Basic information"
+msgstr "Informations de base"
+
+msgid "Short description"
+msgstr "Courte description"
+
+msgid "Funding information"
+msgstr "Renseignements sur le financement"
+
+msgid "Awards/Grants"
+msgstr "Prix/Grants"
+
+msgid "Permanently delete community"
+msgstr "Supprimer définitivement la communauté"
+
+msgid "This action CANNOT be undone!"
+msgstr "Cette action NE PEUT PAS être annulée!"
+
+msgid "Permanently delete"
+msgstr "Supprimer définitivement"
+
+msgid "Are you <1>absolutely sure</1> you want to delete the community?"
+msgstr "Êtes-vous <1>absolument sûr</1> de vouloir supprimer la communauté?"
+
+msgid "<0> members</0> will be removed from the community."
+msgstr "<0> membres</0> sera retiré de la communauté."
+
+msgid "<0> records</0> will be removed from the community."
+msgstr "<0> enregistrements</0> sera retiré de la communauté."
+
+msgid ""
+"You <1>CANNOT</1> reuse the community identifier "
+"\"<3>{{communitySlug}}</3>\"."
+msgstr ""
+"Vous <1> IMPOSSIBLE</1> réutiliser l'identifiant de communauté \" "
+"<3>{{communitySlug}}</3>\""
+
+msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
+msgstr "Veuillez taper <1><0>{{communitySlug}}</0></1> pour confirmer."
+
+msgid "File must be smaller than {{fileSize}}"
+msgstr "Le fichier doit être plus petit que {{fileSize}}"
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr ""
+"Cela peut prendre quelques instants pour que les changements soient visibles"
+" partout"
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "Nouvel identifiant unique de la communauté"

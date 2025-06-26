@@ -1,14 +1,15 @@
 # 
 # Translators:
 # Berat Aldemir <berataldemir@gmail.com>, 2022
-# Ben Translation and Interpreting Services <info@bentercume.com>, 2022
+# BEN TERCÜME, 2024
+# Ben Translation and Interpreting Services <info@bentercume.com>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-10-12T07:39:56.031Z\n"
+"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Ben Translation and Interpreting Services <info@bentercume.com>, 2022\n"
+"Last-Translator: Ben Translation and Interpreting Services <info@bentercume.com>, 2025\n"
 "Language-Team: Turkish (https://app.transifex.com/inveniosoftware/teams/23537/tr/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "mime-version: 1.0\n"
 
-msgid "Description"
-msgstr "Tanım"
-
 msgid "Search for organizations..."
-msgstr ""
+msgstr "Kuruluşları arayın..."
+
+msgid "Edit"
+msgstr "Düzenle"
 
 msgid "Delete"
 msgstr "Sil"
@@ -32,69 +33,68 @@ msgid "Cancel"
 msgstr "İptal"
 
 msgid "Maximum number of characters is 2000"
-msgstr ""
+msgstr "Maksimum karakter sayısı 2000'dir"
 
 msgid "Must be a valid URL"
-msgstr ""
+msgstr "Geçerli bir URL olmalı"
 
 msgid "Profile picture"
-msgstr ""
+msgstr "Profil resmi"
 
 msgid "Upload new picture"
-msgstr ""
+msgstr "Yeni resim yükle"
 
 msgid "Delete picture"
-msgstr ""
+msgstr "Resmi sil"
 
 msgid "Are you sure you want to delete this picture?"
-msgstr ""
+msgstr "Bu resmi silmek istediğinizden emin misiniz?"
 
 msgid "Danger zone"
-msgstr ""
+msgstr "Tehlikeli bölge"
 
 msgid "Change identifier"
-msgstr ""
+msgstr "Tanımlayıcıyı değiştir"
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
 msgstr ""
+"Topluluğunuzun benzersiz tanımlayıcısını (UID) değiştirmeniz beklenmeyen yan"
+" etkilere yol açabilir."
 
 msgid "Delete community"
-msgstr ""
+msgstr "Topluluğu sil"
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
-
-msgid "Are you sure you want to delete this community?"
-msgstr ""
+msgstr "Bir kere silindiğinde sonsuza dek yok olacak. Lütfen emin olun."
 
 msgid "Community name"
-msgstr ""
+msgstr "Topluluk adı"
 
 msgid "Type"
 msgstr "Tür"
 
 msgid "Website"
-msgstr ""
+msgstr "Web sitesi"
 
 msgid "Search for an organization by name"
-msgstr ""
+msgstr "Bir kuruluşu isme göre arayın"
 
 msgid "Organizations"
-msgstr ""
+msgstr "Kuruluşlar"
 
 msgid "Save"
 msgstr "Kaydet"
 
 msgid "Change"
-msgstr ""
+msgstr "Değiştir"
 
 msgid "Saved"
-msgstr ""
+msgstr "Kaydedildi"
 
 msgid "Member"
-msgstr ""
+msgstr "Üye"
 
 msgid "Members"
 msgstr "Üyeler"
@@ -103,294 +103,434 @@ msgid "Role"
 msgstr "Rol"
 
 msgid "Setup your new community"
-msgstr ""
+msgstr "Yeni topluluğunuzu kurun"
 
 msgid "Identifier"
 msgstr "Tanımlayıcı"
 
 msgid "Community visibility"
-msgstr ""
+msgstr "Topluluk görünürlüğü"
 
 msgid "Create community"
-msgstr ""
-
-msgid "Message"
-msgstr "İleti"
+msgstr "Topluluk oluştur"
 
 msgid "View"
 msgstr "Görüntüle"
 
-msgid "{{total}} result(s) found"
-msgstr ""
-
 msgid "Sort by"
 msgstr "Sırala"
-
-msgid "results per page"
-msgstr "sayfa başına sonuç sayısı"
 
 msgid "Search"
 msgstr "Ara"
 
 msgid "Search communities..."
-msgstr ""
+msgstr "Toplulukları ara..."
 
-msgid "New community"
-msgstr "Yeni topluluk"
+msgid "Restore community"
+msgstr "Topluluğu geri yükle"
 
-msgid "Uploaded on"
-msgstr "Yüklenme tarihi"
+msgid "Unavailability statement"
+msgstr "Kullanılamama bildirimi"
 
-msgid "Search guide"
-msgstr "Arama kılavuzu"
+msgid "Success"
+msgstr "Başarı"
 
-msgid "We couldn't find any matches for "
-msgstr ""
+msgid "Community {{id}} was restored."
+msgstr "{{id}} topluluğu geri yüklendi."
 
-msgid "your search"
-msgstr ""
+msgid "Unable to restore."
+msgstr "Geri yüklenemiyor."
 
-msgid "Start over"
-msgstr ""
+msgid "Are you sure you want to restore community #{{id}}"
+msgstr "#{{id}} topluluğunu geri yüklemek istediğinizden emin misiniz?"
 
-msgid "ProTip"
-msgstr ""
+msgid "Close"
+msgstr "Kapat"
 
-msgid "will give you all the publications from 2017 until today"
-msgstr ""
+msgid "Community {{id}} was deleted."
+msgstr "{{id}} topluluğu silindi."
 
-msgid "For more tips, check out our "
-msgstr ""
-
-msgid " for defining advanced search queries"
-msgstr ""
-
-msgid "ORCID profile"
-msgstr ""
-
-msgid "ROR profile"
-msgstr ""
-
-msgid "Filter results"
-msgstr ""
-
-msgid "search guide"
-msgstr ""
-
-msgid "members selected"
-msgstr ""
-
-msgid "Leave community"
-msgstr ""
-
-msgid "Leave"
-msgstr "Ayrıl"
-
-msgid "Remove user"
-msgstr ""
-
-msgid "This action cannot be undone."
-msgstr ""
-
-msgid "Clear all filters"
-msgstr ""
-
-msgid "Group"
-msgstr "Grup"
-
-msgid "Search for groups"
-msgstr ""
-
-msgid "Add"
-msgstr "Ekle"
-
-msgid "People"
-msgstr ""
-
-msgid "Groups"
-msgstr "Gruplar"
-
-msgid "Invite groups"
-msgstr ""
-
-msgid "Invite members"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr ""
-
-msgid "Invite"
-msgstr "Davet et"
-
-msgid "You are about to invite <1>{{selectedCount}}</1> users"
-msgid_plural "You are about to invite <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Name"
-msgstr "Ad"
-
-msgid "Status"
-msgstr "Durum"
-
-msgid "Expires"
-msgstr ""
-
-msgid "result(s) found"
-msgstr "sonuç(lar) bulundu"
-
-msgid "Member since"
-msgstr ""
-
-msgid "Visibility"
-msgstr "Görünürlük"
-
-msgid "Search members..."
-msgstr ""
+msgid "Unable to delete"
+msgstr "Silinemiyor"
 
 msgid "Public"
 msgstr "Herkese açık"
 
 msgid "Hidden"
+msgstr "Gizli"
+
+msgid ""
+"The tombstone is set to hidden but your record is public. Best practice is "
+"to provide a public tombstone when deactivating public records."
 msgstr ""
+"The tombstone is set to hidden but your record is public. Best practice is "
+"to provide a public tombstone when deactivating public records."
 
-msgid "Change roles"
+msgid ""
+"RISK INFORMATION LEAKAGE: The tombstone is set to public but your record is "
+"restricted. Please make sure no restricted information is shared in the "
+"tombstone below."
 msgstr ""
+"BİLGİSİ SIZINTISI RİSKİ: Mezar taşı herkese açık olarak ayarlanmış ancak "
+"kaydınız kısıtlı. Lütfen aşağıdaki mezar taşında kısıtlanmış bilgilerin "
+"paylaşılmadığından emin olun."
 
-msgid "Change visibilities"
+msgid "Bibliographic citation"
+msgstr "Bibliyografik atıf"
+
+msgid ""
+"Input citation text. Blank field will be filled with APA citation by "
+"default."
 msgstr ""
+"Atıf metnini girin. Boş alan varsayılan olarak APA atıfı ile "
+"doldurulacaktır."
 
-msgid "Remove from community"
+msgid "Note"
+msgstr "Not"
+
+msgid "Delete record"
+msgstr "Kaydı sil"
+
+msgid "This set is not editable as it was created by the system."
+msgstr "Bu set sistem tarafından oluşturulduğu için düzenlenemez."
+
+msgid "This set is not deletable as it was created by the system."
+msgstr "Bu set sistem tarafından oluşturulduğu için silinemez."
+
+msgid "Planned features"
+msgstr "Planlanan özellikler"
+
+msgid "Start date"
+msgstr "Başlangıç ​​tarihi"
+
+msgid "Active"
+msgstr "Aktif"
+
+msgid "Actions"
+msgstr "Eylemler"
+
+msgid "Published"
+msgstr "Yayınlanmış"
+
+msgid "Deleted"
+msgstr "Silinen"
+
+msgid "Scheduled for purge"
+msgstr "Silinmek üzere zamanlandı"
+
+msgid "Browse"
+msgstr "Gözat"
+
+msgid "New upload"
+msgstr "Yeni Yükleme"
+
+msgid "Previous slide"
+msgstr "Önceki slayt"
+
+msgid "Next slide"
+msgstr "Sonraki slayt"
+
+msgid "opens in new tab"
+msgstr "yeni sekmede açılır"
+
+msgid "Branding"
+msgstr "Markalama"
+
+msgid "Submission information"
+msgstr "Gönderim bilgileri"
+
+msgid ""
+"Submission to this community does not require review, and will be published "
+"immediately."
 msgstr ""
+"Bu topluluğa gönderilen yazıların ve belgelerin incelenmesi gerekmez ve "
+"hemen yayınlanacaktır."
 
-msgid "You have selected <1>{{selectedCount}}</1> users"
-msgid_plural "You have selected <1>{{selectedCount}}</1> users"
-msgstr[0] ""
-msgstr[1] ""
+msgid "profile"
+msgstr "profil"
 
-msgid "You"
-msgstr ""
+msgid "An error occurred."
+msgstr "Bir hata oluştu."
 
-msgid "Leave..."
-msgstr ""
-
-msgid "Remove..."
-msgstr ""
-
-msgid "Open"
-msgstr "Açık"
-
-msgid "Closed"
-msgstr "Kapalı"
-
-msgid "Search requests..."
-msgstr ""
-
-msgid "All done!"
-msgstr ""
-
-msgid "You've caught up with all open requests."
-msgstr ""
-
-msgid "No requests found!"
-msgstr ""
-
-msgid "Reset search"
-msgstr ""
-
-msgid "Search records in community..."
-msgstr ""
+msgid "Restricted"
+msgstr "Kısıtlı"
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
+"Bu, topluluğunuzun benzersiz tanımlayıcısıdır. Topluluğunuza şu URL "
+"üzerinden erişebileceksiniz:"
+
+msgid "No communities found!"
+msgstr "Hiçbir topluluk bulunamadı!"
+
+msgid "Reset search"
+msgstr "Aramayı sıfırla"
+
+msgid "Filter results"
+msgstr "Sonuçları filtrele"
+
+msgid "Select all members"
+msgstr "Tüm üyeleri seç"
 
 msgid "bulk actions"
-msgstr ""
+msgstr "toplu işlemler"
+
+msgid "Select member"
+msgstr "Üye seç"
 
 msgid "remove {{name}}"
+msgstr "{{name}} adlı üyeyi kaldır"
+
+msgid "Clear all filters"
+msgstr "Tüm filtreleri temizle"
+
+msgid "Search in members ..."
+msgstr "Üyelerde ara ..."
+
+msgid "Leave community"
+msgstr "Topluluktan ayrıl"
+
+msgid "You are about to leave this community."
+msgstr "Bu topluluktan ayrılmak üzeresiniz."
+
+msgid "Leave"
+msgstr "Ayrıl"
+
+msgid "Remove user"
+msgstr "Kullanıcıyı kaldır"
+
+msgid "You are about to remove this user from this community."
+msgstr "Bu kullanıcıyı bu topluluktan kaldırmak üzeresiniz."
+
+msgid "This action cannot be undone."
+msgstr "Bu eylem geri alınamaz."
+
+msgid ""
+"Note: upon addition, selected groups will have access to the record without "
+"any kind of notification."
 msgstr ""
+"Not: Ekleme yapıldığında, seçilen gruplar herhangi bir bildirime gerek "
+"kalmadan kayda erişebilecektir."
 
 msgid "Submitted"
-msgstr ""
+msgstr "Gönderildi"
 
 msgid "Accepted"
-msgstr ""
+msgstr "Kabul edildi"
 
 msgid "Declined"
-msgstr ""
+msgstr "Reddedildi"
 
 msgid "Expired"
+msgstr "Süresi doldu"
+
+msgid "Status"
+msgstr "Durum"
+
+msgid "Expires"
+msgstr "Süresi dolar"
+
+msgid "No matching members found."
+msgstr "Eşleşen üye bulunamadı."
+
+msgid "Current search"
+msgstr "Mevcut arama"
+
+msgid "Clear query"
+msgstr "Sorguyu temizle"
+
+msgid "No selected groups"
+msgstr "Hiçbir grup seçilmedi"
+
+msgid "Group"
+msgstr "Grup"
+
+msgid "Search for groups"
+msgstr "Grupları ara"
+
+msgid "Already a member"
+msgstr "Zaten üye"
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of notification or invitation approval."
 msgstr ""
+"Not: Seçili gruplar, eklendikten sonra, herhangi bir bildirim veya davet "
+"onayına gerek kalmaksızın anında topluluk üyesi olacaktır."
+
+msgid "Add"
+msgstr "Ekle"
+
+msgid "People"
+msgstr "Kişiler"
+
+msgid ""
+"Search for users to invite (only users with a public profile can be invited)"
+msgstr ""
+"Davet edilecek kullanıcıları arayın (sadece herkese açık profile sahip "
+"kullanıcılar davet edilebilir)"
+
+msgid "Invite"
+msgstr "Davet et"
+
+msgid "No selected members"
+msgstr "Hiçbir üye seçilmedi"
+
+msgid "Invitation message"
+msgstr "Davet mesajı"
+
+msgid "You are about to invite"
+msgstr "Şu kullanıcıları davet etmek üzeresiniz:"
+
+msgid "users"
+msgstr "kullanıcılar"
+
+msgid "Already a member or invitation pending"
+msgstr "Zaten üye veya davet gönderilmiş"
+
+msgid "Search by email, full name or username"
+msgstr "E-posta, tam ad veya kullanıcı adı ile arama yapın"
+
+msgid "Groups"
+msgstr "Gruplar"
+
+msgid "Invite groups"
+msgstr "Grupları davet et"
+
+msgid "Invite members"
+msgstr "Üyeleri davet et"
+
+msgid "Invite..."
+msgstr "Davet et..."
+
+msgid "Add groups"
+msgstr "Grupları ekle"
+
+msgid "Search..."
+msgstr "Ara..."
+
+msgid "Name"
+msgstr "Ad"
 
 msgid "Search in invitations..."
-msgstr ""
+msgstr "Davetiyelerde ara..."
 
 msgid "This community has no public members."
 msgstr ""
+"Bu topluluğun herkes tarafından görüntülenebilir üyesi bulunmamaktadır."
 
-msgid "No matching members found."
-msgstr ""
+msgid "result(s) found"
+msgstr "sonuç(lar) bulundu"
 
-msgid "Actions"
-msgstr "Eylemler"
+msgid "Member since"
+msgstr "Üyelik tarihi:"
 
-msgid "Add groups"
-msgstr ""
-
-msgid "Restricted"
-msgstr "Kısıtlı"
-
-msgid "Search records..."
-msgstr ""
-
-msgid "Selected groups"
-msgstr ""
-
-msgid "Selected members"
-msgstr ""
-
-msgid "Search in members ..."
-msgstr ""
-
-msgid "You are about to leave this community."
-msgstr ""
-
-msgid "You are about to remove this user from this community."
-msgstr ""
-
-msgid "You are about to add <1>{{selectedCount}}</1> groups."
-msgid_plural "You are about to add <1>{{selectedCount}}</1> groups."
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Search..."
-msgstr ""
-
-msgid ""
-"Users must set profile visibility to \"Public\" in order to be invited to a "
-"community."
-msgstr ""
+msgid "Visibility"
+msgstr "Görünürlük"
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "Topluluk üyeliğiniz herkes tarafından görülebilir."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
 msgstr ""
+"Topluluk üyeliğiniz yalnızca topluluğun diğer üyeleri tarafından "
+"görülebilir."
 
-msgid "Opened {{difference}} by"
-msgstr ""
+msgid "Change roles"
+msgstr "Rolleri değiştir"
 
-msgid "Expires at:"
-msgstr ""
+msgid "Change visibilities"
+msgstr "Görünürlükleri değiştir"
 
-msgid "File must be smaller than "
+msgid "Remove from community"
+msgstr "Topluluktan kaldır"
+
+msgid "You"
+msgstr "Sen"
+
+msgid "Leave..."
+msgstr "Ayrıl..."
+
+msgid "Remove..."
+msgstr "Kaldır..."
+
+msgid "Search members..."
+msgstr "Üyeleri ara..."
+
+msgid "Submission review policy"
+msgstr "Gönderim inceleme politikası"
+
+msgid "Curation policy"
+msgstr "Küratörlük politikası"
+
+msgid "About page"
+msgstr "Hakkında sayfası"
+
+msgid "Controls if the community is visible to anyone or to members only."
 msgstr ""
+"Topluluğun herkese mi yoksa yalnızca üyelere mi görünür olacağını kontrol "
+"eder."
+
+msgid "Members visibility"
+msgstr "Üye görünürlüğü"
+
+msgid "Controls if the members tab is visible to anyone or to members only."
+msgstr ""
+"Üye sekmesinin herkese mi yoksa yalnızca üyelere mi görünür olacağını "
+"kontrol eder."
+
+msgid "Maximum number of characters is 250"
+msgstr "Maksimum karakter sayısı 250'dir"
+
+msgid "Basic information"
+msgstr "Temel bilgiler"
+
+msgid "Short description"
+msgstr "Kısa açıklama"
+
+msgid "Funding information"
+msgstr "Finansman bilgisi"
+
+msgid "Awards/Grants"
+msgstr "Ödüller/Hibeler"
+
+msgid "Permanently delete community"
+msgstr "Topluluğu kalıcı olarak sil"
+
+msgid "This action CANNOT be undone!"
+msgstr "Bu işlem GERİ ALINAMAZ!"
+
+msgid "Permanently delete"
+msgstr "Kalıcı olarak sil"
+
+msgid "Are you <1>absolutely sure</1> you want to delete the community?"
+msgstr "Topluluğu silmek istediğinizden <1>kesinlikle emin misiniz</1>?"
+
+msgid "<0> members</0> will be removed from the community."
+msgstr "<0>üyeler</0> topluluktan çıkarılacak."
+
+msgid "<0> records</0> will be removed from the community."
+msgstr "<0>kayıtlar</0> topluluktan kaldırılacak."
+
+msgid ""
+"You <1>CANNOT</1> reuse the community identifier "
+"\"<3>{{communitySlug}}</3>\"."
+msgstr ""
+"\"<3>{{communitySlug}}</3>\" topluluk tanımlayıcısını <1>TEKRAR "
+"KULLANAMAZSINIZ</1>."
+
+msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
+msgstr "Onaylamak için lütfen <1><0>{{communitySlug}}</0></1> yazın."
+
+msgid "File must be smaller than {{fileSize}}"
+msgstr "Dosya boyutu {{fileSize}} boyutundan küçük olmalıdır"
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr ""
+"Değişikliklerin her yerde görünür hale gelmesi birkaç dakika sürebilir"
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "Topluluğun yeni benzersiz tanımlayıcısı"

@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022 CERN.
+ * Copyright (C) 2025 KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -13,7 +14,6 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import { ModalContextProvider } from "../../components/modal_manager";
 import RemoveMemberModal from "../../components/RemoveMemberModal";
 import PropTypes from "prop-types";
-import { Trans } from "react-i18next";
 
 export const MembersResults = ({ paginationOptions, currentResultsState }) => {
   const { total } = currentResultsState.data;
@@ -58,9 +58,9 @@ export const MembersResults = ({ paginationOptions, currentResultsState }) => {
             <ResultsPerPage
               values={paginationOptions.resultsPerPage}
               label={(cmp) => (
-                <Trans key="communitiesMembersResult" count={cmp}>
-                  {cmp} results per page
-                </Trans>
+                <>
+                  {cmp} {i18next.t("results per page")}
+                </>
               )}
             />
           </Grid.Column>

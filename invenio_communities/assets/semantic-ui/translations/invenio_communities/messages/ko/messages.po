@@ -1,131 +1,126 @@
 # 
 # Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2024
-# Corina Ionascu <icorina@nipne.ro>, 2024
-# Nicolaie Constantinescu, 2025
+# Minjae Kwon, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Nicolaie Constantinescu, 2025\n"
-"Language-Team: Romanian (https://app.transifex.com/inveniosoftware/teams/23537/ro/)\n"
+"Last-Translator: Minjae Kwon, 2024\n"
+"Language-Team: Korean (https://app.transifex.com/inveniosoftware/teams/23537/ko/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "mime-version: 1.0\n"
 
 msgid "Search for organizations..."
-msgstr "Caută organizații..."
+msgstr ""
 
 msgid "Edit"
-msgstr "Editează"
+msgstr ""
 
 msgid "Delete"
-msgstr "Şterge"
+msgstr ""
 
 msgid "Remove"
-msgstr "Elimină"
+msgstr ""
 
 msgid "Cancel"
-msgstr "Anulează"
+msgstr ""
 
 msgid "Maximum number of characters is 2000"
-msgstr "Numărul maxim de caractere este de 2000"
+msgstr ""
 
 msgid "Must be a valid URL"
-msgstr "Trebuie să fie un URL valid"
+msgstr ""
 
 msgid "Profile picture"
-msgstr "Imagine de profil"
+msgstr ""
 
 msgid "Upload new picture"
-msgstr "Încarcă o imagine nouă"
+msgstr ""
 
 msgid "Delete picture"
-msgstr "Șterge imaginea"
+msgstr ""
 
 msgid "Are you sure you want to delete this picture?"
-msgstr "Ești sigur că dorești să ștergi această imagine?"
+msgstr ""
 
 msgid "Danger zone"
-msgstr "Zonă periculoasă"
+msgstr ""
 
 msgid "Change identifier"
-msgstr "Modifică identificatorul"
+msgstr ""
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
 msgstr ""
-"Modificarea identificatorului unic pentru comunitatea ta poate avea efecte "
-"colaterale nedorilte."
 
 msgid "Delete community"
-msgstr "Șterge comunitatea"
+msgstr ""
 
 msgid "Once deleted, it will be gone forever. Please be certain."
 msgstr ""
-"Din moment ce ai șters-o, nu o mai poți recupera. Trebuie să fii sigur."
 
 msgid "Community name"
-msgstr "Numele comunității"
+msgstr ""
 
 msgid "Type"
-msgstr "Tip"
+msgstr ""
 
 msgid "Website"
-msgstr "Site web"
+msgstr ""
 
 msgid "Search for an organization by name"
-msgstr "Caută o organizație după nume"
+msgstr ""
 
 msgid "Organizations"
-msgstr "Organizații"
+msgstr ""
 
 msgid "Save"
-msgstr "Salvează"
+msgstr ""
 
 msgid "Change"
-msgstr "Modifică"
+msgstr ""
 
 msgid "Saved"
-msgstr "Salvată"
+msgstr ""
 
 msgid "Member"
-msgstr "Membru"
+msgstr ""
 
 msgid "Members"
-msgstr "Membrii"
+msgstr ""
 
 msgid "Role"
-msgstr "Rol"
+msgstr ""
 
 msgid "Setup your new community"
-msgstr "Configurează noua ta comunitate"
+msgstr ""
 
 msgid "Identifier"
-msgstr "Identificator"
+msgstr ""
 
 msgid "Community visibility"
-msgstr "Vizibilitatea comunității"
+msgstr ""
 
 msgid "Create community"
-msgstr "Creează comunitate"
+msgstr ""
 
 msgid "View"
-msgstr "Vizualizare"
+msgstr "보복"
 
 msgid "Sort by"
-msgstr "Sortează după"
+msgstr ""
 
 msgid "Search"
-msgstr "Caută"
+msgstr "검색"
 
 msgid "Search communities..."
-msgstr "Caută în comunități..."
+msgstr ""
 
 msgid "Restore community"
 msgstr ""
@@ -134,7 +129,7 @@ msgid "Unavailability statement"
 msgstr ""
 
 msgid "Success"
-msgstr "Succes"
+msgstr ""
 
 msgid "Community {{id}} was restored."
 msgstr ""
@@ -146,7 +141,7 @@ msgid "Are you sure you want to restore community #{{id}}"
 msgstr ""
 
 msgid "Close"
-msgstr "Închide"
+msgstr ""
 
 msgid "Community {{id}} was deleted."
 msgstr ""
@@ -155,10 +150,10 @@ msgid "Unable to delete"
 msgstr ""
 
 msgid "Public"
-msgstr "Public"
+msgstr ""
 
 msgid "Hidden"
-msgstr "Ascuns"
+msgstr ""
 
 msgid ""
 "The tombstone is set to hidden but your record is public. Best practice is "
@@ -180,10 +175,10 @@ msgid ""
 msgstr ""
 
 msgid "Note"
-msgstr "Notă"
+msgstr ""
 
 msgid "Delete record"
-msgstr "Șterge înregistrare"
+msgstr ""
 
 msgid "This set is not editable as it was created by the system."
 msgstr ""
@@ -198,25 +193,25 @@ msgid "Start date"
 msgstr ""
 
 msgid "Active"
-msgstr "Activ"
+msgstr ""
 
 msgid "Actions"
-msgstr "Acțiuni"
+msgstr ""
 
 msgid "Published"
-msgstr "Publicat"
+msgstr ""
 
 msgid "Deleted"
-msgstr "Șters"
+msgstr "삭제됨"
 
 msgid "Scheduled for purge"
 msgstr ""
 
 msgid "Browse"
-msgstr "Răsfoieşte "
+msgstr "둘러보기"
 
 msgid "New upload"
-msgstr "Încărcare nouă"
+msgstr ""
 
 msgid "Previous slide"
 msgstr ""
@@ -239,65 +234,63 @@ msgid ""
 msgstr ""
 
 msgid "profile"
-msgstr "profil"
+msgstr ""
 
 msgid "An error occurred."
 msgstr ""
 
 msgid "Restricted"
-msgstr "Restricționat"
+msgstr ""
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
-"Acesta este identificatorul unic al comunității tale. Vei putea să accesezi "
-"propria comunitate prin următorul URL:"
 
 msgid "No communities found!"
-msgstr "Nu am găsit comunități!"
+msgstr ""
 
 msgid "Reset search"
-msgstr "Resetează căutarea"
+msgstr ""
 
 msgid "Filter results"
-msgstr "Rezultate de filtrare"
+msgstr ""
 
 msgid "Select all members"
 msgstr ""
 
 msgid "bulk actions"
-msgstr "pachet de acțiuni"
+msgstr ""
 
 msgid "Select member"
 msgstr ""
 
 msgid "remove {{name}}"
-msgstr "elimină {{name}}"
+msgstr ""
 
 msgid "Clear all filters"
-msgstr "Elimină toate filtrele"
+msgstr ""
 
 msgid "Search in members ..."
-msgstr "Caută printre membri..."
+msgstr ""
 
 msgid "Leave community"
-msgstr "Părăsește comunitatea"
+msgstr ""
 
 msgid "You are about to leave this community."
-msgstr "Ești pe cale să părăsești această comunitate."
+msgstr ""
 
 msgid "Leave"
-msgstr "Părăsește"
+msgstr ""
 
 msgid "Remove user"
-msgstr "Elimină utilizator"
+msgstr ""
 
 msgid "You are about to remove this user from this community."
-msgstr "Ești pe cale să elimini acest utilizator din comunitate."
+msgstr ""
 
 msgid "This action cannot be undone."
-msgstr "Această acțiune nu este revocabilă."
+msgstr ""
 
 msgid ""
 "Note: upon addition, selected groups will have access to the record without "
@@ -305,40 +298,40 @@ msgid ""
 msgstr ""
 
 msgid "Submitted"
-msgstr "Trimis"
+msgstr ""
 
 msgid "Accepted"
-msgstr "Acceptat"
+msgstr ""
 
 msgid "Declined"
-msgstr "Respins"
+msgstr ""
 
 msgid "Expired"
-msgstr "Expirat"
+msgstr ""
 
 msgid "Status"
-msgstr "Status"
+msgstr "상태"
 
 msgid "Expires"
-msgstr "Expiră"
+msgstr ""
 
 msgid "No matching members found."
-msgstr "Nu au fost găsiți membri."
+msgstr ""
 
 msgid "Current search"
 msgstr ""
 
 msgid "Clear query"
-msgstr "Șterge interogarea"
+msgstr ""
 
 msgid "No selected groups"
 msgstr ""
 
 msgid "Group"
-msgstr "Grup"
+msgstr ""
 
 msgid "Search for groups"
-msgstr "Caută după grupuri"
+msgstr ""
 
 msgid "Already a member"
 msgstr ""
@@ -349,17 +342,17 @@ msgid ""
 msgstr ""
 
 msgid "Add"
-msgstr "Adaugă"
+msgstr ""
 
 msgid "People"
-msgstr "Oameni"
+msgstr ""
 
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
 msgstr ""
 
 msgid "Invite"
-msgstr "Invită"
+msgstr ""
 
 msgid "No selected members"
 msgstr ""
@@ -377,79 +370,77 @@ msgid "Already a member or invitation pending"
 msgstr ""
 
 msgid "Search by email, full name or username"
-msgstr "Caută după email, numele complet sau nume de utilizator"
+msgstr ""
 
 msgid "Groups"
-msgstr "Grupuri"
+msgstr ""
 
 msgid "Invite groups"
-msgstr "Invită grupuri"
+msgstr ""
 
 msgid "Invite members"
-msgstr "Invită membri"
+msgstr ""
 
 msgid "Invite..."
 msgstr ""
 
 msgid "Add groups"
-msgstr "Adaugă grupuri"
+msgstr ""
 
 msgid "Search..."
-msgstr "Caută..."
+msgstr ""
 
 msgid "Name"
-msgstr "Nume"
+msgstr "이름"
 
 msgid "Search in invitations..."
-msgstr "Caută în invitații..."
+msgstr ""
 
 msgid "This community has no public members."
-msgstr "Comunitate nu are membri expuși public."
+msgstr ""
 
 msgid "result(s) found"
-msgstr "rezultat(e) găsite"
+msgstr ""
 
 msgid "Member since"
-msgstr "Membru din"
+msgstr ""
 
 msgid "Visibility"
-msgstr "Vizibilitate"
+msgstr ""
 
 msgid "Your community membership is visible to everyone."
-msgstr "Apartenența la comunitate este vizibilă tuturor."
+msgstr ""
 
 msgid ""
 "Your community membership is only visible to other members of the community."
 msgstr ""
-"Apartenența la comunitate este vizibilă doar celorlalți membri ai "
-"comunității."
 
 msgid "Change roles"
-msgstr "Modifică rolurile"
+msgstr ""
 
 msgid "Change visibilities"
-msgstr "Modifică vizibilitățile"
+msgstr ""
 
 msgid "Remove from community"
-msgstr "Elimină din comunitate"
+msgstr ""
 
 msgid "You"
-msgstr "Tu"
+msgstr ""
 
 msgid "Leave..."
-msgstr "Părăsește..."
+msgstr ""
 
 msgid "Remove..."
-msgstr "Elimină..."
+msgstr ""
 
 msgid "Search members..."
-msgstr "Caută membri..."
+msgstr ""
 
 msgid "Submission review policy"
 msgstr ""
 
 msgid "Curation policy"
-msgstr "Politica curatorială"
+msgstr ""
 
 msgid "About page"
 msgstr ""
@@ -467,7 +458,7 @@ msgid "Maximum number of characters is 250"
 msgstr ""
 
 msgid "Basic information"
-msgstr "Informații de bază"
+msgstr ""
 
 msgid "Short description"
 msgstr ""
@@ -509,7 +500,6 @@ msgstr ""
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr ""
-"Poate să ia câteva momente pentru ca modiicările să fie vizibile peste tot"
 
 msgid "New unique identifier of the community"
-msgstr "Identificator unic nou pentru comunitate"
+msgstr ""

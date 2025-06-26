@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022-2024 CERN.
+ * Copyright (C) 2025 KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -14,7 +15,6 @@ import { Modal, Form, Button } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { MembersSearchBar } from "./MemberSearchBar";
 import { GroupsApi } from "../../../api/GroupsApi";
-import { Trans } from "react-i18next";
 import { http, withCancel } from "react-invenio-forms";
 
 export class GroupTabPane extends Component {
@@ -130,9 +130,11 @@ export class GroupTabPane extends Component {
             onClick={modalClose}
           />
           {selectedCount > 0 && (
-            <Trans key="communityInviteMembersSelected" count={selectedCount}>
-              You are about to add {{ selectedCount }} groups.
-            </Trans>
+            <>
+              {i18next.t("You are about to add {{count}} groups.", {
+                count: selectedCount,
+              })}
+            </>
           )}
 
           <Button
