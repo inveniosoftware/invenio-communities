@@ -10,6 +10,30 @@
 Changes
 =======
 
+Version v19.1.0 (released 2025-07-02)
+
+- i18n: run js compile catalog
+- i18n: run js extract msgs
+- fix: update copyright information across multiple files
+- i18n: Replace Trans component with i18next.t for selected users message
+- fix: GroupTabPane
+- i18n: Simplify label rendering in Sort component
+- i18n: Remove unnecessary Trans components from member selection
+- i18n: MembersResult replace Trans component
+- i18n: InvitationsResults replace Trans components
+- i18n: DeleteCommunityModal replace Trans component
+- i18n: refactor compileCatalog script
+- i18n: force pull languages
+- i18n: extract py msgs
+- fix: internationalized additionLabel for community organizations picker field
+- translations: using localized strings for displaying active filters
+- fix: cancelled filter has incorrect string value 'cancel'
+- admin: remove flag to always show the admin panel
+- subcomunities: fix parent community ID referencing in request payload
+- translations: wrapped user facing strings into i18next
+- using translated string for displaying role
+- membership-request [#855]: disable button until feature fully merged [+]
+
 Version v19.0.0 (released 2025-06-03)
 
 - setup: bump major dependencies
