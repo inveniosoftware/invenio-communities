@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-06-26T14:56:19.540Z\n"
-"PO-Revision-Date: 2025-06-26T14:56:19.540Z\n"
+"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"PO-Revision-Date: 2025-07-08T19:38:09.523Z\n"
 "Language: en\n"
 
 msgid "Delete community"
@@ -591,3 +591,9 @@ msgstr "Community"
 
 msgid "Create request"
 msgstr "Create request"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Add organization: "
+msgstr "Add organization: "
