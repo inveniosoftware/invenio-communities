@@ -2,16 +2,16 @@
 # Translators:
 # Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2024
 # Alizee Pace <alizee.pace@gmail.com>, 2024
-# Ignacio Estevo, 2024
-# Jesús Martín <jesusmartin@sallep.net>, 2024
+# Ignacio Estevo, 2025
 # Tibor Simko <tibor.simko@cern.ch>, 2025
+# Jesús Martín <jesusmartin@sallep.net>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
+"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2025\n"
+"Last-Translator: Jesús Martín <jesusmartin@sallep.net>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/inveniosoftware/teams/23537/es/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,114 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 "mime-version: 1.0\n"
 
-msgid "Search for organizations..."
-msgstr "Buscar organizaciones..."
-
-msgid "Edit"
-msgstr "Editar"
-
-msgid "Delete"
-msgstr "Eliminar"
-
-msgid "Remove"
-msgstr "Retirar"
-
-msgid "Cancel"
-msgstr "Cancelar"
-
-msgid "Maximum number of characters is 2000"
-msgstr "El máximo de caracteres es 2000"
-
-msgid "Must be a valid URL"
-msgstr "Debe ser una URL válida"
-
-msgid "Profile picture"
-msgstr "Imagen de perfil"
-
-msgid "Upload new picture"
-msgstr "Subir nueva imagen"
-
-msgid "Delete picture"
-msgstr "Eliminar imagen"
-
-msgid "Are you sure you want to delete this picture?"
-msgstr "¿Está seguro de que desea eliminar esta imagen?"
-
-msgid "Danger zone"
-msgstr "Zona de peligro"
-
-msgid "Change identifier"
-msgstr "Cambiar identificador"
-
-msgid ""
-"Changing your community's unique identifier can have unintended side "
-"effects."
-msgstr ""
-"Cambiar el identificador único de su comunidad puede tener efectos "
-"secundarios no deseados."
-
 msgid "Delete community"
 msgstr "Eliminar comunidad"
-
-msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr "Una vez eliminada, no podrá recuperarla. Por favor asegurese."
-
-msgid "Community name"
-msgstr "Nombre de la comunidad"
-
-msgid "Type"
-msgstr "Tipo"
-
-msgid "Website"
-msgstr "Sitio web"
-
-msgid "Search for an organization by name"
-msgstr "Buscar una organización por nombre"
-
-msgid "Organizations"
-msgstr "Organizaciones"
-
-msgid "Save"
-msgstr "Guardar"
-
-msgid "Change"
-msgstr "Cambiar"
-
-msgid "Saved"
-msgstr "Guardado"
-
-msgid "Member"
-msgstr "Miembro"
-
-msgid "Members"
-msgstr "Miembros"
-
-msgid "Role"
-msgstr "Rol"
-
-msgid "Setup your new community"
-msgstr "Configurar su nueva comunidad"
-
-msgid "Identifier"
-msgstr "Identificador"
-
-msgid "Community visibility"
-msgstr "Visibilidad de la comunidad"
-
-msgid "Create community"
-msgstr "Crear comunidad"
-
-msgid "View"
-msgstr "Ver"
-
-msgid "Sort by"
-msgstr "Ordenado por"
-
-msgid "Search"
-msgstr "Buscar"
-
-msgid "Search communities..."
-msgstr "Buscar comunidades..."
 
 msgid "Restore community"
 msgstr "Restaurar la comunidad"
@@ -228,6 +122,9 @@ msgstr "Explorar"
 msgid "New upload"
 msgstr "Nueva subida"
 
+msgid "Submission to this community is only allowed to community members."
+msgstr ""
+
 msgid "Previous slide"
 msgstr "Diapositiva anterior"
 
@@ -250,11 +147,32 @@ msgstr ""
 "El envío a esta comunidad no requiere revisión y se publicará "
 "inmediatamente."
 
-msgid "profile"
-msgstr "perfil"
+msgid "Verified community"
+msgstr ""
+
+msgid "Part of"
+msgstr ""
+
+msgid "Edit"
+msgstr "Editar"
 
 msgid "An error occurred."
 msgstr "Se produjo un error."
+
+msgid "You are not a member of any community."
+msgstr ""
+
+msgid "There are no new communities."
+msgstr ""
+
+msgid "Request Membership"
+msgstr "Solicitar membresía"
+
+msgid "Message to managers (optional)"
+msgstr "Mensaje a los administradores (opcional)"
+
+msgid "Cancel"
+msgstr "Cancelar"
 
 msgid "Restricted"
 msgstr "Restringido"
@@ -266,17 +184,47 @@ msgstr ""
 "Este es el identificador único de su comunidad. Podrá acceder a su comunidad"
 " a través de la URL:"
 
+msgid "Identifier"
+msgstr "Identificador"
+
+msgid "Setup your new community"
+msgstr "Configurar su nueva comunidad"
+
+msgid "Community name"
+msgstr "Nombre de la comunidad"
+
+msgid "Community visibility"
+msgstr "Visibilidad de la comunidad"
+
+msgid "Create community"
+msgstr "Crear comunidad"
+
 msgid "No communities found!"
 msgstr "¡No se encontraron comunidades!"
 
 msgid "Reset search"
 msgstr "Restablecer búsqueda"
 
+msgid "Search"
+msgstr "Buscar"
+
 msgid "Filter results"
 msgstr "Filtrar Resultados"
 
+msgid "Search communities..."
+msgstr "Buscar comunidades..."
+
+msgid "Sort by"
+msgstr "Ordenado por"
+
 msgid "Select all members"
 msgstr "Seleccionar todos los miembros"
+
+msgid "{{count}} members selected"
+msgid_plural "{{count}} members selected"
+msgstr[0] "{{count}} miembros seleccionados"
+msgstr[1] "{{count}} miembros seleccionados"
+msgstr[2] "{{count}} miembros seleccionados"
 
 msgid "bulk actions"
 msgstr "acciones masivas"
@@ -308,6 +256,9 @@ msgstr "Eliminar usuario"
 msgid "You are about to remove this user from this community."
 msgstr "Está a punto de eliminar a este usuario de esta comunidad."
 
+msgid "Remove"
+msgstr "Retirar"
+
 msgid "This action cannot be undone."
 msgstr "Esta acción no se puede deshacer."
 
@@ -317,6 +268,12 @@ msgid ""
 msgstr ""
 "Nota: al agregarlos, los grupos seleccionados tendrán acceso al registro sin"
 " ningún tipo de notificación."
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Visibility"
+msgstr "Visibilidad"
 
 msgid "Submitted"
 msgstr "Enviado"
@@ -365,11 +322,20 @@ msgstr ""
 "la comunidad al momento, sin ningún tipo de notificación o aprobación de la "
 "invitación."
 
+msgid "You are about to add {{count}} groups."
+msgid_plural "You are about to add {{count}} groups."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "Add"
 msgstr "Añadir"
 
 msgid "People"
 msgstr "Personas"
+
+msgid "Member"
+msgstr "Miembro"
 
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
@@ -416,11 +382,17 @@ msgstr "Añadir grupos"
 msgid "Search..."
 msgstr "Buscar..."
 
+msgid "results per page"
+msgstr "resultados por página"
+
 msgid "Name"
 msgstr "Nombre"
 
 msgid "Search in invitations..."
 msgstr "Buscar en invitaciones..."
+
+msgid "View"
+msgstr "Ver"
 
 msgid "This community has no public members."
 msgstr "Esta comunidad no tiene miembros públicos."
@@ -428,11 +400,11 @@ msgstr "Esta comunidad no tiene miembros públicos."
 msgid "result(s) found"
 msgstr "resultado(s) encontrado(s)"
 
+msgid "Members"
+msgstr "Miembros"
+
 msgid "Member since"
 msgstr "Miembro desde"
-
-msgid "Visibility"
-msgstr "Visibilidad"
 
 msgid "Your community membership is visible to everyone."
 msgstr "Todos pueden ver la pertenencia a su comunidad."
@@ -452,6 +424,9 @@ msgstr "Cambiar visibilidad"
 msgid "Remove from community"
 msgstr "Eliminar de la comunidad"
 
+msgid "You have selected {{selectedCount}} users"
+msgstr ""
+
 msgid "You"
 msgstr "Usted"
 
@@ -464,8 +439,20 @@ msgstr "Eliminar..."
 msgid "Search members..."
 msgstr "Buscar miembros..."
 
-msgid "Submission review policy"
-msgstr "Política de revisión de envíos"
+msgid "and"
+msgstr "y"
+
+msgid "{{count}} more organizations"
+msgid_plural "{{count}} more organizations"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Saved"
+msgstr "Guardado"
+
+msgid "Save"
+msgstr "Guardar"
 
 msgid "Curation policy"
 msgstr "Política de conservación"
@@ -486,8 +473,20 @@ msgstr ""
 "Controla si la pestaña de miembros es visible para cualquier persona o solo "
 "para los miembros."
 
+msgid "Membership Policy"
+msgstr "Política de membresía"
+
+msgid "Controls if anyone can request to join your community."
+msgstr "Controla si cualquiera puede solicitar unirse a tu comunidad."
+
+msgid "Maximum number of characters is 2000"
+msgstr "El máximo de caracteres es 2000"
+
 msgid "Maximum number of characters is 250"
 msgstr "El número máximo de caracteres es 250"
+
+msgid "Must be a valid URL"
+msgstr "Debe ser una URL válida"
 
 msgid "Basic information"
 msgstr "Información básica"
@@ -495,42 +494,90 @@ msgstr "Información básica"
 msgid "Short description"
 msgstr "Descripción breve"
 
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Website"
+msgstr "Sitio web"
+
+msgid "Search for an organization by name"
+msgstr "Buscar una organización por nombre"
+
+msgid "Organizations"
+msgstr "Organizaciones"
+
+msgid "Search for organizations..."
+msgstr "Buscar organizaciones..."
+
 msgid "Funding information"
 msgstr "Información de financiación"
 
 msgid "Awards/Grants"
 msgstr "Premios/subvenciones"
 
+msgid "Danger zone"
+msgstr "Zona de peligro"
+
+msgid "Change identifier"
+msgstr "Cambiar identificador"
+
+msgid ""
+"Changing your community's unique identifier can have unintended side "
+"effects."
+msgstr ""
+"Cambiar el identificador único de su comunidad puede tener efectos "
+"secundarios no deseados."
+
+msgid "Once deleted, it will be gone forever. Please be certain."
+msgstr "Una vez eliminada, no podrá recuperarla. Por favor asegurese."
+
+msgid "Delete"
+msgstr "Eliminar"
+
 msgid "Permanently delete community"
 msgstr "Eliminar comunidad permanentemente"
+
+msgid "Are you absolutely sure you want to delete the community?"
+msgstr ""
 
 msgid "This action CANNOT be undone!"
 msgstr "¡Esta acción NO se puede deshacer!"
 
+msgid "members will be removed from the community."
+msgstr ""
+
+msgid "records will be removed from the community."
+msgstr ""
+
+msgid "CANNOT"
+msgstr ""
+
+msgid "reuse the community identifier \"{{slug}}\"."
+msgstr ""
+
+msgid "Please type"
+msgstr ""
+
+msgid "to confirm."
+msgstr ""
+
 msgid "Permanently delete"
 msgstr "Eliminar permanentemente"
 
-msgid "Are you <1>absolutely sure</1> you want to delete the community?"
-msgstr "¿Está <1>absolutamente seguro</1> de querer eliminar la comunidad?"
+msgid "Profile picture"
+msgstr "Imagen de perfil"
 
-msgid "<0> members</0> will be removed from the community."
-msgstr "<0> miembros</0> serán borrados de la comunidad."
-
-msgid "<0> records</0> will be removed from the community."
-msgstr "<0> registros</0> serán borrados de la comunidad."
-
-msgid ""
-"You <1>CANNOT</1> reuse the community identifier "
-"\"<3>{{communitySlug}}</3>\"."
-msgstr ""
-"<1>NO PUEDE</1> reutilizar el identificador de la comunidad "
-"\"<3>{{communitySlug}}</3>\"."
-
-msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
-msgstr "Por favor, escriba <1><0>{{communitySlug}}</0></1> para confirmarlo."
+msgid "Upload new picture"
+msgstr "Subir nueva imagen"
 
 msgid "File must be smaller than {{fileSize}}"
 msgstr "El archivo debe ser menor de {{fileSize}}"
+
+msgid "Delete picture"
+msgstr "Eliminar imagen"
+
+msgid "Are you sure you want to delete this picture?"
+msgstr "¿Está seguro de que desea eliminar esta imagen?"
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr ""
@@ -538,3 +585,42 @@ msgstr ""
 
 msgid "New unique identifier of the community"
 msgstr "Nuevo identificador único de la comunidad"
+
+msgid "Change"
+msgstr "Cambiar"
+
+msgid "Review policy"
+msgstr "Revisar la politica"
+
+msgid "Controls who can publish records directly without review."
+msgstr ""
+
+msgid "Records submission policy"
+msgstr ""
+
+msgid "Controls who can submit records to the community."
+msgstr ""
+
+msgid "Subcommunity request"
+msgstr "Solicitud de subcomunidad"
+
+msgid "Do you already have an existing community?"
+msgstr "¿Ya tiene una comunidad existente?"
+
+msgid "Yes"
+msgstr "Sí"
+
+msgid "No"
+msgstr "No"
+
+msgid "Community"
+msgstr "Comunidad"
+
+msgid "Create request"
+msgstr "Crear solicitud"
+
+msgid "Cancelled"
+msgstr "Cancelado"
+
+msgid "Add organization: "
+msgstr ""

@@ -2,17 +2,17 @@
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Dorottya Szemigán, 2023
-# Dora Szauter, 2025
+# Zoltán Kanász-Nagy, 2025
 # Andrea Dömötör, 2025
 # j k, 2025
-# Zoltán Kanász-Nagy, 2025
+# Dora Szauter, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
+"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Zoltán Kanász-Nagy, 2025\n"
+"Last-Translator: Dora Szauter, 2025\n"
 "Language-Team: Hungarian (https://app.transifex.com/inveniosoftware/teams/23537/hu/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,114 +20,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "mime-version: 1.0\n"
 
-msgid "Search for organizations..."
-msgstr "Szervezetek keresése..."
-
-msgid "Edit"
-msgstr "Szerkesztés"
-
-msgid "Delete"
-msgstr "Törlés"
-
-msgid "Remove"
-msgstr "Törlés"
-
-msgid "Cancel"
-msgstr "Mégsem"
-
-msgid "Maximum number of characters is 2000"
-msgstr "Legfeljebb 2000 karakter megengedett"
-
-msgid "Must be a valid URL"
-msgstr "Érvényes URL-nek kell lennie"
-
-msgid "Profile picture"
-msgstr "Profilkép"
-
-msgid "Upload new picture"
-msgstr "Új kép feltöltése"
-
-msgid "Delete picture"
-msgstr "Kép törlése"
-
-msgid "Are you sure you want to delete this picture?"
-msgstr "Biztosan törölni akarja a képet?"
-
-msgid "Danger zone"
-msgstr "Veszélyzóna"
-
-msgid "Change identifier"
-msgstr "Azonosító cseréje"
-
-msgid ""
-"Changing your community's unique identifier can have unintended side "
-"effects."
-msgstr ""
-"A közösség egyedi azonosítójának megváltoztatása nem várt mellékhatásokkal "
-"járhat."
-
 msgid "Delete community"
 msgstr "Közösség törlése"
-
-msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr "Törlés után nem lehet visszaállítani. Kérjük, gondolja meg!"
-
-msgid "Community name"
-msgstr "Közösség neve"
-
-msgid "Type"
-msgstr "Típus"
-
-msgid "Website"
-msgstr "Weboldal"
-
-msgid "Search for an organization by name"
-msgstr "Szervezet keresése név szerint"
-
-msgid "Organizations"
-msgstr "Szervezetek"
-
-msgid "Save"
-msgstr "Mentés"
-
-msgid "Change"
-msgstr "Módosítás"
-
-msgid "Saved"
-msgstr "Elmentve"
-
-msgid "Member"
-msgstr "Tag"
-
-msgid "Members"
-msgstr "Tagok"
-
-msgid "Role"
-msgstr "Szerepkör"
-
-msgid "Setup your new community"
-msgstr "Új közösség felállítása"
-
-msgid "Identifier"
-msgstr "Azonosító"
-
-msgid "Community visibility"
-msgstr "Közösségi láthatóság"
-
-msgid "Create community"
-msgstr "Közösség létrehozása"
-
-msgid "View"
-msgstr "Megtekintés"
-
-msgid "Sort by"
-msgstr "Rendezési elv"
-
-msgid "Search"
-msgstr "Keresés"
-
-msgid "Search communities..."
-msgstr "Közösségek keresése..."
 
 msgid "Restore community"
 msgstr "Közösség visszaállítása"
@@ -229,6 +123,10 @@ msgstr "Keresés"
 msgid "New upload"
 msgstr "Új feltöltés"
 
+msgid "Submission to this community is only allowed to community members."
+msgstr ""
+"A közösségbe való beküldés csak a közösség tagjai számára engedélyezett."
+
 msgid "Previous slide"
 msgstr "Előző dia"
 
@@ -251,11 +149,32 @@ msgstr ""
 "A közösséghez benyújtott anyagok nem kerülnek bírálatra és azonnal "
 "közzétételre fognak kerülni."
 
-msgid "profile"
-msgstr "profil"
+msgid "Verified community"
+msgstr "Ellenőrzött közösség"
+
+msgid "Part of"
+msgstr ""
+
+msgid "Edit"
+msgstr "Szerkesztés"
 
 msgid "An error occurred."
 msgstr "Hiba történt."
+
+msgid "You are not a member of any community."
+msgstr ""
+
+msgid "There are no new communities."
+msgstr ""
+
+msgid "Request Membership"
+msgstr ""
+
+msgid "Message to managers (optional)"
+msgstr ""
+
+msgid "Cancel"
+msgstr "Mégsem"
 
 msgid "Restricted"
 msgstr "Korlátozott hozzáférés"
@@ -267,17 +186,46 @@ msgstr ""
 "Ez az Ön közösségének egyéni azonosítója. A közösséget ezen a linken érheti "
 "el:"
 
+msgid "Identifier"
+msgstr "Azonosító"
+
+msgid "Setup your new community"
+msgstr "Új közösség felállítása"
+
+msgid "Community name"
+msgstr "Közösség neve"
+
+msgid "Community visibility"
+msgstr "Közösségi láthatóság"
+
+msgid "Create community"
+msgstr "Közösség létrehozása"
+
 msgid "No communities found!"
 msgstr "Nem találtunk közösségeket!"
 
 msgid "Reset search"
 msgstr "Keresési beállítások visszaállítása"
 
+msgid "Search"
+msgstr "Keresés"
+
 msgid "Filter results"
 msgstr "Találatok szűrése"
 
+msgid "Search communities..."
+msgstr "Közösségek keresése..."
+
+msgid "Sort by"
+msgstr "Rendezési elv"
+
 msgid "Select all members"
 msgstr "Összes tag kiválasztása"
+
+msgid "{{count}} members selected"
+msgid_plural "{{count}} members selected"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "bulk actions"
 msgstr "több művelet"
@@ -309,6 +257,9 @@ msgstr "Felhasználó eltávolítása"
 msgid "You are about to remove this user from this community."
 msgstr "Arra készül, hogy eltávolítsa ezt a felhasználót a közösségből."
 
+msgid "Remove"
+msgstr "Törlés"
+
 msgid "This action cannot be undone."
 msgstr "Ez a művelet nem vonható vissza."
 
@@ -318,6 +269,12 @@ msgid ""
 msgstr ""
 "Megjegyzés: a kijelölt csoportok a hozzáadást követően értesítés nélkül "
 "hozzáférést kapnak a rekordhoz."
+
+msgid "Role"
+msgstr "Szerepkör"
+
+msgid "Visibility"
+msgstr "Láthatóság"
 
 msgid "Submitted"
 msgstr "Benyújtva"
@@ -365,11 +322,19 @@ msgstr ""
 "Megjegyzés: a kijelölt csoportok hozzáadása után azonnal a közösség tagjaivá"
 " válnak, értesítés vagy jóváhagyás nélkül."
 
+msgid "You are about to add {{count}} groups."
+msgid_plural "You are about to add {{count}} groups."
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "Add"
 msgstr "Hozzáadás"
 
 msgid "People"
 msgstr "Emberek"
+
+msgid "Member"
+msgstr "Tag"
 
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
@@ -416,11 +381,17 @@ msgstr "Csoportok hozzáadása"
 msgid "Search..."
 msgstr "Keresés..."
 
+msgid "results per page"
+msgstr "találat oldalanként"
+
 msgid "Name"
 msgstr "Név"
 
 msgid "Search in invitations..."
 msgstr "Keresés a meghívók között..."
+
+msgid "View"
+msgstr "Megtekintés"
 
 msgid "This community has no public members."
 msgstr "Ennek a közösségnek nincsenek nyilvános tagjai."
@@ -428,11 +399,11 @@ msgstr "Ennek a közösségnek nincsenek nyilvános tagjai."
 msgid "result(s) found"
 msgstr "találatot kaptunk"
 
+msgid "Members"
+msgstr "Tagok"
+
 msgid "Member since"
 msgstr "Tagság kezdete:"
-
-msgid "Visibility"
-msgstr "Láthatóság"
 
 msgid "Your community membership is visible to everyone."
 msgstr "Az Ön közösségi tagsága mindenki számára látható."
@@ -450,6 +421,9 @@ msgstr "Láthatósági beállítások módosítása"
 msgid "Remove from community"
 msgstr "Eltávolítás a közösségből"
 
+msgid "You have selected {{selectedCount}} users"
+msgstr ""
+
 msgid "You"
 msgstr "Ön"
 
@@ -462,8 +436,19 @@ msgstr "Eltávolítás..."
 msgid "Search members..."
 msgstr "Tagok keresése.."
 
-msgid "Submission review policy"
-msgstr "Benyújtott anyag bírálati irányelvei"
+msgid "and"
+msgstr "és"
+
+msgid "{{count}} more organizations"
+msgid_plural "{{count}} more organizations"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Saved"
+msgstr "Elmentve"
+
+msgid "Save"
+msgstr "Mentés"
 
 msgid "Curation policy"
 msgstr "Gondozási irányelvek"
@@ -483,8 +468,20 @@ msgstr ""
 "Meghatározza, hogy a tagok lap mindenki vagy pedig csak a tagok számára "
 "látható-e."
 
+msgid "Membership Policy"
+msgstr ""
+
+msgid "Controls if anyone can request to join your community."
+msgstr ""
+
+msgid "Maximum number of characters is 2000"
+msgstr "Legfeljebb 2000 karakter megengedett"
+
 msgid "Maximum number of characters is 250"
 msgstr "Legfeljebb 250 karakter megengedett"
+
+msgid "Must be a valid URL"
+msgstr "Érvényes URL-nek kell lennie"
 
 msgid "Basic information"
 msgstr "Alapvető információ"
@@ -492,44 +489,90 @@ msgstr "Alapvető információ"
 msgid "Short description"
 msgstr "Rövid leírás"
 
+msgid "Type"
+msgstr "Típus"
+
+msgid "Website"
+msgstr "Weboldal"
+
+msgid "Search for an organization by name"
+msgstr "Szervezet keresése név szerint"
+
+msgid "Organizations"
+msgstr "Szervezetek"
+
+msgid "Search for organizations..."
+msgstr "Szervezetek keresése..."
+
 msgid "Funding information"
 msgstr "Támogatási információk"
 
 msgid "Awards/Grants"
 msgstr "Díjak/Támogatások"
 
+msgid "Danger zone"
+msgstr "Veszélyzóna"
+
+msgid "Change identifier"
+msgstr "Azonosító cseréje"
+
+msgid ""
+"Changing your community's unique identifier can have unintended side "
+"effects."
+msgstr ""
+"A közösség egyedi azonosítójának megváltoztatása nem várt mellékhatásokkal "
+"járhat."
+
+msgid "Once deleted, it will be gone forever. Please be certain."
+msgstr "Törlés után nem lehet visszaállítani. Kérjük, gondolja meg!"
+
+msgid "Delete"
+msgstr "Törlés"
+
 msgid "Permanently delete community"
 msgstr "Közösség végleges törlése"
+
+msgid "Are you absolutely sure you want to delete the community?"
+msgstr ""
 
 msgid "This action CANNOT be undone!"
 msgstr "Ez a művelet NEM vonható vissza!"
 
+msgid "members will be removed from the community."
+msgstr ""
+
+msgid "records will be removed from the community."
+msgstr ""
+
+msgid "CANNOT"
+msgstr ""
+
+msgid "reuse the community identifier \"{{slug}}\"."
+msgstr ""
+
+msgid "Please type"
+msgstr ""
+
+msgid "to confirm."
+msgstr ""
+
 msgid "Permanently delete"
 msgstr "Tartós törlés"
 
-msgid "Are you <1>absolutely sure</1> you want to delete the community?"
-msgstr "<1>Biztos benne</1>, hogy törölni szeretné a közösséget?"
+msgid "Profile picture"
+msgstr "Profilkép"
 
-msgid "<0> members</0> will be removed from the community."
-msgstr "<0>tagok</0> el lesznek távolítva a közösségből."
-
-msgid "<0> records</0> will be removed from the community."
-msgstr "<0>rekordok</0> el lesznek távolítva a közösségből."
-
-msgid ""
-"You <1>CANNOT</1> reuse the community identifier "
-"\"<3>{{communitySlug}}</3>\"."
-msgstr ""
-"A \"<3>{{communitySlug}}</3>\" közösség azonosító <1>NEM</1> használható "
-"újra."
-
-msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
-msgstr ""
-"Kérjük, írja be a következőt a megerősítéshez: "
-"<1><0>{{communitySlug}}</0></1>"
+msgid "Upload new picture"
+msgstr "Új kép feltöltése"
 
 msgid "File must be smaller than {{fileSize}}"
 msgstr "A fájl mérete nem haladhatja meg a(z) {{fileSize}} értéket"
+
+msgid "Delete picture"
+msgstr "Kép törlése"
+
+msgid "Are you sure you want to delete this picture?"
+msgstr "Biztosan törölni akarja a képet?"
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr ""
@@ -537,3 +580,42 @@ msgstr ""
 
 msgid "New unique identifier of the community"
 msgstr "A közösség új egyedi azonosítója"
+
+msgid "Change"
+msgstr "Módosítás"
+
+msgid "Review policy"
+msgstr " Bírálati irányelv"
+
+msgid "Controls who can publish records directly without review."
+msgstr ""
+
+msgid "Records submission policy"
+msgstr ""
+
+msgid "Controls who can submit records to the community."
+msgstr ""
+
+msgid "Subcommunity request"
+msgstr "Alközösségi kérés"
+
+msgid "Do you already have an existing community?"
+msgstr ""
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "Community"
+msgstr "Közösség"
+
+msgid "Create request"
+msgstr ""
+
+msgid "Cancelled"
+msgstr "Visszavonva"
+
+msgid "Add organization: "
+msgstr ""
