@@ -1,15 +1,15 @@
 # 
 # Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2024
 # Corina Ionascu <icorina@nipne.ro>, 2024
 # Nicolaie Constantinescu, 2025
+# Tibor Simko <tibor.simko@cern.ch>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-03-27T16:17:46.625Z\n"
+"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Nicolaie Constantinescu, 2025\n"
+"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2025\n"
 "Language-Team: Romanian (https://app.transifex.com/inveniosoftware/teams/23537/ro/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,115 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 "mime-version: 1.0\n"
 
-msgid "Search for organizations..."
-msgstr "Caută organizații..."
-
-msgid "Edit"
-msgstr "Editează"
-
-msgid "Delete"
-msgstr "Şterge"
-
-msgid "Remove"
-msgstr "Elimină"
-
-msgid "Cancel"
-msgstr "Anulează"
-
-msgid "Maximum number of characters is 2000"
-msgstr "Numărul maxim de caractere este de 2000"
-
-msgid "Must be a valid URL"
-msgstr "Trebuie să fie un URL valid"
-
-msgid "Profile picture"
-msgstr "Imagine de profil"
-
-msgid "Upload new picture"
-msgstr "Încarcă o imagine nouă"
-
-msgid "Delete picture"
-msgstr "Șterge imaginea"
-
-msgid "Are you sure you want to delete this picture?"
-msgstr "Ești sigur că dorești să ștergi această imagine?"
-
-msgid "Danger zone"
-msgstr "Zonă periculoasă"
-
-msgid "Change identifier"
-msgstr "Modifică identificatorul"
-
-msgid ""
-"Changing your community's unique identifier can have unintended side "
-"effects."
-msgstr ""
-"Modificarea identificatorului unic pentru comunitatea ta poate avea efecte "
-"colaterale nedorilte."
-
 msgid "Delete community"
 msgstr "Șterge comunitatea"
-
-msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
-"Din moment ce ai șters-o, nu o mai poți recupera. Trebuie să fii sigur."
-
-msgid "Community name"
-msgstr "Numele comunității"
-
-msgid "Type"
-msgstr "Tip"
-
-msgid "Website"
-msgstr "Site web"
-
-msgid "Search for an organization by name"
-msgstr "Caută o organizație după nume"
-
-msgid "Organizations"
-msgstr "Organizații"
-
-msgid "Save"
-msgstr "Salvează"
-
-msgid "Change"
-msgstr "Modifică"
-
-msgid "Saved"
-msgstr "Salvată"
-
-msgid "Member"
-msgstr "Membru"
-
-msgid "Members"
-msgstr "Membrii"
-
-msgid "Role"
-msgstr "Rol"
-
-msgid "Setup your new community"
-msgstr "Configurează noua ta comunitate"
-
-msgid "Identifier"
-msgstr "Identificator"
-
-msgid "Community visibility"
-msgstr "Vizibilitatea comunității"
-
-msgid "Create community"
-msgstr "Creează comunitate"
-
-msgid "View"
-msgstr "Vizualizare"
-
-msgid "Sort by"
-msgstr "Sortează după"
-
-msgid "Search"
-msgstr "Caută"
-
-msgid "Search communities..."
-msgstr "Caută în comunități..."
 
 msgid "Restore community"
 msgstr ""
@@ -218,6 +111,9 @@ msgstr "Răsfoieşte "
 msgid "New upload"
 msgstr "Încărcare nouă"
 
+msgid "Submission to this community is only allowed to community members."
+msgstr ""
+
 msgid "Previous slide"
 msgstr ""
 
@@ -238,11 +134,32 @@ msgid ""
 "immediately."
 msgstr ""
 
-msgid "profile"
-msgstr "profil"
+msgid "Verified community"
+msgstr ""
+
+msgid "Part of"
+msgstr ""
+
+msgid "Edit"
+msgstr "Editează"
 
 msgid "An error occurred."
 msgstr ""
+
+msgid "You are not a member of any community."
+msgstr ""
+
+msgid "There are no new communities."
+msgstr ""
+
+msgid "Request Membership"
+msgstr ""
+
+msgid "Message to managers (optional)"
+msgstr ""
+
+msgid "Cancel"
+msgstr "Anulează"
 
 msgid "Restricted"
 msgstr "Restricționat"
@@ -254,17 +171,47 @@ msgstr ""
 "Acesta este identificatorul unic al comunității tale. Vei putea să accesezi "
 "propria comunitate prin următorul URL:"
 
+msgid "Identifier"
+msgstr "Identificator"
+
+msgid "Setup your new community"
+msgstr "Configurează noua ta comunitate"
+
+msgid "Community name"
+msgstr "Numele comunității"
+
+msgid "Community visibility"
+msgstr "Vizibilitatea comunității"
+
+msgid "Create community"
+msgstr "Creează comunitate"
+
 msgid "No communities found!"
 msgstr "Nu am găsit comunități!"
 
 msgid "Reset search"
 msgstr "Resetează căutarea"
 
+msgid "Search"
+msgstr "Caută"
+
 msgid "Filter results"
 msgstr "Rezultate de filtrare"
 
+msgid "Search communities..."
+msgstr "Caută în comunități..."
+
+msgid "Sort by"
+msgstr "Sortează după"
+
 msgid "Select all members"
 msgstr ""
+
+msgid "{{count}} members selected"
+msgid_plural "{{count}} members selected"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "bulk actions"
 msgstr "pachet de acțiuni"
@@ -296,6 +243,9 @@ msgstr "Elimină utilizator"
 msgid "You are about to remove this user from this community."
 msgstr "Ești pe cale să elimini acest utilizator din comunitate."
 
+msgid "Remove"
+msgstr "Elimină"
+
 msgid "This action cannot be undone."
 msgstr "Această acțiune nu este revocabilă."
 
@@ -303,6 +253,12 @@ msgid ""
 "Note: upon addition, selected groups will have access to the record without "
 "any kind of notification."
 msgstr ""
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Visibility"
+msgstr "Vizibilitate"
 
 msgid "Submitted"
 msgstr "Trimis"
@@ -348,11 +304,20 @@ msgid ""
 "immediately without any kind of notification or invitation approval."
 msgstr ""
 
+msgid "You are about to add {{count}} groups."
+msgid_plural "You are about to add {{count}} groups."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "Add"
 msgstr "Adaugă"
 
 msgid "People"
 msgstr "Oameni"
+
+msgid "Member"
+msgstr "Membru"
 
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
@@ -397,11 +362,17 @@ msgstr "Adaugă grupuri"
 msgid "Search..."
 msgstr "Caută..."
 
+msgid "results per page"
+msgstr "rezultate per pagină"
+
 msgid "Name"
 msgstr "Nume"
 
 msgid "Search in invitations..."
 msgstr "Caută în invitații..."
+
+msgid "View"
+msgstr "Vizualizare"
 
 msgid "This community has no public members."
 msgstr "Comunitate nu are membri expuși public."
@@ -409,11 +380,11 @@ msgstr "Comunitate nu are membri expuși public."
 msgid "result(s) found"
 msgstr "rezultat(e) găsite"
 
+msgid "Members"
+msgstr "Membrii"
+
 msgid "Member since"
 msgstr "Membru din"
-
-msgid "Visibility"
-msgstr "Vizibilitate"
 
 msgid "Your community membership is visible to everyone."
 msgstr "Apartenența la comunitate este vizibilă tuturor."
@@ -433,6 +404,9 @@ msgstr "Modifică vizibilitățile"
 msgid "Remove from community"
 msgstr "Elimină din comunitate"
 
+msgid "You have selected {{selectedCount}} users"
+msgstr ""
+
 msgid "You"
 msgstr "Tu"
 
@@ -445,8 +419,20 @@ msgstr "Elimină..."
 msgid "Search members..."
 msgstr "Caută membri..."
 
-msgid "Submission review policy"
-msgstr ""
+msgid "and"
+msgstr "şi"
+
+msgid "{{count}} more organizations"
+msgid_plural "{{count}} more organizations"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Saved"
+msgstr "Salvată"
+
+msgid "Save"
+msgstr "Salvează"
 
 msgid "Curation policy"
 msgstr "Politica curatorială"
@@ -463,8 +449,20 @@ msgstr ""
 msgid "Controls if the members tab is visible to anyone or to members only."
 msgstr ""
 
+msgid "Membership Policy"
+msgstr ""
+
+msgid "Controls if anyone can request to join your community."
+msgstr ""
+
+msgid "Maximum number of characters is 2000"
+msgstr "Numărul maxim de caractere este de 2000"
+
 msgid "Maximum number of characters is 250"
 msgstr ""
+
+msgid "Must be a valid URL"
+msgstr "Trebuie să fie un URL valid"
 
 msgid "Basic information"
 msgstr "Informații de bază"
@@ -472,40 +470,91 @@ msgstr "Informații de bază"
 msgid "Short description"
 msgstr ""
 
+msgid "Type"
+msgstr "Tip"
+
+msgid "Website"
+msgstr "Site web"
+
+msgid "Search for an organization by name"
+msgstr "Caută o organizație după nume"
+
+msgid "Organizations"
+msgstr "Organizații"
+
+msgid "Search for organizations..."
+msgstr "Caută organizații..."
+
 msgid "Funding information"
 msgstr ""
 
 msgid "Awards/Grants"
 msgstr ""
 
+msgid "Danger zone"
+msgstr "Zonă periculoasă"
+
+msgid "Change identifier"
+msgstr "Modifică identificatorul"
+
+msgid ""
+"Changing your community's unique identifier can have unintended side "
+"effects."
+msgstr ""
+"Modificarea identificatorului unic pentru comunitatea ta poate avea efecte "
+"colaterale nedorilte."
+
+msgid "Once deleted, it will be gone forever. Please be certain."
+msgstr ""
+"Din moment ce ai șters-o, nu o mai poți recupera. Trebuie să fii sigur."
+
+msgid "Delete"
+msgstr "Şterge"
+
 msgid "Permanently delete community"
+msgstr ""
+
+msgid "Are you absolutely sure you want to delete the community?"
 msgstr ""
 
 msgid "This action CANNOT be undone!"
 msgstr ""
 
+msgid "members will be removed from the community."
+msgstr ""
+
+msgid "records will be removed from the community."
+msgstr ""
+
+msgid "CANNOT"
+msgstr ""
+
+msgid "reuse the community identifier \"{{slug}}\"."
+msgstr ""
+
+msgid "Please type"
+msgstr ""
+
+msgid "to confirm."
+msgstr ""
+
 msgid "Permanently delete"
 msgstr ""
 
-msgid "Are you <1>absolutely sure</1> you want to delete the community?"
-msgstr ""
+msgid "Profile picture"
+msgstr "Imagine de profil"
 
-msgid "<0> members</0> will be removed from the community."
-msgstr ""
-
-msgid "<0> records</0> will be removed from the community."
-msgstr ""
-
-msgid ""
-"You <1>CANNOT</1> reuse the community identifier "
-"\"<3>{{communitySlug}}</3>\"."
-msgstr ""
-
-msgid "Please type <1><0>{{communitySlug}}</0></1> to confirm."
-msgstr ""
+msgid "Upload new picture"
+msgstr "Încarcă o imagine nouă"
 
 msgid "File must be smaller than {{fileSize}}"
 msgstr ""
+
+msgid "Delete picture"
+msgstr "Șterge imaginea"
+
+msgid "Are you sure you want to delete this picture?"
+msgstr "Ești sigur că dorești să ștergi această imagine?"
 
 msgid "It may take a few moments for changes to be visible everywhere"
 msgstr ""
@@ -513,3 +562,42 @@ msgstr ""
 
 msgid "New unique identifier of the community"
 msgstr "Identificator unic nou pentru comunitate"
+
+msgid "Change"
+msgstr "Modifică"
+
+msgid "Review policy"
+msgstr "Politica de evaluare"
+
+msgid "Controls who can publish records directly without review."
+msgstr ""
+
+msgid "Records submission policy"
+msgstr ""
+
+msgid "Controls who can submit records to the community."
+msgstr ""
+
+msgid "Subcommunity request"
+msgstr ""
+
+msgid "Do you already have an existing community?"
+msgstr ""
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Nu"
+
+msgid "Community"
+msgstr "Comunitate"
+
+msgid "Create request"
+msgstr ""
+
+msgid "Cancelled"
+msgstr "Anulat"
+
+msgid "Add organization: "
+msgstr ""
