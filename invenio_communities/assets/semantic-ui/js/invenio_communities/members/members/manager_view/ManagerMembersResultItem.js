@@ -55,7 +55,7 @@ export class ManagerMembersResultItem extends Component {
     const modalAction = () => api.removeMember(member);
     const modalMode = isRemoving ? modalModeEnum.remove : modalModeEnum.leave;
 
-    openModalCallback({ modalMode, modalAction });
+    openModalCallback({ modalMode, modalAction, member });
   };
 
   render() {
