@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2022-2024 CERN.
 # Copyright (C) 2023 TU Wien.
+# Copyright (C) 2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -92,6 +93,8 @@ class FundingSchema(Schema):
 
 class UICommunitySchema(BaseObjectSchema):
     """Schema for dumping extra information of the community for the UI."""
+
+    object_key = "ui"
 
     type = fields.Nested(VocabularyL10Schema, attribute="metadata.type")
 
