@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
-# Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023-2025 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -18,6 +18,7 @@ from invenio_users_resources.proxies import (
     current_users_service,
 )
 from marshmallow import Schema, ValidationError, fields, validate, validates_schema
+from marshmallow_utils.context import context_schema
 from marshmallow_utils.fields import SanitizedUnicode, TZDateTime
 
 from .fields import RoleField
@@ -123,7 +124,7 @@ class PublicDumpSchema(Schema):
         name = profile.get("full_name") or user.get("username") or _("Untitled")
         description = profile.get("affiliations") or ""
         fake_user_obj = SimpleNamespace(id=user["id"])
-        current_identity = self.context["identity"]
+        current_identity = context_schema.get()["identity"]
         avatar = current_users_service.links_item_tpl.expand(
             current_identity, fake_user_obj
         )["avatar"]
@@ -139,7 +140,7 @@ class PublicDumpSchema(Schema):
     def get_group_member(self, group):
         """Get a group member."""
         fake_group_obj = SimpleNamespace(id=group["id"])
-        current_identity = self.context["identity"]
+        current_identity = context_schema.get()["identity"]
         avatar = current_groups_service.links_item_tpl.expand(
             current_identity, fake_group_obj
         )["avatar"]
@@ -168,7 +169,7 @@ class MemberDumpSchema(PublicDumpSchema):
     def is_self(self, obj):
         """Get permission."""
         if "is_self" not in self.context:
-            current_identity = self.context["identity"]
+            current_identity = context_schema.get()["identity"]
             self.context["is_self"] = (
                 obj.user_id is not None
                 and current_identity.id is not None
@@ -182,7 +183,7 @@ class MemberDumpSchema(PublicDumpSchema):
 
     def get_permissions(self, obj):
         """Get permission."""
-        permission_check = self.context["field_permission_check"]
+        permission_check = context_schema.get()["field_permission_check"]
 
         # Does not take CommunitySelfMember into account because no "member" is
         # passed to the permission check.
@@ -214,7 +215,7 @@ class InvitationDumpSchema(MemberDumpSchema):
         # Only owners and managers can list invitations, and thus only the
         # request status is necessary to determine if the identity can cancel.
         is_open = obj["request"]["status"] == "submitted"
-        permission_check = self.context["field_permission_check"]
+        permission_check = context_schema.get()["field_permission_check"]
 
         return {
             "can_cancel": is_open,
