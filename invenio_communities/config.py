@@ -108,7 +108,7 @@ COMMUNITIES_ROLES = [
         name="manager",
         title=_("Manager"),
         description=_(
-            "Can manage members, curate records " "and view restricted records."
+            "Can manage members, curate records and view restricted records."
         ),
         can_manage_roles=["manager", "curator", "reader"],
         can_manage=True,
@@ -316,7 +316,7 @@ COMMUNITIES_ALLOW_RESTRICTED = True
 COMMUNITIES_IDENTITIES_CACHE_TIME = 60 * 60 * 24
 
 # Redis URL Cache for identities
-COMMUNITIES_IDENTITIES_CACHE_REDIS_URL = "redis://localhost:6379/4"
+COMMUNITIES_IDENTITIES_CACHE_REDIS_URL = None
 
 # Cache handler
 COMMUNITIES_IDENTITIES_CACHE_HANDLER = (
