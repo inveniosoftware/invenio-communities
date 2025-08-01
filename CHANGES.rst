@@ -10,6 +10,11 @@
 Changes
 =======
 
+Version v20.0.0 (released 2025-08-01)
+
+- setup: bump major dependencies of invenio-requests
+  * Bumps a major version to isolate the invenio-requests major bump.
+
 Version v19.2.0 (released 2025-07-17)
 
 - i18n: pulled translations
