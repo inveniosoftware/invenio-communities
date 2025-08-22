@@ -9,6 +9,7 @@
 # Tibor Simko <tibor.simko@cern.ch>, 2025
 # Mattias Vesterlund, 2025
 # Sam Arbid, 2025
+# Lina Andrén, 2025
 # 
 #, fuzzy
 msgid ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2025-07-08 19:38+0000\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Sam Arbid, 2025\n"
+"Last-Translator: Lina Andrén, 2025\n"
 "Language-Team: Swedish (https://app.transifex.com/inveniosoftware/teams/23537/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,7 +111,7 @@ msgstr "En utvald community med {q} finns inte."
 
 #: invenio_communities/errors.py:40
 msgid "No logo exists for this community."
-msgstr "Ingen logotyp finns för detta community."
+msgstr "Det finns ingen logotyp för detta community."
 
 #: invenio_communities/errors.py:52
 #, python-brace-format
@@ -208,7 +209,7 @@ msgstr ""
 
 #: invenio_communities/communities/schema.py:338
 msgid "start date"
-msgstr "start datum"
+msgstr "startdatum"
 
 #: invenio_communities/communities/schema.py:339
 msgid "Accepted format: YYYY-MM-DD hh:mm"
@@ -220,7 +221,7 @@ msgstr "Borttagen community"
 
 #: invenio_communities/communities/schema.py:352
 msgid "The community was deleted."
-msgstr "Communityn raderades."
+msgstr "Communityn har raderats."
 
 #: invenio_communities/communities/resources/config.py:70
 #: invenio_communities/members/resources/config.py:56
@@ -270,11 +271,15 @@ msgstr "Community som tillåts vara parent kan inte också vara child."
 
 #: invenio_communities/communities/services/components.py:328
 msgid "Assigned parent community cannot also have a parent."
-msgstr "Designerad parent kan inte också ha en parent."
+msgstr ""
+"Den community detta delcommunity tillhör kan inte tillhöra ett annat "
+"community."
 
 #: invenio_communities/communities/services/components.py:332
 msgid "Assigned parent community cannot be the same as child."
-msgstr "Designerat parent community kan inte vara detsamma som child."
+msgstr ""
+"Den community detta delcommunity tillhör kan inte vara det samma som "
+"delcommunityn."
 
 #: invenio_communities/communities/services/components.py:335
 msgid "Assigned parent community does not exist."
@@ -407,7 +412,7 @@ msgstr "Communityinbjudan"
 
 #: invenio_communities/members/services/request.py:153
 msgid "Membership request"
-msgstr "Begäran om medlemskap"
+msgstr "Ansökan om medlemskap"
 
 #: invenio_communities/members/services/schemas.py:89
 msgid "Missing fields 'role' and/or 'visible'."
@@ -456,7 +461,7 @@ msgstr "Du kommer att gå med som \"%(role)s\" (ändrat från: \"%(previous)s\")
 #: invenio_communities/members/services/service.py:764
 #, python-format
 msgid "Request to join \"%(community)s\""
-msgstr "Begäran om att gå med i \\\"%(community)s\\\""
+msgstr "Ansökan om att gå med i \\\"%(community)s\\\""
 
 #: invenio_communities/requests/user_moderation/actions.py:71
 msgid "User was blocked"
@@ -464,7 +469,7 @@ msgstr "Användaren blockerades"
 
 #: invenio_communities/subcommunities/services/request.py:64
 msgid "Subcommunity request"
-msgstr "Begäran om delcommunity"
+msgstr "Ansökan om delcommunity"
 
 #: invenio_communities/subcommunities/services/request.py:151
 msgid "Subcommunity invitation"
@@ -552,7 +557,7 @@ msgstr "Datum för borttagning:"
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:120
 msgid "Submission to this community is only allowed to community members."
 msgstr ""
-"Inlämning till denna community är endast tillåten för communitymedlemmar."
+"Endast communityns medlemmar kan skicka in poster till denna community."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:127
 msgid "New upload"
@@ -564,7 +569,7 @@ msgstr "Hantera community"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/new_subcommunity.html:12
 msgid "New subcommunity"
-msgstr "Ny subcommunity"
+msgstr "Ny delcommunity"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:20
 msgid "Awards"
@@ -620,12 +625,12 @@ msgstr "Sidor"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:15
 msgid " subcommunities"
-msgstr " subcommunities"
+msgstr " delcommunities"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:26
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:39
 msgid "Subcommunities"
-msgstr "Subcommunities"
+msgstr "Delcommunities"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:34
 msgid "Browse"
@@ -785,7 +790,7 @@ msgstr "med följande meddelande:"
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:41
 msgid "Check out the invitation:"
-msgstr "Se inbjudningar:"
+msgstr "Se inbjudan:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:59
 #, python-brace-format
@@ -935,7 +940,7 @@ msgid ""
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
 "@{username} accepterade inbjudan för \"{community_title}\" att gå med som en"
-" subcommunity till \"{parent_community_title}\"."
+" delcommunity till \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:55
@@ -950,7 +955,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:55
 msgid "View the request"
-msgstr "Visa begäran"
+msgstr "Visa ansökan"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:45
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:47
@@ -959,7 +964,7 @@ msgstr "Visa begäran"
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:43
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:45
 msgid "View the request at:"
-msgstr "Visa begäran på:"
+msgstr "Visa ansökan på:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:51
@@ -981,7 +986,7 @@ msgid ""
 " join as a subcommunity of \"{parent_community_title}\"."
 msgstr ""
 "@{username} accepterade inbjudan och begäran för \"{community_title}\" att "
-"gå med som en subcommunity till \"{parent_community_title}\"."
+"gå med som en delcommunity till \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:20
 #, python-brace-format
@@ -996,7 +1001,7 @@ msgid ""
 "subcommunity of \"{parent_community_title}\""
 msgstr ""
 "Vi vill bjuda in din community \"{community_title}\" att gå med som en "
-"subcommunity till \"{parent_community_title}\""
+"delcommunity till \"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:33
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:49
@@ -1012,7 +1017,7 @@ msgid ""
 "The community *{community_title}* has requested to join as a subcommunity of"
 " *{parent_community_title}*"
 msgstr ""
-"Communityn *{community_title}* har begärt att gå med som en subcommunity "
+"Communityn *{community_title}* har begärt att gå med som en delcommunity "
 "till *{parent_community_title}*"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:21
@@ -1021,7 +1026,7 @@ msgid ""
 "⛔️ Subcommunity invitation declined for {community_title} to join the "
 "{parent_community_title} community"
 msgstr ""
-"⛔️ Inbjudan för subcommunity {community_title} att gå med i "
+"⛔️ Inbjudan för delcommunity {community_title} att gå med i "
 "{parent_community_title} community avböjdes"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:27
@@ -1033,7 +1038,7 @@ msgid ""
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
 "@{username} avböjde inbjudan för \"{community_title}\" att gå med som en "
-"subcommunity till \"{parent_community_title}\"."
+"delcommunity till \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:18
 #, python-brace-format
@@ -1077,7 +1082,7 @@ msgid ""
 "✅ Subcommunity request accepted for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
-"✅ Begäran för subcommunity \"{community_title}\" att gå med i "
+"✅ Begäran för delcommunity \"{community_title}\" att gå med i "
 "\"{parent_community_title}\" accepterades"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:27
@@ -1090,7 +1095,7 @@ msgid ""
 "\"{parent_community_title}\"."
 msgstr ""
 "Communityansvarig @{username} accepterade begäran för \"{community_title}\" "
-"att gå med som en subcommunity till \"{parent_community_title}\"."
+"att gå med som en delcommunity till \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:19
 #, python-brace-format
@@ -1098,7 +1103,7 @@ msgid ""
 "📬 Subcommunity request for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
-"📬 Begäran om subcommunity för \"{community_title}\" att gå med i "
+"📬 Begäran om delcommunity för \"{community_title}\" att gå med i "
 "\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:25
@@ -1108,7 +1113,7 @@ msgid ""
 "The community \"{community_title}\" has requested to join as a subcommunity "
 "of \"{parent_community_title}\""
 msgstr ""
-"Communityn \"{community_title}\" har begärt att gå med som en subcommunity "
+"Communityn \"{community_title}\" har begärt att gå med som en delcommunity "
 "till \"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:21
@@ -1117,7 +1122,7 @@ msgid ""
 "⛔️ Subcommunity request declined for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
-"⛔️ Begäran om subcommunity för \"{community_title}\" att gå med i "
+"⛔️ Begäran om delcommunity för \"{community_title}\" att gå med i "
 "\"{parent_community_title}\" avböjdes"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:27
@@ -1130,7 +1135,7 @@ msgid ""
 "\"{parent_community_title}\"."
 msgstr ""
 "Communityansvarig @{username} avböjde begäran för \"{community_title}\" att "
-"gå med som en subcommunity till \"{parent_community_title}\"."
+"gå med som en delcommunity till \"{parent_community_title}\"."
 
 #: invenio_communities/views/communities.py:36
 msgid "Your community is publicly accessible and shows up in search results."
@@ -1206,12 +1211,12 @@ msgstr ""
 
 #: invenio_communities/views/communities.py:116
 msgid "Users can request to join your community."
-msgstr "Användare kan skicka in en begäran om att gå med i din community."
+msgstr "Användare kan ansöka om att gå med i din community."
 
 #: invenio_communities/views/communities.py:123
 msgid ""
 "Users cannot request to join your community. Only invited users can become "
 "members of your community."
 msgstr ""
-"Användare kan inte begära att få gå med i din community. Endast inbjudna "
+"Användare kan inte ansöka om att gå med i din community. Endast inbjudna "
 "användare kan bli medlemmar i din community."
