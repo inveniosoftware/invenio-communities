@@ -17,7 +17,7 @@ from flask import Blueprint, current_app, g, render_template, request, url_for
 from flask_login import current_user
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
 from invenio_records_resources.proxies import current_service_registry
-from invenio_records_resources.services.errors import PermissionDeniedError
+from invenio_records_resources.services.errors import PermissionDenied
 
 from invenio_communities.communities.resources.serializer import (
     UICommunityJSONSerializer,
@@ -229,9 +229,7 @@ def create_ui_blueprint(app):
     )
 
     # Register error handlers
-    blueprint.register_error_handler(
-        PermissionDeniedError, record_permission_denied_error
-    )
+    blueprint.register_error_handler(PermissionDenied, record_permission_denied_error)
     blueprint.register_error_handler(CommunityDeletedError, record_tombstone_error)
     blueprint.register_error_handler(PIDDeletedError, record_tombstone_error)
     blueprint.register_error_handler(PIDDoesNotExistError, not_found_error)
