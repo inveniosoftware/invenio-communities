@@ -18,11 +18,12 @@ export class ModalContextProvider extends Component {
       modalMode: null,
       modalAction: null,
       modalOpen: false,
+      member: null,
     };
   }
 
-  openModal = ({ modalAction, modalMode }) => {
-    this.setState({ modalOpen: true, modalAction, modalMode });
+  openModal = ({ modalAction, modalMode, member }) => {
+    this.setState({ modalOpen: true, modalAction, modalMode, member });
   };
 
   closeModal = () => {
@@ -31,7 +32,7 @@ export class ModalContextProvider extends Component {
 
   render() {
     const { children } = this.props;
-    const { modalMode, modalAction, modalOpen } = this.state;
+    const { modalMode, modalAction, modalOpen, member } = this.state;
 
     return (
       <ModalContext.Provider
@@ -41,6 +42,7 @@ export class ModalContextProvider extends Component {
           modalMode,
           modalAction,
           modalOpen,
+          member,
         }}
       >
         {children}
