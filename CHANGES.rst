@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2016-2024 CERN.
+    Copyright (C) 2016-2025 CERN.
     Copyright (C) 2024-2025 Graz University of Technology.
 
     Invenio is free software; you can redistribute it and/or modify it
@@ -9,6 +9,10 @@
 
 Changes
 =======
+
+Version vNext
+
+- setup: bump major version of invenio-requests
 
 Version v20.0.0 (released 2025-08-01)
 
