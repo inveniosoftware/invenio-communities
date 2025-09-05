@@ -10,9 +10,11 @@
 Changes
 =======
 
-Version vNext
+Version v20.1.0 (released 2025-09-05)
 
 - setup: bump major version of invenio-requests
+- views: fix handle permission denied error in the UI view functions
+- fix: correct community topic typo
 
 Version v20.0.0 (released 2025-08-01)
 
