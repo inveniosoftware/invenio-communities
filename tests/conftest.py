@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
+# Copyright (C) 2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -76,7 +77,7 @@ class DummyNotificationBuilder(NotificationBuilder):
 # Application
 #
 @pytest.fixture(scope="module")
-def app_config(app_config):
+def app_config(app_config, cache_uri):
     """Override pytest-invenio app_config fixture."""
     app_config["RECORDS_REFRESOLVER_CLS"] = (
         "invenio_records.resolver.InvenioRefResolver"
@@ -102,7 +103,7 @@ def app_config(app_config):
     app_config["COMMUNITIES_IDENTITIES_CACHE_TIME"] = 2
 
     # Redis URL Cache for identities
-    app_config["COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"] = "redis://localhost:6379/4"
+    app_config["COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"] = cache_uri
 
     # Cache handler
     app_config["COMMUNITIES_IDENTITIES_CACHE_HANDLER"] = (
@@ -147,6 +148,10 @@ def app_config(app_config):
 
     app_config["THEME_FRONTPAGE"] = False
     app_config["NOTIFICATIONS_SETTINGS_VIEW_FUNCTION"] = lambda: "<notification view>"
+
+    app_config["BROKER_URL"] = cache_uri
+    app_config["CELERY_RESULT_BACKEND"] = cache_uri
+    app_config["CACHE_REDIS_URL"] = cache_uri
 
     return app_config
 

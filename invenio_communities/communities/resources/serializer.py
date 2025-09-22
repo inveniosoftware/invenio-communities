@@ -11,7 +11,7 @@
 
 from flask_resources import BaseListSchema, JSONSerializer, MarshmallowSerializer
 
-from invenio_communities.communities.resources.ui_schema import UICommunitySchema
+from .ui_schema import UICommunitySchema
 
 
 class UICommunityJSONSerializer(MarshmallowSerializer):
