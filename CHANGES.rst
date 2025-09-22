@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v21.0.0 (released 2025-09-22)
+
+- installation: bump invenio-requests
+
 Version v20.2.0 (released 2025-09-05)
 
 - setup: bump major version of invenio-vocabularies
