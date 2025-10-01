@@ -204,6 +204,7 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
         "is_expired": False,
         "is_open": True,
         "last_reply": None,
+        "last_activity_at": res.json["updated"],
         "links": {
             "actions": {
                 # The requester can only cancel the request
@@ -263,6 +264,7 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
         "is_expired": False,
         "is_open": False,
         "last_reply": None,
+        "last_activity_at": res.json["updated"],
         "links": {
             "actions": {},
             "comments": f"https://127.0.0.1:5000/api/requests/{request_id}/comments",
@@ -322,6 +324,7 @@ def test_subcommunity_existing_child_flow(
         "is_expired": False,
         "is_open": True,
         "last_reply": None,
+        "last_activity_at": res.json["updated"],
         "links": {
             "actions": {
                 # The requester can only cancel the request
@@ -371,6 +374,7 @@ def test_subcommunity_existing_child_flow(
         "is_expired": False,
         "is_open": False,
         "last_reply": None,
+        "last_activity_at": res.json["updated"],
         "links": {
             "actions": {},
             "comments": f"https://127.0.0.1:5000/api/requests/{request_id}/comments",
