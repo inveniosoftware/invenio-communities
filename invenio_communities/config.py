@@ -86,6 +86,14 @@ COMMUNITIES_SORT_OPTIONS = {
         title=_("Least recently updated"),
         fields=["updated"],
     ),
+    "newestactivity": dict(
+        title=_("Newest activity"),
+        fields=["-last_activity_at"],
+    ),
+    "oldestactivity": dict(
+        title=_("Oldest activity"),
+        fields=["last_activity_at"],
+    ),
 }
 """Definitions of available record sort options."""
 
@@ -108,7 +116,7 @@ COMMUNITIES_ROLES = [
         name="manager",
         title=_("Manager"),
         description=_(
-            "Can manage members, curate records " "and view restricted records."
+            "Can manage members, curate records and view restricted records."
         ),
         can_manage_roles=["manager", "curator", "reader"],
         can_manage=True,
@@ -145,7 +153,7 @@ COMMUNITIES_SUBCOMMUNITIES_SEARCH = {
 
 COMMUNITIES_REQUESTS_SEARCH = {
     "facets": ["type", "status"],
-    "sort": ["bestmatch", "newest", "oldest"],
+    "sort": ["bestmatch", "newest", "oldest", "newestactivity", "oldestactivity"],
 }
 """Community requests search configuration (i.e list of community requests)"""
 
