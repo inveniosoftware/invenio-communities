@@ -10,6 +10,11 @@
 Changes
 =======
 
+Version v21.1.0 (released 2025-10-01)
+
+- feat(config): add last activity sort options
+- installation: bump invenio-requests to v10.2.0
+
 Version v21.0.0 (released 2025-09-22)
 
 - installation: bump invenio-requests
