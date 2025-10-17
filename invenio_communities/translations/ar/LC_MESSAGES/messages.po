@@ -630,7 +630,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:26
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:39
 msgid "Subcommunities"
-msgstr ""
+msgstr "مجتمع فرعي"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:34
 msgid "Browse"
