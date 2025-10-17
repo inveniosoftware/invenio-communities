@@ -142,7 +142,7 @@ msgid "Verified community"
 msgstr "مجتمع تم التحقق منه"
 
 msgid "Part of"
-msgstr ""
+msgstr "جزء من"
 
 msgid "Edit"
 msgstr "تعديل"

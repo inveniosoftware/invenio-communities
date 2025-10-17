@@ -5,13 +5,14 @@
 # Tibor Simko <tibor.simko@cern.ch>, 2025
 # Mattias Vesterlund, 2025
 # Sam Arbid, 2025
+# Lina Andrén, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Sam Arbid, 2025\n"
+"Last-Translator: Lina Andrén, 2025\n"
 "Language-Team: Swedish (https://app.transifex.com/inveniosoftware/teams/23537/sv/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -123,7 +124,7 @@ msgstr "Ny uppladdning"
 
 msgid "Submission to this community is only allowed to community members."
 msgstr ""
-"Inlämning till denna community är endast tillåten för communitymedlemmar."
+"Endast medlemmar i denna community kan skicka in poster till communityn."
 
 msgid "Previous slide"
 msgstr "Föregående bild"
@@ -166,7 +167,7 @@ msgid "There are no new communities."
 msgstr "Det finns inga nya communities."
 
 msgid "Request Membership"
-msgstr "Begär Medlemskap"
+msgstr "Ansök om medlemskap"
 
 msgid "Message to managers (optional)"
 msgstr "Meddelande till managers (valfritt)"
@@ -471,7 +472,7 @@ msgid "Membership Policy"
 msgstr "Medlemskapspolicy"
 
 msgid "Controls if anyone can request to join your community."
-msgstr "Kontrollerar om någon kan begära att få gå med i din community."
+msgstr "Kontrollerar om någon kan ansöka om medlemskap i din community."
 
 msgid "Maximum number of characters is 2000"
 msgstr "Maximalt antal tecken är 2000"
@@ -532,7 +533,7 @@ msgid "Permanently delete community"
 msgstr "Radera communityn permanent"
 
 msgid "Are you absolutely sure you want to delete the community?"
-msgstr "Är du helt säker på att du vill ta bort communityn?"
+msgstr "Är du helt säker på att du vill radera communityn?"
 
 msgid "This action CANNOT be undone!"
 msgstr "Denna åtgärd KAN INTE ångras!"
@@ -544,10 +545,10 @@ msgid "records will be removed from the community."
 msgstr "poster kommer att tas bort från communityn."
 
 msgid "CANNOT"
-msgstr "KAN INTE"
+msgstr "kan INTE"
 
 msgid "reuse the community identifier \"{{slug}}\"."
-msgstr "återanvänd community-identifikatorn \"{{slug}}\"."
+msgstr "återanvänd community-identifieraren \"{{slug}}\"."
 
 msgid "Please type"
 msgstr "Var god skriv"
@@ -589,7 +590,7 @@ msgid "Controls who can publish records directly without review."
 msgstr "Styr vem som kan publicera poster direkt utan granskning."
 
 msgid "Records submission policy"
-msgstr "Policy för inskick av poster"
+msgstr "Policy för att skicka in poster"
 
 msgid "Controls who can submit records to the community."
 msgstr "Styr vem som kan skicka in poster till communityn."
