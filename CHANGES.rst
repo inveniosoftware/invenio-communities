@@ -11,6 +11,10 @@
 Changes
 =======
 
+Version v19.2.2 (released 2025-10-20)
+
+- i18n: pulled translations
+
 Version v19.2.1 (released 2025-08-27)
 
 - fix: correct community topic typo
