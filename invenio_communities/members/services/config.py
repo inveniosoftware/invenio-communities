@@ -10,15 +10,10 @@
 """Members Service Config."""
 
 from invenio_i18n import lazy_gettext as _
-from invenio_records_resources.services import (
-    RecordServiceConfig,
-    SearchOptions,
-)
+from invenio_records_resources.services import RecordServiceConfig, SearchOptions
 from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 from invenio_records_resources.services.records.components import MetadataComponent
-from invenio_records_resources.services.records.links import (
-    pagination_endpoint_links,
-)
+from invenio_records_resources.services.records.links import pagination_endpoint_links
 from invenio_records_resources.services.records.queryparser import (
     QueryParser,
     SearchFieldTransformer,

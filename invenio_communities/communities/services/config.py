@@ -25,9 +25,7 @@ from invenio_records_resources.services.records.config import (
 from invenio_records_resources.services.records.config import (
     SearchOptions as SearchOptionsBase,
 )
-from invenio_records_resources.services.records.links import (
-    pagination_endpoint_links,
-)
+from invenio_records_resources.services.records.links import pagination_endpoint_links
 from invenio_records_resources.services.records.params import (
     FacetsParam,
     PaginationParam,
