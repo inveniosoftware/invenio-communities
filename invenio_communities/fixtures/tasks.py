@@ -10,7 +10,8 @@
 """Celery tasks for fixtures."""
 
 from datetime import datetime
-
+from uuid import UUID
+from invenio_db import db
 from celery import shared_task
 from invenio_access.permissions import system_identity
 from invenio_pidstore.errors import (
@@ -39,6 +40,10 @@ def create_demo_community(data, logo_path=None, feature=False):
         if feature:
             featured_data = {"start_date": datetime.utcnow().isoformat()}
             service.featured_create(system_identity, community.id, featured_data)
+        if "id" in data:
+            uuid = data["id"]
+            community._record.model.id = UUID(uuid)
+            db.session.commit()
 
     except PIDAlreadyExists:
         pass
