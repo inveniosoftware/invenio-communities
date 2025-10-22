@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v21.1.1 (released 2025-10-22)
+
+- feat(fixtures): add community UUID assignment
+
 Version v21.1.0 (released 2025-10-01)
 
 - feat(config): add last activity sort options
