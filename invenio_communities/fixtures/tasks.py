@@ -11,9 +11,10 @@
 
 from datetime import datetime
 from uuid import UUID
-from invenio_db import db
+
 from celery import shared_task
 from invenio_access.permissions import system_identity
+from invenio_db import db
 from invenio_pidstore.errors import (
     PIDAlreadyExists,
     PIDDeletedError,
