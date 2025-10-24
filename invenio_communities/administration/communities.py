@@ -19,6 +19,7 @@ from invenio_search_ui.searchconfig import search_app_config
 
 from invenio_communities.communities.schema import CommunityFeaturedSchema
 
+from invenio_i18n import lazy_gettext as _
 
 class CommunityListView(AdminResourceListView):
     """Search admin view."""
@@ -28,9 +29,9 @@ class CommunityListView(AdminResourceListView):
     resource_config = "communities_resource"
     search_request_headers = {"Accept": "application/vnd.inveniordm.v1+json"}
     title = "Communities"
-    menu_label = "Communities"
-    category = "Communities"
-    pid_path = "id"
+    menu_label = _("Communities")
+    category = _("Communities")
+    pid_path = _("id")
     icon = "users"
     template = "invenio_communities/administration/community_search.html"
 
