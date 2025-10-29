@@ -3,6 +3,7 @@
     Copyright (C) 2016-2024 CERN.
     Copyright (C) 2024-2025 Graz University of Technology.
     Copyright (C) 2025 Northwestern University.
+    Copyright (C) 2025 KTH Royal Institute of Technology.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,11 @@
 
 Changes
 =======
+
+Version v19.2.3 (released 2025-10-29)
+
+- i18n: extract py msgs
+- i18n: wrap missing admin panel strings
 
 Version v19.2.2 (released 2025-10-20)
 
