@@ -48,6 +48,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
         logoSetUrl(logoUrlNoCache);
         logoSetUpdated(true);
         logoSetExists(true);
+        onError({ response: { data: { message: "", errors: null, status: null } } });
       } catch (error) {
         onError(error);
       }
