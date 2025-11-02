@@ -2,14 +2,15 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
-# Copyright (C)      2022 Graz University of Technology.
+# Copyright (C) 2022-2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Celery tasks for fixtures."""
 
-from datetime import datetime
+
+from datetime import datetime, timezone
 from uuid import UUID
 
 from celery import shared_task
@@ -39,7 +40,7 @@ def create_demo_community(data, logo_path=None, feature=False):
                 service.update_logo(system_identity, community.id, filestream)
 
         if feature:
-            featured_data = {"start_date": datetime.utcnow().isoformat()}
+            featured_data = {"start_date": datetime.now(timezone.utc).isoformat()}
             service.featured_create(system_identity, community.id, featured_data)
         if "id" in data:
             uuid = data["id"]
@@ -54,7 +55,7 @@ def create_demo_community(data, logo_path=None, feature=False):
 def reindex_featured_entries():
     """Reindexes records having at least one future entry which is now in the past."""
     service = current_communities.service
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
 
     @unit_of_work()
     def reindex_community(hit, uow=None):

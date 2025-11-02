@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 TU Wien.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 
 """Systemfield for managing tombstone information of a community."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from invenio_records.systemfields import SystemField
 from invenio_requests.resolvers.registry import ResolverRegistry
@@ -90,7 +91,7 @@ class Tombstone:
     def removal_date(self, value):
         """Set the removal date."""
         if value is None:
-            value = datetime.utcnow()
+            value = datetime.now(timezone.utc)
 
         if isinstance(value, datetime):
             value = value.isoformat()
