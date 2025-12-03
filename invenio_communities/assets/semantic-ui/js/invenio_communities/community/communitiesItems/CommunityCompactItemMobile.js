@@ -5,7 +5,6 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import { CommunityTypeLabel } from "../labels";
 import { RestrictedLabel } from "../labels";
 import _truncate from "lodash/truncate";
 import React from "react";
@@ -22,10 +21,9 @@ export const CommunityCompactItemMobile = ({
   detailUrl,
   isCommunityDefault,
 }) => {
-  const communityType = result.ui?.type?.title_l10n;
   const { metadata, ui, links, access, id } = result;
   return (
-    <div key={id} className={`community-item mobile only ${itemClassName}`}>
+    <div key={id} className={`community-item mobile only align-items-start ${itemClassName}`}>
       <div className="display-grid auto-column-grid no-wrap">
         <div className="flex align-items-center">
           <Image
@@ -59,6 +57,19 @@ export const CommunityCompactItemMobile = ({
               )}
             </a>
             <i className="small icon external primary" aria-hidden="true" />
+            {(result.access.visibility === "restricted" ||
+              extraLabels) && (
+              <>
+                <RestrictedLabel access={access.visibility} />
+                {extraLabels}
+              </>
+            )}
+            {isCommunityDefault && (
+              <Label color="purple" size="tiny">
+                <Icon name="paint brush" />
+                {i18next.t("Branding")}
+              </Label>
+            )}
           </div>
         </div>
 
@@ -88,24 +99,6 @@ export const CommunityCompactItemMobile = ({
             {_truncate(metadata.description, { length: 50 })}
           </p>
         )}
-
-        <div className="rel-mt-1">
-          {(result.access.visibility === "restricted" ||
-            communityType ||
-            extraLabels) && (
-            <>
-              <RestrictedLabel access={access.visibility} />
-              <CommunityTypeLabel type={communityType} />
-              {extraLabels}
-            </>
-          )}
-          {isCommunityDefault && (
-            <Label color="purple" size="tiny">
-              <Icon name="paint brush" />
-              {i18next.t("Branding")}
-            </Label>
-          )}
-        </div>
       </div>
     </div>
   );

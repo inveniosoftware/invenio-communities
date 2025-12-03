@@ -11,7 +11,6 @@ import _truncate from "lodash/truncate";
 
 import { Image, InvenioPopup } from "react-invenio-forms";
 import { Icon, Label, Item, Popup } from "semantic-ui-react";
-import { CommunityTypeLabel, RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
   result,
@@ -23,13 +22,12 @@ export const CommunityCompactItemComputer = ({
   isCommunityDefault,
 }) => {
   const { metadata, ui, links, access, id } = result;
-  const communityType = ui?.type?.title_l10n;
   return (
     <Item
       key={id}
-      className={`community-item tablet computer only display-grid auto-column-grid no-wrap ${itemClassName}`}
+      className={`community-item tablet computer only display-grid auto-column-grid align-items-start no-wrap ${itemClassName}`}
     >
-      <div className="flex align-items-center">
+      <div className="flex">
         <Image
           wrapped
           size="tiny"
@@ -61,20 +59,10 @@ export const CommunityCompactItemComputer = ({
               )}
             </a>
             <i className="small icon external primary" aria-hidden="true" />
-          </div>
-          {metadata.description && (
-            <p className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1">
-              {_truncate(metadata.description, { length: 50 })}
-            </p>
-          )}
-
-          <div className="rel-mt-1">
             {(result.access.visibility === "restricted" ||
-              communityType ||
               extraLabels) && (
               <>
                 <RestrictedLabel access={access.visibility} />
-                <CommunityTypeLabel type={communityType} />
                 {extraLabels}
               </>
             )}
@@ -85,10 +73,15 @@ export const CommunityCompactItemComputer = ({
               </Label>
             )}
           </div>
+          {metadata.description && (
+            <p className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1">
+              {_truncate(metadata.description, { length: 50 })}
+            </p>
+          )}
         </div>
       </div>
 
-      <div className="flex align-items-center justify-end">
+      <div className="flex">
         {showPermissionLabel && (
           <span className="rel-mr-1">
             {ui?.permissions?.can_include_directly && (
