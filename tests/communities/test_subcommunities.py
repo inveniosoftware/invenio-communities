@@ -214,6 +214,7 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
+            "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
         },
     }
 
@@ -271,6 +272,7 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
+            "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
         },
     }
 
@@ -334,6 +336,7 @@ def test_subcommunity_existing_child_flow(
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
+            "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
         },
     }
 
@@ -381,6 +384,7 @@ def test_subcommunity_existing_child_flow(
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
+            "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
         },
     }
 
