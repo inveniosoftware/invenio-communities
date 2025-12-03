@@ -20,10 +20,15 @@ export const CommunityCompactItemMobile = ({
   showPermissionLabel,
   detailUrl,
   isCommunityDefault,
+  recordRequests,
 }) => {
   const { metadata, ui, links, access, id } = result;
+  const viewComments = id in recordRequests;
   return (
-    <div key={id} className={`community-item mobile only align-items-start ${itemClassName}`}>
+    <div
+      key={id}
+      className={`community-item mobile only align-items-start ${itemClassName}`}
+    >
       <div className="display-grid auto-column-grid no-wrap">
         <div className="flex align-items-center">
           <Image
@@ -57,8 +62,7 @@ export const CommunityCompactItemMobile = ({
               )}
             </a>
             <i className="small icon external primary" aria-hidden="true" />
-            {(result.access.visibility === "restricted" ||
-              extraLabels) && (
+            {(result.access.visibility === "restricted" || extraLabels) && (
               <>
                 <RestrictedLabel access={access.visibility} />
                 {extraLabels}
@@ -99,6 +103,23 @@ export const CommunityCompactItemMobile = ({
             {_truncate(metadata.description, { length: 50 })}
           </p>
         )}
+        {viewComments && (
+          <div className="mt-10">
+            <small>
+              <b>
+                <a
+                  // building request link as the self_html of the request is
+                  // /requests/<uuid> which doesn't resolve as missing
+                  // /communities/ or /me/. We prefer /communities/ here
+                  href={`${links.self_html}requests/${recordRequests[id]}`}
+                >
+                  <Icon name="discussions" className="mr-5" />
+                  {i18next.t("View comments")}
+                </a>
+              </b>
+            </small>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -112,6 +133,7 @@ CommunityCompactItemMobile.propTypes = {
   actions: PropTypes.node,
   detailUrl: PropTypes.string,
   isCommunityDefault: PropTypes.bool.isRequired,
+  recordRequests: PropTypes.object,
 };
 
 CommunityCompactItemMobile.defaultProps = {
@@ -120,4 +142,5 @@ CommunityCompactItemMobile.defaultProps = {
   itemClassName: "",
   showPermissionLabel: false,
   detailUrl: undefined,
+  recordRequests: {},
 };

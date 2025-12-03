@@ -12,6 +12,7 @@ export function CommunityCompactItem({
   showPermissionLabel,
   detailUrl,
   isCommunityDefault,
+  recordRequests,
 }) {
   return (
     <>
@@ -23,6 +24,7 @@ export function CommunityCompactItem({
         showPermissionLabel={showPermissionLabel}
         detailUrl={detailUrl}
         isCommunityDefault={isCommunityDefault}
+        recordRequests={recordRequests}
       />
       <CommunityCompactItemMobile
         result={result}
@@ -32,6 +34,7 @@ export function CommunityCompactItem({
         showPermissionLabel={showPermissionLabel}
         detailUrl={detailUrl}
         isCommunityDefault={isCommunityDefault}
+        recordRequests={recordRequests}
       />
     </>
   );
@@ -45,6 +48,7 @@ CommunityCompactItem.propTypes = {
   showPermissionLabel: PropTypes.bool,
   detailUrl: PropTypes.string,
   isCommunityDefault: PropTypes.bool.isRequired,
+  recordRequests: PropTypes.object,
 };
 
 CommunityCompactItem.defaultProps = {
@@ -53,4 +57,5 @@ CommunityCompactItem.defaultProps = {
   itemClassName: "",
   showPermissionLabel: false,
   detailUrl: undefined,
+  recordRequests: {},
 };
