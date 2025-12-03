@@ -11,6 +11,7 @@ import _truncate from "lodash/truncate";
 
 import { Image, InvenioPopup } from "react-invenio-forms";
 import { Icon, Label, Item, Popup } from "semantic-ui-react";
+import { RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
   result,
@@ -20,8 +21,10 @@ export const CommunityCompactItemComputer = ({
   showPermissionLabel,
   detailUrl,
   isCommunityDefault,
+  recordRequests,
 }) => {
   const { metadata, ui, links, access, id } = result;
+  const viewComments = id in recordRequests;
   return (
     <Item
       key={id}
@@ -59,8 +62,7 @@ export const CommunityCompactItemComputer = ({
               )}
             </a>
             <i className="small icon external primary" aria-hidden="true" />
-            {(result.access.visibility === "restricted" ||
-              extraLabels) && (
+            {(result.access.visibility === "restricted" || extraLabels) && (
               <>
                 <RestrictedLabel access={access.visibility} />
                 {extraLabels}
@@ -77,6 +79,23 @@ export const CommunityCompactItemComputer = ({
             <p className="truncate-lines-1 text size small text-muted mt-5 rel-mb-1">
               {_truncate(metadata.description, { length: 50 })}
             </p>
+          )}
+          {viewComments && (
+            <div className="mt-10">
+              <small>
+                <b>
+                  <a
+                    // building request link as the self_html of the request is
+                    // /requests/<uuid> which doesn't resolve as missing
+                    // /communities/ or /me/. We prefer /communities/ here
+                    href={`${links.self_html}requests/${recordRequests[id]}`}
+                  >
+                    <Icon name="discussions" className="mr-5" />
+                    {i18next.t("View comments")}
+                  </a>
+                </b>
+              </small>
+            </div>
           )}
         </div>
       </div>
@@ -111,6 +130,7 @@ CommunityCompactItemComputer.propTypes = {
   showPermissionLabel: PropTypes.bool,
   detailUrl: PropTypes.string,
   isCommunityDefault: PropTypes.bool.isRequired,
+  recordRequests: PropTypes.object,
 };
 
 CommunityCompactItemComputer.defaultProps = {
@@ -119,4 +139,5 @@ CommunityCompactItemComputer.defaultProps = {
   itemClassName: "",
   showPermissionLabel: false,
   detailUrl: undefined,
+  recordRequests: {},
 };
