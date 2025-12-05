@@ -8,6 +8,7 @@
 # Berat Aldemir <berataldemir@gmail.com>, 2024
 # Ben Translation and Interpreting Services <info@bentercume.com>, 2025
 # BEN TERCÜME, 2025
+# Eylül-1 -, 2025
 # 
 #, fuzzy
 msgid ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2025-07-08 19:38+0000\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: BEN TERCÜME, 2025\n"
+"Last-Translator: Eylül-1 -, 2025\n"
 "Language-Team: Turkish (https://app.transifex.com/inveniosoftware/teams/23537/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -111,7 +112,7 @@ msgstr "{q} ile öne çıkan bir topluluk girişi mevcut değil."
 
 #: invenio_communities/errors.py:40
 msgid "No logo exists for this community."
-msgstr ""
+msgstr "Bu topluluk için logo mevcut değil."
 
 #: invenio_communities/errors.py:52
 #, python-brace-format
@@ -119,6 +120,8 @@ msgid ""
 "Logo size limit exceeded. Limit: {limit_value} {limit_unit} Given: "
 "{file_size_value} {file_size_unit}"
 msgstr ""
+"Logo boyutu sınırı aşıldı. Sınır: {limit_value} {limit_unit} Verilen: "
+"{file_size_value} {file_size_unit}"
 
 #: invenio_communities/errors.py:69
 #, python-format
@@ -132,7 +135,7 @@ msgstr[0] ""
 "Bu topluluk için %(num)s adet açık talep var. Lütfen bu topluluğu silmeden "
 "önce hepsini çözümleyin."
 msgstr[1] ""
-"Bu topluluk için %(num)s adet açık talep var. Lütfen bu topluluğu silmeden "
+"Bu topluluk için %(num)s adet açık istek var. Lütfen bu topluluğu silmeden "
 "önce hepsini çözümleyin."
 
 #: invenio_communities/errors.py:101
@@ -157,7 +160,7 @@ msgstr "Yeni topluluk"
 
 #: invenio_communities/ext.py:160
 msgid "Requests"
-msgstr "Talepler"
+msgstr "İstekler"
 
 #: invenio_communities/ext.py:167
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:20
@@ -178,11 +181,11 @@ msgstr "Hakkında"
 
 #: invenio_communities/roles.py:64
 msgid "Only one role be defined as owner."
-msgstr ""
+msgstr "Sadece bir rol, sahip olarak tanımlanabilir."
 
 #: invenio_communities/roles.py:66
 msgid "One role must be defined as owner."
-msgstr ""
+msgstr "Bir rol, sahip olarak tanımlanmalıdır."
 
 #: invenio_communities/communities/schema.py:55
 #, python-brace-format
@@ -204,11 +207,11 @@ msgstr "Tanımlayıcı yalnızca harf, rakam veya çizgilerden oluşmalıdır."
 
 #: invenio_communities/communities/schema.py:338
 msgid "start date"
-msgstr ""
+msgstr "başlangıç tarihi"
 
 #: invenio_communities/communities/schema.py:339
 msgid "Accepted format: YYYY-MM-DD hh:mm"
-msgstr ""
+msgstr "Kabul edilen biçim: YYYY-AA-GG ss:dd"
 
 #: invenio_communities/communities/schema.py:351
 msgid "Deleted community"
@@ -256,27 +259,27 @@ msgstr "Topluluk herkese açık değil"
 #: invenio_communities/communities/services/components.py:177
 #, python-format
 msgid "parent.communities.ids:%(id)s"
-msgstr ""
+msgstr "parent.communities.ids:%(id)s"
 
 #: invenio_communities/communities/services/components.py:320
 msgid "Assigned parent is not allowed to be a parent."
-msgstr ""
+msgstr "Atanan üst öğe, bir üst öğe olamaz."
 
 #: invenio_communities/communities/services/components.py:324
 msgid "Community allowed to be a parent can't be a child."
-msgstr ""
+msgstr "Üst öğe olmasına izin verilen topluluk alt öğge olamaz."
 
 #: invenio_communities/communities/services/components.py:328
 msgid "Assigned parent community cannot also have a parent."
-msgstr ""
+msgstr "Atanan üst topluluk da bir üst topluluğa sahip olamaz."
 
 #: invenio_communities/communities/services/components.py:332
 msgid "Assigned parent community cannot be the same as child."
-msgstr ""
+msgstr "Atanan üst topluluk, alt öğe ile aynı olamaz."
 
 #: invenio_communities/communities/services/components.py:335
 msgid "Assigned parent community does not exist."
-msgstr ""
+msgstr "Atanan üst topluluk mevcut değil."
 
 #: invenio_communities/communities/services/config.py:58
 msgid "Featured"
@@ -334,21 +337,21 @@ msgstr "Gerekli alan için veri eksik."
 
 #: invenio_communities/members/resources/config.py:44
 msgid "Invalid member specified."
-msgstr ""
+msgstr "Geçersiz üye belirtildi."
 
 #: invenio_communities/members/resources/config.py:50
 msgid "A member was already added or invited."
-msgstr ""
+msgstr "Bir üye zaten eklenmiş veya davet edilmiştir."
 
 #: invenio_communities/members/services/components.py:34
 #: invenio_communities/members/services/components.py:43
 msgid "Community must be defined."
-msgstr ""
+msgstr "Topluluk tanımlanmalıdır."
 
 #: invenio_communities/members/services/components.py:49
 #, python-format
 msgid "Member must be 'MemberMixin' or 'dict' but was %(type)s"
-msgstr ""
+msgstr "Üye 'MemberMixin' ya da 'dict' olmalıdır ama %(type)s türündeydi."
 
 #: invenio_communities/members/services/facets.py:18
 msgid "Role"
@@ -397,7 +400,7 @@ msgstr "Geçersiz rol."
 
 #: invenio_communities/members/services/fields.py:45
 msgid "Not a valid role to serialize."
-msgstr ""
+msgstr "Serileştirmek için geçerli bir rol değil."
 
 #: invenio_communities/members/services/request.py:108
 msgid "Community invitation"
@@ -405,7 +408,7 @@ msgstr "Topluluk daveti"
 
 #: invenio_communities/members/services/request.py:153
 msgid "Membership request"
-msgstr "Üyelik talebi"
+msgstr "Üyelik isteği"
 
 #: invenio_communities/members/services/schemas.py:89
 msgid "Missing fields 'role' and/or 'visible'."
@@ -426,12 +429,12 @@ msgstr "Geçersiz üye türü: e-posta"
 #: invenio_communities/members/services/service.py:282
 #, python-format
 msgid "Invitation to join \"%(community)s\""
-msgstr ""
+msgstr "\"%(community)s\" topluluğuna katılma daveti"
 
 #: invenio_communities/members/services/service.py:285
 #, python-format
 msgid "You will join as \"%(role)s\"."
-msgstr ""
+msgstr "\"%(role)s\" olarak katılacaksınız."
 
 #: invenio_communities/members/services/service.py:542
 #: invenio_communities/members/services/service.py:662
@@ -451,11 +454,13 @@ msgstr ""
 #, python-format
 msgid "You will join as \"%(role)s\" (changed from: \"%(previous)s\")."
 msgstr ""
+"\"%(role)s\" olarak katılacaksınız (önceki \"%(previous)s\" rolünüz "
+"değiştirildi)."
 
 #: invenio_communities/members/services/service.py:764
 #, python-format
 msgid "Request to join \"%(community)s\""
-msgstr ""
+msgstr "\"%(community)s\" topluluğuna katılma isteği"
 
 #: invenio_communities/requests/user_moderation/actions.py:71
 msgid "User was blocked"
@@ -463,15 +468,15 @@ msgstr "Kullanıcı engellendi"
 
 #: invenio_communities/subcommunities/services/request.py:64
 msgid "Subcommunity request"
-msgstr "Alt topluluk talebi"
+msgstr "Alt topluluk isteği"
 
 #: invenio_communities/subcommunities/services/request.py:151
 msgid "Subcommunity invitation"
-msgstr ""
+msgstr "Alt topluluk daveti"
 
 #: invenio_communities/subcommunities/services/schema.py:50
 msgid "Either community_id or community should be provided."
-msgstr ""
+msgstr "Ya community_id ya da community değerlerinden biri belirtilmelidir."
 
 #: invenio_communities/subcommunities/services/service.py:85
 msgid "Parent community does not accept subcommunities."
@@ -480,7 +485,7 @@ msgstr "Üst topluluk alt toplulukları kabul etmemektedir."
 #: invenio_communities/subcommunities/services/service.py:114
 #, python-format
 msgid "Inclusion of subcommunity \"%(community)s\""
-msgstr ""
+msgstr "\"%(community)s\" alt topluluğunun alınması"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:31
 msgid ""
@@ -530,7 +535,7 @@ msgid ""
 msgstr ""
 "\n"
 "          Erişmeye çalıştığınız topluluk %(sitename)s sitesinden/sitelerinden kaldırıldı. Topluluğun\n"
-"          meta verileri arşivleme amacıyla saklanmaktadır."
+"          üst verileri arşivleme amacıyla saklanmaktadır."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:34
 msgid "Reason for removal:"
@@ -550,7 +555,7 @@ msgstr "Kaldırma tarihi:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:120
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "Bu topluluğa gönderim sadece topluluk üyelerine izin verilir."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:127
 msgid "New upload"
@@ -562,11 +567,11 @@ msgstr "Topluluğu yönet"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/new_subcommunity.html:12
 msgid "New subcommunity"
-msgstr ""
+msgstr "Yeni alt topluluk"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:20
 msgid "Awards"
-msgstr "Ödüller"
+msgstr "Araştırma Destekleri"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:36
 msgid "Visit external website"
@@ -594,7 +599,7 @@ msgstr "Davetler"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:13
 msgid " requests"
-msgstr "talepler"
+msgstr "istekler"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:12
 msgid " settings"
@@ -610,7 +615,7 @@ msgstr "Ayrıcalıklar"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:22
 msgid "Submission policy"
-msgstr ""
+msgstr "Gönderim politikası"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:23
 msgid "Pages"
@@ -618,12 +623,12 @@ msgstr "Sayfalar"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:15
 msgid " subcommunities"
-msgstr ""
+msgstr "alt topluluklar"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:26
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:39
 msgid "Subcommunities"
-msgstr ""
+msgstr "Alt topluluklar"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:34
 msgid "Browse"
@@ -637,20 +642,20 @@ msgstr "Öne çıkan topluluklar"
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:19
 #, python-brace-format
 msgid "💬 New comment on '{request_title}'"
-msgstr ""
+msgstr "💬 '{request_title}' hakkında yeni yorum"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:26
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:25
 #, python-brace-format
 msgid "'@{user_name}' commented on '{request_title}':"
-msgstr ""
+msgstr "'@{user_name}', '{request_title}' hakkında yorum yaptı:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:58
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:57
 msgid "Check out the request"
-msgstr ""
+msgstr "İsteği kontrol et"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:38
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:37
@@ -674,6 +679,8 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:58
 msgid "This is an auto-generated message. To manage notifications, visit your"
 msgstr ""
+"Bu otomatik olarak oluşturulan bir mesajdır. Bildirimleri yönetmek için "
+"şurayı ziyaret edin:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:38
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:37
@@ -696,25 +703,26 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:37
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:58
 msgid "account settings"
-msgstr ""
+msgstr "hesap ayarları"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:44
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:43
 #, python-brace-format
 msgid "@{user_name} commented on '{request_title}'"
-msgstr ""
+msgstr "@{user_name}, '{request_title}' hakkında yorum yaptı"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:48
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:47
 #, python-brace-format
 msgid "Check out the request: {request_link}"
-msgstr ""
+msgstr "İsteği kontrol et: {request_link}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:53
 #, python-brace-format
 msgid "*@{user_name}* commented on *{request_title}*"
 msgstr ""
+"*@{user_name}* adlı kullanıcı *{request_title}* isteği hakkında yorum yaptı"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:17
 #, python-brace-format
@@ -722,6 +730,8 @@ msgid ""
 "✅ @{user_name} accepted the invitation to join community "
 "'{community_title}'."
 msgstr ""
+"✅ @{user_name} adlı kullanıcı, '{community_title}' başlıklı topluluğa "
+"katılma davetini kabul etti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:23
 #, python-brace-format
@@ -729,13 +739,15 @@ msgid ""
 "'@{user_name}' accepted the invitation to join your community "
 "'{community_title}'"
 msgstr ""
+"'@{user_name}' adlı kullanıcı, '{community_title}' başlıklı topluluğunuza "
+"katılma davetini kabul etti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:26
 msgid " with the following message:"
-msgstr ""
+msgstr " ardından şu mesajı bıraktı:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:35
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:67
@@ -750,7 +762,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:48
 msgid "Check out the invitation"
-msgstr ""
+msgstr "Davete göz atın"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:47
 #, python-brace-format
@@ -758,6 +770,8 @@ msgid ""
 "@{user_name} accepted the invitation to join your community "
 "'{community_title}'"
 msgstr ""
+"@{user_name} adlı kullanıcı, {community_title} başlıklı topluluğunuza "
+"katılma davetini kabul etti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:50
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:62
@@ -768,7 +782,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:51
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:63
 msgid "with the following message:"
-msgstr ""
+msgstr "ardından mesajı bıraktı:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:54
@@ -777,7 +791,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:41
 msgid "Check out the invitation:"
-msgstr ""
+msgstr "Davete göz atın:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:59
 #, python-brace-format
@@ -785,11 +799,13 @@ msgid ""
 "*@{user_name}* accepted the invitation to join your community "
 "*{community_title}*"
 msgstr ""
+"*@{user_name}* adlı kullanıcı, *{community_title}* başlıklı topluluğunuza "
+"katılma davetini kabul etti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:17
 #, python-brace-format
 msgid "❌ Community member invitation cancelled for @{user_name}"
-msgstr ""
+msgstr "❌ @{user_name} için topluluk üyesi daveti iptal edildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:23
 #, python-brace-format
@@ -797,6 +813,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' was "
 "cancelled"
 msgstr ""
+"'@{user_name}' adlı kullanıcının '{community_title}' başlıklı topluluğa "
+"katılma daveti iptal edildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:47
 #, python-brace-format
@@ -804,6 +822,8 @@ msgid ""
 "The invitation for @{user_name} to join your community '{community_title}' "
 "was cancelled"
 msgstr ""
+"@{user_name} adlı kullanıcının '{community_title}' başlıklı topluluğunuza "
+"katılma daveti iptal edildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:59
 #, python-brace-format
@@ -811,11 +831,15 @@ msgid ""
 "The invitation for *@{user_name}* to join your community "
 "*'{community_title}'* was cancelled"
 msgstr ""
+"*@{user_name}* adlı kullanıcının *'{community_title}'* başlıklı "
+"topluluğunuza katılma daveti iptal edildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:17
 #, python-brace-format
 msgid "⛔️ @{user_name} declined the invitation to join '{community_title}'"
 msgstr ""
+"⛔️ @{user_name} adlı kullanıcı, '{community_title}' başlıklı topluluğa "
+"katılma davetini reddetti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:23
 #, python-brace-format
@@ -823,6 +847,8 @@ msgid ""
 "'@{user_name}' declined the invitation to join your community "
 "'{community_title}'"
 msgstr ""
+"'@{user_name}' adlı kullanıcı, '{community_title}' başlıklı topluluğunuza "
+"katılma davetini reddetti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:47
 #, python-brace-format
@@ -830,6 +856,8 @@ msgid ""
 "@{user_name} declined the invitation to join your community "
 "{community_title}"
 msgstr ""
+"@{user_name} adlı kullanıcı, {community_title} başlıklı topluluğunuza "
+"katılma davetini reddetti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:59
 #, python-brace-format
@@ -837,6 +865,8 @@ msgid ""
 "*@{user_name}* declined the invitation to join your community "
 "*{community_title}*"
 msgstr ""
+"*@{user_name}* adlı kullanıcı, *{community_title}* başlıklı topluluğunuza "
+"katılma davetini reddetti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:17
 #, python-brace-format
@@ -844,6 +874,8 @@ msgid ""
 "⌛️ The invitation for @{user_name} to join community '{community_title}' "
 "expired"
 msgstr ""
+"⌛️ @{user_name} adlı kullanıcının '{community_title}' başlıklı topluluğa "
+"katılma davetinin süresi geçti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:23
 #, python-brace-format
@@ -851,6 +883,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' has "
 "expired."
 msgstr ""
+"'@{user_name}' adlı kullanıcının '{community_title}' başlıklı topluluğa "
+"katılma davetinin süresi geçti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:38
 #, python-brace-format
@@ -858,6 +892,8 @@ msgid ""
 "The invitation for @{user_name} to join community '{community_title}' has "
 "expired."
 msgstr ""
+"@{user_name} adlı kullanıcının '{community_title}' başlıklı topluluğa "
+"katılma davetinin süresi geçti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:45
 #, python-brace-format
@@ -865,11 +901,15 @@ msgid ""
 "The invitation for *@{user_name}* to join community *{community_title}* has "
 "expired."
 msgstr ""
+"*@{user_name}* adlı kullanıcının *{community_title}* başlıklı topluluğa "
+"katılma davetinin süresi geçti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:18
 #, python-brace-format
 msgid "📬 New invitation to join the community '{community_title}' as '{role}'"
 msgstr ""
+"📬 '{community_title}' başlıklı topluluğa '{role}' olarak katılmak için yeni "
+"davet"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:24
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:48
@@ -877,12 +917,16 @@ msgstr ""
 msgid ""
 "You have been invited to join community '{community_title}' as '{role}'"
 msgstr ""
+"'{community_title}' başlıklı topluluğa '{role}' olarak katılmaya davet "
+"edildiniz"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:60
 #, python-brace-format
 msgid ""
 "You have been invited to join community *{community_title}* as *{role}*"
 msgstr ""
+"*{community_title}* başlıklı topluluğa *{role}* olarak katılmaya davet "
+"edildiniz"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:21
 #, python-brace-format
@@ -890,6 +934,8 @@ msgid ""
 "✅ Invitation accepted for {community_title} to join the "
 "{parent_community_title} community"
 msgstr ""
+"✅ {community_title} başlıklı topluluğun {parent_community_title} başlıklı "
+"üst topluluğa katılma daveti kabul edildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:43
@@ -898,6 +944,9 @@ msgid ""
 "@{username} accepted the invitation for \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} adlı kullanıcı, \"{community_title}\" başlıklı topluluğun "
+"\"{parent_community_title}\" başlıklı topluluğun alt topluluğu olarak "
+"katılması davetini kabul etti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:55
@@ -912,7 +961,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:55
 msgid "View the request"
-msgstr ""
+msgstr "İsteği görüntüle"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:45
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:47
@@ -921,7 +970,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:43
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:45
 msgid "View the request at:"
-msgstr ""
+msgstr "İsteği görüntüleme yeri:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:51
@@ -933,6 +982,8 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "account settings at: "
 msgstr ""
+"Bu otomatik olarak oluşturulan bir mesajdır. Bildirimleri yönetmek için "
+"hesap ayarlarınıza şuradan ulaşabilirsiniz: "
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:53
 #, python-brace-format
@@ -940,11 +991,14 @@ msgid ""
 "@{username} accepted the invitation the request for \"{community_title}\" to"
 " join as a subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} adlı kullanıcı, \"{community_title}\" başlıklı topluluğun "
+"\"{parent_community_title}\" başlıklı topluluğun alt topluluğu olarak "
+"katılması isteğini kabul etti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:20
 #, python-brace-format
 msgid "📬 Invitation to join the {parent_community_title} community"
-msgstr ""
+msgstr "📬 {parent_community_title} başlıklı topluluğa katılma daveti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:26
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:45
@@ -953,13 +1007,16 @@ msgid ""
 "We would like to invite your community \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\""
 msgstr ""
+"\"{community_title}\" başlıklı topluluğunuzu \"{parent_community_title}\" "
+"başlıklı topluluğun bir alt topluluğu olarak katılmaya davet etmek "
+"istiyoruz."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:33
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:49
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:60
 #, python-brace-format
 msgid "This invitation will expire on {expires_at}."
-msgstr ""
+msgstr "Bu davetin süresinin sona erme tarihi: {expires_at}."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:56
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:51
@@ -968,6 +1025,8 @@ msgid ""
 "The community *{community_title}* has requested to join as a subcommunity of"
 " *{parent_community_title}*"
 msgstr ""
+"*{community_title}* başlıklı topluluk, *{parent_community_title}* başlıklı "
+"topluluğun bir alt topluluğu olarak katılmayı istedi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:21
 #, python-brace-format
@@ -975,6 +1034,8 @@ msgid ""
 "⛔️ Subcommunity invitation declined for {community_title} to join the "
 "{parent_community_title} community"
 msgstr ""
+"⛔️ {community_title} başlıklı topluluğun {parent_community_title} başlıklı "
+"topluluğa katılmasına yönelik alt topluluk daveti reddedildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:43
@@ -984,6 +1045,9 @@ msgid ""
 "@{username} declined the invitation for \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} adlı kullanıcı, \"{community_title}\" başlıklı topluluğun "
+"\"{parent_community_title}\" başlıklı topluluğun bir alt topluluğu olarak "
+"katılması davetini reddetti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:18
 #, python-brace-format
@@ -991,6 +1055,8 @@ msgid ""
 "⌛️ The invitation for {community_title} to join the "
 "'{parent_community_title}' community expired"
 msgstr ""
+"⌛️ {community_title} başlıklı topluluğun '{parent_community_title}' başlıklı"
+" topluluğa katılma davetinin süresi geçti"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:24
 #, python-brace-format
@@ -998,6 +1064,8 @@ msgid ""
 "The invitation for '{community_title}' to join the "
 "'{parent_community_title}' community has expired."
 msgstr ""
+"'{community_title}' başlıklı topluluğun '{parent_community_title}' başlıklı "
+"topluluğa katılma davetinin süresi geçti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:39
 #, python-brace-format
@@ -1005,6 +1073,8 @@ msgid ""
 "The invitation for {community_title} to join the '{parent_community_title}' "
 "community has expired."
 msgstr ""
+"{community_title} başlıklı topluluğun '{parent_community_title}' başlıklı "
+"topluluğa katılma davetinin süresi geçti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:46
 #, python-brace-format
@@ -1012,6 +1082,8 @@ msgid ""
 "The invitation for *{community_title}* to join community "
 "*{parent_community_title}* has expired."
 msgstr ""
+"*{community_title}* başlıklı topluluğun *{parent_community_title}* başlıklı "
+"topluluğa katılma davetinin süresi geçti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:21
 #, python-brace-format
@@ -1019,6 +1091,8 @@ msgid ""
 "✅ Subcommunity request accepted for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"✅ \"{community_title}\" başlıklı topluluğun \"{parent_community_title}\" "
+"başlıklı topluluğa katılmasına yönelik alt topluluk isteği kabul edildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:43
@@ -1029,6 +1103,9 @@ msgid ""
 "\"{community_title}\" to join as a subcommunity of "
 "\"{parent_community_title}\"."
 msgstr ""
+"@{username} adlı topluluk yöneticisi, \"{community_title}\" başlıklı "
+"topluluğun \"{parent_community_title}\" başlıklı topluluğun bir alt "
+"topluluğu olarak katılmasına yönelik isteği kabul etti."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:19
 #, python-brace-format
@@ -1036,6 +1113,8 @@ msgid ""
 "📬 Subcommunity request for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"📬 \"{community_title}\" başlıklı topluluğun \"{parent_community_title}\" "
+"başlıklı topluluğa katılmasına yönelik alt topluluk isteği"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:41
@@ -1044,6 +1123,8 @@ msgid ""
 "The community \"{community_title}\" has requested to join as a subcommunity "
 "of \"{parent_community_title}\""
 msgstr ""
+"\"{community_title}\" başlıklı topluluk, \"{parent_community_title}\" "
+"başlıklı topluluğun bir alt topluluğu olarak katılmayı istedi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:21
 #, python-brace-format
@@ -1051,6 +1132,8 @@ msgid ""
 "⛔️ Subcommunity request declined for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"⛔️ \"{community_title}\" başlıklı topluluğun \"{parent_community_title}\" "
+"başlıklı topluluğa katılmasına yönelik alt topluluk isteği reddedildi"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:43
@@ -1061,6 +1144,9 @@ msgid ""
 "\"{community_title}\" to join as a subcommunity of "
 "\"{parent_community_title}\"."
 msgstr ""
+"@{username} adlı topluluk yöneticisi, \"{community_title}\" başlıklı "
+"topluluğun \"{parent_community_title}\" başlıklı topluluğun bir alt "
+"topluluğu olarak katılmasına yönelik isteği reddetti."
 
 #: invenio_communities/views/communities.py:36
 msgid "Your community is publicly accessible and shows up in search results."
@@ -1083,7 +1169,7 @@ msgstr ""
 
 #: invenio_communities/views/communities.py:58
 msgid "Members-only"
-msgstr ""
+msgstr "Üyelere özel"
 
 #: invenio_communities/views/communities.py:62
 msgid ""
@@ -1098,23 +1184,26 @@ msgid ""
 "All authenticated users can submit records to the community. If the "
 "community is restricted, then only members can submit records to it."
 msgstr ""
+"Kimliği doğrulanmış tüm kullanıcılar topluluğa kayıt gönderebilir. Topluluk "
+"kısıtlıysa yalnızca üyeler topluluğa kayıt gönderebilir."
 
 #: invenio_communities/views/communities.py:82
 msgid "Only members can submit records to the community."
-msgstr ""
+msgstr "Yalnızca üyeler topluluğa kayıt gönderebilir."
 
 #: invenio_communities/views/communities.py:88
 msgid "Review all submissions"
-msgstr ""
+msgstr "Tüm gönderimleri incele"
 
 #: invenio_communities/views/communities.py:91
 msgid "All submissions to the community must be reviewed."
-msgstr ""
-"Topluluğa gönderilen tüm yazıların ve belgelerin incelenmesi gerekmektedir."
+msgstr "Topluluğa gönderilen tüm gönderimlerin incelenmesi gerekmektedir."
 
 #: invenio_communities/views/communities.py:94
 msgid "Allow curators, managers and owners to publish without review"
 msgstr ""
+"Küratörlerin, yöneticilerin ve sahiplerin inceleme olmadan yayınlanmasına "
+"izin ver"
 
 #: invenio_communities/views/communities.py:98
 msgid ""
@@ -1127,7 +1216,7 @@ msgstr ""
 
 #: invenio_communities/views/communities.py:102
 msgid "Allow all members to publish without review"
-msgstr ""
+msgstr "Tüm üyelerin inceleme olmadan yayınlanmasına izin ver"
 
 #: invenio_communities/views/communities.py:106
 msgid ""
@@ -1140,12 +1229,12 @@ msgstr ""
 
 #: invenio_communities/views/communities.py:116
 msgid "Users can request to join your community."
-msgstr "Kullanıcılar topluluğunuza katılma talebinde bulunabilir."
+msgstr "Kullanıcılar topluluğunuza katılma isteğinde bulunabilir."
 
 #: invenio_communities/views/communities.py:123
 msgid ""
 "Users cannot request to join your community. Only invited users can become "
 "members of your community."
 msgstr ""
-"Kullanıcılar topluluğunuza katılma talebinde bulunamaz. Yalnızca davet "
+"Kullanıcılar topluluğunuza katılma isteğinde bulunamaz. Yalnızca davet "
 "edilen kullanıcılar topluluğunuzun üyesi olabilir."
