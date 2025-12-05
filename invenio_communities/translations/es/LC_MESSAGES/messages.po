@@ -714,13 +714,13 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:47
 #, python-brace-format
 msgid "Check out the request: {request_link}"
-msgstr ""
+msgstr "Consultar la solicitud: {request_link}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:53
 #, python-brace-format
 msgid "*@{user_name}* commented on *{request_title}*"
-msgstr ""
+msgstr "*@{user_name}* comentó en *{request_title}*"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:17
 #, python-brace-format
@@ -728,6 +728,8 @@ msgid ""
 "✅ @{user_name} accepted the invitation to join community "
 "'{community_title}'."
 msgstr ""
+"✅ @{user_name} aceptó la invitación para unirse a la comunidad "
+"'{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:23
 #, python-brace-format
@@ -735,13 +737,15 @@ msgid ""
 "'@{user_name}' accepted the invitation to join your community "
 "'{community_title}'"
 msgstr ""
+"'@{user_name}' aceptó la invitación para unirse a su comunidad "
+"'{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:26
 msgid " with the following message:"
-msgstr ""
+msgstr "con el siguiente mensaje:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:35
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:67
@@ -756,7 +760,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:48
 msgid "Check out the invitation"
-msgstr ""
+msgstr "Comprobar la invitación"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:47
 #, python-brace-format
@@ -764,6 +768,8 @@ msgid ""
 "@{user_name} accepted the invitation to join your community "
 "'{community_title}'"
 msgstr ""
+"@{user_name} aceptó la invitación para unirse a su comunidad "
+"'{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:50
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:62
@@ -774,7 +780,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:51
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:63
 msgid "with the following message:"
-msgstr ""
+msgstr "con el siguiente mensaje:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:54
