@@ -4,7 +4,7 @@
       {
         "i18n_title": {
           "path_match": "*.title.*",
-          "unmatch": "metadata.title",
+          "path_unmatch": "metadata.title",
           "match_mapping_type": "object",
           "mapping": {
             "type": "text",
