@@ -192,7 +192,6 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
         "created_by": {"community": new_community_id},
         "topic": {"community": new_community_id},
         "receiver": {"community": str(parent_community.id)},
-        "reviewers": [],
         "type": "subcommunity",
         "status": "submitted",
         "title": 'Inclusion of subcommunity "Test community"',
@@ -215,6 +214,8 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
+            "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
+            "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
         },
     }
 
@@ -253,7 +254,6 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
         "created_by": {"community": new_community_id},
         "topic": {"community": new_community_id},
         "receiver": {"community": str(parent_community.id)},
-        "reviewers": [],
         "created": res.json["created"],
         "updated": res.json["updated"],
         "expires_at": None,
@@ -273,6 +273,8 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
+            "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
+            "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
         },
     }
 
@@ -314,7 +316,6 @@ def test_subcommunity_existing_child_flow(
         "created_by": {"community": str(child_community.id)},
         "topic": {"community": str(child_community.id)},
         "receiver": {"community": str(parent_community.id)},
-        "reviewers": [],
         "type": "subcommunity",
         "status": "submitted",
         "title": 'Inclusion of subcommunity "Child Community"',
@@ -337,6 +338,8 @@ def test_subcommunity_existing_child_flow(
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
+            "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
+            "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
         },
     }
 
@@ -365,7 +368,6 @@ def test_subcommunity_existing_child_flow(
         "created_by": {"community": str(child_community.id)},
         "topic": {"community": str(child_community.id)},
         "receiver": {"community": str(parent_community.id)},
-        "reviewers": [],
         "created": res.json["created"],
         "updated": res.json["updated"],
         "expires_at": None,
@@ -385,6 +387,8 @@ def test_subcommunity_existing_child_flow(
             "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
+            "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
+            "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
         },
     }
 
