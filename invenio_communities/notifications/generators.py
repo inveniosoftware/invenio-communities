@@ -13,7 +13,10 @@ from invenio_notifications.models import Recipient
 from invenio_notifications.services.generators import RecipientGenerator
 from invenio_records.dictutils import dict_lookup
 from invenio_search.engine import dsl
-from invenio_users_resources.proxies import current_users_service
+from invenio_users_resources.proxies import (
+    current_groups_service,
+    current_users_service,
+)
 
 from invenio_communities.proxies import current_communities
 
@@ -38,20 +41,28 @@ class CommunityMembersRecipient(RecipientGenerator):
         )
 
         user_ids = set()
+        group_ids = set()
         for m in members:
-            # TODO: add support for groups
-            if m["member"]["type"] != "user":
+            if m["member"]["type"] == "user":
+                user_ids.add(m["member"]["id"])
+            if m["member"]["type"] == "group" and m["group_notification_enabled"]:
+                group_ids.add(m["member"]["id"])
+            else:
                 continue
-            user_ids.add(m["member"]["id"])
 
         # remove system_user_id if present
         user_ids.discard(system_identity.id)
 
-        if not user_ids:
+        if not user_ids and not group_ids:
             return recipients
 
-        filter_ = dsl.Q("terms", **{"id": list(user_ids)})
-        users = current_users_service.scan(system_identity, extra_filter=filter_)
+        filter_u = dsl.Q("terms", **{"id": list(user_ids)})
+        users = current_users_service.scan(system_identity, extra_filter=filter_u)
         for u in users:
             recipients[u["id"]] = Recipient(data=u)
+
+        filter_g = dsl.Q("terms", **{"id": list(group_ids)})
+        groups = current_groups_service.scan(system_identity, extra_filter=filter_g)
+        for g in groups:
+            recipients[g["id"]] = Recipient(data=g)
         return recipients

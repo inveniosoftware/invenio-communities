@@ -61,6 +61,8 @@ class MemberMixin:
     yet activated.
     """
 
+    group_notification_enabled = ModelField("group_notification_enabled")
+
     relations = RelationsField(
         user=ModelRelation(
             UserAggregate,

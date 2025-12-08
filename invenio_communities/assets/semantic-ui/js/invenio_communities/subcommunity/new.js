@@ -145,7 +145,7 @@ class CommunityCreateForm extends Component {
       }
 
       if (errors) {
-        errors.map(({ field, messages }) => {
+        errors.forEach(({ field, messages }) => {
           // Check if the field is already prefixed with "metadata"
           if (!field.startsWith("metadata")) {
             // Add "metadata" prefix if not already present
