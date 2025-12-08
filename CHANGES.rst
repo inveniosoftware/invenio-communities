@@ -12,6 +12,11 @@
 Changes
 =======
 
+Version v19.2.4 (released 2025-12-08)
+
+- i18n: pulled translations
+- ci: enable tests on maint branch
+
 Version v19.2.3 (released 2025-10-29)
 
 - i18n: extract py msgs
