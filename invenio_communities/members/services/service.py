@@ -216,13 +216,24 @@ class MemberService(RecordService):
             member_types=member_types,
         )
 
+        group_notification_enabled = data.get("group_notification_enabled", None)
+
         # Add/invite members via the factory function.
         for m in members:
             # TODO: Add support for inviting an email
             if m["type"] == "email":
                 raise ValidationError(_("Invalid member type: email"))
 
-            factory(identity, community, role, visible, m, message, uow)
+            factory(
+                identity,
+                community,
+                role,
+                visible,
+                m,
+                message,
+                uow,
+                group_notification_enabled=group_notification_enabled,
+            )
             # Run components
             self.run_components(
                 action,
@@ -246,6 +257,7 @@ class MemberService(RecordService):
         uow,
         active=True,
         request_id=None,
+        group_notification_enabled=None,
     ):
         """Add a member to the community."""
         member_arg = {member["type"] + "_id": member["id"]}
@@ -253,12 +265,15 @@ class MemberService(RecordService):
             # Integrity checks happens here which will validate:
             # - if a user/group is already a member
             # - if a user is already invited
+            if member["type"] == "user":
+                group_notification_enabled = None
             member = self.record_cls.create(
                 {},
                 community_id=community.id,
                 role=role.name,
                 active=active,
                 visible=visible,
+                group_notification_enabled=group_notification_enabled,
                 request_id=request_id,
                 **member_arg,
             )
@@ -269,7 +284,17 @@ class MemberService(RecordService):
         # instead of N single indexing requests.
         uow.register(RecordCommitOp(member, indexer=self.indexer))
 
-    def _invite_factory(self, identity, community, role, visible, member, message, uow):
+    def _invite_factory(
+        self,
+        identity,
+        community,
+        role,
+        visible,
+        member,
+        message,
+        uow,
+        group_notification_enabled=True,
+    ):
         """Invite a member to the community."""
         if member["type"] == "group":
             # Groups cannot be invited, because groups have no one who can
@@ -528,10 +553,13 @@ class MemberService(RecordService):
             raise InvalidMemberError()
         role = data.get("role")
         visible = data.get("visible")
+        group_notification_enabled = data.get("group_notification_enabled")
 
         # Perform updates (and check permissions)
         for m in members:
-            self._update(identity, community, m, role, visible, uow)
+            self._update(
+                identity, community, m, role, visible, group_notification_enabled, uow
+            )
 
         # Make sure we're not left owner-less if a role was changed.
         if role is not None:
@@ -547,8 +575,17 @@ class MemberService(RecordService):
 
         return True
 
-    def _update(self, identity, community, member, role, visible, uow):
-        """Update a member's role/visibility."""
+    def _update(
+        self,
+        identity,
+        community,
+        member,
+        role,
+        visible,
+        group_notification_enabled,
+        uow,
+    ):
+        """Update a member's role/visibility/notifcation."""
         # DO NOT USE DIRECTLY - always use update() which will correctly check
         # if we're left without an owner!
         self.require_permission(
@@ -598,6 +635,8 @@ class MemberService(RecordService):
             member.role = role.name
         if visible is not None:
             member.visible = visible
+        if group_notification_enabled is not None:
+            member.group_notification_enabled = group_notification_enabled
 
         # Run components
         self.run_components(

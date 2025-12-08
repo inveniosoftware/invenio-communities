@@ -11,7 +11,7 @@ import { RadioSelection } from "@js/invenio_communities/members/components/bulk_
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Modal, Form, Button } from "semantic-ui-react";
+import { Modal, Form, Button, Checkbox, Popup, Icon } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { MembersSearchBar } from "./MemberSearchBar";
 import { GroupsApi } from "../../../api/GroupsApi";
@@ -27,6 +27,7 @@ export class GroupTabPane extends Component {
       loading: false,
       error: undefined,
       existingIds: [],
+      groupNotificationEnabled: false,
     };
   }
 
@@ -47,12 +48,16 @@ export class GroupTabPane extends Component {
     this.setState({ role: role });
   };
 
+  handleNotificationToggle = (e, { checked }) => {
+    this.setState({ groupNotificationEnabled: checked });
+  };
+
   handleActionClick = async () => {
     const { action, onSuccessCallback } = this.props;
-    const { selectedMembers, role, message } = this.state;
+    const { selectedMembers, role, message, groupNotificationEnabled } = this.state;
     this.setState({ loading: true, error: undefined });
     try {
-      await action(selectedMembers, role, message);
+      await action(selectedMembers, role, message, groupNotificationEnabled);
       this.setState({ loading: false });
       onSuccessCallback();
     } catch (error) {
@@ -79,7 +84,14 @@ export class GroupTabPane extends Component {
 
   render() {
     const { roleOptions, modalClose } = this.props;
-    const { selectedMembers, loading, error, existingIds, role } = this.state;
+    const {
+      selectedMembers,
+      loading,
+      error,
+      existingIds,
+      role,
+      groupNotificationEnabled,
+    } = this.state;
     const selectedCount = Object.keys(selectedMembers).length;
     const client = new GroupsApi();
 
@@ -105,6 +117,30 @@ export class GroupTabPane extends Component {
                 existingEntitiesDescription={i18next.t("Already a member")}
               />
             </Form.Field>
+            <Form.Field className="flex align-items-center">
+              <span className="mr-5">{i18next.t("Email notifications")}</span>
+              <Popup
+                trigger={
+                  <span>
+                    <Icon
+                      name="info circle"
+                      className="mr-10 neutral"
+                      style={{ cursor: "help" }}
+                    />
+                  </span>
+                }
+                content={i18next.t(
+                  "When enabled, group members will receive emails related to community actions, such as submission of records."
+                )}
+                wide="very"
+                position="top center"
+              />
+              <Checkbox
+                toggle
+                checked={groupNotificationEnabled}
+                onChange={this.handleNotificationToggle}
+              />
+            </Form.Field>
             <Form.Field required>
               <RadioSelection
                 options={roleOptions}
@@ -114,7 +150,7 @@ export class GroupTabPane extends Component {
             </Form.Field>
             <i>
               {i18next.t(
-                "Note: upon addition, selected groups will become community members immediately without any kind of notification or invitation approval."
+                "Note: upon addition, selected groups will become community members immediately without any kind of invitation approval."
               )}
             </i>
           </Form>

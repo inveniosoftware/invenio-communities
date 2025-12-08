@@ -80,6 +80,13 @@ class BaseMemberModel(RecordMetadataBase):
 
     active = db.Column(db.Boolean(), index=True, nullable=False)
 
+    group_notification_enabled = db.Column(
+        db.Boolean(),
+        nullable=True,
+        doc="Whether notifications are enabled for group members. "
+        "Only applicable for groups, ignored for users.",
+    )
+
     @classmethod
     def query_memberships(cls, user_id=None, group_ids=None, active=True):
         """Query for (community,role)-pairs."""
@@ -166,6 +173,7 @@ class ArchivedInvitationModel(db.Model, BaseMemberModel):
             role=member_model.role,
             visible=member_model.visible,
             active=member_model.active,
+            group_notification_enabled=member_model.group_notification_enabled,
             created=member_model.created,
             updated=member_model.updated,
             version_id=member_model.version_id,
