@@ -28,10 +28,16 @@ export class CommunityInvitationsApi {
     return await http.post(this.#urls.invitations, payload);
   };
 
-  addGroupToMembers = async (members, role, message = undefined) => {
+  addGroupToMembers = async (
+    members,
+    role,
+    message = undefined,
+    groupNotificationEnabled = true
+  ) => {
     const payload = {
       members: bulkMembersSerializer(members),
       role: role,
+      group_notification_enabled: groupNotificationEnabled,
     };
     if (message) {
       payload.message = message;

@@ -8,6 +8,7 @@ import { Button, Grid, Item, Label, Table } from "semantic-ui-react";
 import { MembersContext } from "../../../api/members/MembersContextProvider";
 import { SearchResultsRowCheckbox } from "../../components/bulk_actions/SearchResultsRowCheckbox";
 import { RoleDropdown, VisibilityDropdown } from "../../components/dropdowns";
+import { GroupNotificationToggle } from "../../components/GroupNotificationToggle";
 import { ModalContext } from "../../components/modal_manager";
 import { modalModeEnum } from "../../components/RemoveMemberModal";
 
@@ -139,6 +140,24 @@ export class ManagerMembersResultItem extends Component {
             />
           ) : (
             memberVisibility
+          )}
+        </Table.Cell>
+
+        <Table.Cell data-label={i18next.t("Notifications")}>
+          {result.member.type === "group" ? (
+            result.permissions.can_update_group_notification ? (
+              <GroupNotificationToggle
+                member={result.member}
+                initialValue={result.group_notification_enabled}
+                updateAction={api.updateGroupNotification}
+              />
+            ) : result.group_notification_enabled ? (
+              i18next.t("Enabled")
+            ) : (
+              i18next.t("Disabled")
+            )
+          ) : (
+            "-"
           )}
         </Table.Cell>
 

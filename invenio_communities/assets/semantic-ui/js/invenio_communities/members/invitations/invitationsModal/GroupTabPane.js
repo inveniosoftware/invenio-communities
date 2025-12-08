@@ -11,7 +11,7 @@ import { RadioSelection } from "@js/invenio_communities/members/components/bulk_
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Modal, Form, Button } from "semantic-ui-react";
+import { Modal, Form, Button, Checkbox } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { MembersSearchBar } from "./MemberSearchBar";
 import { GroupsApi } from "../../../api/GroupsApi";
@@ -27,6 +27,7 @@ export class GroupTabPane extends Component {
       loading: false,
       error: undefined,
       existingIds: [],
+      groupNotificationEnabled: true,
     };
   }
 
@@ -47,12 +48,16 @@ export class GroupTabPane extends Component {
     this.setState({ role: role });
   };
 
+  handleNotificationToggle = (e, { checked }) => {
+    this.setState({ groupNotificationEnabled: checked });
+  };
+
   handleActionClick = async () => {
     const { action, onSuccessCallback } = this.props;
-    const { selectedMembers, role, message } = this.state;
+    const { selectedMembers, role, message, groupNotificationEnabled } = this.state;
     this.setState({ loading: true, error: undefined });
     try {
-      await action(selectedMembers, role, message);
+      await action(selectedMembers, role, message, groupNotificationEnabled);
       this.setState({ loading: false });
       onSuccessCallback();
     } catch (error) {
@@ -79,7 +84,14 @@ export class GroupTabPane extends Component {
 
   render() {
     const { roleOptions, modalClose } = this.props;
-    const { selectedMembers, loading, error, existingIds, role } = this.state;
+    const {
+      selectedMembers,
+      loading,
+      error,
+      existingIds,
+      role,
+      groupNotificationEnabled,
+    } = this.state;
     const selectedCount = Object.keys(selectedMembers).length;
     const client = new GroupsApi();
 
@@ -112,9 +124,17 @@ export class GroupTabPane extends Component {
                 onOptionChangeCallback={this.handleRoleUpdate}
               />
             </Form.Field>
+            <Form.Field>
+              <Checkbox
+                toggle
+                checked={groupNotificationEnabled}
+                onChange={this.handleNotificationToggle}
+                label={i18next.t("Enable notifications for group members")}
+              />
+            </Form.Field>
             <i>
               {i18next.t(
-                "Note: upon addition, selected groups will become community members immediately without any kind of notification or invitation approval."
+                "Note: upon addition, selected groups will become community members immediately without any kind of invitation approval."
               )}
             </i>
           </Form>

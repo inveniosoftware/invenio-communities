@@ -157,6 +157,9 @@
       },
       "active": {
         "type": "boolean"
+      },
+      "group_notification_enabled": {
+        "type": "boolean"
       }
     }
   }
