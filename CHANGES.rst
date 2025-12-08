@@ -10,6 +10,11 @@
 Changes
 =======
 
+Version v21.2.0 (released 2025-12-08)
+
+- feat: add link to submission request from communities modal
+- fix(admin): wrap missing admin panel i18n strings
+
 Version v21.1.1 (released 2025-10-22)
 
 - feat(fixtures): add community UUID assignment
