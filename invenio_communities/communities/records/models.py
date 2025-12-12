@@ -2,20 +2,19 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2021 CERN.
-# Copyright (C)      2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Community database models."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from invenio_db import db
 from invenio_files_rest.models import Bucket
-from invenio_records.models import RecordMetadataBase, Timestamp
+from invenio_records.models import RecordMetadataBase
 from invenio_records_resources.records import FileRecordModelMixin
-from sqlalchemy.dialects import mysql
 from sqlalchemy.types import String
 from sqlalchemy_utils.types import ChoiceType, UUIDType
 
@@ -48,7 +47,7 @@ class CommunityFileMetadata(db.Model, RecordMetadataBase, FileRecordModelMixin):
     __tablename__ = "communities_files"
 
 
-class CommunityFeatured(db.Model, Timestamp):
+class CommunityFeatured(db.Model, db.Timestamp):
     """Featured community entry."""
 
     __tablename__ = "communities_featured"
@@ -58,7 +57,7 @@ class CommunityFeatured(db.Model, Timestamp):
         UUIDType, db.ForeignKey(CommunityMetadata.id), nullable=False
     )
     start_date = db.Column(
-        db.DateTime().with_variant(mysql.DATETIME(fsp=6), "mysql"),
+        db.UTCDateTime(),
         nullable=False,
-        default=datetime.utcnow,
+        default=lambda: datetime.now(timezone.utc),
     )

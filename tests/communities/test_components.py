@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -8,7 +8,7 @@
 """Test components."""
 
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 from invenio_access.permissions import system_identity
@@ -30,7 +30,7 @@ def comm(community_service, minimal_community, owner, location):
     """Create minimal public community."""
     c = deepcopy(minimal_community)
     c["slug"] = "public-{slug}".format(
-        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+        slug=str(datetime.now(timezone.utc).timestamp()).replace(".", "-")
     )
     community = community_service.create(data=c, identity=owner.identity)
     owner.refresh()
@@ -43,7 +43,7 @@ def comm_restricted(community_service, minimal_community, owner, location):
     c = deepcopy(minimal_community)
     c["access"]["visibility"] = "restricted"
     c["slug"] = "restricted-{slug}".format(
-        slug=str(datetime.utcnow().timestamp()).replace(".", "-")
+        slug=str(datetime.now(timezone.utc).timestamp()).replace(".", "-")
     )
     community = community_service.create(data=c, identity=owner.identity)
     owner.refresh()

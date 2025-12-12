@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2022 Graz University of Technology.
+# Copyright (C) 2022-2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -12,7 +12,7 @@ Dumper used to dump/load the featured times of a record to/from an
 search body.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from invenio_records.dumpers import SearchDumperExt
 
@@ -28,7 +28,7 @@ class FeaturedDumperExt(SearchDumperExt):
 
     def dump(self, record, data):
         """Dump featured entries."""
-        now_ = datetime.utcnow()
+        now_ = datetime.now(timezone.utc)
         future_entries = (
             CommunityFeatured.query.filter(
                 CommunityFeatured.community_id == record.id,
