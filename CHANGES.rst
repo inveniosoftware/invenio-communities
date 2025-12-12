@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v22.0.0 (released 2025-12-12)
+
+- chore(setup): bump major version of invenio-requests
+
 Version v21.2.0 (released 2025-12-08)
 
 - feat: add link to submission request from communities modal
