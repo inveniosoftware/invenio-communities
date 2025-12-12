@@ -64,6 +64,15 @@ export class CommunityMembersApi {
     return await this.#updateMembers(payload);
   };
 
+  updateGroupNotification = async (member, notificationEnabled) => {
+    const memberSerialized = bulkMembersSerializer([member]);
+    const payload = {
+      members: memberSerialized,
+      group_notification_enabled: notificationEnabled,
+    };
+    return await this.#updateMembers(payload);
+  };
+
   bulkUpdateRoles = (members, role) => {
     const membersSerialized = bulkMembersSerializer(members);
     const payload = { members: membersSerialized, role: role };

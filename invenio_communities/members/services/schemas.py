@@ -68,6 +68,13 @@ class AddBulkSchema(MembersSchema, Schema):
 
     role = RoleField(required=True)
     visible = fields.Boolean()
+    group_notification_enabled = fields.Boolean(
+        load_default=True,
+        metadata={
+            "description": "Enable/disable notifications for group members. "
+            "Only applicable for groups, ignored for users."
+        },
+    )
 
 
 class InviteBulkSchema(AddBulkSchema):
@@ -81,12 +88,26 @@ class UpdateBulkSchema(MembersSchema, Schema):
 
     role = RoleField()
     visible = fields.Boolean()
+    group_notification_enabled = fields.Boolean(
+        metadata={
+            "description": "Enable/disable notifications for group members. "
+            "Only applicable for groups, ignored for users."
+        }
+    )
 
     @validates_schema
     def validate_schema(self, data, **kwargs):
-        """Validates that role and/or visible is set."""
-        if "role" not in data and "visible" not in data:
-            raise ValidationError(_("Missing fields 'role' and/or 'visible'."))
+        """Validates that role and/or visible and/or group_notification_enabled is set."""
+        if (
+            "role" not in data
+            and "visible" not in data
+            and "group_notification_enabled" not in data
+        ):
+            raise ValidationError(
+                _(
+                    "Missing fields 'role' and/or 'visible' and/or 'group_notification_enabled'."
+                )
+            )
 
 
 class DeleteBulkSchema(MembersSchema):
@@ -157,6 +178,7 @@ class MemberDumpSchema(PublicDumpSchema):
 
     role = fields.String()
     visible = fields.Boolean()
+    group_notification_enabled = fields.Boolean()
 
     is_current_user = fields.Method("get_current_user")
     permissions = fields.Method("get_permissions")
@@ -200,6 +222,7 @@ class MemberDumpSchema(PublicDumpSchema):
             "can_delete": can_update and not is_self,
             "can_update_role": can_update and not is_self,
             "can_update_visible": (obj.visible and can_update) or is_self,
+            "can_update_group_notification": can_update and obj.group_id is not None,
         }
 
 
