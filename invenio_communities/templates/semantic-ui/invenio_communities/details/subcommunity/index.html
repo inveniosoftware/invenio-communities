@@ -41,8 +41,10 @@
   </div>
 </div>
 <div class="ui divider mt-0 mb-0" aria-hidden="true"></div>
-<div id="communities-search" class="rel-mt-2"
+<div id="communities-search"
   data-invenio-search-config='{{search_app_communities_subcommunities_config(app_id="InvenioSubCommunities.Search", endpoint=search_endpoint) | tojson }}'
-  data-permissions='{{ permissions | tojson }}'>
+  data-permissions='{{ permissions | tojson }}'
+  data-user-anonymous='{{ current_user.is_anonymous | tojson }}'
+  >
 </div>
 {%- endblock page_body %}

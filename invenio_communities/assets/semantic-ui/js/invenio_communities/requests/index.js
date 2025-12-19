@@ -12,6 +12,7 @@ import {
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
   ContribSearchAppFacets,
+  SearchResultsBox,
 } from "@js/invenio_search_ui/components";
 import { overrideStore, parametrize } from "react-overridable";
 import {
@@ -21,7 +22,6 @@ import {
 import {
   RequestsSearchLayout,
   RequestsEmptyResultsWithState,
-  RequestsResults,
 } from "@js/invenio_requests/search";
 
 const domContainer = document.getElementById("communities-request-search-root");
@@ -48,7 +48,7 @@ const defaultComponents = {
   [`${appName}.ResultsList.item`]: RequestsResultsItemTemplateWithCommunity,
   [`${appName}.ResultsGrid.item`]: () => null,
   [`${appName}.SearchApp.layout`]: RequestsSearchLayoutWAppName,
-  [`${appName}.SearchApp.results`]: RequestsResults,
+  [`${appName}.SearchApp.results`]: SearchResultsBox,
   [`${appName}.SearchBar.element`]: RecordSearchBarElement,
   [`${appName}.EmptyResults.element`]: RequestsEmptyResultsWithState,
   ...defaultContribComponents,
