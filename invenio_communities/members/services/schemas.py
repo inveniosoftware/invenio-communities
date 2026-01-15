@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022 CERN.
-# Copyright (C) 2023-2025 Graz University of Technology.
+# Copyright (C) 2023-2026 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -168,14 +168,15 @@ class MemberDumpSchema(PublicDumpSchema):
 
     def is_self(self, obj):
         """Get permission."""
-        if "is_self" not in self.context:
+        if not hasattr(self, "_is_self"):
             current_identity = context_schema.get()["identity"]
-            self.context["is_self"] = (
+            self._is_self = (
                 obj.user_id is not None
                 and current_identity.id is not None
                 and str(obj.user_id) == str(current_identity.id)
             )
-        return self.context["is_self"]
+
+        return self._is_self
 
     def get_current_user(self, obj):
         """Get permission."""
