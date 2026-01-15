@@ -1,7 +1,7 @@
 {# -*- coding: utf-8 -*-
 
   This file is part of Invenio.
-  Copyright (C) 2016-2020 CERN.
+  Copyright (C) 2016-2025 CERN.
   Copyright (C) 2025 Graz University of Technology.
 
   Invenio is free software; you can redistribute it and/or modify it
@@ -21,6 +21,7 @@
         'privileges': (_('Privileges'), url_for('invenio_communities.communities_settings_privileges', pid_value=community_ui['slug'])),
         'submission_policy': (_('Submission policy'), url_for('invenio_communities.communities_settings_submission_policy', pid_value=community_ui['slug'])),
         'pages': (_('Pages'), url_for('invenio_communities.communities_settings_pages', pid_value=community_ui["slug"])),
+        'collections': (_('Collections'), url_for('invenio_communities.communities_settings_collections', pid_value=community_ui["slug"])),
       } %}
       <div class="sixteen wide mobile sixteen wide tablet three wide computer column">
         <div role="tablist" class="ui vertical horizontal mobile tablet menu theme-primary-menu">

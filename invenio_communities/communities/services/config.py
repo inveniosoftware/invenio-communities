@@ -141,6 +141,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "records": CommunityEndpointLink(
             "community-records.search", params=["pid_value"]
         ),
+        "collection_trees": CommunityEndpointLink(
+            "collections.list_trees", params=["pid_value"]
+        ),
         "subcommunities": CommunityEndpointLink(
             "communities.search_subcommunities",
             when=children_allowed,
