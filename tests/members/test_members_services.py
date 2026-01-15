@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022 Northwestern University.
 # Copyright (C) 2022-2024 CERN.
-# Copyright (C) 2022-2023 Graz University of Technology.
+# Copyright (C) 2022-2025 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -1214,7 +1214,7 @@ def test_relation_update_propagation(
 
     # update user
     user_id = member["member"]["id"]
-    user = current_datastore.get_user(user_id)
+    user = current_datastore.get_user_by_id(user_id)
     user.user_profile = {"full_name": "Update test", "affiliations": "CERN"}
     current_datastore.commit()
 
