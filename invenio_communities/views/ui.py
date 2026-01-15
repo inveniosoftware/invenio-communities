@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2024 CERN.
+# Copyright (C) 2016-2025 CERN.
 # Copyright (C) 2023-2024 Graz University of Technology.
 # Copyright (C) 2023 KTH Royal Institute of Technology.
 #
@@ -35,6 +35,7 @@ from .communities import (
     communities_requests,
     communities_search,
     communities_settings,
+    communities_settings_collections,
     communities_settings_pages,
     communities_settings_privileges,
     communities_settings_submission_policy,
@@ -216,6 +217,11 @@ def create_ui_blueprint(app):
     blueprint.add_url_rule(
         routes["settings_pages"],
         view_func=communities_settings_pages,
+    )
+
+    blueprint.add_url_rule(
+        routes["settings_collections"],
+        view_func=communities_settings_collections,
     )
 
     blueprint.add_url_rule(routes["members"], view_func=members)
