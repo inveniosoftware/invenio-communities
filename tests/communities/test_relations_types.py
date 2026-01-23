@@ -7,7 +7,6 @@
 
 """Test communities types relationships."""
 
-
 #
 # Tests
 #
