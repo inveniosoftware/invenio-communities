@@ -7,8 +7,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
-import { Button, Form, Grid, Icon, Message, Divider } from "semantic-ui-react";
-import { AccordionField, FieldLabel, TextField } from "react-invenio-forms";
+import { Button, Form, Grid, Message, Divider } from "semantic-ui-react";
+import { FieldLabel, TextField } from "react-invenio-forms";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { generateSlug } from "../Configs";
 
@@ -25,6 +25,8 @@ const CollectionTreeForm = ({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      validateOnChange={false}
+      validateOnBlur={false}
     >
       {({ isSubmitting, isValid, handleSubmit, ...formik }) => (
         <Form onSubmit={handleSubmit} className="communities-collection-tree">
@@ -44,70 +46,50 @@ const CollectionTreeForm = ({
                 computer={16}
                 className="rel-pb-2"
               >
-                <AccordionField
-                  includesPaths={["title", "slug"]}
-                  label={i18next.t("Basic information")}
-                  active
-                >
-                  <div className="rel-ml-1 rel-mr-1">
-                    <TextField
-                      required
-                      fluid
-                      fieldPath="title"
-                      label={
-                        <FieldLabel
-                          htmlFor="title"
-                          icon="group"
-                          label={i18next.t("Title")}
-                        />
-                      }
-                      onChange={
-                        slugGeneration
-                          ? (event, { value }) => {
-                              formik.setFieldValue("title", value);
-                              formik.setFieldValue("slug", generateSlug(value));
-                            }
-                          : (event, { value }) => {
-                              formik.setFieldValue("title", value);
-                            }
-                      }
+                <TextField
+                  required
+                  fluid
+                  fieldPath="title"
+                  label={
+                    <FieldLabel
+                      htmlFor="title"
+                      icon="group"
+                      label={i18next.t("Title")}
                     />
-                    <TextField
-                      required
-                      fluid
-                      fieldPath="slug"
-                      label={
-                        <FieldLabel
-                          htmlFor="slug"
-                          icon="group"
-                          label={i18next.t("Slug")}
-                        />
-                      }
-                    />
-                  </div>
-                </AccordionField>
+                  }
+                  onChange={
+                    slugGeneration
+                      ? (event, { value }) => {
+                          formik.setFieldValue("title", value);
+                          formik.setFieldValue("slug", generateSlug(value));
+                        }
+                      : (event, { value }) => {
+                          formik.setFieldValue("title", value);
+                        }
+                  }
+                />
+                <TextField
+                  required
+                  fluid
+                  fieldPath="slug"
+                  label={
+                    <FieldLabel htmlFor="slug" icon="group" label={i18next.t("Slug")} />
+                  }
+                />
                 <Divider hidden />
-                <Button
-                  disabled={!isValid || isSubmitting}
-                  loading={isSubmitting}
-                  labelPosition="left"
-                  primary
-                  type="submit"
-                  icon
-                >
-                  <Icon name="save" />
-                  {i18next.t("Save")}
-                </Button>
-                <Button
-                  labelPosition="left"
-                  secondary
-                  type="button"
-                  icon
-                  onClick={handleCancel}
-                >
-                  <Icon name="cancel" />
-                  {i18next.t("Cancel")}
-                </Button>
+                <div className="flex justify-space-between">
+                  <Button type="button" onClick={handleCancel}>
+                    {i18next.t("Cancel")}
+                  </Button>
+                  <Button
+                    disabled={!isValid || isSubmitting}
+                    loading={isSubmitting}
+                    primary
+                    type="submit"
+                  >
+                    {i18next.t("Save")}
+                  </Button>
+                </div>
               </Grid.Column>
             </Grid.Row>
           </Grid>

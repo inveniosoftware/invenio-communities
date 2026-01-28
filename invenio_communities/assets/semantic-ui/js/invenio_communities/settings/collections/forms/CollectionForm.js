@@ -7,8 +7,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
-import { Button, Form, Grid, Icon, Message, Divider } from "semantic-ui-react";
-import { AccordionField, FieldLabel, TextField } from "react-invenio-forms";
+import { Button, Form, Grid, Message, Divider } from "semantic-ui-react";
+import { FieldLabel, TextField } from "react-invenio-forms";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { generateSlug } from "../Configs";
 
@@ -23,12 +23,23 @@ const CollectionForm = ({
   testQueryHits,
   error,
   slugGeneration,
+  community,
+  parentQuery,
 }) => {
+  // Build the full search query including parent query if it exists
+  const buildFullSearchQuery = (currentQuery) => {
+    if (parentQuery && currentQuery) {
+      return `(${parentQuery}) AND (${currentQuery})`;
+    }
+    return currentQuery || parentQuery || "";
+  };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      validateOnChange={false}
+      validateOnBlur={false}
     >
       {({ isSubmitting, isValid, handleSubmit, ...formik }) => (
         <Form onSubmit={handleSubmit} className="communities-collection">
@@ -48,104 +59,90 @@ const CollectionForm = ({
                 computer={16}
                 className="rel-pb-2"
               >
-                <AccordionField
-                  includesPaths={["title", "slug", "search_query", "order"]}
-                  label={i18next.t("Collection information")}
-                  active
-                >
-                  <div className="rel-ml-1 rel-mr-1">
-                    <TextField
-                      required
-                      fluid
-                      fieldPath="title"
-                      label={
-                        <FieldLabel
-                          htmlFor="title"
-                          icon="header"
-                          label={i18next.t("Title")}
-                        />
-                      }
-                      onChange={
-                        slugGeneration
-                          ? (event, { value }) => {
-                              formik.setFieldValue("title", value);
-                              formik.setFieldValue("slug", generateSlug(value));
-                            }
-                          : (event, { value }) => {
-                              formik.setFieldValue("title", value);
-                            }
-                      }
+                <TextField
+                  required
+                  fluid
+                  fieldPath="title"
+                  label={
+                    <FieldLabel
+                      htmlFor="title"
+                      icon="header"
+                      label={i18next.t("Title")}
                     />
-                    <TextField
-                      required
-                      fluid
-                      fieldPath="slug"
-                      label={
-                        <FieldLabel
-                          htmlFor="slug"
-                          icon="linkify"
-                          label={i18next.t("Slug")}
-                        />
-                      }
+                  }
+                  onChange={
+                    slugGeneration
+                      ? (event, { value }) => {
+                          formik.setFieldValue("title", value);
+                          formik.setFieldValue("slug", generateSlug(value));
+                        }
+                      : (event, { value }) => {
+                          formik.setFieldValue("title", value);
+                        }
+                  }
+                />
+                <TextField
+                  required
+                  fluid
+                  fieldPath="slug"
+                  label={
+                    <FieldLabel
+                      htmlFor="slug"
+                      icon="linkify"
+                      label={i18next.t("Slug")}
                     />
-                    <TextField
-                      required
-                      fluid
-                      fieldPath="search_query"
-                      label={
-                        <FieldLabel
-                          htmlFor="search_query"
-                          icon="search"
-                          label={i18next.t("Search Query")}
-                        />
-                      }
+                  }
+                />
+                <TextField
+                  required
+                  fluid
+                  fieldPath="search_query"
+                  label={
+                    <FieldLabel
+                      htmlFor="search_query"
+                      icon="search"
+                      label={i18next.t("Search Query")}
                     />
-                    <TextField
-                      fluid
-                      fieldPath="order"
-                      type="number"
-                      label={
-                        <FieldLabel
-                          htmlFor="order"
-                          icon="sort"
-                          label={i18next.t("Order")}
-                        />
-                      }
+                  }
+                />
+                <TextField
+                  fluid
+                  fieldPath="order"
+                  type="number"
+                  placeholder={i18next.t("Leave empty to add to the end")}
+                  label={
+                    <FieldLabel
+                      htmlFor="order"
+                      icon="sort"
+                      label={i18next.t("Order (optional)")}
                     />
-                  </div>
-                </AccordionField>
+                  }
+                />
                 <Divider hidden />
-                <Button
-                  disabled={!isValid || isSubmitting}
-                  loading={isSubmitting}
-                  labelPosition="left"
-                  primary
-                  type="submit"
-                  icon
-                >
-                  <Icon name="save" />
-                  {i18next.t("Save")}
-                </Button>
-                <Button
-                  primary
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onTest(formik.values);
-                  }}
-                >
-                  {i18next.t("Test Query")}
-                </Button>
-                <Button
-                  labelPosition="left"
-                  secondary
-                  type="button"
-                  icon
-                  onClick={handleCancel}
-                >
-                  <Icon name="cancel" />
-                  {i18next.t("Cancel")}
-                </Button>
+                <div className="flex justify-space-between">
+                  <Button type="button" onClick={handleCancel}>
+                    {i18next.t("Cancel")}
+                  </Button>
+                  <div>
+                    <Button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onTest(formik.values);
+                      }}
+                    >
+                      {i18next.t("Test Query")}
+                    </Button>
+                    <Button
+                      disabled={!isValid || isSubmitting}
+                      loading={isSubmitting}
+                      primary
+                      type="submit"
+                    >
+                      {i18next.t("Save")}
+                    </Button>
+                  </div>
+                </div>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -166,6 +163,23 @@ const CollectionForm = ({
                   ))}
                 </Message.List>
               )}
+              {testQuerySuccess === true && testQueryResult > 0 && community && (
+                <div className="rel-mt-1">
+                  <Button
+                    as="a"
+                    href={`/communities/${
+                      community.slug
+                    }/records?q=${encodeURIComponent(
+                      buildFullSearchQuery(formik.values.search_query)
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    icon="external"
+                    content={i18next.t("View Full Results")}
+                    size="small"
+                  />
+                </div>
+              )}
             </Message>
           )}
         </Form>
@@ -185,6 +199,8 @@ CollectionForm.propTypes = {
   testQueryHits: PropTypes.array,
   error: PropTypes.string,
   slugGeneration: PropTypes.bool,
+  community: PropTypes.object,
+  parentQuery: PropTypes.string,
 };
 
 CollectionForm.defaultProps = {
@@ -193,6 +209,8 @@ CollectionForm.defaultProps = {
   testQueryHits: [],
   error: "",
   slugGeneration: false,
+  community: null,
+  parentQuery: null,
 };
 
 export default CollectionForm;

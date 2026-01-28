@@ -93,18 +93,17 @@ class DeleteCollectionAction extends Component {
             </div>
           )}
         </Modal.Content>
-        <Modal.Actions className="rel-pb-3">
-          <Button
-            negative
-            onClick={this.handleDelete}
-            floated="left"
-            disabled={hasChildren && !cascade}
-          >
-            {i18next.t("Delete")}
-          </Button>
-          <Button secondary onClick={this.props.handleCancel} floated="left">
-            {i18next.t("Cancel")}
-          </Button>
+        <Modal.Actions>
+          <div className="flex justify-space-between">
+            <Button onClick={this.props.handleCancel}>{i18next.t("Cancel")}</Button>
+            <Button
+              negative
+              onClick={this.handleDelete}
+              disabled={hasChildren && !cascade}
+            >
+              {i18next.t("Delete")}
+            </Button>
+          </div>
         </Modal.Actions>
       </>
     );
