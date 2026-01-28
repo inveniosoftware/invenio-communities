@@ -342,3 +342,15 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
+
+# Collections configuration
+COMMUNITIES_COLLECTIONS_MAX_DEPTH = 1
+"""Maximum depth for collection hierarchies.
+
+Depth 0 = root collections
+Depth 1 = children of root
+Depth 2 = grandchildren (not allowed by default)
+
+Setting this to 1 allows 2 levels: root + children only.
+Setting this to 2 would allow 3 levels: root + children + grandchildren.
+"""
