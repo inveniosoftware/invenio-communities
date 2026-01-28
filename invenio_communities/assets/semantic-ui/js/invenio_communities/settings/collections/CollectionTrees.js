@@ -26,13 +26,15 @@ class CollectionTrees extends Component {
   }
 
   render() {
-    const { community } = this.props;
+    const { community, permissions, maxCollectionDepth } = this.props;
 
     return (
       <Overridable id="CollectionTrees" {...this.props}>
         <CollectionTreeCardGroup
           community={community}
-          emptyMessage={i18next.t("There are no collection trees.")}
+          permissions={permissions}
+          maxCollectionDepth={maxCollectionDepth}
+          emptyMessage={i18next.t("There are no categories.")}
         />
       </Overridable>
     );
@@ -42,6 +44,7 @@ class CollectionTrees extends Component {
 CollectionTrees.propTypes = {
   community: PropTypes.object.isRequired,
   permissions: PropTypes.object.isRequired,
+  maxCollectionDepth: PropTypes.number.isRequired,
 };
 
 export default CollectionTrees;

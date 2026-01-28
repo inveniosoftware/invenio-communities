@@ -66,16 +66,16 @@ class DeleteCollectionTreeAction extends Component {
             <div className="rel-mt-2">
               <Message info>
                 <Message.Header>
-                  {i18next.t("This collection tree contains collections")}
+                  {i18next.t("This category contains collections")}
                 </Message.Header>
                 <p>
                   {i18next.t(
-                    "You must check the option below to delete the tree along with all its collections."
+                    "You must check the option below to delete the category along with all its collections."
                   )}
                 </p>
               </Message>
               <Checkbox
-                label={i18next.t("Delete this tree and all its collections")}
+                label={i18next.t("Delete this category and all its collections")}
                 checked={cascade}
                 onChange={this.handleCascadeChange}
               />
@@ -84,7 +84,7 @@ class DeleteCollectionTreeAction extends Component {
                   <Message.Header>{i18next.t("Warning")}</Message.Header>
                   <p>
                     {i18next.t(
-                      "This will permanently delete this collection tree and ALL of its collections. This action cannot be undone."
+                      "This will permanently delete this category and ALL of its collections. This action cannot be undone."
                     )}
                   </p>
                 </Message>
@@ -92,18 +92,17 @@ class DeleteCollectionTreeAction extends Component {
             </div>
           )}
         </Modal.Content>
-        <Modal.Actions className="rel-pb-3">
-          <Button
-            negative
-            onClick={this.handleDelete}
-            floated="left"
-            disabled={hasCollections && !cascade}
-          >
-            {i18next.t("Delete")}
-          </Button>
-          <Button secondary onClick={this.props.handleCancel} floated="left">
-            {i18next.t("Cancel")}
-          </Button>
+        <Modal.Actions>
+          <div className="flex justify-space-between">
+            <Button onClick={this.props.handleCancel}>{i18next.t("Cancel")}</Button>
+            <Button
+              negative
+              onClick={this.handleDelete}
+              disabled={hasCollections && !cascade}
+            >
+              {i18next.t("Delete")}
+            </Button>
+          </div>
         </Modal.Actions>
       </>
     );

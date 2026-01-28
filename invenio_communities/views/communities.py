@@ -478,6 +478,7 @@ def communities_settings_collections(pid_value, community, community_ui):
         community_ui=community_ui,
         community=community,
         permissions=permissions,
+        max_collection_depth=current_app.config.get("COMMUNITIES_COLLECTIONS_MAX_DEPTH", 1),
     )
 
 

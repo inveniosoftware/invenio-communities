@@ -89,7 +89,7 @@ class NewCollectionForm extends Component {
   };
 
   render() {
-    const { slugGeneration } = this.props;
+    const { slugGeneration, community } = this.props;
     const { testQueryResult, testQuerySuccess, testQueryHits, error } = this.state;
 
     return (
@@ -104,6 +104,7 @@ class NewCollectionForm extends Component {
         testQueryHits={testQueryHits}
         error={error}
         slugGeneration={slugGeneration}
+        community={community}
       />
     );
   }
@@ -115,6 +116,7 @@ NewCollectionForm.propTypes = {
   handleCancel: PropTypes.func,
   slugGeneration: PropTypes.bool,
   collectionApi: PropTypes.object.isRequired,
+  community: PropTypes.object,
 };
 
 NewCollectionForm.defaultProps = {
