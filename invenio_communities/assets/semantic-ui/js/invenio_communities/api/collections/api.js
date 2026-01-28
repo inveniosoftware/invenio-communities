@@ -366,4 +366,41 @@ export class CommunityCollectionsApi {
       ...options,
     });
   }
+
+  /**
+   * Batch reorder collection trees.
+   *
+   * @param {object} orderData - Order data with format: { order: [{slug, order}, ...] }
+   * @param {object} options - Custom options
+   */
+  async batch_reorder_trees(orderData, options = {}) {
+    const headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    };
+    const url = `${this.endpoint}/reorder`;
+    return http.post(url, orderData, {
+      headers: headers,
+      ...options,
+    });
+  }
+
+  /**
+   * Batch reorder collections within a tree.
+   *
+   * @param {string} treeSlug - Slug of the collection tree
+   * @param {object} orderData - Order data with format: { order: [{slug, order}, ...] }
+   * @param {object} options - Custom options
+   */
+  async batch_reorder_collections(treeSlug, orderData, options = {}) {
+    const headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    };
+    const url = `${this.endpoint}/${treeSlug}/collections/reorder`;
+    return http.post(url, orderData, {
+      headers: headers,
+      ...options,
+    });
+  }
 }
