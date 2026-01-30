@@ -37,6 +37,7 @@ class CollectionTreeCardGroup extends Component {
       showCollectionTreeFormModal: false,
       showCollectionFormModal: false,
       selectedTreeSlug: null,
+      selectedTreeTitle: null,
       showEditModal: false,
       showDeleteModal: false,
       treeToEdit: null,
@@ -44,6 +45,7 @@ class CollectionTreeCardGroup extends Component {
       showEditCollectionFormModel: false,
       showDeleteCollectionFormModel: false,
       parentCollectionSlug: null,
+      parentCollectionTitle: null,
       parentCollectionQuery: null,
       collectionToDelete: null,
       draggedTreeIndex: null,
@@ -70,7 +72,7 @@ class CollectionTreeCardGroup extends Component {
     this.fetchData(); // Refresh the data
   };
 
-  openChildCollectionModal = (treeSlug, parentSlug) => {
+  openChildCollectionModal = (treeSlug, treeTitle, parentSlug, parentTitle) => {
     // Find the parent collection to get its query
     const collectionTrees = Object.values(this.state.data);
     const tree = collectionTrees.find((t) => t.slug === treeSlug);
@@ -105,7 +107,9 @@ class CollectionTreeCardGroup extends Component {
     this.setState({
       showChildCollectionModal: true,
       selectedTreeSlug: treeSlug,
+      selectedTreeTitle: treeTitle,
       parentCollectionSlug: parentSlug,
+      parentCollectionTitle: parentTitle,
       parentCollectionQuery: parentQuery,
     });
   };
@@ -115,8 +119,10 @@ class CollectionTreeCardGroup extends Component {
     this.setState({
       showChildCollectionModal: false,
       parentCollectionSlug: null,
+      parentCollectionTitle: null,
       parentCollectionQuery: null,
       selectedTreeSlug: null,
+      selectedTreeTitle: null,
     });
   };
 
@@ -267,15 +273,19 @@ class CollectionTreeCardGroup extends Component {
     }
   };
 
-  openCollectionFormModal = (treeId, treeSlug) => {
+  openCollectionFormModal = (treeId, treeSlug, treeTitle) => {
     this.setState({
       showCollectionFormModal: true,
-      selectedTreeSlug: treeSlug,
+      selectedTreeSlug: treeSlug || null,
+      selectedTreeTitle: treeTitle || null,
     });
   };
 
   closeCollectionFormModal = () => {
-    this.setState({ showCollectionFormModal: false });
+    this.setState({
+      showCollectionFormModal: false,
+      selectedTreeTitle: null,
+    });
   };
 
   handleCollectionFormSuccess = () => {
@@ -283,7 +293,7 @@ class CollectionTreeCardGroup extends Component {
     this.fetchData();
   };
 
-  openEditCollectionFormModal = (treeSlug, collection) => {
+  openEditCollectionFormModal = (treeSlug, treeTitle, collection) => {
     // Find the parent collection in the tree to get its query
     const collectionTrees = Object.values(this.state.data);
     const tree = collectionTrees.find((t) => t.slug === treeSlug);
@@ -291,12 +301,15 @@ class CollectionTreeCardGroup extends Component {
       ? this.findParentCollection(tree.collections, collection.slug)
       : null;
     const parentQuery = parentCollection ? parentCollection.search_query : null;
+    const parentTitle = parentCollection ? parentCollection.title : null;
 
     this.setState({
       showEditCollectionFormModel: true,
       selectedTreeSlug: treeSlug,
+      selectedTreeTitle: treeTitle,
       selectedCollectionSlug: collection.slug,
       collectionData: collection,
+      parentCollectionTitle: parentTitle,
       parentCollectionQuery: parentQuery,
     });
   };
@@ -307,7 +320,9 @@ class CollectionTreeCardGroup extends Component {
       showEditCollectionFormModel: false,
       selectedCollectionSlug: null,
       selectedTreeSlug: null,
+      selectedTreeTitle: null,
       collectionData: null,
+      parentCollectionTitle: null,
       parentCollectionQuery: null,
     });
   };
@@ -417,9 +432,8 @@ class CollectionTreeCardGroup extends Component {
       return (
         <div
           key={collectionTree.id}
-          className={`collection-tree-section rel-mb-2 ${
-            isDraggingThis ? "dragging" : ""
-          } ${isDraggedOver ? "drag-over" : ""}`}
+          className={`collection-tree-section rel-mb-2 ${isDraggingThis ? "dragging" : ""
+            } ${isDraggedOver ? "drag-over" : ""}`}
           onDragOver={(e) => this.handleTreeDragOver(e, index)}
         >
           <Grid verticalAlign="middle" className="rel-mb-1">
@@ -449,19 +463,19 @@ class CollectionTreeCardGroup extends Component {
                 positive
                 size="small"
                 onClick={() =>
-                  this.openCollectionFormModal(collectionTree.id, collectionTree.slug)
+                  this.openCollectionFormModal(collectionTree.id, collectionTree.slug, collectionTree.title)
                 }
               >
                 <Icon name="plus" /> {i18next.t("New collection")}
               </Button>
               <Button size="small" onClick={() => this.openEditModal(collectionTree)}>
-                <Icon name="edit" /> {i18next.t("Edit Category")}
+                <Icon name="edit" /> {i18next.t("Edit section")}
               </Button>
               <Button
                 negative
                 size="small"
                 icon="trash"
-                title={i18next.t("Delete Category")}
+                title={i18next.t("Delete section")}
                 onClick={() => this.openDeleteModal(collectionTree)}
               />
             </Grid.Column>
@@ -490,25 +504,24 @@ class CollectionTreeCardGroup extends Component {
   }
 
   render() {
-    const { isLoading, error, data, showCollectionFormModal, selectedTreeSlug } =
+    const { isLoading, error, data, showCollectionFormModal, selectedTreeSlug, selectedTreeTitle } =
       this.state;
     const { emptyMessage, community } = this.props;
-
     return (
       <React.Fragment>
         <Grid>
           <Grid.Row>
             <Grid.Column width={12}>
-              <h2>{i18next.t("Categories")}</h2>
+              <h2>{i18next.t("Collections")}</h2>
               <p className="text-muted">
                 {i18next.t(
-                  "A container of collections with a visible title. Needed to group collections together."
+                  "Collections must be organized into sections"
                 )}
               </p>
             </Grid.Column>
             <Grid.Column width={4} textAlign="right">
               <Button positive onClick={this.openCollectionTreeFormModal}>
-                <Icon name="plus" /> {i18next.t("New category")}
+                <Icon name="plus" /> {i18next.t("New section")}
               </Button>
             </Grid.Column>
           </Grid.Row>
@@ -530,7 +543,11 @@ class CollectionTreeCardGroup extends Component {
           onClose={this.closeCollectionFormModal}
           size="large"
         >
-          <Modal.Header>{i18next.t("Create new collection")}</Modal.Header>
+          <Modal.Header>
+            {selectedTreeTitle
+              ? `${i18next.t("Create new collection in")} ${selectedTreeTitle}`
+              : i18next.t("Create new collection")}
+          </Modal.Header>
           <Modal.Content>
             <NewCollectionForm
               community={community}
@@ -546,7 +563,7 @@ class CollectionTreeCardGroup extends Component {
           onClose={this.closeEditModal}
           size="large"
         >
-          <Modal.Header>{i18next.t("Edit Category")}</Modal.Header>
+          <Modal.Header>{i18next.t("Edit section")}</Modal.Header>
           <Modal.Content>
             {this.state.treeToEdit && (
               <UpdateCollectionTreeForm
@@ -565,7 +582,7 @@ class CollectionTreeCardGroup extends Component {
           onClose={this.closeDeleteModal}
           size="large"
         >
-          <Modal.Header>{i18next.t("Delete Category")}</Modal.Header>
+          <Modal.Header>{i18next.t("Delete section")}</Modal.Header>
           <Modal.Content>
             <DeleteCollectionTreeAction
               community={community}
@@ -575,7 +592,7 @@ class CollectionTreeCardGroup extends Component {
               handleCancel={this.closeDeleteModal}
               collectionApi={this.context.api}
               confirmationMessage={i18next.t(
-                "Are you sure you want to delete this category? This action cannot be undone."
+                "Are you sure you want to delete this section? This action cannot be undone."
               )}
             />
           </Modal.Content>
@@ -586,7 +603,11 @@ class CollectionTreeCardGroup extends Component {
           onClose={this.closeChildCollectionModal}
           size="large"
         >
-          <Modal.Header>{i18next.t("Add Child Collection")}</Modal.Header>
+          <Modal.Header>
+            {this.state.parentCollectionTitle
+              ? `${i18next.t("Add child collection in")} ${this.state.parentCollectionTitle}`
+              : i18next.t("Add child collection")}
+          </Modal.Header>
           <Modal.Content>
             <NewChildCollectionForm
               community={community}
@@ -605,7 +626,13 @@ class CollectionTreeCardGroup extends Component {
           onClose={this.closeEditCollectionFormModal}
           size="large"
         >
-          <Modal.Header>{i18next.t("Edit Collection")}</Modal.Header>
+          <Modal.Header>
+            {this.state.parentCollectionTitle
+              ? `${i18next.t("Edit collection in")} ${this.state.parentCollectionTitle}`
+              : this.state.selectedTreeTitle
+              ? `${i18next.t("Edit collection in")} ${this.state.selectedTreeTitle}`
+              : i18next.t("Edit collection")}
+          </Modal.Header>
           <Modal.Content>
             <UpdateCollectionForm
               community={community}
@@ -647,7 +674,7 @@ class CollectionTreeCardGroup extends Component {
           onClose={this.closeCollectionTreeFormModal}
           size="large"
         >
-          <Modal.Header>{i18next.t("Create new category")}</Modal.Header>
+          <Modal.Header>{i18next.t("Create new section")}</Modal.Header>
           <Modal.Content>
             <NewCollectionTreeForm
               community={community}

@@ -23,7 +23,6 @@ class NewChildCollectionForm extends Component {
       title: "",
       slug: "",
       search_query: "*",
-      order: 1,
     };
   };
 

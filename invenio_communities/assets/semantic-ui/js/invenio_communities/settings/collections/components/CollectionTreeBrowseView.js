@@ -105,7 +105,7 @@ class CollectionTreeBrowseView extends Component {
 
   handleEdit = (collection) => {
     const { onEditCollection, collectionTree } = this.props;
-    onEditCollection(collectionTree.slug, collection);
+    onEditCollection(collectionTree.slug, collectionTree.title, collection);
   };
 
   handleDelete = (collection) => {
@@ -115,7 +115,7 @@ class CollectionTreeBrowseView extends Component {
 
   handleAddChild = (collection) => {
     const { onAddChildCollection, collectionTree } = this.props;
-    onAddChildCollection(collectionTree.slug, collection.slug);
+    onAddChildCollection(collectionTree.slug, collectionTree.title, collection.slug, collection.title);
   };
 
   /**
@@ -232,7 +232,7 @@ class CollectionTreeBrowseView extends Component {
                 <Button
                   positive
                   onClick={() =>
-                    onAddCollection(collectionTree.id, collectionTree.slug)
+                    onAddCollection(collectionTree.id, collectionTree.slug, collectionTree.title)
                   }
                 >
                   <Icon name="plus" /> {i18next.t("New collection")}
@@ -258,7 +258,7 @@ class CollectionTreeBrowseView extends Component {
               <Button
                 positive
                 size="small"
-                onClick={() => onAddCollection(collectionTree.id, collectionTree.slug)}
+                onClick={() => onAddCollection(collectionTree.id, collectionTree.slug, collectionTree.title)}
               >
                 <Icon name="plus" /> {i18next.t("New collection")}
               </Button>
