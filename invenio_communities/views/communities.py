@@ -138,6 +138,7 @@ HEADER_PERMISSIONS = {
 
 PRIVATE_PERMISSIONS = HEADER_PERMISSIONS | {
     "manage_access",
+    "manage_collections",
     "rename",
     "delete",
 }
@@ -469,7 +470,7 @@ def communities_settings_pages(pid_value, community, community_ui):
 def communities_settings_collections(pid_value, community, community_ui):
     """Community settings/collections page."""
     permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
-    if not permissions["can_update"]:
+    if not permissions["can_manage_collections"]:
         raise PermissionDeniedError()
 
     return render_community_theme_template(
@@ -478,7 +479,9 @@ def communities_settings_collections(pid_value, community, community_ui):
         community_ui=community_ui,
         community=community,
         permissions=permissions,
-        max_collection_depth=current_app.config.get("COMMUNITIES_COLLECTIONS_MAX_DEPTH", 1),
+        max_collection_depth=current_app.config.get(
+            "COMMUNITIES_COLLECTIONS_MAX_DEPTH", 1
+        ),
     )
 
 

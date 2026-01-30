@@ -25,7 +25,6 @@ class NewCollectionForm extends Component {
       title: "",
       slug: "",
       search_query: "*",
-      order: 1,
     };
   };
 

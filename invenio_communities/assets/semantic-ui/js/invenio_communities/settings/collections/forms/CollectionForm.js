@@ -105,19 +105,6 @@ const CollectionForm = ({
                     />
                   }
                 />
-                <TextField
-                  fluid
-                  fieldPath="order"
-                  type="number"
-                  placeholder={i18next.t("Leave empty to add to the end")}
-                  label={
-                    <FieldLabel
-                      htmlFor="order"
-                      icon="sort"
-                      label={i18next.t("Order (optional)")}
-                    />
-                  }
-                />
                 <Divider hidden />
                 <div className="flex justify-space-between">
                   <Button type="button" onClick={handleCancel}>
@@ -156,6 +143,11 @@ const CollectionForm = ({
               {testQuerySuccess === true
                 ? i18next.t("Total Hits: ") + testQueryResult
                 : testQueryResult}
+              {testQuerySuccess === true && testQueryHits.length > 0 && (
+                <div className="rel-mb-1">
+                  <em>{i18next.t("Showing")} {testQueryHits.length} {i18next.t("example results")}</em>
+                </div>
+              )}
               {testQuerySuccess === true && (
                 <Message.List>
                   {testQueryHits.map((hit, index) => (

@@ -72,8 +72,10 @@ class IfRestrictedBase(Generator):
             # TODO - when permissions on links are checked, the record is not
             # passes properly, causing below ``record.access`` to fail.
             return self.else_
-        # TODO: Next statement should be made more reusable
-        is_then_value = self.field_getter(record) or self.then_value
+        # Get the field value, using then_value as default only if None
+        # This handles both string and boolean fields correctly
+        field_value = self.field_getter(record)
+        is_then_value = self.then_value if field_value is None else field_value
         return self.then_ if is_then_value == self.then_value else self.else_
 
     def needs(self, record=None, **kwargs):
@@ -424,3 +426,32 @@ class AllowedMemberTypes(Generator):
                 if m not in self.allowed_member_types:
                     return [any_user]
         return []
+
+
+class IfCollectionsEnabled(IfRestrictedBase):
+    """Conditional generator based on collections_enabled field.
+
+    When collections are disabled (False), restricts access to system process only.
+    When collections are enabled (True), allows normal permissions.
+    """
+
+    def __init__(self, then_, else_):
+        """Initialize.
+
+        Args:
+            then_: Generators to use when collections are enabled (True).
+            else_: Generators to use when collections are disabled (False).
+        """
+        field = "collections_enabled"
+        super().__init__(
+            field_getter=lambda r: (
+                getattr(r.access, field, None)
+                if hasattr(r, "access")
+                else r.get("access", {}).get(field)
+            ),
+            field_name=f"access.{field}",
+            then_value=True,  # Collections enabled
+            else_value=False,  # Collections disabled
+            then_=then_,
+            else_=else_,
+        )

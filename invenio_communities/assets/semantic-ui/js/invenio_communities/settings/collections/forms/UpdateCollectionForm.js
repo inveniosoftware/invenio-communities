@@ -26,7 +26,6 @@ class UpdateCollectionForm extends Component {
       title: collectionData.title,
       slug: collectionData.slug,
       search_query: collectionData.search_query,
-      order: collectionData.order,
     };
   };
 
