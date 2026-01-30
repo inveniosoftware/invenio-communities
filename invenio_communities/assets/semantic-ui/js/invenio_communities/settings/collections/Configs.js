@@ -15,7 +15,6 @@ export const COLLECTION_VALIDATION_SCHEMA = Yup.object({
     .required(i18next.t("Slug is required"))
     .max(100, i18next.t("Maximum number of characters is 100")),
   search_query: Yup.string().required(i18next.t("Search query is required")),
-  order: Yup.number(),
 });
 
 export const COLLECTION_TREE_VALIDATION_SCHEMA = Yup.object({

@@ -24,6 +24,7 @@ def test_ui_serializer(app, community, users, any_user):
             "can_include_directly": False,
             "can_update": True,
             "can_submit_record": True,
+            "can_manage_collections": True,
         }
     }
 
@@ -43,6 +44,7 @@ def test_ui_serializer(app, community, users, any_user):
             "can_include_directly": True,
             "can_update": True,
             "can_submit_record": True,
+            "can_manage_collections": True,
         }
     }
 
@@ -59,6 +61,7 @@ def test_ui_serializer(app, community, users, any_user):
             "can_include_directly": False,
             "can_update": False,
             "can_submit_record": True,
+            "can_manage_collections": False,
         }
     }
 

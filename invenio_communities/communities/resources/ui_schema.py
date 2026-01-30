@@ -143,10 +143,14 @@ class UICommunitySchema(BaseObjectSchema):
         can_submit_record = _community_permission_check(
             "submit_record", community=obj, identity=g.identity
         )
+        can_manage_collections = _community_permission_check(
+            "manage_collections", community=obj, identity=g.identity
+        )
         return {
             "can_include_directly": can_include_directly,
             "can_update": can_update,
             "can_submit_record": can_submit_record,
+            "can_manage_collections": can_manage_collections,
         }
 
     @post_dump(pass_original=True)
