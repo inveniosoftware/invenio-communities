@@ -58,6 +58,10 @@
             "closed",
             "members"
           ]
+        },
+        "collections_enabled": {
+          "description": "Whether collections management is enabled for this community.",
+          "type": "boolean"
         }
       }
     },

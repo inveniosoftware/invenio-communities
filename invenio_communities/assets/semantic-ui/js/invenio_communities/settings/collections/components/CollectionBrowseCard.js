@@ -123,13 +123,12 @@ const CollectionBrowseCard = ({
       icon: "edit",
       onClick: () => onEdit(collection),
     },
-    {
+    ...(collection.depth < maxCollectionDepth ? [{
       key: "add-child",
       text: i18next.t("Add Child"),
       icon: "plus",
       onClick: () => onAddChild(collection),
-      disabled: collection.depth >= maxCollectionDepth,
-    },
+    }] : []),
     {
       key: "delete",
       text: i18next.t("Delete"),
@@ -193,7 +192,6 @@ const CollectionBrowseCard = ({
                     icon={option.icon}
                     text={option.text}
                     onClick={option.onClick}
-                    disabled={option.disabled}
                   />
                 ))}
               </Dropdown.Menu>
@@ -222,13 +220,12 @@ const CollectionBrowseCard = ({
                 icon: "edit",
                 onClick: () => onEdit(child),
               },
-              {
+              ...(depth < maxCollectionDepth ? [{
                 key: "add-child",
                 text: i18next.t("Add Child"),
                 icon: "plus",
                 onClick: () => onAddChild(child),
-                disabled: depth >= maxCollectionDepth,
-              },
+              }] : []),
               {
                 key: "delete",
                 text: i18next.t("Delete"),
@@ -305,7 +302,6 @@ const CollectionBrowseCard = ({
                             icon={option.icon}
                             text={option.text}
                             onClick={option.onClick}
-                            disabled={option.disabled}
                           />
                         ))}
                       </Dropdown.Menu>
@@ -425,13 +421,12 @@ const NestedCollectionItem = ({
       icon: "edit",
       onClick: () => onEdit(collection),
     },
-    {
+    ...(depth < maxCollectionDepth ? [{
       key: "add-child",
       text: i18next.t("Add Child"),
       icon: "plus",
       onClick: () => onAddChild(collection),
-      disabled: depth >= maxCollectionDepth,
-    },
+    }] : []),
     {
       key: "delete",
       text: i18next.t("Delete"),
@@ -483,7 +478,6 @@ const NestedCollectionItem = ({
                   icon={option.icon}
                   text={option.text}
                   onClick={option.onClick}
-                  disabled={option.disabled}
                 />
               ))}
             </Dropdown.Menu>

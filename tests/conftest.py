@@ -432,6 +432,7 @@ def minimal_community():
             "visibility": "public",
             "members_visibility": "public",
             "record_submission_policy": "open",
+            "collections_enabled": True,
         },
         "slug": "public",
         "metadata": {
@@ -448,6 +449,7 @@ def minimal_restricted_community_1():
             "visibility": "restricted",
             "members_visibility": "restricted",
             "record_submission_policy": "closed",
+            "collections_enabled": True,
         },
         "slug": "community1",
         "metadata": {
@@ -464,6 +466,7 @@ def minimal_restricted_community_2():
             "visibility": "restricted",
             "members_visibility": "restricted",
             "record_submission_policy": "closed",
+            "collections_enabled": True,
         },
         "slug": "community2",
         "metadata": {
@@ -481,6 +484,7 @@ def full_community():
             "members_visibility": "public",
             "member_policy": "open",
             "record_submission_policy": "open",
+            "collections_enabled": True,
         },
         "slug": "my_community_id",
         "metadata": {

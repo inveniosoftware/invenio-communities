@@ -33,6 +33,7 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     IfCommunityAllowsMembershipRequests,
+    IfCollectionsEnabled,
     IfCommunityDeleted,
     IfRecordSubmissionPolicyClosed,
     IfRestricted,
@@ -62,6 +63,11 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_update = [CommunityOwners(), SystemProcess()]
 
     can_delete = [CommunityOwners(), SystemProcess()]
+
+    can_manage_collections = [
+        CommunityOwners(),
+        SystemProcess()
+    ]
 
     can_purge = [CommunityOwners(), SystemProcess()]
 
