@@ -3,6 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2025 CERN.
 # Copyright (C) 2025 Northwestern University.
+# Copyright (C) 2026 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,9 @@
 """Mock module."""
 
 from flask import Blueprint
+from invenio_administration.views.base import (
+    AdminResourceListView,
+)
 
 
 def create_invenio_app_rdm_communities_blueprint(app):
@@ -41,3 +45,24 @@ def create_community_records_blueprint(app):
     blueprint.add_url_rule("/communities/<pid_value>/records", view_func=search)
 
     return blueprint
+
+
+class RecordAdminListView(AdminResourceListView):
+    """Configuration for the records list view."""
+
+    name = "records"
+    resource_config = "records_resource"
+
+
+class DraftAdminListView(AdminResourceListView):
+    """Configuration for the drafts list view."""
+
+    name = "drafts"
+    resource_config = "records_resource"
+
+
+class UserModerationListView(AdminResourceListView):
+    """User moderation admin search view."""
+
+    name = "moderation"
+    resource_config = "requests_resource"

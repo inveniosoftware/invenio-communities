@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
+# Copyright (C) 2025-2026 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -158,6 +159,11 @@ def extra_entry_points():
         "invenio_base.blueprints": [
             "invenio_app_rdm_communities = tests.mock_module:create_invenio_app_rdm_communities_blueprint",  # noqa
             "invenio_rdm_community_records = tests.mock_module:create_community_records_blueprint",  # noqa
+        ],
+        "invenio_administration.views": [
+            "invenio_app_rdm_records_list = tests.mock_module:RecordAdminListView",
+            "invenio_app_rdm_drafts_list = tests.mock_module:DraftAdminListView",
+            "invenio_requests_user_moderation_list = tests.mock_module:UserModerationListView",
         ],
     }
 
