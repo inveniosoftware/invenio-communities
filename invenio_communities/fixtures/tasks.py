@@ -9,7 +9,6 @@
 
 """Celery tasks for fixtures."""
 
-
 from datetime import datetime, timezone
 from uuid import UUID
 

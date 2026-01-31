@@ -8,7 +8,6 @@
 
 """Tests for the tombstone field and community deletion field."""
 
-
 from datetime import datetime, timezone
 
 import pytest
