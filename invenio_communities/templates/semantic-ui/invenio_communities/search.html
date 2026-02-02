@@ -20,13 +20,14 @@
 <div class="ui container fluid page-subheader-outer compact ml-0-mobile mr-0-mobile">
   <div class="ui container community-search page-subheader flex align-items-center justify-space-between">
     <h1 class="ui large header m-0">{{_("Communities")}}</h1>
-
+    {%- block new_community_button %}
     {% if permissions.can_create %}
       <a class="ui button positive left labeled icon m-0" href="{{ config.COMMUNITIES_ROUTES['new'] }}">
         <i class="plus icon" aria-hidden="true"></i>
         {{ _('New community') }}
       </a>
     {% endif %}
+    {%- endblock new_community_button %}
   </div>
 </div>
 <div id="communities-search" class="rel-mt-2"
