@@ -1,7 +1,7 @@
 ..
     This file is part of Invenio.
     Copyright (C) 2016-2025 CERN.
-    Copyright (C) 2024-2025 Graz University of Technology.
+    Copyright (C) 2024-2026 Graz University of Technology.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -9,6 +9,19 @@
 
 Changes
 =======
+
+Version v23.0.0 (released 2026-02-02)
+
+- fix(tests): remove not existing route
+- fix(tests): add mocks
+- chore(setup): bump dependencies
+- chore(black): update formatting to >= 26.0
+- fix: DeprecationWarning
+- fix: remove RemovedInMarshmallow4Warning
+- fix(chore): DeprecationWarning stdlib
+- refactor: migrate to context_schema
+- refactor(schema): remove usage of object_key
+- fix(black): fix style to meet Black 26 standard
 
 Version v22.0.0 (released 2025-12-12)
 
