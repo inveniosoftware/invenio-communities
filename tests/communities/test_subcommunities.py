@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2024-2025 CERN.
+# Copyright (C) 2026 Graz University of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -211,7 +212,6 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             },
             "comments": f"https://127.0.0.1:5000/api/requests/{request_id}/comments",
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
-            "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
@@ -270,7 +270,6 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "actions": {},
             "comments": f"https://127.0.0.1:5000/api/requests/{request_id}/comments",
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
-            "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
@@ -335,7 +334,6 @@ def test_subcommunity_existing_child_flow(
             },
             "comments": f"https://127.0.0.1:5000/api/requests/{request_id}/comments",
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
-            "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
@@ -384,7 +382,6 @@ def test_subcommunity_existing_child_flow(
             "actions": {},
             "comments": f"https://127.0.0.1:5000/api/requests/{request_id}/comments",
             "self": f"https://127.0.0.1:5000/api/requests/{request_id}",
-            "self_html": f"https://127.0.0.1:5000/requests/{request_id}",
             "timeline": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline",
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
