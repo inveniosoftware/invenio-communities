@@ -11,6 +11,7 @@ import {
   ContribBucketAggregationElement,
   ContribBucketAggregationValuesElement,
   ContribSearchAppFacets,
+  ContribRangeFacetElement,
 } from "@js/invenio_search_ui/components";
 import { overrideStore, parametrize } from "react-overridable";
 import {
@@ -34,6 +35,7 @@ const CommunitiesSearchLayoutConfig = parametrize(CommunitiesSearchLayout, {
 export const defaultComponents = {
   [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
   [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
+  [`${appName}.RangeFacet.element`]: ContribRangeFacetElement,
   [`${appName}.SearchApp.facets`]: ContribSearchAppFacetsWithConfig,
   [`${appName}.ResultsList.item`]: CommunityItem,
   [`${appName}.ResultsGrid.item`]: ResultsGridItemTemplate,
