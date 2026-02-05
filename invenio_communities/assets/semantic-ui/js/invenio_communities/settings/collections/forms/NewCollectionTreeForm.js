@@ -57,19 +57,19 @@ class NewCollectionTreeForm extends Component {
 
       const { message, errors } = communityErrorSerializer(error);
 
-      setSubmitting(false);
-
       if (message) {
         this.setGlobalError(error);
       }
       if (errors) {
-        errors.map(({ field, messages }) => setFieldError(field, messages[0]));
+        errors.forEach(({ field, messages }) => setFieldError(field, messages[0]));
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
   render() {
-    const { slugGeneration } = this.props;
+    const { slugGeneration, onFormReady } = this.props;
     const { error } = this.state;
 
     return (
@@ -80,6 +80,7 @@ class NewCollectionTreeForm extends Component {
         handleCancel={this.props.handleCancel}
         error={error}
         slugGeneration={slugGeneration}
+        onFormReady={onFormReady}
       />
     );
   }
@@ -91,6 +92,7 @@ NewCollectionTreeForm.propTypes = {
   handleCancel: PropTypes.func.isRequired,
   slugGeneration: PropTypes.bool,
   collectionApi: PropTypes.object.isRequired,
+  onFormReady: PropTypes.func,
 };
 
 NewCollectionTreeForm.defaultProps = {

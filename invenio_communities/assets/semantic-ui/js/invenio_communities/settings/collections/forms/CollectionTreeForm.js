@@ -19,6 +19,7 @@ const CollectionTreeForm = ({
   handleCancel,
   error,
   slugGeneration,
+  onFormReady,
 }) => {
   return (
     <Formik
@@ -28,73 +29,69 @@ const CollectionTreeForm = ({
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({ isSubmitting, isValid, handleSubmit, ...formik }) => (
-        <Form onSubmit={handleSubmit} className="communities-collection-tree">
-          <Message hidden={error === ""} negative>
-            <Grid container>
-              <Grid.Column width={15} textAlign="left">
-                <strong>{error}</strong>
-              </Grid.Column>
+      {({ isSubmitting, isValid, handleSubmit, ...formik }) => {
+        // Call onFormReady to expose formik state to parent
+        if (onFormReady) {
+          onFormReady({ isSubmitting, isValid, handleSubmit, handleCancel });
+        }
+        return (
+          <Form onSubmit={handleSubmit} className="communities-collection-tree">
+            <Message hidden={error === ""} negative>
+              <Grid container>
+                <Grid.Column width={15} textAlign="left">
+                  <strong>{error}</strong>
+                </Grid.Column>
+              </Grid>
+            </Message>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column
+                  as="section"
+                  mobile={16}
+                  tablet={16}
+                  computer={16}
+                  className="rel-pb-2"
+                >
+                  <TextField
+                    required
+                    fluid
+                    fieldPath="title"
+                    label={
+                      <FieldLabel
+                        htmlFor="title"
+                        icon="group"
+                        label={i18next.t("Title")}
+                      />
+                    }
+                    onChange={
+                      slugGeneration
+                        ? (event, { value }) => {
+                            formik.setFieldValue("title", value);
+                            formik.setFieldValue("slug", generateSlug(value));
+                          }
+                        : (event, { value }) => {
+                            formik.setFieldValue("title", value);
+                          }
+                    }
+                  />
+                  <TextField
+                    required
+                    fluid
+                    fieldPath="slug"
+                    label={
+                      <FieldLabel
+                        htmlFor="slug"
+                        icon="group"
+                        label={i18next.t("Slug")}
+                      />
+                    }
+                  />
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
-          </Message>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column
-                as="section"
-                mobile={16}
-                tablet={16}
-                computer={16}
-                className="rel-pb-2"
-              >
-                <TextField
-                  required
-                  fluid
-                  fieldPath="title"
-                  label={
-                    <FieldLabel
-                      htmlFor="title"
-                      icon="group"
-                      label={i18next.t("Title")}
-                    />
-                  }
-                  onChange={
-                    slugGeneration
-                      ? (event, { value }) => {
-                          formik.setFieldValue("title", value);
-                          formik.setFieldValue("slug", generateSlug(value));
-                        }
-                      : (event, { value }) => {
-                          formik.setFieldValue("title", value);
-                        }
-                  }
-                />
-                <TextField
-                  required
-                  fluid
-                  fieldPath="slug"
-                  label={
-                    <FieldLabel htmlFor="slug" icon="group" label={i18next.t("Slug")} />
-                  }
-                />
-                <Divider hidden />
-                <div className="flex justify-space-between">
-                  <Button type="button" onClick={handleCancel}>
-                    {i18next.t("Cancel")}
-                  </Button>
-                  <Button
-                    disabled={!isValid || isSubmitting}
-                    loading={isSubmitting}
-                    primary
-                    type="submit"
-                  >
-                    {i18next.t("Save")}
-                  </Button>
-                </div>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Form>
-      )}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
@@ -106,6 +103,7 @@ CollectionTreeForm.propTypes = {
   handleCancel: PropTypes.func.isRequired,
   error: PropTypes.string,
   slugGeneration: PropTypes.bool,
+  onFormReady: PropTypes.func,
 };
 
 CollectionTreeForm.defaultProps = {

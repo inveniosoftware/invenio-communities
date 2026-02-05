@@ -50,7 +50,20 @@ class CollectionTreeCardGroup extends Component {
       collectionToDelete: null,
       draggedTreeIndex: null,
       draggedOverTreeIndex: null,
+      // Formik state for modal actions
+      newTreeFormState: null,
+      editTreeFormState: null,
+      newCollectionFormState: null,
+      newChildCollectionFormState: null,
+      editCollectionFormState: null,
     };
+
+    // Store previous formik state to detect changes
+    this.prevNewTreeFormState = null;
+    this.prevEditTreeFormState = null;
+    this.prevNewCollectionFormState = null;
+    this.prevNewChildCollectionFormState = null;
+    this.prevEditCollectionFormState = null;
   }
   // Open the modal
   openCollectionTreeFormModal = () => {
@@ -174,6 +187,70 @@ class CollectionTreeCardGroup extends Component {
   handleDeleteSuccess = () => {
     this.closeDeleteModal();
     this.fetchData(); // Refresh the collection trees
+  };
+
+  // Formik state handlers for Modal.Actions (only update state when values change)
+  handleNewTreeFormReady = (formState) => {
+    this.newTreeFormSubmit = formState.handleSubmit;
+    if (
+      !this.prevNewTreeFormState ||
+      this.prevNewTreeFormState.isValid !== formState.isValid ||
+      this.prevNewTreeFormState.isSubmitting !== formState.isSubmitting
+    ) {
+      this.prevNewTreeFormState = formState;
+      this.setState({ newTreeFormState: formState });
+    }
+  };
+
+  handleEditTreeFormReady = (formState) => {
+    this.editTreeFormSubmit = formState.handleSubmit;
+    if (
+      !this.prevEditTreeFormState ||
+      this.prevEditTreeFormState.isValid !== formState.isValid ||
+      this.prevEditTreeFormState.isSubmitting !== formState.isSubmitting
+    ) {
+      this.prevEditTreeFormState = formState;
+      this.setState({ editTreeFormState: formState });
+    }
+  };
+
+  handleNewCollectionFormReady = (formState) => {
+    this.newCollectionFormSubmit = formState.handleSubmit;
+    if (
+      !this.prevNewCollectionFormState ||
+      this.prevNewCollectionFormState.isValid !== formState.isValid ||
+      this.prevNewCollectionFormState.isSubmitting !== formState.isSubmitting
+    ) {
+      this.prevNewCollectionFormState = formState;
+      this.setState({ newCollectionFormState: formState });
+    }
+  };
+
+  handleNewChildCollectionFormReady = (formState) => {
+    this.newChildCollectionFormSubmit = formState.handleSubmit;
+    if (
+      !this.prevNewChildCollectionFormState ||
+      this.prevNewChildCollectionFormState.isValid !== formState.isValid ||
+      this.prevNewChildCollectionFormState.isSubmitting !== formState.isSubmitting
+    ) {
+      this.prevNewChildCollectionFormState = formState;
+      this.setState({ newChildCollectionFormState: formState });
+    }
+  };
+
+  handleEditCollectionFormReady = (formState) => {
+    // Store handleSubmit in a ref to avoid re-render issues
+    this.editCollectionFormSubmit = formState.handleSubmit;
+
+    // Only update state when button-relevant values change
+    if (
+      !this.prevEditCollectionFormState ||
+      this.prevEditCollectionFormState.isValid !== formState.isValid ||
+      this.prevEditCollectionFormState.isSubmitting !== formState.isSubmitting
+    ) {
+      this.prevEditCollectionFormState = formState;
+      this.setState({ editCollectionFormState: formState });
+    }
   };
 
   // Handle expand/collapse of collection tree
@@ -432,8 +509,9 @@ class CollectionTreeCardGroup extends Component {
       return (
         <div
           key={collectionTree.id}
-          className={`collection-tree-section rel-mb-2 ${isDraggingThis ? "dragging" : ""
-            } ${isDraggedOver ? "drag-over" : ""}`}
+          className={`collection-tree-section rel-mb-2 ${
+            isDraggingThis ? "dragging" : ""
+          } ${isDraggedOver ? "drag-over" : ""}`}
           onDragOver={(e) => this.handleTreeDragOver(e, index)}
         >
           <Grid verticalAlign="middle" className="rel-mb-1">
@@ -463,7 +541,11 @@ class CollectionTreeCardGroup extends Component {
                 positive
                 size="small"
                 onClick={() =>
-                  this.openCollectionFormModal(collectionTree.id, collectionTree.slug, collectionTree.title)
+                  this.openCollectionFormModal(
+                    collectionTree.id,
+                    collectionTree.slug,
+                    collectionTree.title
+                  )
                 }
               >
                 <Icon name="plus" /> {i18next.t("New collection")}
@@ -504,8 +586,14 @@ class CollectionTreeCardGroup extends Component {
   }
 
   render() {
-    const { isLoading, error, data, showCollectionFormModal, selectedTreeSlug, selectedTreeTitle } =
-      this.state;
+    const {
+      isLoading,
+      error,
+      data,
+      showCollectionFormModal,
+      selectedTreeSlug,
+      selectedTreeTitle,
+    } = this.state;
     const { emptyMessage, community } = this.props;
     return (
       <React.Fragment>
@@ -514,9 +602,7 @@ class CollectionTreeCardGroup extends Component {
             <Grid.Column width={12}>
               <h2>{i18next.t("Collections")}</h2>
               <p className="text-muted">
-                {i18next.t(
-                  "Collections must be organized into sections"
-                )}
+                {i18next.t("Collections must be organized into sections.")}
               </p>
             </Grid.Column>
             <Grid.Column width={4} textAlign="right">
@@ -548,15 +634,37 @@ class CollectionTreeCardGroup extends Component {
               ? `${i18next.t("Create new collection in")} ${selectedTreeTitle}`
               : i18next.t("Create new collection")}
           </Modal.Header>
-          <Modal.Content>
+          <Modal.Content style={{ paddingBottom: 0 }}>
             <NewCollectionForm
               community={community}
               collectionTreeSlug={selectedTreeSlug}
               onSuccess={this.handleCollectionFormSuccess}
               handleCancel={this.closeCollectionFormModal}
               collectionApi={this.context.api}
+              onFormReady={this.handleNewCollectionFormReady}
             />
           </Modal.Content>
+          <Modal.Actions className="flex justify-space-between">
+            <Button onClick={this.closeCollectionFormModal}>
+              {i18next.t("Cancel")}
+            </Button>
+            <Button
+              primary
+              disabled={
+                !this.state.newCollectionFormState?.isValid ||
+                this.state.newCollectionFormState?.isSubmitting
+              }
+              loading={this.state.newCollectionFormState?.isSubmitting}
+              onClick={(e) => {
+                e.preventDefault();
+                if (this.newCollectionFormSubmit) {
+                  this.newCollectionFormSubmit();
+                }
+              }}
+            >
+              {i18next.t("Save")}
+            </Button>
+          </Modal.Actions>
         </Modal>
         <Modal
           open={this.state.showEditModal}
@@ -564,7 +672,7 @@ class CollectionTreeCardGroup extends Component {
           size="large"
         >
           <Modal.Header>{i18next.t("Edit section")}</Modal.Header>
-          <Modal.Content>
+          <Modal.Content style={{ paddingBottom: 0 }}>
             {this.state.treeToEdit && (
               <UpdateCollectionTreeForm
                 community={community}
@@ -572,9 +680,29 @@ class CollectionTreeCardGroup extends Component {
                 onSuccess={this.handleEditSuccess}
                 handleCancel={this.closeEditModal}
                 collectionApi={this.context.api}
+                onFormReady={this.handleEditTreeFormReady}
               />
             )}
           </Modal.Content>
+          <Modal.Actions className="flex justify-space-between">
+            <Button onClick={this.closeEditModal}>{i18next.t("Cancel")}</Button>
+            <Button
+              primary
+              disabled={
+                !this.state.editTreeFormState?.isValid ||
+                this.state.editTreeFormState?.isSubmitting
+              }
+              loading={this.state.editTreeFormState?.isSubmitting}
+              onClick={(e) => {
+                e.preventDefault();
+                if (this.editTreeFormSubmit) {
+                  this.editTreeFormSubmit();
+                }
+              }}
+            >
+              {i18next.t("Save")}
+            </Button>
+          </Modal.Actions>
         </Modal>
         {/* Modal for delete collection tree */}
         <Modal
@@ -605,10 +733,12 @@ class CollectionTreeCardGroup extends Component {
         >
           <Modal.Header>
             {this.state.parentCollectionTitle
-              ? `${i18next.t("Add child collection in")} ${this.state.parentCollectionTitle}`
+              ? `${i18next.t("Add child collection in")} ${
+                  this.state.parentCollectionTitle
+                }`
               : i18next.t("Add child collection")}
           </Modal.Header>
-          <Modal.Content>
+          <Modal.Content style={{ paddingBottom: 0 }}>
             <NewChildCollectionForm
               community={community}
               collectionTreeSlug={this.state.selectedTreeSlug}
@@ -617,8 +747,30 @@ class CollectionTreeCardGroup extends Component {
               onSuccess={this.handleChildCollectionSuccess}
               handleCancel={this.closeChildCollectionModal}
               collectionApi={this.context.api}
+              onFormReady={this.handleNewChildCollectionFormReady}
             />
           </Modal.Content>
+          <Modal.Actions className="flex justify-space-between">
+            <Button onClick={this.closeChildCollectionModal}>
+              {i18next.t("Cancel")}
+            </Button>
+            <Button
+              primary
+              disabled={
+                !this.state.newChildCollectionFormState?.isValid ||
+                this.state.newChildCollectionFormState?.isSubmitting
+              }
+              loading={this.state.newChildCollectionFormState?.isSubmitting}
+              onClick={(e) => {
+                e.preventDefault();
+                if (this.newChildCollectionFormSubmit) {
+                  this.newChildCollectionFormSubmit();
+                }
+              }}
+            >
+              {i18next.t("Save")}
+            </Button>
+          </Modal.Actions>
         </Modal>
         {/* Modal for editing collection form */}
         <Modal
@@ -633,7 +785,7 @@ class CollectionTreeCardGroup extends Component {
               ? `${i18next.t("Edit collection in")} ${this.state.selectedTreeTitle}`
               : i18next.t("Edit collection")}
           </Modal.Header>
-          <Modal.Content>
+          <Modal.Content style={{ paddingBottom: 0 }}>
             <UpdateCollectionForm
               community={community}
               collectionTreeSlug={this.state.selectedTreeSlug}
@@ -643,8 +795,30 @@ class CollectionTreeCardGroup extends Component {
               onSuccess={this.handleEditCollectionFormSuccess}
               handleCancel={this.closeEditCollectionFormModal}
               collectionApi={this.context.api}
+              onFormReady={this.handleEditCollectionFormReady}
             />
           </Modal.Content>
+          <Modal.Actions className="flex justify-space-between">
+            <Button onClick={this.closeEditCollectionFormModal}>
+              {i18next.t("Cancel")}
+            </Button>
+            <Button
+              primary
+              disabled={
+                !this.state.editCollectionFormState?.isValid ||
+                this.state.editCollectionFormState?.isSubmitting
+              }
+              loading={this.state.editCollectionFormState?.isSubmitting}
+              onClick={(e) => {
+                e.preventDefault();
+                if (this.editCollectionFormSubmit) {
+                  this.editCollectionFormSubmit();
+                }
+              }}
+            >
+              {i18next.t("Save")}
+            </Button>
+          </Modal.Actions>
         </Modal>
         {/* Modal for editing collection form */}
         <Modal
@@ -675,15 +849,37 @@ class CollectionTreeCardGroup extends Component {
           size="large"
         >
           <Modal.Header>{i18next.t("Create new section")}</Modal.Header>
-          <Modal.Content>
+          <Modal.Content style={{ paddingBottom: 0 }}>
             <NewCollectionTreeForm
               community={community}
               collectionTree={{}}
               onSuccess={this.handleCollectionTreeFormSuccess}
               handleCancel={this.closeCollectionTreeFormModal}
               collectionApi={this.context.api}
+              onFormReady={this.handleNewTreeFormReady}
             />
           </Modal.Content>
+          <Modal.Actions className="flex justify-space-between">
+            <Button onClick={this.closeCollectionTreeFormModal}>
+              {i18next.t("Cancel")}
+            </Button>
+            <Button
+              primary
+              disabled={
+                !this.state.newTreeFormState?.isValid ||
+                this.state.newTreeFormState?.isSubmitting
+              }
+              loading={this.state.newTreeFormState?.isSubmitting}
+              onClick={(e) => {
+                e.preventDefault();
+                if (this.newTreeFormSubmit) {
+                  this.newTreeFormSubmit();
+                }
+              }}
+            >
+              {i18next.t("Save")}
+            </Button>
+          </Modal.Actions>
         </Modal>
       </React.Fragment>
     );
