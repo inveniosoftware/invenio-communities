@@ -4,10 +4,50 @@
 // Invenio-Communities is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import PropTypes from "prop-types";
 import { Grid, Header, Label, Dropdown, Icon, Container } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
+
+/**
+ * Helper function to generate action menu options for a collection.
+ * @param {Object} collection - The collection object
+ * @param {number} maxCollectionDepth - Maximum allowed collection depth
+ * @param {Function} onEdit - Edit callback
+ * @param {Function} onDelete - Delete callback
+ * @param {Function} onAddChild - Add child callback
+ * @returns {Array} Array of action menu option objects
+ */
+const getActionMenuOptions = (
+  collection,
+  maxCollectionDepth,
+  onEdit,
+  onDelete,
+  onAddChild
+) => [
+  {
+    key: "edit",
+    text: i18next.t("Edit"),
+    icon: "edit",
+    onClick: () => onEdit(collection),
+  },
+  ...(collection.depth < maxCollectionDepth
+    ? [
+        {
+          key: "add-child",
+          text: i18next.t("Add Child"),
+          icon: "plus",
+          onClick: () => onAddChild(collection),
+        },
+      ]
+    : []),
+  {
+    key: "delete",
+    text: i18next.t("Delete"),
+    icon: "trash",
+    onClick: () => onDelete(collection),
+  },
+];
 
 const CollectionBrowseCard = ({
   collection,
@@ -30,9 +70,7 @@ const CollectionBrowseCard = ({
   const [draggedOverChildIndex, setDraggedOverChildIndex] = useState(null);
 
   useEffect(() => {
-    if (collection.children && collection.children.length > 0) {
-      setChildrenOrder(collection.children);
-    }
+    setChildrenOrder(collection.children || []);
   }, [collection.children]);
 
   /**
@@ -43,7 +81,6 @@ const CollectionBrowseCard = ({
   const handleChildDragStart = (e, index) => {
     setDraggedChildIndex(index);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html", e.currentTarget);
   };
 
   /**
@@ -98,44 +135,37 @@ const CollectionBrowseCard = ({
     if (collectionApi && treeSlug) {
       try {
         const orderPayload = {
-          order: items.map((childId, index) => {
-            const child = allCollections[childId];
-            return {
-              slug: child.slug,
-              order: (index + 1) * 10,
-            };
-          }),
+          order: items
+            .map((childId, index) => {
+              const child = allCollections[childId];
+              if (!child) {
+                console.warn(`Child collection with id ${childId} not found`);
+                return null;
+              }
+              return {
+                slug: child.slug,
+                order: (index + 1) * 10,
+              };
+            })
+            .filter(Boolean),
         };
 
         await collectionApi.batch_reorder_collections(treeSlug, orderPayload);
       } catch (error) {
         console.error("Failed to update child collection order:", error);
         // Revert on error
-        setChildrenOrder(collection.children);
+        setChildrenOrder(collection.children || []);
       }
     }
   };
 
-  const actionMenuOptions = [
-    {
-      key: "edit",
-      text: i18next.t("Edit"),
-      icon: "edit",
-      onClick: () => onEdit(collection),
-    },
-    ...(collection.depth < maxCollectionDepth ? [{
-      key: "add-child",
-      text: i18next.t("Add Child"),
-      icon: "plus",
-      onClick: () => onAddChild(collection),
-    }] : []),
-    {
-      key: "delete",
-      text: i18next.t("Delete"),
-      icon: "trash",
-      onClick: () => onDelete(collection),
-    },
-  ];
+  const actionMenuOptions = getActionMenuOptions(
+    collection,
+    maxCollectionDepth,
+    onEdit,
+    onDelete,
+    onAddChild
+  );
 
   const parentCollectionUrl = community
     ? `/communities/${community.slug}/collections/${treeSlug}/${collection.slug}`
@@ -155,6 +185,8 @@ const CollectionBrowseCard = ({
                   draggable
                   onDragStart={(e) => onDragStart(e, dragIndex)}
                   onDragEnd={onDragEnd}
+                  tabIndex={0}
+                  role="button"
                 />
               )}
               {parentCollectionUrl ? (
@@ -200,7 +232,7 @@ const CollectionBrowseCard = ({
         </Grid>
       </div>
 
-      {childrenOrder && childrenOrder.length > 0 && (
+      {childrenOrder.length > 0 && (
         <div className="content">
           {childrenOrder.map((childSlug, index) => {
             const child = allCollections[childSlug];
@@ -213,26 +245,13 @@ const CollectionBrowseCard = ({
               children: childChildren,
             } = child;
 
-            const childActionMenuOptions = [
-              {
-                key: "edit",
-                text: i18next.t("Edit"),
-                icon: "edit",
-                onClick: () => onEdit(child),
-              },
-              ...(depth < maxCollectionDepth ? [{
-                key: "add-child",
-                text: i18next.t("Add Child"),
-                icon: "plus",
-                onClick: () => onAddChild(child),
-              }] : []),
-              {
-                key: "delete",
-                text: i18next.t("Delete"),
-                icon: "trash",
-                onClick: () => onDelete(child),
-              },
-            ];
+            const childActionMenuOptions = getActionMenuOptions(
+              child,
+              maxCollectionDepth,
+              onEdit,
+              onDelete,
+              onAddChild
+            );
 
             const collectionUrl = community
               ? `/communities/${community.slug}/collections/${treeSlug}/${child.slug}`
@@ -259,6 +278,8 @@ const CollectionBrowseCard = ({
                       draggable
                       onDragStart={(e) => handleChildDragStart(e, index)}
                       onDragEnd={handleChildDragEnd}
+                      tabIndex={0}
+                      role="button"
                     />
                     <div className="child-collection-content">
                       {collectionUrl ? (
@@ -381,6 +402,8 @@ CollectionBrowseCard.defaultProps = {
  * Displays collection information with edit/delete/add actions and
  * recursively renders all descendant collections with visual indentation.
  *
+ * Wrapped with React.memo for performance optimization.
+ *
  * @component
  * @param {Object} props - Component props
  * @param {Object} props.collection - The collection to render
@@ -393,125 +416,114 @@ CollectionBrowseCard.defaultProps = {
  * @param {Object} props.community - Community object
  * @param {string} props.treeSlug - Collection tree slug
  */
-const NestedCollectionItem = ({
-  collection,
-  allCollections,
-  onEdit,
-  onDelete,
-  onAddChild,
-  maxCollectionDepth,
-  nestingLevel = 1,
-  community,
-  treeSlug,
-}) => {
-  const { title, num_records: numRecords, depth, children, slug } = collection;
+const NestedCollectionItem = memo(
+  ({
+    collection,
+    allCollections,
+    onEdit,
+    onDelete,
+    onAddChild,
+    maxCollectionDepth,
+    nestingLevel = 1,
+    community,
+    treeSlug,
+  }) => {
+    const { title, num_records: numRecords, depth, children, slug } = collection;
 
-  const [childrenOrder, setChildrenOrder] = useState([]);
+    const [childrenOrder, setChildrenOrder] = useState([]);
 
-  useEffect(() => {
-    if (children && children.length > 0) {
-      setChildrenOrder(children);
-    }
-  }, [children]);
+    useEffect(() => {
+      setChildrenOrder(children || []);
+    }, [children]);
 
-  const actionMenuOptions = [
-    {
-      key: "edit",
-      text: i18next.t("Edit"),
-      icon: "edit",
-      onClick: () => onEdit(collection),
-    },
-    ...(depth < maxCollectionDepth ? [{
-      key: "add-child",
-      text: i18next.t("Add Child"),
-      icon: "plus",
-      onClick: () => onAddChild(collection),
-    }] : []),
-    {
-      key: "delete",
-      text: i18next.t("Delete"),
-      icon: "trash",
-      onClick: () => onDelete(collection),
-    },
-  ];
+    const actionMenuOptions = getActionMenuOptions(
+      collection,
+      maxCollectionDepth,
+      onEdit,
+      onDelete,
+      onAddChild
+    );
 
-  const collectionUrl = community
-    ? `/communities/${community.slug}/collections/${treeSlug}/${slug}`
-    : null;
+    const collectionUrl = community
+      ? `/communities/${community.slug}/collections/${treeSlug}/${slug}`
+      : null;
 
-  return (
-    <div className="nested-collection-item" data-nesting-level={nestingLevel}>
-      <Container className="mb-0 mt-0 collection-child-item">
-        <div className="child-collection-row">
-          <div className="child-collection-content">
-            {collectionUrl ? (
-              <a
-                href={collectionUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="collection-link truncated"
-                title={title}
-              >
-                <Header as="h5" className="truncated">
+    return (
+      <div className="nested-collection-item" data-nesting-level={nestingLevel}>
+        <Container className="mb-0 mt-0 collection-child-item">
+          <div className="child-collection-row">
+            <div className="child-collection-content">
+              {collectionUrl ? (
+                <a
+                  href={collectionUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="collection-link truncated"
+                  title={title}
+                >
+                  <Header as="h5" className="truncated">
+                    {title}
+                  </Header>
+                </a>
+              ) : (
+                <Header as="h5" className="theme-primary-text truncated" title={title}>
                   {title}
                 </Header>
-              </a>
-            ) : (
-              <Header as="h5" className="theme-primary-text truncated" title={title}>
-                {title}
-              </Header>
-            )}
-            <Label size="tiny" className="child-collection-label text-muted ml-1">
-              ({numRecords || 0})
-            </Label>
+              )}
+              <Label size="tiny" className="child-collection-label text-muted ml-1">
+                ({numRecords || 0})
+              </Label>
+            </div>
+            <Dropdown
+              icon="ellipsis vertical"
+              floating
+              button
+              className="child-collection-actions icon mini collection-actions-menu"
+            >
+              <Dropdown.Menu direction="left">
+                {actionMenuOptions.map((option) => (
+                  <Dropdown.Item
+                    key={option.key}
+                    icon={option.icon}
+                    text={option.text}
+                    onClick={option.onClick}
+                  />
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-          <Dropdown
-            icon="ellipsis vertical"
-            floating
-            button
-            className="child-collection-actions icon mini collection-actions-menu"
-          >
-            <Dropdown.Menu direction="left">
-              {actionMenuOptions.map((option) => (
-                <Dropdown.Item
-                  key={option.key}
-                  icon={option.icon}
-                  text={option.text}
-                  onClick={option.onClick}
+        </Container>
+
+        {/* RECURSION: Render this collection's children */}
+        {childrenOrder.length > 0 && (
+          <div className="nested-children">
+            {childrenOrder.map((childSlug) => {
+              const child = allCollections[childSlug];
+              if (!child) return null;
+
+              return (
+                <NestedCollectionItem
+                  key={childSlug}
+                  collection={child}
+                  allCollections={allCollections}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onAddChild={onAddChild}
+                  maxCollectionDepth={maxCollectionDepth}
+                  nestingLevel={nestingLevel + 1}
+                  community={community}
+                  treeSlug={treeSlug}
                 />
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </Container>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
-      {/* RECURSION: Render this collection's children */}
-      {childrenOrder && childrenOrder.length > 0 && (
-        <div className="nested-children">
-          {childrenOrder.map((childSlug) => {
-            const child = allCollections[childSlug];
-            if (!child) return null;
-
-            return (
-              <NestedCollectionItem
-                key={childSlug}
-                collection={child}
-                allCollections={allCollections}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onAddChild={onAddChild}
-                maxCollectionDepth={maxCollectionDepth}
-                nestingLevel={nestingLevel + 1}
-                community={community}
-                treeSlug={treeSlug}
-              />
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-};
+NestedCollectionItem.displayName = "NestedCollectionItem";
 
 NestedCollectionItem.propTypes = {
   collection: PropTypes.object.isRequired,

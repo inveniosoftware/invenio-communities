@@ -56,7 +56,7 @@ class NewCollectionForm extends Component {
     } catch (error) {
       this.setState({
         testQuerySuccess: false,
-        testQueryResult: error.response.data.message,
+        testQueryResult: error.response?.data?.message || "Network error",
       });
     }
   };
@@ -74,13 +74,11 @@ class NewCollectionForm extends Component {
 
       const { message, errors } = communityErrorSerializer(error);
 
-      setSubmitting(false);
-
       if (message) {
         this.setGlobalError(error);
       }
       if (errors) {
-        errors.map(({ field, messages }) => setFieldError(field, messages[0]));
+        errors.forEach(({ field, messages }) => setFieldError(field, messages[0]));
       }
     } finally {
       setSubmitting(false);
@@ -88,7 +86,7 @@ class NewCollectionForm extends Component {
   };
 
   render() {
-    const { slugGeneration, community } = this.props;
+    const { slugGeneration, community, onFormReady } = this.props;
     const { testQueryResult, testQuerySuccess, testQueryHits, error } = this.state;
 
     return (
@@ -104,6 +102,7 @@ class NewCollectionForm extends Component {
         error={error}
         slugGeneration={slugGeneration}
         community={community}
+        onFormReady={onFormReady}
       />
     );
   }
@@ -116,6 +115,7 @@ NewCollectionForm.propTypes = {
   slugGeneration: PropTypes.bool,
   collectionApi: PropTypes.object.isRequired,
   community: PropTypes.object,
+  onFormReady: PropTypes.func,
 };
 
 NewCollectionForm.defaultProps = {

@@ -115,7 +115,12 @@ class CollectionTreeBrowseView extends Component {
 
   handleAddChild = (collection) => {
     const { onAddChildCollection, collectionTree } = this.props;
-    onAddChildCollection(collectionTree.slug, collectionTree.title, collection.slug, collection.title);
+    onAddChildCollection(
+      collectionTree.slug,
+      collectionTree.title,
+      collection.slug,
+      collection.title
+    );
   };
 
   /**
@@ -126,7 +131,6 @@ class CollectionTreeBrowseView extends Component {
   handleDragStart = (e, index) => {
     this.setState({ draggedIndex: index });
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html", e.currentTarget);
   };
 
   /**
@@ -232,7 +236,11 @@ class CollectionTreeBrowseView extends Component {
                 <Button
                   positive
                   onClick={() =>
-                    onAddCollection(collectionTree.id, collectionTree.slug, collectionTree.title)
+                    onAddCollection(
+                      collectionTree.id,
+                      collectionTree.slug,
+                      collectionTree.title
+                    )
                   }
                 >
                   <Icon name="plus" /> {i18next.t("New collection")}
@@ -258,7 +266,13 @@ class CollectionTreeBrowseView extends Component {
               <Button
                 positive
                 size="small"
-                onClick={() => onAddCollection(collectionTree.id, collectionTree.slug, collectionTree.title)}
+                onClick={() =>
+                  onAddCollection(
+                    collectionTree.id,
+                    collectionTree.slug,
+                    collectionTree.title
+                  )
+                }
               >
                 <Icon name="plus" /> {i18next.t("New collection")}
               </Button>
