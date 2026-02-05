@@ -34,7 +34,7 @@ class CollectionTrees extends Component {
           community={community}
           permissions={permissions}
           maxCollectionDepth={maxCollectionDepth}
-          emptyMessage={i18next.t("There are no categories.")}
+          emptyMessage={i18next.t("There are no sections.")}
         />
       </Overridable>
     );
