@@ -91,7 +91,7 @@ class CommunityAccess:
         """
         self.visibility = visibility or VisibilityEnum.PUBLIC
         self.members_visibility = members_visibility or MembersVisibilityEnum.PUBLIC
-        self.member_policy = member_policy or MemberPolicyEnum.OPEN
+        self.member_policy = member_policy or MemberPolicyEnum.CLOSED
         self.record_submission_policy = (
             record_submission_policy
             or current_app.config["COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY"]
