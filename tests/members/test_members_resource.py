@@ -364,9 +364,12 @@ def test_search_invitation(
 #
 
 
-def test_post_membership_requests(app, client, headers, community_id, create_user, db):
+def test_post_membership_requests(
+    app, client, headers, community_open_to_membership_requests, create_user, db
+):
     user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
     client = user.login(client)
+    community_id = str(community_open_to_membership_requests._record.id)
 
     # Post membership request
     r = client.post(
@@ -388,7 +391,7 @@ def test_post_membership_requests(app, client, headers, community_id, create_use
     # Check the request
     r = client.get(url_of_request, headers=headers)
     assert 200 == r.status_code
-    assert 'Request to join "My Community"' in r.json["title"]
+    assert community_id == r.json["receiver"]["community"]
 
     # Check the timeline
     r = client.get(url_of_timeline, headers=headers)

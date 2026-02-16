@@ -14,7 +14,7 @@ from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
 from invenio_cache import current_cache
 from invenio_records_resources.services.errors import PermissionDeniedError
-from invenio_requests.records.api import RequestEvent
+from invenio_requests.records.api import Request, RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
@@ -1162,9 +1162,74 @@ def test_update_invalid_data(member_service, community, group):
 #
 
 
+def test_get_request_id_of_pending_member(
+    member_service,
+    community_open_to_membership_requests,
+    anon_identity,
+    owner,
+    create_user,
+    requests_service,
+    db,
+    clean_index,
+):
+    user = create_user()
+    community = community_open_to_membership_requests
+
+    # Case: anonymous identity - return None
+    request_id = member_service.get_request_id_of_pending_member(
+        anon_identity, community._record.id
+    )
+    assert request_id is None
+
+    # Case: no pending request - return None
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert request_id is None
+
+    # Case: pending membership request - return request id
+    membership_request = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        {"message": "Can I join the club?"},
+    )
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert membership_request.id == str(request_id)
+
+    # Case (sanity check): pending invitation request - return request id
+    requests_service.execute_action(user.identity, membership_request.id, "cancel")
+    data = {
+        "members": [{"type": "user", "id": str(user.id)}],
+        "role": "reader",
+        "message": "Welcome to the club!",
+    }
+    member_service.invite(owner.identity, community._record.id, data)
+    # get invitation_request_id
+    Request.index.refresh()
+    results = requests_service.search(
+        user.identity,
+        receiver={"user": user.id},
+        type="community-invitation",
+    ).to_dict()
+    invitation_request_id = results["hits"]["hits"][0]["id"]
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert invitation_request_id == str(request_id)
+
+    # Case: membership established (associated request id but not pending) - return None
+    requests_service.execute_action(user.identity, invitation_request_id, "accept")
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert request_id is None
+
+
 def test_request_cancel_request_flow(
     member_service,
-    community,
+    community_open_to_membership_requests,
     create_user,
     requests_service,
     db,
@@ -1176,6 +1241,7 @@ def test_request_cancel_request_flow(
     """
     # Create membership request
     user = create_user()
+    community = community_open_to_membership_requests
     data = {
         "message": "Can I join the club?",
     }

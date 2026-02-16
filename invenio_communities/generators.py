@@ -4,7 +4,7 @@
 # Copyright (C) 2016-2024 CERN.
 # Copyright (C) 2021 Graz University of Technology.
 # Copyright (C) 2021 TU Wien.
-# Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022-2026 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -304,11 +304,7 @@ class CommunityRoles(Generator):
         assert community_id, "No community id provided."
         community_id = str(community_id)
 
-        roles = self.roles(**kwargs)
-        if roles:
-            needs = [CommunityRoleNeed(community_id, role) for role in roles]
-            return needs
-        return []
+        return [CommunityRoleNeed(community_id, r) for r in self.roles(**kwargs) or []]
 
     def query_filter(self, identity=None, **kwargs):
         """Filters for current identity as owner."""
