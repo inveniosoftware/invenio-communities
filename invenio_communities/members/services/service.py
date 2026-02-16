@@ -853,3 +853,14 @@ class MemberService(RecordService):
         member = self.record_cls.get_member_by_request(request_id)
         assert member.active is False
         uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+
+    def get_request_id_of_pending_member(self, identity, community_id):
+        """
+        Return request id of invitation/membership request pending for user+community.
+
+        :param cls: Description
+        :param user_id: Description
+        :param community_id: Description
+        :return: UUID: id of active request associated with user and community
+        """
+        return self.record_cls.get_pending_request_id(identity.id, community_id)

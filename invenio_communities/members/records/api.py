@@ -19,7 +19,7 @@ from invenio_records_resources.records.api import Record
 from invenio_records_resources.records.systemfields import IndexField
 from invenio_requests.records.api import Request
 from invenio_users_resources.records.api import GroupAggregate, UserAggregate
-from sqlalchemy import or_
+from sqlalchemy import or_, select
 
 from ..errors import InvalidMemberError
 from .models import ArchivedInvitationModel, MemberModel
@@ -43,10 +43,10 @@ class MemberMixin:
     """The data-layer id of the user (or None)."""
 
     group_id = ModelField("group_id")
-    """The data-layer id of the user (or None)."""
+    """The data-layer id of the group (or None)."""
 
     request_id = ModelField("request_id")
-    """The data-layer id of the user (or None)."""
+    """The data-layer id of the request (or None)."""
 
     role = ModelField("role")
     """The role of the entity."""
@@ -160,6 +160,25 @@ class MemberMixin:
         """Get members of a community."""
         return cls.model_cls.count_members(community_id, role=role)
 
+    @classmethod
+    def get_pending_request_id(cls, user_id, community_id):
+        """
+        Return request id of invitation/membership request pending for user+community.
+
+        :param cls: Description
+        :param user_id: Description
+        :param community_id: Description
+        :return: UUID: id of active request associated with user and community
+        """
+        stmt = (
+            select(cls.model_cls.request_id)
+            .where(cls.model_cls.user_id == user_id)
+            .where(cls.model_cls.community_id == community_id)
+            .where(cls.model_cls.active == False)
+        )
+        request_id = db.session.scalars(stmt).one_or_none()
+        return request_id
+
 
 class Member(Record, MemberMixin):
     """A member/invitation record.
@@ -187,7 +206,10 @@ class Member(Record, MemberMixin):
 
 
 class ArchivedInvitation(Record, MemberMixin):
-    """An archived invitation record.
+    """An archived invitation or membership request record.
+
+    The name is a legacy prior to membership request. Since we don't want to rename the
+    DB model or the document engine index, it is kept.
 
     We are using a record without using the actual JSON document and
     schema validation normally used in a record. The reason for using a record
