@@ -16,10 +16,11 @@ from collections import namedtuple
 from functools import partial, reduce
 from itertools import chain
 
+from flask import current_app
 from flask_principal import UserNeed
 from invenio_access.permissions import any_user, authenticated_user, system_process
 from invenio_records.dictutils import dict_lookup
-from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.generators import ConditionalGenerator, Generator
 from invenio_search.engine import dsl
 
 from .communities.records.systemfields.deletion_status import (
@@ -186,26 +187,6 @@ class IfRecordSubmissionPolicyClosed(IfRestrictedBase):
         )
 
 
-class IfMemberPolicyClosed(IfRestrictedBase):
-    """If member policy is closed."""
-
-    def __init__(self, then_, else_):
-        """Initialize."""
-        field = "member_policy"
-        super().__init__(
-            field_getter=lambda r: (
-                getattr(r.access, field, None)
-                if hasattr(r, "access")
-                else r.get("access", {}).get(field)
-            ),  # needed for running permission check at serialization time and avoid db query
-            field_name=f"access.{field}",
-            then_value="closed",
-            else_value="open",
-            then_=then_,
-            else_=else_,
-        )
-
-
 class IfCommunityDeleted(Generator):
     """Conditional generator for deleted communities."""
 
@@ -263,11 +244,29 @@ class IfCommunityDeleted(Generator):
 #
 
 
-class AuthenticatedButNotCommunityMembers(Generator):
+class IfCommunityAllowsMembershipRequests(ConditionalGenerator):
+    """If community allows membership requests."""
+
+    def _condition(self, record=None, **kwargs):
+        """Condition to choose generators.
+
+        :param record: api.Community
+        """
+        config_enabled = bool(
+            current_app.config.get("COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS")
+        )
+        setting_enabled = record and record.access.member_policy_is_open
+        return config_enabled and setting_enabled
+
+
+class AuthenticatedUserButNotCommunityMember(Generator):
     """Authenticated user not part of community."""
 
     def needs(self, record=None, **kwargs):
-        """Required needs."""
+        """Required needs.
+
+        :param record: api.Community
+        """
         return [authenticated_user]
 
     def excludes(self, record=None, **kwargs):
@@ -276,6 +275,9 @@ class AuthenticatedButNotCommunityMembers(Generator):
         Excludes identities with a role in the community. This assumes all roles at
         this point mean valid memberships. This is the same assumption as
         `CommunityMembers` below.
+
+        :param record: api.Community
+
         """
         if not record:
             return []

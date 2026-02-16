@@ -171,6 +171,11 @@ class CommunityAccess:
         self._member_policy = value
 
     @property
+    def member_policy_is_open(self):
+        """Return true when member policy is open."""
+        return self.member_policy == MemberPolicyEnum.OPEN.value
+
+    @property
     def record_submission_policy(self):
         """Get the record submission policy level."""
         return self._record_submission_policy
