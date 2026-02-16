@@ -25,15 +25,15 @@ from invenio_users_resources.services.permissions import UserManager
 
 from .generators import (
     AllowedMemberTypes,
-    AuthenticatedButNotCommunityMembers,
+    AuthenticatedUserButNotCommunityMember,
     CommunityCurators,
     CommunityManagers,
     CommunityManagersForRole,
     CommunityMembers,
     CommunityOwners,
     CommunitySelfMember,
+    IfCommunityAllowsMembershipRequests,
     IfCommunityDeleted,
-    IfMemberPolicyClosed,
     IfRecordSubmissionPolicyClosed,
     IfRestricted,
     ReviewPolicy,
@@ -187,19 +187,13 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_manage_parent = [Administration(), SystemProcess()]
 
     # request_membership permission is based on configuration, community settings and
-    # identity. Other factors (e.g., previous membership requests) are not under
-    # its purview and are dealt with elsewhere.
+    # identity. At end of the day, it's convenient for this permission to answer
+    # if allowed by also checking if possible at all. In other words, even a superuser
+    # is disallowed if the app config or community setting turned the feature off.
     can_request_membership = [
-        IfConfig(
-            "COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS",
-            then_=[
-                IfMemberPolicyClosed(
-                    then_=[SystemProcess()],
-                    else_=[AuthenticatedButNotCommunityMembers()],
-                ),
-            ],
-            else_=[SystemProcess()],
-        ),
+        IfCommunityAllowsMembershipRequests(
+            then_=[AuthenticatedUserButNotCommunityMember()], else_=[Disable()]
+        )
     ]
 
 
