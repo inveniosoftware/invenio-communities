@@ -1162,6 +1162,38 @@ def test_update_invalid_data(member_service, community, group):
 #
 
 
+def test_request_membership_links(
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    member_service,
+    owner,
+    requests_service,
+):
+    community = community_open_to_membership_requests
+    user = create_user()
+    membership_request = member_service.request_membership(
+        user.identity,
+        community.id,
+        {"message": "Can I join the club?"},
+    )
+
+    # case: requester - user dashboard request view
+    assert (
+        f"https://127.0.0.1:5000/me/requests/{membership_request.id}"
+        == membership_request.links["self_html"]
+    )
+
+    # case: community manager - community dashboard membership request view
+    membership_request_via_owner = requests_service.read(
+        owner.identity, membership_request.id
+    )
+    assert (
+        f"https://127.0.0.1:5000/communities/{community.id}/membership-requests/{membership_request.id}"
+        == membership_request_via_owner.links["self_html"]
+    )
+
+
 def test_get_request_id_of_pending_member(
     member_service,
     community_open_to_membership_requests,
