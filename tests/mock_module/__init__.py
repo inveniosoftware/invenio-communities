@@ -47,6 +47,28 @@ def create_community_records_blueprint(app):
     return blueprint
 
 
+def create_invenio_app_rdm_requests_blueprint(app):
+    """Create fake invenio_app_rdm_requests Blueprint akin to invenio-app-rdm's."""
+    blueprint = Blueprint(
+        "invenio_app_rdm_requests",
+        __name__,
+    )
+
+    @blueprint.route("/me/requests/<uuid:request_pid_value>")
+    def user_dashboard_request_view(request_pid_value):
+        """Fake user_dashboard_request_view."""
+        return "<user dashboard request view>"
+
+    @blueprint.route(
+        "/communities/<pid_value>/membership-requests/<uuid:request_pid_value>"
+    )
+    def community_dashboard_membership_request_view(request_pid_value):
+        """Fake community_dashboard_membership_request_view."""
+        return "<community dashboard membership request view>"
+
+    return blueprint
+
+
 class RecordAdminListView(AdminResourceListView):
     """Configuration for the records list view."""
 

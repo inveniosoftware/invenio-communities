@@ -159,6 +159,7 @@ def extra_entry_points():
         "invenio_base.blueprints": [
             "invenio_app_rdm_communities = tests.mock_module:create_invenio_app_rdm_communities_blueprint",  # noqa
             "invenio_rdm_community_records = tests.mock_module:create_community_records_blueprint",  # noqa
+            "invenio_app_rdm_requests = tests.mock_module:create_invenio_app_rdm_requests_blueprint",  # noqa
         ],
         "invenio_administration.views": [
             "invenio_app_rdm_records_list = tests.mock_module:RecordAdminListView",
