@@ -12,6 +12,7 @@
 from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
 from invenio_notifications.services.uow import NotificationOp
+from invenio_records_resources.services import ConditionalLink, EndpointLink
 from invenio_requests.customizations import RequestType, actions
 
 from invenio_communities.notifications.builders import (
@@ -146,6 +147,21 @@ class CancelMembershipRequestAction(actions.CancelAction):
         super().execute(identity, uow)
 
 
+def is_created_by_current_user(request, vars):
+    """Is created by current user.
+
+    :param request: api.Request
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    id_creator = str(request.created_by.reference_dict.get("user"))
+    id_identity = str(vars["identity"].id)
+    return id_identity == id_creator
+
+
 class MembershipRequestRequestType(RequestType):
     """Request type for membership requests."""
 
@@ -163,3 +179,30 @@ class MembershipRequestRequestType(RequestType):
     allowed_creator_ref_types = ["user"]
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
+
+    links_item = {
+        # This EndpointLink selection logic is better than existing logic for
+        # other RequestTypes' self_html, bc it points to right place depending
+        # on current user. But it may need further improvements down the road
+        # to also depend on the state of the request.
+        "self_html": ConditionalLink(
+            cond=is_created_by_current_user,
+            # if_ -> then_ : change when ConditionalLink is updated
+            if_=EndpointLink(
+                "invenio_app_rdm_requests.user_dashboard_request_view",
+                params=["request_pid_value"],
+                vars=lambda request, vars: vars.update(request_pid_value=request.id),
+            ),
+            else_=EndpointLink(
+                "invenio_app_rdm_requests.community_dashboard_membership_request_view",
+                params=["pid_value", "request_pid_value"],
+                vars=lambda request, vars: (
+                    vars.update(
+                        # The topic for a MembershipRequest holds a CommunityPKProxy
+                        pid_value=request.topic.reference_dict.get("community"),
+                        request_pid_value=request.id,
+                    ),
+                ),
+            ),
+        )
+    }
