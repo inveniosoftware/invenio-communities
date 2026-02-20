@@ -32,7 +32,7 @@ export function RequestMembershipModal(props) {
     try {
       const response = await client.requestMembership(values);
       const linksExtractor = new RequestLinksExtractor(response.data);
-      window.location.href = linksExtractor.userDiscussionUrl;
+      window.location.href = linksExtractor.url("self_html");
     } catch (error) {
       setSubmitting(false);
 

@@ -21,9 +21,4 @@ export class RequestLinksExtractor {
     }
     return urlOfKey;
   }
-
-  get userDiscussionUrl() {
-    const result = this.url("self_html");
-    return result.replace("/requests/", "/me/requests/");
-  }
 }
