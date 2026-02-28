@@ -133,6 +133,7 @@ class CommunityAccessSchema(Schema):
             ]
         )
     )
+    collections_enabled = fields.Boolean()
 
 
 # TODO: Probably this should be the default behavior for all relations

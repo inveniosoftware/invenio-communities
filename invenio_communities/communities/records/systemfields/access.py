@@ -84,10 +84,12 @@ class CommunityAccess:
         member_policy=None,
         record_submission_policy=None,
         review_policy=None,
+        collections_enabled=None,
     ):
         """Create a new CommunityAccess object.
 
         :param visibility: The visibility level.
+        :param collections_enabled: Whether collections management is enabled.
         """
         self.visibility = visibility or VisibilityEnum.PUBLIC
         self.members_visibility = members_visibility or MembersVisibilityEnum.PUBLIC
@@ -97,6 +99,9 @@ class CommunityAccess:
             or current_app.config["COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY"]
         )
         self.review_policy = review_policy or ReviewPolicyEnum.CLOSED
+        self.collections_enabled = (
+            collections_enabled if collections_enabled is not None else True
+        )
         self.errors = []
 
     @classmethod
@@ -202,6 +207,7 @@ class CommunityAccess:
             "member_policy": str(self.member_policy),
             "record_submission_policy": str(self.record_submission_policy),
             "review_policy": str(self.review_policy),
+            "collections_enabled": self.collections_enabled,
         }
 
     def refresh_from_dict(self, access_dict):
@@ -212,6 +218,7 @@ class CommunityAccess:
         self.member_policy = new_access.member_policy
         self.record_submission_policy = new_access.record_submission_policy
         self.review_policy = new_access.review_policy
+        self.collections_enabled = new_access.collections_enabled
 
     @classmethod
     def from_dict(
@@ -231,6 +238,7 @@ class CommunityAccess:
             member_policy=access_dict.get("member_policy"),
             record_submission_policy=access_dict.get("record_submission_policy"),
             review_policy=access_dict.get("review_policy"),
+            collections_enabled=access_dict.get("collections_enabled", True),
         )
         access.errors = errors
         return access
@@ -243,7 +251,8 @@ class CommunityAccess:
             f"members_visibility: {str(self.members_visibility)}, "
             f"member_policy: {str(self.member_policy)}, "
             f"record_submission_policy: {str(self.record_submission_policy)}, "
-            f"review_policy: {str(self.review_policy)})>"
+            f"review_policy: {str(self.review_policy)}, "
+            f"collections_enabled: {self.collections_enabled})>"
         )
 
 
