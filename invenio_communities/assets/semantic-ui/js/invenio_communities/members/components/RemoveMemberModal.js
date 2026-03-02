@@ -26,8 +26,14 @@ class RemoveMemberModal extends Component {
       error: "",
       loading: false,
     };
+  }
 
-    this.contentMap = {
+  static contextType = ModalContext;
+
+  getContentMap = () => {
+    const { member } = this.context;
+
+    return {
       [modalModeEnum.leave]: {
         headerText: i18next.t("Leave community"),
         bodyText: i18next.t("You are about to leave this community."),
@@ -36,14 +42,16 @@ class RemoveMemberModal extends Component {
       },
       [modalModeEnum.remove]: {
         headerText: i18next.t("Remove user"),
-        bodyText: i18next.t("You are about to remove this user from this community."),
+        bodyText: member
+          ? i18next.t("You are about to remove {{name}} from this community.", {
+              name: member.name,
+            })
+          : i18next.t("You are about to remove this user from this community."),
         buttonText: i18next.t("Remove"),
         buttonIcon: "user delete",
       },
     };
-  }
-
-  static contextType = ModalContext;
+  };
 
   onActionHandler = async () => {
     const { modalAction } = this.context;
@@ -69,7 +77,7 @@ class RemoveMemberModal extends Component {
     const { loading, error } = this.state;
     const { modalOpen, modalMode } = this.context;
 
-    const content = this.contentMap[modalMode];
+    const content = this.getContentMap()[modalMode];
 
     return (
       <Overridable
@@ -78,7 +86,7 @@ class RemoveMemberModal extends Component {
         modalMode={modalMode}
         modalAction={this.onActionHandler}
         closeModal={this.onCloseHandler}
-        contentMap={this.contentMap}
+        contentMap={this.getContentMap()}
       >
         <Modal open={modalOpen} role="dialog" aria-label={i18next.t("Remove user")}>
           <Modal.Header>{content?.headerText}</Modal.Header>
