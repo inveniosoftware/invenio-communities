@@ -22,7 +22,9 @@ class IdentityRedisCache(IdentityCache):
         """Initialize the cache."""
         super().__init__(app=app)
         app = app or current_app
-        redis_url = app.config["COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"]
+        redis_url = app.config.get(
+            "COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"
+        ) or app.config.get("CACHE_REDIS_URL")
         prefix = app.config.get("COMMUNITIES_IDENTITIES_CACHE_REDIS_PREFIX", "identity")
         self.cache = RedisCache(host=StrictRedis.from_url(redis_url), key_prefix=prefix)
 
