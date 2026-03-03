@@ -5,6 +5,7 @@
 # Copyright (C) 2021 Graz University of Technology.
 # Copyright (C) 2021 TU Wien.
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2026 CESNET, z.s.p.o.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -17,6 +18,7 @@ from invenio_records_permissions.generators import (
     AuthenticatedUser,
     Disable,
     IfConfig,
+    SameAs,
     SystemProcess,
 )
 from invenio_records_permissions.policies import BasePermissionPolicy
@@ -56,21 +58,25 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # cannot be implemented inside can_read - otherwise permission will
     # kick in before tombstone renders
     can_read_deleted = [
-        IfCommunityDeleted(then_=[UserManager, SystemProcess()], else_=can_read)
+        IfCommunityDeleted(
+            then_=[UserManager, SystemProcess()], else_=SameAs("can_read")
+        )
     ]
 
     can_update = [CommunityOwners(), SystemProcess()]
 
-    can_delete = [CommunityOwners(), SystemProcess()]
+    can_delete = SameAs("can_update")
 
-    can_purge = [CommunityOwners(), SystemProcess()]
+    can_purge = SameAs("can_update")
+
+    can_rename = SameAs("can_update")
 
     can_manage_access = [
-        IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=can_update, else_=[]),
+        IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=SameAs("can_update"), else_=[]),
     ]
 
     can_create_restricted = [
-        IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=can_create, else_=[]),
+        IfConfig("COMMUNITIES_ALLOW_RESTRICTED", then_=SameAs("can_create"), else_=[]),
     ]
 
     can_search = [AnyUser(), SystemProcess()]
@@ -80,8 +86,6 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_search_invites = [CommunityManagers(), SystemProcess()]
 
     can_search_requests = [CommunityManagers(), CommunityCurators(), SystemProcess()]
-
-    can_rename = [CommunityOwners(), SystemProcess()]
 
     can_submit_record = [
         IfRecordSubmissionPolicyClosed(
@@ -151,7 +155,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         SystemProcess(),
     ]
 
-    can_members_bulk_delete = can_members_bulk_update
+    can_members_bulk_delete = SameAs("can_members_bulk_update")
 
     # Ability to update a single membership
     can_members_update = [
@@ -161,16 +165,19 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
     # Ability to delete a single membership
-    can_members_delete = can_members_update
+    can_members_delete = SameAs("can_members_update")
 
     can_invite_owners = [CommunityOwners(), SystemProcess()]
 
     # Abilities for featured communities
     can_featured_search = [AnyUser(), SystemProcess()]
-    can_featured_list = [Administration(), SystemProcess()]
-    can_featured_create = [Administration(), SystemProcess()]
-    can_featured_update = [Administration(), SystemProcess()]
-    can_featured_delete = [Administration(), SystemProcess()]
+
+    featured_managers = [Administration(), SystemProcess()]
+
+    can_featured_list = SameAs("featured_managers")
+    can_featured_create = SameAs("featured_managers")
+    can_featured_update = SameAs("featured_managers")
+    can_featured_delete = SameAs("featured_managers")
 
     # Used to hide at the moment the `is_verified` field. It should be set to
     # correct permissions based on which the field will be exposed only to moderators
@@ -178,7 +185,7 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Permissions to crud community theming
     can_set_theme = [SystemProcess()]
-    can_delete_theme = can_set_theme
+    can_delete_theme = SameAs("can_set_theme")
 
     # Permissions to set if communities can have children
     can_manage_children = [SystemProcess()]
