@@ -217,6 +217,9 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
             "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
         },
+        "files": {
+            "enabled": True,
+        },
     }
 
     # Check the new community
@@ -274,6 +277,9 @@ def test_subcommunity_simple_flow(app, curator, owner, parent_community):
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
             "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
+        },
+        "files": {
+            "enabled": True,
         },
     }
 
@@ -339,6 +345,9 @@ def test_subcommunity_existing_child_flow(
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
             "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
         },
+        "files": {
+            "enabled": True,
+        },
     }
 
     # Accept the request as the parent community owner
@@ -386,6 +395,9 @@ def test_subcommunity_existing_child_flow(
             "timeline_focused": f"https://127.0.0.1:5000/api/requests/{request_id}/timeline_focused",
             "lock": f"https://127.0.0.1:5000/api/requests/{request_id}/lock",
             "unlock": f"https://127.0.0.1:5000/api/requests/{request_id}/unlock",
+        },
+        "files": {
+            "enabled": True,
         },
     }
 
