@@ -91,7 +91,7 @@ class CommunityAccess:
         """
         self.visibility = visibility or VisibilityEnum.PUBLIC
         self.members_visibility = members_visibility or MembersVisibilityEnum.PUBLIC
-        self.member_policy = member_policy or MemberPolicyEnum.OPEN
+        self.member_policy = member_policy or MemberPolicyEnum.CLOSED
         self.record_submission_policy = (
             record_submission_policy
             or current_app.config["COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY"]
@@ -169,6 +169,11 @@ class CommunityAccess:
         if not self.validate_member_policy_level(value):
             raise ValueError(f"Unknown member policy level: {value}")
         self._member_policy = value
+
+    @property
+    def member_policy_is_open(self):
+        """Return true when member policy is open."""
+        return self.member_policy == MemberPolicyEnum.OPEN.value
 
     @property
     def record_submission_policy(self):

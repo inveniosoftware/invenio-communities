@@ -259,4 +259,17 @@ def create_ui_blueprint(app):
 
         return logo_link
 
+    @blueprint.app_context_processor
+    def processor_for_member_button():
+        """Processor for member button related function.
+
+        It unfortunately has to be an app_context_processor simply because a community's
+        records page is not under this blueprint.
+        """
+        return {
+            "get_request_id_of_pending_member": (
+                current_communities.service.members.get_request_id_of_pending_member
+            )
+        }
+
     return blueprint

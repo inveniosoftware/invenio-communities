@@ -530,6 +530,21 @@ def restricted_members_community(community_service, owner, minimal_community, lo
     return c
 
 
+@pytest.fixture(scope="module")
+def community_open_to_membership_requests(
+    community_service, owner, minimal_community, location
+):
+    """A community open to membership requests."""
+    data = deepcopy(minimal_community)
+    data["access"]["member_policy"] = "open"
+    data["metadata"]["title"] = "Community open to membership requests"
+    data["slug"] = "community-open-to-membership-requests"
+    c = community_service.create(owner.identity, data)
+    Community.index.refresh()
+    owner.refresh()
+    return c
+
+
 @pytest.fixture(scope="function")
 def fake_communities(
     community_service,
