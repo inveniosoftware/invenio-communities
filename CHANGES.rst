@@ -10,6 +10,12 @@
 Changes
 =======
 
+Version v23.1.0 (released 2026-03-04)
+
+- feat(facets): register overriden range facet element
+- fix: size error on community image upload doesn't go away after image
+- fix(tests): add files.enabled to subcommunity request
+
 Version v23.0.0 (released 2026-02-02)
 
 - fix(tests): remove not existing route
