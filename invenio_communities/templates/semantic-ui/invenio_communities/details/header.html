@@ -14,25 +14,36 @@
 
 
 {% macro button_for_membership(community_ui) %}
-  {% set request_id_of_pending_member = get_request_id_of_pending_member(g.identity, community_ui.id) %}
-  {# None if no pending membership or invitation request #}
+  {# Macro to display the button related to membership (request or discussion) #}
 
-  {% if request_id_of_pending_member %}
-    <a href="{{ url_for('invenio_app_rdm_requests.user_dashboard_request_view', request_pid_value=request_id_of_pending_member) }}"
-      class="ui button labeled icon rel-mt-1 theme-secondary">
-      <i class="sign-in icon" aria-hidden="true"></i>
-      {{ _("Membership discussion") }}
-    </a>
-  {% elif permissions.can_request_membership %}
-    <div
-      id="request-membership-app"
-      data-community='{{ community_ui | tojson }}'
-      class="display-inline-block"
-    >
-    </div>
-  {% else %}
-    {# show nothing #}
+  {# Ths conditionals try hard to reduce the need for a DB hit #}
+  {% if config.COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS %}
+    {% if community_ui["access"]["member_policy"] == "open" %}
+      {# The below permission check includes the above checks among other checks, so
+         it was not enough on its own to prevent a large swath of cases where the DB
+         could be hit.
+      #}
+      {% if permissions.can_request_membership %}
+        <div
+          id="request-membership-app"
+          data-community='{{ community_ui | tojson }}'
+          class="display-inline-block"
+        >
+        </div>
+      {% else %}
+        {% set request_id_of_pending_member = get_request_id_of_pending_member(g.identity, community_ui["id"]) %}
+        {# None if no pending membership or invitation request #}
+        {% if request_id_of_pending_member %}
+          <a href="{{ url_for('invenio_app_rdm_requests.user_dashboard_request_view', request_pid_value=request_id_of_pending_member) }}"
+            class="ui button labeled icon rel-mt-1 theme-secondary">
+            <i class="sign-in icon" aria-hidden="true"></i>
+            {{ _("Membership discussion") }}
+          </a>
+        {% endif %}
+      {% endif %}
+    {% endif %}
   {% endif %}
+
 {% endmacro %}
 
 {% macro community_title(community_ui) %}
