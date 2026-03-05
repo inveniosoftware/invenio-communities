@@ -24,7 +24,7 @@ export const ManagerMembersResultsContainer = ({
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell width={6}>
+          <Table.HeaderCell width={5}>
             <ManagerMemberBulkActions
               community={community}
               roles={config.roles}
@@ -32,10 +32,11 @@ export const ManagerMembersResultsContainer = ({
               permissions={config.permissions}
             />
           </Table.HeaderCell>
-          <Table.HeaderCell width={3}>{i18next.t("Member since")}</Table.HeaderCell>
-          <Table.HeaderCell width={3}>{i18next.t("Visibility")}</Table.HeaderCell>
-          <Table.HeaderCell width={3}>{i18next.t("Role")}</Table.HeaderCell>
-          <Table.HeaderCell width={1} textAlign="right">
+          <Table.HeaderCell width={2}>{i18next.t("Member since")}</Table.HeaderCell>
+          <Table.HeaderCell width={2}>{i18next.t("Visibility")}</Table.HeaderCell>
+          <Table.HeaderCell width={2}>{i18next.t("Notifications")}</Table.HeaderCell>
+          <Table.HeaderCell width={2}>{i18next.t("Role")}</Table.HeaderCell>
+          <Table.HeaderCell width={2} textAlign="right">
             <InvitationsContextProvider community={community}>
               <InvitationsMembersModalWithSearchKit
                 rolesCanInvite={rolesCanInvite}
