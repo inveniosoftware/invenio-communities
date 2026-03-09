@@ -6,11 +6,6 @@
 
 export { CommunityInvitationsApi } from "./invitations/api";
 export { CommunityApi } from "./CommunityApi";
-export { CommunityCollectionsApi } from "./collections/api";
-export {
-  CollectionsContextProvider,
-  CollectionsContext,
-} from "./collections/CollectionsContextProvider";
 export { CommunityMembersApi } from "./members/api";
 export { GroupsApi } from "./GroupsApi";
 export { UsersApi } from "./UsersApi";
