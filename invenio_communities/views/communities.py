@@ -474,14 +474,12 @@ def communities_settings_collections(pid_value, community, community_ui):
         raise PermissionDeniedError()
 
     return render_community_theme_template(
-        "invenio_communities/details/settings/collections.html",
+        "invenio_collections/collections.html",
         theme=community_ui.get("theme", {}),
         community_ui=community_ui,
         community=community,
         permissions=permissions,
-        max_collection_depth=current_app.config.get(
-            "COMMUNITIES_COLLECTIONS_MAX_DEPTH", 1
-        ),
+        max_collection_depth=current_app.config.get("COLLECTIONS_MAX_DEPTH", 1),
     )
 
 
