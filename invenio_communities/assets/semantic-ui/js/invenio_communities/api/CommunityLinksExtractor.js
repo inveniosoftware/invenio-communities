@@ -36,6 +36,13 @@ export class CommunityLinksExtractor {
     return this.#urls.invitations;
   }
 
+  get collectionTreesUrl() {
+    if (!this.#urls.collection_trees) {
+      throw TypeError("Collection trees link missing from resource.");
+    }
+    return this.#urls.collection_trees;
+  }
+
   url(key) {
     const urlOfKey = this.#urls[key];
     if (!urlOfKey) {

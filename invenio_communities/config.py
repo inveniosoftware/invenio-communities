@@ -33,6 +33,7 @@ COMMUNITIES_ROUTES = {
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
     "settings_submission_policy": "/communities/<pid_value>/settings/submission-policy",
     "settings_pages": "/communities/<pid_value>/settings/pages",
+    "settings_collections": "/communities/<pid_value>/settings/collections",
     "members": "/communities/<pid_value>/members",
     "invitations": "/communities/<pid_value>/invitations",
     "about": "/communities/<pid_value>/about",
@@ -341,3 +342,4 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
+
