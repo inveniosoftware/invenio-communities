@@ -10,6 +10,11 @@
 Changes
 =======
 
+Version v24.0.0 (released 2026-03-10)
+
+- feat(members): add group notifications enable toggle,
+                 breaking change: alembic upgrade, index upgrade
+
 Version v23.1.0 (released 2026-03-04)
 
 - feat(facets): register overriden range facet element
