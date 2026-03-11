@@ -1259,24 +1259,18 @@ def test_get_request_id_of_pending_member(
     assert request_id is None
 
 
-def test_request_cancel_request_flow(
+def test_cancel_membership_request(
     member_service,
     community_open_to_membership_requests,
     create_user,
     requests_service,
     db,
-    search_clear,
+    clean_index,
 ):
-    """Check creation of membership request after first creation closed.
-
-    This tests a temporary business rule that should be revisited later.
-    """
     # Create membership request
     user = create_user()
     community = community_open_to_membership_requests
-    data = {
-        "message": "Can I join the club?",
-    }
+    data = {"message": "Can I join the club?"}
     membership_request = member_service.request_membership(
         user.identity,
         community._record.id,
@@ -1284,12 +1278,12 @@ def test_request_cancel_request_flow(
     )
 
     # Close request - here via cancel
-    request = requests_service.execute_action(
+    requests_service.execute_action(
         user.identity, membership_request.id, "cancel"
     ).to_dict()
 
     # Should be possible to create a new one again
-    membership_request_2 = member_service.request_membership(
+    member_service.request_membership(
         user.identity,
         community._record.id,
         {"message": "Oops didn't mean to cancel. Oh well, I will request again."},
