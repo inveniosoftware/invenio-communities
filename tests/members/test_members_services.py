@@ -14,7 +14,7 @@ from invenio_access.permissions import system_identity
 from invenio_accounts.proxies import current_datastore
 from invenio_cache import current_cache
 from invenio_records_resources.services.errors import PermissionDeniedError
-from invenio_requests.records.api import RequestEvent
+from invenio_requests.records.api import Request, RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
@@ -1162,23 +1162,115 @@ def test_update_invalid_data(member_service, community, group):
 #
 
 
-def test_request_cancel_request_flow(
+def test_request_membership_links(
+    community_open_to_membership_requests,
+    create_user,
+    db,
     member_service,
-    community,
+    owner,
+    requests_service,
+):
+    community = community_open_to_membership_requests
+    user = create_user()
+    membership_request = member_service.request_membership(
+        user.identity,
+        community.id,
+        {"message": "Can I join the club?"},
+    )
+
+    # case: requester - user dashboard request view
+    assert (
+        f"https://127.0.0.1:5000/me/requests/{membership_request.id}"
+        == membership_request.links["self_html"]
+    )
+
+    # case: community manager - community dashboard membership request view
+    membership_request_via_owner = requests_service.read(
+        owner.identity, membership_request.id
+    )
+    assert (
+        f"https://127.0.0.1:5000/communities/{community.id}/membership-requests/{membership_request.id}"
+        == membership_request_via_owner.links["self_html"]
+    )
+
+
+def test_get_request_id_of_pending_member(
+    member_service,
+    community_open_to_membership_requests,
+    anon_identity,
+    owner,
     create_user,
     requests_service,
     db,
-    search_clear,
+    clean_index,
 ):
-    """Check creation of membership request after first creation closed.
+    user = create_user()
+    community = community_open_to_membership_requests
 
-    This tests a temporary business rule that should be revisited later.
-    """
+    # Case: anonymous identity - return None
+    request_id = member_service.get_request_id_of_pending_member(
+        anon_identity, community._record.id
+    )
+    assert request_id is None
+
+    # Case: no pending request - return None
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert request_id is None
+
+    # Case: pending membership request - return request id
+    membership_request = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        {"message": "Can I join the club?"},
+    )
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert membership_request.id == str(request_id)
+
+    # Case (sanity check): pending invitation request - return request id
+    requests_service.execute_action(user.identity, membership_request.id, "cancel")
+    data = {
+        "members": [{"type": "user", "id": str(user.id)}],
+        "role": "reader",
+        "message": "Welcome to the club!",
+    }
+    member_service.invite(owner.identity, community._record.id, data)
+    # get invitation_request_id
+    Request.index.refresh()
+    results = requests_service.search(
+        user.identity,
+        receiver={"user": user.id},
+        type="community-invitation",
+    ).to_dict()
+    invitation_request_id = results["hits"]["hits"][0]["id"]
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert invitation_request_id == str(request_id)
+
+    # Case: membership established (associated request id but not pending) - return None
+    requests_service.execute_action(user.identity, invitation_request_id, "accept")
+    request_id = member_service.get_request_id_of_pending_member(
+        user.identity, community._record.id
+    )
+    assert request_id is None
+
+
+def test_cancel_membership_request(
+    member_service,
+    community_open_to_membership_requests,
+    create_user,
+    requests_service,
+    db,
+    clean_index,
+):
     # Create membership request
     user = create_user()
-    data = {
-        "message": "Can I join the club?",
-    }
+    community = community_open_to_membership_requests
+    data = {"message": "Can I join the club?"}
     membership_request = member_service.request_membership(
         user.identity,
         community._record.id,
@@ -1186,12 +1278,12 @@ def test_request_cancel_request_flow(
     )
 
     # Close request - here via cancel
-    request = requests_service.execute_action(
+    requests_service.execute_action(
         user.identity, membership_request.id, "cancel"
     ).to_dict()
 
     # Should be possible to create a new one again
-    membership_request_2 = member_service.request_membership(
+    member_service.request_membership(
         user.identity,
         community._record.id,
         {"message": "Oops didn't mean to cancel. Oh well, I will request again."},

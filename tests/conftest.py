@@ -159,6 +159,7 @@ def extra_entry_points():
         "invenio_base.blueprints": [
             "invenio_app_rdm_communities = tests.mock_module:create_invenio_app_rdm_communities_blueprint",  # noqa
             "invenio_rdm_community_records = tests.mock_module:create_community_records_blueprint",  # noqa
+            "invenio_app_rdm_requests = tests.mock_module:create_invenio_app_rdm_requests_blueprint",  # noqa
         ],
         "invenio_administration.views": [
             "invenio_app_rdm_records_list = tests.mock_module:RecordAdminListView",
@@ -526,6 +527,21 @@ def restricted_members_community(community_service, owner, minimal_community, lo
     data["access"]["members_visibility"] = "restricted"
     data["slug"] = "members_restricted"
     c = community_service.create(owner.identity, data)
+    owner.refresh()
+    return c
+
+
+@pytest.fixture(scope="module")
+def community_open_to_membership_requests(
+    community_service, owner, minimal_community, location
+):
+    """A community open to membership requests."""
+    data = deepcopy(minimal_community)
+    data["access"]["member_policy"] = "open"
+    data["metadata"]["title"] = "Community open to membership requests"
+    data["slug"] = "community-open-to-membership-requests"
+    c = community_service.create(owner.identity, data)
+    Community.index.refresh()
     owner.refresh()
     return c
 

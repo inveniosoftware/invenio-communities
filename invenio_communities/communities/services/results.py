@@ -105,20 +105,12 @@ class CommunityFeaturedList(CommunityListResult):
 
 
 class CommunityItem(RecordItem):
-    """Single request result."""
+    """Single Community result.
 
-    @property
-    def links(self):
-        """Get links for this result item."""
-        return self._links_tpl.expand(self._identity, self._record)
-
-    def to_dict(self):
-        """Get a dictionary for the community."""
-        res = self.data
-        if self._errors:
-            res["errors"] = self._errors
-        return res
+    Kept for legacy reasons and availability in the future. Would be happy
+    to remove though.
+    """
 
 
 class FeaturedCommunityItem(CommunityItem):
-    """Single request result."""
+    """Single Featured Community result."""
