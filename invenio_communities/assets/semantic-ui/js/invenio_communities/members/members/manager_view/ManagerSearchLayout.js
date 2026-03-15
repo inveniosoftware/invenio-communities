@@ -15,6 +15,7 @@ import { SearchFilters } from "@js/invenio_search_ui/components";
 import { SearchBar, Sort } from "react-searchkit";
 import { InvitationsContextProvider } from "../../../api/invitations/InvitationsContextProvider";
 import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitationsModal/InvitationsMembersModal";
+import Overridable from "react-overridable";
 
 export class ManagerSearchLayout extends Component {
   render() {
@@ -29,11 +30,18 @@ export class ManagerSearchLayout extends Component {
           <div>
             <div className="mobile only rel-mb-1">
               <InvitationsContextProvider community={community}>
-                <InvitationsMembersModalWithSearchKit
+                <Overridable
+                  id="InvenioCommunities.CommunityMembersSearch.ManagerSearchLayout.InvitationsModal"
                   rolesCanInvite={rolesCanInvite}
                   groupsEnabled={groupsEnabled}
                   community={community}
-                />
+                >
+                  <InvitationsMembersModalWithSearchKit
+                    rolesCanInvite={rolesCanInvite}
+                    groupsEnabled={groupsEnabled}
+                    community={community}
+                  />
+                </Overridable>
               </InvitationsContextProvider>
             </div>
             <SearchBar fluid />
@@ -42,11 +50,18 @@ export class ManagerSearchLayout extends Component {
           <div className="flex align-items-center column-mobile">
             <div className="tablet only">
               <InvitationsContextProvider community={community}>
-                <InvitationsMembersModalWithSearchKit
+                <Overridable
+                  id="InvenioCommunities.CommunityMembersSearch.ManagerSearchLayout.InvitationsModal"
                   rolesCanInvite={rolesCanInvite}
                   groupsEnabled={groupsEnabled}
                   community={community}
-                />
+                >
+                  <InvitationsMembersModalWithSearchKit
+                    rolesCanInvite={rolesCanInvite}
+                    groupsEnabled={groupsEnabled}
+                    community={community}
+                  />
+                </Overridable>
               </InvitationsContextProvider>
             </div>
 
