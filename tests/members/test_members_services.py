@@ -665,6 +665,15 @@ def test_leave_owner_allowed(member_service, community, owner, group, db):
     data = {"members": [{"type": "user", "id": str(owner.id)}]}
     assert member_service.delete(owner.identity, community._record.id, data)
 
+    # the leave operation above removes the original owner of the community,
+    # which is a module-level fixture. To avoid side-effects on other tests,
+    # we re-add the owner here.
+    data = {
+        "members": [{"type": "user", "id": str(owner.id)}],
+        "role": "owner",
+    }
+    member_service.add(system_identity, community._record.id, data)
+
 
 #
 # Delete members
