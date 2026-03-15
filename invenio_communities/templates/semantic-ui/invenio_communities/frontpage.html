@@ -32,6 +32,7 @@
         </p>
       </div>
     </div>
+    {%- block searchbar %}
     <div class="two column stackable row">
       <div class="eight wide tablet five wide computer column mt-auto mb-auto">
         <form action="{{ url_for('invenio_communities.communities_search') }}" class="ui form">
@@ -62,10 +63,12 @@
         </div>
       {% endif %}
     </div>
+    {%- endblock searchbar %}
     <div class="ui divider hidden"></div>
   </div>
 </div>
 <div class="ui container communities-frontpage rel-mt-3 rel-mb-2">
+  {%- block user_communities %}
   {% if current_user.is_authenticated %}
     <div class="flex">
       <h2 class="ui header mb-0 align-self-center">{{_('My communities')}}</h2>
@@ -76,6 +79,8 @@
     <div class="ui divider hidden"></div>
     <div id="user-communities" class="rel-mb-2"></div>
   {% endif %}
+  {%- endblock user_communities %}
+  {%- block new_communities %}
   <div class="ui divider"></div>
   <div class="flex">
     <h2 class="ui header mb-0 align-self-center">{{ _('New communities') }}</h2>
@@ -85,5 +90,6 @@
   </div>
   <div class="ui divider hidden"></div>
   <div id="new-communities"></div>
+  {%- endblock new_communities %}
 </div>
 {%- endblock page_body %}
