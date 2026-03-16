@@ -203,6 +203,19 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     ]
 
 
+class CollectionsPermissionPolicy(BasePermissionPolicy):
+    """Permission policy for invenio-collections (set via COLLECTIONS_PERMISSION_POLICY).
+
+    Uses ``namespace_id`` (a community UUID) instead of a full community record,
+    so generators only need the UUID already stored on the collection tree.
+    """
+
+    can_read = [AnyUser(), SystemProcess()]
+    
+
+    can_manage_collections = [CommunityOwners(), SystemProcess()]
+
+
 def can_perform_action(community, context):
     """Check if the given action is available on the request."""
     action = context.get("action")

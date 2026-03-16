@@ -72,7 +72,7 @@ class InvenioCommunities(object):
         Override configuration variables with the values in this package.
         """
         for k in dir(config):
-            if k.startswith("COMMUNITIES_"):
+            if k.startswith("COMMUNITIES_") or k.startswith("COLLECTIONS_"):
                 app.config.setdefault(k, getattr(config, k))
 
         self.roles_registry = RoleRegistry(app.config["COMMUNITIES_ROLES"])
