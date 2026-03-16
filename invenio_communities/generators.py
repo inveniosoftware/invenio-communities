@@ -298,10 +298,10 @@ class CommunityRoles(Generator):
         """Communities."""
         raise NotImplementedError
 
-    def needs(self, record=None, community_id=None, **kwargs):
+    def needs(self, record=None, community_id=None, namespace_id=None, **kwargs):
         """Enabling Needs."""
         if community_id is None:
-            community_id = record.id
+            community_id = namespace_id or (record.id if record is not None else None)
 
         assert community_id, "No community id provided."
         community_id = str(community_id)
