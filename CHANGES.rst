@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v24.0.1 (released 2026-03-17)
+
+- fix(alembic): correct `down_revision` of group notifications migration
+
 Version v24.0.0 (released 2026-03-10)
 
 - feat(members): add group notifications enable toggle,
