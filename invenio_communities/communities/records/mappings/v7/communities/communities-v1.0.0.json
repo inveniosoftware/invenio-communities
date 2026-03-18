@@ -106,9 +106,6 @@
           },
           "review_policy": {
             "type": "keyword"
-          },
-          "collections_enabled": {
-            "type": "boolean"
           }
         }
       },

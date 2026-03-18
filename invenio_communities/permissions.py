@@ -33,7 +33,6 @@ from .generators import (
     CommunityOwners,
     CommunitySelfMember,
     IfCommunityAllowsMembershipRequests,
-    IfCollectionsEnabled,
     IfCommunityDeleted,
     IfRecordSubmissionPolicyClosed,
     IfRestricted,
@@ -66,7 +65,8 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_manage_collections = [
         CommunityOwners(),
-        SystemProcess()
+        CommunityManagers(),
+        SystemProcess(),
     ]
 
     can_purge = [CommunityOwners(), SystemProcess()]
@@ -201,19 +201,6 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
             then_=[AuthenticatedUserButNotCommunityMember()], else_=[Disable()]
         )
     ]
-
-
-class CollectionsPermissionPolicy(BasePermissionPolicy):
-    """Permission policy for invenio-collections (set via COLLECTIONS_PERMISSION_POLICY).
-
-    Uses ``namespace_id`` (a community UUID) instead of a full community record,
-    so generators only need the UUID already stored on the collection tree.
-    """
-
-    can_read = [AnyUser(), SystemProcess()]
-    
-
-    can_manage_collections = [CommunityOwners(), SystemProcess()]
 
 
 def can_perform_action(community, context):

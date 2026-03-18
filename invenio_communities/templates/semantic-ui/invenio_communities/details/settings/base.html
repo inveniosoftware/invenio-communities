@@ -1,7 +1,7 @@
 {# -*- coding: utf-8 -*-
 
   This file is part of Invenio.
-  Copyright (C) 2016-2025 CERN.
+  Copyright (C) 2016-2026 CERN.
   Copyright (C) 2025 Graz University of Technology.
 
   Invenio is free software; you can redistribute it and/or modify it
@@ -26,7 +26,9 @@
       <div class="sixteen wide mobile sixteen wide tablet three wide computer column">
         <div role="tablist" class="ui vertical horizontal mobile tablet menu theme-primary-menu">
           {% for menu_key, (menu_item, menu_link) in menu_items.items() %}
-            {% if not (menu_key == 'privileges' and not permissions.can_manage_access) and not (menu_key == 'collections' and not permissions.can_manage_collections) %}
+            {% set hide_privileges = menu_key == 'privileges' and not permissions.can_manage_access %}
+            {% set hide_collections = menu_key == 'collections' and not permissions.can_manage_collections %}
+            {% if not hide_privileges and not hide_collections %}
               <a
                 role="tab"
                 id="{{ menu_key }}"
