@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v25.0.0 (released 2026-03-18)
+
+- change(setup): upgrade invenio-vocabularies, invenio-jobs
+
 Version v24.0.1 (released 2026-03-17)
 
 - fix(alembic): correct `down_revision` of group notifications migration
