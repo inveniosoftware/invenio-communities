@@ -71,8 +71,12 @@ class InvenioCommunities(object):
 
         Override configuration variables with the values in this package.
         """
+        supported_configurations = [
+            "COLLECTIONS_PERMISSION_POLICY",
+        ]
+
         for k in dir(config):
-            if k.startswith("COMMUNITIES_") or k.startswith("COLLECTIONS_"):
+            if k.startswith("COMMUNITIES_") or k in supported_configurations:
                 app.config.setdefault(k, getattr(config, k))
 
         self.roles_registry = RoleRegistry(app.config["COMMUNITIES_ROLES"])

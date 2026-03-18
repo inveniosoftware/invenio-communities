@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2025 CERN.
+# Copyright (C) 2016-2026 CERN.
 # Copyright (C) 2023-2025 Graz University of Technology.
 # Copyright (C) 2024 KTH Royal Institute of Technology.
 #
@@ -474,12 +474,12 @@ def communities_settings_collections(pid_value, community, community_ui):
         raise PermissionDeniedError()
 
     return render_community_theme_template(
-        "invenio_collections/collections.html",
+        "invenio_communities/details/settings/collections.html",
         theme=community_ui.get("theme", {}),
         community_ui=community_ui,
         community=community,
         permissions=permissions,
-        max_collection_depth=current_app.config.get("COLLECTIONS_MAX_DEPTH", 1),
+        max_collection_depth=current_app.config["COLLECTIONS_MAX_DEPTH"],
     )
 
 

@@ -424,32 +424,3 @@ class AllowedMemberTypes(Generator):
                 if m not in self.allowed_member_types:
                     return [any_user]
         return []
-
-
-class IfCollectionsEnabled(IfRestrictedBase):
-    """Conditional generator based on collections_enabled field.
-
-    When collections are disabled (False), restricts access to system process only.
-    When collections are enabled (True), allows normal permissions.
-    """
-
-    def __init__(self, then_, else_):
-        """Initialize.
-
-        Args:
-            then_: Generators to use when collections are enabled (True).
-            else_: Generators to use when collections are disabled (False).
-        """
-        field = "collections_enabled"
-        super().__init__(
-            field_getter=lambda r: (
-                getattr(r.access, field, None)
-                if hasattr(r, "access")
-                else r.get("access", {}).get(field)
-            ),
-            field_name=f"access.{field}",
-            then_value=True,  # Collections enabled
-            else_value=False,  # Collections disabled
-            then_=then_,
-            else_=else_,
-        )

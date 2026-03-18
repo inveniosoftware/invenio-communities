@@ -18,9 +18,9 @@ from invenio_communities.communities.records.systemfields.access import (
     RecordSubmissionPolicyEnum,
 )
 from invenio_communities.communities.services import facets
-from invenio_communities.permissions import CollectionsPermissionPolicy
+from invenio_communities.permissions import CommunityPermissionPolicy
 
-COLLECTIONS_PERMISSION_POLICY = CollectionsPermissionPolicy
+COLLECTIONS_PERMISSION_POLICY = CommunityPermissionPolicy
 """Permission policy used by invenio-collections for managing collection trees."""
 
 COMMUNITIES_ROUTES = {
