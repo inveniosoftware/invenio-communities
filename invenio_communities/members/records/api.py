@@ -22,15 +22,17 @@ from invenio_users_resources.records.api import GroupAggregate, UserAggregate
 from sqlalchemy import or_, select
 
 from ..errors import InvalidMemberError
+from .dumpers import RequestTypeDumperExt
 from .models import ArchivedInvitationModel, MemberModel
 
 relations_dumper = SearchDumper(
     extensions=[
         RelationDumperExt("relations"),
+        RequestTypeDumperExt(),
         IndexedAtDumperExt(),
     ]
 )
-"""Relations dumper for members and archived invitations."""
+"""Relations dumper for members and archived member requests."""
 
 
 class MemberMixin:
@@ -88,9 +90,12 @@ class MemberMixin:
             Request,
             "request_id",
             "request",
-            attrs=["status", "expires_at", "is_open"],
+            attrs=["status", "expires_at", "is_open", "type"],
         ),
     )
+
+    index = IndexField("communitymembers")
+    """Alias used to search across all community members' indices."""
 
     @classmethod
     def get_memberships_from_group_ids(cls, identity, group_ids):
@@ -207,11 +212,8 @@ class Member(Record, MemberMixin):
     """The ES index used."""
 
 
-class ArchivedInvitation(Record, MemberMixin):
+class ArchivedMemberRequest(Record, MemberMixin):
     """An archived invitation or membership request record.
-
-    The name is a legacy prior to membership request. Since we don't want to rename the
-    DB model or the document engine index, it is kept.
 
     We are using a record without using the actual JSON document and
     schema validation normally used in a record. The reason for using a record
@@ -220,6 +222,11 @@ class ArchivedInvitation(Record, MemberMixin):
     """
 
     model_cls = ArchivedInvitationModel
+    """The DB model used.
+
+    The name is a legacy prior to membership request. It is kept so as to not have to
+    rename the table (and all implications).
+    """
 
     # Needs to be here instead of on MemberMixin to overwrite Record.dumper
     dumper = relations_dumper
@@ -229,10 +236,13 @@ class ArchivedInvitation(Record, MemberMixin):
     metadata = None
 
     index = IndexField(
-        "communitymembers-archivedinvitations-archivedinvitation-v1.0.0",
-        search_alias="communitymembers",
+        "communitymembers-archivedinvitations-archivedinvitation-v1.0.0"
     )
-    """The ES index used."""
+    """The document index used.
+
+    The name is a legacy prior to membership request. It is kept so as to not have to
+    rename the index (and all implications).
+    """
 
     @classmethod
     def create_from_member(cls, member):
@@ -241,3 +251,7 @@ class ArchivedInvitation(Record, MemberMixin):
             record = cls({}, model=cls.model_cls.from_member_model(member.model))
             db.session.add(record.model)
         return record
+
+
+ArchivedInvitation = ArchivedMemberRequest
+"""Legacy name kept around just in case. Could be removed eventually."""
