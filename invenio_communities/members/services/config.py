@@ -22,7 +22,7 @@ from invenio_records_resources.services.records.queryparser import (
 from ...communities.records.api import Community
 from ...permissions import CommunityPermissionPolicy
 from ..records import Member
-from ..records.api import ArchivedInvitation
+from ..records.api import ArchivedMemberRequest
 from . import facets
 from .components import CommunityMemberCachingComponent
 from .schemas import MemberEntitySchema
@@ -168,7 +168,7 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     indexer_queue_name = "members"
     relations = {"users": ["user"]}
 
-    archive_cls = ArchivedInvitation
+    archive_cls = ArchivedMemberRequest
     archive_indexer_cls = RecordServiceConfig.indexer_cls
     archive_indexer_queue_name = "archived-invitations"
 

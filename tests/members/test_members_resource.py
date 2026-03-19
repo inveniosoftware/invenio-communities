@@ -321,9 +321,9 @@ def test_search_public(
 
 
 def test_search_invitation(
+def test_search_invitations(
     client, headers, community_id, owner, invite_user, db, clean_index
 ):
-    """Search invitations."""
     client = owner.login(client)
     r = client.get(
         f"/communities/{community_id}/invitations",
