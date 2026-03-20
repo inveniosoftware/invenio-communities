@@ -58,7 +58,7 @@ class CommunitiesRelationManager:
     # API
     #
     def add(self, community_or_id, request=None, default=False):
-        """Add a record to a community.
+        """Add a record (parent) to a community.
 
         If a record was already added to a community an IntegrityError will
         be raised.
@@ -85,7 +85,7 @@ class CommunitiesRelationManager:
             self._communities_cache[community_id] = community_or_id
 
     def remove(self, community_or_id):
-        """Remove a record from a community."""
+        """Remove a record (parent) from a community."""
         community_id = self._to_id(community_or_id)
 
         # Delete M2M row.
@@ -103,7 +103,7 @@ class CommunitiesRelationManager:
             self._default_id = None
 
     def clear(self):
-        """Clear all communities from the record."""
+        """Clear all communities from the record (parent)."""
         # Remove all associations
         res = self._m2m_model_cls.query.filter_by(record_id=self._record_id).delete()
         self._communities_ids = set()
@@ -125,6 +125,14 @@ class CommunitiesRelationManager:
         # Unset default if no longer available
         if self._default_id and self._default_id not in self._communities_ids:
             self._default_id = None
+
+    def get_requests(self):
+        """Get all accepted requests for the record (parent)."""
+        # Only requests that led to the record being added to the community are stored in the table
+        return self._m2m_model_cls.query.filter(
+            self._m2m_model_cls.record_id == self._record_id,
+            self._m2m_model_cls.request_id.isnot(None),
+        ).all()
 
     def __len__(self):
         """Get number of communities."""
