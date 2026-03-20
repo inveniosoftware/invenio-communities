@@ -18,7 +18,7 @@ from invenio_requests.records.api import Request, RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
-from invenio_communities.members.records.api import ArchivedInvitation, Member
+from invenio_communities.members.records.api import Member
 from invenio_communities.proxies import current_identities_cache
 
 
@@ -499,16 +499,13 @@ def test_invite_accept_flow(
 ):
     """Invite a user."""
     # Accept request
-    request = requests_service.execute_action(
-        invite_user.identity, invite_request_id, "accept"
-    ).to_dict()
+    requests_service.execute_action(invite_user.identity, invite_request_id, "accept")
 
     # See new member in list
     res = member_service.search(owner.identity, community._record.id)
     assert res.to_dict()["hits"]["total"] == 2
 
     # See invitation in archived list
-    ArchivedInvitation.index.refresh()
     res = member_service.search_invitations(owner.identity, community._record.id)
     assert res.to_dict()["hits"]["total"] == 1
 
@@ -1289,6 +1286,99 @@ def test_cancel_membership_request(
         community._record.id,
         {"message": "Oops didn't mean to cancel. Oh well, I will request again."},
     )
+
+
+def test_decline_membership_request(
+    clean_index,
+    community_open_to_membership_requests,
+    db,
+    membership_request,
+    member_service,
+    owner,
+    requests_service,
+):
+    community = community_open_to_membership_requests
+    # pre-condition: only owner
+    result = member_service.search(owner.identity, community._record.id).to_dict()
+    assert result["hits"]["total"] == 1
+
+    requests_service.execute_action(owner.identity, membership_request.id, "decline")
+
+    # Only owner in list
+    Member.index.refresh()
+    result = member_service.search(owner.identity, community._record.id).to_dict()
+    assert result["hits"]["total"] == 1
+    # Has been archived
+    result = member_service.search_membership_requests(
+        owner.identity, community._record.id
+    ).to_dict()
+    assert result["hits"]["total"] == 1
+    hit = result["hits"]["hits"][0]
+    assert "declined" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+
+
+def test_accept_membership_request(
+    clean_index,
+    community_open_to_membership_requests,
+    db,
+    membership_request,
+    member_service,
+    owner,
+    requests_service,
+):
+    community = community_open_to_membership_requests
+    # pre-condition: only owner
+    result = member_service.search(owner.identity, community._record.id).to_dict()
+    assert result["hits"]["total"] == 1
+
+    requests_service.execute_action(owner.identity, membership_request.id, "accept")
+
+    # By adding index_refresh to accept_member_request, we don't need those
+    # refresh() calls.
+    # post-conditions:
+    # 1) 2 members: the owner + requester
+    result = member_service.search(owner.identity, community._record.id).to_dict()
+    assert 2 == result["hits"]["total"]
+
+    # 2) 1 member request, the accepted one
+    result = member_service.search_membership_requests(
+        owner.identity, community._record.id
+    ).to_dict()
+    assert 1 == result["hits"]["total"]
+    hit = result["hits"]["hits"][0]
+    assert "accepted" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+
+
+def test_update_membership_request_role(
+    clean_index,
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    member_service,
+    owner,
+):
+    community = community_open_to_membership_requests
+    # Create membership request
+    user = create_user()
+    community = community_open_to_membership_requests
+    membership_request = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        data={"message": "Can I join the club?"},
+    )
+    data = {
+        "members": [{"type": "user", "id": str(user.id)}],
+        "role": "manager",
+    }
+
+    # Case: owner can update role of requester
+    member_service.update(owner.identity, community._record.id, data)
+
+    # Case: requester cannot update its role
+    with pytest.raises(PermissionDeniedError):
+        member_service.update(user.identity, community._record.id, data)
 
 
 #

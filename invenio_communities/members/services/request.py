@@ -32,75 +32,6 @@ def service():
 
 
 #
-# CommunityInvitation: actions and request type
-#
-
-
-#
-# Actions
-#
-# All actions use `system_identity` and not the `identity` param, because
-# the permission check happens at the request service (`execute_action`) level
-# before reaching these components and therefore the check is not needed.
-# These actions will assert the identity is `system identity`, which cannot
-# be obtained as a user.
-class AcceptAction(actions.AcceptAction):
-    """Accept action."""
-
-    def execute(self, identity, uow):
-        """Execute action."""
-        service().accept_invite(system_identity, self.request.id, uow=uow)
-        uow.register(
-            NotificationOp(
-                CommunityInvitationAcceptNotificationBuilder.build(self.request)
-            )
-        )
-        super().execute(identity, uow)
-
-
-class DeclineAction(actions.DeclineAction):
-    """Delete action."""
-
-    def execute(self, identity, uow):
-        """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
-        uow.register(
-            NotificationOp(
-                CommunityInvitationDeclineNotificationBuilder.build(self.request)
-            )
-        )
-        super().execute(identity, uow)
-
-
-class CancelAction(actions.CancelAction):
-    """Cancel action."""
-
-    def execute(self, identity, uow):
-        """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
-        uow.register(
-            NotificationOp(
-                CommunityInvitationCancelNotificationBuilder.build(self.request)
-            )
-        )
-        super().execute(identity, uow)
-
-
-class ExpireAction(actions.ExpireAction):
-    """Expire action."""
-
-    def execute(self, identity, uow):
-        """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
-        uow.register(
-            NotificationOp(
-                CommunityInvitationExpireNotificationBuilder.build(self.request)
-            )
-        )
-        super().execute(identity, uow)
-
-
-#
 # Request
 #
 def is_request_created_by_current_user(obj, vars):
@@ -109,7 +40,7 @@ def is_request_created_by_current_user(obj, vars):
     Because this is called in the context of a RequestType, the received obj
     can be a Request or RequestEvent, so better to trust the vars content.
 
-    :param request: api.Request
+    :param request: api.Request|api.RequestEvent
     :param vars: dict: context variables w/ keys:
         "permission_policy_cls" for api.Request
         "identity"
@@ -158,6 +89,75 @@ def update_vars_for_community_dashboard_request_view(obj, vars):
         pid_value=slug,
         request_pid_value=request.id,
     )
+
+
+#
+# CommunityInvitation: actions and request type
+#
+
+
+#
+# Actions
+#
+# All actions use `system_identity` and not the `identity` param, because
+# the permission check happens at the request service (`execute_action`) level
+# before reaching these components and therefore the check is not needed.
+# These actions will assert the identity is `system identity`, which cannot
+# be obtained as a user.
+class AcceptAction(actions.AcceptAction):
+    """Accept action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationAcceptNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
+
+
+class DeclineAction(actions.DeclineAction):
+    """Delete action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationDeclineNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
+
+
+class CancelAction(actions.CancelAction):
+    """Cancel action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationCancelNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
+
+
+class ExpireAction(actions.ExpireAction):
+    """Expire action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityInvitationExpireNotificationBuilder.build(self.request)
+            )
+        )
+        super().execute(identity, uow)
 
 
 class CommunityInvitation(RequestType):
@@ -212,13 +212,50 @@ class CommunityInvitation(RequestType):
 #
 
 
+class AcceptMembershipRequestAction(actions.AcceptAction):
+    """Accept membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: notifications for accept
+        # uow.register(
+        #     NotificationOp(
+        #         (
+        #             CommunityMembershipRequestAcceptNotificationBuilder.build(
+        #                 self.request
+        #             )
+        #         )
+        #     )
+        # )
+        super().execute(identity, uow)
+
+
 class CancelMembershipRequestAction(actions.CancelAction):
     """Cancel membership request action."""
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().close_membership_request(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         # TODO: Investigate notifications
+        super().execute(identity, uow)
+
+
+class DeclineMembershipRequestAction(actions.DeclineAction):
+    """Decline action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: Notification for declining
+        # uow.register(
+        #     NotificationOp(
+        #         (
+        #             CommunityMembershipRequestDeclineNotificationBuilder
+        #             .build(self.request)
+        #         )
+        #     )
+        # )
         super().execute(identity, uow)
 
 
@@ -230,8 +267,10 @@ class MembershipRequestRequestType(RequestType):
 
     create_action = "create"
     available_actions = {
+        "accept": AcceptMembershipRequestAction,
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
+        "decline": DeclineMembershipRequestAction,
     }
 
     creator_can_be_none = False
