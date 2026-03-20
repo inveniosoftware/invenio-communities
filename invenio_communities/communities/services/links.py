@@ -10,7 +10,6 @@
 
 from invenio_records_resources.services.base.links import (
     EndpointLink,
-    Link,
     LinksTemplate,
 )
 
@@ -64,17 +63,3 @@ class CommunityUIEndpointLink(EndpointLink):
     def vars(record, vars):
         """Variables for generation of the url."""
         vars.update({"pid_value": record.slug})
-
-
-class CommunityLink(Link):
-    """Link variables setter for Community Members links."""
-
-    @staticmethod
-    def vars(record, vars):
-        """Variables for the URI template."""
-        vars.update(
-            {
-                "id": record.id,
-                "slug": record.slug,
-            }
-        )

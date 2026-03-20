@@ -45,7 +45,6 @@ from invenio_communities.errors import (
     OpenRequestsForCommunityDeletionError,
 )
 from invenio_communities.generators import CommunityMembers
-from invenio_communities.members.services.request import MembershipRequestRequestType
 
 from ...errors import CommunityDeletedError, DeletionStatusError
 from ..records.systemfields.deletion_status import CommunityDeletionStatusEnum
@@ -173,10 +172,12 @@ class CommunityService(RecordService):
                 must=[
                     dsl.Q("term", **{"receiver.community": community_id}),
                     ~dsl.Q("term", **{"status": "created"}),
-                    # Excluding explicitly this type for now
+                    # Exclude explicitly MembershipRequestRequestType.type_id .
                     # Requests of that type are returned in a dedicated search on
-                    # the MemberService class
-                    ~dsl.Q("term", **{"type": MembershipRequestRequestType.type_id}),
+                    # the MemberService class.
+                    # To prevent circular imports and wider refactor for now, we use
+                    # the id value directly
+                    ~dsl.Q("term", **{"type": "community-membership-request"}),
                 ],
             ),
             **kwargs,

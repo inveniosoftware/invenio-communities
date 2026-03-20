@@ -186,6 +186,15 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     links_search = pagination_endpoint_links(
         "community_members.search", params=["pid_value"]
     )
+    links_search_public = pagination_endpoint_links(
+        "community_members.search_public", params=["pid_value"]
+    )
+    links_search_invitations = pagination_endpoint_links(
+        "community_members.search_invitations", params=["pid_value"]
+    )
+    links_search_membership_requests = pagination_endpoint_links(
+        "community_members.search_membership_requests", params=["pid_value"]
+    )
 
     # Service components
     components = [

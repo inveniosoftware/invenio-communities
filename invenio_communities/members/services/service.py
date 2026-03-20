@@ -45,6 +45,7 @@ from .schemas import (
     InvitationDumpSchema,
     InviteBulkSchema,
     MemberDumpSchema,
+    MembershipRequestDumpSchema,
     PublicDumpSchema,
     RequestMembershipSchema,
     UpdateBulkSchema,
@@ -282,6 +283,65 @@ class MemberService(RecordService):
         # instead of N single indexing requests.
         uow.register(RecordCommitOp(member, indexer=self.indexer))
 
+    def _members_search(
+        self,
+        identity,
+        community_id,
+        permission_action,
+        schema,
+        search_opts,
+        extra_filter=None,
+        params=None,
+        search_preference=None,
+        links_tpl=None,
+        scan=False,
+        scan_params=None,
+        **kwargs,
+    ):
+        """Members search."""
+        community = self.community_cls.get_record(community_id)
+        self.require_permission(identity, permission_action, record=community)
+
+        # Apply extra filters
+        filter = dsl.Q("term", **{"community_id": community.id})
+        if extra_filter:
+            filter &= extra_filter
+
+        # Prepare and execute the search
+        params = params or {}
+        scan_params = scan_params or {}
+
+        search = self._search(
+            "search_members",
+            identity,
+            params,
+            search_preference,
+            search_opts=search_opts,
+            permission_action=None,
+            extra_filter=filter,
+            **kwargs,
+        )
+        # scan has a default scroll timeout of 5 minutes
+        # https://github.com/opensearch-project/opensearch-py/blob/fe3b5a8922aa8eb04f735c74d127d7ea68a00bec/opensearchpy/helpers/actions.py#L492-L503
+        search_result = (
+            search.params(**scan_params).scan() if scan else search.execute()
+        )
+
+        return self.result_list(
+            self,
+            identity,
+            search_result,
+            params,
+            links_tpl=links_tpl,
+            links_item_tpl=LinksTemplate(
+                self.config.links_item,
+                context={
+                    "community_slug": community.slug,
+                },
+            ),
+            schema=schema,
+        )
+
     def search(
         self,
         identity,
@@ -306,6 +366,13 @@ class MemberService(RecordService):
             extra_filter=filter_,
             params=params,
             search_preference=search_preference,
+            links_tpl=LinksTemplate(
+                self.config.links_search,
+                context={
+                    "args": params or {},
+                    "pid_value": community_id,
+                },
+            ),
             **kwargs,
         )
 
@@ -356,69 +423,14 @@ class MemberService(RecordService):
             ),
             params=params,
             search_preference=search_preference,
-            **kwargs,
-        )
-
-    def _members_search(
-        self,
-        identity,
-        community_id,
-        permission_action,
-        schema,
-        search_opts,
-        extra_filter=None,
-        params=None,
-        search_preference=None,
-        scan=False,
-        scan_params=None,
-        **kwargs,
-    ):
-        """Members search."""
-        community = self.community_cls.get_record(community_id)
-        self.require_permission(identity, permission_action, record=community)
-
-        # Apply extra filters
-        filter = dsl.Q("term", **{"community_id": community.id})
-        if extra_filter:
-            filter &= extra_filter
-
-        # Prepare and execute the search
-        params = params or {}
-        scan_params = scan_params or {}
-
-        search = self._search(
-            "search_members",
-            identity,
-            params,
-            search_preference,
-            search_opts=search_opts,
-            permission_action=None,
-            extra_filter=filter,
-            **kwargs,
-        )
-        # scan has a default scroll timeout of 5 minutes
-        # https://github.com/opensearch-project/opensearch-py/blob/fe3b5a8922aa8eb04f735c74d127d7ea68a00bec/opensearchpy/helpers/actions.py#L492-L503
-        search_result = (
-            search.params(**scan_params).scan() if scan else search.execute()
-        )
-
-        return self.result_list(
-            self,
-            identity,
-            search_result,
-            params,
-            links_tpl=(
-                None
-                if scan
-                else LinksTemplate(
-                    self.config.links_search,
-                    context={
-                        "args": params,
-                        "pid_value": community_id,
-                    },
-                )
+            links_tpl=LinksTemplate(
+                self.config.links_search_public,
+                context={
+                    "args": params or {},
+                    "pid_value": community_id,
+                },
             ),
-            schema=schema,
+            **kwargs,
         )
 
     def read_memberships(self, identity):
@@ -636,6 +648,8 @@ class MemberService(RecordService):
         return True
 
     # Invitation
+    # Member requests - Invitation
+
     def _invite_factory(
         self,
         identity,
@@ -752,9 +766,9 @@ class MemberService(RecordService):
         return self._members_search(
             identity,
             community_id,
-            "search_invites",
-            self.invitation_dump_schema,
-            self.config.search_invitations,
+            permission_action="search_invites",
+            schema=self.invitation_dump_schema,
+            search_opts=self.config.search_invitations,
             record_cls=MemberMixin,  # just for search alias purposes
             extra_filter=dsl.Q(
                 "bool",
@@ -774,6 +788,13 @@ class MemberService(RecordService):
             ),
             params=params,
             search_preference=search_preference,
+            links_tpl=LinksTemplate(
+                self.config.links_search_invitations,
+                context={
+                    "args": params or {},
+                    "pid_value": community_id,
+                },
+            ),
             **kwargs,
         )
 
@@ -913,10 +934,41 @@ class MemberService(RecordService):
         # TODO: Implement me
         pass
 
-    def search_membership_requests(self):
+    def search_membership_requests(
+        self, identity, community_id, params=None, search_preference=None, **kwargs
+    ):
         """Search membership requests."""
-        # TODO: Implement me
-        pass
+        # The search for membership requests uses the MemberMixin as a record class in
+        # order to search over the "communitymembers" alias which includes
+        # both current membership requests AND archived membership requests.
+        # `params` specifies which to filter for.
+        return self._members_search(
+            identity,
+            community_id,
+            permission_action="search_membership_requests",
+            schema=ServiceSchemaWrapper(self, schema=MembershipRequestDumpSchema),
+            search_opts=self.config.search_invitations,
+            extra_filter=dsl.Q(
+                "bool",
+                filter=[
+                    dsl.Q("term", **{"active": False}),
+                    dsl.Q(
+                        "term", **{"request.type": MembershipRequestRequestType.type_id}
+                    ),
+                ],
+            ),
+            params=params,
+            search_preference=search_preference,
+            record_cls=MemberMixin,  # just for search alias purposes
+            links_tpl=LinksTemplate(
+                self.config.links_search_membership_requests,
+                context={
+                    "args": params or {},
+                    "pid_value": community_id,
+                },
+            ),
+            **kwargs,
+        )
 
     @unit_of_work()
     def accept_membership_request(self, identity, request_id, uow=None):

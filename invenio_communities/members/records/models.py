@@ -144,7 +144,7 @@ class MemberModel(db.Model, BaseMemberModel):
     )
 
 
-class ArchivedInvitationModel(db.Model, BaseMemberModel):
+class ArchivedMemberRequestModel(db.Model, BaseMemberModel):
     """Archived invitations model.
 
     The archived invitations model stores invitations that was rejected or
@@ -153,6 +153,11 @@ class ArchivedInvitationModel(db.Model, BaseMemberModel):
     """
 
     __tablename__ = "communities_archivedinvitations"
+    """The DB table name used.
+
+    The name is a legacy prior to membership request. It is kept so as to not have to
+    rename the table (and all implications).
+    """
 
     # We're not adding a check constraint since the row has already been
     # inserted in the member model where it was checked.
@@ -178,3 +183,7 @@ class ArchivedInvitationModel(db.Model, BaseMemberModel):
             updated=member_model.updated,
             version_id=member_model.version_id,
         )
+
+
+ArchivedInvitationModel = ArchivedMemberRequestModel
+"""Legacy name kept around for compatibility for now."""
