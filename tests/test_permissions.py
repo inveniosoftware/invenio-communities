@@ -14,9 +14,11 @@ CommunityPermissionPolicy is defined at the top-level, the test are defined ther
 
 import copy
 
+import pytest
 from flask_principal import Identity
 
 from invenio_communities.generators import CommunityRoleNeed
+from invenio_communities.members import Member
 from invenio_communities.permissions import CommunityPermissionPolicy
 
 
@@ -145,3 +147,68 @@ def test_can_search_request_membership(
     assert not policy(action=action, record=community_open_record).allows(identity)
     identity.provides = identity_orig.provides.union({needs["reader"]})
     assert not policy(action=action, record=community_open_record).allows(identity)
+
+
+@pytest.fixture()
+def membership_request_member(
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    member_service,
+    search_clear,
+):
+    user = create_user(
+        data={
+            "email": "membership-requester@example.org",
+            "username": "membership-requester",
+        }
+    )
+    request = member_service.request_membership(
+        user.identity,
+        community_open_to_membership_requests._record.id,
+        data={"message": "Can I join the club?"},
+    )
+    return Member.get_member_by_request(request.id)
+
+
+@pytest.mark.parametrize(
+    "actor,initial_role,new_role,allowed_or_not",
+    [
+        ("owner", "reader", "owner", True),
+        ("owner", "owner", "reader", True),
+        ("manager", "reader", "manager", True),
+        ("manager", "manager", "reader", True),
+        ("reader", "reader", "curator", False),
+        ("curator", "reader", "curator", False),
+        ("manager", "reader", "owner", False),
+    ],
+)
+def test_can_update_membership_request_role(
+    actor,
+    initial_role,
+    new_role,
+    allowed_or_not,
+    app,
+    community_open_to_membership_requests,
+    create_user,
+    member_service,
+    membership_request_member,
+):
+    policy = CommunityPermissionPolicy
+    community_open_record = community_open_to_membership_requests._record
+    user = create_user()
+    identity_actor = Identity(user.id)
+    identity_actor.provides |= {
+        CommunityRoleNeed(value=str(community_open_record.id), role=actor)
+    }
+    membership_request_member.role = initial_role
+
+    assert (
+        policy(
+            action="members_update",
+            record=community_open_record,
+            member=membership_request_member,
+            role=new_role,
+        ).allows(identity_actor)
+        is allowed_or_not
+    )
