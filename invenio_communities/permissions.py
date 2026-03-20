@@ -113,8 +113,6 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         SystemProcess(),
     ]
 
-    # PR comment: just grouped members related permissions together +
-    # added search_mshp_request
     # Members related permissions
     can_members_add = [
         CommunityManagersForRole(),

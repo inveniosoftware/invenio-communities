@@ -148,6 +148,7 @@ MEMBERS_PERMISSIONS = PRIVATE_PERMISSIONS | {
     "members_manage",
     "invite_owners",
     "search_invites",
+    "search_membership_requests",
 }
 
 
@@ -384,22 +385,6 @@ def communities_settings(pid_value, community, community_ui):
 
 
 @pass_community(serialize=True)
-def communities_requests(pid_value, community, community_ui):
-    """Community requests page."""
-    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
-    if not permissions["can_search_requests"]:
-        raise PermissionDeniedError()
-
-    return render_community_theme_template(
-        "invenio_communities/details/requests/index.html",
-        theme=community_ui.get("theme", {}),
-        community_ui=community_ui,
-        community=community,
-        permissions=permissions,
-    )
-
-
-@pass_community(serialize=True)
 def communities_settings_privileges(pid_value, community, community_ui):
     """Community settings/privileges page."""
     permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
@@ -466,6 +451,22 @@ def communities_settings_pages(pid_value, community, community_ui):
     )
 
 
+# PR Comment: just moved to let settings be grouped together
+@pass_community(serialize=True)
+def communities_requests(pid_value, community, community_ui):
+    """Community requests page."""
+    permissions = community.has_permissions_to(PRIVATE_PERMISSIONS)
+    if not permissions["can_search_requests"]:
+        raise PermissionDeniedError()
+
+    return render_community_theme_template(
+        "invenio_communities/details/requests/index.html",
+        theme=community_ui.get("theme", {}),
+        community_ui=community_ui,
+        community=community,
+        permissions=permissions,
+    )
+
 @pass_community(serialize=True)
 def communities_settings_collections(pid_value, community, community_ui):
     """Community settings/collections page."""
@@ -513,6 +514,22 @@ def invitations(pid_value, community, community_ui):
         community_ui=community_ui,
         community=community,
         roles_can_invite=_get_roles_can_invite(community.id),
+        permissions=permissions,
+    )
+
+
+@pass_community(serialize=True)
+def membership_requests(pid_value, community, community_ui):
+    """Community membership requests page."""
+    permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
+    if not permissions["can_search_membership_requests"]:
+        raise PermissionDeniedError()
+    return render_community_theme_template(
+        "invenio_communities/details/members/membership_requests.html",
+        theme=community_ui.get("theme", {}),
+        community_ui=community_ui,
+        community=community,
+        roles_can_assign=_get_roles_can_invite(community.id),  # to change?
         permissions=permissions,
     )
 
