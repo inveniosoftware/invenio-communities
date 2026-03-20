@@ -96,14 +96,14 @@ def invite_request_id(requests_service, invite_user):
 
 
 @pytest.fixture(scope="function")
-def membership_request(member_service, community, create_user, db, search_clear):
+def membership_request(
+    member_service, community_open_to_membership_requests, create_user, db, search_clear
+):
     """A membership request."""
     user = create_user()
-    data = {
-        "message": "Can I join the club?",
-    }
+    data = {"message": "Can I join the club?"}
     return member_service.request_membership(
         user.identity,
-        community._record.id,
+        community_open_to_membership_requests._record.id,
         data,
     )

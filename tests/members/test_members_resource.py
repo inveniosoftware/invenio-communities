@@ -237,27 +237,39 @@ def test_search(
     assert r.status_code == 200
     data = r.json
     assert data["sortBy"] == "name"
-    assert data["hits"]["total"] == 3
+    # aggregations
     assert "role" in data["aggregations"]
     assert "visibility" in data["aggregations"]
-
+    # links
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
+    # hits
+    assert data["hits"]["total"] == 3
+    # hits > hit0
     hit = data["hits"]["hits"][0]
     assert "role" in hit
     assert "visible" in hit
+    assert hit["visible"] is True
     assert "created" in hit
     assert "updated" in hit
     assert "revision_id" in hit
     assert "is_current_user" in hit
+    # hits > hit0 > permissions
     assert "permissions" in hit
     assert hit["permissions"]["can_leave"] is False
     assert hit["permissions"]["can_delete"] is True
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_update_visible"] is True
-    assert hit["visible"] is True
+    # hits > hit0 > links
+    assert {} == hit["links"]
 
+    # hits > hit1
     hit = data["hits"]["hits"][1]  # should be last, test sorting
     assert hit["member"]["name"] == "Should be last"
 
+    # hits > hit2
     # third because of no name
     hit = data["hits"]["hits"][2]
     assert hit["is_current_user"] is True
@@ -299,11 +311,17 @@ def test_search_public(
     assert r.status_code == 200
     data = r.json
     assert data["sortBy"] == "name"
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/members/public?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
+    assert "aggregations" not in data
+    # hits
     assert data["hits"]["total"] == 1
+    # hits > hit
     hit = data["hits"]["hits"][0]
     # Public view has no facets (because that would leak information on
     # roles/visible)
-    assert "aggregations" not in data
     # A member in the public view should not leak below attributes:
     assert "role" not in hit
     assert "visible" not in hit
@@ -312,7 +330,7 @@ def test_search_public(
     assert "revision_id" not in hit
     assert "is_current_user" not in hit
     assert "permissions" not in hit
-    # A member do have:
+    # hits > hit > member
     assert "member" in hit
     assert "id" in hit["member"]
     assert "type" in hit["member"]
@@ -320,20 +338,30 @@ def test_search_public(
     assert "description" in hit["member"]
 
 
-def test_search_invitation(
 def test_search_invitations(
-    client, headers, community_id, owner, invite_user, db, clean_index
+    client, headers, community, owner, invite_user, db, clean_index
 ):
     client = owner.login(client)
+    community_id = str(community._record.id)
+    community_slug = str(community._record.slug)
+
     r = client.get(
         f"/communities/{community_id}/invitations",
         headers=headers,
     )
     assert r.status_code == 200
     data = r.json
-    assert data["hits"]["total"] == 1
+    # aggregations
     assert "role" in data["aggregations"]
     assert "status" in data["aggregations"]
+    # links
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/invitations?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
+    # hits
+    assert data["hits"]["total"] == 1
+    # hits > hit
     hit = data["hits"]["hits"][0]
     assert "role" in hit
     assert "visible" in hit
@@ -341,11 +369,15 @@ def test_search_invitations(
     assert "updated" in hit
     assert "revision_id" in hit
     assert "request" in hit
+    assert "permissions" in hit
+    # hits > hit > request
     assert "id" in hit["request"]
+    request_id = hit["request"]["id"]
     assert "status" in hit["request"]
     assert "expires_at" in hit["request"]
+    assert "community-invitation" == hit["request"]["type"]
     assert hit["request"]["expires_at"] is not None
-    assert "permissions" in hit
+    # hits > hit > permissions
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_cancel"] is True
 
@@ -364,7 +396,7 @@ def test_search_invitations(
 #
 
 
-def test_post_membership_requests(
+def test_post_request_membership(
     app, client, headers, community_open_to_membership_requests, create_user, db
 ):
     user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
@@ -401,7 +433,66 @@ def test_post_membership_requests(
     assert "Can I join the club?" == msg
 
 
-def test_put_membership_requests(
+def test_get_search_membership_requests(
+    client,
+    headers,
+    community_open_to_membership_requests,
+    owner,
+    membership_request,
+    db,
+    clean_index,
+):
+    client = owner.login(client)
+    community_id = str(community_open_to_membership_requests._record.id)
+    community_slug = str(community_open_to_membership_requests._record.slug)
+
+    r = client.get(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+    )
+
+    assert r.status_code == 200
+    data = r.json
+    # aggregations
+    assert "role" in data["aggregations"]
+    assert "status" in data["aggregations"]
+    # links
+    expected_links = {
+        "self": f"https://127.0.0.1:5000/api/communities/{community_id}/membership-requests?page=1&size=25&sort=name"  # noqa
+    }
+    assert expected_links == data["links"]
+    # hits
+    assert data["hits"]["total"] == 1  # from membership_request fixture
+    # hits > hit
+    hit = data["hits"]["hits"][0]
+    assert "role" in hit
+    assert "visible" in hit
+    assert "created" in hit
+    assert "updated" in hit
+    assert "revision_id" in hit
+    # hits > hit > request
+    assert "request" in hit
+    assert "id" in hit["request"]
+    assert "status" in hit["request"]
+    assert "community-membership-request" == hit["request"]["type"]
+    # hits > hit > permissions
+    assert hit["permissions"]["can_update_role"] is True
+    # TODO: Test when expiration is implemented
+    # assert "expires_at" in hit["request"]
+    # assert hit["request"]["expires_at"] is not None
+    # TODO: Test when actions are implemented
+    # hits > hit > links
+    # request_id = hit["request"]["id"]
+    # expected_links = {
+    #     "actions": {
+    #         "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",  # noqa
+    #         "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",  # noqa
+    #     },
+    # }
+    # assert expected_links == hit["links"]
+
+
+def test_put_update_membership_requests(
     client, headers, community_id, owner, new_user_data, db
 ):
     # update membership request
@@ -416,10 +507,4 @@ def test_error_handling_for_membership_requests(
     # error handling registered
     #   - permission handling registered
     #   - duplicate handling registered
-    assert True
-
-
-# TODO: search membership requests
-def test_get_membership_requests(client):
-    # TODO: Implement me!
     assert True

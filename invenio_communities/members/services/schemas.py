@@ -50,7 +50,7 @@ class MembersSchema(Schema):
 
 
 class RequestSchema(Schema):
-    """Request Schema."""
+    """Request dump Schema."""
 
     id = fields.String()
     status = fields.String()
@@ -59,6 +59,24 @@ class RequestSchema(Schema):
     # because the relations field doesn't properly load data from the index
     # (it should have converted expires_at into a datetime object).
     expires_at = fields.String()
+    type = fields.Method("serialize_request_type")
+
+
+    def serialize_request_type(self, member_request, context=None):
+        """Dump/serialize a Member.request.type.
+
+        This exists to take into account historical storage when type was not saved.
+        In that case, at that time, it meant the request was of type "community-invitation"
+        and this function reflects that.
+
+        :param member_request: dict Member["request"] field
+        """
+        breakpoint()
+        # just in case empty
+        if member_request:
+            return member_request.get("type", "community-invitation")
+        else:
+            return ""  # to keep string interface
 
 
 #
@@ -249,4 +267,22 @@ class InvitationDumpSchema(MemberDumpSchema):
                 community_id=obj.community_id,
                 member=obj,
             ),
+        }
+
+
+class MembershipRequestDumpSchema(MemberDumpSchema):
+    """Schema for dumping invitations."""
+
+    request = fields.Nested(RequestSchema)
+    permissions = fields.Method("get_permissions")
+
+    def get_permissions(self, obj):
+        """Get permission.
+
+        Only can_update_role seems to be needed for now.
+        """
+        # Only owners and managers can list membership requests, and thus only
+        # if the MembershipRequest is_open can roles be updated
+        return {
+            "can_update_role": obj["request"]["is_open"],
         }

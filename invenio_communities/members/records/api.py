@@ -23,7 +23,7 @@ from sqlalchemy import or_, select
 
 from ..errors import InvalidMemberError
 from .dumpers import RequestTypeDumperExt
-from .models import ArchivedInvitationModel, MemberModel
+from .models import ArchivedMemberRequestModel, MemberModel
 
 relations_dumper = SearchDumper(
     extensions=[
@@ -188,7 +188,7 @@ class MemberMixin:
 
 
 class Member(Record, MemberMixin):
-    """A member/invitation record.
+    """A member/invitation/request membership record.
 
     We are using a record without using the actual JSON document and
     schema validation normally used in a record. The reason for using a record
@@ -219,14 +219,12 @@ class ArchivedMemberRequest(Record, MemberMixin):
     schema validation normally used in a record. The reason for using a record
     is to facilitate the indexing which we need to have an effective search
     over the list of members.
+
+    Instances of this class are not returned by search. Instances of Member (above)
+    are.
     """
 
-    model_cls = ArchivedInvitationModel
-    """The DB model used.
-
-    The name is a legacy prior to membership request. It is kept so as to not have to
-    rename the table (and all implications).
-    """
+    model_cls = ArchivedMemberRequestModel
 
     # Needs to be here instead of on MemberMixin to overwrite Record.dumper
     dumper = relations_dumper
@@ -236,12 +234,13 @@ class ArchivedMemberRequest(Record, MemberMixin):
     metadata = None
 
     index = IndexField(
-        "communitymembers-archivedinvitations-archivedinvitation-v1.0.0"
+        "communitymembers-archivedinvitations-archivedinvitation-v1.0.0",
+        search_alias="communitymembers-archivedinvitations",
     )
     """The document index used.
 
     The name is a legacy prior to membership request. It is kept so as to not have to
-    rename the index (and all implications).
+    rename the index (and deal with all implications).
     """
 
     @classmethod
