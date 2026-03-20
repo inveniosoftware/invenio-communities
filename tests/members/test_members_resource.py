@@ -396,8 +396,8 @@ def test_search_invitations(
     request_id = hit["request"]["id"]
     assert "status" in hit["request"]
     assert "expires_at" in hit["request"]
-    assert "community-invitation" == hit["request"]["type"]
     assert hit["request"]["expires_at"] is not None
+    assert "community-invitation" == hit["request"]["type"]
     # hits > hit > permissions
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_cancel"] is True
@@ -461,13 +461,13 @@ def test_post_request_membership(
 
 
 def test_get_search_membership_requests(
-    client,
-    headers,
-    community_open_to_membership_requests,
-    owner,
-    membership_request,
-    db,
     clean_index,
+    client,
+    community_open_to_membership_requests,
+    db,
+    headers,
+    membership_request,
+    owner,
 ):
     client = owner.login(client)
     community_id = str(community_open_to_membership_requests._record.id)
@@ -502,11 +502,10 @@ def test_get_search_membership_requests(
     assert "id" in hit["request"]
     assert "status" in hit["request"]
     assert "community-membership-request" == hit["request"]["type"]
+    assert "expires_at" in hit["request"]
+    assert hit["request"]["expires_at"] is not None
     # hits > hit > permissions
     assert hit["permissions"]["can_update_role"] is True
-    # TODO: Test when expiration is implemented
-    # assert "expires_at" in hit["request"]
-    # assert hit["request"]["expires_at"] is not None
     # hits > hit > links
     request_id = hit["request"]["id"]
     expected_links = {

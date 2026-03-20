@@ -102,8 +102,10 @@ def membership_request(
     """A membership request."""
     user = create_user()
     data = {"message": "Can I join the club?"}
-    return member_service.request_membership(
+    request_result = member_service.request_membership(
         user.identity,
         community_open_to_membership_requests._record.id,
         data,
     )
+    Member.index.refresh()
+    return request_result

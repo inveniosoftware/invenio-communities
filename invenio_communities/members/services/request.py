@@ -20,6 +20,10 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationCancelNotificationBuilder,
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
+    CommunityMembershipRequestAcceptedNotificationBuilder,
+    CommunityMembershipRequestCancelledNotificationBuilder,
+    CommunityMembershipRequestDeclinedNotificationBuilder,
+    CommunityMembershipRequestExpiredNotificationBuilder,
 )
 
 from ...communities.services.service import get_cached_community_slug
@@ -29,6 +33,67 @@ from ...proxies import current_communities
 def service():
     """Service."""
     return current_communities.service.members
+
+#
+# Request
+#
+
+
+def is_request_created_by_current_user(obj, vars):
+    """Is created by current user.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent, so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    request = vars["request"]
+    id_creator = str(request.created_by.reference_dict.get("user"))
+    id_identity = str(vars["identity"].id)
+    return id_identity == id_creator
+
+
+def update_vars_for_user_dashboard_request_view(obj, vars):
+    """Update vars.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    vars.update(request_pid_value=str(vars["request"].id))
+
+
+def update_vars_for_community_dashboard_request_view(obj, vars):
+    """Update vars.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    request = vars["request"]
+    # The topic holds a CommunityPKProxy
+    slug = get_cached_community_slug(request.topic.reference_dict["community"])
+    vars.update(
+        pid_value=slug,
+        request_pid_value=request.id,
+    )
 
 
 #
@@ -220,16 +285,13 @@ class AcceptMembershipRequestAction(actions.AcceptAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().accept_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: notifications for accept
-        # uow.register(
-        #     NotificationOp(
-        #         (
-        #             CommunityMembershipRequestAcceptNotificationBuilder.build(
-        #                 self.request
-        #             )
-        #         )
-        #     )
-        # )
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestAcceptedNotificationBuilder.build(
+                    self.request
+                )
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -239,7 +301,13 @@ class CancelMembershipRequestAction(actions.CancelAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().close_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: Investigate notifications
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestCancelledNotificationBuilder.build(
+                    self.request
+                )
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -249,15 +317,27 @@ class DeclineMembershipRequestAction(actions.DeclineAction):
     def execute(self, identity, uow):
         """Execute action."""
         service().close_member_request(system_identity, self.request.id, uow=uow)
-        # TODO: Notification for declining
-        # uow.register(
-        #     NotificationOp(
-        #         (
-        #             CommunityMembershipRequestDeclineNotificationBuilder
-        #             .build(self.request)
-        #         )
-        #     )
-        # )
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestDeclinedNotificationBuilder.build(
+                    self.request
+                )
+            )
+        )
+        super().execute(identity, uow)
+
+
+class ExpireMembershipRequestAction(actions.ExpireAction):
+    """Expire action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestExpiredNotificationBuilder.build(self.request)
+            )
+        )
         super().execute(identity, uow)
 
 
@@ -270,9 +350,10 @@ class MembershipRequestRequestType(RequestType):
     create_action = "create"
     available_actions = {
         "accept": AcceptMembershipRequestAction,
-        "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
+        "create": actions.CreateAndSubmitAction,
         "decline": DeclineMembershipRequestAction,
+        "expire": ExpireMembershipRequestAction,
     }
 
     creator_can_be_none = False
@@ -294,8 +375,7 @@ class MembershipRequestRequestType(RequestType):
     links_item = {
         # This EndpointLink selection logic is better than existing logic for
         # other RequestTypes' self_html, bc it points to right place depending
-        # on current user. But it may need further improvements down the road
-        # to also depend on the state of the request.
+        # on current user.
         "self_html": ConditionalLink(
             cond=is_request_created_by_current_user,
             # if_ -> then_ : change when ConditionalLink is updated

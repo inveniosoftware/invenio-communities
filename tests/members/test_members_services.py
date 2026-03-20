@@ -18,7 +18,7 @@ from invenio_requests.records.api import Request, RequestEvent
 from marshmallow import ValidationError
 
 from invenio_communities.members.errors import AlreadyMemberError, InvalidMemberError
-from invenio_communities.members.records.api import Member
+from invenio_communities.members.records.api import Member, MemberMixin
 from invenio_communities.proxies import current_identities_cache
 
 
@@ -1342,7 +1342,9 @@ def test_decline_membership_request(
     result = member_service.search(owner.identity, community._record.id).to_dict()
     assert result["hits"]["total"] == 1
 
-    requests_service.execute_action(owner.identity, membership_request.id, "decline")
+    requests_service.execute_action(
+        owner.identity, membership_request._record.id, "decline"
+    )
 
     # Only owner in list
     Member.index.refresh()
@@ -1419,6 +1421,48 @@ def test_update_membership_request_role(
     # Case: requester cannot update its role
     with pytest.raises(PermissionDeniedError):
         member_service.update(user.identity, community._record.id, data)
+
+
+def test_expire_membership_request(
+    clean_index,
+    community_open_to_membership_requests,
+    db,
+    member_service,
+    membership_request,
+    owner,
+    requests_service,
+):
+    community = community_open_to_membership_requests
+
+    # Pre-conditions:
+    # 1) only owner
+    result = member_service.search(owner.identity, community.id).to_dict()
+    assert 1 == result["hits"]["total"]
+    # 2) one membership request
+    result = member_service.search_membership_requests(
+        owner.identity, community.id,
+    ).to_dict()
+    assert 1 == result["hits"]["total"]
+
+    # Expire request
+    requests_service.execute_action(
+        system_identity, membership_request.id, "expire"
+    )
+    MemberMixin.index.refresh()
+
+    # Post-conditions
+    # 1) still 1 member, the owner
+    res = member_service.search(owner.identity, community.id)
+    assert 1 == res.to_dict()["hits"]["total"]
+
+    # 2) 1 member request, the accepted one
+    result = member_service.search_membership_requests(
+        owner.identity, community.id
+    ).to_dict()
+    assert 1 == result["hits"]["total"]
+    hit = result["hits"]["hits"][0]
+    assert "expired" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
 
 
 #
