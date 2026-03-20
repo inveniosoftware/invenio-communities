@@ -34,7 +34,10 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from werkzeug.local import LocalProxy
 
-from ...notifications.builders import CommunityInvitationSubmittedNotificationBuilder
+from ...notifications.builders import (
+    CommunityInvitationSubmittedNotificationBuilder,
+    CommunityMembershipRequestSubmittedNotificationBuilder,
+)
 from ...proxies import current_roles
 from ..errors import AlreadyMemberError, InvalidMemberError
 from ..records.api import ArchivedMemberRequest, MemberMixin
@@ -877,16 +880,15 @@ class MemberService(RecordService):
         }
         request_item = current_requests_service.create(
             identity,
-            data={
-                "title": title,
-                # "description": description,
-            },
+            data={"title": title},
             request_type=MembershipRequestRequestType,
-            receiver=community,
             creator={"user": str(identity.user.id)},
-            topic=community,  # user instead?
-            # TODO: Consider expiration
-            # expires_at=invite_expires_at(),
+            topic=community,
+            receiver=community,
+            expires_at=(
+                datetime.now(timezone.utc)
+                + current_app.config["COMMUNITIES_MEMBERSHIP_REQUESTS_EXPIRES_IN"]
+            ),
             uow=uow,
         )
 
@@ -901,23 +903,23 @@ class MemberService(RecordService):
                 notify=False,
             )
 
-        # TODO: Add notification mechanism
-        # uow.register(
-        #     NotificationOp(
-        #         MembershipRequestSubmittedNotificationBuilder.build(
-        #             request=request_item._request,
-        #             # explicit string conversion to get the value of LazyText
-        #             role=str(role.title),
-        #             message=message,
-        #         )
-        #     )
-        # )
+        role = current_roles["reader"]
+
+        uow.register(
+            NotificationOp(
+                CommunityMembershipRequestSubmittedNotificationBuilder.build(
+                    request=request_item._request,
+                    role=role.name,
+                    message=message,
+                )
+            )
+        )
 
         # Create an inactive member entry linked to the request.
         self._add_factory(
             identity,
             community=community,
-            role=current_roles["reader"],
+            role=role,
             visible=False,
             member={"type": "user", "id": str(identity.user.id)},
             message=message,

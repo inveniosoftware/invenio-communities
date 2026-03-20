@@ -24,7 +24,7 @@ export class SelectedMembers extends Component {
     const { selectedMembers, headerText } = this.props;
 
     return !_isEmpty(selectedMembers) ? (
-      <Segment className="selected-members-header mb-20 mr-20">
+      <Segment className="selected-members-header mb-20">
         {Object.entries(selectedMembers).map(([memberId, member]) => (
           <Button
             key={memberId}

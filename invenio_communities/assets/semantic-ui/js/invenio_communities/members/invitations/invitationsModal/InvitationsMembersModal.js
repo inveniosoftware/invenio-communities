@@ -131,7 +131,7 @@ export class InvitationsMembersModal extends Component {
             doneButtonTipType={i18next.t("users")}
             existingEntities={existingIds}
             existingEntitiesDescription={i18next.t(
-              "Already a member or invitation pending"
+              "Already a member or pending a decision"
             )}
             searchBarPlaceholder={i18next.t(
               "Search by full name, username or email (if publicly visible)"

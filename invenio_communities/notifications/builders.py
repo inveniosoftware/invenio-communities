@@ -20,7 +20,7 @@ from invenio_communities.notifications.generators import CommunityMembersRecipie
 
 
 class BaseNotificationBuilder(NotificationBuilder):
-    """Base notification builder for community invitation action."""
+    """Base notification builder for community notification."""
 
     context = [
         EntityResolve(key="request"),
@@ -151,6 +151,99 @@ class CommunityInvitationExpireNotificationBuilder(
     recipients = [
         CommunityMembersRecipient(key="request.created_by", roles=["owner", "manager"]),
         UserRecipient(key="request.receiver"),
+    ]
+
+
+class CommunityMembershipRequestNotificationBuilder(BaseNotificationBuilder):
+    """Base notification builder for community membership-request action."""
+
+    type = "community-membership-request"
+
+    @classmethod
+    def build(cls, request, message=None):
+        """Build notification with request context."""
+        return Notification(
+            type=cls.type,
+            context={
+                "request": EntityResolverRegistry.reference_entity(request),
+            },
+        )
+
+
+class CommunityMembershipRequestSubmittedNotificationBuilder(
+    CommunityMembershipRequestNotificationBuilder
+):
+    """Notification builder for membership request submitted."""
+
+    type = f"{CommunityMembershipRequestNotificationBuilder.type}.submit"
+
+    @classmethod
+    def build(cls, request, role, message=None):
+        """Build notification with request context.
+
+        :param request: api.Request
+        :param role: string
+        :param message: string
+        """
+        return Notification(
+            type=cls.type,
+            context={
+                "request": EntityResolverRegistry.reference_entity(request),
+                "role": role,
+                "message": message,
+            },
+        )
+
+    recipients = [
+        CommunityMembersRecipient(key="request.receiver", roles=["owner", "manager"]),
+    ]
+
+
+class CommunityMembershipRequestCancelledNotificationBuilder(
+    CommunityMembershipRequestNotificationBuilder
+):
+    """Notification builder for membership request cancelled."""
+
+    type = f"{CommunityMembershipRequestNotificationBuilder.type}.cancel"
+    recipients = [
+        CommunityMembersRecipient(key="request.receiver", roles=["owner", "manager"]),
+    ]
+
+
+class CommunityMembershipRequestAcceptedNotificationBuilder(
+    CommunityMembershipRequestNotificationBuilder
+):
+    """Notification builder for membership request accepted."""
+
+    type = f"{CommunityMembershipRequestNotificationBuilder.type}.accept"
+
+    recipients = [
+        UserRecipient(key="request.created_by"),
+    ]
+
+
+class CommunityMembershipRequestDeclinedNotificationBuilder(
+    CommunityMembershipRequestNotificationBuilder
+):
+    """Notification builder for membership request declined."""
+
+    type = f"{CommunityMembershipRequestNotificationBuilder.type}.decline"
+
+    recipients = [
+        UserRecipient(key="request.created_by"),
+    ]
+
+
+class CommunityMembershipRequestExpiredNotificationBuilder(
+    CommunityMembershipRequestNotificationBuilder
+):
+    """Notification builder for membership request expired."""
+
+    type = f"{CommunityMembershipRequestNotificationBuilder.type}.expire"
+
+    recipients = [
+        UserRecipient(key="request.created_by"),
+        CommunityMembersRecipient(key="request.receiver", roles=["owner", "manager"]),
     ]
 
 

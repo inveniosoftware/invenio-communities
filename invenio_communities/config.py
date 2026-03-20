@@ -208,7 +208,7 @@ COMMUNITIES_MEMBERS_FACETS = {
 """Available facets defined for this module."""
 
 COMMUNITIES_INVITATIONS_SEARCH = {
-    "facets": ["type", "status"],
+    "facets": ["type", "status"],  # what is type?
     "sort": ["bestmatch", "name", "newest", "oldest"],
 }
 """Community invitations search configuration (i.e list of community invitations)"""
@@ -234,13 +234,13 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 """Definitions of available record sort options."""
 
 COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
-""""Default amount of time before an invitation expires."""
+"""Default amount of time before an invitation expires."""
 
 COMMUNITIES_MEMBERSHIP_REQUESTS_SEARCH = {
     "facets": ["role", "status"],
     "sort": ["bestmatch", "name", "newest", "oldest"],
 }
-""""Community membership requests search configuration."""
+"""Community membership requests search configuration."""
 
 COMMUNITIES_MEMBERSHIP_REQUESTS_FACETS = {
     "role": {
@@ -257,6 +257,9 @@ COMMUNITIES_MEMBERSHIP_REQUESTS_FACETS = {
     },
 }
 """Available facets for membership requests."""
+
+COMMUNITIES_MEMBERSHIP_REQUESTS_EXPIRES_IN = timedelta(days=30)
+"""Default amount of time before a membership request expires."""
 
 COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""

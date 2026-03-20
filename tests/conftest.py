@@ -43,6 +43,11 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationDeclineNotificationBuilder,
     CommunityInvitationExpireNotificationBuilder,
     CommunityInvitationSubmittedNotificationBuilder,
+    CommunityMembershipRequestAcceptedNotificationBuilder,
+    CommunityMembershipRequestCancelledNotificationBuilder,
+    CommunityMembershipRequestDeclinedNotificationBuilder,
+    CommunityMembershipRequestSubmittedNotificationBuilder,
+    CommunityMembershipRequestExpiredNotificationBuilder,
 )
 from invenio_communities.proxies import current_communities
 
@@ -124,6 +129,11 @@ def app_config(app_config):
         CommunityInvitationDeclineNotificationBuilder.type: CommunityInvitationDeclineNotificationBuilder,
         CommunityInvitationExpireNotificationBuilder.type: CommunityInvitationExpireNotificationBuilder,
         CommunityInvitationSubmittedNotificationBuilder.type: CommunityInvitationSubmittedNotificationBuilder,
+        CommunityMembershipRequestAcceptedNotificationBuilder.type: CommunityMembershipRequestAcceptedNotificationBuilder,
+        CommunityMembershipRequestCancelledNotificationBuilder.type: CommunityMembershipRequestCancelledNotificationBuilder,
+        CommunityMembershipRequestDeclinedNotificationBuilder.type: CommunityMembershipRequestDeclinedNotificationBuilder,
+        CommunityMembershipRequestExpiredNotificationBuilder.type: CommunityMembershipRequestExpiredNotificationBuilder,
+        CommunityMembershipRequestSubmittedNotificationBuilder.type: CommunityMembershipRequestSubmittedNotificationBuilder,
     }
 
     # Specifying default resolvers. Will only be used in specific test cases.
@@ -619,6 +629,35 @@ def community_type_record(
 
     Vocabulary.index.refresh()  # Refresh the index
     return records_list
+
+
+@pytest.fixture(scope="function")
+def create_member(member_service, db):
+    """Factory fixture to create a community member."""
+
+    def _create_member(
+        community_id, user_id, role="reader", visible=False, active=True
+    ):
+        m = Member.create(
+            {},
+            community_id=community_id,
+            user_id=user_id,
+            role=role,
+            visible=visible,
+            active=active,
+        )
+        member_service.indexer.index(m)
+        Member.index.refresh()
+
+        # reindex user to make sure the user service is up-to-date
+        current_users_service.indexer.process_bulk_queue()
+        current_users_service.record_cls.index.refresh()
+
+        db.session.commit()
+
+        return m
+
+    return _create_member
 
 
 @pytest.fixture(scope="function")
