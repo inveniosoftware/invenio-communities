@@ -49,7 +49,7 @@ class AcceptAction(actions.AcceptAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().accept_invite(system_identity, self.request.id, uow=uow)
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationAcceptNotificationBuilder.build(self.request)
@@ -136,6 +136,25 @@ class CommunityInvitation(RequestType):
 #
 # MembershipRequestRequestType: actions and request type
 #
+
+
+class AcceptMembershipRequestAction(actions.AcceptAction):
+    """Accept membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: notifications for accept
+        # uow.register(
+        #     NotificationOp(
+        #         (
+        #             CommunityMembershipRequestAcceptNotificationBuilder.build(
+        #                 self.request
+        #             )
+        #         )
+        #     )
+        # )
+        super().execute(identity, uow)
 
 
 class CancelMembershipRequestAction(actions.CancelAction):
@@ -231,6 +250,7 @@ class MembershipRequestRequestType(RequestType):
 
     create_action = "create"
     available_actions = {
+        "accept": AcceptMembershipRequestAction,
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
         "decline": DeclineMembershipRequestAction,

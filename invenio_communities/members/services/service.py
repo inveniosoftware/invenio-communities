@@ -650,6 +650,35 @@ class MemberService(RecordService):
     # Member requests
 
     @unit_of_work()
+    def accept_member_request(self, identity, request_id, uow=None):
+        """Accept member request (invitation or membership request)."""
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        archived_member_request = self.archive_cls.create_from_member(member)
+        member.active = True
+        # Run components
+        self.run_components(
+            "accept_member_request",
+            identity,
+            record=member,
+            errors=None,
+            uow=uow,
+        )
+
+        uow.register(RecordCommitOp(member, indexer=self.indexer, index_refresh=True))
+        uow.register(
+            RecordCommitOp(
+                archived_member_request,
+                indexer=self.archive_indexer,
+                index_refresh=True,
+            )
+        )
+        # PR comment - needed?
+        # uow.register(IndexRefreshOp(indexer=self.indexer))
+
+    @unit_of_work()
     def close_member_request(self, identity, request_id, uow=None):
         """Close member request (invitation or membership request).
 
@@ -980,12 +1009,6 @@ class MemberService(RecordService):
             ),
             **kwargs,
         )
-
-    @unit_of_work()
-    def accept_membership_request(self, identity, request_id, uow=None):
-        """Accept membership request."""
-        # TODO: Implement me
-        pass
 
     def get_request_id_of_pending_member(self, identity, community_id):
         """
