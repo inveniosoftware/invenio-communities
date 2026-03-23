@@ -63,7 +63,7 @@ class DeclineAction(actions.DeclineAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationDeclineNotificationBuilder.build(self.request)
@@ -77,7 +77,7 @@ class CancelAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationCancelNotificationBuilder.build(self.request)
@@ -91,7 +91,7 @@ class ExpireAction(actions.ExpireAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationExpireNotificationBuilder.build(self.request)
@@ -143,12 +143,30 @@ class CancelMembershipRequestAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().close_membership_request(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         # TODO: Investigate notifications
         super().execute(identity, uow)
 
 
-def is_request_created_by_current_user(obj, vars):
+class DeclineMembershipRequestAction(actions.DeclineAction):
+    """Decline action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: Notification for declining
+        # uow.register(
+        #     NotificationOp(
+        #         (
+        #             CommunityMembershipRequestDeclineNotificationBuilder
+        #             .build(self.request)
+        #         )
+        #     )
+        # )
+        super().execute(identity, uow)
+
+
+def is_created_by_current_user(request, vars):
     """Is created by current user.
 
     Because this is called in the context of a RequestType, the received obj
@@ -215,6 +233,7 @@ class MembershipRequestRequestType(RequestType):
     available_actions = {
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
+        "decline": DeclineMembershipRequestAction,
     }
 
     creator_can_be_none = False

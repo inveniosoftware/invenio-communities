@@ -170,7 +170,7 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     archive_cls = ArchivedMemberRequest
     archive_indexer_cls = RecordServiceConfig.indexer_cls
-    archive_indexer_queue_name = "archived-invitations"
+    archive_indexer_queue_name = "archived-invitations"  # legacy name
 
     permission_policy_cls = FromConfig(
         "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy

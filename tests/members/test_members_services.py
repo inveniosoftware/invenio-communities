@@ -1291,6 +1291,38 @@ def test_cancel_membership_request(
     )
 
 
+def test_decline_membership_request(
+    clean_index,
+    community_open_to_membership_requests,
+    db,
+    membership_request,
+    member_service,
+    owner,
+    requests_service,
+):
+    community = community_open_to_membership_requests
+    # pre-condition: only owner
+    result = member_service.search(owner.identity, community._record.id).to_dict()
+    assert result["hits"]["total"] == 1
+
+    requests_service.execute_action(
+        owner.identity, membership_request._record.id, "decline"
+    )
+
+    # Only owner in list
+    Member.index.refresh()
+    result = member_service.search(owner.identity, community._record.id).to_dict()
+    assert result["hits"]["total"] == 1
+    # Has been archived
+    result = member_service.search_membership_requests(
+        owner.identity, community._record.id
+    ).to_dict()
+    assert result["hits"]["total"] == 1
+    hit = result["hits"]["hits"][0]
+    assert "declined" == hit["request"]["status"]
+    assert hit["request"]["is_open"] is False
+
+
 #
 # Change notifications
 #
