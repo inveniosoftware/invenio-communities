@@ -10,6 +10,16 @@
 Changes
 =======
 
+Version v20.2.1 (released 2026-03-24)
+
+- chore: reformat with black v26
+- fix(setup): pin setuptools for pkg_resources
+- ci: enable tests on maint branch
+- i18n: pulled translations
+- i18n: extract py msgs
+- i18n: wrap missing admin panel strings
+- i18n: pulled translations (#1333)
+
 Version v20.2.0 (released 2025-09-05)
 
 - setup: bump major version of invenio-vocabularies
