@@ -380,10 +380,15 @@ def test_search_invitations(
     # hits > hit > permissions
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_cancel"] is True
+    # hits > hit > links
+    expected_links = {
+        "actions": {
+            "cancel": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/cancel",  # noqa
+        },
+    }
+    assert expected_links == hit["links"]
 
 
-# TODO: member serialization/links
-# TODO: request serialization/links
 # TODO: community member can see info
 # TODO: community non-member can't see info
 # TODO: facet by role, facet by visibility, define sorts.
@@ -480,16 +485,15 @@ def test_get_search_membership_requests(
     # TODO: Test when expiration is implemented
     # assert "expires_at" in hit["request"]
     # assert hit["request"]["expires_at"] is not None
-    # TODO: Test when actions are implemented
     # hits > hit > links
-    # request_id = hit["request"]["id"]
-    # expected_links = {
-    #     "actions": {
-    #         "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",  # noqa
-    #         "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",  # noqa
-    #     },
-    # }
-    # assert expected_links == hit["links"]
+    request_id = hit["request"]["id"]
+    expected_links = {
+        "actions": {
+            "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",  # noqa
+            "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",  # noqa
+        },
+    }
+    assert expected_links == hit["links"]
 
 
 def test_put_update_membership_requests(

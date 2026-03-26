@@ -1336,14 +1336,12 @@ def test_accept_membership_request(
 
     # PR comment: by adding index_refresh to accept_member_request, we didn't need those
     # refresh() calls below . At least 1 of those was refreshed anyway before...
-    # Member.index.refresh()
     # post-conditions:
     # 1) 2 members: the owner + requester
     result = member_service.search(owner.identity, community._record.id).to_dict()
     assert 2 == result["hits"]["total"]
 
     # 2) 1 member request, the accepted one
-    # ArchivedMemberRequest.index.refresh() needed?
     result = member_service.search_membership_requests(
         owner.identity, community._record.id
     ).to_dict()
