@@ -133,7 +133,9 @@ export class InvitationsMembersModal extends Component {
             existingEntitiesDescription={i18next.t(
               "Already a member or invitation pending"
             )}
-            searchBarPlaceholder={i18next.t("Search by email, full name or username")}
+            searchBarPlaceholder={i18next.t(
+              "Search by full name, username or email (if publicly visible)"
+            )}
           />
         </Tab.Pane>
       ),
