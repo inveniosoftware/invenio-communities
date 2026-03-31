@@ -185,7 +185,7 @@ class DeclineMembershipRequestAction(actions.DeclineAction):
         super().execute(identity, uow)
 
 
-def is_created_by_current_user(request, vars):
+def is_request_created_by_current_user(request, vars):
     """Is created by current user.
 
     Because this is called in the context of a RequestType, the received obj

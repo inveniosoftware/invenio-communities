@@ -441,8 +441,8 @@ class MemberService(RecordService):
     def update(self, identity, community_id, data, uow=None, refresh=False):
         """Bulk update.
 
-        Used to update both active members and active invitations. Archived
-        invitations cannot be updated.
+        Used to update both active members and non-archived invitations + membership
+        requests. Archived invitations/membership-requests cannot be updated.
         """
         community = self.community_cls.get_record(community_id)
 

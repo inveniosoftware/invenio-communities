@@ -497,11 +497,33 @@ def test_get_search_membership_requests(
 
 
 def test_put_update_membership_requests(
-    client, headers, community_id, owner, new_user_data, db
+    client,
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    headers,
+    owner,
 ):
-    # update membership request
-    # TODO: Implement me!
-    assert True
+    user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
+    client = user.login(client)
+    community_id = str(community_open_to_membership_requests._record.id)
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+
+    # Update the membership request
+    client = owner.login(client, logout_first=True)
+    r = client.put(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={
+            "members": [{"type": "user", "id": str(user.id)}],
+            "role": "curator",
+        },
+    )
+    assert r.status_code == 204
 
 
 def test_error_handling_for_membership_requests(

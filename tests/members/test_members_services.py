@@ -1351,6 +1351,36 @@ def test_accept_membership_request(
     assert hit["request"]["is_open"] is False
 
 
+def test_update_membership_request_role(
+    clean_index,
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    member_service,
+    owner,
+):
+    community = community_open_to_membership_requests
+    # Create membership request
+    user = create_user()
+    community = community_open_to_membership_requests
+    membership_request = member_service.request_membership(
+        user.identity,
+        community._record.id,
+        data={"message": "Can I join the club?"},
+    )
+    data = {
+        "members": [{"type": "user", "id": str(user.id)}],
+        "role": "manager",
+    }
+
+    # Case: owner can update role of requester
+    member_service.update(owner.identity, community._record.id, data)
+
+    # Case: requester cannot update its role
+    with pytest.raises(PermissionDeniedError):
+        member_service.update(user.identity, community._record.id, data)
+
+
 #
 # Change notifications
 #
