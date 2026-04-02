@@ -347,3 +347,5 @@ COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS = False
 COMMUNITIES_DEFAULT_RECORD_SUBMISSION_POLICY = RecordSubmissionPolicyEnum.OPEN
 """Default value of record submission policy community access setting."""
 
+COMMUNITIES_COLLECTIONS_ENABLED = False
+"""Feature flag to enable/disable collections feature."""

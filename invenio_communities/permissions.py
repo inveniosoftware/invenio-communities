@@ -64,9 +64,11 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     can_delete = [CommunityOwners(), SystemProcess()]
 
     can_manage_collections = [
-        CommunityOwners(),
-        CommunityManagers(),
-        SystemProcess(),
+        IfConfig(
+            "COMMUNITIES_COLLECTIONS_ENABLED",
+            then_=[CommunityOwners(), CommunityManagers(), SystemProcess()],
+            else_=[Disable()],
+        )
     ]
 
     can_purge = [CommunityOwners(), SystemProcess()]

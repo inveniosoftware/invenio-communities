@@ -54,7 +54,7 @@ def test_manage_collections_insufficient_permissions(
 def test_manage_collections_with_manager_role(
     app, db, community, owner, new_user, member_service
 ):
-    """Test that community managers cannot manage collections."""
+    """Test that community managers can manage collections."""
     policy = CommunityPermissionPolicy
     community_record = community._record
 
@@ -66,7 +66,7 @@ def test_manage_collections_with_manager_role(
     db.session.commit()
 
     new_user.refresh()
-    assert not policy(action="manage_collections", record=community_record).allows(
+    assert policy(action="manage_collections", record=community_record).allows(
         new_user.identity
     )
 
