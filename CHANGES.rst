@@ -10,6 +10,16 @@
 Changes
 =======
 
+Version v26.0.0 (released 2026-04-02)
+
+- feat(collections): add feature flag to enable/disable collections
+- feat(collections): add template for UI
+- feat(communities): add CollectionsPermissionPolicy and support namespace_id in generators
+- feat(collections): rework the UI to match the browse page, add limits to categories and collections
+- feat(collections): add collections CRUD UI
+- feat(mshp-req): generate self_html link and redirect on frontend for membership request
+- fix(invitations): de-emphasize search by email in InvitationsModal
+
 Version v25.0.0 (released 2026-03-18)
 
 - change(setup): upgrade invenio-vocabularies, invenio-jobs
