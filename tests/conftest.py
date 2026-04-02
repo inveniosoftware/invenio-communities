@@ -145,6 +145,7 @@ def app_config(app_config):
     app_config["ACCOUNTS_DEFAULT_USERS_VERIFIED"] = True
 
     app_config["COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS"] = True
+    app_config["COMMUNITIES_COLLECTIONS_ENABLED"] = True
 
     app_config["THEME_FRONTPAGE"] = False
     app_config["NOTIFICATIONS_SETTINGS_VIEW_FUNCTION"] = lambda: "<notification view>"

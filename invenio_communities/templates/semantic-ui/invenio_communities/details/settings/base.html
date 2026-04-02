@@ -27,7 +27,7 @@
         <div role="tablist" class="ui vertical horizontal mobile tablet menu theme-primary-menu">
           {% for menu_key, (menu_item, menu_link) in menu_items.items() %}
             {% set hide_privileges = menu_key == 'privileges' and not permissions.can_manage_access %}
-            {% set hide_collections = menu_key == 'collections' and not permissions.can_manage_collections %}
+            {% set hide_collections = menu_key == 'collections' and (not config.COMMUNITIES_COLLECTIONS_ENABLED or not permissions.can_manage_collections) %}
             {% if not hide_privileges and not hide_collections %}
               <a
                 role="tab"
