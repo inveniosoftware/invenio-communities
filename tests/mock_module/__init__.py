@@ -47,6 +47,23 @@ def create_community_records_blueprint(app):
     return blueprint
 
 
+def create_community_collections_blueprint(app):
+    """Create fake invenio-records Blueprint akin to invenio-rdm-records'."""
+    blueprint = Blueprint(
+        "collections",
+        __name__,
+    )
+
+    def list_trees():
+        return "<list_trees>"
+
+    blueprint.add_url_rule(
+        "/communities/<pid_value>/collection-trees", view_func=list_trees
+    )
+
+    return blueprint
+
+
 def create_invenio_app_rdm_requests_blueprint(app):
     """Create fake invenio_app_rdm_requests Blueprint akin to invenio-app-rdm's."""
     blueprint = Blueprint(
