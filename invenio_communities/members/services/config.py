@@ -25,7 +25,10 @@ from ..records import Member
 from ..records.api import ArchivedMemberRequest
 from . import facets
 from .components import CommunityMemberCachingComponent
-from .links import MemberRequestActionsEndpointLinks
+from .links import (
+    MemberRequestActionsEndpointLinks,
+    MemberRequestCommunityDashboardEndpointLink,
+)
 from .schemas import MemberEntitySchema
 
 
@@ -182,6 +185,10 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     links_item = {
         "actions": MemberRequestActionsEndpointLinks(),
+        # We define the self_html of a Member to be the community dashboard one of its
+        # assocaated Request (in this context, the user dashboard endpoint is never
+        # appropriate)
+        "self_html": MemberRequestCommunityDashboardEndpointLink(),
     }
     # ResultList configurations
     links_search = pagination_endpoint_links(
