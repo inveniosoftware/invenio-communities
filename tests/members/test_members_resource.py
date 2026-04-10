@@ -385,6 +385,7 @@ def test_search_invitations(
         "actions": {
             "cancel": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/cancel",  # noqa
         },
+        "self_html": f"https://127.0.0.1:5000/communities/{community_slug}/invitations/{request_id}",  # noqa
     }
     assert expected_links == hit["links"]
 
@@ -492,6 +493,7 @@ def test_get_search_membership_requests(
             "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",  # noqa
             "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",  # noqa
         },
+        "self_html": f"https://127.0.0.1:5000/communities/{community_slug}/membership-requests/{request_id}",  # noqa
     }
     assert expected_links == hit["links"]
 

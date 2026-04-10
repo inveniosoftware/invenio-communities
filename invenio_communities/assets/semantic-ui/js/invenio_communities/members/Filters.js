@@ -55,6 +55,12 @@ export class Filters {
     return { ...rolesFilters, ...visibilityFilters };
   }
 
+  getMembershipRequestsFilters() {
+    const rolesFilters = this.getRoles();
+    const statusFilters = this.getStatus();
+    return { ...rolesFilters, ...statusFilters };
+  }
+
   getHumanReadableVisibility(value) {
     return value === "true" ? i18next.t("Public") : i18next.t("Hidden");
   }

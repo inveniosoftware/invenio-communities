@@ -7,10 +7,13 @@
 
 """Members Service links."""
 
+from collections import namedtuple
+
 from invenio_records_resources.services.base.links import (
     EndpointLink,
 )
 from invenio_requests.proxies import current_request_type_registry
+from invenio_requests.services.links import RequestTypeDependentEndpointLink
 
 from .request import CommunityInvitation, MembershipRequestRequestType
 
@@ -151,3 +154,74 @@ class MemberRequestActionsEndpointLinks:
                 links[action] = self._endpoint_link.expand(obj, ctx)
 
         return links
+
+
+class MemberRequestCommunityDashboardEndpointLink:
+    """EndpointLink for community dashboard endpoint of request of member.
+
+    WHY: A Member doesn't doesn't store its associated request in its entirety in same
+         db/index entry (naturally). So the blunt approach of reusing Request dependent
+         functionality is not possible without a high performance cost (to retrieve each
+         full request) or an incomplete and error-prone faked interface.
+
+         So we use a different approach instead. At the cost of not reusing the
+         self_html link defined in the MemberRequest, we define the self_html links here
+         in the context of a Member service call (Member JSON API). Contextual knowledge
+         is leveraged to cut to the chase.
+    """
+
+    def __init__(self):
+        """docstring."""
+
+    def _select_link(self, obj, context):
+        """Select EndpointLink corresponding to type of request of Member.
+
+        :param obj: api.Member
+        :param context: dict of context variables
+        return EndpointLink
+        """
+        member = obj
+
+        link_no_op = EndpointLink("", when=lambda obj, vars: False)
+
+        # No member request link for active member or member without request
+        # (added directly)
+        if member.active or not member.get("request"):
+            return link_no_op
+
+        # Not all members may have a request with a type stored since the request type
+        # was not stored originally. But in that case, because at this point we know the
+        # Member is inactive and has a request without stored type, the request must be
+        # an invitation (it's a legacy invitation).
+        request_type_id = member["request"].get("type") or "community-invitation"
+
+        if request_type_id == CommunityInvitation.type_id:
+            endpoint = "invenio_app_rdm_requests.community_dashboard_request_view"
+        elif request_type_id == MembershipRequestRequestType.type_id:
+            endpoint = "invenio_app_rdm_requests.community_dashboard_membership_request_view"  # noqa
+        else:
+            # In case something strange / future-proofing
+            return link_no_op
+
+        return EndpointLink(
+            endpoint,
+            params=["pid_value", "request_pid_value"],
+            vars=lambda obj, vars: (
+                vars.update(
+                    # override the pid_value to use the community slug since this
+                    # is a UI URL
+                    pid_value=vars["community_slug"],
+                    request_pid_value=str(member.request_id),
+                ),
+            ),
+        )
+
+    def should_render(self, obj, context):
+        """Should render."""
+        link = self._select_link(obj, context)
+        return link.should_render(obj, context)
+
+    def expand(self, obj, context):
+        """Expand the link with obj and context."""
+        link = self._select_link(obj, context)
+        return link.expand(obj, context)

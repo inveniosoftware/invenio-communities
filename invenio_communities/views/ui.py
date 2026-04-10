@@ -43,6 +43,7 @@ from .communities import (
     community_theme_css_config,
     invitations,
     members,
+    membership_requests,
 )
 from .decorators import warn_deprecation
 
@@ -198,35 +199,33 @@ def create_ui_blueprint(app):
         routes["settings"],
         view_func=communities_settings,
     )
-
-    blueprint.add_url_rule(
-        routes["requests"],
-        view_func=communities_requests,
-    )
-
     blueprint.add_url_rule(
         routes["settings_privileges"],
         view_func=communities_settings_privileges,
     )
-
     blueprint.add_url_rule(
         routes["settings_submission_policy"],
         view_func=communities_settings_submission_policy,
     )
-
     blueprint.add_url_rule(
         routes["settings_pages"],
         view_func=communities_settings_pages,
     )
-
     blueprint.add_url_rule(
         routes["settings_collections"],
         view_func=communities_settings_collections,
     )
 
-    blueprint.add_url_rule(routes["members"], view_func=members)
+    # Requests tab routes
+    blueprint.add_url_rule(
+        routes["requests"],
+        view_func=communities_requests,
+    )
 
+    # Members tab routes
+    blueprint.add_url_rule(routes["members"], view_func=members)
     blueprint.add_url_rule(routes["invitations"], view_func=invitations)
+    blueprint.add_url_rule(routes["membership_requests"], view_func=membership_requests)
 
     # theme injection view
     blueprint.add_url_rule(

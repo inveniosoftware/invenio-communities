@@ -126,6 +126,9 @@ MEMBER_POLICY_FIELDS = [
 ]
 
 
+# Permissions to determine relevant to community pages
+
+
 HEADER_PERMISSIONS = {
     "read",
     "update",
@@ -514,6 +517,22 @@ def invitations(pid_value, community, community_ui):
         community_ui=community_ui,
         community=community,
         roles_can_invite=_get_roles_can_invite(community.id),
+        permissions=permissions,
+    )
+
+
+@pass_community(serialize=True)
+def membership_requests(pid_value, community, community_ui):
+    """Community membership requests page."""
+    permissions = community.has_permissions_to(MEMBERS_PERMISSIONS)
+    if not permissions["can_search_membership_requests"]:
+        raise PermissionDeniedError()
+    return render_community_theme_template(
+        "invenio_communities/details/members/membership_requests.html",
+        theme=community_ui.get("theme", {}),
+        community_ui=community_ui,
+        community=community,
+        roles_can_assign=_get_roles_can_invite(community.id),  # to change?
         permissions=permissions,
     )
 

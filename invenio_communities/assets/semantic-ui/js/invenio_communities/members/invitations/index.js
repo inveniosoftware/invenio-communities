@@ -9,11 +9,12 @@
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { parametrize, overrideStore } from "react-overridable";
 import { DropdownSort } from "@js/invenio_search_ui/components";
+import { i18next } from "@translations/invenio_communities/i18next";
 import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
 import { InvitationResultItem } from "./InvitationResultItem";
 import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
-import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
+import { MemberRequestsSearchBarElement } from "../member_requests/MemberRequestsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
 import { InvitationsEmptyResults } from "./InvitationsEmptyResults";
 import {
@@ -47,6 +48,11 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   permissions: permissions,
   groupsEnabled: groupsEnabled,
   appName: appName,
+});
+
+const InvitationsSearchBarElement = parametrize(MemberRequestsSearchBarElement, {
+  className: "invitations-searchbar",
+  placeholder: i18next.t("Search in invitations..."),
 });
 
 const InvitationsContextProvider = parametrize(ContextProvider, {
