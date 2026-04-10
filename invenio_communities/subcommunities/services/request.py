@@ -10,6 +10,8 @@ from invenio_access.permissions import system_identity
 from invenio_i18n import lazy_gettext as _
 from invenio_notifications.services.uow import NotificationOp
 from invenio_requests.customizations import RequestType, actions
+from invenio_records_resources.services import EndpointLink
+from invenio_requests.services.events.config import request_event_anchor
 from marshmallow.exceptions import ValidationError
 
 import invenio_communities.notifications.builders as notifications
@@ -85,6 +87,18 @@ class SubCommunityRequest(RequestType):
             "owner",
             "manager",
         ]
+    }
+
+    links_item = {
+        "self_html": EndpointLink(
+            "invenio_app_rdm_requests.community_dashboard_request_view",
+            params=["pid_value", "request_pid_value"],
+            vars=lambda obj, vars: vars.update(
+                request_pid_value=vars["request"].id,
+                pid_value=vars["request"].receiver.resolve().slug,
+            ),
+            anchor=request_event_anchor,
+        ),
     }
 
 
@@ -172,6 +186,18 @@ class SubCommunityInvitationRequest(RequestType):
             "owner",
             "manager",
         ]
+    }
+
+    links_item = {
+        "self_html": EndpointLink(
+            "invenio_app_rdm_requests.community_dashboard_request_view",
+            params=["pid_value", "request_pid_value"],
+            vars=lambda obj, vars: vars.update(
+                request_pid_value=vars["request"].id,
+                pid_value=vars["request"].receiver.resolve().slug,
+            ),
+            anchor=request_event_anchor,
+        ),
     }
 
 
