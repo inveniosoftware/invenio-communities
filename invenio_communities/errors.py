@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2026 KTH Royal Institute of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
@@ -24,9 +25,8 @@ class CommunityFeaturedEntryDoesNotExistError(CommunityError):
         """Initialise error."""
         super().__init__(
             _(
-                "A featured community entry with {q} does not exist.".format(
-                    q=query_arguments
-                )
+                "A featured community entry with %(q)s does not exist.",
+                q=query_arguments,
             )
         )
 
@@ -48,12 +48,12 @@ class LogoSizeLimitError(CommunityError):
         file_size_value, file_size_unit = humanize_byte_size(file_size)
         super().__init__(
             _(
-                "Logo size limit exceeded. Limit: {limit_value} {limit_unit} Given: {file_size_value} {file_size_unit}".format(
-                    limit_value=limit_value,
-                    limit_unit=limit_unit,
-                    file_size_value=file_size_value,
-                    file_size_unit=file_size_unit,
-                )
+                "Logo size limit exceeded. Limit: %(limit_value)s %(limit_unit)s "
+                "Given: %(file_size_value)s %(file_size_unit)s",
+                limit_value=limit_value,
+                limit_unit=limit_unit,
+                file_size_value=file_size_value,
+                file_size_unit=file_size_unit,
             )
         )
 

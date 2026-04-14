@@ -3,7 +3,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2016-2024 CERN.
 # Copyright (C) 2023-2025 Graz University of Technology.
-# Copyright (C) 2024 KTH Royal Institute of Technology.
+# Copyright (C) 2024-2026 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -51,9 +51,7 @@ def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
     max_ = kwargs.get("max", "")
     return validate.Length(
-        error=_(
-            "Field cannot be blank or longer than {max_} characters.".format(max_=max_)
-        ),
+        error=_("Field cannot be blank or longer than %(max)s characters.", max=max_),
         min=1,
         **kwargs,
     )
@@ -62,7 +60,7 @@ def _not_blank(**kwargs):
 def no_longer_than(max, **kwargs):
     """Returns a character limit validation rule."""
     return validate.Length(
-        error=_("Field cannot be longer than {max} characters.".format(max=max)),
+        error=_("Field cannot be longer than %(max)s characters.", max=max),
         max=max,
         **kwargs,
     )
