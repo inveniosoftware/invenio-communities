@@ -51,9 +51,7 @@ def _not_blank(**kwargs):
     """Returns a non-blank validation rule."""
     max_ = kwargs.get("max", "")
     return validate.Length(
-        error=_(
-            "Field cannot be blank or longer than {max_} characters.".format(max_=max_)
-        ),
+        error=_("Field cannot be blank or longer than %(max_)s characters.", max_=max_),
         min=1,
         **kwargs,
     )
@@ -62,7 +60,7 @@ def _not_blank(**kwargs):
 def no_longer_than(max, **kwargs):
     """Returns a character limit validation rule."""
     return validate.Length(
-        error=_("Field cannot be longer than {max} characters.".format(max=max)),
+        error=_("Field cannot be longer than %(max)s characters.", max_=max_),
         max=max,
         **kwargs,
     )
