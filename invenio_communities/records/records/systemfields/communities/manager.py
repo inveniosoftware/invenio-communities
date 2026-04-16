@@ -57,7 +57,7 @@ class CommunitiesRelationManager:
     #
     # API
     #
-    def add(self, community_or_id, request=None, default=False):
+    def add(self, community_or_id, default=False):
         """Add a record to a community.
 
         If a record was already added to a community an IntegrityError will
@@ -69,7 +69,6 @@ class CommunitiesRelationManager:
         obj = self._m2m_model_cls(
             record_id=self._record_id,
             community_id=community_id,
-            request_id=self._to_id(request),
         )
         db.session.add(obj)
 

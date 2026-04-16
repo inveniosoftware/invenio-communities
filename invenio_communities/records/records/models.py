@@ -9,7 +9,6 @@
 """Abstract database model for modelling community/record relationships."""
 
 from invenio_db import db
-from invenio_requests.records.models import RequestMetadata
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils.types import UUIDType
 
@@ -32,7 +31,7 @@ class CommunityRelationMixin:
 
     @declared_attr
     def community_id(cls):
-        """Foreign key to the related communithy."""
+        """Foreign key to the related community."""
         return db.Column(
             UUIDType,
             db.ForeignKey(CommunityMetadata.id, ondelete="CASCADE"),
@@ -46,13 +45,4 @@ class CommunityRelationMixin:
             UUIDType,
             db.ForeignKey(cls.__record_model__.id, ondelete="CASCADE"),
             primary_key=True,
-        )
-
-    @declared_attr
-    def request_id(cls):
-        """Foreign key to a related request."""
-        return db.Column(
-            UUIDType,
-            db.ForeignKey(RequestMetadata.id, ondelete="SET NULL"),
-            nullable=True,
         )
