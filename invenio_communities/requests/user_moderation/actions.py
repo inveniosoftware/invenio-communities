@@ -68,11 +68,12 @@ def on_block(user_id, uow=None, **kwargs):
     of an HTTP request!
     """
     user_id = str(user_id)
-    tombstone_data = {"note": _("User was blocked")}
+    # Resolve the lazy translation now; Celery can't serialize LazyString.
+    tombstone_data = {"note": kwargs.get("note") or str(_("User was blocked"))}
 
-    # set the removal reason if the vocabulary item exists
+    # Set the removal reason if the vocabulary item exists
     try:
-        removal_reason_id = kwargs.get("removal_reason_id", "misconduct")
+        removal_reason_id = kwargs.get("removal_reason_id") or "misconduct"
         vocab = vocab_service.read(
             identity=system_identity, id_=("removalreasons", removal_reason_id)
         )
@@ -80,7 +81,13 @@ def on_block(user_id, uow=None, **kwargs):
     except PIDDoesNotExistError:
         pass
 
-    # soft-delete all the communities of that user (only if they are the only owner)
+    # Use the actor who triggered the block on the tombstone; without
+    # this tombstones would attribute the removal to the system (identity).
+    actor_id = kwargs.get("actor_id")
+    if actor_id is not None:
+        tombstone_data["removed_by"] = {"user": str(actor_id)}
+
+    # Soft-delete all the communities of that user (only if they are the only owner)
     for comm in _get_communities_for_user(user_id):
         delete_community.delay(comm.pid.pid_value, tombstone_data)
 
