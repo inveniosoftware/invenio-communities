@@ -249,8 +249,11 @@ class CommunityDeletionComponent(ServiceComponent):
         record.deletion_status = CommunityDeletionStatusEnum.DELETED
         record.tombstone = data
 
-        # Set `removed_by` information for the tombstone
-        record.tombstone.removed_by = identity.id
+        # Preserve a caller-supplied removed_by; otherwise credit the acting
+        # identity. This lets async tombstoning (e.g. on user block) attribute
+        # the deletion to the moderator instead of system_identity.
+        if record.tombstone.removed_by is None:
+            record.tombstone.removed_by = identity.id
 
     def update_tombstone(self, identity, data=None, record=None, **kwargs):
         """Update the community's tombstone information."""
