@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022-2026 Northwestern University.
 # Copyright (C) 2022-2025 CERN.
 # Copyright (C) 2023 Graz University of Technology.
 #
@@ -103,8 +103,11 @@ class ExpireAction(actions.ExpireAction):
 #
 # Request
 #
-def is_created_by_current_user(obj, vars):
+def is_request_created_by_current_user(obj, vars):
     """Is created by current user.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent, so better to trust the vars content.
 
     :param request: api.Request
     :param vars: dict: context variables w/ keys:
@@ -188,7 +191,7 @@ class CommunityInvitation(RequestType):
 
     links_item = {
         "self_html": ConditionalLink(
-            cond=is_created_by_current_user,
+            cond=is_request_created_by_current_user,
             if_=EndpointLink(
                 "invenio_app_rdm_requests.user_dashboard_request_view",
                 params=["request_pid_value"],
@@ -243,23 +246,17 @@ class MembershipRequestRequestType(RequestType):
         # on current user. But it may need further improvements down the road
         # to also depend on the state of the request.
         "self_html": ConditionalLink(
-            cond=is_created_by_current_user,
+            cond=is_request_created_by_current_user,
             # if_ -> then_ : change when ConditionalLink is updated
             if_=EndpointLink(
                 "invenio_app_rdm_requests.user_dashboard_request_view",
                 params=["request_pid_value"],
-                vars=lambda request, vars: vars.update(request_pid_value=request.id),
+                vars=update_vars_for_user_dashboard_request_view,
             ),
             else_=EndpointLink(
                 "invenio_app_rdm_requests.community_dashboard_membership_request_view",
                 params=["pid_value", "request_pid_value"],
-                vars=lambda request, vars: (
-                    vars.update(
-                        # The topic for a MembershipRequest holds a CommunityPKProxy
-                        pid_value=request.topic.reference_dict.get("community"),
-                        request_pid_value=request.id,
-                    ),
-                ),
+                vars=update_vars_for_community_dashboard_request_view,
             ),
         )
     }
