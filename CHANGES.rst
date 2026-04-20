@@ -2,6 +2,7 @@
     This file is part of Invenio.
     Copyright (C) 2016-2025 CERN.
     Copyright (C) 2024-2026 Graz University of Technology.
+    Copyright (C) 2026 KTH Royal Institute of Technology.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -9,6 +10,10 @@
 
 Changes
 =======
+
+Version v26.0.1 (released 2026-04-20)
+
+- i18n: fix strings formatting in schema and error messages
 
 Version v26.0.0 (released 2026-04-02)
 
