@@ -1188,8 +1188,9 @@ def test_request_membership_links(
     membership_request_via_owner = requests_service.read(
         owner.identity, membership_request.id
     )
+    community_slug = community._record.slug
     assert (
-        f"https://127.0.0.1:5000/communities/{community.id}/membership-requests/{membership_request.id}"
+        f"https://127.0.0.1:5000/communities/{community_slug}/membership-requests/{membership_request.id}"
         == membership_request_via_owner.links["self_html"]
     )
 

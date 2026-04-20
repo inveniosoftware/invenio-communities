@@ -61,17 +61,18 @@ class RequestSchema(Schema):
     expires_at = fields.String()
     type = fields.Method("serialize_request_type")
 
-
     def serialize_request_type(self, member_request, context=None):
-        """Dump/serialize a Member.request.type.
+        """Dump/serialize a type from member_request dict.
+
+        This is part of the process that serializes Member.request.type to final
+        output dict.
 
         This exists to take into account historical storage when type was not saved.
-        In that case, at that time, it meant the request was of type "community-invitation"
-        and this function reflects that.
+        In that case, at that time, it meant the request was of type
+        "community-invitation" and this function reflects that.
 
         :param member_request: dict Member["request"] field
         """
-        breakpoint()
         # just in case empty
         if member_request:
             return member_request.get("type", "community-invitation")
