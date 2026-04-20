@@ -52,9 +52,9 @@ export class CustomFieldSerializer {
       if (isVocabulary && value?.id) {
         return value.id;
       }
-      // Add __key if i is passed i.e is an array. This is needed because of ArrayField
-      // internal implementation
-      if (i) value.__key = i;
+      // only assign __key when we're iterating an array (Number.isInteger(i)) and the element is a plain object (not a string or other primitive).
+      if (Number.isInteger(i) && typeof value === "object" && value !== null)
+        value.__key = i;
       return value;
     };
     const _record = _cloneDeep(record);
