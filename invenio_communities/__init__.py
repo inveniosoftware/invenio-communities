@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2025 CERN.
+# Copyright (C) 2016-2026 CERN.
 # Copyright (C) 2024-2026 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
@@ -12,6 +12,6 @@
 from .ext import InvenioCommunities
 from .proxies import current_communities
 
-__version__ = "26.0.1"
+__version__ = "26.1.0"
 
 __all__ = ("InvenioCommunities", "current_communities")

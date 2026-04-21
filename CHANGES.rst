@@ -11,6 +11,13 @@
 Changes
 =======
 
+Version v26.1.0 (released 2026-04-21)
+
+- feat(moderation): handle `actor_id` and `note` in user block callback
+- fix(components): handle tombstone `removed_by` value
+    * In case the tombstone's `removed_by` value is already set use it
+      instead of always defaulting to setting it to the system identity.
+
 Version v26.0.1 (released 2026-04-20)
 
 - i18n: fix strings formatting in schema and error messages
