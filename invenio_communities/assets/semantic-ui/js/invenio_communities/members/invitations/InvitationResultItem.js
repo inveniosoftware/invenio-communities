@@ -1,23 +1,23 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2022 CERN.
+ * Copyright (C) 2026 Northwestern University.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import { RequestActionController } from "@js/invenio_requests/request/actions/RequestActionController";
+import RequestStatus from "@js/invenio_requests/request/RequestStatus";
 import { i18next } from "@translations/invenio_communities/i18next";
-import { DateTime } from "luxon";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Image } from "react-invenio-forms";
 import { Container, Grid, Item, Table } from "semantic-ui-react";
+
 import { InvitationsContext } from "../../api/invitations/InvitationsContextProvider";
 import { RoleDropdown } from "../components/dropdowns";
-import RequestStatus from "@js/invenio_requests/request/RequestStatus";
-
-const formattedTime = (expiresAt) =>
-  DateTime.fromISO(expiresAt).setLocale(i18next.language).toRelative();
+import { buildRequestFromMember, formattedTime } from "../utils";
 
 export class InvitationResultItem extends Component {
   constructor(props) {
@@ -38,13 +38,17 @@ export class InvitationResultItem extends Component {
       config: { rolesCanInvite },
       community,
     } = this.props;
+
     const {
-      invitation: { member, request },
+      invitation: { member },
       invitation,
     } = this.state;
+
+    const request = buildRequestFromMember(invitation, ["cancel"]);
     const { api: invitationsApi } = this.context;
     const rolesCanInviteByType = rolesCanInvite[member.type];
     const memberInvitationExpiration = formattedTime(request.expires_at);
+
     return (
       <Table.Row className="community-member-item">
         <Table.Cell>
@@ -90,11 +94,12 @@ export class InvitationResultItem extends Component {
         </Table.Cell>
         <Table.Cell>
           <Container fluid textAlign="right">
-            {/* TODO uncomment when links available in the request resource subschema */}
-            {/*<RequestActionController*/}
-            {/*  request={request }*/}
-            {/*  actionSuccessCallback={this.updateInvitation}*/}
-            {/*>*/}
+            <RequestActionController
+              request={request}
+              actionSuccessCallback={() => {
+                window.location.reload();
+              }}
+            />
             {/*<ActionButtons request={invitation} />*/}
             {/*</RequestActionController>*/}
           </Container>
