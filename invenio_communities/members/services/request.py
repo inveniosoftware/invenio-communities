@@ -22,6 +22,7 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationExpireNotificationBuilder,
 )
 
+from ...communities.services.service import get_cached_community_slug
 from ...proxies import current_communities
 
 
@@ -102,6 +103,60 @@ class ExpireAction(actions.ExpireAction):
 #
 # Request
 #
+def is_created_by_current_user(obj, vars):
+    """Is created by current user.
+
+    :param request: api.Request
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    request = vars["request"]
+    id_creator = str(request.created_by.reference_dict.get("user"))
+    id_identity = str(vars["identity"].id)
+    return id_identity == id_creator
+
+
+def update_vars_for_user_dashboard_request_view(obj, vars):
+    """Update vars.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    vars.update(request_pid_value=str(vars["request"].id))
+
+
+def update_vars_for_community_dashboard_request_view(obj, vars):
+    """Update vars.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    request = vars["request"]
+    # The topic holds a CommunityPKProxy
+    slug = get_cached_community_slug(request.topic.reference_dict["community"])
+    vars.update(
+        pid_value=slug,
+        request_pid_value=request.id,
+    )
+
+
 class CommunityInvitation(RequestType):
     """Community member invitation request type."""
 
@@ -131,6 +186,23 @@ class CommunityInvitation(RequestType):
         ]
     }
 
+    links_item = {
+        "self_html": ConditionalLink(
+            cond=is_created_by_current_user,
+            if_=EndpointLink(
+                "invenio_app_rdm_requests.user_dashboard_request_view",
+                params=["request_pid_value"],
+                vars=update_vars_for_user_dashboard_request_view,
+            ),
+            else_=EndpointLink(
+                # Ideally have a _WithFallbackEndpointLink()
+                "invenio_app_rdm_requests.community_dashboard_request_view",
+                params=["pid_value", "request_pid_value"],
+                vars=update_vars_for_community_dashboard_request_view,
+            ),
+        )
+    }
+
 
 #
 # MembershipRequestRequestType: actions and request type
@@ -145,21 +217,6 @@ class CancelMembershipRequestAction(actions.CancelAction):
         service().close_membership_request(system_identity, self.request.id, uow=uow)
         # TODO: Investigate notifications
         super().execute(identity, uow)
-
-
-def is_created_by_current_user(request, vars):
-    """Is created by current user.
-
-    :param request: api.Request
-    :param vars: dict: context variables w/ keys:
-        "permission_policy_cls" for api.Request
-        "identity"
-        "request"
-        "request_type"
-    """
-    id_creator = str(request.created_by.reference_dict.get("user"))
-    id_identity = str(vars["identity"].id)
-    return id_identity == id_creator
 
 
 class MembershipRequestRequestType(RequestType):
