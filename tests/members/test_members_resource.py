@@ -131,6 +131,27 @@ def test_invite_deny(client, headers, community_id, new_user, new_user_data, db)
     assert r.status_code == 403
 
 
+def test_invite_duplicate(
+    client,
+    community_id,
+    db,
+    headers,
+    new_user_data,
+    owner,
+):
+    client = owner.login(client)
+    r = client.post(
+        f"/communities/{community_id}/invitations", headers=headers, json=new_user_data
+    )
+    assert 204 == r.status_code
+
+    r = client.post(
+        f"/communities/{community_id}/invitations", headers=headers, json=new_user_data
+    )
+    assert 400 == r.status_code
+    assert r.json["message"] is not None
+
+
 #
 # Update
 #
@@ -529,10 +550,37 @@ def test_put_update_membership_requests(
 
 
 def test_error_handling_for_membership_requests(
-    client, headers, community_id, owner, new_user_data, db
+    clean_index,
+    client,
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    headers,
+    owner,
 ):
-    # TODO: Implement me!
-    # error handling registered
-    #   - permission handling registered
-    #   - duplicate handling registered
-    assert True
+    community_id = str(community_open_to_membership_requests._record.id)
+
+    # Case - denied because of permission
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+    assert 403 == r.status_code
+
+    # Case - denied because duplicate (already added, invited or requeested)
+    user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
+    client = user.login(client)
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+    assert 201 == r.status_code
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club again?"},
+    )
+    assert 400 == r.status_code
+    assert r.json["message"] is not None

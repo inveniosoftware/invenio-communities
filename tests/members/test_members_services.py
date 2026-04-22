@@ -309,6 +309,45 @@ def test_invite_view_request(
     assert hits["hits"][0]["payload"]["content"] == "Welcome to the club!"
 
 
+def test_invite_multiple_members_with_one_already_invited(
+    clean_index,
+    community,
+    create_user,
+    db,
+    member_service,
+    members,
+    owner,
+):
+    res = member_service.search_invitations(
+        owner.identity, community._record.id
+    ).to_dict()
+    total_before = res["hits"]["total"]
+    user_1 = create_user(data={"email": "user_1@example.org", "username": "user_1"})
+    user_2 = create_user(data={"email": "user_2@example.org", "username": "user_2"})
+    data = {
+        "members": [
+            {"type": "user", "id": str(user_1.id)},
+            {"type": "user", "id": str(members["reader"].id)},
+            {"type": "user", "id": str(user_2.id)},
+        ],
+        "role": "reader",
+    }
+
+    pytest.raises(
+        AlreadyMemberError,
+        member_service.invite,
+        owner.identity,
+        community._record.id,
+        data,
+    )
+
+    # *No* invitations should go through if one is problematic
+    res = member_service.search_invitations(
+        owner.identity, community._record.id
+    ).to_dict()
+    assert total_before == res["hits"]["total"]
+
+
 #
 # Search and read members
 #
