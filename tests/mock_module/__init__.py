@@ -76,6 +76,15 @@ def create_invenio_app_rdm_requests_blueprint(app):
         """Fake user_dashboard_request_view."""
         return "<user dashboard request view>"
 
+    @blueprint.route("/communities/<pid_value>/invitations/<uuid:request_pid_value>")
+    def community_dashboard_request_view(request_pid_value):
+        """Fake community_dashboard_request_view.
+
+        `community_dashboard_request_view` is the view function used to serve the
+        invitation endpoint in invenio-app-rdm at time of writing.
+        """
+        return "<community dashboard invitation view>"
+
     @blueprint.route(
         "/communities/<pid_value>/membership-requests/<uuid:request_pid_value>"
     )

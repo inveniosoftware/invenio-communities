@@ -22,7 +22,7 @@ from invenio_records_resources.services.records.queryparser import (
 from ...communities.records.api import Community
 from ...permissions import CommunityPermissionPolicy
 from ..records import Member
-from ..records.api import ArchivedInvitation
+from ..records.api import ArchivedMemberRequest
 from . import facets
 from .components import CommunityMemberCachingComponent
 from .schemas import MemberEntitySchema
@@ -168,7 +168,7 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     indexer_queue_name = "members"
     relations = {"users": ["user"]}
 
-    archive_cls = ArchivedInvitation
+    archive_cls = ArchivedMemberRequest
     archive_indexer_cls = RecordServiceConfig.indexer_cls
     archive_indexer_queue_name = "archived-invitations"
 
@@ -185,6 +185,15 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     # ResultList configurations
     links_search = pagination_endpoint_links(
         "community_members.search", params=["pid_value"]
+    )
+    links_search_public = pagination_endpoint_links(
+        "community_members.search_public", params=["pid_value"]
+    )
+    links_search_invitations = pagination_endpoint_links(
+        "community_members.search_invitations", params=["pid_value"]
+    )
+    links_search_membership_requests = pagination_endpoint_links(
+        "community_members.search_membership_requests", params=["pid_value"]
     )
 
     # Service components
