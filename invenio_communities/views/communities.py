@@ -126,7 +126,7 @@ MEMBER_POLICY_FIELDS = [
 ]
 
 
-# Permissions to determine relevant to community pages
+# Permissions relevant to community actions
 
 
 HEADER_PERMISSIONS = {
@@ -532,7 +532,8 @@ def membership_requests(pid_value, community, community_ui):
         theme=community_ui.get("theme", {}),
         community_ui=community_ui,
         community=community,
-        roles_can_assign=_get_roles_can_invite(community.id),  # to change?
+        # Same as invite ones so just reuse
+        roles_can_assign=_get_roles_can_invite(community.id),
         permissions=permissions,
     )
 

@@ -46,7 +46,7 @@ export class MembershipRequestsSearchLayout extends Component {
           </div>
         </div>
         <div className="rel-mb-1">
-          <FilterLabels ignoreFilters={["is_open"]} />
+          <FilterLabels ignoreFilters={["is_open"]} roles={roles} />
         </div>
         <SearchAppResultsPane layoutOptions={config.layoutOptions} appName={appName} />
       </>

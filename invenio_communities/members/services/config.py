@@ -185,8 +185,8 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     links_item = {
         "actions": MemberRequestActionsEndpointLinks(),
-        # We define the self_html of a Member to be the community dashboard one of its
-        # assocaated Request (in this context, the user dashboard endpoint is never
+        # We define the self_html of a Member to be the community dashboard link of its
+        # associated Request (in this context, the user dashboard endpoint is never
         # appropriate)
         "self_html": MemberRequestCommunityDashboardEndpointLink(),
     }
