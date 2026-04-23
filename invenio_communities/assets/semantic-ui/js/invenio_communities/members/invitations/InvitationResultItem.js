@@ -48,6 +48,7 @@ export class InvitationResultItem extends Component {
     const { api: invitationsApi } = this.context;
     const rolesCanInviteByType = rolesCanInvite[member.type];
     const memberInvitationExpiration = formattedTime(request.expires_at);
+    const linkToRequest = invitation.links.self_html;
 
     return (
       <Table.Row className="community-member-item">
@@ -58,9 +59,7 @@ export class InvitationResultItem extends Component {
                 <Image src={member.avatar} avatar circular className="mr-10" />
                 <Item.Content>
                   <Item.Header size="small" as="b">
-                    <a href={`/communities/${community.slug}/requests/${request.id}`}>
-                      {member.name}
-                    </a>
+                    <a href={linkToRequest}>{member.name}</a>
                   </Item.Header>
                   {member.description && (
                     <Item.Meta>

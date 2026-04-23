@@ -196,6 +196,9 @@ class MemberRequestCommunityDashboardEndpointLink:
         request_type_id = member["request"].get("type") or "community-invitation"
 
         if request_type_id == CommunityInvitation.type_id:
+            # TODO: replace by
+            #   invenio_app_rdm_requests.community_dashboard_invitation_view
+            # when view implemented in invenio-app-rdm
             endpoint = "invenio_app_rdm_requests.community_dashboard_request_view"
         elif request_type_id == MembershipRequestRequestType.type_id:
             endpoint = "invenio_app_rdm_requests.community_dashboard_membership_request_view"  # noqa
