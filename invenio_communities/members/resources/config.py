@@ -48,7 +48,7 @@ class MemberResourceConfig(RecordResourceConfig):
             HTTPJSONException(
                 code=400,
                 description=_(
-                    "One of the submitted entity is already part of the community or is already being assessed. The entire action was cancelled."  # noqa
+                    "One of the submitted entity is already a member or pending a decision. The entire action was cancelled."  # noqa
                 ),
             )
         ),

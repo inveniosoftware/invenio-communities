@@ -198,7 +198,9 @@ class CommunityInvitation(RequestType):
                 vars=update_vars_for_user_dashboard_request_view,
             ),
             else_=EndpointLink(
-                # Ideally have a _WithFallbackEndpointLink()
+                # TODO: Change to
+                # invenio_app_rdm_requests.community_dashboard_invitation_view
+                # when defined in invenio-app-rdm
                 "invenio_app_rdm_requests.community_dashboard_request_view",
                 params=["pid_value", "request_pid_value"],
                 vars=update_vars_for_community_dashboard_request_view,

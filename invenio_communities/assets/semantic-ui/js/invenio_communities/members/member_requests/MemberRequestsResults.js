@@ -33,7 +33,7 @@ export const MemberRequestsResults = ({ paginationOptions, currentResultsState }
               }}
             />
           </Grid.Column>
-          <Grid.Column textAlign="right" width={8}>
+          <Grid.Column width={8} textAlign="right">
             <ResultsPerPage
               values={paginationOptions.resultsPerPage}
               label={(cmp) => (

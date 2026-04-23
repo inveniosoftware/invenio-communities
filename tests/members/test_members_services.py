@@ -342,6 +342,7 @@ def test_invite_multiple_members_with_one_already_invited(
     )
 
     # *No* invitations should go through if one is problematic
+    Member.index.refresh()
     res = member_service.search_invitations(
         owner.identity, community._record.id
     ).to_dict()

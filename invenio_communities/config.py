@@ -208,7 +208,7 @@ COMMUNITIES_MEMBERS_FACETS = {
 """Available facets defined for this module."""
 
 COMMUNITIES_INVITATIONS_SEARCH = {
-    "facets": ["type", "status"],  # what is type?
+    "facets": ["type", "status"],
     "sort": ["bestmatch", "name", "newest", "oldest"],
 }
 """Community invitations search configuration (i.e list of community invitations)"""
