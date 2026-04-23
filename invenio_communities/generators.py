@@ -291,7 +291,7 @@ class CommunityRoles(Generator):
     """Base class for community roles generators."""
 
     def roles(self, **kwargs):
-        """R."""
+        """Roles."""
         raise NotImplementedError
 
     def communities(self, identity):

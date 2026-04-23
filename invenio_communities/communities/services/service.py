@@ -172,6 +172,12 @@ class CommunityService(RecordService):
                 must=[
                     dsl.Q("term", **{"receiver.community": community_id}),
                     ~dsl.Q("term", **{"status": "created"}),
+                    # Exclude explicitly MembershipRequestRequestType.type_id .
+                    # Requests of that type are returned in a dedicated search on
+                    # the MemberService class.
+                    # To prevent circular imports and wider refactor for now, we use
+                    # the id value directly
+                    ~dsl.Q("term", **{"type": "community-membership-request"}),
                 ],
             ),
             **kwargs,

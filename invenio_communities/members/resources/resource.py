@@ -36,6 +36,12 @@ class MemberResource(RecordResource):
             route("PUT", routes["invitations"], self.update_invitations),
             route("GET", routes["invitations"], self.search_invitations),
             route("POST", routes["membership_requests"], self.request_membership),
+            route(
+                "GET", routes["membership_requests"], self.search_membership_requests
+            ),
+            route(
+                "PUT", routes["membership_requests"], self.update_membership_requests
+            ),
         ]
 
     @request_view_args
@@ -70,6 +76,19 @@ class MemberResource(RecordResource):
     def search_invitations(self):
         """Perform a search over the invitations."""
         hits = self.service.search_invitations(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            params=resource_requestctx.args,
+            search_preference=search_preference(),
+        )
+        return hits.to_dict(), 200
+
+    @request_view_args
+    @request_search_args
+    @response_handler(many=True)
+    def search_membership_requests(self):
+        """Perform a search over the membership requests."""
+        hits = self.service.search_membership_requests(
             g.identity,
             resource_requestctx.view_args["pid_value"],
             params=resource_requestctx.args,
@@ -127,6 +146,17 @@ class MemberResource(RecordResource):
     @request_data
     def update_invitations(self):
         """Update invitations."""
+        self.service.update(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            data=resource_requestctx.data,
+        )
+        return "", 204
+
+    @request_view_args
+    @request_data
+    def update_membership_requests(self):
+        """Update membership requests."""
         self.service.update(
             g.identity,
             resource_requestctx.view_args["pid_value"],

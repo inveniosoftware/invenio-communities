@@ -85,8 +85,6 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     can_search_user_communities = [AuthenticatedUser(), SystemProcess()]
 
-    can_search_invites = [CommunityManagers(), SystemProcess()]
-
     can_search_requests = [CommunityManagers(), CommunityCurators(), SystemProcess()]
 
     can_rename = [CommunityOwners(), SystemProcess()]
@@ -115,29 +113,32 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         SystemProcess(),
     ]
 
+    # Members related permissions
     can_members_add = [
         CommunityManagersForRole(),
         AllowedMemberTypes("group"),
         GroupsEnabled("group"),
         SystemProcess(),
     ]
-
-    can_members_invite = [
-        CommunityManagersForRole(),
-        AllowedMemberTypes("user", "email"),
-        SystemProcess(),
-    ]
-
     can_members_manage = [
         CommunityManagers(),
         SystemProcess(),
     ]
-
+    can_members_update = [  # Ability to update a single membership
+        CommunityManagersForRole(),
+        CommunitySelfMember(),
+        SystemProcess(),
+    ]
+    can_members_bulk_update = [  # Ability to use membership update api
+        CommunityMembers(),
+        SystemProcess(),
+    ]
+    can_members_delete = can_members_update  # Ability to delete a single membership
+    can_members_bulk_delete = can_members_bulk_update
     can_members_search = [
         CommunityMembers(),
         SystemProcess(),
     ]
-
     can_members_search_public = [
         IfRestricted(
             "visibility",
@@ -152,26 +153,29 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
         ),
         SystemProcess(),
     ]
-
-    # Ability to use membership update api
-    can_members_bulk_update = [
-        CommunityMembers(),
-        SystemProcess(),
-    ]
-
-    can_members_bulk_delete = can_members_bulk_update
-
-    # Ability to update a single membership
-    can_members_update = [
+    can_members_invite = [
         CommunityManagersForRole(),
-        CommunitySelfMember(),
+        AllowedMemberTypes("user", "email"),
         SystemProcess(),
     ]
-
-    # Ability to delete a single membership
-    can_members_delete = can_members_update
-
     can_invite_owners = [CommunityOwners(), SystemProcess()]
+    can_search_invites = [CommunityManagers(), SystemProcess()]
+    # request_membership permission is based on configuration, community settings and
+    # identity. At end of the day, it's convenient for this permission to answer
+    # if allowed by also checking if possible at all. In other words, even a superuser
+    # is disallowed if the app config or community setting turned the feature off.
+    can_request_membership = [
+        IfCommunityAllowsMembershipRequests(
+            then_=[AuthenticatedUserButNotCommunityMember()], else_=[Disable()]
+        )
+    ]
+    # For search, it might have been useful to let any non-UI cases, but that is too
+    # finicky
+    can_search_membership_requests = [
+        IfCommunityAllowsMembershipRequests(
+            then_=[CommunityManagers(), SystemProcess()], else_=[Disable()]
+        )
+    ]
 
     # Abilities for featured communities
     can_featured_search = [AnyUser(), SystemProcess()]
@@ -193,16 +197,6 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
 
     # Permission for assigning a parent community
     can_manage_parent = [Administration(), SystemProcess()]
-
-    # request_membership permission is based on configuration, community settings and
-    # identity. At end of the day, it's convenient for this permission to answer
-    # if allowed by also checking if possible at all. In other words, even a superuser
-    # is disallowed if the app config or community setting turned the feature off.
-    can_request_membership = [
-        IfCommunityAllowsMembershipRequests(
-            then_=[AuthenticatedUserButNotCommunityMember()], else_=[Disable()]
-        )
-    ]
 
 
 def can_perform_action(community, context):

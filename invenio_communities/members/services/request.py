@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2022 Northwestern University.
+# Copyright (C) 2022-2026 Northwestern University.
 # Copyright (C) 2022-2025 CERN.
 # Copyright (C) 2023 Graz University of Technology.
 #
@@ -22,6 +22,7 @@ from invenio_communities.notifications.builders import (
     CommunityInvitationExpireNotificationBuilder,
 )
 
+from ...communities.services.service import get_cached_community_slug
 from ...proxies import current_communities
 
 
@@ -48,7 +49,7 @@ class AcceptAction(actions.AcceptAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().accept_invite(system_identity, self.request.id, uow=uow)
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationAcceptNotificationBuilder.build(self.request)
@@ -62,7 +63,7 @@ class DeclineAction(actions.DeclineAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationDeclineNotificationBuilder.build(self.request)
@@ -76,7 +77,7 @@ class CancelAction(actions.CancelAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationCancelNotificationBuilder.build(self.request)
@@ -90,7 +91,7 @@ class ExpireAction(actions.ExpireAction):
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().decline_invite(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         uow.register(
             NotificationOp(
                 CommunityInvitationExpireNotificationBuilder.build(self.request)
@@ -137,29 +138,108 @@ class CommunityInvitation(RequestType):
 #
 
 
+class AcceptMembershipRequestAction(actions.AcceptAction):
+    """Accept membership request action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().accept_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: notifications for accept
+        # uow.register(
+        #     NotificationOp(
+        #         (
+        #             CommunityMembershipRequestAcceptNotificationBuilder.build(
+        #                 self.request
+        #             )
+        #         )
+        #     )
+        # )
+        super().execute(identity, uow)
+
+
 class CancelMembershipRequestAction(actions.CancelAction):
     """Cancel membership request action."""
 
     def execute(self, identity, uow):
         """Execute action."""
-        service().close_membership_request(system_identity, self.request.id, uow=uow)
+        service().close_member_request(system_identity, self.request.id, uow=uow)
         # TODO: Investigate notifications
         super().execute(identity, uow)
 
 
-def is_created_by_current_user(request, vars):
+class DeclineMembershipRequestAction(actions.DeclineAction):
+    """Decline action."""
+
+    def execute(self, identity, uow):
+        """Execute action."""
+        service().close_member_request(system_identity, self.request.id, uow=uow)
+        # TODO: Notification for declining
+        # uow.register(
+        #     NotificationOp(
+        #         (
+        #             CommunityMembershipRequestDeclineNotificationBuilder
+        #             .build(self.request)
+        #         )
+        #     )
+        # )
+        super().execute(identity, uow)
+
+
+def is_request_created_by_current_user(request, vars):
     """Is created by current user.
 
-    :param request: api.Request
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent, so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
     :param vars: dict: context variables w/ keys:
         "permission_policy_cls" for api.Request
         "identity"
         "request"
         "request_type"
     """
+    request = vars["request"]
     id_creator = str(request.created_by.reference_dict.get("user"))
     id_identity = str(vars["identity"].id)
     return id_identity == id_creator
+
+
+def update_vars_for_user_dashboard_request_view(obj, vars):
+    """Update vars.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    vars.update(request_pid_value=str(vars["request"].id))
+
+
+def update_vars_for_community_dashboard_request_view(obj, vars):
+    """Update vars.
+
+    Because this is called in the context of a RequestType, the received obj
+    can be a Request or RequestEvent so better to trust the vars content.
+
+    :param obj: api.Request|api.RequestEvent
+    :param vars: dict: context variables w/ keys:
+        "permission_policy_cls" for api.Request
+        "identity"
+        "request"
+        "request_type"
+    """
+    request = vars["request"]
+    # The topic holds a CommunityPKProxy
+    slug = get_cached_community_slug(request.topic.reference_dict["community"])
+    vars.update(
+        pid_value=slug,
+        request_pid_value=request.id,
+    )
 
 
 class MembershipRequestRequestType(RequestType):
@@ -170,8 +250,10 @@ class MembershipRequestRequestType(RequestType):
 
     create_action = "create"
     available_actions = {
+        "accept": AcceptMembershipRequestAction,
         "create": actions.CreateAndSubmitAction,
         "cancel": CancelMembershipRequestAction,
+        "decline": DeclineMembershipRequestAction,
     }
 
     creator_can_be_none = False
@@ -186,23 +268,17 @@ class MembershipRequestRequestType(RequestType):
         # on current user. But it may need further improvements down the road
         # to also depend on the state of the request.
         "self_html": ConditionalLink(
-            cond=is_created_by_current_user,
+            cond=is_request_created_by_current_user,
             # if_ -> then_ : change when ConditionalLink is updated
             if_=EndpointLink(
                 "invenio_app_rdm_requests.user_dashboard_request_view",
                 params=["request_pid_value"],
-                vars=lambda request, vars: vars.update(request_pid_value=request.id),
+                vars=update_vars_for_user_dashboard_request_view,
             ),
             else_=EndpointLink(
                 "invenio_app_rdm_requests.community_dashboard_membership_request_view",
                 params=["pid_value", "request_pid_value"],
-                vars=lambda request, vars: (
-                    vars.update(
-                        # The topic for a MembershipRequest holds a CommunityPKProxy
-                        pid_value=request.topic.reference_dict.get("community"),
-                        request_pid_value=request.id,
-                    ),
-                ),
+                vars=update_vars_for_community_dashboard_request_view,
             ),
         )
     }
