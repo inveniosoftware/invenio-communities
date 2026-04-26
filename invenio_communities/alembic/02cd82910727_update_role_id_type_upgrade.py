@@ -20,11 +20,14 @@ from alembic import op
 # revision identifiers, used by Alembic.
 revision = "02cd82910727"
 down_revision = (
-    "f9843093f686",
+    # our own 37b21951084c_update_role_id_type_downgrade.py
     "37b21951084c",
-)  # Depends on invenio-access revision id (f9843093f686)
+)
 branch_labels = ()
-depends_on = None
+depends_on = [
+    # invenio_accounts/alembic/f2522cdd5fcd_change_accountsrole_primary_key_to_string.py
+    "f2522cdd5fcd",
+]
 
 
 def upgrade():
