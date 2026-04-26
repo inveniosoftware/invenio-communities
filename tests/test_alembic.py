@@ -12,7 +12,7 @@ import pytest
 from invenio_db.utils import alembic_test_context, drop_alembic_version_table
 
 
-def test_alembic(base_app, database):
+def test_alembic(base_app, database, extra_entry_points):
     """Test alembic recipes."""
     db = database
     ext = base_app.extensions["invenio-db"]
@@ -34,8 +34,14 @@ def test_alembic(base_app, database):
     db.drop_all()
     drop_alembic_version_table()
     ext.alembic.upgrade()
+
+    # expected non-covered migrations (from previous tests that use mock_module):
+    # ('add_table', Table('mock_metadata'
+    # ('add_table', Table('mock_community'
     for m in ext.alembic.compare_metadata():
-        print("Missing migration for: ", m)
-    assert len(ext.alembic.compare_metadata()) == 0
+        if not (
+            m[0] == "add_table" and m[1].name in ["mock_metadata", "mock_community"]
+        ):
+            raise RuntimeError(f"Unexpected migration: {m}")
 
     drop_alembic_version_table()
