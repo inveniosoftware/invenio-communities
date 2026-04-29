@@ -3,6 +3,7 @@
     Copyright (C) 2016-2025 CERN.
     Copyright (C) 2024-2026 Graz University of Technology.
     Copyright (C) 2026 KTH Royal Institute of Technology.
+    Copyright (C) 2026 Northwestern University.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,10 @@
 
 Changes
 =======
+
+Version v26.1.1 (released 2026-04-29)
+
+- fix(inv): show discussion for invitation requests by generating self_html
 
 Version v26.1.0 (released 2026-04-21)
 
