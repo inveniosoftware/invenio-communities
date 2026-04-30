@@ -34,7 +34,7 @@ class InvitationsEmptyResultsCmp extends Component {
         <Segment placeholder textAlign="center">
           <Header icon>
             <Icon name="search" />
-            {i18next.t("No matching members found.")}
+            {i18next.t("No matching invitations found.")}
           </Header>
           {queryString && (
             <p>

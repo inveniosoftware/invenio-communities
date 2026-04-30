@@ -4,6 +4,7 @@
 # Copyright (C) 2016-2025 CERN.
 # Copyright (C) 2023 Graz University of Technology.
 # Copyright (C) 2023 KTH Royal Institute of Technology.
+# Copyright (C) 2026 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -13,6 +14,7 @@
 from datetime import timedelta
 
 from invenio_i18n import lazy_gettext as _
+from invenio_requests.services.requests import facets as facets_for_requests
 
 from invenio_communities.communities.records.systemfields.access import (
     RecordSubmissionPolicyEnum,
@@ -30,16 +32,17 @@ COMMUNITIES_ROUTES = {
     "new": "/communities-new",
     "deprecated_new": "/communities/new",
     "upload": "/communities/<pid_value>/upload",
-    "settings": "/communities/<pid_value>/settings",
     "requests": "/communities/<pid_value>/requests",
     "subcommunities": "/communities/<pid_value>/browse/subcommunities",
     "new_subcommunity": "/communities/<pid_value>/subcommunities/new",
+    "settings": "/communities/<pid_value>/settings",
     "settings_privileges": "/communities/<pid_value>/settings/privileges",
     "settings_submission_policy": "/communities/<pid_value>/settings/submission-policy",
     "settings_pages": "/communities/<pid_value>/settings/pages",
     "settings_collections": "/communities/<pid_value>/settings/collections",
     "members": "/communities/<pid_value>/members",
     "invitations": "/communities/<pid_value>/invitations",
+    "membership_requests": "/communities/<pid_value>/membership-requests",
     "about": "/communities/<pid_value>/about",
     "curation_policy": "/communities/<pid_value>/curation-policy",
 }
@@ -166,7 +169,7 @@ COMMUNITIES_MEMBERS_SEARCH = {
     "facets": ["role", "visibility"],
     "sort": ["bestmatch", "name", "newest", "oldest"],
 }
-"""Community requests search configuration (i.e list of community requests)"""
+"""Community members search configuration (i.e list of community members)"""
 
 COMMUNITIES_MEMBERS_SORT_OPTIONS = {
     "bestmatch": dict(
@@ -205,7 +208,7 @@ COMMUNITIES_MEMBERS_FACETS = {
 """Available facets defined for this module."""
 
 COMMUNITIES_INVITATIONS_SEARCH = {
-    "facets": ["type", "status"],
+    "facets": ["type", "status"],  # what is type?
     "sort": ["bestmatch", "name", "newest", "oldest"],
 }
 """Community invitations search configuration (i.e list of community invitations)"""
@@ -230,13 +233,33 @@ COMMUNITIES_INVITATIONS_SORT_OPTIONS = {
 }
 """Definitions of available record sort options."""
 
-
 COMMUNITIES_INVITATIONS_EXPIRES_IN = timedelta(days=30)
 """"Default amount of time before an invitation expires."""
 
+COMMUNITIES_MEMBERSHIP_REQUESTS_SEARCH = {
+    "facets": ["role", "status"],
+    "sort": ["bestmatch", "name", "newest", "oldest"],
+}
+""""Community membership requests search configuration."""
+
+COMMUNITIES_MEMBERSHIP_REQUESTS_FACETS = {
+    "role": {
+        "facet": facets.role,
+        "ui": {
+            "field": "role",
+        },
+    },
+    "status": {
+        "facet": facets_for_requests.status,
+        "ui": {
+            "field": "role",
+        },
+    },
+}
+"""Available facets for membership requests."""
+
 COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""
-
 
 COMMUNITIES_NAMESPACES = {}
 """Custom fields namespaces.

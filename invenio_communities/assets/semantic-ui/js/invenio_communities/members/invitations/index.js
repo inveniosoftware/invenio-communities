@@ -6,14 +6,19 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+import { RequestCancelButton } from "@js/invenio_requests/components/Buttons";
+import { RequestCancelModalTrigger } from "@js/invenio_requests/components/ModalTriggers";
 import { createSearchAppInit } from "@js/invenio_search_ui";
-import { parametrize, overrideStore } from "react-overridable";
 import { DropdownSort } from "@js/invenio_search_ui/components";
+import { i18next } from "@translations/invenio_communities/i18next";
+import React from "react";
+import { parametrize, overrideStore } from "react-overridable";
+
 import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";
+import { MemberRequestsSearchBarElement } from "../member_requests/MemberRequestsSearchBarElement";
 import { InvitationResultItem } from "./InvitationResultItem";
 import { InvitationsResults } from "./InvitationsResults";
 import { InvitationsResultsContainer } from "./InvitationsResultsContainer";
-import { InvitationsSearchBarElement } from "./InvitationsSearchBarElement";
 import { InvitationsSearchLayout } from "./InvitationsSearchLayout";
 import { InvitationsEmptyResults } from "./InvitationsEmptyResults";
 import {
@@ -49,6 +54,11 @@ const InvitationsSearchLayoutWithConfig = parametrize(InvitationsSearchLayout, {
   appName: appName,
 });
 
+const InvitationsSearchBarElement = parametrize(MemberRequestsSearchBarElement, {
+  className: "invitations-searchbar",
+  placeholder: i18next.t("Search in invitations..."),
+});
+
 const InvitationsContextProvider = parametrize(ContextProvider, {
   community: community,
 });
@@ -57,6 +67,14 @@ const InvitationsResultsContainerWithConfig = parametrize(InvitationsResultsCont
   rolesCanInvite: communitiesRolesCanInvite,
   community: community,
   groupsEnabled: groupsEnabled,
+});
+
+const InvitationsRequestActionModalCancelTitle = (props) => {
+  return i18next.t("cancel invitation");
+};
+
+const InvitationsRequestCancelButton = parametrize(RequestCancelButton, {
+  content: i18next.t("Cancel invitation"),
 });
 
 const InvitationsEmptyResultsWithCommunity = parametrize(InvitationsEmptyResults, {
@@ -73,12 +91,15 @@ const defaultComponents = {
   [`${appName}.SearchApp.results`]: InvitationsResults,
   [`${appName}.ResultsList.container`]: InvitationsResultsContainerWithConfig,
   [`${appName}.Sort.element`]: DropdownSort,
-  [`RequestStatus.layout.submitted`]: SubmitStatus,
-  [`RequestStatus.layout.deleted`]: DeleteStatus,
-  [`RequestStatus.layout.accepted`]: AcceptStatus,
-  [`RequestStatus.layout.declined`]: DeclineStatus,
-  [`RequestStatus.layout.cancelled`]: CancelStatus,
-  [`RequestStatus.layout.expired`]: ExpireStatus,
+  "RequestActionModalTrigger.cancel": RequestCancelModalTrigger,
+  "RequestActionModal.title.cancel": InvitationsRequestActionModalCancelTitle,
+  "RequestActionButton.cancel": InvitationsRequestCancelButton,
+  "RequestStatus.layout.submitted": SubmitStatus,
+  "RequestStatus.layout.deleted": DeleteStatus,
+  "RequestStatus.layout.accepted": AcceptStatus,
+  "RequestStatus.layout.declined": DeclineStatus,
+  "RequestStatus.layout.cancelled": CancelStatus,
+  "RequestStatus.layout.expired": ExpireStatus,
 };
 
 const overriddenComponents = overrideStore.getAll();

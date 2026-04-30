@@ -131,6 +131,27 @@ def test_invite_deny(client, headers, community_id, new_user, new_user_data, db)
     assert r.status_code == 403
 
 
+def test_invite_duplicate(
+    client,
+    community_id,
+    db,
+    headers,
+    new_user_data,
+    owner,
+):
+    client = owner.login(client)
+    r = client.post(
+        f"/communities/{community_id}/invitations", headers=headers, json=new_user_data
+    )
+    assert 204 == r.status_code
+
+    r = client.post(
+        f"/communities/{community_id}/invitations", headers=headers, json=new_user_data
+    )
+    assert 400 == r.status_code
+    assert r.json["message"] is not None
+
+
 #
 # Update
 #
@@ -380,10 +401,16 @@ def test_search_invitations(
     # hits > hit > permissions
     assert hit["permissions"]["can_update_role"] is True
     assert hit["permissions"]["can_cancel"] is True
+    # hits > hit > links
+    expected_links = {
+        "actions": {
+            "cancel": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/cancel",  # noqa
+        },
+        "self_html": f"https://127.0.0.1:5000/communities/{community_slug}/requests/{request_id}",  # noqa
+    }
+    assert expected_links == hit["links"]
 
 
-# TODO: member serialization/links
-# TODO: request serialization/links
 # TODO: community member can see info
 # TODO: community non-member can't see info
 # TODO: facet by role, facet by visibility, define sorts.
@@ -480,31 +507,80 @@ def test_get_search_membership_requests(
     # TODO: Test when expiration is implemented
     # assert "expires_at" in hit["request"]
     # assert hit["request"]["expires_at"] is not None
-    # TODO: Test when actions are implemented
     # hits > hit > links
-    # request_id = hit["request"]["id"]
-    # expected_links = {
-    #     "actions": {
-    #         "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",  # noqa
-    #         "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",  # noqa
-    #     },
-    # }
-    # assert expected_links == hit["links"]
+    request_id = hit["request"]["id"]
+    expected_links = {
+        "actions": {
+            "accept": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/accept",  # noqa
+            "decline": f"https://127.0.0.1:5000/api/requests/{request_id}/actions/decline",  # noqa
+        },
+        "self_html": f"https://127.0.0.1:5000/communities/{community_slug}/membership-requests/{request_id}",  # noqa
+    }
+    assert expected_links == hit["links"]
 
 
 def test_put_update_membership_requests(
-    client, headers, community_id, owner, new_user_data, db
+    client,
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    headers,
+    owner,
 ):
-    # update membership request
-    # TODO: Implement me!
-    assert True
+    user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
+    client = user.login(client)
+    community_id = str(community_open_to_membership_requests._record.id)
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+
+    # Update the membership request
+    client = owner.login(client, logout_first=True)
+    r = client.put(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={
+            "members": [{"type": "user", "id": str(user.id)}],
+            "role": "curator",
+        },
+    )
+    assert r.status_code == 204
 
 
 def test_error_handling_for_membership_requests(
-    client, headers, community_id, owner, new_user_data, db
+    clean_index,
+    client,
+    community_open_to_membership_requests,
+    create_user,
+    db,
+    headers,
+    owner,
 ):
-    # TODO: Implement me!
-    # error handling registered
-    #   - permission handling registered
-    #   - duplicate handling registered
-    assert True
+    community_id = str(community_open_to_membership_requests._record.id)
+
+    # Case - denied because of permission
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+    assert 403 == r.status_code
+
+    # Case - denied because duplicate (already added, invited or requeested)
+    user = create_user({"email": "user_foo@example.org", "username": "user_foo"})
+    client = user.login(client)
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club?"},
+    )
+    assert 201 == r.status_code
+    r = client.post(
+        f"/communities/{community_id}/membership-requests",
+        headers=headers,
+        json={"message": "Can I join the club again?"},
+    )
+    assert 400 == r.status_code
+    assert r.json["message"] is not None

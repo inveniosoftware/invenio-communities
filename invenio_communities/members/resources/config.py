@@ -47,7 +47,9 @@ class MemberResourceConfig(RecordResourceConfig):
         AlreadyMemberError: create_error_handler(
             HTTPJSONException(
                 code=400,
-                description=_("A member was already added or invited."),
+                description=_(
+                    "One of the submitted entity is already part of the community or is already being assessed. The entire action was cancelled."  # noqa
+                ),
             )
         ),
         CommunityDeletedError: create_error_handler(
