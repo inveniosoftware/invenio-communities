@@ -441,8 +441,8 @@ class MemberService(RecordService):
     def update(self, identity, community_id, data, uow=None, refresh=False):
         """Bulk update.
 
-        Used to update both active members and active invitations. Archived
-        invitations cannot be updated.
+        Used to update both active members and non-archived invitations + membership
+        requests. Archived invitations/membership-requests cannot be updated.
         """
         community = self.community_cls.get_record(community_id)
 
@@ -647,7 +647,57 @@ class MemberService(RecordService):
 
         return True
 
-    # Invitation
+    # Member requests
+
+    @unit_of_work()
+    def accept_member_request(self, identity, request_id, uow=None):
+        """Accept member request (invitation or membership request)."""
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        archived_member_request = self.archive_cls.create_from_member(member)
+        member.active = True
+        # Run components
+        self.run_components(
+            "accept_member_request",
+            identity,
+            record=member,
+            errors=None,
+            uow=uow,
+        )
+
+        uow.register(RecordCommitOp(member, indexer=self.indexer, index_refresh=True))
+        uow.register(
+            RecordCommitOp(
+                archived_member_request,
+                indexer=self.archive_indexer,
+                index_refresh=True,
+            )
+        )
+
+    @unit_of_work()
+    def close_member_request(self, identity, request_id, uow=None):
+        """Close member request (invitation or membership request).
+
+        Used when cancelling, declining, or expiring.
+        """
+        # Permissions are checked on the request action
+        assert identity == system_identity
+        member = self.record_cls.get_member_by_request(request_id)
+        assert member.active is False
+        archived_member_request = self.archive_cls.create_from_member(member)
+        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
+        uow.register(
+            RecordCommitOp(archived_member_request, indexer=self.archive_indexer)
+        )
+        uow.register(
+            IndexRefreshOp(
+                indexer=self.indexer,
+                index=ArchivedMemberRequest.index,
+            )
+        )
+
     # Member requests - Invitation
 
     def _invite_factory(
@@ -798,52 +848,6 @@ class MemberService(RecordService):
             **kwargs,
         )
 
-    @unit_of_work()
-    def accept_invite(self, identity, request_id, uow=None):
-        """Accept an invitation."""
-        # Permissions are checked on the request action
-        assert identity == system_identity
-        member = self.record_cls.get_member_by_request(request_id)
-        assert member.active is False
-        archived_member_request = self.archive_cls.create_from_member(member)
-        member.active = True
-        # TODO: recompute permissions for member.
-        # Run components
-        self.run_components(
-            "accept_invite",
-            identity,
-            record=member,
-            errors=None,
-            uow=uow,
-        )
-
-        uow.register(RecordCommitOp(member, indexer=self.indexer))
-        uow.register(
-            RecordCommitOp(archived_member_request, indexer=self.archive_indexer)
-        )
-        uow.register(IndexRefreshOp(indexer=self.indexer))
-
-    @unit_of_work()
-    def decline_invite(self, identity, request_id, uow=None):
-        """Decline an invitation."""
-        # Permissions are checked on the request action
-        assert identity == system_identity
-        member = self.record_cls.get_member_by_request(request_id)
-        assert member.active is False
-        archived_member_request = self.archive_cls.create_from_member(member)
-        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
-        uow.register(
-            RecordCommitOp(archived_member_request, indexer=self.archive_indexer)
-        )
-        uow.register(
-            IndexRefreshOp(
-                # need to use an indexer with a diff index
-                # no access to invitations indexer
-                indexer=self.indexer,
-                index=ArchivedMemberRequest.index,
-            )
-        )
-
     # Request membership
     @unit_of_work()
     def request_membership(self, identity, community_id, data, uow=None):
@@ -928,12 +932,6 @@ class MemberService(RecordService):
         # Has to return the request so that frontend can redirect to it
         return request_item
 
-    @unit_of_work()
-    def update_membership_request(self, identity, community_id, data, uow=None):
-        """Update membership request."""
-        # TODO: Implement me
-        pass
-
     def search_membership_requests(
         self, identity, community_id, params=None, search_preference=None, **kwargs
     ):
@@ -969,28 +967,6 @@ class MemberService(RecordService):
             ),
             **kwargs,
         )
-
-    @unit_of_work()
-    def accept_membership_request(self, identity, request_id, uow=None):
-        """Accept membership request."""
-        # TODO: Implement me
-        pass
-
-    @unit_of_work()
-    def close_membership_request(self, identity, request_id, uow=None):
-        """Close membership request.
-
-        Used for cancelling, declining, or expiring a membership request.
-
-        For now we just delete the "fake" member that was created in
-        request_membership. TODO: explore alternatives/ramifications at a
-        later point.
-        """
-        # Permissions are checked on the request action
-        assert identity == system_identity
-        member = self.record_cls.get_member_by_request(request_id)
-        assert member.active is False
-        uow.register(RecordDeleteOp(member, indexer=self.indexer, force=True))
 
     def get_request_id_of_pending_member(self, identity, community_id):
         """

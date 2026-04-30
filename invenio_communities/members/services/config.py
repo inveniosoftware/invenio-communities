@@ -25,6 +25,7 @@ from ..records import Member
 from ..records.api import ArchivedMemberRequest
 from . import facets
 from .components import CommunityMemberCachingComponent
+from .links import MemberRequestActionsEndpointLinks
 from .schemas import MemberEntitySchema
 
 
@@ -170,7 +171,7 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
 
     archive_cls = ArchivedMemberRequest
     archive_indexer_cls = RecordServiceConfig.indexer_cls
-    archive_indexer_queue_name = "archived-invitations"
+    archive_indexer_queue_name = "archived-invitations"  # legacy name
 
     permission_policy_cls = FromConfig(
         "COMMUNITIES_PERMISSION_POLICY", default=CommunityPermissionPolicy
@@ -179,9 +180,9 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     search_public = PublicSearchOptions
     search_invitations = InvitationsSearchOptions
 
-    # No links
-    links_item = {}
-
+    links_item = {
+        "actions": MemberRequestActionsEndpointLinks(),
+    }
     # ResultList configurations
     links_search = pagination_endpoint_links(
         "community_members.search", params=["pid_value"]

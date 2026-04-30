@@ -24,7 +24,7 @@ def test_accept_invite_cache_clear(
     community_roles = current_identities_cache.get(cache_key)
     assert len(community_roles) == 0
 
-    # cached entry should be cleared on accept_invite
+    # cached entry should be cleared on accept_member_request
     requests_service.execute_action(invite_user.identity, invite_request_id, "accept")
     community_roles = current_identities_cache.get(cache_key)
     assert community_roles is None
