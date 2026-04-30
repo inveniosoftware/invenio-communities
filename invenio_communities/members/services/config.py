@@ -197,7 +197,7 @@ class MemberServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     )
 
     # Service components
-    components = [
-        MetadataComponent,
-        CommunityMemberCachingComponent,
-    ]
+    components = FromConfig(
+        "COMMUNITIES_MEMBERS_SERVICE_COMPONENTS",
+        default=[MetadataComponent, CommunityMemberCachingComponent],
+    )
