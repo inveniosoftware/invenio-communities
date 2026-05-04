@@ -16,6 +16,9 @@ import copy
 
 import pytest
 from flask_principal import Identity
+from invenio_requests.services.permissions import (
+    PermissionPolicy as RequestPermissionPolicy,
+)
 
 from invenio_communities.generators import CommunityRoleNeed
 from invenio_communities.members import Member
@@ -209,6 +212,65 @@ def test_can_update_membership_request_role(
             record=community_open_record,
             member=membership_request_member,
             role=new_role,
+        ).allows(identity_actor)
+        is allowed_or_not
+    )
+
+
+@pytest.mark.parametrize(
+    "action,role,allowed_or_not",
+    [
+        # Accept
+        ("accept", "manager", True),  # stand in for manager and owner
+        ("accept", "curator", False),  # stand in for any other member
+        ("accept", "requester", False),
+        # Decline
+        ("decline", "owner", True),
+        ("decline", "curator", False),
+        ("decline", "requester", False),
+        # Cancel
+        ("cancel", "manager", False),
+        ("cancel", "curator", False),
+        ("cancel", "requester", True),
+        # Expire
+        ("expire", "manager", False),
+        ("expire", "curator", False),
+        ("expire", "requester", False),
+    ],
+)
+def test_can_perform_actions_on_membership_request(
+    # parameters
+    action,
+    allowed_or_not,
+    role,
+    # fixtures
+    community_open_to_membership_requests,
+    create_user,
+    member_service,
+):
+    # Membership request
+    community = community_open_to_membership_requests
+    requester_user = create_user()
+    request = member_service.request_membership(
+        requester_user.identity,
+        community._record.id,
+        data={"message": "Can I join the club?"},
+    )
+
+    # Identity of actor
+    if role == "requester":
+        identity_actor = requester_user.identity
+    else:
+        actor_user = create_user({"username": "actor", "email": "actor@example.org"})
+        identity_actor = actor_user.identity
+        identity_actor.provides |= {
+            CommunityRoleNeed(value=str(community.id), role=role)
+        }
+
+    assert (
+        RequestPermissionPolicy(
+            action=f"action_{action}",
+            request=request._record,
         ).allows(identity_actor)
         is allowed_or_not
     )
