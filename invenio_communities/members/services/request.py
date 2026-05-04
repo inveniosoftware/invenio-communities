@@ -279,6 +279,16 @@ class MembershipRequestRequestType(RequestType):
     allowed_receiver_ref_types = ["community"]
     allowed_topic_ref_types = ["community"]
 
+    # This lists the roles that are associated wtih a community entity in the context
+    # of request action permissions. e.g., Receiver() (for a community receiver) will
+    # map to users with the owner/manager roles
+    needs_context = {
+        "community_roles": [
+            "owner",
+            "manager",
+        ]
+    }
+
     links_item = {
         # This EndpointLink selection logic is better than existing logic for
         # other RequestTypes' self_html, bc it points to right place depending
