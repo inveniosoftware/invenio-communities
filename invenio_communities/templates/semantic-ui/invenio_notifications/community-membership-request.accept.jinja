@@ -11,8 +11,7 @@ under the terms of the MIT License; see LICENSE file for more details.
 {% set community = request.receiver %}
 {% set community_title = community["metadata"]["title"] %}
 {% set role = "role" %}
-{% set request_link = invenio_url_for("invenio_app_rdm_requests.user_dashboard_request_view",
-request_pid_value=request.id) %}
+{% set request_link = invenio_url_for("invenio_app_rdm_requests.user_dashboard_request_view", request_pid_value=request.id) %}
 {% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
 
 
