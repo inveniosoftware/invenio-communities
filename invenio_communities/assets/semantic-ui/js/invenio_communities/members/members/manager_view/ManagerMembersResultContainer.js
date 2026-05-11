@@ -12,6 +12,7 @@ import { InvitationsContextProvider } from "../../../api/invitations/Invitations
 import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitationsModal/InvitationsMembersModal";
 import { Table } from "semantic-ui-react";
 import { ManagerMemberBulkActions } from "./ManagerMemberBulkActions";
+import Overridable from "react-overridable";
 
 export const ManagerMembersResultsContainer = ({
   results,
@@ -38,12 +39,19 @@ export const ManagerMembersResultsContainer = ({
           <Table.HeaderCell width={2}>{i18next.t("Role")}</Table.HeaderCell>
           <Table.HeaderCell width={2} textAlign="right">
             <InvitationsContextProvider community={community}>
-              <InvitationsMembersModalWithSearchKit
+              <Overridable
+                id="InvenioCommunities.CommunityMembersSearch.ManagerMembersResultsContainer.InvitationsModal"
                 rolesCanInvite={rolesCanInvite}
                 groupsEnabled={groupsEnabled}
                 community={community}
-                triggerButtonSize="tiny"
-              />
+              >
+                <InvitationsMembersModalWithSearchKit
+                  rolesCanInvite={rolesCanInvite}
+                  groupsEnabled={groupsEnabled}
+                  community={community}
+                  triggerButtonSize="tiny"
+                />
+              </Overridable>
             </InvitationsContextProvider>
           </Table.HeaderCell>
         </Table.Row>

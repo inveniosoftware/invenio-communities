@@ -5,6 +5,7 @@ import { withState } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { InvitationsContextProvider } from "../../../api/invitations/InvitationsContextProvider";
 import { InvitationsMembersModalWithSearchKit } from "../../invitations/invitationsModal/InvitationsMembersModal";
+import Overridable from "react-overridable";
 
 class ManagerEmptyResultsCmp extends Component {
   render() {
@@ -23,11 +24,18 @@ class ManagerEmptyResultsCmp extends Component {
           <Grid.Column width="13" />
           <Grid.Column width="3">
             <InvitationsContextProvider community={community}>
-              <InvitationsMembersModalWithSearchKit
+              <Overridable
+                id="InvenioCommunities.CommunityMembersSearch.ManagerEmptyResults.InvitationsModal"
                 rolesCanInvite={rolesCanInvite}
                 groupsEnabled={groupsEnabled}
                 community={community}
-              />
+              >
+                <InvitationsMembersModalWithSearchKit
+                  rolesCanInvite={rolesCanInvite}
+                  groupsEnabled={groupsEnabled}
+                  community={community}
+                />
+              </Overridable>
             </InvitationsContextProvider>
           </Grid.Column>
         </Segment>
