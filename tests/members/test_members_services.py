@@ -1440,14 +1440,13 @@ def test_expire_membership_request(
     assert 1 == result["hits"]["total"]
     # 2) one membership request
     result = member_service.search_membership_requests(
-        owner.identity, community.id,
+        owner.identity,
+        community.id,
     ).to_dict()
     assert 1 == result["hits"]["total"]
 
     # Expire request
-    requests_service.execute_action(
-        system_identity, membership_request.id, "expire"
-    )
+    requests_service.execute_action(system_identity, membership_request.id, "expire")
     MemberMixin.index.refresh()
 
     # Post-conditions
@@ -1455,7 +1454,7 @@ def test_expire_membership_request(
     res = member_service.search(owner.identity, community.id)
     assert 1 == res.to_dict()["hits"]["total"]
 
-    # 2) 1 member request, the accepted one
+    # 2) 1 member request, the expired one
     result = member_service.search_membership_requests(
         owner.identity, community.id
     ).to_dict()

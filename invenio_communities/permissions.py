@@ -166,7 +166,9 @@ class CommunityPermissionPolicy(BasePermissionPolicy):
     # is disallowed if the app config or community setting turned the feature off.
     can_request_membership = [
         IfCommunityAllowsMembershipRequests(
-            then_=[AuthenticatedUserButNotCommunityMember()], else_=[Disable()]
+            # TODO: Refactor to add NotCommunityCandidate()
+            then_=[AuthenticatedUserButNotCommunityMember()],
+            else_=[Disable()],
         )
     ]
     # For search, it might have been useful to let any non-UI cases, but that is too

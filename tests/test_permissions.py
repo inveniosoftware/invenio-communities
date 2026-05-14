@@ -16,6 +16,7 @@ import copy
 
 import pytest
 from flask_principal import Identity
+from invenio_access.permissions import system_identity
 from invenio_requests.services.permissions import (
     PermissionPolicy as RequestPermissionPolicy,
 )
@@ -82,6 +83,13 @@ def test_can_request_membership(
             owner.identity
         )
     )
+    # TODO: Case - config enabled, setting enabled - already pending decision
+    # assert not (
+    #     policy(action="request_membership", record=community_open_record).allows(
+    #         identity_pending
+    #     )
+    # )
+
     # Case - config enabled, setting enabled - authenticated but not member of community
     assert policy(action="request_membership", record=community_open_record).allows(
         identity_authenticated
@@ -236,6 +244,7 @@ def test_can_update_membership_request_role(
         ("expire", "manager", False),
         ("expire", "curator", False),
         ("expire", "requester", False),
+        ("expire", "system", True),
     ],
 )
 def test_can_perform_actions_on_membership_request(
@@ -260,6 +269,8 @@ def test_can_perform_actions_on_membership_request(
     # Identity of actor
     if role == "requester":
         identity_actor = requester_user.identity
+    elif role == "system":
+        identity_actor = system_identity
     else:
         actor_user = create_user({"username": "actor", "email": "actor@example.org"})
         identity_actor = actor_user.identity

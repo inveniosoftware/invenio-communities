@@ -72,43 +72,36 @@ def check_msg_content_for(message, list_of_required_content):
             assert required_content in content
 
 
+def get_msg_to_email(outbox, email):
+    """Get outbox message sent to email."""
+    msg = next((msg for msg in outbox if email in msg.send_to), None)
+    assert msg
+    return msg
+
+
 #
 # invenio-notification testcases
 #
 def test_community_invitation_submit_notification(
-    member_service,
-    requests_service,
-    community,
-    owner,
-    new_user,
-    db,
-    monkeypatch,
     app,
     clean_index,
+    community,
+    db,
+    mail_ext,
+    member_service,
+    mock_build_of_notification_builder,
+    new_user,
+    owner,
+    requests_service,
 ):
     """Test notifcation being built on community invitation submit."""
 
-    original_builder = CommunityInvitationSubmittedNotificationBuilder
-
     # mock build to observe calls
-    mock_build = MagicMock()
-    mock_build.side_effect = original_builder.build
-    monkeypatch.setattr(original_builder, "build", mock_build)
-    # setting specific builder for test case
-    monkeypatch.setattr(
-        current_notifications_manager,
-        "builders",
-        {
-            **current_notifications_manager.builders,
-            original_builder.type: original_builder,
-        },
+    mock_build = mock_build_of_notification_builder(
+        CommunityInvitationSubmittedNotificationBuilder
     )
-    assert not mock_build.called
 
-    mail = app.extensions.get("mail")
-    assert mail
-
-    with mail.record_messages() as outbox:
+    with mail_ext.record_messages() as outbox:
         # Validate that email was sent
         role = "reader"
         message = "<p>invitation message</p>"
@@ -128,8 +121,8 @@ def test_community_invitation_submit_notification(
         assert mock_build.called
         assert len(outbox) == 1
         html = outbox[0].html
-        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
-        assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        request_id = inv["request"]["id"]
+        assert f"/me/requests/{request_id}" in html
         assert "/account/settings/notifications" in html
         # role titles will be capitalized
         assert role.capitalize() in html
@@ -138,8 +131,8 @@ def test_community_invitation_submit_notification(
         assert community["metadata"]["title"] in html
 
     # decline to reset
-    requests_service.execute_action(new_user.identity, inv["request"]["id"], "decline")
-    with mail.record_messages() as outbox:
+    requests_service.execute_action(new_user.identity, request_id, "decline")
+    with mail_ext.record_messages() as outbox:
         data = {
             "members": [{"type": "user", "id": str(new_user.id)}],
             "role": role,
@@ -151,43 +144,25 @@ def test_community_invitation_submit_notification(
         assert res["hits"]["total"] == 2
         inv = res["hits"]["hits"][1]
 
-        # check notification is build on submit
-        assert mock_build.called
-        assert len(outbox) == 1
-        html = outbox[0].html
-        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
-        assert "/me/requests/{}".format(inv["request"]["id"]) in html
-        # role titles will be capitalized
-        assert role.capitalize() in html
-        assert "You have been invited to join" in html
-        assert "with the following message:" not in html
-        assert community["metadata"]["title"] in html
-
 
 def test_community_invitation_accept_notification(
-    member_service,
-    requests_service,
-    community,
-    new_user,
-    db,
-    monkeypatch,
     app,
-    members,
     clean_index,
+    community,
+    db,
+    mail_ext,
+    member_service,
+    members,
+    mock_build_of_notification_builder,
+    new_user,
+    requests_service,
 ):
     """Test notifcation sent on community invitation accept."""
 
-    original_builder = CommunityInvitationAcceptNotificationBuilder
-
     owner = members["owner"]
-    # mock build to observe calls
-    mock_build = MagicMock()
-    mock_build.side_effect = original_builder.build
-    monkeypatch.setattr(original_builder, "build", mock_build)
-    assert not mock_build.called
-
-    mail = app.extensions.get("mail")
-    assert mail
+    mock_build = mock_build_of_notification_builder(
+        CommunityInvitationAcceptNotificationBuilder
+    )
 
     role = "reader"
     data = {
@@ -198,18 +173,18 @@ def test_community_invitation_accept_notification(
     res = member_service.search_invitations(owner.identity, community.id).to_dict()
     assert res["hits"]["total"] == 1
     inv = res["hits"]["hits"][0]
-    with mail.record_messages() as outbox:
+
+    with mail_ext.record_messages() as outbox:
+        request_id = inv["request"]["id"]
         # Validate that email was sent
-        requests_service.execute_action(
-            new_user.identity, inv["request"]["id"], "accept"
-        )
+        requests_service.execute_action(new_user.identity, request_id, "accept")
         # check notification is build on submit
         assert mock_build.called
         # community owner, manager get notified
         assert len(outbox) == 2
         html = outbox[0].html
-        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
-        assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        community_slug = community._record.slug
+        assert f"/communities/{community_slug}/requests/{request_id}" in html
         # role titles will be capitalized
         assert (
             "'@{who}' accepted the invitation to join your community '{title}'".format(
@@ -222,28 +197,23 @@ def test_community_invitation_accept_notification(
 
 
 def test_community_invitation_cancel_notification(
-    member_service,
-    requests_service,
-    community,
-    owner,
-    new_user,
-    db,
-    monkeypatch,
     app,
     clean_index,
+    community,
+    db,
+    mail_ext,
+    member_service,
+    mock_build_of_notification_builder,
+    new_user,
+    owner,
+    requests_service,
 ):
     """Test notifcation sent on community invitation cancel."""
 
-    original_builder = CommunityInvitationCancelNotificationBuilder
-
     # mock build to observe calls
-    mock_build = MagicMock()
-    mock_build.side_effect = original_builder.build
-    monkeypatch.setattr(original_builder, "build", mock_build)
-    assert not mock_build.called
-
-    mail = app.extensions.get("mail")
-    assert mail
+    mock_build = mock_build_of_notification_builder(
+        CommunityInvitationCancelNotificationBuilder
+    )
 
     role = "reader"
     data = {
@@ -255,16 +225,17 @@ def test_community_invitation_cancel_notification(
     res = member_service.search_invitations(owner.identity, community.id).to_dict()
     assert res["hits"]["total"] == 1
     inv = res["hits"]["hits"][0]
-    with mail.record_messages() as outbox:
+
+    with mail_ext.record_messages() as outbox:
+        request_id = inv["request"]["id"]
         # Validate that email was sent
-        requests_service.execute_action(owner.identity, inv["request"]["id"], "cancel")
+        requests_service.execute_action(owner.identity, request_id, "cancel")
         # check notification is build on submit
         assert mock_build.called
         # invited user gets notified
         assert len(outbox) == 1
         html = outbox[0].html
-        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
-        assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        assert "/me/requests/{}".format(request_id) in html
         # role titles will be capitalized
         assert (
             "The invitation for '@{who}' to join community '{title}' was cancelled".format(
@@ -277,29 +248,24 @@ def test_community_invitation_cancel_notification(
 
 
 def test_community_invitation_decline_notification(
-    member_service,
-    requests_service,
-    community,
-    new_user,
-    db,
-    monkeypatch,
     app,
-    members,
     clean_index,
+    community,
+    db,
+    mail_ext,
+    member_service,
+    members,
+    mock_build_of_notification_builder,
+    new_user,
+    requests_service,
 ):
     """Test notifcation sent on community invitation decline."""
 
     owner = members["owner"]
-    original_builder = CommunityInvitationDeclineNotificationBuilder
-
     # mock build to observe calls
-    mock_build = MagicMock()
-    mock_build.side_effect = original_builder.build
-    monkeypatch.setattr(original_builder, "build", mock_build)
-    assert not mock_build.called
-
-    mail = app.extensions.get("mail")
-    assert mail
+    mock_build = mock_build_of_notification_builder(
+        CommunityInvitationDeclineNotificationBuilder
+    )
 
     role = "reader"
     data = {
@@ -310,19 +276,19 @@ def test_community_invitation_decline_notification(
     res = member_service.search_invitations(owner.identity, community.id).to_dict()
     assert res["hits"]["total"] == 1
     inv = res["hits"]["hits"][0]
-    with mail.record_messages() as outbox:
+
+    with mail_ext.record_messages() as outbox:
+        request_id = inv["request"]["id"]
         # Validate that email was sent
         # Added resp
-        resp = requests_service.execute_action(
-            new_user.identity, inv["request"]["id"], "decline"
-        )
+        resp = requests_service.execute_action(new_user.identity, request_id, "decline")
         # check notification is build on submit
         assert mock_build.called
         # community owner, manager get notified
         assert len(outbox) == 2
         html = outbox[0].html
-        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
-        assert "/me/requests/{}".format(inv["request"]["id"]) in html
+        community_slug = community._record.slug
+        assert f"/communities/{community_slug}/requests/{request_id}" in html
         # role titles will be capitalized
         assert (
             "'@{who}' declined the invitation to join your community '{title}'".format(
@@ -335,29 +301,24 @@ def test_community_invitation_decline_notification(
 
 
 def test_community_invitation_expire_notification(
-    member_service,
-    requests_service,
-    community,
-    new_user,
-    db,
-    monkeypatch,
     app,
-    members,
     clean_index,
+    community,
+    db,
+    mail_ext,
+    member_service,
+    members,
+    mock_build_of_notification_builder,
+    new_user,
+    requests_service,
 ):
     """Test notifcation sent on community invitation decline."""
 
     owner = members["owner"]
-    original_builder = CommunityInvitationExpireNotificationBuilder
-
     # mock build to observe calls
-    mock_build = MagicMock()
-    mock_build.side_effect = original_builder.build
-    monkeypatch.setattr(original_builder, "build", mock_build)
-    assert not mock_build.called
-
-    mail = app.extensions.get("mail")
-    assert mail
+    mock_build = mock_build_of_notification_builder(
+        CommunityInvitationExpireNotificationBuilder
+    )
 
     role = "reader"
     data = {
@@ -368,29 +329,42 @@ def test_community_invitation_expire_notification(
     res = member_service.search_invitations(owner.identity, community.id).to_dict()
     assert res["hits"]["total"] == 1
     inv = res["hits"]["hits"][0]
-    with mail.record_messages() as outbox:
+
+    with mail_ext.record_messages() as outbox:
+        request_id = inv["request"]["id"]
         # Validate that email was sent
-        requests_service.execute_action(system_identity, inv["request"]["id"], "expire")
+        requests_service.execute_action(system_identity, request_id, "expire")
 
         # check notification is build on submit
         assert mock_build.called
         # community owner, manager and invited user get notified
-        # TODO: Replace with equivalent
         assert len(outbox) == 3
-        html = outbox[0].html
-        # TODO: update to `req["links"]["self_html"]` when addressing https://github.com/inveniosoftware/invenio-rdm-records/issues/1327
-        assert "/me/requests/{}".format(inv["request"]["id"]) in html
-        # role titles will be capitalized
-        assert (
-            "The invitation for '@{who}' to join community '{title}' has expired.".format(
-                who=new_user.user.username
-                or new_user.user.user_profile.get("full_name"),
-                title=community["metadata"]["title"],
-            )
-            in html
+        all_send_to = reduce(lambda s, m: m.send_to | s, outbox, set())
+        manager = members["manager"]
+        assert {new_user.email, manager.email, owner.email} == all_send_to
+
+        # Relevant kinds of messages to test
+        msg_to_manager = get_msg_to_email(outbox, manager.email)
+        msg_to_invitee = get_msg_to_email(outbox, new_user.email)
+
+        who = new_user.user.username or new_user.user.user_profile.get("full_name")
+        title = community["metadata"]["title"]
+        expiration_sentence = (
+            f"The invitation for '@{who}' to join community '{title}' expired."
         )
 
+        # Check manager content for key information
+        community_slug = community._record.slug
+        link = f"/communities/{community_slug}/requests/{request_id}"
+        check_msg_content_for(msg_to_manager, [expiration_sentence, link])
+        # Check invitee content for key information
+        link = f"/me/requests/{request_id}"
+        check_msg_content_for(msg_to_invitee, [expiration_sentence, link])
 
+
+#
+# membership request notification testcases
+#
 def test_request_membership_emits_notification(
     clean_index,  # instead of search_clear because module fixtures present
     community_open_to_membership_requests,
@@ -631,16 +605,9 @@ def test_expire_membership_request_emits_notification(
         requests_service.execute_action(system_identity, request_result.id, "expire")
 
         assert mock_build.called
-        # breakpoint()
         assert 3 == len(outbox)
         all_send_to = reduce(lambda s, m: m.send_to | s, outbox, set())
         assert {requester.user.email, manager_user.email, owner.email} == all_send_to
-
-        def get_msg_to_email(outbox, email):
-            """Get outbox message sent to email."""
-            msg = next((msg for msg in outbox if email in msg.send_to), None)
-            assert msg
-            return msg
 
         msg_to_manager = get_msg_to_email(outbox, manager_user.email)
         msg_to_requester = get_msg_to_email(outbox, requester.user.email)

@@ -16,19 +16,19 @@
 {% set request_link = (
   invenio_url_for("invenio_app_rdm_requests.user_dashboard_request_view", request_pid_value=invitation_request.id)
   if recipient_is_receiver else
-  invenio_url_for("invenio_app_rdm_requests.community_dashboard_membership_request_view", pid_value=community.slug, request_pid_value=invitation_request.id)
+  invenio_url_for("invenio_app_rdm_requests.community_dashboard_request_view", pid_value=community.slug, request_pid_value=invitation_request.id)
 ) %}
 {% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
 
 
 {%- block subject -%}
-  {{ _("⌛️ The invitation for @{user_name} to join community '{community_title}' expired").format(user_name=receiver_name, community_title=community_title) }}
+  {{ _("⌛️ The invitation for '@{user_name}' to join community '{community_title}' expired").format(user_name=receiver_name, community_title=community_title) }}
 {%- endblock subject -%}
 
 {%- block html_body -%}
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
-        <td>{{ _("The invitation for '@{user_name}' to join community '{community_title}' has expired.").format(user_name=receiver_name, community_title=community_title) }}</td>
+        <td>{{ _("The invitation for '@{user_name}' to join community '{community_title}' expired").format(user_name=receiver_name, community_title=community_title) }}.</td>
     </tr>
     <tr>
         <td><a href="{{ request_link }}" class="button">{{ _("Check out the invitation")}}</a></td>
@@ -43,14 +43,14 @@
 {%- endblock html_body %}
 
 {%- block plain_body -%}
-{{ _("The invitation for @{user_name} to join community '{community_title}' has expired.").format(user_name=receiver_name, community_title=community_title) }}
+{{ _("The invitation for '@{user_name}' to join community '{community_title}' expired.").format(user_name=receiver_name, community_title=community_title) }}
 
 {{ _("Check out the invitation:") }} {{ request_link }}
 {%- endblock plain_body %}
 
 {# Markdown for Slack/Mattermost/chat #}
 {%- block md_body -%}
-{{ _("The invitation for *@{user_name}* to join community *{community_title}* has expired.").format(user_name=receiver_name, community_title=community_title) }}
+{{ _("The invitation for *@{user_name}* to join community *{community_title}* expired.").format(user_name=receiver_name, community_title=community_title) }}
 
 [{{ _("Check out the invitation") }}]({{ request_link }})
 {%- endblock md_body %}

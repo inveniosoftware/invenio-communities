@@ -46,8 +46,8 @@ from invenio_communities.notifications.builders import (
     CommunityMembershipRequestAcceptedNotificationBuilder,
     CommunityMembershipRequestCancelledNotificationBuilder,
     CommunityMembershipRequestDeclinedNotificationBuilder,
-    CommunityMembershipRequestSubmittedNotificationBuilder,
     CommunityMembershipRequestExpiredNotificationBuilder,
+    CommunityMembershipRequestSubmittedNotificationBuilder,
 )
 from invenio_communities.proxies import current_communities
 

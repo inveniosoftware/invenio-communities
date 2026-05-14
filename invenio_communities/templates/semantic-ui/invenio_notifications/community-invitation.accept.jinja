@@ -13,7 +13,8 @@
 {% set community_title = community.metadata.title %}
 {% set receiver_name = receiver.username or receiver.profile.full_name %}
 {# This notification is sent to the community owners/managers so community link used #}
-{% set request_link = invenio_url_for("invenio_app_rdm_requests.community_dashboard_membership_request_view", pid_value=community.slug, request_pid_value=request.id) %}
+{# TODO: use community_dashboard_invitation_view endpoint when app-rdm defines it #}
+{% set request_link = invenio_url_for("invenio_app_rdm_requests.community_dashboard_request_view", pid_value=community.slug, request_pid_value=invitation_request.id) %}
 {% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
 
 

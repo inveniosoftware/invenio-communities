@@ -7,13 +7,10 @@
 
 """Members Service links."""
 
-from collections import namedtuple
-
 from invenio_records_resources.services.base.links import (
     EndpointLink,
 )
 from invenio_requests.proxies import current_request_type_registry
-from invenio_requests.services.links import RequestTypeDependentEndpointLink
 
 from .request import CommunityInvitation, MembershipRequestRequestType
 
