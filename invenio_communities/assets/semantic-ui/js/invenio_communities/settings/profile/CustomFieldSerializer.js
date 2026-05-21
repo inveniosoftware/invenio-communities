@@ -54,7 +54,8 @@ export class CustomFieldSerializer {
       }
       // Add __key if i is passed i.e is an array. This is needed because of ArrayField
       // internal implementation
-      if (i) value.__key = i;
+      if (i !== null && i !== undefined && typeof value === "object" && value !== null)
+        value.__key = i;
       return value;
     };
     const _record = _cloneDeep(record);
