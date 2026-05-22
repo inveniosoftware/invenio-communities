@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2024 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from "react";
 import ReactDOM from "react-dom";
 import SubmissionPolicyForm from "./SubmissionPolicyForm";

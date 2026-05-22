@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { InvenioSearchPagination } from "@js/invenio_search_ui/components";
 import React from "react";
 import { ResultsList } from "react-searchkit";

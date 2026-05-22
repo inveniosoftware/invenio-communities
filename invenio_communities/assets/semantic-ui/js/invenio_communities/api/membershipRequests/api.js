@@ -1,9 +1,8 @@
-// This file is part of Invenio-communities
-// Copyright (C) 2022 CERN.
-// Copyright (C) 2024-2026 Northwestern University.
-//
-// Invenio-communities is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-FileCopyrightText: 2024-2026 Northwestern University.
+ * SPDX-License-Identifier: MIT
+ */
 
 import { CommunityLinksExtractor } from "../CommunityLinksExtractor";
 import { http } from "react-invenio-forms";

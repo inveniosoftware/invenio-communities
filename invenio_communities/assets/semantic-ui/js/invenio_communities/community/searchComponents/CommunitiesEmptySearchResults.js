@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";

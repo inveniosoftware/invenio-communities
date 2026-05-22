@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { CommunityInvitationsApi } from "./api";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
