@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 CERN.
+# SPDX-License-Identifier: MIT
+
 """Example of a record draft API."""
 
 from invenio_records.systemfields import ConstantField

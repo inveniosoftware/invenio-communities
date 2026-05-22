@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2023-2026 CERN.
-# Copyright (C) 2023 TU Wien.
-#
-# Invenio-Communities is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License; see LICENSE file for more details.
+# SPDX-FileCopyrightText: 2023-2026 CERN.
+# SPDX-FileCopyrightText: 2023 TU Wien.
+# SPDX-License-Identifier: MIT
+
 """Communities user moderation actions."""
 
 from collections import defaultdict

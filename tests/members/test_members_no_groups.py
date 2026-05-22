@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022-2024 CERN.
+# SPDX-License-Identifier: MIT
+
 import pytest
 from invenio_records_resources.services.errors import PermissionDeniedError
 

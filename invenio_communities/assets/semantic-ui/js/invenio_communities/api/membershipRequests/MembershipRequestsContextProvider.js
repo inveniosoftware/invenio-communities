@@ -1,9 +1,7 @@
-// This file is part of Invenio-communities
-//
-// Copyright (C) 2026 Northwestern University.
-//
-// Invenio-communities is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2026 Northwestern University.
+ * SPDX-License-Identifier: MIT
+ */
 
 import { CommunityMembershipRequestsApi } from "./api";
 import React, { Component } from "react";

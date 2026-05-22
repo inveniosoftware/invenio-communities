@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Component } from "react";
 import { withCancel } from "react-invenio-forms";
 import { http } from "react-invenio-forms";

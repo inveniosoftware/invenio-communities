@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { generatePath } from "react-router-dom";
 
 const CommunitiesRoutesBase = "/communities";

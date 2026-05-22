@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023-2024 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 export { default as CarouselItem } from "./communitiesCarousel/CarouselItem";
 export { default as CommunitiesCarousel } from "./communitiesCarousel/CommunitiesCarousel";
 export { default as FeaturedCommunities } from "./featuredCommunities/FeaturedCommunities";

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023-2025 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { MembersContextProvider } from "../../../api/members/MembersContextProvider";
 import SearchResultsBulkActionsManager from "../../../members/components/bulk_actions/SearchResultsBulkActionsManager";
 import PropTypes from "prop-types";

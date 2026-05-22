@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2024 CERN.
-#
-# Invenio-Communities is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License; see LICENSE file for more details.
+# SPDX-FileCopyrightText: 2024 CERN.
+# SPDX-License-Identifier: MIT
+
 """Configurations for subcommunities service."""
 
 from invenio_records_permissions.generators import Disable, SystemProcess

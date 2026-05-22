@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2024 CERN.
-# Copyright (C) 2024 KTH Royal Institute of Technology.
-#
-# Invenio-Communities is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License; see LICENSE file for more details.
+# SPDX-FileCopyrightText: 2024 CERN.
+# SPDX-FileCopyrightText: 2024 KTH Royal Institute of Technology.
+# SPDX-License-Identifier: MIT
+
 """Subcommunities service schemas."""
 
 from invenio_i18n import lazy_gettext as _
