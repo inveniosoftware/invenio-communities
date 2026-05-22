@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022-2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Component } from "react";
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { withState } from "react-searchkit";

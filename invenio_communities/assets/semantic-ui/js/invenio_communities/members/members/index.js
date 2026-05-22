@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { i18next } from "@translations/invenio_communities/i18next";
 
 export const memberVisibilityTypes = [

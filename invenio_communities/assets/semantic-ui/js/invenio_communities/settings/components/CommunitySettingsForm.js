@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import _defaultsDeep from "lodash/defaultsDeep";

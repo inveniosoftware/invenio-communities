@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022-2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Radio, Item } from "semantic-ui-react";

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-FileCopyrightText: 2026 Northwestern University.
+ * SPDX-License-Identifier: MIT
+ */
+
 import _upperFirst from "lodash/upperFirst";
 import { i18next } from "@translations/invenio_communities/i18next";
 

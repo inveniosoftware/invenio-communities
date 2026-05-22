@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2022 Northwestern University.
-# Copyright (C) 2026 KTH Royal Institute of Technology.
-#
-# Invenio-Communities is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License; see LICENSE file for more details.
+# SPDX-FileCopyrightText: 2022 Northwestern University.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
+# SPDX-License-Identifier: MIT
 
 """Community base error."""
 

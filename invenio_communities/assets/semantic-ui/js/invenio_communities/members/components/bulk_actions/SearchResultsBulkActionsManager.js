@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022-2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { BulkActionsContext } from "./context";
 import React, { Component } from "react";
 import Overridable from "react-overridable";

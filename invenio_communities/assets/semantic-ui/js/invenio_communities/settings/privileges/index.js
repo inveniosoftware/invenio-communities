@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-FileCopyrightText: 2024 Northwestern University.
+ * SPDX-License-Identifier: MIT
+ */
+
 import CommunityPrivilegesForm from "./CommunityPrivilegesForm";
 import ReactDOM from "react-dom";
 import React from "react";

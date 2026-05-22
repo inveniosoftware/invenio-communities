@@ -1,8 +1,7 @@
-// This file is part of InvenioRDM
-// Copyright (C) 2023-2024 CERN.
-//
-// InvenioRDM is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2023-2024 CERN.
+ * SPDX-License-Identifier: MIT
+ */
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import React from "react";

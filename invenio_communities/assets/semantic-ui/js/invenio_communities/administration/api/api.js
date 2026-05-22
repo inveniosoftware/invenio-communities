@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { APIRoutes } from "./routes";
 import { http } from "react-invenio-forms";
 

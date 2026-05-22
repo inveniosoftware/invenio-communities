@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { CommunityPagesForm } from "./CommunityPagesForm";
 import ReactDOM from "react-dom";
 import React from "react";
