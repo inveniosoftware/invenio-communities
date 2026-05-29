@@ -5,19 +5,18 @@
 
 """UI community schema."""
 
-from functools import partial
-
 from flask import g
 from flask_resources import BaseObjectSchema
 from idutils import detect_identifier_schemes, to_url
 from invenio_i18n import get_locale
 from invenio_i18n import lazy_gettext as _
+from invenio_records_resources.proxies import current_custom_fields_schema_registry
 from invenio_records_resources.services.custom_fields import CustomFieldsSchemaUI
 from invenio_vocabularies.contrib.awards.serializer import AwardL10NItemSchema
 from invenio_vocabularies.contrib.funders.serializer import FunderL10NItemSchema
 from invenio_vocabularies.resources import VocabularyL10Schema
 from marshmallow import Schema, fields, post_dump
-from marshmallow_utils.fields import FormatEDTF as FormatEDTF_
+from marshmallow_utils.fields import FormatEDTF
 
 from invenio_communities.communities.schema import CommunityThemeSchema
 from invenio_communities.proxies import current_communities
@@ -57,10 +56,6 @@ def mask_removed_by(obj):
     return return_value
 
 
-# Partial to make short definitions in below schema.
-FormatEDTF = partial(FormatEDTF_, locale=get_locale)
-
-
 class TombstoneSchema(Schema):
     """Schema for a record tombstone."""
 
@@ -70,9 +65,13 @@ class TombstoneSchema(Schema):
 
     removed_by = fields.Function(mask_removed_by)
 
-    removal_date_l10n_medium = FormatEDTF(attribute="removal_date", format="medium")
+    removal_date_l10n_medium = FormatEDTF(
+        attribute="removal_date", format="medium", locale=get_locale
+    )
 
-    removal_date_l10n_long = FormatEDTF(attribute="removal_date", format="long")
+    removal_date_l10n_long = FormatEDTF(
+        attribute="removal_date", format="long", locale=get_locale
+    )
 
     citation_text = fields.String(attribute="citation_text")
 
@@ -106,7 +105,9 @@ class UICommunitySchema(BaseObjectSchema):
 
     # Custom fields
     custom_fields = fields.Nested(
-        partial(CustomFieldsSchemaUI, fields_var="COMMUNITIES_CUSTOM_FIELDS")
+        lambda: current_custom_fields_schema_registry.get(
+            "COMMUNITIES_CUSTOM_FIELDS", CustomFieldsSchemaUI.field_property_name
+        )
     )
 
     permissions = fields.Method("get_permissions", dump_only=True)

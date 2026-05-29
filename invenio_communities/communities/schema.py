@@ -10,6 +10,7 @@ from functools import partial
 from uuid import UUID
 
 from invenio_i18n import lazy_gettext as _
+from invenio_records_resources.proxies import current_custom_fields_schema_registry
 from invenio_records_resources.services.custom_fields import CustomFieldsSchema
 from invenio_records_resources.services.records.schema import (
     BaseGhostSchema,
@@ -245,7 +246,9 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     access = NestedAttribute(CommunityAccessSchema, required=True)
 
     custom_fields = NestedAttribute(
-        partial(CustomFieldsSchema, fields_var="COMMUNITIES_CUSTOM_FIELDS")
+        lambda: current_custom_fields_schema_registry.get(
+            "COMMUNITIES_CUSTOM_FIELDS", CustomFieldsSchema.field_property_name
+        )
     )
 
     is_verified = fields.Boolean(dump_only=True)
