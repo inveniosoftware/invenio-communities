@@ -12,6 +12,32 @@
 Changes
 =======
 
+Version v27.0.0 (released 2026-05-29)
+
+- chore(setup): bump dependencies
+- fix: moved dependency to depends_on
+- feat: introduced SameAs to make the policy extendable
+- fix: tests in subcommunities
+- fix(mshp-req): display discussion link on communiy header correctly [+]
+- fix(inv): use appropriate link in invitation notification
+- feat(mshp-req): notify upon each membership request action
+- feat(inv): use backend self_html for frontend invitation link
+- feat: generalize error message for AlreadyMemberError
+- feat(inv): cancel invitations from community invitations search
+- feat(mshp-req): display membership requests on community dashboard
+- build(deps-dev): bump minimatch
+- build(deps-dev): bump lodash
+- fix(mshp-req): enforce action permissions
+- feat(mshp-req): accept,decline,cancel,upate role of membership requests [+]
+- refactor: allow overriding members service components
+- fix(community-themes): only request theme CSS for themed communities
+- fix(mshp-req): generate proper self_html link for requests JSON API
+- feat(mshp-req)!: search membership requests - modifies mapping!
+- feat: add request.type to communitymembers indices + refactor for clarity
+- fix(deps): bump invenio-requests since tests assume v12.3.x at least
+- feat(mshp-req): add permission to search membership requests
+- feat(mshp-req): don't show community membership request in community requests
+
 Version v26.1.1 (released 2026-04-29)
 
 - fix(inv): show discussion for invitation requests by generating self_html
