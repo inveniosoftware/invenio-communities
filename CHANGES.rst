@@ -12,6 +12,13 @@
 Changes
 =======
 
+Version v28.0.0 (released 2026-06-05)
+
+- chore(setup): bump dependencies
+- feat: add member name to community member removal modal
+- feat: added blocks to communities templates
+- fix(ui): new community form typo
+
 Version v27.0.0 (released 2026-05-29)
 
 - chore(setup): bump dependencies
