@@ -16,6 +16,7 @@ from invenio_accounts.signals import datastore_post_commit
 from invenio_base.utils import load_or_import_from_config
 from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services import FileService
+from invenio_records_resources.services.custom_fields.schema import CustomFieldsSchema, CustomFieldsSchemaUI
 
 from invenio_communities.communities import (
     CommunityFileServiceConfig,
@@ -221,3 +222,8 @@ def init(app):
 
     # change notification handlers
     rr_ext.notification_registry.register("users", ext.service.on_relation_update)
+
+    # Register custom fields schemas
+    cfs_registry = app.extensions["invenio-records-resources"].custom_fields_schema_registry
+    cfs_registry.register(app, "COMMUNITIES_CUSTOM_FIELDS", CustomFieldsSchema)
+    cfs_registry.register(app, "COMMUNITIES_CUSTOM_FIELDS", CustomFieldsSchemaUI)
