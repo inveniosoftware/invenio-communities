@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022-2024 CERN.
-# Copyright (C) 2025 KTH Royal Institute of Technology.
+# Copyright (C) 2025-2026 KTH Royal Institute of Technology.
 #
 # Invenio-Communities is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -119,6 +119,7 @@ class CommunityDetailView(AdminResourceDetailView):
     item_field_list = {
         "slug": {
             "text": _("Slug"),
+            "link": "links.self_html",
             "order": 1,
         },
         "metadata.title": {"text": _("Title"), "order": 2},
