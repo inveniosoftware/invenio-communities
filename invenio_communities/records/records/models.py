@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2021 CERN.
+# Copyright (C) 2021-2026 CERN.
 #
 # Invenio-Communities is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
 """Abstract database model for modelling community/record relationships."""
+
+import warnings
 
 from invenio_db import db
 from invenio_requests.records.models import RequestMetadata
@@ -17,7 +19,7 @@ from ...communities.records.models import CommunityMetadata
 
 
 class CommunityRelationMixin:
-    """Model mixin to define a relationship between a communities and records.
+    """(Deprecated) Model mixin to define a relationship between a communities and records.
 
     Usage:
 
@@ -56,3 +58,11 @@ class CommunityRelationMixin:
             db.ForeignKey(RequestMetadata.id, ondelete="SET NULL"),
             nullable=True,
         )
+
+
+warnings.warn(
+    "CommunityRelationMixin has been moved to invenio_rdm_records.records.models. "
+    "Importing from invenio_communities.records.records.models is deprecated and will be removed in a future release.",
+    DeprecationWarning,
+    stacklevel=2,
+)
