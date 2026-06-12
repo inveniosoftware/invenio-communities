@@ -12,6 +12,14 @@
 Changes
 =======
 
+Version v28.1.0 (released 2026-06-12)
+
+- feat(manager): Add API to search accepted community requests
+- refactor(models): Deprecate CommunityRelationMixin class
+- template: pages: fix missing titles (about and curation policy)
+- fix: custom fields serialization
+- feat: added overridable blocks around community invitations modal
+
 Version v28.0.0 (released 2026-06-05)
 
 - chore(setup): bump dependencies
