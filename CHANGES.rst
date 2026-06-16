@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version v29.0.0 (released 2026-06-18)
+
+- chore(setup): bump dependencies
+- chore(git-blame): ignore the SPDX license header commit
+- chore(licenses): update license headers to use SPDX
+
 Version v28.1.0 (released 2026-06-12)
 
 - feat(manager): Add API to search accepted community requests
