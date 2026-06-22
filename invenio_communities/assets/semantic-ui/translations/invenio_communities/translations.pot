@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
-"PO-Revision-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
+"PO-Revision-Date: 2026-06-22T20:51:30.697Z\n"
 "Language: en\n"
 
 msgid "Delete community"
@@ -175,9 +175,6 @@ msgstr ""
 msgid "Identifier"
 msgstr "Identifier"
 
-msgid "Setup your new community"
-msgstr "Setup your new community"
-
 msgid "Community name"
 msgstr "Community name"
 
@@ -301,13 +298,6 @@ msgstr "Search for groups"
 msgid "Already a member"
 msgstr "Already a member"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] "You are about to add {{count}} groups."
@@ -339,12 +329,6 @@ msgstr "You are about to invite"
 
 msgid "users"
 msgstr "users"
-
-msgid "Already a member or invitation pending"
-msgstr "Already a member or invitation pending"
-
-msgid "Search by email, full name or username"
-msgstr "Search by email, full name or username"
 
 msgid "Groups"
 msgstr "Groups"
@@ -597,3 +581,59 @@ msgstr "Cancelled"
 
 msgid "Add organization: "
 msgstr "Add organization: "
+
+msgid "View comments"
+msgstr "View comments"
+
+msgid "Set up your new community"
+msgstr "Set up your new community"
+
+msgid "Enabled"
+msgstr "Enabled"
+
+msgid "Disabled"
+msgstr "Disabled"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr "You are about to remove {{name}} from this community."
+
+msgid "cancel invitation"
+msgstr "cancel invitation"
+
+msgid "Cancel invitation"
+msgstr "Cancel invitation"
+
+msgid "No matching invitations found."
+msgstr "No matching invitations found."
+
+msgid "Email notifications"
+msgstr "Email notifications"
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+
+msgid "Already a member or pending a decision"
+msgstr "Already a member or pending a decision"
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr "Search by full name, username or email (if publicly visible)"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Search in membership requests..."
+msgstr "Search in membership requests..."
+
+msgid "No matching membership requests found."
+msgstr "No matching membership requests found."
