@@ -9,18 +9,33 @@
 from datetime import timedelta
 
 from invenio_i18n import lazy_gettext as _
+from invenio_records_resources.services.records.components import MetadataComponent
 from invenio_requests.services.requests import facets as facets_for_requests
 
 from invenio_communities.communities.records.api import Community
 from invenio_communities.communities.records.systemfields.access import (
     RecordSubmissionPolicyEnum,
 )
+from invenio_communities.communities.resources.config import (
+    community_error_handlers,
+)
 from invenio_communities.communities.schema import CommunitySchema
 from invenio_communities.communities.services import facets
+from invenio_communities.communities.services.components import (
+    DefaultCommunityComponents,
+)
+from invenio_communities.members.services.components import (
+    CommunityMemberCachingComponent,
+)
 from invenio_communities.permissions import CommunityPermissionPolicy
+from invenio_communities.subcommunities.services.request import SubCommunityRequest
+from invenio_communities.subcommunities.services.schema import SubcommunityRequestSchema
 
 COLLECTIONS_PERMISSION_POLICY = CommunityPermissionPolicy
 """Permission policy used by invenio-collections for managing collection trees."""
+
+COMMUNITIES_PERMISSION_POLICY = CommunityPermissionPolicy
+"""Permission policy for communities."""
 
 COMMUNITIES_ROUTES = {
     "frontpage": "/communities",
@@ -378,3 +393,21 @@ COMMUNITIES_COMMUNITY_CLS = Community
 
 COMMUNITIES_COMMUNITY_SCHEMA = CommunitySchema
 """Community schema."""
+
+COMMUNITIES_ERROR_HANDLERS = community_error_handlers
+"""Community resource error handlers."""
+
+COMMUNITIES_SERVICE_COMPONENTS = DefaultCommunityComponents
+"""Community service components."""
+
+COMMUNITIES_MEMBERS_SERVICE_COMPONENTS = [
+    MetadataComponent,
+    CommunityMemberCachingComponent,
+]
+"""Community members service components."""
+
+COMMUNITIES_SUB_SERVICE_SCHEMA = SubcommunityRequestSchema
+"""Subcommunity service schema."""
+
+COMMUNITIES_SUB_REQUEST_CLS = SubCommunityRequest
+"""Subcommunity request class."""
