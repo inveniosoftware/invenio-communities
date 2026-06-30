@@ -19,6 +19,7 @@ from invenio_vocabularies.contrib.affiliations.schema import (
     AffiliationRelationSchema as BaseAffiliationRelationSchema,
 )
 from invenio_vocabularies.contrib.awards.schema import FundingRelationSchema
+from invenio_vocabularies.contrib.funders.schema import FunderRelationSchema
 from invenio_vocabularies.services.schema import (
     VocabularyRelationSchema as VocabularySchema,
 )
@@ -138,6 +139,18 @@ class AffiliationRelationSchema(BaseAffiliationRelationSchema):
         unknown = EXCLUDE
 
 
+class CommunityFundingSchema(FundingRelationSchema):
+    """Community funding schema.
+
+    Funding entries must always reference a funder (the award is optional).
+    This matches what the community profile form produces and prevents
+    funding entries without a funder from being stored (which break the
+    community profile UI).
+    """
+
+    funder = fields.Nested(FunderRelationSchema, required=True)
+
+
 class CommunityMetadataSchema(Schema):
     """Community metadata schema."""
 
@@ -149,7 +162,7 @@ class CommunityMetadataSchema(Schema):
 
     type = fields.Nested(VocabularySchema, metadata={"type": "communitytypes"})
     website = URL(validate=_not_blank())
-    funding = fields.List(fields.Nested(FundingRelationSchema))
+    funding = fields.List(fields.Nested(CommunityFundingSchema))
     organizations = fields.List(fields.Nested(AffiliationRelationSchema))
 
     # TODO: Add when general vocabularies are ready

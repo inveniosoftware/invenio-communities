@@ -4,7 +4,6 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React from "react";
 import PropTypes from "prop-types";
 import _truncate from "lodash/truncate";
 
@@ -14,16 +13,16 @@ import { RestrictedLabel } from "../labels";
 
 export const CommunityCompactItemComputer = ({
   result,
-  actions,
-  extraLabels,
-  itemClassName,
-  showPermissionLabel,
-  detailUrl,
+  actions = undefined,
+  extraLabels = undefined,
+  itemClassName = "",
+  showPermissionLabel = false,
+  detailUrl = undefined,
   isCommunityDefault,
   recordRequests,
 }) => {
   const { metadata, ui, links, access, id } = result;
-  const viewComments = id in recordRequests;
+  const viewComments = recordRequests && id in recordRequests;
   return (
     <Item
       key={id}
@@ -130,13 +129,4 @@ CommunityCompactItemComputer.propTypes = {
   detailUrl: PropTypes.string,
   isCommunityDefault: PropTypes.bool.isRequired,
   recordRequests: PropTypes.object,
-};
-
-CommunityCompactItemComputer.defaultProps = {
-  actions: undefined,
-  extraLabels: undefined,
-  itemClassName: "",
-  showPermissionLabel: false,
-  detailUrl: undefined,
-  recordRequests: {},
 };

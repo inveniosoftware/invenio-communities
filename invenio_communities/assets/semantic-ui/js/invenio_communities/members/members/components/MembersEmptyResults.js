@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { withState } from "react-searchkit";
 import { i18next } from "@translations/invenio_communities/i18next";
@@ -13,7 +13,7 @@ class MembersEmptyResults extends Component {
   render() {
     const {
       resetQuery,
-      extraContent,
+      extraContent = null,
       queryString,
       currentQueryState,
       currentResultsState,
@@ -54,10 +54,6 @@ MembersEmptyResults.propTypes = {
   currentQueryState: PropTypes.object.isRequired,
   currentResultsState: PropTypes.object.isRequired,
   extraContent: PropTypes.node,
-};
-
-MembersEmptyResults.defaultProps = {
-  extraContent: null,
 };
 
 export default withState(MembersEmptyResults);

@@ -6,23 +6,22 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { RestrictedLabel } from "../labels";
 import _truncate from "lodash/truncate";
-import React from "react";
 import { Image, InvenioPopup } from "react-invenio-forms";
 import { Icon, Label, Popup } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export const CommunityCompactItemMobile = ({
   result,
-  actions,
-  extraLabels,
-  itemClassName,
-  showPermissionLabel,
-  detailUrl,
+  actions = undefined,
+  extraLabels = undefined,
+  itemClassName = "",
+  showPermissionLabel = false,
+  detailUrl = undefined,
   isCommunityDefault,
   recordRequests,
 }) => {
   const { metadata, ui, links, access, id } = result;
-  const viewComments = id in recordRequests;
+  const viewComments = recordRequests && id in recordRequests;
   return (
     <div
       key={id}
@@ -133,13 +132,4 @@ CommunityCompactItemMobile.propTypes = {
   detailUrl: PropTypes.string,
   isCommunityDefault: PropTypes.bool.isRequired,
   recordRequests: PropTypes.object,
-};
-
-CommunityCompactItemMobile.defaultProps = {
-  actions: undefined,
-  extraLabels: undefined,
-  itemClassName: "",
-  showPermissionLabel: false,
-  detailUrl: undefined,
-  recordRequests: {},
 };

@@ -5,7 +5,7 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React, { Component } from "react";
+import { Component, createRef } from "react";
 import { withCancel } from "react-invenio-forms";
 import { Button, Form, Icon, Modal } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
@@ -22,8 +22,8 @@ export class RenameCommunitySlugButton extends Component {
       error: "",
     };
 
-    this.formInputRef = React.createRef();
-    this.modalTriggerRef = React.createRef();
+    this.formInputRef = createRef();
+    this.modalTriggerRef = createRef();
   }
 
   componentDidUpdate() {

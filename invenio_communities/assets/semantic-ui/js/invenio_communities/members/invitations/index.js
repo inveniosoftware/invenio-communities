@@ -8,7 +8,6 @@ import { RequestCancelModalTrigger } from "@js/invenio_requests/components/Modal
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { DropdownSort } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_communities/i18next";
-import React from "react";
 import { parametrize, overrideStore } from "react-overridable";
 
 import { InvitationsContextProvider as ContextProvider } from "../../api/invitations/InvitationsContextProvider";

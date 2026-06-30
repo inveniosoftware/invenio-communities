@@ -5,7 +5,6 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React from "react";
 import { Grid, Header, Segment } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
 import { RenameCommunitySlugButton } from "./RenameCommunitySlugButton";
