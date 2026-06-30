@@ -4,7 +4,6 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "semantic-ui-react";
 import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";

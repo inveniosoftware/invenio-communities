@@ -8,7 +8,7 @@ import { RadioSelection } from "@js/invenio_communities/members/components/bulk_
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button, Form, Modal } from "semantic-ui-react";
 import { MembersSearchBar } from "../invitations/invitationsModal/MemberSearchBar";
 import { SelectedMembers } from "./bulk_actions/SelectedMembers";
@@ -38,7 +38,7 @@ export class SearchWithRoleSelection extends Component {
   };
 
   handleActionClick = async () => {
-    const { action, onSuccessCallback, message, notify } = this.props;
+    const { action, onSuccessCallback, message = "", notify = false } = this.props;
     const { selected, role } = this.state;
     this.setState({ loading: true, error: undefined });
     try {
@@ -54,20 +54,20 @@ export class SearchWithRoleSelection extends Component {
     const {
       roleOptions,
       modalClose,
-      searchBarTitle,
-      searchBarTooltip,
-      doneButtonText,
-      doneButtonIcon,
-      doneButtonTip,
-      radioLabel,
-      selectedItemsHeader,
-      messageComponent,
+      searchBarTitle = null,
+      searchBarTooltip = "",
+      doneButtonText = "",
+      doneButtonIcon = "",
+      doneButtonTip = "",
+      radioLabel = "",
+      selectedItemsHeader = "",
+      messageComponent = null,
       existingEntities,
-      existingEntitiesDescription,
+      existingEntitiesDescription = "",
       fetchMembers,
       searchType,
-      searchBarPlaceholder,
-      doneButtonTipType,
+      searchBarPlaceholder = "",
+      doneButtonTipType = "",
     } = this.props;
     const { selected, loading, error, role } = this.state;
     const selectedCount = Object.keys(selected).length;
@@ -163,20 +163,4 @@ SearchWithRoleSelection.propTypes = {
   existingEntitiesDescription: PropTypes.string,
   fetchMembers: PropTypes.func.isRequired,
   searchType: PropTypes.oneOf(["group", "role", "user"]).isRequired,
-};
-
-SearchWithRoleSelection.defaultProps = {
-  searchBarTitle: null,
-  searchBarTooltip: "",
-  doneButtonText: "",
-  doneButtonIcon: "",
-  doneButtonTip: "",
-  doneButtonTipType: "",
-  searchBarPlaceholder: "",
-  radioLabel: "",
-  selectedItemsHeader: "",
-  message: "",
-  messageComponent: null,
-  notify: false,
-  existingEntitiesDescription: "",
 };

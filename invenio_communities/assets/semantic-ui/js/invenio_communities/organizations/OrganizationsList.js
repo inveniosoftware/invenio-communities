@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import PropTypes from "prop-types";
 import { Popup } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";

@@ -3,15 +3,12 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import SubmissionPolicyForm from "./SubmissionPolicyForm";
 
 const domContainer = document.getElementById("app");
 const community = JSON.parse(domContainer.dataset.community);
 const formConfig = JSON.parse(domContainer.dataset.formConfig);
 
-ReactDOM.render(
-  <SubmissionPolicyForm community={community} formConfig={formConfig} />,
-  domContainer
-);
+const root = createRoot(domContainer);
+root.render(<SubmissionPolicyForm community={community} formConfig={formConfig} />);

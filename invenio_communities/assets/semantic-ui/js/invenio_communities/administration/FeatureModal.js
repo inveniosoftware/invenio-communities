@@ -5,7 +5,7 @@
 import { InvenioAdministrationCommunitiesApi } from "./api";
 import { DateTime } from "luxon";
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { withCancel } from "react-invenio-forms";
 import { Header, Table, Loader, Modal } from "semantic-ui-react";
@@ -40,7 +40,7 @@ export class FeatureModal extends Component {
 
   render() {
     const { featuredList, loading, error } = this.state;
-    const { children, modalOpen } = this.props;
+    const { children, modalOpen = false } = this.props;
     const now = DateTime.now();
 
     return (
@@ -93,8 +93,4 @@ FeatureModal.propTypes = {
   resource: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
   modalOpen: PropTypes.bool,
-};
-
-FeatureModal.defaultProps = {
-  modalOpen: false,
 };

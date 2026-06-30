@@ -7,7 +7,7 @@ import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMe
 import _get from "lodash/get";
 import { DateTime } from "luxon";
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { withCancel } from "react-invenio-forms";
 import { Header, Table, Loader } from "semantic-ui-react";

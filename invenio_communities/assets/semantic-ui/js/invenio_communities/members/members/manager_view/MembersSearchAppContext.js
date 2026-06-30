@@ -6,7 +6,7 @@
 import { MembersContextProvider } from "../../../api/members/MembersContextProvider";
 import SearchResultsBulkActionsManager from "../../../members/components/bulk_actions/SearchResultsBulkActionsManager";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 
 export class MembersSearchAppContext extends Component {
   render() {

@@ -5,15 +5,15 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React, { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { Button, Icon, Modal } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export const DeleteButton = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const cancelBtnRef = React.createRef();
-  const openModalBtnRef = React.createRef();
+  const cancelBtnRef = createRef();
+  const openModalBtnRef = createRef();
 
   const handleOpen = () => setModalOpen(true);
 
