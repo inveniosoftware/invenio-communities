@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { withState } from "react-searchkit";
@@ -11,7 +11,7 @@ import { i18next } from "@translations/invenio_communities/i18next";
 
 class MembershipRequestsEmptyResultsCmp extends Component {
   render() {
-    const { resetQuery, extraContent, queryString } = this.props;
+    const { resetQuery, extraContent = null, queryString } = this.props;
 
     return (
       <Segment.Group>
@@ -41,10 +41,6 @@ MembershipRequestsEmptyResultsCmp.propTypes = {
   resetQuery: PropTypes.func.isRequired,
   queryString: PropTypes.string.isRequired,
   extraContent: PropTypes.node,
-};
-
-MembershipRequestsEmptyResultsCmp.defaultProps = {
-  extraContent: null,
 };
 
 export const MembershipRequestsEmptyResults = withState(

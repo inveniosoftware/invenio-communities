@@ -4,18 +4,18 @@
  */
 
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Icon } from "semantic-ui-react";
 
 export class SuccessIcon extends Component {
   constructor(props) {
     super(props);
-    const { show } = props;
+    const { show = false } = props;
     this.state = { show: show };
   }
 
   componentDidMount() {
-    const { timeOutDelay, show } = this.props;
+    const { timeOutDelay, show = false } = this.props;
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ show: show });
 
@@ -39,7 +39,7 @@ export class SuccessIcon extends Component {
   };
 
   render() {
-    const { className, content } = this.props;
+    const { className = "", content } = this.props;
     const { show } = this.state;
     return (
       show && (
@@ -57,10 +57,4 @@ SuccessIcon.propTypes = {
   show: PropTypes.bool,
   className: PropTypes.string,
   content: PropTypes.string,
-};
-
-SuccessIcon.defaultProps = {
-  show: false,
-  className: "",
-  content: undefined,
 };

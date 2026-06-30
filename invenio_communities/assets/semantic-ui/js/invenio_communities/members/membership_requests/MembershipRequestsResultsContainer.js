@@ -5,7 +5,6 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React from "react";
 import { Table } from "semantic-ui-react";
 
 export const MembershipRequestsResultsContainer = ({ results }) => {
@@ -28,5 +27,3 @@ export const MembershipRequestsResultsContainer = ({ results }) => {
 MembershipRequestsResultsContainer.propTypes = {
   results: PropTypes.array.isRequired,
 };
-
-MembershipRequestsResultsContainer.defaultProps = {};

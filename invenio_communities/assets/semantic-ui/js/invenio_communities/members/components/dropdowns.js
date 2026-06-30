@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import ActionDropdown from "./ActionDropdown";
 import { Grid, Icon, Item } from "semantic-ui-react";
 import PropTypes from "prop-types";

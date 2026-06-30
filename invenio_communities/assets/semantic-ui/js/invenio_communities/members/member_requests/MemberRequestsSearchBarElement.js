@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import { Input } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
@@ -14,9 +13,9 @@ export const MemberRequestsSearchBarElement = ({
   onInputChange,
   onKeyPress,
   queryString,
-  uiProps,
-  className,
-  placeholder,
+  uiProps = null,
+  className = "",
+  placeholder = "",
 }) => {
   return (
     <Input
@@ -47,10 +46,4 @@ MemberRequestsSearchBarElement.propTypes = {
   uiProps: PropTypes.object,
   className: PropTypes.string,
   placeholder: PropTypes.string,
-};
-
-MemberRequestsSearchBarElement.defaultProps = {
-  uiProps: null,
-  className: "",
-  placeholder: "",
 };

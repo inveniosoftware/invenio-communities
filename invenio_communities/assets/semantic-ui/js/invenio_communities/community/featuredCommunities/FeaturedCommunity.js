@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { Grid, Segment, Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import { Image } from "react-invenio-forms";

@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import { Table } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";

@@ -11,7 +11,7 @@ import { BulkActionsContext } from "@js/invenio_communities/members/components/b
 import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
 import { SelectedMembers } from "@js/invenio_communities/members/components/bulk_actions/SelectedMembers";
 import _mapValues from "lodash/mapValues";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Button, Form, Modal } from "semantic-ui-react";

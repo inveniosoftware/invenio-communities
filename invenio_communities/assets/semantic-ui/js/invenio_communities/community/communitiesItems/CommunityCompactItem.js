@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import PropTypes from "prop-types";
 
 import { CommunityCompactItemComputer } from "./CommunityCompactItemComputer";
@@ -11,11 +10,11 @@ import { CommunityCompactItemMobile } from "./CommunityCompactItemMobile";
 
 export function CommunityCompactItem({
   result,
-  actions,
-  extraLabels,
-  itemClassName,
-  showPermissionLabel,
-  detailUrl,
+  actions = undefined,
+  extraLabels = undefined,
+  itemClassName = "",
+  showPermissionLabel = false,
+  detailUrl = undefined,
   isCommunityDefault,
   recordRequests,
 }) {
@@ -54,13 +53,4 @@ CommunityCompactItem.propTypes = {
   detailUrl: PropTypes.string,
   isCommunityDefault: PropTypes.bool.isRequired,
   recordRequests: PropTypes.object,
-};
-
-CommunityCompactItem.defaultProps = {
-  actions: undefined,
-  extraLabels: undefined,
-  itemClassName: "",
-  showPermissionLabel: false,
-  detailUrl: undefined,
-  recordRequests: {},
 };
