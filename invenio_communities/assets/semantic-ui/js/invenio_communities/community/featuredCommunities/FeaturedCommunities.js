@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { withCancel } from "react-invenio-forms";
 import { http } from "react-invenio-forms";
 import { Grid, Message, Container, Loader } from "semantic-ui-react";

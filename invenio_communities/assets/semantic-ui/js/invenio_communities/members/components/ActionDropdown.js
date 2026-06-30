@@ -4,7 +4,7 @@
  */
 
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { withCancel } from "react-invenio-forms";
 import Overridable from "react-overridable";
 import { Dropdown, List } from "semantic-ui-react";
@@ -65,12 +65,12 @@ class ActionDropdown extends Component {
     const { loading, actionSuccess, error } = this.state;
     const {
       options,
-      currentValue,
-      optionsSerializer,
-      disabled,
-      direction,
-      fluid,
-      label,
+      currentValue = "",
+      optionsSerializer = dropdownOptionsGenerator,
+      disabled = false,
+      direction = "right",
+      fluid = false,
+      label = "",
     } = this.props;
 
     return (
@@ -119,15 +119,6 @@ ActionDropdown.propTypes = {
   label: PropTypes.string,
   resource: PropTypes.object.isRequired,
   fluid: PropTypes.bool,
-};
-
-ActionDropdown.defaultProps = {
-  currentValue: "",
-  disabled: false,
-  direction: "right",
-  optionsSerializer: dropdownOptionsGenerator,
-  fluid: false,
-  label: "",
 };
 
 export default Overridable.component("ActionDropdown", ActionDropdown);

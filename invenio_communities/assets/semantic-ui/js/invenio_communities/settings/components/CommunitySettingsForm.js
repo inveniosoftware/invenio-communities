@@ -6,7 +6,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import _defaultsDeep from "lodash/defaultsDeep";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button, Form, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
 import { communityErrorSerializer } from "../../api/serializers";

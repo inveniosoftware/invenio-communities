@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { Filters } from "../../Filters";
 import { FilterLabels } from "../../components/FilterLabels";
@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 
 export class MembersSearchLayout extends Component {
   render() {
-    const { config, roles, appName } = this.props;
+    const { config, roles, appName = "" } = this.props;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getMembersFilters();
     return (
@@ -41,8 +41,4 @@ MembersSearchLayout.propTypes = {
   config: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
   appName: PropTypes.string,
-};
-
-MembersSearchLayout.defaultProps = {
-  appName: "",
 };

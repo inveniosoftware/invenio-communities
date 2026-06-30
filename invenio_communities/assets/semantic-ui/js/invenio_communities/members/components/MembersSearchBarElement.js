@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import { Input } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { withState } from "react-searchkit";

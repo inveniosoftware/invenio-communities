@@ -4,7 +4,7 @@
  */
 
 import { BulkActionsContext } from "./context";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";

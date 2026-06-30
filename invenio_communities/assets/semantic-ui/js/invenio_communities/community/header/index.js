@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import OrganizationsList from "../../organizations/OrganizationsList";
-import React from "react";
 
 import { RequestMembershipButton } from "./RequestMembershipButton";
 
@@ -13,15 +12,14 @@ const organizationsContainer = document.getElementById("organizations-list");
 
 if (organizationsContainer) {
   const organizations = JSON.parse(organizationsContainer.dataset.organizations);
-  ReactDOM.render(
-    <OrganizationsList organizations={organizations} />,
-    organizationsContainer
-  );
+  const root = createRoot(organizationsContainer);
+  root.render(<OrganizationsList organizations={organizations} />);
 }
 
 const domContainer = document.getElementById("request-membership-app");
 
 if (domContainer) {
   const community = JSON.parse(domContainer.dataset.community);
-  ReactDOM.render(<RequestMembershipButton community={community} />, domContainer);
+  const root = createRoot(domContainer);
+  root.render(<RequestMembershipButton community={community} />);
 }

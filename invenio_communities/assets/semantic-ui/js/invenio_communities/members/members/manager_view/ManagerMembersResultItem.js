@@ -7,7 +7,7 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import _upperFirst from "lodash/upperFirst";
 import { DateTime } from "luxon";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Image } from "react-invenio-forms";
 import { Button, Grid, Item, Label, Table } from "semantic-ui-react";
 import { MembersContext } from "../../../api/members/MembersContextProvider";
