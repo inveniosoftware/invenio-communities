@@ -9,7 +9,7 @@ import uuid
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 
-import arrow
+import pendulum
 import pytest
 from invenio_access.permissions import system_identity
 from invenio_cache import current_cache
@@ -423,7 +423,10 @@ def test_community_deletion(community_service, users, comm):
     assert tombstone.removal_reason is None
     assert tombstone.note == tombstone_info["note"]
     assert isinstance(tombstone.citation_text, str)
-    assert arrow.get(tombstone.removal_date).date() == datetime.now(timezone.utc).date()
+    assert (
+        pendulum.parse(tombstone.removal_date).date()
+        == datetime.now(timezone.utc).date()
+    )
 
     # mark the community for purge
     community = community_service.mark_community_for_purge(
