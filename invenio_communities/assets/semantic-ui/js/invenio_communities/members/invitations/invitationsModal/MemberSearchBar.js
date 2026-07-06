@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Image, withCancel } from "react-invenio-forms";
 import { Dropdown, Grid, Header } from "semantic-ui-react";
+import _debounce from "lodash/debounce";
 import _truncate from "lodash/truncate";
 
 export class MembersSearchBar extends Component {
@@ -138,12 +139,20 @@ export class MembersSearchBar extends Component {
     handleChange(selectedMembers);
   };
 
-  onSearchChange = async (event, { searchQuery }) => {
+  componentWillUnmount() {
+    this.onSearchChange.cancel();
+    this.cancellableSuggestions?.cancel();
+  }
+
+  onSearchChange = _debounce(async (event, { searchQuery }) => {
     const { fetchMembers } = this.props;
+    // cancel in-flight requests so stale responses don't overwrite newer ones
+    this.cancellableSuggestions?.cancel();
+    const cancellableSuggestions = withCancel(fetchMembers(searchQuery));
+    this.cancellableSuggestions = cancellableSuggestions;
     try {
       this.setState({ isFetching: true });
 
-      const cancellableSuggestions = withCancel(fetchMembers(searchQuery));
       const suggestions = await cancellableSuggestions.promise;
       this.setState({
         isFetching: false,
@@ -151,13 +160,19 @@ export class MembersSearchBar extends Component {
         error: false,
       });
     } catch (e) {
+      if (e === "UNMOUNTED") return;
       console.error(e);
       this.setState({
         isFetching: false,
         error: true,
       });
+    } finally {
+      // a cancelled request settles late; don't clear a newer request's reference
+      if (this.cancellableSuggestions === cancellableSuggestions) {
+        this.cancellableSuggestions = null;
+      }
     }
-  };
+  }, 300);
 
   updatedOptions = () => {
     // disable options that can not be added (members that are already added)
