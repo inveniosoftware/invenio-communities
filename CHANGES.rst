@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v29.0.1 (released 2026-07-09)
+
+- fix(members): debounce user/group search in invitation and share modals
+
 Version v29.0.0 (released 2026-06-18)
 
 - chore(setup): bump dependencies
