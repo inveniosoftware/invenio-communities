@@ -91,7 +91,6 @@ class Community(Record):
                 "acronym",
                 "program",
                 "subjects",
-                "organizations",
             ],
             pid_field=Award.pid,
             cache_key="awards",
