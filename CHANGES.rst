@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v28.1.1 (released 2026-07-20)
+
+- fix(alembic): alter index safely
+- chore(licenses): update license headers to use SPDX
+
 Version v28.1.0 (released 2026-06-12)
 
 - feat(manager): Add API to search accepted community requests
