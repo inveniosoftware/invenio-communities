@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v28.1.2 (released 2026-07-21)
+
+- chore(setup): migrate from setuptools to hatchling
+
 Version v28.1.1 (released 2026-07-20)
 
 - fix(alembic): alter index safely
