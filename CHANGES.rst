@@ -10,6 +10,11 @@
 Changes
 =======
 
+Version v29.1.0 (released 2026-07-23)
+
+- fix(awards): drop organizations from funding award relation
+- fix(alembic): alter index safely
+
 Version v29.0.2 (released 2026-07-09)
 
 - fix(errors): add error handler for StorageError exceptions
