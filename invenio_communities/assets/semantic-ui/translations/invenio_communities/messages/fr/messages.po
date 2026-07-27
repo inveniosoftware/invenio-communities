@@ -1,17 +1,16 @@
-# 
 # Translators:
 # Alizee Pace <alizee.pace@gmail.com>, 2025
-# Tibor Simko <tibor.simko@cern.ch>, 2025
-# Keziah Okyere, 2025
+# Keziah Okyere, 2026
+# Tibor Simko <tibor.simko@cern.ch>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Keziah Okyere, 2025\n"
+"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2026\n"
 "Language-Team: French (https://app.transifex.com/inveniosoftware/teams/23537/fr/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
@@ -184,9 +183,6 @@ msgstr ""
 msgid "Identifier"
 msgstr "Identifiant"
 
-msgid "Setup your new community"
-msgstr "Configurez votre nouvelle communauté"
-
 msgid "Community name"
 msgstr "Nom de la communauté"
 
@@ -312,14 +308,6 @@ msgstr "Recherche de groupes"
 msgid "Already a member"
 msgstr "Déjà membre"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Remarque: lors de l'ajout, les groupes sélectionnés deviendront des membres "
-"de la communauté immédiatement sans aucune sorte de notification ou "
-"d'approbation d'invitation."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] ""
@@ -355,12 +343,6 @@ msgstr "Vous êtes sur le point d'inviter"
 
 msgid "users"
 msgstr "utilisateurs"
-
-msgid "Already a member or invitation pending"
-msgstr "Déjà membre ou invitation en attente"
-
-msgid "Search by email, full name or username"
-msgstr "Recherche par email, nom complet ou nom d'utilisateur"
 
 msgid "Groups"
 msgstr "Groupes"
@@ -622,4 +604,56 @@ msgid "Cancelled"
 msgstr "Annulé"
 
 msgid "Add organization: "
+msgstr ""
+
+msgid "View comments"
+msgstr ""
+
+msgid "Set up your new community"
+msgstr ""
+
+msgid "Enabled"
+msgstr "Activé"
+
+msgid "Disabled"
+msgstr "Désactivé "
+
+msgid "You are about to remove {{name}} from this community."
+msgstr ""
+
+msgid "cancel invitation"
+msgstr ""
+
+msgid "Cancel invitation"
+msgstr ""
+
+msgid "No matching invitations found."
+msgstr ""
+
+msgid "Email notifications"
+msgstr ""
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+
+msgid "Already a member or pending a decision"
+msgstr ""
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Search in membership requests..."
+msgstr ""
+
+msgid "No matching membership requests found."
 msgstr ""

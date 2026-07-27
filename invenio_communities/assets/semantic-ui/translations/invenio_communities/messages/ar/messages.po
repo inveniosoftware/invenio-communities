@@ -1,17 +1,16 @@
-# 
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2025
 # Bessem Aamira <bessemamira@gmail.com>, 2025
-# Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2025
+# Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2025\n"
+"Last-Translator: Salaheddine Ben Ali <salaheddine.benali@cnudst.tn>, 2026\n"
 "Language-Team: Arabic (https://app.transifex.com/inveniosoftware/teams/23537/ar/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
@@ -142,7 +141,7 @@ msgid "Verified community"
 msgstr "مجتمع تم التحقق منه"
 
 msgid "Part of"
-msgstr ""
+msgstr "جزء من"
 
 msgid "Edit"
 msgstr "تعديل"
@@ -175,9 +174,6 @@ msgstr "هذا هو المعرف الوحيد لمجتمعك. يمكنك زيا�
 
 msgid "Identifier"
 msgstr "المعرّف"
-
-msgid "Setup your new community"
-msgstr "إعداد المجتمع الجديد"
 
 msgid "Community name"
 msgstr "إسم المجتمع"
@@ -306,13 +302,6 @@ msgstr "البحث في المجموعات"
 msgid "Already a member"
 msgstr "عضو بالفعل"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"ملاحظة: عند الإضافة، ستصبح المجموعات المحددة أعضاء في المجتمع على الفور دون "
-"أي نوع من الإشعار أو الموافقة على الدعوة."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] ""
@@ -351,12 +340,6 @@ msgstr "أنت على وشك دعوة"
 
 msgid "users"
 msgstr "المستخدمين"
-
-msgid "Already a member or invitation pending"
-msgstr "هل أنت عضو بالفعل أو لديك دعوة معلقة؟"
-
-msgid "Search by email, full name or username"
-msgstr "البحث عبر عنوان البيريد اﻹلكتروني، الإسم الكلمل او إسم المستخدم"
 
 msgid "Groups"
 msgstr "الفرق"
@@ -613,4 +596,58 @@ msgid "Cancelled"
 msgstr "ملغى"
 
 msgid "Add organization: "
+msgstr ""
+
+msgid "View comments"
+msgstr "عرض التعليقات"
+
+msgid "Set up your new community"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "You are about to remove {{name}} from this community."
+msgstr ""
+
+msgid "cancel invitation"
+msgstr ""
+
+msgid "Cancel invitation"
+msgstr ""
+
+msgid "No matching invitations found."
+msgstr ""
+
+msgid "Email notifications"
+msgstr ""
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+
+msgid "Already a member or pending a decision"
+msgstr ""
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+" ابحث باستخدام الاسم الكامل أو اسم المستخدم أو البريد الإلكتروني (إذا كان "
+"ظاهرًا للعامة)"
+
+msgid "Notifications"
+msgstr "إشعارات"
+
+msgid "Search in membership requests..."
+msgstr ""
+
+msgid "No matching membership requests found."
 msgstr ""

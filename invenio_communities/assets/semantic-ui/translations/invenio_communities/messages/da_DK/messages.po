@@ -1,17 +1,14 @@
-# Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2025\n"
-"Language-Team: Japanese (https://app.transifex.com/inveniosoftware/teams/23537/ja/)\n"
+"Language-Team: Danish (Denmark) (https://app.transifex.com/inveniosoftware/teams/23537/da_DK/)\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: da_DK\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "mime-version: 1.0\n"
 
 msgid "Delete community"
@@ -70,7 +67,7 @@ msgid ""
 msgstr ""
 
 msgid "Note"
-msgstr "注意"
+msgstr ""
 
 msgid "Delete record"
 msgstr ""
@@ -91,7 +88,7 @@ msgid "Active"
 msgstr ""
 
 msgid "Actions"
-msgstr "アクション"
+msgstr ""
 
 msgid "Published"
 msgstr ""
@@ -103,7 +100,7 @@ msgid "Scheduled for purge"
 msgstr ""
 
 msgid "Browse"
-msgstr "ブラウズ"
+msgstr ""
 
 msgid "New upload"
 msgstr ""
@@ -138,7 +135,7 @@ msgid "Part of"
 msgstr ""
 
 msgid "Edit"
-msgstr "編集"
+msgstr ""
 
 msgid "An error occurred."
 msgstr ""
@@ -156,7 +153,7 @@ msgid "Message to managers (optional)"
 msgstr ""
 
 msgid "Cancel"
-msgstr "キャンセル"
+msgstr ""
 
 msgid "Restricted"
 msgstr ""
@@ -185,7 +182,7 @@ msgid "Reset search"
 msgstr ""
 
 msgid "Search"
-msgstr "検索"
+msgstr ""
 
 msgid "Filter results"
 msgstr ""
@@ -202,6 +199,7 @@ msgstr ""
 msgid "{{count}} members selected"
 msgid_plural "{{count}} members selected"
 msgstr[0] ""
+msgstr[1] ""
 
 msgid "bulk actions"
 msgstr ""
@@ -234,7 +232,7 @@ msgid "You are about to remove this user from this community."
 msgstr ""
 
 msgid "Remove"
-msgstr "削除"
+msgstr ""
 
 msgid "This action cannot be undone."
 msgstr ""
@@ -263,7 +261,7 @@ msgid "Expired"
 msgstr ""
 
 msgid "Status"
-msgstr "状態"
+msgstr ""
 
 msgid "Expires"
 msgstr ""
@@ -281,7 +279,7 @@ msgid "No selected groups"
 msgstr ""
 
 msgid "Group"
-msgstr "グループ"
+msgstr ""
 
 msgid "Search for groups"
 msgstr ""
@@ -292,6 +290,7 @@ msgstr ""
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] ""
+msgstr[1] ""
 
 msgid "Add"
 msgstr ""
@@ -322,7 +321,7 @@ msgid "users"
 msgstr ""
 
 msgid "Groups"
-msgstr "グループ"
+msgstr ""
 
 msgid "Invite groups"
 msgstr ""
@@ -343,7 +342,7 @@ msgid "results per page"
 msgstr ""
 
 msgid "Name"
-msgstr "名前"
+msgstr ""
 
 msgid "Search in invitations..."
 msgstr ""
@@ -395,11 +394,12 @@ msgid "Search members..."
 msgstr ""
 
 msgid "and"
-msgstr "および"
+msgstr ""
 
 msgid "{{count}} more organizations"
 msgid_plural "{{count}} more organizations"
 msgstr[0] ""
+msgstr[1] ""
 
 msgid "Saved"
 msgstr ""
@@ -479,7 +479,7 @@ msgid "Once deleted, it will be gone forever. Please be certain."
 msgstr ""
 
 msgid "Delete"
-msgstr "削除"
+msgstr ""
 
 msgid "Permanently delete community"
 msgstr ""
@@ -554,10 +554,10 @@ msgid "Do you already have an existing community?"
 msgstr ""
 
 msgid "Yes"
-msgstr "はい"
+msgstr ""
 
 msgid "No"
-msgstr "いいえ"
+msgstr ""
 
 msgid "Community"
 msgstr ""

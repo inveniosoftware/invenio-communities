@@ -5,7 +5,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 # 
 # Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2026
+# Suthep Yonphimai <tomztt@gmail.com>, 2026
 # 
 #, fuzzy
 msgid ""
@@ -14,14 +14,14 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2026-06-22 20:51+0000\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2026\n"
-"Language-Team: Croatian (https://app.transifex.com/inveniosoftware/teams/23537/hr/)\n"
+"Last-Translator: Suthep Yonphimai <tomztt@gmail.com>, 2026\n"
+"Language-Team: Thai (https://app.transifex.com/inveniosoftware/teams/23537/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"Language: hr\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: invenio_communities/config.py:69 invenio_communities/config.py:171
 #: invenio_communities/config.py:213
@@ -29,93 +29,93 @@ msgstr ""
 #: invenio_communities/members/services/config.py:81
 #: invenio_communities/members/services/config.py:112
 msgid "Best match"
-msgstr ""
+msgstr "ตรงที่สุด"
 
 #: invenio_communities/config.py:73 invenio_communities/config.py:179
 #: invenio_communities/config.py:221
 #: invenio_communities/members/services/config.py:89
 #: invenio_communities/members/services/config.py:120
 msgid "Newest"
-msgstr ""
+msgstr "ใหม่ที่สุด"
 
 #: invenio_communities/config.py:77 invenio_communities/config.py:183
 #: invenio_communities/config.py:225
 #: invenio_communities/members/services/config.py:93
 #: invenio_communities/members/services/config.py:124
 msgid "Oldest"
-msgstr ""
+msgstr "เก่าที่สุด"
 
 #: invenio_communities/config.py:81
 msgid "Version"
-msgstr ""
+msgstr "เวอร์ชัน"
 
 #: invenio_communities/config.py:85
 msgid "Recently updated"
-msgstr ""
+msgstr "อัปเดตล่าสุด"
 
 #: invenio_communities/config.py:89
 msgid "Least recently updated"
-msgstr ""
+msgstr "อัปเดตนานที่สุด"
 
 #: invenio_communities/config.py:93
 msgid "Newest activity"
-msgstr ""
+msgstr "กิจกรรมล่าสุด"
 
 #: invenio_communities/config.py:97
 msgid "Oldest activity"
-msgstr ""
+msgstr "กิจกรรมเก่าสุด"
 
 #: invenio_communities/communities/services/facets.py:35
 #: invenio_communities/config.py:107
 msgid "Reader"
-msgstr ""
+msgstr "ผู้อ่าน"
 
 #: invenio_communities/config.py:108
 msgid "Can view restricted records."
-msgstr ""
+msgstr "สามารถดูระเบียนที่จำกัดการเข้าถึงได้"
 
 #: invenio_communities/communities/services/facets.py:37
 #: invenio_communities/config.py:113
 msgid "Curator"
-msgstr ""
+msgstr "ผู้ดูแลคอลเลกชัน"
 
 #: invenio_communities/config.py:114
 msgid "Can curate records and view restricted records."
-msgstr ""
+msgstr "สามารถดูแลระเบียนและดูระเบียนที่จำกัดการเข้าถึงได้"
 
 #: invenio_communities/communities/services/facets.py:36
 #: invenio_communities/config.py:120
 msgid "Manager"
-msgstr ""
+msgstr "ผู้จัดการ"
 
 #: invenio_communities/config.py:122
 msgid "Can manage members, curate records and view restricted records."
-msgstr ""
+msgstr "สามารถจัดการสมาชิก ดูแลระเบียน และดูระเบียนที่จำกัดการเข้าถึงได้"
 
 #: invenio_communities/communities/services/facets.py:34
 #: invenio_communities/config.py:131
 msgid "Owner"
-msgstr "Vlasnik"
+msgstr "เจ้าของ"
 
 #: invenio_communities/config.py:132
 msgid "Full administrative access to the entire community."
-msgstr ""
+msgstr "สิทธิ์ผู้ดูแลระบบเต็มรูปแบบสำหรับชุมชนทั้งหมด"
 
 #: invenio_communities/config.py:175 invenio_communities/config.py:217
 #: invenio_communities/members/services/config.py:42
 #: invenio_communities/members/services/config.py:85
 #: invenio_communities/members/services/config.py:116
 msgid "Name"
-msgstr "Ime"
+msgstr "ชื่อ"
 
 #: invenio_communities/errors.py:24
 #, python-format
 msgid "A featured community entry with %(q)s does not exist."
-msgstr ""
+msgstr "ไม่พบชุมชนแนะนำที่มีเงื่อนไข %(q)s"
 
 #: invenio_communities/errors.py:35
 msgid "No logo exists for this community."
-msgstr ""
+msgstr "ไม่มีโลโก้สำหรับชุมชนนี้"
 
 #: invenio_communities/errors.py:47
 #, python-format
@@ -123,6 +123,8 @@ msgid ""
 "Logo size limit exceeded. Limit: %(limit_value)s %(limit_unit)s Given: "
 "%(file_size_value)s %(file_size_unit)s"
 msgstr ""
+"ขนาดโลโก้เกินขีดจำกัด ขีดจำกัด: %(limit_value)s %(limit_unit)s ที่ให้มา: "
+"%(file_size_value)s %(file_size_unit)s"
 
 #: invenio_communities/errors.py:64
 #, python-format
@@ -133,14 +135,15 @@ msgid_plural ""
 "There are %(num)s requests open for this community. Please, resolve all of "
 "them before deleting this community."
 msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+"มีคำขอที่ยังเปิดอยู่%(num)s รายการสำหรับชุมชนนี้ "
+"โปรดแก้ไขคำขอทั้งหมดก่อนที่จะลบชุมชนนี้"
 
 #: invenio_communities/errors.py:96
 msgid ""
 "Cannot set community as the default. The record has not been added to the "
 "community."
 msgstr ""
+"ไม่สามารถตั้งชุมชนเป็นค่าเริ่มต้นได้ ระเบียนยังไม่ได้ถูกเพิ่มเข้าชุมชน"
 
 #: invenio_communities/administration/communities.py:27
 #: invenio_communities/administration/communities.py:28
@@ -150,413 +153,418 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:21
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:18
 msgid "Communities"
-msgstr ""
+msgstr "ชุมชน"
 
 #: invenio_communities/ext.py:150
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:57
 #: invenio_communities/templates/semantic-ui/invenio_communities/new.html:8
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:23
 msgid "New community"
-msgstr ""
+msgstr "ชุมชนใหม่"
 
 #: invenio_communities/ext.py:159
 msgid "Requests"
-msgstr ""
+msgstr "คำขอ"
 
 #: invenio_communities/ext.py:166
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:16
 msgid "Members"
-msgstr ""
+msgstr "สมาชิก"
 
 #: invenio_communities/ext.py:174
 msgid "Settings"
-msgstr ""
+msgstr "การตั้งค่า"
 
 #: invenio_communities/ext.py:182
 msgid "Curation policy"
-msgstr ""
+msgstr "นโยบายการดูแลคอลเลกชัน"
 
 #: invenio_communities/ext.py:190
 msgid "About"
-msgstr ""
+msgstr "เกี่ยวกับ"
 
 #: invenio_communities/roles.py:60
 msgid "Only one role be defined as owner."
-msgstr ""
+msgstr "สามารถกำหนดบทบาทเดียวเท่านั้นเป็นเจ้าของ"
 
 #: invenio_communities/roles.py:62
 msgid "One role must be defined as owner."
-msgstr ""
+msgstr "ต้องกำหนดหนึ่งบทบาทเป็นเจ้าของ"
 
 #: invenio_communities/administration/communities.py:40
 #: invenio_communities/administration/communities.py:116
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: invenio_communities/administration/communities.py:41
 #: invenio_communities/administration/communities.py:119
 msgid "Title"
-msgstr "Naslov"
+msgstr "ชื่อเรื่อง"
 
 #: invenio_communities/administration/communities.py:43
 #: invenio_communities/administration/communities.py:121
 #: invenio_communities/communities/services/facets.py:12
 msgid "Type"
-msgstr ""
+msgstr "ประเภท"
 
 #: invenio_communities/administration/communities.py:44
 #: invenio_communities/communities/services/config.py:51
 msgid "Featured"
-msgstr ""
+msgstr "แนะนำ"
 
 #: invenio_communities/administration/communities.py:45
 #: invenio_communities/administration/communities.py:122
 msgid "Created"
-msgstr ""
+msgstr "สร้างเมื่อ"
 
 #: invenio_communities/administration/communities.py:50
 #: invenio_communities/administration/communities.py:108
 msgid "Feature"
-msgstr ""
+msgstr "แนะนำ"
 
 #: invenio_communities/administration/communities.py:56
 msgid "Delete"
-msgstr "Briši"
+msgstr "ลบ"
 
 #: invenio_communities/administration/communities.py:62
 msgid "Restore"
-msgstr ""
+msgstr "กู้คืน"
 
 #: invenio_communities/administration/communities.py:96
 msgid "Community"
-msgstr ""
+msgstr "ชุมชน"
 
 #: invenio_communities/communities/schema.py:49
 #, python-format
 msgid "Field cannot be blank or longer than %(max)s characters."
-msgstr ""
+msgstr "ฟิลด์ต้องไม่ว่างเปล่าหรือยาวเกิน %(max)s ตัวอักษร"
 
 #: invenio_communities/communities/schema.py:58
 #, python-format
 msgid "Field cannot be longer than %(max)s characters."
-msgstr ""
+msgstr "ฟิลด์ต้องไม่ยาวเกิน %(max)s ตัวอักษร"
 
 #: invenio_communities/communities/schema.py:69
 msgid "The ID must not be an Universally Unique IDentifier (UUID)."
-msgstr ""
+msgstr "รหัสต้องไม่เป็น Universally Unique IDentifier (UUID)"
 
 #: invenio_communities/communities/schema.py:238
 msgid "The identifier should contain only letters, numbers, or dashes."
-msgstr ""
+msgstr "ตัวระบุควรประกอบด้วยตัวอักษร ตัวเลข หรือขีดกลางเท่านั้น"
 
 #: invenio_communities/communities/schema.py:331
 msgid "start date"
-msgstr ""
+msgstr "วันที่เริ่มต้น"
 
 #: invenio_communities/communities/schema.py:332
 msgid "Accepted format: YYYY-MM-DD hh:mm"
-msgstr ""
+msgstr "รูปแบบที่ยอมรับ: YYYY-MM-DD hh:mm"
 
 #: invenio_communities/communities/schema.py:344
 msgid "Deleted community"
-msgstr ""
+msgstr "ชุมชนที่ถูกลบ"
 
 #: invenio_communities/communities/schema.py:345
 msgid "The community was deleted."
-msgstr ""
+msgstr "ชุมชนถูกลบแล้ว"
 
 #: invenio_communities/communities/resources/config.py:65
 #: invenio_communities/members/resources/config.py:54
 msgid "The record has been deleted."
-msgstr "Zapis je obrisan."
+msgstr "ระเบียนถูกลบแล้ว"
 
 #: invenio_communities/communities/resources/ui_schema.py:46
 msgid "Unknown"
-msgstr ""
+msgstr "ไม่ทราบ"
 
 #: invenio_communities/communities/resources/ui_schema.py:53
 msgid "System (automatic)"
-msgstr ""
+msgstr "ระบบ (อัตโนมัติ)"
 
 #: invenio_communities/communities/resources/ui_schema.py:55
 msgid "Admin"
-msgstr ""
+msgstr "ผู้ดูแลระบบ"
 
 #: invenio_communities/communities/services/components.py:35
 msgid "A community with this identifier already exists."
-msgstr ""
+msgstr "ชุมชนที่มีตัวระบุนี้มีอยู่แล้ว"
 
 #: invenio_communities/communities/services/components.py:53
 msgid "The ID should be modified through the renaming URL instead."
-msgstr ""
+msgstr "ควรแก้ไขรหัสผ่าน URL การเปลี่ยนชื่อแทน"
 
 #: invenio_communities/communities/services/components.py:61
 msgid "A new ID value is required for the renaming."
-msgstr ""
+msgstr "ต้องการค่ารหัสใหม่สำหรับการเปลี่ยนชื่อ"
 
 #: invenio_communities/communities/services/components.py:143
 msgid "The community is not public."
-msgstr ""
+msgstr "ชุมชนนี้ไม่เป็นสาธารณะ"
 
 #: invenio_communities/communities/services/components.py:172
 #, python-format
 msgid "parent.communities.ids:%(id)s"
-msgstr ""
+msgstr "parent.communities.ids:%(id)s"
 
 #: invenio_communities/communities/services/components.py:318
 msgid "Assigned parent is not allowed to be a parent."
-msgstr ""
+msgstr "ชุมชนหลักที่กำหนดไม่ได้รับอนุญาตให้เป็นชุมชนหลัก"
 
 #: invenio_communities/communities/services/components.py:322
 msgid "Community allowed to be a parent can't be a child."
-msgstr ""
+msgstr "ชุมชนที่อนุญาตให้เป็นชุมชนหลักไม่สามารถเป็นชุมชนย่อยได้"
 
 #: invenio_communities/communities/services/components.py:326
 msgid "Assigned parent community cannot also have a parent."
-msgstr ""
+msgstr "ชุมชนหลักที่กำหนดไม่สามารถมีชุมชนหลักได้"
 
 #: invenio_communities/communities/services/components.py:330
 msgid "Assigned parent community cannot be the same as child."
-msgstr ""
+msgstr "ชุมชนหลักที่กำหนดต้องไม่เป็นชุมชนเดียวกับชุมชนย่อย"
 
 #: invenio_communities/communities/services/components.py:333
 msgid "Assigned parent community does not exist."
-msgstr ""
+msgstr "ชุมชนหลักที่กำหนดไม่มีอยู่"
 
 #: invenio_communities/communities/services/facets.py:14
 msgid "Organization"
-msgstr ""
+msgstr "องค์กร"
 
 #: invenio_communities/communities/services/facets.py:15
 msgid "Event"
-msgstr ""
+msgstr "กิจกรรม"
 
 #: invenio_communities/communities/services/facets.py:16
 msgid "Topic"
-msgstr ""
+msgstr "หัวข้อ"
 
 #: invenio_communities/communities/services/facets.py:17
 msgid "Project"
-msgstr ""
+msgstr "โครงการ"
 
 #: invenio_communities/communities/services/facets.py:23
 #: invenio_communities/communities/services/facets.py:32
 #: invenio_communities/communities/services/facets.py:43
 #: invenio_communities/members/services/facets.py:32
 msgid "Visibility"
-msgstr ""
+msgstr "การมองเห็น"
 
 #: invenio_communities/communities/services/facets.py:25
 #: invenio_communities/members/services/facets.py:33
 #: invenio_communities/views/communities.py:27
 #: invenio_communities/views/communities.py:44
 msgid "Public"
-msgstr ""
+msgstr "สาธารณะ"
 
 #: invenio_communities/communities/services/facets.py:26
 #: invenio_communities/communities/services/facets.py:46
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:14
 #: invenio_communities/views/communities.py:35
 msgid "Restricted"
-msgstr ""
+msgstr "จำกัดการเข้าถึง"
 
 #: invenio_communities/communities/services/facets.py:45
 #: invenio_communities/members/services/facets.py:33
 msgid "Hidden"
-msgstr ""
+msgstr "ซ่อน"
 
 #: invenio_communities/communities/services/service.py:210
 msgid "Missing data for required field."
-msgstr ""
+msgstr "ไม่มีข้อมูลสำหรับฟิลด์ที่จำเป็น"
 
 #: invenio_communities/members/resources/config.py:40
 msgid "Invalid member specified."
-msgstr ""
+msgstr "ระบุสมาชิกไม่ถูกต้อง"
 
 #: invenio_communities/members/resources/config.py:47
 msgid ""
 "One of the submitted entity is already a member or pending a decision. The "
 "entire action was cancelled."
 msgstr ""
+"หนึ่งในเอนทิตีที่ส่งมาเป็นสมาชิกอยู่แล้วหรือรอการตัดสินใจ "
+"การดำเนินการทั้งหมดถูกยกเลิก"
 
 #: invenio_communities/members/services/components.py:29
 #: invenio_communities/members/services/components.py:38
 msgid "Community must be defined."
-msgstr ""
+msgstr "ต้องกำหนดชุมชน"
 
 #: invenio_communities/members/services/components.py:44
 #, python-format
 msgid "Member must be 'MemberMixin' or 'dict' but was %(type)s"
-msgstr ""
+msgstr "สมาชิกต้องเป็น 'MemberMixin' หรือ 'dict' แต่เป็น %(type)s"
 
 #: invenio_communities/members/services/facets.py:14
 msgid "Role"
-msgstr ""
+msgstr "บทบาท"
 
 #: invenio_communities/members/services/facets.py:20
 #: invenio_communities/members/services/facets.py:38
 msgid "Status"
-msgstr "Status"
+msgstr "สถานะ"
 
 #: invenio_communities/members/services/facets.py:22
 msgid "Submitted"
-msgstr ""
+msgstr "ส่งแล้ว"
 
 #: invenio_communities/members/services/facets.py:23
 msgid "Expired"
-msgstr ""
+msgstr "หมดอายุแล้ว"
 
 #: invenio_communities/members/services/facets.py:24
 msgid "Accepted"
-msgstr ""
+msgstr "ยอมรับแล้ว"
 
 #: invenio_communities/members/services/facets.py:25
 msgid "Declined"
-msgstr ""
+msgstr "ปฏิเสธแล้ว"
 
 #: invenio_communities/members/services/facets.py:26
 msgid "Cancelled"
-msgstr ""
+msgstr "ยกเลิกแล้ว"
 
 #: invenio_communities/members/services/facets.py:39
 #: invenio_communities/views/communities.py:65
 #: invenio_communities/views/communities.py:108
 msgid "Open"
-msgstr ""
+msgstr "เปิด"
 
 #: invenio_communities/members/services/facets.py:39
 #: invenio_communities/views/communities.py:74
 #: invenio_communities/views/communities.py:114
 msgid "Closed"
-msgstr ""
+msgstr "ปิดแล้ว"
 
 #: invenio_communities/members/services/fields.py:18
 msgid "Invalid role."
-msgstr ""
+msgstr "บทบาทไม่ถูกต้อง"
 
 #: invenio_communities/members/services/fields.py:41
 msgid "Not a valid role to serialize."
-msgstr ""
+msgstr "ไม่ใช่บทบาทที่ถูกต้องสำหรับการประมวลผล"
 
 #: invenio_communities/members/services/request.py:167
 msgid "Community invitation"
-msgstr ""
+msgstr "คำเชิญเข้าร่วมชุมชน"
 
 #: invenio_communities/members/services/request.py:283
 msgid "Membership request"
-msgstr ""
+msgstr "คำขอเป็นสมาชิก"
 
 #: invenio_communities/members/services/schemas.py:124
 msgid ""
 "Missing fields 'role' and/or 'visible' and/or 'group_notification_enabled'."
 msgstr ""
+"ขาดฟิลด์ 'role' และ/หรือ 'visible' และ/หรือ 'group_notification_enabled'"
 
 #: invenio_communities/members/services/schemas.py:160
 msgid "Untitled"
-msgstr ""
+msgstr "ไม่มีชื่อ"
 
 #: invenio_communities/members/services/service.py:196
 msgid "Must be false"
-msgstr ""
+msgstr "ต้องเป็นเท็จ"
 
 #: invenio_communities/members/services/service.py:218
 msgid "Invalid member type: email"
-msgstr ""
+msgstr "ประเภทสมาชิกไม่ถูกต้อง: email"
 
 #: invenio_communities/members/services/service.py:482
 #: invenio_communities/members/services/service.py:613
 msgid "A community must have at least one owner."
-msgstr ""
+msgstr "ชุมชนต้องมีเจ้าของอย่างน้อยหนึ่งคน"
 
 #: invenio_communities/members/services/service.py:520
 msgid "You cannot change your own role."
-msgstr ""
+msgstr "คุณไม่สามารถเปลี่ยนบทบาทของตนเองได้"
 
 #: invenio_communities/members/services/service.py:528
 msgid "You can only set public visibility on your own membership."
-msgstr ""
+msgstr "คุณสามารถตั้งค่าการมองเห็นสาธารณะได้เฉพาะสมาชิกภาพของตนเองเท่านั้น"
 
 #: invenio_communities/members/services/service.py:537
 #, python-format
 msgid "You will join as \"%(role)s\" (changed from: \"%(previous)s\")."
-msgstr ""
+msgstr "คุณจะเข้าร่วมในฐานะ \"%(role)s\" (เปลี่ยนจาก: \"%(previous)s\")"
 
 #: invenio_communities/members/services/service.py:722
 #, python-format
 msgid "Invitation to join \"%(community)s\""
-msgstr ""
+msgstr "คำเชิญเข้าร่วม \"%(community)s\""
 
 #: invenio_communities/members/services/service.py:725
 #, python-format
 msgid "You will join as \"%(role)s\"."
-msgstr ""
+msgstr "คุณจะเข้าร่วมในฐานะ \"%(role)s\""
 
 #: invenio_communities/members/services/service.py:874
 #, python-format
 msgid "Request to join \"%(community)s\""
-msgstr ""
+msgstr "คำขอเข้าร่วม \"%(community)s\""
 
 #: invenio_communities/requests/user_moderation/actions.py:69
 msgid "User was blocked"
-msgstr ""
+msgstr "ผู้ใช้ถูกบล็อก"
 
 #: invenio_communities/subcommunities/services/request.py:61
 msgid "Subcommunity request"
-msgstr ""
+msgstr "คำขอชุมชนย่อย"
 
 #: invenio_communities/subcommunities/services/request.py:148
 msgid "Subcommunity invitation"
-msgstr ""
+msgstr "คำเชิญชุมชนย่อย"
 
 #: invenio_communities/subcommunities/services/schema.py:47
 msgid "Either community_id or community should be provided."
-msgstr ""
+msgstr "ต้องระบุ community_id หรือ community อย่างใดอย่างหนึ่ง"
 
 #: invenio_communities/subcommunities/services/service.py:82
 msgid "Parent community does not accept subcommunities."
-msgstr ""
+msgstr "ชุมชนหลักไม่รับชุมชนย่อย"
 
 #: invenio_communities/subcommunities/services/service.py:111
 #, python-format
 msgid "Inclusion of subcommunity \"%(community)s\""
-msgstr ""
+msgstr "การรวมชุมชนย่อย \"%(community)s\""
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:27
 msgid ""
 "Organize, curate and collaborate on records for your institution, project, "
 "topic or event."
 msgstr ""
+"จัดระเบียบ ดูแล และร่วมมือกันในระเบียนสำหรับสถาบัน โครงการ หัวข้อ "
+"หรือกิจกรรมของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:40
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:41
 #: invenio_communities/templates/semantic-ui/invenio_communities/search.html:8
 msgid "Search communities"
-msgstr ""
+msgstr "ค้นหาชุมชน"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:46
 msgid "Search"
-msgstr "Pretraži"
+msgstr "ค้นหา"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:70
 msgid "My communities"
-msgstr ""
+msgstr "ชุมชนของฉัน"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:72
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:84
 msgid "See all"
-msgstr ""
+msgstr "ดูทั้งหมด"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:82
 msgid "New communities"
-msgstr ""
+msgstr "ชุมชนใหม่"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:8
 msgid "Tombstone"
-msgstr ""
+msgstr "บันทึกลบ"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:18
 msgid "Gone"
-msgstr ""
+msgstr "ถูกลบแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:23
 #, python-format
@@ -565,146 +573,148 @@ msgid ""
 "        The community you are trying to access was removed from %(sitename)s. The\n"
 "        metadata of the community is kept for archival purposes."
 msgstr ""
+"ชุมชนที่คุณพยายามเข้าถึงถูกลบออกจาก %(sitename)s "
+"เมตาดาตาของชุมชนยังคงเก็บไว้เพื่อการเก็บถาวร"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:32
 msgid "Reason for removal:"
-msgstr ""
+msgstr "เหตุผลที่ลบ:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:35
 msgid "Removed by:"
-msgstr ""
+msgstr "ลบโดย:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:44
 msgid "Removal note:"
-msgstr ""
+msgstr "หมายเหตุการลบ:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:48
 msgid "Date of removal:"
-msgstr ""
+msgstr "วันที่ลบ:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:27
 msgid "Membership discussion"
-msgstr ""
+msgstr "การสนทนาสมาชิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:137
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "การส่งเข้าชุมชนนี้อนุญาตเฉพาะสมาชิกชุมชนเท่านั้น"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:144
 msgid "New upload"
-msgstr ""
+msgstr "อัปโหลดใหม่"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:152
 msgid "Manage community"
-msgstr ""
+msgstr "จัดการชุมชน"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/new_subcommunity.html:8
 msgid "New subcommunity"
-msgstr ""
+msgstr "ชุมชนย่อยใหม่"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:8
 msgid " about"
-msgstr ""
+msgstr " เกี่ยวกับ"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:17
 msgid "Awards"
-msgstr ""
+msgstr "รางวัล"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:33
 msgid "Visit external website"
-msgstr ""
+msgstr "เยี่ยมชมเว็บไซต์ภายนอก"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:34
 msgid "Opens in new tab"
-msgstr ""
+msgstr "เปิดในแท็บใหม่"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/curation_policy/index.html:8
 msgid " curation policy"
-msgstr ""
+msgstr " นโยบายการดูแลคอลเลกชัน"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:9
 msgid "Community visibility"
-msgstr ""
+msgstr "การมองเห็นชุมชน"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:10
 msgid "The community is restricted to users with access."
-msgstr ""
+msgstr "ชุมชนนี้จำกัดเฉพาะผู้ใช้ที่ได้รับสิทธิ์เข้าถึง"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:9
 msgid " members"
-msgstr ""
+msgstr " สมาชิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:17
 msgid "Invitations"
-msgstr ""
+msgstr "คำเชิญ"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:18
 msgid "Membership Requests"
-msgstr ""
+msgstr "คำขอเป็นสมาชิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:9
 msgid " requests"
-msgstr ""
+msgstr " คำขอ"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:8
 msgid " settings"
-msgstr ""
+msgstr " การตั้งค่า"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:16
 msgid "Profile"
-msgstr ""
+msgstr "โปรไฟล์"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:17
 msgid "Privileges"
-msgstr ""
+msgstr "สิทธิพิเศษ"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
 msgid "Submission policy"
-msgstr ""
+msgstr "นโยบายการส่ง"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
 msgid "Pages"
-msgstr ""
+msgstr "หน้า"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:20
 msgid "Collections"
-msgstr "Kolekcije"
+msgstr "คอลเลกชัน"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:11
 msgid " subcommunities"
-msgstr ""
+msgstr " ชุมชนย่อย"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:22
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:35
 msgid "Subcommunities"
-msgstr ""
+msgstr "ชุมชนย่อย"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:30
 msgid "Browse"
-msgstr "Pregledaj"
+msgstr "เรียกดู"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/macros/communities_carousel.html:7
 msgid "Featured communities"
-msgstr ""
+msgstr "ชุมชนแนะนำ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:24
 #, python-brace-format
 msgid "💬 New comment on '{request_title}'"
-msgstr ""
+msgstr "💬 มีความคิดเห็นใหม่ใน '{request_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:30
 #, python-brace-format
 msgid "'@{user_name}' commented on '{request_title}':"
-msgstr ""
+msgstr "'@{user_name}' แสดงความคิดเห็นใน '{request_title}':"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:37
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:63
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:36
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:62
 msgid "Check out the request"
-msgstr ""
+msgstr "ตรวจสอบคำขอ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:43
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:42
@@ -733,6 +743,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:63
 msgid "This is an auto-generated message. To manage notifications, visit your"
 msgstr ""
+"นี่คือข้อความที่สร้างขึ้นโดยอัตโนมัติ หากต้องการจัดการการแจ้งเตือน โปรดไปที่"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:43
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:42
@@ -760,39 +771,39 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:42
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:63
 msgid "account settings"
-msgstr ""
+msgstr "การตั้งค่าบัญชี"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:49
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:48
 #, python-brace-format
 msgid "@{user_name} commented on '{request_title}'"
-msgstr ""
+msgstr "@{user_name} แสดงความคิดเห็นใน '{request_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:53
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:52
 #, python-brace-format
 msgid "Check out the request: {request_link}"
-msgstr ""
+msgstr "ตรวจสอบคำขอ: {request_link}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:59
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:58
 #, python-brace-format
 msgid "*@{user_name}* commented on *{request_title}*"
-msgstr ""
+msgstr "*@{user_name}* แสดงความคิดเห็นใน *{request_title}*"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:19
 #, python-brace-format
 msgid ""
 "✅ @{user_name} accepted the invitation to join community "
 "'{community_title}'."
-msgstr ""
+msgstr "✅ @{user_name} ยอมรับคำเชิญเข้าร่วมชุมชน '{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:25
 #, python-brace-format
 msgid ""
 "'@{user_name}' accepted the invitation to join your community "
 "'{community_title}'"
-msgstr ""
+msgstr "'@{user_name}' ยอมรับคำเชิญเข้าร่วมชุมชน '{community_title}' ของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:26
@@ -801,7 +812,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:27
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:50
 msgid " with the following message:"
-msgstr ""
+msgstr "พร้อมข้อความดังต่อไปนี้:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:37
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:69
@@ -816,14 +827,14 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:53
 msgid "Check out the invitation"
-msgstr ""
+msgstr "ตรวจสอบคำเชิญ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:49
 #, python-brace-format
 msgid ""
 "@{user_name} accepted the invitation to join your community "
 "'{community_title}'"
-msgstr ""
+msgstr "@{user_name} ยอมรับคำเชิญเข้าร่วมชุมชน '{community_title}' ของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:52
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:64
@@ -835,7 +846,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:63
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:61
 msgid "with the following message:"
-msgstr ""
+msgstr "พร้อมข้อความดังต่อไปนี้:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:56
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:55
@@ -844,19 +855,19 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:46
 msgid "Check out the invitation:"
-msgstr ""
+msgstr "ตรวจสอบคำเชิญ:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:61
 #, python-brace-format
 msgid ""
 "*@{user_name}* accepted the invitation to join your community "
 "*{community_title}*"
-msgstr ""
+msgstr "*@{user_name}* ยอมรับคำเชิญเข้าร่วมชุมชน *{community_title}* ของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:18
 #, python-brace-format
 msgid "❌ Community member invitation cancelled for @{user_name}"
-msgstr ""
+msgstr "❌ ยกเลิกคำเชิญเป็นสมาชิกชุมชนสำหรับ @{user_name}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:24
 #, python-brace-format
@@ -864,6 +875,7 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' was "
 "cancelled"
 msgstr ""
+"คำเชิญสำหรับ '@{user_name}' เข้าร่วมชุมชน '{community_title}' ถูกยกเลิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:48
 #, python-brace-format
@@ -871,6 +883,7 @@ msgid ""
 "The invitation for @{user_name} to join your community '{community_title}' "
 "was cancelled"
 msgstr ""
+"คำเชิญสำหรับ @{user_name} เข้าร่วมชุมชน '{community_title}' ของคุณถูกยกเลิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:60
 #, python-brace-format
@@ -878,32 +891,34 @@ msgid ""
 "The invitation for *@{user_name}* to join your community "
 "*'{community_title}'* was cancelled"
 msgstr ""
+"คำเชิญสำหรับ *@{user_name}* เข้าร่วมชุมชน *'{community_title}'* "
+"ของคุณถูกยกเลิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:18
 #, python-brace-format
 msgid "⛔️ @{user_name} declined the invitation to join '{community_title}'"
-msgstr ""
+msgstr "⛔️ @{user_name} ปฏิเสธคำเชิญเข้าร่วม '{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:24
 #, python-brace-format
 msgid ""
 "'@{user_name}' declined the invitation to join your community "
 "'{community_title}'"
-msgstr ""
+msgstr "'@{user_name}' ปฏิเสธคำเชิญเข้าร่วมชุมชน '{community_title}' ของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:48
 #, python-brace-format
 msgid ""
 "@{user_name} declined the invitation to join your community "
 "{community_title}"
-msgstr ""
+msgstr "@{user_name} ปฏิเสธคำเชิญเข้าร่วมชุมชน {community_title} ของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:60
 #, python-brace-format
 msgid ""
 "*@{user_name}* declined the invitation to join your community "
 "*{community_title}*"
-msgstr ""
+msgstr "*@{user_name}* ปฏิเสธคำเชิญเข้าร่วมชุมชน *{community_title}* ของคุณ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:22
 #, python-brace-format
@@ -911,6 +926,7 @@ msgid ""
 "⌛️ The invitation for '@{user_name}' to join community '{community_title}' "
 "expired"
 msgstr ""
+"⌛️ คำเชิญสำหรับ '@{user_name}' เข้าร่วมชุมชน '{community_title}' หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:28
 #, python-brace-format
@@ -918,6 +934,7 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' "
 "expired"
 msgstr ""
+"คำเชิญสำหรับ '@{user_name}' เข้าร่วมชุมชน '{community_title}' หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:43
 #, python-brace-format
@@ -925,6 +942,7 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' "
 "expired."
 msgstr ""
+"คำเชิญสำหรับ '@{user_name}' เข้าร่วมชุมชน '{community_title}' หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:50
 #, python-brace-format
@@ -932,36 +950,37 @@ msgid ""
 "The invitation for *@{user_name}* to join community *{community_title}* "
 "expired."
 msgstr ""
+"คำเชิญสำหรับ *@{user_name}* เข้าร่วมชุมชน *{community_title}* หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:18
 #, python-brace-format
 msgid "📬 New invitation to join the community '{community_title}' as '{role}'"
-msgstr ""
+msgstr "📬 คำเชิญใหม่เข้าร่วมชุมชน '{community_title}' ในฐานะ '{role}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:24
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:48
 #, python-brace-format
 msgid ""
 "You have been invited to join community '{community_title}' as '{role}'"
-msgstr ""
+msgstr "คุณได้รับคำเชิญให้เข้าร่วมชุมชน '{community_title}' ในฐานะ '{role}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:60
 #, python-brace-format
 msgid ""
 "You have been invited to join community *{community_title}* as *{role}*"
-msgstr ""
+msgstr "คุณได้รับคำเชิญให้เข้าร่วมชุมชน *{community_title}* ในฐานะ *{role}*"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:16
 #, python-brace-format
 msgid "Request to join the community '{community_title}' was accepted"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน '{community_title}' ได้รับการยอมรับ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:24
 #, python-brace-format
 msgid ""
 "The request to join the community '{community_title}' as '{role}' was "
 "accepted"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน '{community_title}' ในฐานะ '{role}' ได้รับการยอมรับ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:28
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:43
@@ -979,12 +998,12 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:52
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:63
 msgid "Check out the membership request"
-msgstr ""
+msgstr "ตรวจสอบคำขอเป็นสมาชิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:41
 #, python-brace-format
 msgid "The request to join the community '{community_title}' was accepted"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน '{community_title}' ได้รับการยอมรับ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:45
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:45
@@ -995,11 +1014,13 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "account settings"
 msgstr ""
+"นี่คือข้อความที่สร้างขึ้นโดยอัตโนมัติ หากต้องการจัดการการแจ้งเตือน "
+"โปรดไปที่การตั้งค่าบัญชี"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:51
 #, python-brace-format
 msgid "The request to join the community *{community_title}* was accepted"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน *{community_title}* ได้รับการยอมรับ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:56
@@ -1009,6 +1030,8 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "[account settings]({account_settings_link})"
 msgstr ""
+"นี่คือข้อความที่สร้างขึ้นโดยอัตโนมัติ หากต้องการจัดการการแจ้งเตือน "
+"โปรดไปที่[การตั้งค่าบัญชี]({account_settings_link})"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:18
 #, python-brace-format
@@ -1016,6 +1039,7 @@ msgid ""
 "The request from '@{requester_name}' to join the community "
 "'{community_title}' was cancelled"
 msgstr ""
+"คำขอจาก '@{requester_name}' เข้าร่วมชุมชน '{community_title}' ถูกยกเลิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:41
@@ -1024,6 +1048,8 @@ msgid ""
 "The membership request from '@{requester_name}' to join the community "
 "'{community_title}' was cancelled"
 msgstr ""
+"คำขอเป็นสมาชิกจาก '@{requester_name}' เข้าร่วมชุมชน '{community_title}' "
+"ถูกยกเลิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:51
 #, python-brace-format
@@ -1031,6 +1057,8 @@ msgid ""
 "The membership request from *@{requester_name}* to join the community "
 "*{community_title}* was cancelled"
 msgstr ""
+"คำขอเป็นสมาชิกจาก *@{requester_name}* เข้าร่วมชุมชน *{community_title}* "
+"ถูกยกเลิก"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:65
@@ -1039,25 +1067,27 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your [account\n"
 "settings]({account_settings_link})"
 msgstr ""
+"นี่คือข้อความที่สร้างขึ้นโดยอัตโนมัติ หากต้องการจัดการการแจ้งเตือน "
+"โปรดไปที่[การตั้งค่าบัญชี]({account_settings_link})"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:16
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:42
 #, python-brace-format
 msgid "The request to join the community '{community_title}' was declined"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน '{community_title}' ถูกปฏิเสธ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:52
 #, python-brace-format
 msgid "The request to join the community *{community_title}* was declined"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน *{community_title}* ถูกปฏิเสธ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:22
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:33
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:54
 #, python-brace-format
 msgid "Your request to join the community '{community_title}' expired"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน '{community_title}' ของคุณหมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:24
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:35
@@ -1066,25 +1096,25 @@ msgstr ""
 msgid ""
 "The request from '@{user_name}' to join the community '{community_title}' "
 "expired"
-msgstr ""
+msgstr "คำขอจาก '@{user_name}' เข้าร่วมชุมชน '{community_title}' หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:68
 #, python-brace-format
 msgid "Your request to join the community *{community_title}* expired"
-msgstr ""
+msgstr "คำขอเข้าร่วมชุมชน *{community_title}* ของคุณหมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:70
 #, python-brace-format
 msgid ""
 "The request from *@{user_name}* to join the community *{community_title}* "
 "expired"
-msgstr ""
+msgstr "คำขอจาก *@{user_name}* เข้าร่วมชุมชน *{community_title}* หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:19
 #, python-brace-format
 msgid ""
 "New request from '@{user_name}' to join the community '{community_title}'"
-msgstr ""
+msgstr "คำขอใหม่จาก '@{user_name}' เข้าร่วมชุมชน '{community_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:26
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:49
@@ -1092,12 +1122,14 @@ msgstr ""
 msgid ""
 "'@{user_name}' wants to join the community '{community_title}' as '{role}'"
 msgstr ""
+"'@{user_name}' ต้องการเข้าร่วมชุมชน '{community_title}' ในฐานะ '{role}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:60
 #, python-brace-format
 msgid ""
 "*@{user_name}* wants to join the community *{community_title}* as *{role}*"
 msgstr ""
+"*@{user_name}* ต้องการเข้าร่วมชุมชน *{community_title}* ในฐานะ *{role}*"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:26
 #, python-brace-format
@@ -1105,6 +1137,8 @@ msgid ""
 "✅ Invitation accepted for {community_title} to join the "
 "{parent_community_title} community"
 msgstr ""
+"✅ ยอมรับคำเชิญสำหรับ {community_title} เข้าร่วมชุมชน "
+"{parent_community_title}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
@@ -1113,6 +1147,8 @@ msgid ""
 "@{username} accepted the invitation for \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} ยอมรับคำเชิญสำหรับ \"{community_title}\" "
+"เข้าร่วมเป็นชุมชนย่อยของ \"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:36
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:60
@@ -1127,7 +1163,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:36
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:60
 msgid "View the request"
-msgstr ""
+msgstr "ดูคำขอ"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:50
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:52
@@ -1136,7 +1172,7 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:48
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:50
 msgid "View the request at:"
-msgstr ""
+msgstr "ดูคำขอได้ที่:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:53
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:56
@@ -1148,6 +1184,8 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "account settings at: "
 msgstr ""
+"นี่คือข้อความที่สร้างขึ้นโดยอัตโนมัติ หากต้องการจัดการการแจ้งเตือน "
+"โปรดไปที่การตั้งค่าบัญชี: "
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:58
 #, python-brace-format
@@ -1155,11 +1193,13 @@ msgid ""
 "@{username} accepted the invitation the request for \"{community_title}\" to"
 " join as a subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} ยอมรับคำเชิญและคำขอสำหรับ \"{community_title}\" "
+"เข้าร่วมเป็นชุมชนย่อยของ \"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:25
 #, python-brace-format
 msgid "📬 Invitation to join the {parent_community_title} community"
-msgstr ""
+msgstr "📬 คำเชิญเข้าร่วมชุมชน {parent_community_title}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:50
@@ -1168,13 +1208,15 @@ msgid ""
 "We would like to invite your community \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\""
 msgstr ""
+"เราขอเชิญชุมชน \"{community_title}\" ของคุณเข้าร่วมเป็นชุมชนย่อยของ "
+"\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:38
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:65
 #, python-brace-format
 msgid "This invitation will expire on {expires_at}."
-msgstr ""
+msgstr "คำเชิญนี้จะหมดอายุในวันที่ {expires_at}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:61
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:56
@@ -1183,6 +1225,8 @@ msgid ""
 "The community *{community_title}* has requested to join as a subcommunity of"
 " *{parent_community_title}*"
 msgstr ""
+"ชุมชน *{community_title}* ขอเข้าร่วมเป็นชุมชนย่อยของ "
+"*{parent_community_title}*"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:26
 #, python-brace-format
@@ -1190,6 +1234,8 @@ msgid ""
 "⛔️ Subcommunity invitation declined for {community_title} to join the "
 "{parent_community_title} community"
 msgstr ""
+"⛔️ ปฏิเสธคำเชิญชุมชนย่อยสำหรับ {community_title} เข้าร่วมชุมชน "
+"{parent_community_title}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:48
@@ -1199,6 +1245,8 @@ msgid ""
 "@{username} declined the invitation for \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} ปฏิเสธคำเชิญสำหรับ \"{community_title}\" "
+"เข้าร่วมเป็นชุมชนย่อยของ \"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:23
 #, python-brace-format
@@ -1206,6 +1254,8 @@ msgid ""
 "⌛️ The invitation for {community_title} to join the "
 "'{parent_community_title}' community expired"
 msgstr ""
+"⌛️ คำเชิญสำหรับ {community_title} เข้าร่วมชุมชน '{parent_community_title}' "
+"หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:29
 #, python-brace-format
@@ -1213,6 +1263,8 @@ msgid ""
 "The invitation for '{community_title}' to join the "
 "'{parent_community_title}' community has expired."
 msgstr ""
+"คำเชิญสำหรับ '{community_title}' เข้าร่วมชุมชน '{parent_community_title}' "
+"หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:44
 #, python-brace-format
@@ -1220,6 +1272,8 @@ msgid ""
 "The invitation for {community_title} to join the '{parent_community_title}' "
 "community has expired."
 msgstr ""
+"คำเชิญสำหรับ {community_title} เข้าร่วมชุมชน '{parent_community_title}' "
+"หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:51
 #, python-brace-format
@@ -1227,6 +1281,8 @@ msgid ""
 "The invitation for *{community_title}* to join community "
 "*{parent_community_title}* has expired."
 msgstr ""
+"คำเชิญสำหรับ *{community_title}* เข้าร่วมชุมชน *{parent_community_title}* "
+"หมดอายุแล้ว"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:26
 #, python-brace-format
@@ -1234,6 +1290,8 @@ msgid ""
 "✅ Subcommunity request accepted for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"✅ ยอมรับคำขอชุมชนย่อยสำหรับ \"{community_title}\" เข้าร่วม "
+"\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:48
@@ -1244,6 +1302,8 @@ msgid ""
 "\"{community_title}\" to join as a subcommunity of "
 "\"{parent_community_title}\"."
 msgstr ""
+"ผู้จัดการชุมชน @{username} ยอมรับคำขอสำหรับ \"{community_title}\" "
+"เข้าร่วมเป็นชุมชนย่อยของ \"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:24
 #, python-brace-format
@@ -1251,6 +1311,8 @@ msgid ""
 "📬 Subcommunity request for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"📬 คำขอชุมชนย่อยสำหรับ \"{community_title}\" เข้าร่วม "
+"\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:30
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:46
@@ -1259,6 +1321,8 @@ msgid ""
 "The community \"{community_title}\" has requested to join as a subcommunity "
 "of \"{parent_community_title}\""
 msgstr ""
+"ชุมชน \"{community_title}\" ขอเข้าร่วมเป็นชุมชนย่อยของ "
+"\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:26
 #, python-brace-format
@@ -1266,6 +1330,8 @@ msgid ""
 "⛔️ Subcommunity request declined for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"⛔️ ปฏิเสธคำขอชุมชนย่อยสำหรับ \"{community_title}\" เข้าร่วม "
+"\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:48
@@ -1276,75 +1342,88 @@ msgid ""
 "\"{community_title}\" to join as a subcommunity of "
 "\"{parent_community_title}\"."
 msgstr ""
+"ผู้จัดการชุมชน @{username} ปฏิเสธคำขอสำหรับ \"{community_title}\" "
+"เข้าร่วมเป็นชุมชนย่อยของ \"{parent_community_title}\""
 
 #: invenio_communities/views/communities.py:31
 msgid "Your community is publicly accessible and shows up in search results."
-msgstr ""
+msgstr "ชุมชนของคุณเข้าถึงได้สาธารณะและปรากฏในผลการค้นหา"
 
 #: invenio_communities/views/communities.py:38
 msgid "Your community is restricted to users with access."
-msgstr ""
+msgstr "ชุมชนของคุณจำกัดเฉพาะผู้ใช้ที่มีสิทธิ์เข้าถึง"
 
 #: invenio_communities/views/communities.py:48
 msgid ""
 "Members who have set their visibility to public are visible to anyone. "
 "Members with hidden visibility are only visible to other members."
 msgstr ""
+"สมาชิกที่ตั้งค่าการมองเห็นเป็นสาธารณะจะมองเห็นได้โดยทุกคน "
+"สมาชิกที่ซ่อนการมองเห็นจะมองเห็นได้เฉพาะสมาชิกคนอื่น"
 
 #: invenio_communities/views/communities.py:53
 msgid "Members-only"
-msgstr ""
+msgstr "เฉพาะสมาชิก"
 
 #: invenio_communities/views/communities.py:57
 msgid ""
 "Members in your community are only visible to other members of the "
 "community."
-msgstr ""
+msgstr "สมาชิกในชุมชนของคุณมองเห็นได้เฉพาะสมาชิกคนอื่นของชุมชน"
 
 #: invenio_communities/views/communities.py:69
 msgid ""
 "All authenticated users can submit records to the community. If the "
 "community is restricted, then only members can submit records to it."
 msgstr ""
+"ผู้ใช้ที่เข้าสู่ระบบทุกคนสามารถส่งระเบียนเข้าชุมชนได้ หากชุมชนถูกจำกัด "
+"เฉพาะสมาชิกเท่านั้นที่สามารถส่งระเบียนได้"
 
 #: invenio_communities/views/communities.py:77
 msgid "Only members can submit records to the community."
-msgstr ""
+msgstr "เฉพาะสมาชิกเท่านั้นที่สามารถส่งระเบียนเข้าชุมชนได้"
 
 #: invenio_communities/views/communities.py:83
 msgid "Review all submissions"
-msgstr ""
+msgstr "พิจารณาการส่งทั้งหมด"
 
 #: invenio_communities/views/communities.py:86
 msgid "All submissions to the community must be reviewed."
-msgstr ""
+msgstr "การส่งทั้งหมดเข้าชุมชนต้องผ่านการพิจารณา"
 
 #: invenio_communities/views/communities.py:89
 msgid "Allow curators, managers and owners to publish without review"
 msgstr ""
+"อนุญาตให้ผู้ดูแลคอลเลกชัน ผู้จัดการ และเจ้าของเผยแพร่โดยไม่ต้องพิจารณา"
 
 #: invenio_communities/views/communities.py:93
 msgid ""
 "Submissions to the community by default requires review, but curators, "
 "managers and owners can publish directly without review."
 msgstr ""
+"การส่งเข้าชุมชนโดยค่าเริ่มต้นต้องผ่านการพิจารณา แต่ผู้ดูแลคอลเลกชัน "
+"ผู้จัดการ และเจ้าของสามารถเผยแพร่โดยตรงโดยไม่ต้องพิจารณา"
 
 #: invenio_communities/views/communities.py:97
 msgid "Allow all members to publish without review"
-msgstr ""
+msgstr "อนุญาตให้สมาชิกทุกคนเผยแพร่โดยไม่ต้องพิจารณา"
 
 #: invenio_communities/views/communities.py:101
 msgid ""
 "Submissions to the community by default requires review, but all community "
 "members can publish directly without review."
 msgstr ""
+"การส่งเข้าชุมชนโดยค่าเริ่มต้นต้องผ่านการพิจารณา "
+"แต่สมาชิกชุมชนทุกคนสามารถเผยแพร่โดยตรงโดยไม่ต้องพิจารณา"
 
 #: invenio_communities/views/communities.py:111
 msgid "Users can request to join your community."
-msgstr ""
+msgstr "ผู้ใช้สามารถส่งคำขอเข้าร่วมชุมชนของคุณได้"
 
 #: invenio_communities/views/communities.py:118
 msgid ""
 "Users cannot request to join your community. Only invited users can become "
 "members of your community."
 msgstr ""
+"ผู้ใช้ไม่สามารถส่งคำขอเข้าร่วมชุมชนของคุณได้ "
+"เฉพาะผู้ใช้ที่ได้รับคำเชิญเท่านั้นที่สามารถเป็นสมาชิกได้"

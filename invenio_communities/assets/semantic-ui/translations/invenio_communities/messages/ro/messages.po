@@ -1,17 +1,16 @@
-# 
 # Translators:
 # Corina Ionascu <icorina@nipne.ro>, 2024
-# Nicolaie Constantinescu, 2025
 # Tibor Simko <tibor.simko@cern.ch>, 2025
+# Nicolaie Constantinescu, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2025\n"
+"Last-Translator: Nicolaie Constantinescu, 2026\n"
 "Language-Team: Romanian (https://app.transifex.com/inveniosoftware/teams/23537/ro/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
@@ -174,9 +173,6 @@ msgstr ""
 msgid "Identifier"
 msgstr "Identificator"
 
-msgid "Setup your new community"
-msgstr "Configurează noua ta comunitate"
-
 msgid "Community name"
 msgstr "Numele comunității"
 
@@ -299,11 +295,6 @@ msgstr "Caută după grupuri"
 msgid "Already a member"
 msgstr ""
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] ""
@@ -337,12 +328,6 @@ msgstr ""
 
 msgid "users"
 msgstr ""
-
-msgid "Already a member or invitation pending"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr "Caută după email, numele complet sau nume de utilizator"
 
 msgid "Groups"
 msgstr "Grupuri"
@@ -600,4 +585,56 @@ msgid "Cancelled"
 msgstr "Anulat"
 
 msgid "Add organization: "
+msgstr ""
+
+msgid "View comments"
+msgstr ""
+
+msgid "Set up your new community"
+msgstr ""
+
+msgid "Enabled"
+msgstr "Activat"
+
+msgid "Disabled"
+msgstr "Dezactivat"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr ""
+
+msgid "cancel invitation"
+msgstr ""
+
+msgid "Cancel invitation"
+msgstr ""
+
+msgid "No matching invitations found."
+msgstr ""
+
+msgid "Email notifications"
+msgstr ""
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+
+msgid "Already a member or pending a decision"
+msgstr ""
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+
+msgid "Notifications"
+msgstr "Notificări"
+
+msgid "Search in membership requests..."
+msgstr ""
+
+msgid "No matching membership requests found."
 msgstr ""

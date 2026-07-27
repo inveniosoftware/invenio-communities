@@ -1,587 +1,627 @@
-# 
 # Translators:
-# Minjae Kwon, 2024
+# Minjae Kwon, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Minjae Kwon, 2024\n"
+"Last-Translator: Minjae Kwon, 2026\n"
 "Language-Team: Korean (https://app.transifex.com/inveniosoftware/teams/23537/ko/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "mime-version: 1.0\n"
 
 msgid "Delete community"
-msgstr ""
+msgstr "커뮤니티 제거"
 
 msgid "Restore community"
-msgstr ""
+msgstr "커뮤니티 복원"
 
 msgid "Unavailability statement"
-msgstr ""
+msgstr "이용 불가 안내문"
 
 msgid "Success"
-msgstr ""
+msgstr "성공"
 
 msgid "Community {{id}} was restored."
-msgstr ""
+msgstr "커뮤니티 {{id}}이(가) 복원되었습니다."
 
 msgid "Unable to restore."
-msgstr ""
+msgstr "복원할 수 없습니다."
 
 msgid "Are you sure you want to restore community #{{id}}"
-msgstr ""
+msgstr "커뮤니티 #{{id}}을(를) 복원하시겠습니까"
 
 msgid "Close"
-msgstr ""
+msgstr "닫기"
 
 msgid "Community {{id}} was deleted."
-msgstr ""
+msgstr "커뮤니티 {{id}}이(가) 제거되었습니다."
 
 msgid "Unable to delete"
-msgstr ""
+msgstr "제거할 수 없습니다"
 
 msgid "Public"
-msgstr ""
+msgstr "공개"
 
 msgid "Hidden"
-msgstr ""
+msgstr "숨김"
 
 msgid ""
 "The tombstone is set to hidden but your record is public. Best practice is "
 "to provide a public tombstone when deactivating public records."
 msgstr ""
+"삭제 안내가 숨김으로 설정되어 있지만 레코드는 공개 상태입니다. 공개 레코드를 비활성화할 때는 공개 삭제 안내를 제공하는 것이 좋습니다."
 
 msgid ""
 "RISK INFORMATION LEAKAGE: The tombstone is set to public but your record is "
 "restricted. Please make sure no restricted information is shared in the "
 "tombstone below."
 msgstr ""
+"정보 유출 위험: 삭제 안내가 공개로 설정되어 있지만 레코드는 제한 상태입니다. 아래 삭제 안내에 제한된 정보가 공유되지 않도록 "
+"하십시오."
 
 msgid "Bibliographic citation"
-msgstr ""
+msgstr "서지 인용"
 
 msgid ""
 "Input citation text. Blank field will be filled with APA citation by "
 "default."
-msgstr ""
+msgstr "인용 텍스트를 입력하십시오. 비워 두면 기본적으로 APA 인용으로 채워집니다."
 
 msgid "Note"
-msgstr ""
+msgstr "참고"
 
 msgid "Delete record"
-msgstr ""
+msgstr "레코드 제거"
 
 msgid "This set is not editable as it was created by the system."
-msgstr ""
+msgstr "이 세트는 시스템이 생성했으므로 수정할 수 없습니다."
 
 msgid "This set is not deletable as it was created by the system."
-msgstr ""
+msgstr "이 세트는 시스템이 생성했으므로 제거할 수 없습니다."
 
 msgid "Planned features"
-msgstr ""
+msgstr "예정된 기능"
 
 msgid "Start date"
-msgstr ""
+msgstr "시작일"
 
 msgid "Active"
-msgstr ""
+msgstr "활성"
 
 msgid "Actions"
-msgstr ""
+msgstr "작업"
 
 msgid "Published"
-msgstr ""
+msgstr "게시됨"
 
 msgid "Deleted"
 msgstr "삭제됨"
 
 msgid "Scheduled for purge"
-msgstr ""
+msgstr "영구 삭제 예정"
 
 msgid "Browse"
 msgstr "둘러보기"
 
 msgid "New upload"
-msgstr ""
+msgstr "새 업로드"
 
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "이 커뮤니티에는 커뮤니티 구성원만 제출할 수 있습니다."
 
 msgid "Previous slide"
-msgstr ""
+msgstr "이전 슬라이드"
 
 msgid "Next slide"
-msgstr ""
+msgstr "다음 슬라이드"
 
 msgid "opens in new tab"
-msgstr ""
+msgstr "새 탭에서 열림"
 
 msgid "Branding"
-msgstr ""
+msgstr "브랜딩"
 
 msgid "Submission information"
-msgstr ""
+msgstr "제출 정보"
 
 msgid ""
 "Submission to this community does not require review, and will be published "
 "immediately."
-msgstr ""
+msgstr "이 커뮤니티 제출은 검토가 필요하지 않으며 즉시 게시됩니다."
 
 msgid "Verified community"
-msgstr ""
+msgstr "인증된 커뮤니티"
 
 msgid "Part of"
-msgstr ""
+msgstr "소속:"
 
 msgid "Edit"
-msgstr ""
+msgstr "수정"
 
 msgid "An error occurred."
-msgstr ""
+msgstr "오류가 발생했습니다."
 
 msgid "You are not a member of any community."
-msgstr ""
+msgstr "어떤 커뮤니티에도 소속되어 있지 않습니다."
 
 msgid "There are no new communities."
-msgstr ""
+msgstr "새 커뮤니티가 없습니다."
 
 msgid "Request Membership"
-msgstr ""
+msgstr "가입 요청"
 
 msgid "Message to managers (optional)"
-msgstr ""
+msgstr "관리자에게 보낼 메시지 (선택)"
 
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 msgid "Restricted"
-msgstr ""
+msgstr "제한"
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
-msgstr ""
+msgstr "커뮤니티의 고유 식별자입니다. 다음 URL로 커뮤니티에 접근할 수 있습니다:"
 
 msgid "Identifier"
-msgstr ""
-
-msgid "Setup your new community"
-msgstr ""
+msgstr "식별자"
 
 msgid "Community name"
-msgstr ""
+msgstr "커뮤니티 이름"
 
 msgid "Community visibility"
-msgstr ""
+msgstr "커뮤니티 공개 범위"
 
 msgid "Create community"
-msgstr ""
+msgstr "커뮤니티 만들기"
 
 msgid "No communities found!"
-msgstr ""
+msgstr "커뮤니티가 없습니다."
 
 msgid "Reset search"
-msgstr ""
+msgstr "검색 초기화"
 
 msgid "Search"
 msgstr "검색"
 
 msgid "Filter results"
-msgstr ""
+msgstr "결과 필터링"
 
 msgid "Search communities..."
-msgstr ""
+msgstr "커뮤니티 검색..."
 
 msgid "Sort by"
-msgstr ""
+msgstr "정렬 기준"
 
 msgid "Select all members"
-msgstr ""
+msgstr "모든 구성원 선택"
 
 msgid "{{count}} members selected"
 msgid_plural "{{count}} members selected"
-msgstr[0] ""
+msgstr[0] "구성원 {{count}}명 선택됨"
 
 msgid "bulk actions"
-msgstr ""
+msgstr "일괄 작업"
 
 msgid "Select member"
-msgstr ""
+msgstr "구성원 선택"
 
 msgid "remove {{name}}"
-msgstr ""
+msgstr "{{name}} 제거"
 
 msgid "Clear all filters"
-msgstr ""
+msgstr "모든 필터 지우기"
 
 msgid "Search in members ..."
-msgstr ""
+msgstr "구성원 검색 ..."
 
 msgid "Leave community"
-msgstr ""
+msgstr "커뮤니티 나가기"
 
 msgid "You are about to leave this community."
-msgstr ""
+msgstr "이 커뮤니티를 나가려고 합니다."
 
 msgid "Leave"
-msgstr ""
+msgstr "나가기"
 
 msgid "Remove user"
-msgstr ""
+msgstr "사용자 제거"
 
 msgid "You are about to remove this user from this community."
-msgstr ""
+msgstr "이 커뮤니티에서 이 사용자를 제거하려고 합니다."
 
 msgid "Remove"
-msgstr ""
+msgstr "제거"
 
 msgid "This action cannot be undone."
-msgstr ""
+msgstr "이 작업은 되돌릴 수 없습니다."
 
 msgid ""
 "Note: upon addition, selected groups will have access to the record without "
 "any kind of notification."
-msgstr ""
+msgstr "참고: 추가하면 선택한 그룹이 별도의 알림 없이 레코드에 접근할 수 있게 됩니다."
 
 msgid "Role"
-msgstr ""
+msgstr "역할"
 
 msgid "Visibility"
-msgstr ""
+msgstr "공개 범위"
 
 msgid "Submitted"
-msgstr ""
+msgstr "제출됨"
 
 msgid "Accepted"
-msgstr ""
+msgstr "수락됨"
 
 msgid "Declined"
-msgstr ""
+msgstr "거절됨"
 
 msgid "Expired"
-msgstr ""
+msgstr "만료됨"
 
 msgid "Status"
 msgstr "상태"
 
 msgid "Expires"
-msgstr ""
+msgstr "만료"
 
 msgid "No matching members found."
-msgstr ""
+msgstr "일치하는 구성원이 없습니다."
 
 msgid "Current search"
-msgstr ""
+msgstr "현재 검색"
 
 msgid "Clear query"
-msgstr ""
+msgstr "쿼리 지우기"
 
 msgid "No selected groups"
-msgstr ""
+msgstr "선택된 그룹이 없습니다"
 
 msgid "Group"
-msgstr ""
+msgstr "그룹"
 
 msgid "Search for groups"
-msgstr ""
+msgstr "그룹 검색"
 
 msgid "Already a member"
-msgstr ""
-
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
+msgstr "이미 구성원임"
 
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
-msgstr[0] ""
+msgstr[0] "그룹 {{count}}개를 추가하려고 합니다."
 
 msgid "Add"
-msgstr ""
+msgstr "추가"
 
 msgid "People"
-msgstr ""
+msgstr "사용자"
 
 msgid "Member"
-msgstr ""
+msgstr "구성원"
 
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
-msgstr ""
+msgstr "초대할 사용자 검색 (공개 프로필이 있는 사용자만 초대할 수 있습니다)"
 
 msgid "Invite"
-msgstr ""
+msgstr "초대"
 
 msgid "No selected members"
-msgstr ""
+msgstr "선택된 구성원이 없습니다"
 
 msgid "Invitation message"
-msgstr ""
+msgstr "초대 메시지"
 
 msgid "You are about to invite"
-msgstr ""
+msgstr "다음을 초대하려고 합니다:"
 
 msgid "users"
-msgstr ""
-
-msgid "Already a member or invitation pending"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr ""
+msgstr "사용자"
 
 msgid "Groups"
-msgstr ""
+msgstr "그룹"
 
 msgid "Invite groups"
-msgstr ""
+msgstr "그룹 초대"
 
 msgid "Invite members"
-msgstr ""
+msgstr "구성원 초대"
 
 msgid "Invite..."
-msgstr ""
+msgstr "초대..."
 
 msgid "Add groups"
-msgstr ""
+msgstr "그룹 추가"
 
 msgid "Search..."
-msgstr ""
+msgstr "검색..."
 
 msgid "results per page"
-msgstr ""
+msgstr "페이지당 결과 수"
 
 msgid "Name"
 msgstr "이름"
 
 msgid "Search in invitations..."
-msgstr ""
+msgstr "초대에서 검색..."
 
 msgid "View"
 msgstr "보복"
 
 msgid "This community has no public members."
-msgstr ""
+msgstr "이 커뮤니티에는 공개 구성원이 없습니다."
 
 msgid "result(s) found"
-msgstr ""
+msgstr "개 결과를 찾았습니다"
 
 msgid "Members"
-msgstr ""
+msgstr "구성원"
 
 msgid "Member since"
-msgstr ""
+msgstr "가입일"
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "귀하의 커뮤니티 소속이 모든 사람에게 표시됩니다."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
-msgstr ""
+msgstr "귀하의 커뮤니티 소속이 커뮤니티의 다른 구성원에게만 표시됩니다."
 
 msgid "Change roles"
-msgstr ""
+msgstr "역할 변경"
 
 msgid "Change visibilities"
-msgstr ""
+msgstr "공개 범위 변경"
 
 msgid "Remove from community"
-msgstr ""
+msgstr "커뮤니티에서 제거"
 
 msgid "You have selected {{selectedCount}} users"
-msgstr ""
+msgstr "사용자 {{selectedCount}}명을 선택했습니다"
 
 msgid "You"
-msgstr ""
+msgstr "나"
 
 msgid "Leave..."
-msgstr ""
+msgstr "나가기..."
 
 msgid "Remove..."
-msgstr ""
+msgstr "제거..."
 
 msgid "Search members..."
-msgstr ""
+msgstr "구성원 검색..."
 
 msgid "and"
-msgstr ""
+msgstr "및"
 
 msgid "{{count}} more organizations"
 msgid_plural "{{count}} more organizations"
-msgstr[0] ""
+msgstr[0] "기관 {{count}}개 더"
 
 msgid "Saved"
-msgstr ""
+msgstr "저장됨"
 
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 msgid "Curation policy"
-msgstr ""
+msgstr "큐레이션 정책"
 
 msgid "About page"
-msgstr ""
+msgstr "소개 페이지"
 
 msgid "Controls if the community is visible to anyone or to members only."
-msgstr ""
+msgstr "커뮤니티를 모든 사람에게 표시할지 구성원에게만 표시할지 제어합니다."
 
 msgid "Members visibility"
-msgstr ""
+msgstr "구성원 공개 범위"
 
 msgid "Controls if the members tab is visible to anyone or to members only."
-msgstr ""
+msgstr "구성원 탭을 모든 사람에게 표시할지 구성원에게만 표시할지 제어합니다."
 
 msgid "Membership Policy"
-msgstr ""
+msgstr "가입 정책"
 
 msgid "Controls if anyone can request to join your community."
-msgstr ""
+msgstr "누구나 커뮤니티 가입을 요청할 수 있는지 제어합니다."
 
 msgid "Maximum number of characters is 2000"
-msgstr ""
+msgstr "최대 문자 수는 2000자입니다"
 
 msgid "Maximum number of characters is 250"
-msgstr ""
+msgstr "최대 문자 수는 250자입니다"
 
 msgid "Must be a valid URL"
-msgstr ""
+msgstr "올바른 URL이어야 합니다"
 
 msgid "Basic information"
-msgstr ""
+msgstr "기본 정보"
 
 msgid "Short description"
-msgstr ""
+msgstr "간단한 설명"
 
 msgid "Type"
-msgstr ""
+msgstr "유형"
 
 msgid "Website"
-msgstr ""
+msgstr "웹사이트"
 
 msgid "Search for an organization by name"
-msgstr ""
+msgstr "이름으로 기관 검색"
 
 msgid "Organizations"
-msgstr ""
+msgstr "기관"
 
 msgid "Search for organizations..."
-msgstr ""
+msgstr "기관 검색..."
 
 msgid "Funding information"
-msgstr ""
+msgstr "지원 정보"
 
 msgid "Awards/Grants"
-msgstr ""
+msgstr "과제"
 
 msgid "Danger zone"
-msgstr ""
+msgstr "위험 구역"
 
 msgid "Change identifier"
-msgstr ""
+msgstr "식별자 변경"
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
-msgstr ""
+msgstr "커뮤니티의 고유 식별자를 변경하면 의도하지 않은 부작용이 발생할 수 있습니다."
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
+msgstr "한 번 제거하면 영구적으로 사라집니다. 신중하게 결정하십시오."
 
 msgid "Delete"
-msgstr ""
+msgstr "제거"
 
 msgid "Permanently delete community"
-msgstr ""
+msgstr "커뮤니티 영구 제거"
 
 msgid "Are you absolutely sure you want to delete the community?"
-msgstr ""
+msgstr "정말로 커뮤니티를 제거하시겠습니까?"
 
 msgid "This action CANNOT be undone!"
-msgstr ""
+msgstr "이 작업은 되돌릴 수 없습니다."
 
 msgid "members will be removed from the community."
-msgstr ""
+msgstr "명의 구성원이 커뮤니티에서 제거됩니다."
 
 msgid "records will be removed from the community."
-msgstr ""
+msgstr "개의 레코드가 커뮤니티에서 제거됩니다."
 
 msgid "CANNOT"
-msgstr ""
+msgstr "절대"
 
 msgid "reuse the community identifier \"{{slug}}\"."
-msgstr ""
+msgstr "커뮤니티 식별자 \"{{slug}}\"을(를) 다시 사용할 수 없습니다."
 
 msgid "Please type"
-msgstr ""
+msgstr "다음을 입력하십시오:"
 
 msgid "to confirm."
-msgstr ""
+msgstr "(확인용)."
 
 msgid "Permanently delete"
-msgstr ""
+msgstr "영구 제거"
 
 msgid "Profile picture"
-msgstr ""
+msgstr "프로필 사진"
 
 msgid "Upload new picture"
-msgstr ""
+msgstr "새 사진 업로드"
 
 msgid "File must be smaller than {{fileSize}}"
-msgstr ""
+msgstr "파일은 {{fileSize}}보다 작아야 합니다"
 
 msgid "Delete picture"
-msgstr ""
+msgstr "사진 제거"
 
 msgid "Are you sure you want to delete this picture?"
-msgstr ""
+msgstr "이 사진을 제거하시겠습니까?"
 
 msgid "It may take a few moments for changes to be visible everywhere"
-msgstr ""
+msgstr "변경 사항이 모든 곳에 반영되기까지 다소 시간이 걸릴 수 있습니다"
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "커뮤니티의 새 고유 식별자"
 
 msgid "Change"
-msgstr ""
+msgstr "변경"
 
 msgid "Review policy"
-msgstr ""
+msgstr "검토 정책"
 
 msgid "Controls who can publish records directly without review."
-msgstr ""
+msgstr "누가 검토 없이 레코드를 바로 게시할 수 있는지 제어합니다."
 
 msgid "Records submission policy"
-msgstr ""
+msgstr "레코드 제출 정책"
 
 msgid "Controls who can submit records to the community."
-msgstr ""
+msgstr "누가 커뮤니티에 레코드를 제출할 수 있는지 제어합니다."
 
 msgid "Subcommunity request"
-msgstr ""
+msgstr "하위 커뮤니티 요청"
 
 msgid "Do you already have an existing community?"
-msgstr ""
+msgstr "이미 커뮤니티가 있으신가요?"
 
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 msgid "No"
-msgstr ""
+msgstr "아니요"
 
 msgid "Community"
-msgstr ""
+msgstr "커뮤니티"
 
 msgid "Create request"
-msgstr ""
+msgstr "요청 만들기"
 
 msgid "Cancelled"
-msgstr ""
+msgstr "취소됨"
 
 msgid "Add organization: "
-msgstr ""
+msgstr "기관 추가: "
+
+msgid "View comments"
+msgstr "댓글 보기"
+
+msgid "Set up your new community"
+msgstr "새 커뮤니티 설정"
+
+msgid "Enabled"
+msgstr "활성화됨"
+
+msgid "Disabled"
+msgstr "비활성화됨"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr "이 커뮤니티에서 {{name}}을(를) 제거하려고 합니다."
+
+msgid "cancel invitation"
+msgstr "초대 취소"
+
+msgid "Cancel invitation"
+msgstr "초대 취소"
+
+msgid "No matching invitations found."
+msgstr "일치하는 초대가 없습니다."
+
+msgid "Email notifications"
+msgstr "이메일 알림"
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr "활성화하면 그룹 구성원이 레코드 제출과 같은 커뮤니티 작업 관련 이메일을 받습니다."
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr "참고: 추가하면 선택한 그룹이 초대 승인 없이 즉시 커뮤니티 구성원이 됩니다."
+
+msgid "Already a member or pending a decision"
+msgstr "이미 구성원이거나 결정 대기 중"
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr "전체 이름, 사용자 이름 또는 이메일로 검색 (공개된 경우)"
+
+msgid "Notifications"
+msgstr "알림"
+
+msgid "Search in membership requests..."
+msgstr "가입 요청에서 검색..."
+
+msgid "No matching membership requests found."
+msgstr "일치하는 가입 요청이 없습니다."

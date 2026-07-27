@@ -1,4 +1,3 @@
-# 
 # Translators:
 # Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
 # c960a0736ea0fb7507bb1c3555e7d33f_88b575f <3cef15c38ce2563e884ec389656c9161_1006830>, 2022
@@ -8,18 +7,18 @@
 # Alizee Pace <alizee.pace@gmail.com>, 2025
 # Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2025
 # Frank Berkemeier, 2025
-# Tibor Simko <tibor.simko@cern.ch>, 2025
-# Sarah Wiechers, 2025
-# Adienne Karsten-Welker, 2025
+# Tibor Simko <tibor.simko@cern.ch>, 2026
+# Sarah Wiechers, 2026
+# Adienne Karsten-Welker, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Adienne Karsten-Welker, 2025\n"
+"Last-Translator: Adienne Karsten-Welker, 2026\n"
 "Language-Team: German (https://app.transifex.com/inveniosoftware/teams/23537/de/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -170,7 +169,7 @@ msgid "You are not a member of any community."
 msgstr "Sie sind kein Mitglied einer Community."
 
 msgid "There are no new communities."
-msgstr "Es gibt keine neuen Communities."
+msgstr "Es gibt keine neuen Communitys."
 
 msgid "Request Membership"
 msgstr "Mitgliedschaft beantragen"
@@ -194,9 +193,6 @@ msgstr ""
 msgid "Identifier"
 msgstr "Kennung"
 
-msgid "Setup your new community"
-msgstr "Richten Sie Ihre neue Community ein"
-
 msgid "Community name"
 msgstr "Communityname"
 
@@ -207,7 +203,7 @@ msgid "Create community"
 msgstr "Community erstellen"
 
 msgid "No communities found!"
-msgstr "Keine Communities gefunden!"
+msgstr "Keine Communitys gefunden!"
 
 msgid "Reset search"
 msgstr "Suche zurücksetzen"
@@ -320,13 +316,6 @@ msgstr "Suche nach Gruppen"
 msgid "Already a member"
 msgstr "Bereits Mitglied"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Hinweis: Nach dem Hinzufügen werden die ausgewählten Gruppen ohne weitere "
-"Benachrichtigung Zugriff auf den Eintrag erhalten."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] "Sie fügen {{count}} Gruppe hinzu."
@@ -361,12 +350,6 @@ msgstr "Sie sind dabei, folgende Benutzer*innen einzuladen:"
 
 msgid "users"
 msgstr "Benutzer*innen"
-
-msgid "Already a member or invitation pending"
-msgstr "Bereits Mitglied oder Einladung ausstehend"
-
-msgid "Search by email, full name or username"
-msgstr "Suche anhand von E-Mail, vollständigem Namen oder Kontonamen"
 
 msgid "Groups"
 msgstr "Gruppen"
@@ -458,7 +441,7 @@ msgid "Save"
 msgstr "Speichern"
 
 msgid "Curation policy"
-msgstr "Kuratierungs-Richtlinie"
+msgstr "Kurationsrichtlinie"
 
 msgid "About page"
 msgstr "Über diese Community"
@@ -627,3 +610,61 @@ msgstr "Abgebrochen"
 
 msgid "Add organization: "
 msgstr "Organisation hinzufügen:"
+
+msgid "View comments"
+msgstr "Kommentare anzeigen"
+
+msgid "Set up your new community"
+msgstr "Richten Sie Ihre neue Community ein"
+
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgid "Disabled"
+msgstr "Behindert"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr "Sie sind dabei, {{name}} aus dieser Community zu entfernen."
+
+msgid "cancel invitation"
+msgstr "Einladung abbrechen"
+
+msgid "Cancel invitation"
+msgstr "Einladung abbrechen"
+
+msgid "No matching invitations found."
+msgstr "Keine passenden Einladungen gefunden."
+
+msgid "Email notifications"
+msgstr "E-Mail-Benachrichtigungen"
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+"Wenn aktiviert, erhalten Gruppenmitglieder E-Mails zu Community-Aktionen, "
+"wie z. B. der Einreichung von Datensätzen."
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+"Hinweis: Beim Hinzufügen werden ausgewählte Gruppen sofort Community-"
+"Mitglieder, ohne dass eine Einladung genehmigt werden muss."
+
+msgid "Already a member or pending a decision"
+msgstr "Bereits Mitglied oder Entscheidung ausstehend"
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+"Suche nach vollständigem Namen, Benutzernamen oder E-Mail (falls öffentlich "
+"sichtbar)"
+
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+msgid "Search in membership requests..."
+msgstr "In Mitgliedschaftsanfragen suchen..."
+
+msgid "No matching membership requests found."
+msgstr "Keine passenden Mitgliedschaftsanfragen gefunden."

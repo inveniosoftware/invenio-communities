@@ -1,19 +1,18 @@
-# 
 # Translators:
 # Ivan Masár <helix84@centrum.sk>, 2022
 # Jiří Kunčar <jiri.kuncar@gmail.com>, 2025
 # Tibor Simko <tibor.simko@cern.ch>, 2025
-# Mirek Simek <miroslav.simek@gmail.com>, 2025
-# daniela.hornickova, 2025
+# daniela.hornickova, 2026
+# Mirek Simek <miroslav.simek@gmail.com>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: daniela.hornickova, 2025\n"
+"Last-Translator: Mirek Simek <miroslav.simek@gmail.com>, 2026\n"
 "Language-Team: Czech (https://app.transifex.com/inveniosoftware/teams/23537/cs/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
@@ -184,9 +183,6 @@ msgstr ""
 msgid "Identifier"
 msgstr "Identifikátor"
 
-msgid "Setup your new community"
-msgstr "Nastavení Vaší nové komunity"
-
 msgid "Community name"
 msgstr "Název komunity"
 
@@ -312,13 +308,6 @@ msgstr "Hledat skupiny"
 msgid "Already a member"
 msgstr "Již je členem"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Poznámka: Po přidání se vybrané skupiny okamžitě stanou členy komunity bez "
-"jakéhokoli upozornění nebo schválení pozvánky."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] "Chystáte se přidat jednu skupinu."
@@ -355,12 +344,6 @@ msgstr "Chystáte se pozvat "
 
 msgid "users"
 msgstr "uživatelé"
-
-msgid "Already a member or invitation pending"
-msgstr "Již je členem nebo má vytvořenou pozvánku."
-
-msgid "Search by email, full name or username"
-msgstr "Hledat podle emailu, plného jména nebo uživatelského jména"
 
 msgid "Groups"
 msgstr "Skupiny"
@@ -618,3 +601,61 @@ msgstr "Zrušena"
 
 msgid "Add organization: "
 msgstr "Přidat organizaci:"
+
+msgid "View comments"
+msgstr "Zobrazit komentáře"
+
+msgid "Set up your new community"
+msgstr "Nastavení Vaší nové komunity "
+
+msgid "Enabled"
+msgstr "Povoleno"
+
+msgid "Disabled"
+msgstr "Zakázáno"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr "Chystáte se odebrat {{name}} z této komunity."
+
+msgid "cancel invitation"
+msgstr "zrušit pozvánku"
+
+msgid "Cancel invitation"
+msgstr "Zrušit pozvánku"
+
+msgid "No matching invitations found."
+msgstr "Nenalezeny pozvánky vyhovující dotazu."
+
+msgid "Email notifications"
+msgstr "Emailové notifikace"
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+"Po schválení budou členové skupiny dostávat e-maily související s "
+"komunitními akcemi, jako je například odesílání záznamů."
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+"Poznámka: po přidání se vybrané skupiny stanou členy komunity okamžitě, bez "
+"jakéhokoli schvalování pozvánek."
+
+msgid "Already a member or pending a decision"
+msgstr "Již je členem nebo se čeká na schválení/akceptování."
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+"Vyhledávat podle celého jména, uživatelského jména nebo e-mailu (pokud je "
+"veřejně viditelný)"
+
+msgid "Notifications"
+msgstr "Notifikace"
+
+msgid "Search in membership requests..."
+msgstr "Hledat v žádostech o členství..."
+
+msgid "No matching membership requests found."
+msgstr "Nenalezeny žádosti o členství vyhovující dotazu."

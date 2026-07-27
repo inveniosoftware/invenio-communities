@@ -1,16 +1,15 @@
-# 
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2025
-# Anna Sakoyan, 2025
+# Anna Sakoyan, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Anna Sakoyan, 2025\n"
+"Last-Translator: Anna Sakoyan, 2026\n"
 "Language-Team: Russian (https://app.transifex.com/inveniosoftware/teams/23537/ru/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
@@ -183,9 +182,6 @@ msgstr ""
 msgid "Identifier"
 msgstr "Идентификатор"
 
-msgid "Setup your new community"
-msgstr "Настройте свое новое сообщество"
-
 msgid "Community name"
 msgstr "Название сообщества"
 
@@ -311,13 +307,6 @@ msgstr "Искать группы"
 msgid "Already a member"
 msgstr "Уже участник"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Примечание: после добавления выбранные группы станут участниками сообщества "
-"немедленно, без каких-либо уведомлений или одобрения приглашения."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] ""
@@ -354,12 +343,6 @@ msgstr "Вы собираетесь пригласить"
 
 msgid "users"
 msgstr "пользователи"
-
-msgid "Already a member or invitation pending"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr "Искать по адресу электронной почты, полному имени или юзернейму."
 
 msgid "Groups"
 msgstr "Группы"
@@ -618,4 +601,56 @@ msgid "Cancelled"
 msgstr "Удален"
 
 msgid "Add organization: "
+msgstr ""
+
+msgid "View comments"
+msgstr ""
+
+msgid "Set up your new community"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "You are about to remove {{name}} from this community."
+msgstr ""
+
+msgid "cancel invitation"
+msgstr ""
+
+msgid "Cancel invitation"
+msgstr ""
+
+msgid "No matching invitations found."
+msgstr ""
+
+msgid "Email notifications"
+msgstr ""
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+
+msgid "Already a member or pending a decision"
+msgstr ""
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+
+msgid "Notifications"
+msgstr "Уведомления"
+
+msgid "Search in membership requests..."
+msgstr ""
+
+msgid "No matching membership requests found."
 msgstr ""

@@ -1,575 +1,595 @@
 # Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2025
+# Matti Lassila <matti.lassila@gmail.com>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2025\n"
-"Language-Team: Japanese (https://app.transifex.com/inveniosoftware/teams/23537/ja/)\n"
+"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2026\n"
+"Language-Team: Finnish (https://app.transifex.com/inveniosoftware/teams/23537/fi/)\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "mime-version: 1.0\n"
 
 msgid "Delete community"
-msgstr ""
+msgstr "Poista yhteisö"
 
 msgid "Restore community"
-msgstr ""
+msgstr "Palauta yhteisö"
 
 msgid "Unavailability statement"
-msgstr ""
+msgstr "Saatavuusilmoitus"
 
 msgid "Success"
-msgstr ""
+msgstr "Onnistui"
 
 msgid "Community {{id}} was restored."
-msgstr ""
+msgstr "Yhteisö {{id}} palautettiin."
 
 msgid "Unable to restore."
-msgstr ""
+msgstr "Palautus epäonnistui."
 
 msgid "Are you sure you want to restore community #{{id}}"
-msgstr ""
+msgstr "Haluatko varmasti palauttaa yhteisön #{{id}}"
 
 msgid "Close"
-msgstr ""
+msgstr "Sulje"
 
 msgid "Community {{id}} was deleted."
-msgstr ""
+msgstr "Yhteisö {{id}} poistettiin."
 
 msgid "Unable to delete"
-msgstr ""
+msgstr "Poisto epäonnistui"
 
 msgid "Public"
-msgstr ""
+msgstr "Julkinen"
 
 msgid "Hidden"
-msgstr ""
+msgstr "Piilotettu"
 
 msgid ""
 "The tombstone is set to hidden but your record is public. Best practice is "
 "to provide a public tombstone when deactivating public records."
 msgstr ""
+"Poistosivu on asetettu piilotetuksi, mutta tietueesi on julkinen. Parhaan "
+"käytännön mukaan julkiset tietueet tulisi poistaa julkisella poistosivulla."
 
 msgid ""
 "RISK INFORMATION LEAKAGE: The tombstone is set to public but your record is "
 "restricted. Please make sure no restricted information is shared in the "
 "tombstone below."
 msgstr ""
+"RISKI TIETOJEN VUOTAMISESTA: Poistosivu on julkinen, mutta tietueesi on "
+"rajoitettu. Varmista, ettei alla olevalla poistosivulla jaeta rajoitettua "
+"tietoa."
 
 msgid "Bibliographic citation"
-msgstr ""
+msgstr "Lähdeviite"
 
 msgid ""
 "Input citation text. Blank field will be filled with APA citation by "
 "default."
 msgstr ""
+"Syötä viitteen teksti. Tyhjä kenttä täytetään oletuksena APA-muotoisella "
+"viitteellä."
 
 msgid "Note"
-msgstr "注意"
+msgstr "Huomautus"
 
 msgid "Delete record"
-msgstr ""
+msgstr "Poista tietue"
 
 msgid "This set is not editable as it was created by the system."
-msgstr ""
+msgstr "Tätä joukkoa ei voi muokata, koska järjestelmä loi sen."
 
 msgid "This set is not deletable as it was created by the system."
-msgstr ""
+msgstr "Tätä joukkoa ei voi poistaa, koska järjestelmä loi sen."
 
 msgid "Planned features"
-msgstr ""
+msgstr "Suunnitellut ominaisuudet"
 
 msgid "Start date"
-msgstr ""
+msgstr "Aloituspäivä"
 
 msgid "Active"
-msgstr ""
+msgstr "Aktiivinen"
 
 msgid "Actions"
-msgstr "アクション"
+msgstr "Toiminnot"
 
 msgid "Published"
-msgstr ""
+msgstr "Julkaistu"
 
 msgid "Deleted"
-msgstr ""
+msgstr "Poistettu"
 
 msgid "Scheduled for purge"
-msgstr ""
+msgstr "Ajastettu poistoon"
 
 msgid "Browse"
-msgstr "ブラウズ"
+msgstr "Selaa"
 
 msgid "New upload"
-msgstr ""
+msgstr "Uusi lataus"
 
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "Tähän yhteisöön voivat tallentaa vain yhteisön jäsenet."
 
 msgid "Previous slide"
-msgstr ""
+msgstr "Edellinen dia"
 
 msgid "Next slide"
-msgstr ""
+msgstr "Seuraava dia"
 
 msgid "opens in new tab"
-msgstr ""
+msgstr "avautuu uuteen välilehteen"
 
 msgid "Branding"
-msgstr ""
+msgstr "Brändäys"
 
 msgid "Submission information"
-msgstr ""
+msgstr "Tallennuksen tiedot"
 
 msgid ""
 "Submission to this community does not require review, and will be published "
 "immediately."
 msgstr ""
+"Tähän yhteisöön tallennettu sisältö ei vaadi arviointia ja julkaistaan "
+"välittömästi."
 
 msgid "Verified community"
-msgstr ""
+msgstr "Vahvistettu yhteisö"
 
 msgid "Part of"
-msgstr ""
+msgstr "Osa"
 
 msgid "Edit"
-msgstr "編集"
+msgstr "Muokkaa"
 
 msgid "An error occurred."
-msgstr ""
+msgstr "Tapahtui virhe."
 
 msgid "You are not a member of any community."
-msgstr ""
+msgstr "Et ole minkään yhteisön jäsen."
 
 msgid "There are no new communities."
-msgstr ""
+msgstr "Uusia yhteisöjä ei ole."
 
 msgid "Request Membership"
-msgstr ""
+msgstr "Pyydä jäsenyyttä"
 
 msgid "Message to managers (optional)"
-msgstr ""
+msgstr "Viesti ylläpitäjille (valinnainen)"
 
 msgid "Cancel"
-msgstr "キャンセル"
+msgstr "Peruuta"
 
 msgid "Restricted"
-msgstr ""
+msgstr "Rajoitettu"
 
 msgid ""
 "This is your community's unique identifier. You will be able to access your "
 "community through the URL:"
 msgstr ""
+"Tämä on yhteisösi yksilöllinen tunniste. Pääset yhteisöösi seuraavalla URL-"
+"osoitteella:"
 
 msgid "Identifier"
-msgstr ""
+msgstr "Tunniste"
 
 msgid "Community name"
-msgstr ""
+msgstr "Yhteisön nimi"
 
 msgid "Community visibility"
-msgstr ""
+msgstr "Yhteisön näkyvyys"
 
 msgid "Create community"
-msgstr ""
+msgstr "Luo yhteisö"
 
 msgid "No communities found!"
-msgstr ""
+msgstr "Yhteisöjä ei löytynyt!"
 
 msgid "Reset search"
-msgstr ""
+msgstr "Nollaa haku"
 
 msgid "Search"
-msgstr "検索"
+msgstr "Haku"
 
 msgid "Filter results"
-msgstr ""
+msgstr "Suodata tuloksia"
 
 msgid "Search communities..."
-msgstr ""
+msgstr "Hae yhteisöjä..."
 
 msgid "Sort by"
-msgstr ""
+msgstr "Lajittele"
 
 msgid "Select all members"
-msgstr ""
+msgstr "Valitse kaikki jäsenet"
 
 msgid "{{count}} members selected"
 msgid_plural "{{count}} members selected"
-msgstr[0] ""
+msgstr[0] "Valittu {{count}} jäsen"
+msgstr[1] "Valittu {{count}} jäsentä"
 
 msgid "bulk actions"
-msgstr ""
+msgstr "massatoiminnot"
 
 msgid "Select member"
-msgstr ""
+msgstr "Valitse jäsen"
 
 msgid "remove {{name}}"
-msgstr ""
+msgstr "poista {{name}}"
 
 msgid "Clear all filters"
-msgstr ""
+msgstr "Tyhjennä kaikki suodattimet"
 
 msgid "Search in members ..."
-msgstr ""
+msgstr "Hae jäsenistä ..."
 
 msgid "Leave community"
-msgstr ""
+msgstr "Poistu yhteisöstä"
 
 msgid "You are about to leave this community."
-msgstr ""
+msgstr "Olet poistumassa tästä yhteisöstä."
 
 msgid "Leave"
-msgstr ""
+msgstr "Poistu"
 
 msgid "Remove user"
-msgstr ""
+msgstr "Poista käyttäjä"
 
 msgid "You are about to remove this user from this community."
-msgstr ""
+msgstr "Olet poistamassa tämän käyttäjän tästä yhteisöstä."
 
 msgid "Remove"
-msgstr "削除"
+msgstr "Poista"
 
 msgid "This action cannot be undone."
-msgstr ""
+msgstr "Tätä toimintoa ei voi perua."
 
 msgid ""
 "Note: upon addition, selected groups will have access to the record without "
 "any kind of notification."
 msgstr ""
+"Huom: lisäyksen jälkeen valituilla ryhmillä on pääsy tietueeseen ilman "
+"minkäänlaista ilmoitusta."
 
 msgid "Role"
-msgstr ""
+msgstr "Rooli"
 
 msgid "Visibility"
-msgstr ""
+msgstr "Näkyvyys"
 
 msgid "Submitted"
-msgstr ""
+msgstr "Lähetetty"
 
 msgid "Accepted"
-msgstr ""
+msgstr "Hyväksytty"
 
 msgid "Declined"
-msgstr ""
+msgstr "Hylätty"
 
 msgid "Expired"
-msgstr ""
+msgstr "Vanhentunut"
 
 msgid "Status"
-msgstr "状態"
+msgstr "Tila"
 
 msgid "Expires"
-msgstr ""
+msgstr "Vanhenee"
 
 msgid "No matching members found."
-msgstr ""
+msgstr "Vastaavia jäseniä ei löytynyt."
 
 msgid "Current search"
-msgstr ""
+msgstr "Nykyinen haku"
 
 msgid "Clear query"
-msgstr ""
+msgstr "Tyhjennä kysely"
 
 msgid "No selected groups"
-msgstr ""
+msgstr "Ei valittuja ryhmiä"
 
 msgid "Group"
-msgstr "グループ"
+msgstr "Ryhmä"
 
 msgid "Search for groups"
-msgstr ""
+msgstr "Hae ryhmiä"
 
 msgid "Already a member"
-msgstr ""
+msgstr "Jo jäsen"
 
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
-msgstr[0] ""
+msgstr[0] "Olet lisäämässä {{count}} ryhmän."
+msgstr[1] "Olet lisäämässä {{count}} ryhmää."
 
 msgid "Add"
-msgstr ""
+msgstr "Lisää"
 
 msgid "People"
-msgstr ""
+msgstr "Henkilöt"
 
 msgid "Member"
-msgstr ""
+msgstr "Jäsen"
 
 msgid ""
 "Search for users to invite (only users with a public profile can be invited)"
 msgstr ""
+"Hae kutsuttavia käyttäjiä (vain julkisen profiilin omaavia voidaan kutsua)"
 
 msgid "Invite"
-msgstr ""
+msgstr "Kutsu"
 
 msgid "No selected members"
-msgstr ""
+msgstr "Ei valittuja jäseniä"
 
 msgid "Invitation message"
-msgstr ""
+msgstr "Kutsuviesti"
 
 msgid "You are about to invite"
-msgstr ""
+msgstr "Olet kutsumassa"
 
 msgid "users"
-msgstr ""
+msgstr "käyttäjää"
 
 msgid "Groups"
-msgstr "グループ"
+msgstr "Ryhmät"
 
 msgid "Invite groups"
-msgstr ""
+msgstr "Kutsu ryhmiä"
 
 msgid "Invite members"
-msgstr ""
+msgstr "Kutsu jäseniä"
 
 msgid "Invite..."
-msgstr ""
+msgstr "Kutsu..."
 
 msgid "Add groups"
-msgstr ""
+msgstr "Lisää ryhmiä"
 
 msgid "Search..."
-msgstr ""
+msgstr "Haku..."
 
 msgid "results per page"
-msgstr ""
+msgstr "tulosta per sivu"
 
 msgid "Name"
-msgstr "名前"
+msgstr "Nimi"
 
 msgid "Search in invitations..."
-msgstr ""
+msgstr "Hae kutsuista..."
 
 msgid "View"
-msgstr ""
+msgstr "Näytä"
 
 msgid "This community has no public members."
-msgstr ""
+msgstr "Tässä yhteisössä ei ole julkisia jäseniä."
 
 msgid "result(s) found"
-msgstr ""
+msgstr "tulos(ta) löytyi"
 
 msgid "Members"
-msgstr ""
+msgstr "Jäsenet"
 
 msgid "Member since"
-msgstr ""
+msgstr "Jäsenenä alkaen"
 
 msgid "Your community membership is visible to everyone."
-msgstr ""
+msgstr "Yhteisöjäsenyytesi näkyy kaikille."
 
 msgid ""
 "Your community membership is only visible to other members of the community."
-msgstr ""
+msgstr "Yhteisöjäsenyytesi näkyy vain yhteisön muille jäsenille."
 
 msgid "Change roles"
-msgstr ""
+msgstr "Vaihda rooleja"
 
 msgid "Change visibilities"
-msgstr ""
+msgstr "Vaihda näkyvyyksiä"
 
 msgid "Remove from community"
-msgstr ""
+msgstr "Poista yhteisöstä"
 
 msgid "You have selected {{selectedCount}} users"
-msgstr ""
+msgstr "Olet valinnut {{selectedCount}} käyttäjää"
 
 msgid "You"
-msgstr ""
+msgstr "Sinä"
 
 msgid "Leave..."
-msgstr ""
+msgstr "Poistu..."
 
 msgid "Remove..."
-msgstr ""
+msgstr "Poista..."
 
 msgid "Search members..."
-msgstr ""
+msgstr "Hae jäseniä..."
 
 msgid "and"
-msgstr "および"
+msgstr "ja"
 
 msgid "{{count}} more organizations"
 msgid_plural "{{count}} more organizations"
-msgstr[0] ""
+msgstr[0] "{{count}} muu organisaatio"
+msgstr[1] "{{count}} muuta organisaatiota"
 
 msgid "Saved"
-msgstr ""
+msgstr "Tallennettu"
 
 msgid "Save"
-msgstr ""
+msgstr "Tallenna"
 
 msgid "Curation policy"
-msgstr ""
+msgstr "Kuraatiokäytäntö"
 
 msgid "About page"
-msgstr ""
+msgstr "Tietosivu"
 
 msgid "Controls if the community is visible to anyone or to members only."
-msgstr ""
+msgstr "Määrittää, onko yhteisö näkyvissä kaikille vai vain jäsenille."
 
 msgid "Members visibility"
-msgstr ""
+msgstr "Jäsenten näkyvyys"
 
 msgid "Controls if the members tab is visible to anyone or to members only."
 msgstr ""
+"Määrittää, onko Jäsenet-välilehti näkyvissä kaikille vai vain jäsenille."
 
 msgid "Membership Policy"
-msgstr ""
+msgstr "Jäsenyyskäytäntö"
 
 msgid "Controls if anyone can request to join your community."
-msgstr ""
+msgstr "Määrittää, voiko kuka tahansa pyytää liittymistä yhteisöösi."
 
 msgid "Maximum number of characters is 2000"
-msgstr ""
+msgstr "Enimmäispituus on 2000 merkkiä"
 
 msgid "Maximum number of characters is 250"
-msgstr ""
+msgstr "Enimmäispituus on 250 merkkiä"
 
 msgid "Must be a valid URL"
-msgstr ""
+msgstr "Täytyy olla kelvollinen URL-osoite"
 
 msgid "Basic information"
-msgstr ""
+msgstr "Perustiedot"
 
 msgid "Short description"
-msgstr ""
+msgstr "Lyhyt kuvaus"
 
 msgid "Type"
-msgstr ""
+msgstr "Tyyppi"
 
 msgid "Website"
-msgstr ""
+msgstr "Verkkosivusto"
 
 msgid "Search for an organization by name"
-msgstr ""
+msgstr "Hae organisaatiota nimellä"
 
 msgid "Organizations"
-msgstr ""
+msgstr "Organisaatiot"
 
 msgid "Search for organizations..."
-msgstr ""
+msgstr "Hae organisaatioita..."
 
 msgid "Funding information"
-msgstr ""
+msgstr "Rahoitustiedot"
 
 msgid "Awards/Grants"
-msgstr ""
+msgstr "Apurahat/tuet"
 
 msgid "Danger zone"
-msgstr ""
+msgstr "Vaaravyöhyke"
 
 msgid "Change identifier"
-msgstr ""
+msgstr "Vaihda tunnistetta"
 
 msgid ""
 "Changing your community's unique identifier can have unintended side "
 "effects."
 msgstr ""
+"Yhteisösi yksilöllisen tunnisteen muuttaminen voi aiheuttaa odottamattomia "
+"sivuvaikutuksia."
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr ""
+msgstr "Poiston jälkeen sitä ei voi palauttaa. Oletko varma?"
 
 msgid "Delete"
-msgstr "削除"
+msgstr "Poista"
 
 msgid "Permanently delete community"
-msgstr ""
+msgstr "Poista yhteisö pysyvästi"
 
 msgid "Are you absolutely sure you want to delete the community?"
-msgstr ""
+msgstr "Oletko aivan varma, että haluat poistaa yhteisön?"
 
 msgid "This action CANNOT be undone!"
-msgstr ""
+msgstr "Tätä toimintoa EI VOI perua!"
 
 msgid "members will be removed from the community."
-msgstr ""
+msgstr "jäsentä poistetaan yhteisöstä."
 
 msgid "records will be removed from the community."
-msgstr ""
+msgstr "tietuetta poistetaan yhteisöstä."
 
 msgid "CANNOT"
-msgstr ""
+msgstr "EI VOI"
 
 msgid "reuse the community identifier \"{{slug}}\"."
-msgstr ""
+msgstr "käyttää uudelleen yhteisön tunnistetta \"{{slug}}”."
 
 msgid "Please type"
-msgstr ""
+msgstr "Kirjoita"
 
 msgid "to confirm."
-msgstr ""
+msgstr "vahvistaaksesi."
 
 msgid "Permanently delete"
-msgstr ""
+msgstr "Poista pysyvästi"
 
 msgid "Profile picture"
-msgstr ""
+msgstr "Profiilikuva"
 
 msgid "Upload new picture"
-msgstr ""
+msgstr "Lataa uusi kuva"
 
 msgid "File must be smaller than {{fileSize}}"
-msgstr ""
+msgstr "Tiedoston on oltava pienempi kuin {{fileSize}}"
 
 msgid "Delete picture"
-msgstr ""
+msgstr "Poista kuva"
 
 msgid "Are you sure you want to delete this picture?"
-msgstr ""
+msgstr "Haluatko varmasti poistaa tämän kuvan?"
 
 msgid "It may take a few moments for changes to be visible everywhere"
-msgstr ""
+msgstr "Muutosten näkymisessä kaikkialla voi kestää hetki"
 
 msgid "New unique identifier of the community"
-msgstr ""
+msgstr "Yhteisön uusi yksilöllinen tunniste"
 
 msgid "Change"
-msgstr ""
+msgstr "Vaihda"
 
 msgid "Review policy"
-msgstr ""
+msgstr "Arviointikäytäntö"
 
 msgid "Controls who can publish records directly without review."
-msgstr ""
+msgstr "Määrittää, kuka voi julkaista tietueet suoraan ilman arviointia."
 
 msgid "Records submission policy"
-msgstr ""
+msgstr "Tietueiden lähetyskäytäntö"
 
 msgid "Controls who can submit records to the community."
-msgstr ""
+msgstr "Määrittää, kuka voi tallentaa tietueita yhteisöön."
 
 msgid "Subcommunity request"
-msgstr ""
+msgstr "Alayhteisöpyyntö"
 
 msgid "Do you already have an existing community?"
-msgstr ""
+msgstr "Onko sinulla jo olemassa oleva yhteisö?"
 
 msgid "Yes"
-msgstr "はい"
+msgstr "Kyllä"
 
 msgid "No"
-msgstr "いいえ"
+msgstr "Ei"
 
 msgid "Community"
-msgstr ""
+msgstr "Yhteisö"
 
 msgid "Create request"
-msgstr ""
+msgstr "Luo pyyntö"
 
 msgid "Cancelled"
-msgstr ""
+msgstr "Peruttu"
 
 msgid "Add organization: "
-msgstr ""
+msgstr "Lisää organisaatio: "
 
 msgid "View comments"
 msgstr ""
@@ -615,7 +635,7 @@ msgid "Search by full name, username or email (if publicly visible)"
 msgstr ""
 
 msgid "Notifications"
-msgstr ""
+msgstr "Ilmoitukset"
 
 msgid "Search in membership requests..."
 msgstr ""

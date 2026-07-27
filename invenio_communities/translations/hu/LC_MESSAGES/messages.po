@@ -1,133 +1,141 @@
 # Translations template for invenio-communities.
-# Copyright (C) 2025 CERN
+# Copyright (C) 2026 CERN
 # This file is distributed under the same license as the invenio-communities
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 # 
 # Translators:
 # Dorottya Szemigán, 2023
 # Tibor Simko <tibor.simko@cern.ch>, 2024
 # Júlia Babos, 2025
-# Zoltán Kanász-Nagy, 2025
-# Andrea Dömötör, 2025
-# j k, 2025
 # Dora Szauter, 2025
+# Zoltán Kanász-Nagy, 2026
+# Andrea Dömötör, 2026
+# j k, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: invenio-communities 19.1.0\n"
+"Project-Id-Version: invenio-communities 28.1.0\n"
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2025-07-08 19:38+0000\n"
+"POT-Creation-Date: 2026-06-22 20:51+0000\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Dora Szauter, 2025\n"
+"Last-Translator: j k, 2026\n"
 "Language-Team: Hungarian (https://app.transifex.com/inveniosoftware/teams/23537/hu/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 "Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: invenio_communities/config.py:66 invenio_communities/config.py:160
-#: invenio_communities/config.py:202
-#: invenio_communities/members/services/config.py:43
-#: invenio_communities/members/services/config.py:86
-#: invenio_communities/members/services/config.py:117
+#: invenio_communities/config.py:69 invenio_communities/config.py:171
+#: invenio_communities/config.py:213
+#: invenio_communities/members/services/config.py:38
+#: invenio_communities/members/services/config.py:81
+#: invenio_communities/members/services/config.py:112
 msgid "Best match"
 msgstr "Legjobb találat"
 
-#: invenio_communities/config.py:70 invenio_communities/config.py:168
-#: invenio_communities/config.py:210
-#: invenio_communities/members/services/config.py:94
-#: invenio_communities/members/services/config.py:125
+#: invenio_communities/config.py:73 invenio_communities/config.py:179
+#: invenio_communities/config.py:221
+#: invenio_communities/members/services/config.py:89
+#: invenio_communities/members/services/config.py:120
 msgid "Newest"
 msgstr "Legújabb"
 
-#: invenio_communities/config.py:74 invenio_communities/config.py:172
-#: invenio_communities/config.py:214
-#: invenio_communities/members/services/config.py:98
-#: invenio_communities/members/services/config.py:129
+#: invenio_communities/config.py:77 invenio_communities/config.py:183
+#: invenio_communities/config.py:225
+#: invenio_communities/members/services/config.py:93
+#: invenio_communities/members/services/config.py:124
 msgid "Oldest"
 msgstr "Legrégebbi"
 
-#: invenio_communities/config.py:78
+#: invenio_communities/config.py:81
 msgid "Version"
 msgstr "Verzió"
 
-#: invenio_communities/config.py:82
+#: invenio_communities/config.py:85
 msgid "Recently updated"
 msgstr "Nemrég feltöltött"
 
-#: invenio_communities/config.py:86
+#: invenio_communities/config.py:89
 msgid "Least recently updated"
 msgstr "Legrégebben feltöltött"
 
-#: invenio_communities/communities/services/facets.py:39
-#: invenio_communities/config.py:96
+#: invenio_communities/config.py:93
+msgid "Newest activity"
+msgstr ""
+
+#: invenio_communities/config.py:97
+msgid "Oldest activity"
+msgstr ""
+
+#: invenio_communities/communities/services/facets.py:35
+#: invenio_communities/config.py:107
 msgid "Reader"
 msgstr "Olvasó"
 
-#: invenio_communities/config.py:97
+#: invenio_communities/config.py:108
 msgid "Can view restricted records."
 msgstr "Megtekintheti a korlátozott hozzáférésű rekordokat."
 
-#: invenio_communities/communities/services/facets.py:41
-#: invenio_communities/config.py:102
+#: invenio_communities/communities/services/facets.py:37
+#: invenio_communities/config.py:113
 msgid "Curator"
 msgstr "Felügyelő"
 
-#: invenio_communities/config.py:103
+#: invenio_communities/config.py:114
 msgid "Can curate records and view restricted records."
 msgstr ""
 "Felügyelheti a rekordokat és láthatja a korlátozott hozzáférésű rekordokat."
 
-#: invenio_communities/communities/services/facets.py:40
-#: invenio_communities/config.py:109
+#: invenio_communities/communities/services/facets.py:36
+#: invenio_communities/config.py:120
 msgid "Manager"
 msgstr "Kezelő"
 
-#: invenio_communities/config.py:111
+#: invenio_communities/config.py:122
 msgid "Can manage members, curate records and view restricted records."
 msgstr ""
 "Kezelheti a tagokat, gondozhatja a rekordokat és megtekintheti a korlátozott"
 " hozzáférésű rekordokat."
 
-#: invenio_communities/communities/services/facets.py:38
-#: invenio_communities/config.py:120
+#: invenio_communities/communities/services/facets.py:34
+#: invenio_communities/config.py:131
 msgid "Owner"
 msgstr "Tulajdonos"
 
-#: invenio_communities/config.py:121
+#: invenio_communities/config.py:132
 msgid "Full administrative access to the entire community."
 msgstr "Teljes adminisztrátori hozzáférés az egész közösséghez."
 
-#: invenio_communities/config.py:164 invenio_communities/config.py:206
-#: invenio_communities/members/services/config.py:47
-#: invenio_communities/members/services/config.py:90
-#: invenio_communities/members/services/config.py:121
+#: invenio_communities/config.py:175 invenio_communities/config.py:217
+#: invenio_communities/members/services/config.py:42
+#: invenio_communities/members/services/config.py:85
+#: invenio_communities/members/services/config.py:116
 msgid "Name"
 msgstr "Név"
 
-#: invenio_communities/errors.py:28
-#, python-brace-format
-msgid "A featured community entry with {q} does not exist."
+#: invenio_communities/errors.py:24
+#, python-format
+msgid "A featured community entry with %(q)s does not exist."
 msgstr "Nincs {g} bejegyzést tartalmazó kiemelt közösség."
 
-#: invenio_communities/errors.py:40
+#: invenio_communities/errors.py:35
 msgid "No logo exists for this community."
 msgstr "Ennek a közösségnek nincs logója."
 
-#: invenio_communities/errors.py:52
-#, python-brace-format
+#: invenio_communities/errors.py:47
+#, python-format
 msgid ""
-"Logo size limit exceeded. Limit: {limit_value} {limit_unit} Given: "
-"{file_size_value} {file_size_unit}"
+"Logo size limit exceeded. Limit: %(limit_value)s %(limit_unit)s Given: "
+"%(file_size_value)s %(file_size_unit)s"
 msgstr ""
-"A logó mérete meghaladja a megengedett limitet. Limit: {limit_value} "
-"{limit_unit}. Megadott: {file_size_value} {file_size_unit}"
+"A logó mérete meghaladja a megengedett limitet. Limit: %(limit_value)s "
+"%(limit_unit)s. Megadott: %(file_size_value)s %(file_size_unit)s"
 
-#: invenio_communities/errors.py:69
+#: invenio_communities/errors.py:64
 #, python-format
 msgid ""
 "There is %(num)s request open for this community. Please, resolve it before "
@@ -142,7 +150,7 @@ msgstr[1] ""
 "%(num)s nyitott kérés van ehhez a közösséghez. Kérjük, oldja fel ezeket, "
 "mielőtt törölné a közösséget."
 
-#: invenio_communities/errors.py:101
+#: invenio_communities/errors.py:96
 msgid ""
 "Cannot set community as the default. The record has not been added to the "
 "community."
@@ -150,347 +158,388 @@ msgstr ""
 "A közösség nem állítható be alapértelmezettként. A rekord nem került "
 "hozzáadásra a közösséghez."
 
-#: invenio_communities/ext.py:146
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:13
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:25
-#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:22
+#: invenio_communities/administration/communities.py:27
+#: invenio_communities/administration/communities.py:28
+#: invenio_communities/administration/communities.py:29
+#: invenio_communities/ext.py:145
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:9
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:21
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:18
 msgid "Communities"
 msgstr "Közösségek"
 
-#: invenio_communities/ext.py:151
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:60
-#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:12
-#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:27
+#: invenio_communities/ext.py:150
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:57
+#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:8
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:23
 msgid "New community"
 msgstr "Új közösség"
 
-#: invenio_communities/ext.py:160
+#: invenio_communities/ext.py:159
 msgid "Requests"
 msgstr "Kérések"
 
-#: invenio_communities/ext.py:167
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:20
+#: invenio_communities/ext.py:166
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:16
 msgid "Members"
 msgstr "Tagok"
 
-#: invenio_communities/ext.py:175
+#: invenio_communities/ext.py:174
 msgid "Settings"
 msgstr "Beállítások"
 
-#: invenio_communities/ext.py:183
+#: invenio_communities/ext.py:182
 msgid "Curation policy"
 msgstr "Gondozási irányelvek"
 
-#: invenio_communities/ext.py:191
+#: invenio_communities/ext.py:190
 msgid "About"
 msgstr "Névjegy"
 
-#: invenio_communities/roles.py:64
+#: invenio_communities/roles.py:60
 msgid "Only one role be defined as owner."
 msgstr "Csak egy szerepkört lehet tulajdonosként megadni."
 
-#: invenio_communities/roles.py:66
+#: invenio_communities/roles.py:62
 msgid "One role must be defined as owner."
 msgstr "Legalább egy szerepkört tulajdonosként kell megadni."
 
-#: invenio_communities/communities/schema.py:55
-#, python-brace-format
-msgid "Field cannot be blank or longer than {max_} characters."
-msgstr "A mező nem lehet üres vagy {max_} karakternél hosszabb."
+#: invenio_communities/administration/communities.py:40
+#: invenio_communities/administration/communities.py:116
+msgid "Slug"
+msgstr ""
 
-#: invenio_communities/communities/schema.py:65
-#, python-brace-format
-msgid "Field cannot be longer than {max} characters."
-msgstr "A mező nem lehet hosszabb {max} karakternél."
+#: invenio_communities/administration/communities.py:41
+#: invenio_communities/administration/communities.py:119
+msgid "Title"
+msgstr "Cím"
 
-#: invenio_communities/communities/schema.py:76
+#: invenio_communities/administration/communities.py:43
+#: invenio_communities/administration/communities.py:121
+#: invenio_communities/communities/services/facets.py:12
+msgid "Type"
+msgstr "Típus"
+
+#: invenio_communities/administration/communities.py:44
+#: invenio_communities/communities/services/config.py:51
+msgid "Featured"
+msgstr "Kiemelt"
+
+#: invenio_communities/administration/communities.py:45
+#: invenio_communities/administration/communities.py:122
+msgid "Created"
+msgstr "Létrehozva"
+
+#: invenio_communities/administration/communities.py:50
+#: invenio_communities/administration/communities.py:108
+msgid "Feature"
+msgstr ""
+
+#: invenio_communities/administration/communities.py:56
+msgid "Delete"
+msgstr "Törlés"
+
+#: invenio_communities/administration/communities.py:62
+msgid "Restore"
+msgstr "Visszaállítás"
+
+#: invenio_communities/administration/communities.py:96
+msgid "Community"
+msgstr "Közösség"
+
+#: invenio_communities/communities/schema.py:49
+#, python-format
+msgid "Field cannot be blank or longer than %(max)s characters."
+msgstr "A mező nem lehet üres vagy %(max)s karakternél hosszabb."
+
+#: invenio_communities/communities/schema.py:58
+#, python-format
+msgid "Field cannot be longer than %(max)s characters."
+msgstr "A mező nem lehet hosszabb %(max)s karakternél."
+
+#: invenio_communities/communities/schema.py:69
 msgid "The ID must not be an Universally Unique IDentifier (UUID)."
 msgstr "Az ID-nek UUID-nek (Universally Unique IDentifier) kell lennie."
 
-#: invenio_communities/communities/schema.py:245
+#: invenio_communities/communities/schema.py:238
 msgid "The identifier should contain only letters, numbers, or dashes."
 msgstr "Az azonosító csak betűket, számokat vagy kötőjeleket tartalmazhat."
 
-#: invenio_communities/communities/schema.py:338
+#: invenio_communities/communities/schema.py:331
 msgid "start date"
 msgstr "kezdődátum"
 
-#: invenio_communities/communities/schema.py:339
+#: invenio_communities/communities/schema.py:332
 msgid "Accepted format: YYYY-MM-DD hh:mm"
 msgstr "Elfogadott formátum: ÉÉÉÉ-HH-NN óó:pp"
 
-#: invenio_communities/communities/schema.py:351
+#: invenio_communities/communities/schema.py:344
 msgid "Deleted community"
 msgstr "Törölt közösség"
 
-#: invenio_communities/communities/schema.py:352
+#: invenio_communities/communities/schema.py:345
 msgid "The community was deleted."
 msgstr "A közösség törölve lett."
 
-#: invenio_communities/communities/resources/config.py:70
-#: invenio_communities/members/resources/config.py:56
+#: invenio_communities/communities/resources/config.py:65
+#: invenio_communities/members/resources/config.py:54
 msgid "The record has been deleted."
 msgstr "A rekord törölve lett."
 
-#: invenio_communities/communities/resources/ui_schema.py:50
+#: invenio_communities/communities/resources/ui_schema.py:46
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: invenio_communities/communities/resources/ui_schema.py:57
+#: invenio_communities/communities/resources/ui_schema.py:53
 msgid "System (automatic)"
 msgstr "Rendszer (automatikus)"
 
-#: invenio_communities/communities/resources/ui_schema.py:59
+#: invenio_communities/communities/resources/ui_schema.py:55
 msgid "Admin"
 msgstr "Adminisztrátor"
 
-#: invenio_communities/communities/services/components.py:40
+#: invenio_communities/communities/services/components.py:35
 msgid "A community with this identifier already exists."
 msgstr "Már létezik ilyen azonosítójú közösség."
 
-#: invenio_communities/communities/services/components.py:58
+#: invenio_communities/communities/services/components.py:53
 msgid "The ID should be modified through the renaming URL instead."
 msgstr "Az azonosítót az átnevező linkkel kell módosítani."
 
-#: invenio_communities/communities/services/components.py:66
+#: invenio_communities/communities/services/components.py:61
 msgid "A new ID value is required for the renaming."
 msgstr "Az átnevezéshez új ID érték szükséges."
 
-#: invenio_communities/communities/services/components.py:148
+#: invenio_communities/communities/services/components.py:143
 msgid "The community is not public."
 msgstr "A közösség nem nyilvános."
 
-#: invenio_communities/communities/services/components.py:177
+#: invenio_communities/communities/services/components.py:172
 #, python-format
 msgid "parent.communities.ids:%(id)s"
 msgstr "parent.communities.ids:%(id)s"
 
-#: invenio_communities/communities/services/components.py:320
+#: invenio_communities/communities/services/components.py:318
 msgid "Assigned parent is not allowed to be a parent."
 msgstr "A kijelölt szülő nem lehet szülő."
 
-#: invenio_communities/communities/services/components.py:324
+#: invenio_communities/communities/services/components.py:322
 msgid "Community allowed to be a parent can't be a child."
 msgstr "A szülőként megjelölt közösség nem lehet gyerek."
 
-#: invenio_communities/communities/services/components.py:328
+#: invenio_communities/communities/services/components.py:326
 msgid "Assigned parent community cannot also have a parent."
 msgstr "A kijelölt szülő közösségnek nem lehet saját szülője."
 
-#: invenio_communities/communities/services/components.py:332
+#: invenio_communities/communities/services/components.py:330
 msgid "Assigned parent community cannot be the same as child."
 msgstr "A szülő közösség nem lehet ugyanaz, mint a gyerek közösség."
 
-#: invenio_communities/communities/services/components.py:335
+#: invenio_communities/communities/services/components.py:333
 msgid "Assigned parent community does not exist."
 msgstr " A megadott szülő közösség nem létezik."
 
-#: invenio_communities/communities/services/config.py:58
-msgid "Featured"
-msgstr "Kiemelt"
-
-#: invenio_communities/communities/services/facets.py:16
-msgid "Type"
-msgstr "Típus"
-
-#: invenio_communities/communities/services/facets.py:18
+#: invenio_communities/communities/services/facets.py:14
 msgid "Organization"
 msgstr "Szervezet"
 
-#: invenio_communities/communities/services/facets.py:19
+#: invenio_communities/communities/services/facets.py:15
 msgid "Event"
 msgstr "Esemény"
 
-#: invenio_communities/communities/services/facets.py:20
+#: invenio_communities/communities/services/facets.py:16
 msgid "Topic"
 msgstr "Téma"
 
-#: invenio_communities/communities/services/facets.py:21
+#: invenio_communities/communities/services/facets.py:17
 msgid "Project"
 msgstr "Projekt"
 
-#: invenio_communities/communities/services/facets.py:27
-#: invenio_communities/communities/services/facets.py:36
-#: invenio_communities/communities/services/facets.py:47
-#: invenio_communities/members/services/facets.py:36
+#: invenio_communities/communities/services/facets.py:23
+#: invenio_communities/communities/services/facets.py:32
+#: invenio_communities/communities/services/facets.py:43
+#: invenio_communities/members/services/facets.py:32
 msgid "Visibility"
 msgstr "Láthatóság"
 
-#: invenio_communities/communities/services/facets.py:29
-#: invenio_communities/members/services/facets.py:37
-#: invenio_communities/views/communities.py:32
-#: invenio_communities/views/communities.py:49
+#: invenio_communities/communities/services/facets.py:25
+#: invenio_communities/members/services/facets.py:33
+#: invenio_communities/views/communities.py:27
+#: invenio_communities/views/communities.py:44
 msgid "Public"
 msgstr "Nyilvános"
 
-#: invenio_communities/communities/services/facets.py:30
-#: invenio_communities/communities/services/facets.py:50
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:9
-#: invenio_communities/views/communities.py:40
+#: invenio_communities/communities/services/facets.py:26
+#: invenio_communities/communities/services/facets.py:46
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:14
+#: invenio_communities/views/communities.py:35
 msgid "Restricted"
 msgstr "Korlátozott hozzáférés"
 
-#: invenio_communities/communities/services/facets.py:49
-#: invenio_communities/members/services/facets.py:37
+#: invenio_communities/communities/services/facets.py:45
+#: invenio_communities/members/services/facets.py:33
 msgid "Hidden"
 msgstr "Elrejtve"
 
-#: invenio_communities/communities/services/service.py:209
+#: invenio_communities/communities/services/service.py:210
 msgid "Missing data for required field."
 msgstr "Hiányzó adat egy kötelező mezőhöz. "
 
-#: invenio_communities/members/resources/config.py:44
+#: invenio_communities/members/resources/config.py:40
 msgid "Invalid member specified."
 msgstr "Érvénytelen tag lett megadva."
 
-#: invenio_communities/members/resources/config.py:50
-msgid "A member was already added or invited."
-msgstr "Egy tag már hozzá lett adva vagy meg lett hívva."
+#: invenio_communities/members/resources/config.py:47
+msgid ""
+"One of the submitted entity is already a member or pending a decision. The "
+"entire action was cancelled."
+msgstr ""
 
-#: invenio_communities/members/services/components.py:34
-#: invenio_communities/members/services/components.py:43
+#: invenio_communities/members/services/components.py:29
+#: invenio_communities/members/services/components.py:38
 msgid "Community must be defined."
 msgstr "A közösséget meg kell adni."
 
-#: invenio_communities/members/services/components.py:49
+#: invenio_communities/members/services/components.py:44
 #, python-format
 msgid "Member must be 'MemberMixin' or 'dict' but was %(type)s"
 msgstr ""
 "A tagnak 'MemberMixin'-nek vagy 'dict'-nek kell lennie, de %(type)s lett "
 "megadva"
 
-#: invenio_communities/members/services/facets.py:18
+#: invenio_communities/members/services/facets.py:14
 msgid "Role"
 msgstr "Szerepkör"
 
-#: invenio_communities/members/services/facets.py:24
-#: invenio_communities/members/services/facets.py:42
+#: invenio_communities/members/services/facets.py:20
+#: invenio_communities/members/services/facets.py:38
 msgid "Status"
 msgstr "Állapot"
 
-#: invenio_communities/members/services/facets.py:26
+#: invenio_communities/members/services/facets.py:22
 msgid "Submitted"
 msgstr "Benyújtva"
 
-#: invenio_communities/members/services/facets.py:27
+#: invenio_communities/members/services/facets.py:23
 msgid "Expired"
 msgstr "Lejárt"
 
-#: invenio_communities/members/services/facets.py:28
+#: invenio_communities/members/services/facets.py:24
 msgid "Accepted"
 msgstr "Elfogadva"
 
-#: invenio_communities/members/services/facets.py:29
+#: invenio_communities/members/services/facets.py:25
 msgid "Declined"
 msgstr "Elutasítva"
 
-#: invenio_communities/members/services/facets.py:30
+#: invenio_communities/members/services/facets.py:26
 msgid "Cancelled"
 msgstr "Visszavonva"
 
-#: invenio_communities/members/services/facets.py:43
-#: invenio_communities/views/communities.py:70
-#: invenio_communities/views/communities.py:113
+#: invenio_communities/members/services/facets.py:39
+#: invenio_communities/views/communities.py:65
+#: invenio_communities/views/communities.py:108
 msgid "Open"
-msgstr "Megnyitás"
+msgstr "Nyílt"
 
-#: invenio_communities/members/services/facets.py:43
-#: invenio_communities/views/communities.py:79
-#: invenio_communities/views/communities.py:119
+#: invenio_communities/members/services/facets.py:39
+#: invenio_communities/views/communities.py:74
+#: invenio_communities/views/communities.py:114
 msgid "Closed"
 msgstr "Lezárva"
 
-#: invenio_communities/members/services/fields.py:22
+#: invenio_communities/members/services/fields.py:18
 msgid "Invalid role."
 msgstr "Érvénytelen szerepkör."
 
-#: invenio_communities/members/services/fields.py:45
+#: invenio_communities/members/services/fields.py:41
 msgid "Not a valid role to serialize."
 msgstr "Szerializáláshoz nem megfelelő szerepkör."
 
-#: invenio_communities/members/services/request.py:108
+#: invenio_communities/members/services/request.py:167
 msgid "Community invitation"
 msgstr "Közösségi meghívó"
 
-#: invenio_communities/members/services/request.py:153
+#: invenio_communities/members/services/request.py:283
 msgid "Membership request"
 msgstr "Tagsági kérelem"
 
-#: invenio_communities/members/services/schemas.py:89
-msgid "Missing fields 'role' and/or 'visible'."
-msgstr "Hiányzó mezők: 'szerepkör' és/vagy 'látható'."
+#: invenio_communities/members/services/schemas.py:124
+msgid ""
+"Missing fields 'role' and/or 'visible' and/or 'group_notification_enabled'."
+msgstr ""
 
-#: invenio_communities/members/services/schemas.py:123
+#: invenio_communities/members/services/schemas.py:160
 msgid "Untitled"
 msgstr "Nincs cím"
 
-#: invenio_communities/members/services/service.py:201
+#: invenio_communities/members/services/service.py:196
 msgid "Must be false"
 msgstr "Hamisnak kell lennie"
 
-#: invenio_communities/members/services/service.py:223
+#: invenio_communities/members/services/service.py:218
 msgid "Invalid member type: email"
 msgstr "Érvénytelen tagtípus: email"
 
-#: invenio_communities/members/services/service.py:282
-#, python-format
-msgid "Invitation to join \"%(community)s\""
-msgstr "Meghívás a(z) \"%(community)s\" közösséghez való csatlakozásra"
-
-#: invenio_communities/members/services/service.py:285
-#, python-format
-msgid "You will join as \"%(role)s\"."
-msgstr "Ön \"%(role)s\"-ként fog csatlakozni"
-
-#: invenio_communities/members/services/service.py:542
-#: invenio_communities/members/services/service.py:662
+#: invenio_communities/members/services/service.py:482
+#: invenio_communities/members/services/service.py:613
 msgid "A community must have at least one owner."
 msgstr "A közösséghez tartoznia kell legalább egy tulajdonosnak."
 
-#: invenio_communities/members/services/service.py:571
+#: invenio_communities/members/services/service.py:520
 msgid "You cannot change your own role."
 msgstr "Nem változtathatja meg a saját szerepkörét."
 
-#: invenio_communities/members/services/service.py:579
+#: invenio_communities/members/services/service.py:528
 msgid "You can only set public visibility on your own membership."
 msgstr "Csak a saját tagságára tud nyilvános láthatóságot beállítani."
 
-#: invenio_communities/members/services/service.py:588
+#: invenio_communities/members/services/service.py:537
 #, python-format
 msgid "You will join as \"%(role)s\" (changed from: \"%(previous)s\")."
 msgstr "Ön \"%(role)s\"-ként fog csatlakozni (módosítva erről: \"%(previous)s\")."
 
-#: invenio_communities/members/services/service.py:764
+#: invenio_communities/members/services/service.py:722
+#, python-format
+msgid "Invitation to join \"%(community)s\""
+msgstr "Meghívás a(z) \"%(community)s\" közösséghez való csatlakozásra"
+
+#: invenio_communities/members/services/service.py:725
+#, python-format
+msgid "You will join as \"%(role)s\"."
+msgstr "Ön \"%(role)s\"-ként fog csatlakozni"
+
+#: invenio_communities/members/services/service.py:874
 #, python-format
 msgid "Request to join \"%(community)s\""
 msgstr "Csatlakozási kérés a %(community)s\" közösséghez"
 
-#: invenio_communities/requests/user_moderation/actions.py:71
+#: invenio_communities/requests/user_moderation/actions.py:69
 msgid "User was blocked"
 msgstr "A  felhasználó le lett tiltva"
 
-#: invenio_communities/subcommunities/services/request.py:64
+#: invenio_communities/subcommunities/services/request.py:61
 msgid "Subcommunity request"
 msgstr "Alközösségi kérés"
 
-#: invenio_communities/subcommunities/services/request.py:151
+#: invenio_communities/subcommunities/services/request.py:148
 msgid "Subcommunity invitation"
 msgstr "Meghívó al-közösségbe"
 
-#: invenio_communities/subcommunities/services/schema.py:50
+#: invenio_communities/subcommunities/services/schema.py:47
 msgid "Either community_id or community should be provided."
 msgstr "Vagy community_id vagy közösség megadása szükséges."
 
-#: invenio_communities/subcommunities/services/service.py:85
+#: invenio_communities/subcommunities/services/service.py:82
 msgid "Parent community does not accept subcommunities."
 msgstr "Ez a szülőközösség nem fogad be alközösségeket."
 
-#: invenio_communities/subcommunities/services/service.py:114
+#: invenio_communities/subcommunities/services/service.py:111
 #, python-format
 msgid "Inclusion of subcommunity \"%(community)s\""
 msgstr "\"%(community)s\" alközösség bevonása"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:31
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:27
 msgid ""
 "Organize, curate and collaborate on records for your institution, project, "
 "topic or event."
@@ -498,38 +547,38 @@ msgstr ""
 "Szervezze, gondozza és működjön együtt intézménye, projektje, témaköre vagy "
 "eseménye rekordjain!"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:43
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:44
-#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:12
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:40
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:41
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:8
 msgid "Search communities"
 msgstr "Közösségek keresése"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:49
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:46
 msgid "Search"
 msgstr "Keresés"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:71
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:70
 msgid "My communities"
 msgstr "Közösségeim"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:73
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:83
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:72
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:84
 msgid "See all"
 msgstr "Összes megtekintése"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:81
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:82
 msgid "New communities"
 msgstr "Új közösségek"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:10
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:8
 msgid "Tombstone"
 msgstr "Helyettesítő oldal"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:20
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:18
 msgid "Gone"
 msgstr "Véglegesen törölve"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:25
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:23
 #, python-format
 msgid ""
 "\n"
@@ -540,195 +589,225 @@ msgstr ""
 "        A keresett közösséget eltávolították a(z) %(sitename)s oldalról. A\n"
 "        közösség metaadatait archiválási célból megőriztük."
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:34
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:32
 msgid "Reason for removal:"
 msgstr "Eltávolítás oka:"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:37
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:35
 msgid "Removed by:"
 msgstr "Eltávolította:"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:46
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:44
 msgid "Removal note:"
 msgstr "Eltávolítási megjegyzés:"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:50
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:48
 msgid "Date of removal:"
 msgstr "Eltávolítás dátuma:"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:120
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:27
+msgid "Membership discussion"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:137
 msgid "Submission to this community is only allowed to community members."
 msgstr ""
 "A közösségbe való beküldés csak a közösség tagjai számára engedélyezett."
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:127
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:144
 msgid "New upload"
 msgstr "Új feltöltés"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:135
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:152
 msgid "Manage community"
 msgstr "Közösség kezelése"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/new_subcommunity.html:12
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/new_subcommunity.html:8
 msgid "New subcommunity"
 msgstr "Új alközösség"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:20
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:8
+msgid " about"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:17
 msgid "Awards"
 msgstr "Díjak"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:36
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:33
 msgid "Visit external website"
 msgstr "Külső weboldal megnyitása"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:37
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:34
 msgid "Opens in new tab"
 msgstr "Új lapon nyílik meg"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:4
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/curation_policy/index.html:8
+msgid " curation policy"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:9
 msgid "Community visibility"
 msgstr "Közösségi láthatóság"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:5
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:10
 msgid "The community is restricted to users with access."
 msgstr ""
 "A közösség korlátozva van a hozzáféréssel rendelkező felhasználók számára."
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:13
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:9
 msgid " members"
 msgstr "tagok"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:21
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:17
 msgid "Invitations"
 msgstr "Meghívások"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:13
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:18
+msgid "Membership Requests"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:9
 msgid " requests"
 msgstr "kérések"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:12
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:8
 msgid " settings"
 msgstr "beállítások"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:20
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:16
 msgid "Profile"
 msgstr "Profil"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:21
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:17
 msgid "Privileges"
 msgstr "Jogok"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:22
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
 msgid "Submission policy"
 msgstr "Beadási irányelvek"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:23
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
 msgid "Pages"
 msgstr "Oldalak"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:15
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:20
+msgid "Collections"
+msgstr "Gyűjtemények"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:11
 msgid " subcommunities"
 msgstr "alközösségek"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:26
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:39
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:22
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:35
 msgid "Subcommunities"
 msgstr "Alközösségek"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:34
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:30
 msgid "Browse"
 msgstr "Keresés"
 
-#: invenio_communities/templates/semantic-ui/invenio_communities/macros/communities_carousel.html:11
+#: invenio_communities/templates/semantic-ui/invenio_communities/macros/communities_carousel.html:7
 msgid "Featured communities"
 msgstr "Kiemelt közösségek"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:20
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:19
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:24
 #, python-brace-format
 msgid "💬 New comment on '{request_title}'"
 msgstr "💬 Új hozzászólás: '{request_title}'"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:26
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:31
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:30
 #, python-brace-format
 msgid "'@{user_name}' commented on '{request_title}':"
 msgstr "'@{user_name}' hozzászólt ehhez: '{request_title}'"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:32
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:31
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:57
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:37
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:62
 msgid "Check out the request"
 msgstr " Tekintse meg a kérelmet"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:38
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:41
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:41
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:41
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:37
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:42
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:39
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:62
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:33
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:35
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:56
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:58
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:44
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:63
 msgid "This is an auto-generated message. To manage notifications, visit your"
 msgstr ""
 "Ez egy automatikusan generált üzenet. Az értesítések kezeléséhez látogasson "
 "el"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:38
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:41
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:41
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:41
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:37
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:42
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:39
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:62
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:33
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:35
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:56
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:37
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:58
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:44
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:63
 msgid "account settings"
 msgstr "Fiókbeállítások"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:44
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:49
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:48
 #, python-brace-format
 msgid "@{user_name} commented on '{request_title}'"
 msgstr "@{user_name} hozzászólt ehhez: '{request_title}'"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:48
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:47
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:52
 #, python-brace-format
 msgid "Check out the request: {request_link}"
 msgstr "Tekintse meg a kérelmet: {request_link}"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:54
-#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:58
 #, python-brace-format
 msgid "*@{user_name}* commented on *{request_title}*"
 msgstr "*@{user_name}* hozzászólt ehhez: *{request_title}*"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:17
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:19
 #, python-brace-format
 msgid ""
 "✅ @{user_name} accepted the invitation to join community "
@@ -737,7 +816,7 @@ msgstr ""
 "✅ @{user_name} elfogadta a(z) '{community_title}' közösségbe szóló "
 "meghívást."
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:23
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:25
 #, python-brace-format
 msgid ""
 "'@{user_name}' accepted the invitation to join your community "
@@ -745,29 +824,31 @@ msgid ""
 msgstr ""
 "'@{user_name}' elfogadta a(z) '{community_title}' közösségbe szóló meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:25
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:25
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:27
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:26
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:27
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:50
 msgid " with the following message:"
 msgstr "a következő üzenettel:"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:35
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:67
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:35
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:66
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:35
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:66
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:26
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:47
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:37
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:69
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:31
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:52
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:36
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:67
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:27
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:53
 msgid "Check out the invitation"
 msgstr "Tekintse meg a meghívót"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:47
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:49
 #, python-brace-format
 msgid ""
 "@{user_name} accepted the invitation to join your community "
@@ -775,27 +856,28 @@ msgid ""
 msgstr ""
 "@{user_name} elfogadta az Ön '{community_title}' közösségébe szóló meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:50
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:62
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:50
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:62
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:50
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:62
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:64
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:63
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:51
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:61
 msgid "with the following message:"
 msgstr "ezzel az üzenettel:"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:54
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:54
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:54
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:56
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:45
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:55
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:41
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:46
 msgid "Check out the invitation:"
 msgstr "Meghívó megtekintése:"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:61
 #, python-brace-format
 msgid ""
 "*@{user_name}* accepted the invitation to join your community "
@@ -804,12 +886,12 @@ msgstr ""
 "*@{user_name}* elfogadta az Ön *{community_title}* közösségébe szóló "
 "meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:17
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:18
 #, python-brace-format
 msgid "❌ Community member invitation cancelled for @{user_name}"
 msgstr "❌ @{user_name} részére szóló közösségi meghívó törölve lett"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:23
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:24
 #, python-brace-format
 msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' was "
@@ -818,7 +900,7 @@ msgstr ""
 "'@{user_name}' részére szóló meghívó a(z) '{community_title}' közösségbe "
 "törölve lett"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:47
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:48
 #, python-brace-format
 msgid ""
 "The invitation for @{user_name} to join your community '{community_title}' "
@@ -826,7 +908,7 @@ msgid ""
 msgstr ""
 "@{user_name} meghívása a(z) '{community_title}' közösségbe törölve lett"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:60
 #, python-brace-format
 msgid ""
 "The invitation for *@{user_name}* to join your community "
@@ -834,14 +916,14 @@ msgid ""
 msgstr ""
 "*@{user_name}* meghívása a(z) *'{community_title}'* közösségbe törölve lett"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:17
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:18
 #, python-brace-format
 msgid "⛔️ @{user_name} declined the invitation to join '{community_title}'"
 msgstr ""
 "⛔️ @{user_name} elutasította a(z) '{community_title}' közösségbe szóló "
 "meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:23
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:24
 #, python-brace-format
 msgid ""
 "'@{user_name}' declined the invitation to join your community "
@@ -850,7 +932,7 @@ msgstr ""
 "'@{user_name}' elutasította a(z) '{community_title}' közösségébe szóló "
 "meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:47
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:48
 #, python-brace-format
 msgid ""
 "@{user_name} declined the invitation to join your community "
@@ -858,7 +940,7 @@ msgid ""
 msgstr ""
 "@{user_name} elutasította a(z) {community_title} közösségébe szóló meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:60
 #, python-brace-format
 msgid ""
 "*@{user_name}* declined the invitation to join your community "
@@ -867,33 +949,33 @@ msgstr ""
 "*@{user_name}* elutasította a(z) *{community_title}* közösségébe szóló "
 "meghívást"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:17
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:22
 #, python-brace-format
 msgid ""
-"⌛️ The invitation for @{user_name} to join community '{community_title}' "
+"⌛️ The invitation for '@{user_name}' to join community '{community_title}' "
 "expired"
-msgstr "⌛️ @{user_name} meghívása a(z) '{community_title}' közösségbe lejárt"
+msgstr ""
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:23
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:28
 #, python-brace-format
 msgid ""
-"The invitation for '@{user_name}' to join community '{community_title}' has "
-"expired."
-msgstr "'@{user_name}' meghívása a(z) '{community_title}' közösségbe lejárt."
+"The invitation for '@{user_name}' to join community '{community_title}' "
+"expired"
+msgstr ""
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:43
 #, python-brace-format
 msgid ""
-"The invitation for @{user_name} to join community '{community_title}' has "
+"The invitation for '@{user_name}' to join community '{community_title}' "
 "expired."
-msgstr "@{user_name} meghívása a(z) '{community_title}' közösségbe lejárt."
+msgstr ""
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:50
 #, python-brace-format
 msgid ""
-"The invitation for *@{user_name}* to join community *{community_title}* has "
+"The invitation for *@{user_name}* to join community *{community_title}* "
 "expired."
-msgstr "*@{user_name}* meghívása a(z) *{community_title}* közösségbe lejárt."
+msgstr ""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:18
 #, python-brace-format
@@ -916,7 +998,157 @@ msgid ""
 msgstr ""
 "Meghívást kapott a(z) *{community_title}* közösségbe, *{role}* szerepkörben"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:21
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:16
+#, python-brace-format
+msgid "Request to join the community '{community_title}' was accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:24
+#, python-brace-format
+msgid ""
+"The request to join the community '{community_title}' as '{role}' was "
+"accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:28
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:28
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:29
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:44
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:54
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:73
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:63
+msgid "Check out the membership request"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:41
+#, python-brace-format
+msgid "The request to join the community '{community_title}' was accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:54
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your "
+"account settings"
+msgstr ""
+"Automatikusan generált üzenet. Az értesítéseit a fiókbeállítások között "
+"kezelheti"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:51
+#, python-brace-format
+msgid "The request to join the community *{community_title}* was accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:56
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:75
+#, python-brace-format
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your "
+"[account settings]({account_settings_link})"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:18
+#, python-brace-format
+msgid ""
+"The request from '@{requester_name}' to join the community "
+"'{community_title}' was cancelled"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:41
+#, python-brace-format
+msgid ""
+"The membership request from '@{requester_name}' to join the community "
+"'{community_title}' was cancelled"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:51
+#, python-brace-format
+msgid ""
+"The membership request from *@{requester_name}* to join the community "
+"*{community_title}* was cancelled"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:65
+#, python-brace-format
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your [account\n"
+"settings]({account_settings_link})"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:16
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:42
+#, python-brace-format
+msgid "The request to join the community '{community_title}' was declined"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:52
+#, python-brace-format
+msgid "The request to join the community *{community_title}* was declined"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:22
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:33
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:54
+#, python-brace-format
+msgid "Your request to join the community '{community_title}' expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:24
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:56
+#, python-brace-format
+msgid ""
+"The request from '@{user_name}' to join the community '{community_title}' "
+"expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:68
+#, python-brace-format
+msgid "Your request to join the community *{community_title}* expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:70
+#, python-brace-format
+msgid ""
+"The request from *@{user_name}* to join the community *{community_title}* "
+"expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:19
+#, python-brace-format
+msgid ""
+"New request from '@{user_name}' to join the community '{community_title}'"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:49
+#, python-brace-format
+msgid ""
+"'@{user_name}' wants to join the community '{community_title}' as '{role}'"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:60
+#, python-brace-format
+msgid ""
+"*@{user_name}* wants to join the community *{community_title}* as *{role}*"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:26
 #, python-brace-format
 msgid ""
 "✅ Invitation accepted for {community_title} to join the "
@@ -925,8 +1157,8 @@ msgstr ""
 "✅ {parent_community_title} csatlakozási meghívását a {community_title} "
 "elfogadta"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:27
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
 #, python-brace-format
 msgid ""
 "@{username} accepted the invitation for \"{community_title}\" to join as a "
@@ -935,36 +1167,36 @@ msgstr ""
 "@{user_name} elfogadta a meghívást a \"{community_title}\" közösségbe a "
 "\"{parent_community_title}\" alközösségeként"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:31
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:55
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:30
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:58
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:31
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:55
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:31
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:55
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:29
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:53
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:31
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:58
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:60
 msgid "View the request"
 msgstr "A kérés megtekintése"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:45
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:47
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:45
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:45
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:43
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:50
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:50
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:50
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:50
 msgid "View the request at:"
 msgstr "A kérés megtekintése itt:"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:51
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:48
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:48
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:46
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:56
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:53
 msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "account settings at: "
@@ -972,7 +1204,7 @@ msgstr ""
 "Automatikusan generált üzenet. Az értesítéseit a fiókbeállítások között itt "
 "kezelheti:"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:58
 #, python-brace-format
 msgid ""
 "@{username} accepted the invitation the request for \"{community_title}\" to"
@@ -981,14 +1213,14 @@ msgstr ""
 "@{user_name} elfogadta a meghívást a \"{community_title}\" közösségbe a "
 "\"{parent_community_title}\" alközösségeként"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:20
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:25
 #, python-brace-format
 msgid "📬 Invitation to join the {parent_community_title} community"
 msgstr ""
 "📬 Meghívó a(z) \"{parent_community_title}\" közösséghez való csatlakozásra"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:26
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:31
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:50
 #, python-brace-format
 msgid ""
 "We would like to invite your community \"{community_title}\" to join as a "
@@ -997,15 +1229,15 @@ msgstr ""
 "Szeretnénk meghívni \"{community_title}\" közösségét, hogy a "
 "\"{parent_community_title}\" alközösségeként csatlakozzon "
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:33
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:49
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:54
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:65
 #, python-brace-format
 msgid "This invitation will expire on {expires_at}."
 msgstr "Ez a meghívó a következő időpontban lejár: {expires_at} "
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:56
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:56
 #, python-brace-format
 msgid ""
 "The community *{community_title}* has requested to join as a subcommunity of"
@@ -1014,7 +1246,7 @@ msgstr ""
 "A *{community_title}* közösség a *{parent_community_title}* alközösségeként "
 "kíván csatlakozni"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:21
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:26
 #, python-brace-format
 msgid ""
 "⛔️ Subcommunity invitation declined for {community_title} to join the "
@@ -1023,9 +1255,9 @@ msgstr ""
 "⛔️ {community_title} alközösségi meghívójának elutasítása a "
 "{parent_community_title} közösséghez"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:27
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:43
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:58
 #, python-brace-format
 msgid ""
 "@{username} declined the invitation for \"{community_title}\" to join as a "
@@ -1034,7 +1266,7 @@ msgstr ""
 "@{user_name} elutasította a(z) {community_title} közösségbe a(z) "
 "\"{parent_community_title}\" alközösségeként szóló meghívást  "
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:18
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:23
 #, python-brace-format
 msgid ""
 "⌛️ The invitation for {community_title} to join the "
@@ -1043,7 +1275,7 @@ msgstr ""
 "⌛️ A(z) {community_title} meghívója a(z) '{parent_community_title}' "
 "közösségbe lejárt"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:24
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:29
 #, python-brace-format
 msgid ""
 "The invitation for '{community_title}' to join the "
@@ -1052,7 +1284,7 @@ msgstr ""
 "A(z) '{community_title}' meghívója a(z) '{parent_community_title}' "
 "közösségbe lejárt."
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:39
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:44
 #, python-brace-format
 msgid ""
 "The invitation for {community_title} to join the '{parent_community_title}' "
@@ -1061,7 +1293,7 @@ msgstr ""
 "A(z) {community_title} meghívója a(z) '{parent_community_title}' közösségbe "
 "lejárt."
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:51
 #, python-brace-format
 msgid ""
 "The invitation for *{community_title}* to join community "
@@ -1070,7 +1302,7 @@ msgstr ""
 "A(z) *{community_title}* meghívója a(z) *{parent_community_title}* "
 "közösségbe lejárt."
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:21
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:26
 #, python-brace-format
 msgid ""
 "✅ Subcommunity request accepted for \"{community_title}\" to join "
@@ -1079,9 +1311,9 @@ msgstr ""
 "✅ \"{community_title}\" csatlakozási kérése a \"{parent_community_title}\" "
 "alközösségeként elfogadásra került"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:27
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:43
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:58
 #, python-brace-format
 msgid ""
 "The community manager @{username} accepted the request for "
@@ -1091,7 +1323,7 @@ msgstr ""
 "@{username} közösségvezető elfogadta \"{community_title}\" csatlakozási "
 "kérését a \"{parent_community_title}\" alközösségeként."
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:19
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:24
 #, python-brace-format
 msgid ""
 "📬 Subcommunity request for \"{community_title}\" to join "
@@ -1100,8 +1332,8 @@ msgstr ""
 "📬 \"{community_title}\" csatlakozási kérése a \"{parent_community_title}\" "
 "alközösségeként"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:25
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:41
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:30
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:46
 #, python-brace-format
 msgid ""
 "The community \"{community_title}\" has requested to join as a subcommunity "
@@ -1110,7 +1342,7 @@ msgstr ""
 "A \"{community_title}\" közösség a \"{parent_community_title}\" "
 "alközösségeként kíván csatlakozni"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:21
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:26
 #, python-brace-format
 msgid ""
 "⛔️ Subcommunity request declined for \"{community_title}\" to join "
@@ -1119,9 +1351,9 @@ msgstr ""
 "⛔️ \"{community_title}\" alközösségként való csatlakozási kérése a "
 "\"{parent_community_title}\" közösséghez elutasítva"
 
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:27
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:43
-#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:58
 #, python-brace-format
 msgid ""
 "The community manager @{username} declined the request for "
@@ -1131,17 +1363,17 @@ msgstr ""
 "@{username} közösségvezető elutasította \"{community_title}\" csatlakozási "
 "kérését a \"{parent_community_title}\" alközösségeként."
 
-#: invenio_communities/views/communities.py:36
+#: invenio_communities/views/communities.py:31
 msgid "Your community is publicly accessible and shows up in search results."
 msgstr ""
 "Az Ön közössége nyilvánosan elérhető, és megjelenik a keresési találatokban."
 
-#: invenio_communities/views/communities.py:43
+#: invenio_communities/views/communities.py:38
 msgid "Your community is restricted to users with access."
 msgstr ""
 "Az Ön közössége csak a hozzáféréssel rendelkező tagok számára elérhető."
 
-#: invenio_communities/views/communities.py:53
+#: invenio_communities/views/communities.py:48
 msgid ""
 "Members who have set their visibility to public are visible to anyone. "
 "Members with hidden visibility are only visible to other members."
@@ -1149,17 +1381,17 @@ msgstr ""
 "A nyilvános láthatóságot beállító tagok bárki számára láthatók. A rejtett "
 "láthatóságú tagokat csak a közösség többi tagja által láthatóak."
 
-#: invenio_communities/views/communities.py:58
+#: invenio_communities/views/communities.py:53
 msgid "Members-only"
 msgstr "Csak tagoknak"
 
-#: invenio_communities/views/communities.py:62
+#: invenio_communities/views/communities.py:57
 msgid ""
 "Members in your community are only visible to other members of the "
 "community."
 msgstr "A közösségének tagjai csak a közösség más tagjai számára láthatók."
 
-#: invenio_communities/views/communities.py:74
+#: invenio_communities/views/communities.py:69
 msgid ""
 "All authenticated users can submit records to the community. If the "
 "community is restricted, then only members can submit records to it."
@@ -1167,24 +1399,24 @@ msgstr ""
 "Minden hitelesített felhasználó küldhet be rekordokat a közösségbe. Ha a "
 "közösség korlátozott, csak a tagok küldhetnek be rekordokat."
 
-#: invenio_communities/views/communities.py:82
+#: invenio_communities/views/communities.py:77
 msgid "Only members can submit records to the community."
 msgstr "Csak a tagok küldhetnek be rekordokat a közösségbe."
 
-#: invenio_communities/views/communities.py:88
+#: invenio_communities/views/communities.py:83
 msgid "Review all submissions"
 msgstr "Összes beküldés áttekintése"
 
-#: invenio_communities/views/communities.py:91
+#: invenio_communities/views/communities.py:86
 msgid "All submissions to the community must be reviewed."
 msgstr "A közösségbe beküldött összes anyag bírálatot igényel."
 
-#: invenio_communities/views/communities.py:94
+#: invenio_communities/views/communities.py:89
 msgid "Allow curators, managers and owners to publish without review"
 msgstr ""
 "A felügyelők, kezelők és tulajdonosok bírálat nélkül is publikálhatnak."
 
-#: invenio_communities/views/communities.py:98
+#: invenio_communities/views/communities.py:93
 msgid ""
 "Submissions to the community by default requires review, but curators, "
 "managers and owners can publish directly without review."
@@ -1193,12 +1425,12 @@ msgstr ""
 "felügyelők, kezelők és tulajdonosok bírálat nélkül, közvetlenül "
 "publikálhatnak."
 
-#: invenio_communities/views/communities.py:102
+#: invenio_communities/views/communities.py:97
 msgid "Allow all members to publish without review"
 msgstr ""
 "Minden tag számára legyen lehetőség felülvizsgálat nélküli közzétételre"
 
-#: invenio_communities/views/communities.py:106
+#: invenio_communities/views/communities.py:101
 msgid ""
 "Submissions to the community by default requires review, but all community "
 "members can publish directly without review."
@@ -1206,11 +1438,11 @@ msgstr ""
 "Alapértelmezés szerint a beküldött anyagok bírálatot igényelnek, de a "
 "közösség minden tagja bírálat nélkül, közvetlenül publikálhat."
 
-#: invenio_communities/views/communities.py:116
+#: invenio_communities/views/communities.py:111
 msgid "Users can request to join your community."
 msgstr "A felhasználók kérhetik a közösséghez való csatlakozást."
 
-#: invenio_communities/views/communities.py:123
+#: invenio_communities/views/communities.py:118
 msgid ""
 "Users cannot request to join your community. Only invited users can become "
 "members of your community."

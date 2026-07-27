@@ -1,19 +1,19 @@
-# 
 # Translators:
 # yyones, 2024
 # Rim Sharif, 2025
 # Tibor Simko <tibor.simko@cern.ch>, 2025
-# Mattias Vesterlund, 2025
-# Sam Arbid, 2025
+# Lina Andrén, 2025
+# Sam Arbid, 2026
+# Mattias Vesterlund, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Sam Arbid, 2025\n"
+"Last-Translator: Mattias Vesterlund, 2026\n"
 "Language-Team: Swedish (https://app.transifex.com/inveniosoftware/teams/23537/sv/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -123,7 +123,7 @@ msgstr "Ny uppladdning"
 
 msgid "Submission to this community is only allowed to community members."
 msgstr ""
-"Inlämning till denna community är endast tillåten för communitymedlemmar."
+"Endast medlemmar i denna community kan skicka in poster till communityn."
 
 msgid "Previous slide"
 msgstr "Föregående bild"
@@ -166,7 +166,7 @@ msgid "There are no new communities."
 msgstr "Det finns inga nya communities."
 
 msgid "Request Membership"
-msgstr "Begär Medlemskap"
+msgstr "Ansök om medlemskap"
 
 msgid "Message to managers (optional)"
 msgstr "Meddelande till managers (valfritt)"
@@ -186,9 +186,6 @@ msgstr ""
 
 msgid "Identifier"
 msgstr "Identifierare"
-
-msgid "Setup your new community"
-msgstr "Skapa din nya community"
 
 msgid "Community name"
 msgstr "Communitynamn"
@@ -313,13 +310,6 @@ msgstr "Sök efter grupper"
 msgid "Already a member"
 msgstr "Redan medlem"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Obs: vid tillägg kommer valda grupper att bli medlemmar i communityn "
-"omedelbart utan någon form av meddelande eller godkännande av inbjudan."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] "Du är på väg att lägga till {{count}} grupp."
@@ -354,12 +344,6 @@ msgstr "Du är på väg att bjuda in"
 
 msgid "users"
 msgstr "användare"
-
-msgid "Already a member or invitation pending"
-msgstr "Redan medlem eller väntar på svar på inbjudan"
-
-msgid "Search by email, full name or username"
-msgstr "Sök med e-post, fullständigt namn eller användarnamn"
 
 msgid "Groups"
 msgstr "Grupper"
@@ -471,7 +455,7 @@ msgid "Membership Policy"
 msgstr "Medlemskapspolicy"
 
 msgid "Controls if anyone can request to join your community."
-msgstr "Kontrollerar om någon kan begära att få gå med i din community."
+msgstr "Kontrollerar om någon kan ansöka om medlemskap i din community."
 
 msgid "Maximum number of characters is 2000"
 msgstr "Maximalt antal tecken är 2000"
@@ -532,7 +516,7 @@ msgid "Permanently delete community"
 msgstr "Radera communityn permanent"
 
 msgid "Are you absolutely sure you want to delete the community?"
-msgstr "Är du helt säker på att du vill ta bort communityn?"
+msgstr "Är du helt säker på att du vill radera communityn?"
 
 msgid "This action CANNOT be undone!"
 msgstr "Denna åtgärd KAN INTE ångras!"
@@ -544,10 +528,10 @@ msgid "records will be removed from the community."
 msgstr "poster kommer att tas bort från communityn."
 
 msgid "CANNOT"
-msgstr "KAN INTE"
+msgstr "kan INTE"
 
 msgid "reuse the community identifier \"{{slug}}\"."
-msgstr "återanvänd community-identifikatorn \"{{slug}}\"."
+msgstr "återanvänd community-identifieraren \"{{slug}}\"."
 
 msgid "Please type"
 msgstr "Var god skriv"
@@ -589,7 +573,7 @@ msgid "Controls who can publish records directly without review."
 msgstr "Styr vem som kan publicera poster direkt utan granskning."
 
 msgid "Records submission policy"
-msgstr "Policy för inskick av poster"
+msgstr "Policy för att skicka in poster"
 
 msgid "Controls who can submit records to the community."
 msgstr "Styr vem som kan skicka in poster till communityn."
@@ -617,3 +601,61 @@ msgstr "Avbruten"
 
 msgid "Add organization: "
 msgstr "Lägg till organisation: "
+
+msgid "View comments"
+msgstr "Visa kommentarer"
+
+msgid "Set up your new community"
+msgstr "Konfigurera din nya community"
+
+msgid "Enabled"
+msgstr "Aktiverad"
+
+msgid "Disabled"
+msgstr "Inaktiverad"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr "Du håller på att ta bort {{name}} från denna community."
+
+msgid "cancel invitation"
+msgstr "avbryt inbjudan"
+
+msgid "Cancel invitation"
+msgstr "Avbryt inbjudan"
+
+msgid "No matching invitations found."
+msgstr "Inga matchande inbjudningar hittades."
+
+msgid "Email notifications"
+msgstr "E-postaviseringar"
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+"När detta är aktiverat får gruppmedlemmar e-postmeddelanden relaterade till "
+"communityåtgärder, till exempel inskickning av poster."
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+"Obs! När de läggs till blir valda grupper omedelbart communitymedlemmar utan"
+" någon form av godkännande av inbjudan."
+
+msgid "Already a member or pending a decision"
+msgstr "Redan medlem eller väntar på beslut"
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+"Sök med fullständigt namn, användarnamn eller e-postadress (om offentligt "
+"synlig)"
+
+msgid "Notifications"
+msgstr "Meddelanden"
+
+msgid "Search in membership requests..."
+msgstr "Sök i medlemskapsförfrågningar..."
+
+msgid "No matching membership requests found."
+msgstr "Inga matchande medlemskapsförfrågningar hittades."

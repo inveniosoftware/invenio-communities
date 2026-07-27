@@ -1,17 +1,16 @@
-# 
 # Translators:
 # Weizheng Lu, 2025
 # Tibor Simko <tibor.simko@cern.ch>, 2025
-# Kalven Richie, 2025
+# Kalven Richie, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Kalven Richie, 2025\n"
+"Last-Translator: Kalven Richie, 2026\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/inveniosoftware/teams/23537/zh_CN/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -172,9 +171,6 @@ msgstr "这是您社区的唯一标识符。您可以通过URL访问您的社区
 msgid "Identifier"
 msgstr "标识符"
 
-msgid "Setup your new community"
-msgstr "设置你的新社区"
-
 msgid "Community name"
 msgstr "社区名称"
 
@@ -295,11 +291,6 @@ msgstr "搜索组别"
 msgid "Already a member"
 msgstr ""
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
 msgstr[0] ""
@@ -331,12 +322,6 @@ msgstr ""
 
 msgid "users"
 msgstr ""
-
-msgid "Already a member or invitation pending"
-msgstr ""
-
-msgid "Search by email, full name or username"
-msgstr "通过电子邮件、全名或用户名搜索"
 
 msgid "Groups"
 msgstr "组别"
@@ -586,4 +571,56 @@ msgid "Cancelled"
 msgstr "已取消"
 
 msgid "Add organization: "
+msgstr ""
+
+msgid "View comments"
+msgstr ""
+
+msgid "Set up your new community"
+msgstr ""
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Disabled"
+msgstr "无效"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr ""
+
+msgid "cancel invitation"
+msgstr ""
+
+msgid "Cancel invitation"
+msgstr ""
+
+msgid "No matching invitations found."
+msgstr ""
+
+msgid "Email notifications"
+msgstr ""
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
+msgstr ""
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+
+msgid "Already a member or pending a decision"
+msgstr ""
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Search in membership requests..."
+msgstr ""
+
+msgid "No matching membership requests found."
 msgstr ""

@@ -1,17 +1,19 @@
-# 
 # Translators:
 # Berat Aldemir <berataldemir@gmail.com>, 2022
-# Ben Translation and Interpreting Services <info@bentercume.com>, 2025
-# BEN TERCÜME, 2025
+# Eylül-1 -, 2025
+# BEN TERCÜME, 2026
+# Ben Translation and Interpreting Services <info@bentercume.com>, 2026
+# Cansu SAZOĞLU, 2026
+# Furkan Kalkan <furkan.kalkan3@gmail.com>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-07-08T19:38:09.523Z\n"
+"POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: BEN TERCÜME, 2025\n"
+"Last-Translator: Furkan Kalkan <furkan.kalkan3@gmail.com>, 2026\n"
 "Language-Team: Turkish (https://app.transifex.com/inveniosoftware/teams/23537/tr/)\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -27,7 +29,7 @@ msgid "Unavailability statement"
 msgstr "Kullanılamama bildirimi"
 
 msgid "Success"
-msgstr "Başarı"
+msgstr "Başarılı"
 
 msgid "Community {{id}} was restored."
 msgstr "{{id}} topluluğu geri yüklendi."
@@ -119,7 +121,7 @@ msgid "New upload"
 msgstr "Yeni Yükleme"
 
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "Bu topluluğa gönderim sadece topluluk üyelerine izin verilir."
 
 msgid "Previous slide"
 msgstr "Önceki slayt"
@@ -144,10 +146,10 @@ msgstr ""
 "hemen yayınlanacaktır."
 
 msgid "Verified community"
-msgstr ""
+msgstr "Doğrulanmış topluluk"
 
 msgid "Part of"
-msgstr ""
+msgstr "Şunun parçası:"
 
 msgid "Edit"
 msgstr "Düzenle"
@@ -156,13 +158,13 @@ msgid "An error occurred."
 msgstr "Bir hata oluştu."
 
 msgid "You are not a member of any community."
-msgstr ""
+msgstr "Herhangi bir topluluğun üyesi değilsiniz."
 
 msgid "There are no new communities."
-msgstr ""
+msgstr "Hiç yeni topluluk yok."
 
 msgid "Request Membership"
-msgstr "Üyelik Talebi"
+msgstr "Üyelik İsteği"
 
 msgid "Message to managers (optional)"
 msgstr "Yöneticilere mesaj (isteğe bağlı)"
@@ -182,9 +184,6 @@ msgstr ""
 
 msgid "Identifier"
 msgstr "Tanımlayıcı"
-
-msgid "Setup your new community"
-msgstr "Yeni topluluğunuzu kurun"
 
 msgid "Community name"
 msgstr "Topluluk adı"
@@ -309,17 +308,10 @@ msgstr "Grupları ara"
 msgid "Already a member"
 msgstr "Zaten üye"
 
-msgid ""
-"Note: upon addition, selected groups will become community members "
-"immediately without any kind of notification or invitation approval."
-msgstr ""
-"Not: Seçili gruplar, eklendikten sonra, herhangi bir bildirim veya davet "
-"onayına gerek kalmaksızın anında topluluk üyesi olacaktır."
-
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{{count}} grup eklemek üzeresiniz."
+msgstr[1] "{{count}} adet grup eklemek üzeresiniz."
 
 msgid "Add"
 msgstr "Ekle"
@@ -350,12 +342,6 @@ msgstr "Şu kullanıcıları davet etmek üzeresiniz:"
 
 msgid "users"
 msgstr "kullanıcılar"
-
-msgid "Already a member or invitation pending"
-msgstr "Zaten üye veya davet gönderilmiş"
-
-msgid "Search by email, full name or username"
-msgstr "E-posta, tam ad veya kullanıcı adı ile arama yapın"
 
 msgid "Groups"
 msgstr "Gruplar"
@@ -419,7 +405,7 @@ msgid "Remove from community"
 msgstr "Topluluktan kaldır"
 
 msgid "You have selected {{selectedCount}} users"
-msgstr ""
+msgstr "{{selectedCount}} adet kullanıcı seçtiniz"
 
 msgid "You"
 msgstr "Sen"
@@ -438,8 +424,8 @@ msgstr "ve"
 
 msgid "{{count}} more organizations"
 msgid_plural "{{count}} more organizations"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{{count}} kuruluş daha"
+msgstr[1] "{{count}} kuruluş daha"
 
 msgid "Saved"
 msgstr "Kaydedildi"
@@ -471,7 +457,7 @@ msgstr "Üyelik Politikası"
 
 msgid "Controls if anyone can request to join your community."
 msgstr ""
-"Herhangi birinin topluluğunuza katılma talebinde bulunup bulunamayacağını "
+"Herhangi birinin topluluğunuza katılma isteğinde bulunup bulunamayacağını "
 "kontrol eder."
 
 msgid "Maximum number of characters is 2000"
@@ -508,7 +494,7 @@ msgid "Funding information"
 msgstr "Finansman bilgisi"
 
 msgid "Awards/Grants"
-msgstr "Ödüller/Hibeler"
+msgstr "Araştırma Destekleri / Hibeler"
 
 msgid "Danger zone"
 msgstr "Tehlikeli bölge"
@@ -533,28 +519,28 @@ msgid "Permanently delete community"
 msgstr "Topluluğu kalıcı olarak sil"
 
 msgid "Are you absolutely sure you want to delete the community?"
-msgstr ""
+msgstr "Topluluğu silmek istediğinizden kesinlikle emin misiniz?"
 
 msgid "This action CANNOT be undone!"
 msgstr "Bu işlem GERİ ALINAMAZ!"
 
 msgid "members will be removed from the community."
-msgstr ""
+msgstr "üyeler topluluktan çıkarılacak."
 
 msgid "records will be removed from the community."
-msgstr ""
+msgstr "kayıtlar topluluktan kaldırılacak."
 
 msgid "CANNOT"
-msgstr ""
+msgstr " \"{{slug}}\""
 
 msgid "reuse the community identifier \"{{slug}}\"."
-msgstr ""
+msgstr "topluluk tanımlayıcısını tekrar KULLANAMAZSINIZ."
 
 msgid "Please type"
-msgstr ""
+msgstr "Doğrulamak için"
 
 msgid "to confirm."
-msgstr ""
+msgstr "lütfen yazın."
 
 msgid "Permanently delete"
 msgstr "Kalıcı olarak sil"
@@ -589,15 +575,16 @@ msgstr "İnceleme politikası"
 
 msgid "Controls who can publish records directly without review."
 msgstr ""
+"İnceleme olmadan kayıtları doğrudan yayınlayabilecek kişileri kontrol eder."
 
 msgid "Records submission policy"
-msgstr ""
+msgstr "Kayıt gönderim politikası"
 
 msgid "Controls who can submit records to the community."
-msgstr ""
+msgstr "Topluluğa kayıt gönderebilecek kişileri kontrol eder."
 
 msgid "Subcommunity request"
-msgstr "Alt topluluk talebi"
+msgstr "Alt topluluk isteği"
 
 msgid "Do you already have an existing community?"
 msgstr "Halihazırda mevcut bir topluluğunuz var mı?"
@@ -612,10 +599,67 @@ msgid "Community"
 msgstr "Topluluk"
 
 msgid "Create request"
-msgstr "Talep oluştur"
+msgstr "İstek oluştur"
 
 msgid "Cancelled"
 msgstr "İptal edildi"
 
 msgid "Add organization: "
+msgstr "Kuruluş ekle:"
+
+msgid "View comments"
+msgstr "Yorumları göster"
+
+msgid "Set up your new community"
+msgstr "Yeni topluluğunuzu kurun"
+
+msgid "Enabled"
+msgstr "Etkin"
+
+msgid "Disabled"
+msgstr "Etkin değil"
+
+msgid "You are about to remove {{name}} from this community."
+msgstr "{{name}} isimli kullanıcıyı bu topluluktan kaldırmak üzeresiniz."
+
+msgid "cancel invitation"
+msgstr "daveti iptal et"
+
+msgid "Cancel invitation"
+msgstr "Daveti iptal et"
+
+msgid "No matching invitations found."
+msgstr "Eşleşen davet bulunamadı."
+
+msgid "Email notifications"
+msgstr "E-posta bildirimleri"
+
+msgid ""
+"When enabled, group members will receive emails related to community "
+"actions, such as submission of records."
 msgstr ""
+"Etkinleştirildiğinde, grup üyeleri kayıt gönderimi gibi topluluk "
+"eylemleriyle ilgili e-postalar alacaktır."
+
+msgid ""
+"Note: upon addition, selected groups will become community members "
+"immediately without any kind of invitation approval."
+msgstr ""
+"Not: Seçilen gruplar eklendikten sonra herhangi bir davet onayı "
+"gerekmeksizin anında topluluk üyesi olacaktır."
+
+msgid "Already a member or pending a decision"
+msgstr "Zaten üye olan veya bir karar bekleyen"
+
+msgid "Search by full name, username or email (if publicly visible)"
+msgstr ""
+"Ad soyad, kullanıcı adı veya e-posta adresine göre arayın (herkese açıksa) "
+
+msgid "Notifications"
+msgstr "Bildirimler"
+
+msgid "Search in membership requests..."
+msgstr "Üyelik taleplerinde arama yapın..."
+
+msgid "No matching membership requests found."
+msgstr "Eşleşen üyelik isteği bulunamadı."
