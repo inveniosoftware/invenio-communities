@@ -899,7 +899,9 @@ class MemberService(RecordService):
                 notify=False,
             )
 
-        role = current_roles["reader"]
+        role = current_roles[
+            current_app.config["COMMUNITIES_MEMBERSHIP_REQUESTS_DEFAULT_ROLE"]
+        ]
 
         uow.register(
             NotificationOp(
