@@ -47,11 +47,11 @@ msgstr "Más nuevo"
 #: invenio_communities/members/services/config.py:93
 #: invenio_communities/members/services/config.py:124
 msgid "Oldest"
-msgstr "Más viejo"
+msgstr "Más antiguo"
 
 #: invenio_communities/config.py:81
 msgid "Version"
-msgstr "Version"
+msgstr "Versión"
 
 #: invenio_communities/config.py:85
 msgid "Recently updated"
@@ -155,7 +155,7 @@ msgid ""
 "community."
 msgstr ""
 "No se puede establecer la comunidad como predeterminada. El registro no se "
-"ha agregado a la comunidad."
+"ha añadido a la comunidad."
 
 #: invenio_communities/administration/communities.py:27
 #: invenio_communities/administration/communities.py:28
@@ -189,7 +189,7 @@ msgstr "Ajustes"
 
 #: invenio_communities/ext.py:182
 msgid "Curation policy"
-msgstr "Política de conservación"
+msgstr "Política de curación"
 
 #: invenio_communities/ext.py:190
 msgid "About"
@@ -206,7 +206,7 @@ msgstr "Se debe definir un rol como propietario."
 #: invenio_communities/administration/communities.py:40
 #: invenio_communities/administration/communities.py:116
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: invenio_communities/administration/communities.py:41
 #: invenio_communities/administration/communities.py:119
@@ -232,7 +232,7 @@ msgstr "Creado"
 #: invenio_communities/administration/communities.py:50
 #: invenio_communities/administration/communities.py:108
 msgid "Feature"
-msgstr ""
+msgstr "característica"
 
 #: invenio_communities/administration/communities.py:56
 msgid "Delete"
@@ -324,19 +324,21 @@ msgstr "Al progenitor asignado no se le permite serlo."
 
 #: invenio_communities/communities/services/components.py:322
 msgid "Community allowed to be a parent can't be a child."
-msgstr ""
+msgstr "Una comunidad a la que se le permite ser padre no puede ser hijo."
 
 #: invenio_communities/communities/services/components.py:326
 msgid "Assigned parent community cannot also have a parent."
-msgstr ""
+msgstr "Una comunidad principal asignada no puede de otra padre."
 
 #: invenio_communities/communities/services/components.py:330
 msgid "Assigned parent community cannot be the same as child."
 msgstr ""
+"La comunidad principal asignada no puede ser la misma que la del elemento "
+"secundario."
 
 #: invenio_communities/communities/services/components.py:333
 msgid "Assigned parent community does not exist."
-msgstr ""
+msgstr "La comunidad padre asignada no existe."
 
 #: invenio_communities/communities/services/facets.py:14
 msgid "Organization"
@@ -366,7 +368,7 @@ msgstr "Visibilidad"
 #: invenio_communities/views/communities.py:27
 #: invenio_communities/views/communities.py:44
 msgid "Public"
-msgstr "Publico"
+msgstr "Público"
 
 #: invenio_communities/communities/services/facets.py:26
 #: invenio_communities/communities/services/facets.py:46
@@ -393,6 +395,8 @@ msgid ""
 "One of the submitted entity is already a member or pending a decision. The "
 "entire action was cancelled."
 msgstr ""
+"Una de las entidades presentadas ya es miembro o está a la espera de una "
+"decisión. Se ha cancelado todo el procedimiento."
 
 #: invenio_communities/members/services/components.py:29
 #: invenio_communities/members/services/components.py:38
@@ -465,6 +469,7 @@ msgstr "Solicitud de membresía"
 msgid ""
 "Missing fields 'role' and/or 'visible' and/or 'group_notification_enabled'."
 msgstr ""
+"Faltan los campos «role» y/o «visible» y/o «group_notification_enabled»."
 
 #: invenio_communities/members/services/schemas.py:160
 msgid "Untitled"
@@ -525,7 +530,7 @@ msgstr "Invitación a la subcomunidad"
 
 #: invenio_communities/subcommunities/services/schema.py:47
 msgid "Either community_id or community should be provided."
-msgstr ""
+msgstr "Se debe proporcionar tanto community_id como community."
 
 #: invenio_communities/subcommunities/services/service.py:82
 msgid "Parent community does not accept subcommunities."
@@ -541,8 +546,8 @@ msgid ""
 "Organize, curate and collaborate on records for your institution, project, "
 "topic or event."
 msgstr ""
-"Organice, cure y colabore en registros para su institución, proyecto, tema o"
-" evento."
+"Organice, seleccione y colabore en la gestión de documentos para su "
+"institución, proyecto, tema o evento."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:40
 #: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:41
@@ -583,7 +588,7 @@ msgid ""
 "        metadata of the community is kept for archival purposes."
 msgstr ""
 "\n"
-"La comunidad que intentas acceder fue eliminada de %(sitename)s. Los metadatos de la comunidad se conservan con fines archivísticos"
+"La comunidad a la que intenta acceder fue eliminada de %(sitename)s. Los metadatos de la comunidad se conservan con fines archivísticos"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:32
 msgid "Reason for removal:"
@@ -603,15 +608,15 @@ msgstr "Fecha de eliminación:"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:27
 msgid "Membership discussion"
-msgstr ""
+msgstr "Discusión sobre la membresía"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:137
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "Solo los miembros de esta comunidad pueden enviar publicaciones."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:144
 msgid "New upload"
-msgstr "Nueva subida"
+msgstr "Nuevo envío"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:152
 msgid "Manage community"
@@ -623,7 +628,7 @@ msgstr "Nueva subcomunidad"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:8
 msgid " about"
-msgstr ""
+msgstr "acerca de"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:17
 msgid "Awards"
@@ -639,7 +644,7 @@ msgstr "Se abre en una pestaña nueva"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/curation_policy/index.html:8
 msgid " curation policy"
-msgstr ""
+msgstr "política de curación"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:9
 msgid "Community visibility"
@@ -659,7 +664,7 @@ msgstr "Invitaciónes"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:18
 msgid "Membership Requests"
-msgstr ""
+msgstr "Solicitudes de membresía"
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:9
 msgid " requests"
@@ -787,7 +792,7 @@ msgstr "configuraciones de la cuenta"
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:48
 #, python-brace-format
 msgid "@{user_name} commented on '{request_title}'"
-msgstr ""
+msgstr "@{user_name} comentó en '{request_title}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:53
 #: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:52
@@ -879,11 +884,13 @@ msgid ""
 "*@{user_name}* accepted the invitation to join your community "
 "*{community_title}*"
 msgstr ""
+"*@{user_name}* aceptó la invitación para unirse a su comunidad "
+"*{community_title}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:18
 #, python-brace-format
 msgid "❌ Community member invitation cancelled for @{user_name}"
-msgstr ""
+msgstr "❌ Se ha cancelado la invitación a la comunidad para @{user_name}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:24
 #, python-brace-format
@@ -891,6 +898,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' was "
 "cancelled"
 msgstr ""
+"Se ha cancelado la invitación para que '@{user_name}' se una a la comunidad "
+"'{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:48
 #, python-brace-format
@@ -898,6 +907,8 @@ msgid ""
 "The invitation for @{user_name} to join your community '{community_title}' "
 "was cancelled"
 msgstr ""
+"La invitación para que @{user_name} se una a su comunidad "
+"'{community_title}' fue cancelada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:60
 #, python-brace-format
@@ -905,11 +916,14 @@ msgid ""
 "The invitation for *@{user_name}* to join your community "
 "*'{community_title}'* was cancelled"
 msgstr ""
+"La invitación para que *@{user_name}* se una a su comunidad "
+"*'{community_title}'* fue cancelada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:18
 #, python-brace-format
 msgid "⛔️ @{user_name} declined the invitation to join '{community_title}'"
 msgstr ""
+"⛔️ @{user_name} rechazó la invitación para unirse a '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:24
 #, python-brace-format
@@ -917,6 +931,8 @@ msgid ""
 "'@{user_name}' declined the invitation to join your community "
 "'{community_title}'"
 msgstr ""
+"'@{user_name}' rechazó la invitación para unirse a la comunidad "
+"'{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:48
 #, python-brace-format
@@ -924,6 +940,8 @@ msgid ""
 "@{user_name} declined the invitation to join your community "
 "{community_title}"
 msgstr ""
+"@{user_name} rechazó la invitación para unirse a la comunidad "
+"{community_title}."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:60
 #, python-brace-format
@@ -931,6 +949,8 @@ msgid ""
 "*@{user_name}* declined the invitation to join your community "
 "*{community_title}*"
 msgstr ""
+"*@{user_name}* rechazó la invitación para unirse a la comunidad "
+"*{community_title}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:22
 #, python-brace-format
@@ -938,6 +958,8 @@ msgid ""
 "⌛️ The invitation for '@{user_name}' to join community '{community_title}' "
 "expired"
 msgstr ""
+"⌛️ La invitación para que '@{user_name}' se una a la comunidad "
+"'{community_title}' ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:28
 #, python-brace-format
@@ -945,6 +967,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' "
 "expired"
 msgstr ""
+"La invitación para que '@{user_name}' se una a la comunidad "
+"'{community_title}' ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:43
 #, python-brace-format
@@ -952,6 +976,8 @@ msgid ""
 "The invitation for '@{user_name}' to join community '{community_title}' "
 "expired."
 msgstr ""
+"La invitación para que '@{user_name}' se una a la comunidad "
+"'{community_title}' ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:50
 #, python-brace-format
@@ -959,11 +985,15 @@ msgid ""
 "The invitation for *@{user_name}* to join community *{community_title}* "
 "expired."
 msgstr ""
+"La invitación a *@{user_name}* para unirse a la comunidad "
+"*{community_title}* ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:18
 #, python-brace-format
 msgid "📬 New invitation to join the community '{community_title}' as '{role}'"
 msgstr ""
+"📬 Nueva invitación para unirse a la comunidad '{community_title}' como "
+"'{role}'"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:24
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:48
@@ -971,17 +1001,20 @@ msgstr ""
 msgid ""
 "You have been invited to join community '{community_title}' as '{role}'"
 msgstr ""
+"Ha sido invitado a unirte a la comunidad '{community_title}' como '{role}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:60
 #, python-brace-format
 msgid ""
 "You have been invited to join community *{community_title}* as *{role}*"
 msgstr ""
+"Ha sido invitado a unirse a la comunidad *{community_title}* como *{role}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:16
 #, python-brace-format
 msgid "Request to join the community '{community_title}' was accepted"
 msgstr ""
+"Se aceptó la solicitud para unirse a la comunidad '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:24
 #, python-brace-format
@@ -989,6 +1022,8 @@ msgid ""
 "The request to join the community '{community_title}' as '{role}' was "
 "accepted"
 msgstr ""
+"La solicitud para unirse a la comunidad '{community_title}' como '{role}' ha"
+" sido aceptada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:28
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:43
@@ -1006,12 +1041,13 @@ msgstr ""
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:52
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:63
 msgid "Check out the membership request"
-msgstr ""
+msgstr "Consulte la solicitud de membresía"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:41
 #, python-brace-format
 msgid "The request to join the community '{community_title}' was accepted"
 msgstr ""
+"Se ha aceptado la solicitud para unirse a la comunidad '{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:45
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:45
@@ -1022,11 +1058,14 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "account settings"
 msgstr ""
+"Este es un mensaje generado automáticamente. Para gestionar las "
+"notificaciones, visite la configuración de su cuenta."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:51
 #, python-brace-format
 msgid "The request to join the community *{community_title}* was accepted"
 msgstr ""
+"Se ha aceptado la solicitud para unirse a la comunidad *{community_title}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:56
@@ -1036,6 +1075,8 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "[account settings]({account_settings_link})"
 msgstr ""
+"Este es un mensaje generado automáticamente. Para gestionar las "
+"notificaciones, visite su  [account settings]({account_settings_link})"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:18
 #, python-brace-format
@@ -1043,6 +1084,8 @@ msgid ""
 "The request from '@{requester_name}' to join the community "
 "'{community_title}' was cancelled"
 msgstr ""
+"La solicitud de '@{requester_name}' para unirse a la comunidad "
+"'{community_title}' ha sido cancelada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:25
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:41
@@ -1051,6 +1094,8 @@ msgid ""
 "The membership request from '@{requester_name}' to join the community "
 "'{community_title}' was cancelled"
 msgstr ""
+"La solicitud de membresía de '@{requester_name}' para unirse a la comunidad "
+"'{community_title}' ha sido cancelada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:51
 #, python-brace-format
@@ -1058,6 +1103,8 @@ msgid ""
 "The membership request from *@{requester_name}* to join the community "
 "*{community_title}* was cancelled"
 msgstr ""
+"La solicitud de membresía de *@{requester_name}* para unirse a la comunidad "
+"*{community_title}* ha sido cancelada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:55
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:65
@@ -1066,6 +1113,8 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your [account\n"
 "settings]({account_settings_link})"
 msgstr ""
+"Este es un mensaje generado automáticamente. Para gestionar las notificaciones, visite su [account\n"
+"settings]({account_settings_link})"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:16
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:25
@@ -1073,11 +1122,15 @@ msgstr ""
 #, python-brace-format
 msgid "The request to join the community '{community_title}' was declined"
 msgstr ""
+"La solicitud para unirse a la comunidad '{community_title}' ha sido "
+"rechazada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:52
 #, python-brace-format
 msgid "The request to join the community *{community_title}* was declined"
 msgstr ""
+"La solicitud para unirse a la comunidad '{community_title}' ha sido "
+"rechazada."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:22
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:33
@@ -1085,6 +1138,7 @@ msgstr ""
 #, python-brace-format
 msgid "Your request to join the community '{community_title}' expired"
 msgstr ""
+"Su solicitud para unirse a la comunidad '{community_title}' ha caducado"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:24
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:35
@@ -1094,11 +1148,14 @@ msgid ""
 "The request from '@{user_name}' to join the community '{community_title}' "
 "expired"
 msgstr ""
+"La solicitud de '@{user_name}' para unirse a la comunidad "
+"'{community_title}' ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:68
 #, python-brace-format
 msgid "Your request to join the community *{community_title}* expired"
 msgstr ""
+"Su solicitud para unirse a la comunidad '{community_title}' ha caducado"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:70
 #, python-brace-format
@@ -1106,12 +1163,16 @@ msgid ""
 "The request from *@{user_name}* to join the community *{community_title}* "
 "expired"
 msgstr ""
+"La solicitud de '@{user_name}' para unirse a la comunidad "
+"'{community_title}' ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:19
 #, python-brace-format
 msgid ""
 "New request from '@{user_name}' to join the community '{community_title}'"
 msgstr ""
+"Nueva solicitud de '@{user_name}' para unirse a la comunidad "
+"'{community_title}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:26
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:49
@@ -1119,12 +1180,16 @@ msgstr ""
 msgid ""
 "'@{user_name}' wants to join the community '{community_title}' as '{role}'"
 msgstr ""
+"'@{user_name}' quiere unirse a la comunidad '{community_title}' como "
+"'{role}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:60
 #, python-brace-format
 msgid ""
 "*@{user_name}* wants to join the community *{community_title}* as *{role}*"
 msgstr ""
+"'@{user_name}' quiere unirse a la comunidad '{community_title}' como "
+"'{role}'."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:26
 #, python-brace-format
@@ -1132,6 +1197,8 @@ msgid ""
 "✅ Invitation accepted for {community_title} to join the "
 "{parent_community_title} community"
 msgstr ""
+"✅ Invitación aceptada para que {community_title} se una a la comunidad de "
+"{parent_community_title}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
@@ -1140,6 +1207,8 @@ msgid ""
 "@{username} accepted the invitation for \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} aceptó la invitación para que \"{community_title}\" se una como "
+"subcomunidad de \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:36
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:60
@@ -1163,7 +1232,7 @@ msgstr "Ver la petición"
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:48
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:50
 msgid "View the request at:"
-msgstr ""
+msgstr "Consulte la solicitud en:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:53
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:56
@@ -1175,6 +1244,8 @@ msgid ""
 "This is an auto-generated message. To manage notifications, visit your "
 "account settings at: "
 msgstr ""
+"Este es un mensaje generado automáticamente. Para gestionar las "
+"notificaciones, visite la configuración de su cuenta en:"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:58
 #, python-brace-format
@@ -1182,11 +1253,13 @@ msgid ""
 "@{username} accepted the invitation the request for \"{community_title}\" to"
 " join as a subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} aceptó la invitación para que \"{community_title}\" se una como "
+"subcomunidad de \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:25
 #, python-brace-format
 msgid "📬 Invitation to join the {parent_community_title} community"
-msgstr ""
+msgstr "📬 Invitación para unirte a la comunidad {parent_community_title}"
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:31
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:50
@@ -1195,13 +1268,15 @@ msgid ""
 "We would like to invite your community \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\""
 msgstr ""
+"Nos gustaría invitar a su comunidad \"{community_title}\" a unirse como "
+"subcomunidad de \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:38
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:54
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:65
 #, python-brace-format
 msgid "This invitation will expire on {expires_at}."
-msgstr ""
+msgstr "Esta invitación caducará el {expires_at}."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:61
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:56
@@ -1210,6 +1285,8 @@ msgid ""
 "The community *{community_title}* has requested to join as a subcommunity of"
 " *{parent_community_title}*"
 msgstr ""
+"La comunidad *{community_title}* ha solicitado unirse como subcomunidad de "
+"*{parent_community_title}*."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:26
 #, python-brace-format
@@ -1228,6 +1305,8 @@ msgid ""
 "@{username} declined the invitation for \"{community_title}\" to join as a "
 "subcommunity of \"{parent_community_title}\"."
 msgstr ""
+"@{username} rechazó la invitación para que \"{community_title}\" se uniera "
+"como subcomunidad de \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:23
 #, python-brace-format
@@ -1235,6 +1314,8 @@ msgid ""
 "⌛️ The invitation for {community_title} to join the "
 "'{parent_community_title}' community expired"
 msgstr ""
+"⌛️ La invitación para que {community_title} se uniera a la comunidad "
+"'{parent_community_title}' ha caducado."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:29
 #, python-brace-format
@@ -1269,6 +1350,8 @@ msgid ""
 "✅ Subcommunity request accepted for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"✅ Se ha aceptado la solicitud de la subcomunidad \"{community_title}\" para "
+"unirse a \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:48
@@ -1279,6 +1362,9 @@ msgid ""
 "\"{community_title}\" to join as a subcommunity of "
 "\"{parent_community_title}\"."
 msgstr ""
+"El administrador de la comunidad @{username} ha aceptado la solicitud de "
+"\"{community_title}\" para unirse como subcomunidad de "
+"\"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:24
 #, python-brace-format
@@ -1286,6 +1372,8 @@ msgid ""
 "📬 Subcommunity request for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"📬 Solicitud de la subcomunidad para que \"{community_title}\" se una a "
+"\"{parent_community_title}\""
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:30
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:46
@@ -1294,6 +1382,8 @@ msgid ""
 "The community \"{community_title}\" has requested to join as a subcommunity "
 "of \"{parent_community_title}\""
 msgstr ""
+"La comunidad \"{community_title}\" ha solicitado unirse como subcomunidad de"
+" \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:26
 #, python-brace-format
@@ -1301,6 +1391,8 @@ msgid ""
 "⛔️ Subcommunity request declined for \"{community_title}\" to join "
 "\"{parent_community_title}\""
 msgstr ""
+"⛔️ Se ha rechazado la solicitud de la subcomunidad para que "
+"\"{community_title}\" se una a \"{parent_community_title}\"."
 
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:32
 #: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:48
@@ -1311,6 +1403,9 @@ msgid ""
 "\"{community_title}\" to join as a subcommunity of "
 "\"{parent_community_title}\"."
 msgstr ""
+"El administrador de la comunidad @{username} ha rechazado la solicitud de "
+"\"{community_title}\" para unirse como subcomunidad de "
+"\"{parent_community_title}\"."
 
 #: invenio_communities/views/communities.py:31
 msgid "Your community is publicly accessible and shows up in search results."
@@ -1333,7 +1428,7 @@ msgstr ""
 
 #: invenio_communities/views/communities.py:53
 msgid "Members-only"
-msgstr ""
+msgstr "Solo para miembros"
 
 #: invenio_communities/views/communities.py:57
 msgid ""
@@ -1348,35 +1443,39 @@ msgid ""
 "All authenticated users can submit records to the community. If the "
 "community is restricted, then only members can submit records to it."
 msgstr ""
+"Todos los usuarios autenticados pueden enviar registros a la comunidad. Si "
+"la comunidad está restringida, solo los miembros podrán enviar registros."
 
 #: invenio_communities/views/communities.py:77
 msgid "Only members can submit records to the community."
-msgstr ""
+msgstr "Solo los miembros pueden enviar registros a la comunidad."
 
 #: invenio_communities/views/communities.py:83
 msgid "Review all submissions"
-msgstr ""
+msgstr "Revisar todos los envíos"
 
 #: invenio_communities/views/communities.py:86
 msgid "All submissions to the community must be reviewed."
-msgstr "Todas las presentaciones a la comunidad deben ser revisadas."
+msgstr "Todos los envíos a la comunidad deben ser revisados."
 
 #: invenio_communities/views/communities.py:89
 msgid "Allow curators, managers and owners to publish without review"
 msgstr ""
+"Permitir a los curadores, administradores y propietarios publicar sin "
+"revisión"
 
 #: invenio_communities/views/communities.py:93
 msgid ""
 "Submissions to the community by default requires review, but curators, "
 "managers and owners can publish directly without review."
 msgstr ""
-"Las presentaciones a la comunidad requieren revisión por defecto, pero los "
+"Los envíos a la comunidad requieren revisión por defecto, pero los "
 "curadores, gestores y propietarios pueden publicar directamente sin "
 "revisión."
 
 #: invenio_communities/views/communities.py:97
 msgid "Allow all members to publish without review"
-msgstr ""
+msgstr "Permitir que todos los miembros publiquen sin revisión."
 
 #: invenio_communities/views/communities.py:101
 msgid ""
@@ -1388,12 +1487,12 @@ msgstr ""
 
 #: invenio_communities/views/communities.py:111
 msgid "Users can request to join your community."
-msgstr "Los usuarios pueden solicitar unirse a tu comunidad."
+msgstr "Los usuarios pueden solicitar unirse a su comunidad."
 
 #: invenio_communities/views/communities.py:118
 msgid ""
 "Users cannot request to join your community. Only invited users can become "
 "members of your community."
 msgstr ""
-"Los usuarios no pueden solicitar unirse a tu comunidad. Solo los usuarios "
-"invitados pueden convertirse en miembros de tu comunidad. "
+"Los usuarios no pueden solicitar unirse a su comunidad. Solo los usuarios "
+"invitados pueden convertirse en miembros de su comunidad. "

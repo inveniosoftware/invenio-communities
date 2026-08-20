@@ -49,7 +49,7 @@ msgid "Unable to delete"
 msgstr "No se puede eliminar"
 
 msgid "Public"
-msgstr "Publico"
+msgstr "Público"
 
 msgid "Hidden"
 msgstr "Oculto"
@@ -119,10 +119,10 @@ msgid "Browse"
 msgstr "Explorar"
 
 msgid "New upload"
-msgstr "Nueva subida"
+msgstr "Nuevo envío"
 
 msgid "Submission to this community is only allowed to community members."
-msgstr ""
+msgstr "Solo los miembros de esta comunidad pueden enviar publicaciones."
 
 msgid "Previous slide"
 msgstr "Diapositiva anterior"
@@ -147,10 +147,10 @@ msgstr ""
 "inmediatamente."
 
 msgid "Verified community"
-msgstr ""
+msgstr "Comunidad verificada"
 
 msgid "Part of"
-msgstr ""
+msgstr "Parte de"
 
 msgid "Edit"
 msgstr "Editar"
@@ -159,10 +159,10 @@ msgid "An error occurred."
 msgstr "Se produjo un error."
 
 msgid "You are not a member of any community."
-msgstr ""
+msgstr "Usted no pertenece a ninguna comunidad."
 
 msgid "There are no new communities."
-msgstr ""
+msgstr "No hay nuevas comunidades."
 
 msgid "Request Membership"
 msgstr "Solicitar membresía"
@@ -262,8 +262,8 @@ msgid ""
 "Note: upon addition, selected groups will have access to the record without "
 "any kind of notification."
 msgstr ""
-"Nota: al agregarlos, los grupos seleccionados tendrán acceso al registro sin"
-" ningún tipo de notificación."
+"Nota: al añadirlos, los grupos seleccionados tendrán acceso al registro sin "
+"ningún tipo de notificación."
 
 msgid "Role"
 msgstr "Rol"
@@ -312,9 +312,9 @@ msgstr "Ya es miembro"
 
 msgid "You are about to add {{count}} groups."
 msgid_plural "You are about to add {{count}} groups."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Estás a punto de añadir {{count}} grupo."
+msgstr[1] "Está a punto de añadir {{count}} grupos."
+msgstr[2] "Está a punto de añadir {{count}} grupos."
 
 msgid "Add"
 msgstr "Añadir"
@@ -407,7 +407,7 @@ msgid "Remove from community"
 msgstr "Eliminar de la comunidad"
 
 msgid "You have selected {{selectedCount}} users"
-msgstr ""
+msgstr "Ha seleccionado {{selectedCount}} usuarios"
 
 msgid "You"
 msgstr "Usted"
@@ -426,9 +426,9 @@ msgstr "y"
 
 msgid "{{count}} more organizations"
 msgid_plural "{{count}} more organizations"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{{count}} organización más"
+msgstr[1] "{{count}} organizaciones más"
+msgstr[2] "{{count}} organizaciones más"
 
 msgid "Saved"
 msgstr "Guardado"
@@ -437,7 +437,7 @@ msgid "Save"
 msgstr "Guardar"
 
 msgid "Curation policy"
-msgstr "Política de conservación"
+msgstr "Política de curación"
 
 msgid "About page"
 msgstr "Página acerca de"
@@ -498,7 +498,7 @@ msgid "Awards/Grants"
 msgstr "Premios/subvenciones"
 
 msgid "Danger zone"
-msgstr "Zona de peligro"
+msgstr "Zona de riesgo"
 
 msgid "Change identifier"
 msgstr "Cambiar identificador"
@@ -511,7 +511,7 @@ msgstr ""
 "secundarios no deseados."
 
 msgid "Once deleted, it will be gone forever. Please be certain."
-msgstr "Una vez eliminada, no podrá recuperarla. Por favor asegurese."
+msgstr "Una vez eliminada, no podrá recuperarla. Por favor asegúrese bien."
 
 msgid "Delete"
 msgstr "Eliminar"
@@ -520,28 +520,28 @@ msgid "Permanently delete community"
 msgstr "Eliminar comunidad permanentemente"
 
 msgid "Are you absolutely sure you want to delete the community?"
-msgstr ""
+msgstr "¿Está completamente seguro de que quiere eliminar la comunidad?"
 
 msgid "This action CANNOT be undone!"
 msgstr "¡Esta acción NO se puede deshacer!"
 
 msgid "members will be removed from the community."
-msgstr ""
+msgstr "los miembros serán expulsados ​​de la comunidad."
 
 msgid "records will be removed from the community."
-msgstr ""
+msgstr "los registros serán eliminados de la comunidad."
 
 msgid "CANNOT"
-msgstr ""
+msgstr "NO SE PUEDE"
 
 msgid "reuse the community identifier \"{{slug}}\"."
-msgstr ""
+msgstr "reutilizar el identificador de comunidad \"{{slug}}\"."
 
 msgid "Please type"
-msgstr ""
+msgstr "Por favor escriba"
 
 msgid "to confirm."
-msgstr ""
+msgstr "para confirmar."
 
 msgid "Permanently delete"
 msgstr "Eliminar permanentemente"
@@ -575,13 +575,13 @@ msgid "Review policy"
 msgstr "Revisar la politica"
 
 msgid "Controls who can publish records directly without review."
-msgstr ""
+msgstr "Controle quién puede publicar registros directamente sin revisión."
 
 msgid "Records submission policy"
-msgstr ""
+msgstr "Política de envío de registros"
 
 msgid "Controls who can submit records to the community."
-msgstr ""
+msgstr "Controla quién puede enviar registros a la comunidad."
 
 msgid "Subcommunity request"
 msgstr "Solicitud de subcomunidad"
@@ -605,13 +605,13 @@ msgid "Cancelled"
 msgstr "Cancelado"
 
 msgid "Add organization: "
-msgstr ""
+msgstr "Añadir organización:"
 
 msgid "View comments"
-msgstr ""
+msgstr "Ver comentarios"
 
 msgid "Set up your new community"
-msgstr ""
+msgstr "Configure su nueva comunidad"
 
 msgid "Enabled"
 msgstr "Activado"
@@ -620,41 +620,48 @@ msgid "Disabled"
 msgstr "Desactivado"
 
 msgid "You are about to remove {{name}} from this community."
-msgstr ""
+msgstr "Está a punto de eliminar a {{name}} de esta comunidad."
 
 msgid "cancel invitation"
-msgstr ""
+msgstr "cancelar invitación"
 
 msgid "Cancel invitation"
-msgstr ""
+msgstr "Cancelar invitación"
 
 msgid "No matching invitations found."
-msgstr ""
+msgstr "No se encontraron invitaciones que coincidan."
 
 msgid "Email notifications"
-msgstr ""
+msgstr "Notificaciones por correo electrónico"
 
 msgid ""
 "When enabled, group members will receive emails related to community "
 "actions, such as submission of records."
 msgstr ""
+"Cuando esta opción esté activada, los miembros del grupo recibirán correos "
+"electrónicos relacionados con acciones de la comunidad, como el envío de "
+"documentos."
 
 msgid ""
 "Note: upon addition, selected groups will become community members "
 "immediately without any kind of invitation approval."
 msgstr ""
+"Nota: al añadirlos, los grupos seleccionados se convertirán en miembros de "
+"la comunidad inmediatamente sin ningún tipo de aprobación de invitación."
 
 msgid "Already a member or pending a decision"
-msgstr ""
+msgstr "Ya es miembro o está pendiente de decisión."
 
 msgid "Search by full name, username or email (if publicly visible)"
 msgstr ""
+"Buscar por nombre completo, nombre de usuario o correo electrónico (si es "
+"visible públicamente)."
 
 msgid "Notifications"
 msgstr "Notificaciones"
 
 msgid "Search in membership requests..."
-msgstr ""
+msgstr "Buscar en las solicitudes de membresía..."
 
 msgid "No matching membership requests found."
-msgstr ""
+msgstr "No se encontraron solicitudes de membresía que coincidan."
