@@ -5,13 +5,14 @@
 # Lina Andrén, 2025
 # Sam Arbid, 2026
 # Mattias Vesterlund, 2026
+# Taha Ahmed, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2026-06-22T20:51:30.697Z\n"
 "PO-Revision-Date: 2022-03-10 09:30+0000\n"
-"Last-Translator: Mattias Vesterlund, 2026\n"
+"Last-Translator: Taha Ahmed, 2026\n"
 "Language-Team: Swedish (https://app.transifex.com/inveniosoftware/teams/23537/sv/)\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -633,15 +634,15 @@ msgid ""
 "When enabled, group members will receive emails related to community "
 "actions, such as submission of records."
 msgstr ""
-"När detta är aktiverat får gruppmedlemmar e-postmeddelanden relaterade till "
-"communityåtgärder, till exempel inskickning av poster."
+"När det är aktiverat kommer gruppmedlemmar att få e-postmeddelanden "
+"relaterade till händelser i communityt, till exempel uppladdning av poster."
 
 msgid ""
 "Note: upon addition, selected groups will become community members "
 "immediately without any kind of invitation approval."
 msgstr ""
 "Obs! När de läggs till blir valda grupper omedelbart communitymedlemmar utan"
-" någon form av godkännande av inbjudan."
+" föregående inbjudan eller godkännande."
 
 msgid "Already a member or pending a decision"
 msgstr "Redan medlem eller väntar på beslut"

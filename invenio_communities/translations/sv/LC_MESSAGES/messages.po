@@ -10,6 +10,7 @@
 # Tibor Simko <tibor.simko@cern.ch>, 2026
 # Mattias Vesterlund, 2026
 # Sam Arbid, 2026
+# Taha Ahmed, 2026
 # 
 #, fuzzy
 msgid ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
 "POT-Creation-Date: 2026-06-22 20:51+0000\n"
 "PO-Revision-Date: 2016-08-18 12:29+0000\n"
-"Last-Translator: Sam Arbid, 2026\n"
+"Last-Translator: Taha Ahmed, 2026\n"
 "Language-Team: Swedish (https://app.transifex.com/inveniosoftware/teams/23537/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -115,7 +116,7 @@ msgstr "Namn"
 #: invenio_communities/errors.py:24
 #, python-format
 msgid "A featured community entry with %(q)s does not exist."
-msgstr "En framhävd communitypost med %(q)s finns inte."
+msgstr "En featured communitypost med %(q)s finns inte."
 
 #: invenio_communities/errors.py:35
 msgid "No logo exists for this community."
@@ -228,7 +229,7 @@ msgstr "Skapad"
 #: invenio_communities/administration/communities.py:50
 #: invenio_communities/administration/communities.py:108
 msgid "Feature"
-msgstr "Visa upp"
+msgstr "Featured"
 
 #: invenio_communities/administration/communities.py:56
 msgid "Delete"
@@ -325,15 +326,12 @@ msgstr "Community som tillåts vara parent kan inte också vara child."
 
 #: invenio_communities/communities/services/components.py:326
 msgid "Assigned parent community cannot also have a parent."
-msgstr ""
-"Den community detta delcommunity tillhör kan inte tillhöra ett annat "
-"community."
+msgstr "Den tilldelade föräldracommunityn kan inte i sin tur ha en förälder."
 
 #: invenio_communities/communities/services/components.py:330
 msgid "Assigned parent community cannot be the same as child."
 msgstr ""
-"Den community detta delcommunity tillhör kan inte vara det samma som "
-"delcommunityn."
+"Den tilldelade föräldracommunityn kan inte vara identisk med delcommunityn."
 
 #: invenio_communities/communities/services/components.py:333
 msgid "Assigned parent community does not exist."
@@ -614,7 +612,7 @@ msgstr "Medlemskapsdiskussion"
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:137
 msgid "Submission to this community is only allowed to community members."
 msgstr ""
-"Endast communityns medlemmar kan skicka in poster till denna community."
+"Endast detta communitys medlemmar kan skicka in poster till communityn."
 
 #: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:144
 msgid "New upload"
