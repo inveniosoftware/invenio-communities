@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v28.2.1 (released 2026-08-26)
+
+- i18n: pulled translations
+
 Version v28.2.0 (released 2026-07-28)
 
 - fix(build): include mo files
