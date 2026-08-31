@@ -1,6 +1,7 @@
-# SPDX-FileCopyrightText: 2016-2024 CERN.
+# SPDX-FileCopyrightText: 2016-2026 CERN.
 # SPDX-FileCopyrightText: 2023-2025 Graz University of Technology.
 # SPDX-FileCopyrightText: 2024-2026 KTH Royal Institute of Technology.
+# SPDX-FileCopyrightText: 2026 TU Wien.
 # SPDX-License-Identifier: MIT
 
 """Community schema."""
@@ -245,7 +246,7 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     access = NestedAttribute(CommunityAccessSchema, required=True)
 
     custom_fields = NestedAttribute(
-        partial(CustomFieldsSchema, fields_var="COMMUNITIES_CUSTOM_FIELDS")
+        lambda: CustomFieldsSchema("COMMUNITIES_CUSTOM_FIELDS")
     )
 
     is_verified = fields.Boolean(dump_only=True)
