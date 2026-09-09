@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2016-2024 CERN.
 # SPDX-FileCopyrightText: 2023 TU Wien.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Invenio Communities Resource API config."""
@@ -11,7 +12,6 @@ from flask_resources import (
     ResponseHandler,
     create_error_handler,
 )
-from invenio_files_rest.errors import StorageError
 from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.resources import RecordResourceConfig
 from invenio_records_resources.resources.records.headers import etag_headers
@@ -27,6 +27,7 @@ from invenio_communities.communities.resources.serializer import (
 from invenio_communities.errors import (
     CommunityDeletedError,
     CommunityFeaturedEntryDoesNotExistError,
+    LogoFileNotFoundError,
     LogoNotFoundError,
     LogoSizeLimitError,
     OpenRequestsForCommunityDeletionError,
@@ -36,11 +37,13 @@ from invenio_communities.errors import (
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update(
     {
-        LogoNotFoundError: create_error_handler(
-            HTTPJSONException(
-                code=404,
-                description="No logo exists for this community.",
-            )
+        LogoNotFoundError: lambda e: HTTPJSONException(
+            code=404,
+            description=str(e),
+        ),
+        LogoFileNotFoundError: lambda e: HTTPJSONException(
+            code=404,
+            description=str(e),
         ),
         CommunityFeaturedEntryDoesNotExistError: create_error_handler(
             lambda e: HTTPJSONException(
@@ -71,14 +74,6 @@ community_error_handlers.update(
             lambda e: HTTPJSONException(
                 code=400,
                 description=str(e),
-            )
-        ),
-        StorageError: create_error_handler(
-            lambda e: HTTPJSONException(
-                code=404,
-                # The StorageError class has code 500 baked in, and adds that when
-                # transformed into a string; so we only use `e.description`
-                description=e.description,
             )
         ),
     }
