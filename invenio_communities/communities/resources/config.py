@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2016-2024 CERN.
 # SPDX-FileCopyrightText: 2023 TU Wien.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Invenio Communities Resource API config."""
@@ -26,6 +27,7 @@ from invenio_communities.communities.resources.serializer import (
 from invenio_communities.errors import (
     CommunityDeletedError,
     CommunityFeaturedEntryDoesNotExistError,
+    LogoFileNotFoundError,
     LogoNotFoundError,
     LogoSizeLimitError,
     OpenRequestsForCommunityDeletionError,
@@ -35,11 +37,13 @@ from invenio_communities.errors import (
 community_error_handlers = RecordResourceConfig.error_handlers.copy()
 community_error_handlers.update(
     {
-        LogoNotFoundError: create_error_handler(
-            HTTPJSONException(
-                code=404,
-                description="No logo exists for this community.",
-            )
+        LogoNotFoundError: lambda e: HTTPJSONException(
+            code=404,
+            description=str(e),
+        ),
+        LogoFileNotFoundError: lambda e: HTTPJSONException(
+            code=404,
+            description=str(e),
         ),
         CommunityFeaturedEntryDoesNotExistError: create_error_handler(
             lambda e: HTTPJSONException(

@@ -35,6 +35,14 @@ class LogoNotFoundError(CommunityError):
         super().__init__(_("No logo exists for this community."))
 
 
+class LogoFileNotFoundError(CommunityError):
+    """The logo file was not found in storage."""
+
+    def __init__(self):
+        """Initialise error."""
+        super().__init__(_("The logo file could not be found in storage."))
+
+
 class LogoSizeLimitError(CommunityError):
     """The provided logo size exceeds limit."""
 
