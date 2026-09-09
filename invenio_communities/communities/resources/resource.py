@@ -13,6 +13,7 @@ from flask_resources import (
     response_handler,
     route,
 )
+from invenio_files_rest.errors import StorageError
 from invenio_records_resources.resources.files.resource import request_stream
 from invenio_records_resources.resources.records.resource import (
     RecordResource,
@@ -24,6 +25,7 @@ from invenio_records_resources.resources.records.resource import (
 )
 from invenio_records_resources.resources.records.utils import search_preference
 
+from invenio_communities.errors import LogoFileNotFoundError
 from invenio_communities.proxies import current_communities
 
 request_community_requests_search_args = request_parser(
@@ -118,7 +120,10 @@ class CommunityResource(RecordResource):
 
         is_restricted = community["access"]["visibility"] == "restricted"
 
-        return item.send_file(restricted=is_restricted)
+        try:
+            return item.send_file(restricted=is_restricted)
+        except StorageError as e:
+            raise LogoFileNotFoundError() from e
 
     @request_view_args
     @request_stream
