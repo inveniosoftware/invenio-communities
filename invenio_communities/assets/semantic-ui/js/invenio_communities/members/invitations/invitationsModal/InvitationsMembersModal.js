@@ -1,11 +1,10 @@
 /*
- * SPDX-FileCopyrightText: 2022-2024 CERN.
+ * SPDX-FileCopyrightText: 2022-2026 CERN.
  * SPDX-FileCopyrightText: 2024 KTH Royal Institute of Technology.
  * SPDX-License-Identifier: MIT
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import { InvenioCommunitiesRoutesGenerator } from "../../../routes/appUrls";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { withState } from "react-searchkit";
@@ -41,7 +40,7 @@ export class InvitationsMembersModal extends Component {
 
   onGroupSuccess = () => {
     const { community } = this.props;
-    window.location = InvenioCommunitiesRoutesGenerator.membersList(community.slug);
+    window.location = community.links.members_html;
   };
 
   fetchExisting = async () => {
