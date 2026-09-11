@@ -14,7 +14,7 @@
     "parent_community_id": parent_community.slug,
     "parent_community_title": parent_community.metadata.title,
     "request_id": request.id,
-    "username": user.username or user.profile.full_name,
+    "username": user.profile.full_name or (user.username and "@" ~ user.username),
     "ui": ui,
 } %}
 
@@ -29,7 +29,7 @@
 {%- block html_body -%}
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
-        <td>{{ _('@{username} accepted the invitation for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
+        <td>{{ _('{username} accepted the invitation for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
         </td>
     </tr>
     <tr>
@@ -45,7 +45,7 @@
 {%- endblock html_body %}
 
 {%- block plain_body -%}
-{{ _('@{username} accepted the invitation for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
+{{ _('{username} accepted the invitation for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
 
 {{ _("View the request at:") }} {{ request_link }}
 
@@ -55,7 +55,7 @@
 
 {# Markdown for Slack/Mattermost/chat #}
 {%- block md_body -%}
-{{ _('@{username} accepted the invitation the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
+{{ _('{username} accepted the invitation the request for "{community_title}" to join as a subcommunity of "{parent_community_title}".').format(**msg_ctx) }}
 
 [{{ _("View the request") }}]({{ request_link }})
 
