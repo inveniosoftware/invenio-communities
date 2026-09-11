@@ -44,7 +44,6 @@ communities = WebpackThemeBundle(
             },
             dependencies={
                 "@semantic-ui-react/css-patch": "^1.0.0",
-                "react-router-dom": "^6.3.0",
                 "react-invenio-forms": "^4.0.0",
                 "axios": "^1.7.7",
                 "formik": "^2.1.0",
