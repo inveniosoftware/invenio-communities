@@ -19,7 +19,8 @@ class IdentityRedisCache(IdentityCache):
         app = app or current_app
         redis_url = app.config["COMMUNITIES_IDENTITIES_CACHE_REDIS_URL"]
         prefix = app.config.get("COMMUNITIES_IDENTITIES_CACHE_REDIS_PREFIX", "identity")
-        self.cache = RedisCache(host=StrictRedis.from_url(redis_url), key_prefix=prefix)
+        self.redis = StrictRedis.from_url(redis_url)
+        self.cache = RedisCache(host=self.redis, key_prefix=prefix)
 
     def get(self, key):
         """Return the key value.
@@ -44,8 +45,15 @@ class IdentityRedisCache(IdentityCache):
         self.cache.delete(key)
 
     def flush(self):
-        """Flush the cache."""
-        self.cache.clear()
+        """Flush matching keys incrementally, reclaiming memory asynchronously."""
+        keys = []
+        for key in self.redis.scan_iter(match=f"{self.cache.key_prefix}*", count=1000):
+            keys.append(key)
+            if len(keys) == 500:
+                self.redis.unlink(*keys)
+                keys.clear()
+        if keys:
+            self.redis.unlink(*keys)
 
     def append(self, key, value):
         """Appends a new value to a list.
