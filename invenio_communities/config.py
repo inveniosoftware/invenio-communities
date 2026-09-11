@@ -256,6 +256,13 @@ COMMUNITIES_MEMBERSHIP_REQUESTS_FACETS = {
 COMMUNITIES_MEMBERSHIP_REQUESTS_EXPIRES_IN = timedelta(days=30)
 """Default amount of time before a membership request expires."""
 
+COMMUNITIES_MEMBERSHIP_REQUESTS_DEFAULT_ROLE = "reader"
+"""Role assigned to a member who joins via a membership request.
+
+Must be the ``name`` of one of the roles defined in ``COMMUNITIES_ROLES``.
+Deployments that customise ``COMMUNITIES_ROLES`` (and therefore may not define a
+``reader`` role) can point this at their own lowest-privilege role."""
+
 COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""
 
