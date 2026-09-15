@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2016-2024 CERN.
+# SPDX-FileCopyrightText: 2016-2026 CERN.
 # SPDX-FileCopyrightText: 2022-2025 Northwestern University.
 # SPDX-FileCopyrightText: 2023 Graz University of Technology.
 # SPDX-License-Identifier: MIT
@@ -118,6 +118,9 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         ),
         "settings_html": CommunityUIEndpointLink(
             "invenio_communities.communities_settings", params=["pid_value"]
+        ),
+        "members_html": CommunityUIEndpointLink(
+            "invenio_communities.members", params=["pid_value"]
         ),
         "logo": CommunityEndpointLink("communities.read_logo", params=["pid_value"]),
         "rename": CommunityEndpointLink("communities.rename", params=["pid_value"]),
