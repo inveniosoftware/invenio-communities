@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version v28.2.2 (released 2026-09-15)
+
+- fix: handle missing community logo files and suppress noisy tracebacks
+- fix: make comunity header title link use self_html
+
 Version v28.2.1 (released 2026-08-26)
 
 - i18n: pulled translations
