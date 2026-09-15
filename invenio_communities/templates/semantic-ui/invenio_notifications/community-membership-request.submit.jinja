@@ -9,7 +9,7 @@
 {% set created_by = request.created_by %}
 {% set message = notification.context.message | safe if notification.context.message else '' %}
 {% set role = notification.context.role %}
-{% set user_name = created_by.username or created_by.profile.full_name %}
+{% set user_name = created_by.profile.full_name or created_by.username %}
 {# This email is sent to the community owners/managers so community link used #}
 {% set request_link = invenio_url_for("invenio_app_rdm_requests.community_dashboard_membership_request_view", pid_value=community.slug, request_pid_value=request.id) %}
 {% set account_settings_link = invenio_url_for("invenio_notifications_settings.index") %}
