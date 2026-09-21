@@ -10,6 +10,28 @@
 Changes
 =======
 
+Version v29.2.0 (released 2026-09-21)
+
+- refactor(schema): align community schemas with custom-fields
+    * remove `partial()` calls from schemas since they're not needed and
+      cannot be used with DeepFriedMarshmallow
+
+    Co-authored-by: Saksham Arora <sakshamarora1001@gmail.com>
+
+- perf(cache): flush identities with batched scan and unlink
+    * Avoid large blocking KEYS and DEL commands on the shared Redis instance, including when cache invalidation runs inside a request.
+
+- fix: handle missing logo files
+    * Distinguish missing logo metadata from missing
+      logo files in storage.
+    * Map both logo errors to 404 JSON responses without
+      logging expected tracebacks.
+
+- fix: make comunity header title link use self_html
+    This way, the link is coherent with whether the community is a themed
+    community or not by being a link to communities_home and the link
+    is not recomputed.
+
 Version v29.1.1 (released 2026-08-04)
 
 - fix(build): include mo files
