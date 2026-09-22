@@ -5,7 +5,7 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { withState } from "react-searchkit";
 import { Button } from "semantic-ui-react";
 
@@ -36,7 +36,11 @@ class DeletionStatusFilterComponent extends Component {
    * @param {string} value true if open requests and false if closed requests
    */
   filterRecords = (value = "P") => {
-    const { currentQueryState, updateQueryState, keepFiltersOnUpdate } = this.props;
+    const {
+      currentQueryState,
+      updateQueryState,
+      keepFiltersOnUpdate = false,
+    } = this.props;
     const { selected } = this.state;
 
     if (selected === value) {
@@ -103,10 +107,6 @@ DeletionStatusFilterComponent.propTypes = {
   updateQueryState: PropTypes.func.isRequired,
   currentQueryState: PropTypes.object.isRequired,
   keepFiltersOnUpdate: PropTypes.bool,
-};
-
-DeletionStatusFilterComponent.defaultProps = {
-  keepFiltersOnUpdate: false,
 };
 
 export const DeletionStatusFilter = withState(DeletionStatusFilterComponent);

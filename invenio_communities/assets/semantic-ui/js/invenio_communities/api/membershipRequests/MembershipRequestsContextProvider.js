@@ -4,10 +4,10 @@
  */
 
 import { CommunityMembershipRequestsApi } from "./api";
-import React, { Component } from "react";
+import { Component, createContext } from "react";
 import PropTypes from "prop-types";
 
-export const MembershipRequestsContext = React.createContext({ api: undefined });
+export const MembershipRequestsContext = createContext({ api: undefined });
 
 export class MembershipRequestsContextProvider extends Component {
   constructor(props) {

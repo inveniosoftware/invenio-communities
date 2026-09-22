@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { default as CommunityProfileForm } from "./CommunityProfileForm";
 import { OverridableContext, overrideStore } from "react-overridable";
 
@@ -18,7 +17,9 @@ const customFields = JSON.parse(domContainer.dataset.customFields);
 const permissions = JSON.parse(domContainer.dataset.permissions);
 const overriddenComponents = overrideStore.getAll();
 
-ReactDOM.render(
+const root = createRoot(domContainer);
+
+root.render(
   <OverridableContext.Provider value={overriddenComponents}>
     <CommunityProfileForm
       community={community}
@@ -29,6 +30,5 @@ ReactDOM.render(
       customFields={customFields}
       permissions={permissions}
     />
-  </OverridableContext.Provider>,
-  domContainer
+  </OverridableContext.Provider>
 );

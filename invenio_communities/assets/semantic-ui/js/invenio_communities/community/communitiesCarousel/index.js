@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { OverridableContext, overrideStore } from "react-overridable";
 import CommunitiesCarousel from "./CommunitiesCarousel";
 
@@ -20,7 +19,9 @@ const showUploadBtn = JSON.parse(communitiesCarouselContainer.dataset.showUpload
 
 const overriddenComponents = overrideStore.getAll();
 
-ReactDOM.render(
+const root = createRoot(communitiesCarouselContainer);
+
+root.render(
   <OverridableContext.Provider value={overriddenComponents}>
     <CommunitiesCarousel
       title={title}
@@ -31,6 +32,5 @@ ReactDOM.render(
       itemsPerPage={itemsPerPage}
       showUploadBtn={showUploadBtn}
     />
-  </OverridableContext.Provider>,
-  communitiesCarouselContainer
+  </OverridableContext.Provider>
 );

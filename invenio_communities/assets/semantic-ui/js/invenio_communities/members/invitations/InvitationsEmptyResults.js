@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Header, Icon, Segment, Grid } from "semantic-ui-react";
 import { withState } from "react-searchkit";
@@ -17,7 +17,7 @@ class InvitationsEmptyResultsCmp extends Component {
   render() {
     const {
       resetQuery,
-      extraContent,
+      extraContent = null,
       queryString,
       community,
       groupsEnabled,
@@ -74,10 +74,6 @@ InvitationsEmptyResultsCmp.propTypes = {
   community: PropTypes.object.isRequired,
   groupsEnabled: PropTypes.bool.isRequired,
   extraContent: PropTypes.node,
-};
-
-InvitationsEmptyResultsCmp.defaultProps = {
-  extraContent: null,
 };
 
 export const InvitationsEmptyResults = withState(InvitationsEmptyResultsCmp);

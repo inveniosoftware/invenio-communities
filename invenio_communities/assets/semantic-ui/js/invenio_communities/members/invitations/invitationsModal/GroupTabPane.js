@@ -6,7 +6,7 @@
 import { SelectedMembers } from "@js/invenio_communities/members/components/bulk_actions/SelectedMembers";
 import { RadioSelection } from "@js/invenio_communities/members/components/bulk_actions/RadioSelection";
 import { ErrorMessage } from "@js/invenio_communities/members/components/ErrorMessage";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal, Form, Button, Checkbox, Popup, Icon } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button } from "semantic-ui-react";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { RequestActionContext } from "@js/invenio_requests";

@@ -5,7 +5,7 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Image, withCancel } from "react-invenio-forms";
 import { Dropdown, Grid, Header } from "semantic-ui-react";
 import _debounce from "lodash/debounce";
@@ -28,14 +28,14 @@ export class MembersSearchBar extends Component {
     const displayName = name
       ? `${name} <${person.email || person.username}>`
       : person.email
-      ? `${person.email} <${person.username}>`
-      : `<${person.username}>`;
+        ? `${person.email} <${person.username}>`
+        : `<${person.username}>`;
 
     return displayName;
   };
 
   serializeUsersForDropdown = (users) => {
-    const { existingEntitiesDescription } = this.props;
+    const { existingEntitiesDescription = "" } = this.props;
     // place available users on top of the list
     const sortedUsers = users.sort((a, b) => ("disabled" in a) - ("disabled" in b));
     return sortedUsers.map((person) => {
@@ -65,7 +65,7 @@ export class MembersSearchBar extends Component {
   };
 
   serializeGroupsForDropdown = (groups) => {
-    const { existingEntitiesDescription } = this.props;
+    const { existingEntitiesDescription = "" } = this.props;
     // place available groups on top of the list
     const sortedGroups = groups.sort((a, b) => ("disabled" in a) - ("disabled" in b));
     return sortedGroups.map((group) => {
@@ -198,7 +198,7 @@ export class MembersSearchBar extends Component {
 
   render() {
     const { isFetching, error } = this.state;
-    const { placeholder } = this.props;
+    const { placeholder = i18next.t("Search...") } = this.props;
     const options = this.updatedOptions();
     return (
       <Dropdown
@@ -228,9 +228,4 @@ MembersSearchBar.propTypes = {
   placeholder: PropTypes.string,
   existingEntities: PropTypes.array.isRequired,
   existingEntitiesDescription: PropTypes.string,
-};
-
-MembersSearchBar.defaultProps = {
-  placeholder: i18next.t("Search..."),
-  existingEntitiesDescription: "",
 };

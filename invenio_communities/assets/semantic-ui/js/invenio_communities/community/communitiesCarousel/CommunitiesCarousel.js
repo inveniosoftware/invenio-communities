@@ -6,7 +6,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import _isEmpty from "lodash/isEmpty";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { http, withCancel } from "react-invenio-forms";
 import Overridable from "react-overridable";
 import {
@@ -146,7 +146,7 @@ class CommunitiesCarousel extends Component {
 
   carouselSlides = () => {
     const { data, activeIndex } = this.state;
-    const { defaultLogo, itemsPerPage, showUploadBtn } = this.props;
+    const { defaultLogo, itemsPerPage, showUploadBtn = true } = this.props;
 
     const sliceEnd = parseInt(activeIndex) + parseInt(itemsPerPage);
 
@@ -266,10 +266,6 @@ CommunitiesCarousel.propTypes = {
   defaultLogo: PropTypes.string.isRequired,
   itemsPerPage: PropTypes.string.isRequired,
   showUploadBtn: PropTypes.bool,
-};
-
-CommunitiesCarousel.defaultProps = {
-  showUploadBtn: true,
 };
 
 export default Overridable.component(

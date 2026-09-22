@@ -5,19 +5,19 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { withState } from "react-searchkit";
 import { Button } from "semantic-ui-react";
 import FilterLabel from "./FilterLabel";
 
 export class FilterLabelsComponent extends Component {
   filterCurrentFilters = (filters) => {
-    const { ignoreFilters } = this.props;
+    const { ignoreFilters = [] } = this.props;
     return filters.filter((element) => !ignoreFilters.includes(element[0]));
   };
 
   onClearAllFilters = (currentQueryState, updateCurrentFilters) => {
-    const { ignoreFilters } = this.props;
+    const { ignoreFilters = [] } = this.props;
     currentQueryState.filters = currentQueryState.filters.filter((element) =>
       ignoreFilters.includes(element[0])
     );
@@ -25,7 +25,7 @@ export class FilterLabelsComponent extends Component {
   };
 
   render() {
-    const { currentQueryState, updateQueryState, roles } = this.props;
+    const { currentQueryState, updateQueryState, roles = [] } = this.props;
     const currentFilters = this.filterCurrentFilters(currentQueryState.filters);
 
     return (
@@ -64,11 +64,6 @@ FilterLabelsComponent.propTypes = {
   currentQueryState: PropTypes.object.isRequired,
   ignoreFilters: PropTypes.array,
   roles: PropTypes.array,
-};
-
-FilterLabelsComponent.defaultProps = {
-  ignoreFilters: [],
-  roles: [],
 };
 
 export const FilterLabels = withState(FilterLabelsComponent);

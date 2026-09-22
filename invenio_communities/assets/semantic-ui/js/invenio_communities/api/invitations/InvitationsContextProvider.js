@@ -4,10 +4,10 @@
  */
 
 import { CommunityInvitationsApi } from "./api";
-import React, { Component } from "react";
+import { Component, createContext } from "react";
 import PropTypes from "prop-types";
 
-export const InvitationsContext = React.createContext({ api: undefined });
+export const InvitationsContext = createContext({ api: undefined });
 
 export class InvitationsContextProvider extends Component {
   constructor(props) {

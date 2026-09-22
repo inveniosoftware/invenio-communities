@@ -7,17 +7,17 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import { useField } from "formik";
 import { CommunitySettingsForm } from "../components";
 import _get from "lodash/get";
-import React, { Component } from "react";
+import { Component, Fragment } from "react";
 import { RadioField } from "react-invenio-forms";
 import { Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
-const ReviewPolicyField = ({ label, formConfig, ...props }) => {
+const ReviewPolicyField = ({ label = "", formConfig, ...props }) => {
   const [field] = useField(props);
   return (
     <>
       {formConfig.access.review_policy.map((item) => (
-        <React.Fragment key={item.value}>
+        <Fragment key={item.value}>
           <RadioField
             key={item.value}
             fieldPath="access.review_policy"
@@ -28,7 +28,7 @@ const ReviewPolicyField = ({ label, formConfig, ...props }) => {
             value={item.value}
           />
           <label className="helptext">{item.helpText}</label>
-        </React.Fragment>
+        </Fragment>
       ))}
     </>
   );
@@ -39,18 +39,14 @@ ReviewPolicyField.propTypes = {
   formConfig: PropTypes.object.isRequired,
 };
 
-ReviewPolicyField.defaultProps = {
-  label: "",
-};
-
-const RecordSubmissionPolicyField = ({ label, formConfig, ...props }) => {
+const RecordSubmissionPolicyField = ({ label = "", formConfig, ...props }) => {
   const [field] = useField(props);
   const fieldPath = "access.record_submission_policy";
   const { record_submission_policy: subPolicy } = formConfig.access;
   return (
     <>
       {subPolicy.map((item) => (
-        <React.Fragment key={item.value}>
+        <Fragment key={item.value}>
           <RadioField
             key={item.value}
             fieldPath={fieldPath}
@@ -60,7 +56,7 @@ const RecordSubmissionPolicyField = ({ label, formConfig, ...props }) => {
             value={item.value}
           />
           <label className="helptext">{item.helpText}</label>
-        </React.Fragment>
+        </Fragment>
       ))}
     </>
   );
@@ -69,10 +65,6 @@ const RecordSubmissionPolicyField = ({ label, formConfig, ...props }) => {
 RecordSubmissionPolicyField.propTypes = {
   label: PropTypes.string,
   formConfig: PropTypes.object.isRequired,
-};
-
-RecordSubmissionPolicyField.defaultProps = {
-  label: "",
 };
 
 class SubmissionPolicyForm extends Component {
