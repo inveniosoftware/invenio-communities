@@ -295,13 +295,38 @@ class CommunitySchema(BaseCommunitySchema):
 
     @post_load(pass_original=True)
     def filter_parent_id(self, in_data, original_data, **kwargs):
-        """Simply keep the parent id."""
+        """Keep the parent id if we can.
+
+        In order to
+        - prevent ill-constructed input to generate 500 errors
+        - root out some invalid id value before hitting the database
+        - keep some legacy interfaces (whether explicitly desired or not)
+
+        , this filter has be careful as to how it treats input data.
+        """
         if "parent" in original_data:
-            in_data["parent"] = (
-                dict(id=original_data["parent"]["id"])
-                if original_data["parent"]
-                else None
-            )
+            parent = original_data["parent"]
+            if not parent:
+                # to keep same behavior as before (although
+                # doubtful it was explicitly desired)
+                in_data["parent"] = None
+            elif isinstance(parent, dict):
+                id_of_parent = parent.get("id")
+                if not id_of_parent:
+                    raise ValidationError(
+                        _("Assigned parent community does not exist.")
+                    )
+                elif not isinstance(id_of_parent, str):
+                    # Coupled to schema.id being fields.String
+                    raise ValidationError(
+                        _("Assigned parent community does not exist.")
+                    )
+
+                in_data["parent"] = {"id": id_of_parent}
+
+            # To note that if something else is sent in this field, we leave the
+            # original logic intact which is that the schema will discard it.
+
         return in_data
 
     @pre_load

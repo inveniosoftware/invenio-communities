@@ -410,3 +410,53 @@ def test_subcommunity_existing_child_flow(
     )
     assert res.status_code == 200
     assert res.json["parent"]["id"] == str(parent_community.id)
+
+
+def test_subcommunity_parent_validation_integration(
+    child_community,
+    client,
+    headers,
+    parent_community,
+    superuser,
+):
+    client = superuser.login(client)
+    id_of_child_community = str(child_community.id)
+    r = client.get(
+        f"/communities/{id_of_child_community}",
+        headers=headers,
+    )
+    assert r.status_code == 200
+
+    # Case - invalid parent (see test_schema.py for variations)
+    payload = r.json
+    payload["parent"] = {"foo": "invalid"}
+    r = client.put(
+        f"/communities/{id_of_child_community}",
+        headers=headers,
+        json=payload,
+    )
+    assert r.status_code == 400
+    # Perhaps something more specific in the future,
+    # but for now kept existing behavior
+    assert r.json["message"] == "A validation error occurred."
+
+    # Case - valid parent
+    id_of_parent_community = str(parent_community.id)
+    payload["parent"] = {"id": id_of_parent_community}
+    r = client.put(
+        f"/communities/{id_of_child_community}",
+        headers=headers,
+        json=payload,
+    )
+    assert r.status_code == 200
+    assert id_of_parent_community == r.json["parent"]["id"]
+
+    # Case - no parent
+    payload["parent"] = {}
+    r = client.put(
+        f"/communities/{id_of_child_community}",
+        headers=headers,
+        json=payload,
+    )
+    assert r.status_code == 200
+    assert "parent" not in r.json

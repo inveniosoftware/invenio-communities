@@ -236,6 +236,57 @@ def anon_identity():
 
 
 @pytest.fixture(scope="module")
+def superuser_action_role(database):
+    """Store 1 role with 'superuser-access' ActionNeed.
+
+    WHY: This is needed because expansion of ActionNeed is
+         done on the basis of a User/Role being associated with that Need.
+         If no User/Role is associated with that Need (in the DB), the
+         permission is expanded to an empty list.
+    """
+    db = database
+
+    role = Role(id="superuser-access", name="superuser-access")
+    db.session.add(role)
+
+    action_role = ActionRoles.create(action=superuser_access, role=role)
+    db.session.add(action_role)
+
+    db.session.commit()
+    return action_role
+
+
+@pytest.fixture(scope="module")
+def superuser_role_need(superuser_action_role):
+    """This is technically the superuser-access action Need.
+
+    Name kept for legacy reasons.
+    """
+    return superuser_action_role.need
+
+
+@pytest.fixture(scope="module")
+def superuser(UserFixture, app, database, superuser_action_role):
+    """Admin user for requests."""
+    u = UserFixture(
+        email="superuser@inveniosoftware.org",
+        password="superuser",
+    )
+    u.create(app, database)
+
+    datastore = app.extensions["security"].datastore
+    datastore.add_role_to_user(u.user, superuser_action_role.role)
+    datastore.commit()
+    return u
+
+
+@pytest.fixture()
+def superuser_identity(superuser):
+    """Superuser identity fixture."""
+    return superuser.identity
+
+
+@pytest.fixture(scope="module")
 def users(UserFixture, app, database):
     """Users."""
     users = {}
@@ -312,14 +363,6 @@ def admin(UserFixture, app, db, admin_role_need):
 
 
 @pytest.fixture()
-def superuser_identity(admin, superuser_role_need):
-    """Superuser identity fixture."""
-    identity = admin.identity
-    identity.provides.add(superuser_role_need)
-    return identity
-
-
-@pytest.fixture()
 def admin_role_need(db):
     """Store 1 role with 'superuser-access' ActionNeed.
 
@@ -332,26 +375,6 @@ def admin_role_need(db):
     db.session.add(role)
 
     action_role = ActionRoles.create(action=administration_access_action, role=role)
-    db.session.add(action_role)
-
-    db.session.commit()
-
-    return action_role.need
-
-
-@pytest.fixture()
-def superuser_role_need(db):
-    """Store 1 role with 'superuser-access' ActionNeed.
-
-    WHY: This is needed because expansion of ActionNeed is
-         done on the basis of a User/Role being associated with that Need.
-         If no User/Role is associated with that Need (in the DB), the
-         permission is expanded to an empty list.
-    """
-    role = Role(id="superuser-access", name="superuser-access")
-    db.session.add(role)
-
-    action_role = ActionRoles.create(action=superuser_access, role=role)
     db.session.add(action_role)
 
     db.session.commit()
