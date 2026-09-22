@@ -204,19 +204,16 @@ class MemberDumpSchema(PublicDumpSchema):
     revision_id = fields.Integer()
 
     def is_self(self, obj):
-        """Get permission."""
-        if not hasattr(self, "_is_self"):
-            current_identity = context_schema.get()["identity"]
-            self._is_self = (
-                obj.user_id is not None
-                and current_identity.id is not None
-                and str(obj.user_id) == str(current_identity.id)
-            )
-
-        return self._is_self
+        """Returns if user of contextual identity is the one of MemberApi obj."""
+        current_identity = context_schema.get()["identity"]
+        return (
+            obj.user_id is not None
+            and current_identity.id is not None
+            and str(obj.user_id) == str(current_identity.id)
+        )
 
     def get_current_user(self, obj):
-        """Get permission."""
+        """Wrapper for is_self()."""
         return self.is_self(obj)
 
     def get_permissions(self, obj):
