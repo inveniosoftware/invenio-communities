@@ -8,6 +8,6 @@
 from .ext import InvenioCommunities
 from .proxies import current_communities
 
-__version__ = "28.2.2"
+__version__ = "28.2.3"
 
 __all__ = ("InvenioCommunities", "current_communities")

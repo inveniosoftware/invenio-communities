@@ -9,6 +9,13 @@
 Changes
 =======
 
+Version v28.2.3 (released 2026-09-24)
+
+- fix: prevent 500 on degenerate community parent field input
+- fix: fix is_current_user potentially frozen
+       NOTE: this is a pre-emptive fix for upstream changes that may be backported.
+             It prevents this fix from being lost in the shuffle and it doesn't cost too much.
+
 Version v28.2.2 (released 2026-09-15)
 
 - fix: handle missing logo files
