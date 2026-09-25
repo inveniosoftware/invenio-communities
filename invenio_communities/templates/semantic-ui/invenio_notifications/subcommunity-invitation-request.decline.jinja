@@ -14,7 +14,7 @@
     "parent_community_id": parent_community.slug,
     "parent_community_title": parent_community.metadata.title,
     "request_id": request.id,
-    "username": user.username or user.profile.full_name,
+    "username": user.profile.full_name or user.username,
     "ui": ui,
 } %}
 
