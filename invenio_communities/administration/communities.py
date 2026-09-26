@@ -4,6 +4,7 @@
 
 """Invenio administration OAI-PMH view module."""
 
+from datetime import datetime, timezone
 from functools import partial
 
 from flask import current_app
@@ -15,6 +16,13 @@ from invenio_i18n import lazy_gettext as _
 from invenio_search_ui.searchconfig import search_app_config
 
 from invenio_communities.communities.schema import CommunityFeaturedSchema
+
+
+def _featured_community_initial_values():
+    """Return initial values for the feature-community action."""
+    return {
+        "start_date": datetime.now(timezone.utc).isoformat(timespec="minutes"),
+    }
 
 
 class CommunityListView(AdminResourceListView):
@@ -49,6 +57,7 @@ class CommunityListView(AdminResourceListView):
         "featured": {
             "text": _("Feature"),
             "payload_schema": CommunityFeaturedSchema,
+            "initial_values": _featured_community_initial_values,
             "order": 1,
         },
         # custom components in the UI
@@ -107,6 +116,7 @@ class CommunityDetailView(AdminResourceDetailView):
         "featured": {
             "text": _("Feature"),
             "payload_schema": CommunityFeaturedSchema,
+            "initial_values": _featured_community_initial_values,
             "order": 1,
         }
     }
