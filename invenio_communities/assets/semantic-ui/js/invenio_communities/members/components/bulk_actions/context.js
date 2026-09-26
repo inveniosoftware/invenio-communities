@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
+import { createContext } from "react";
 
-export const BulkActionsContext = React.createContext({
+export const BulkActionsContext = createContext({
   bulkActionContext: {},
   addToSelected: () => {},
   allSelected: false,

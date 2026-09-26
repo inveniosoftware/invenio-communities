@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import { Filters } from "../../Filters";
@@ -16,8 +16,14 @@ import Overridable from "react-overridable";
 
 export class ManagerSearchLayout extends Component {
   render() {
-    const { config, roles, rolesCanInvite, community, groupsEnabled, appName } =
-      this.props;
+    const {
+      config,
+      roles,
+      rolesCanInvite,
+      community,
+      groupsEnabled,
+      appName = "",
+    } = this.props;
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getMembersFilters();
     return (
@@ -86,8 +92,4 @@ ManagerSearchLayout.propTypes = {
   community: PropTypes.object.isRequired,
   groupsEnabled: PropTypes.bool.isRequired,
   appName: PropTypes.string,
-};
-
-ManagerSearchLayout.defaultProps = {
-  appName: "",
 };

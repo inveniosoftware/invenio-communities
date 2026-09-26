@@ -7,7 +7,7 @@ import { RequestActionController } from "@js/invenio_requests/request/actions/Re
 import RequestStatus from "@js/invenio_requests/request/RequestStatus";
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Image } from "react-invenio-forms";
 import { Grid, Item, Table } from "semantic-ui-react";
 
@@ -107,5 +107,3 @@ MembershipRequestsResultItem.propTypes = {
   config: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
 };
-
-MembershipRequestsResultItem.defaultProps = {};

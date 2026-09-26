@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Checkbox, Dropdown } from "semantic-ui-react";
@@ -14,7 +14,7 @@ import _pickBy from "lodash/pickBy";
 export class SearchResultsBulkActions extends Component {
   constructor(props) {
     super(props);
-    const { allSelected } = this.props;
+    const { allSelected = false } = this.props;
     this.state = { allSelectedChecked: allSelected };
   }
 
@@ -89,10 +89,6 @@ SearchResultsBulkActions.propTypes = {
   bulkDropdownOptions: PropTypes.array.isRequired,
   allSelected: PropTypes.bool,
   optionSelectionCallback: PropTypes.func.isRequired,
-};
-
-SearchResultsBulkActions.defaultProps = {
-  allSelected: false,
 };
 
 export default Overridable.component(

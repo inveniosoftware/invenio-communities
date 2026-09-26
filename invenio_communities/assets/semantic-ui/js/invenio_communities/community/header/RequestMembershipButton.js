@@ -7,7 +7,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextAreaField } from "react-invenio-forms";
 import { Button, Form, Grid, Message, Modal } from "semantic-ui-react";
 

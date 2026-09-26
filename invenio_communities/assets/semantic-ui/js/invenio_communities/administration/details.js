@@ -4,12 +4,12 @@
  */
 
 import { FeatureModal } from "./FeatureModal";
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import _get from "lodash/get";
 import { OverridableContext, parametrize } from "react-overridable";
 import { FeaturedEntries } from "./featured";
 import { AdminDetailsView, Edit, Delete } from "@js/invenio_administration";
+import { RecordResourceActions } from "./components/RecordResourceActions";
 import { i18next } from "@translations/invenio_communities/i18next";
 
 const domContainer = document.getElementById("invenio-details-config");
@@ -43,10 +43,11 @@ const overridenComponents = {
     ),
   }),
   "InvenioAdministration.ActionModal.layout": FeatureModal,
+  "InvenioAdministration.ResourceActions": RecordResourceActions,
 };
 
 domContainer &&
-  ReactDOM.render(
+  createRoot(domContainer).render(
     <OverridableContext.Provider value={overridenComponents}>
       <AdminDetailsView
         title={title}
@@ -65,6 +66,5 @@ domContainer &&
       >
         <FeaturedEntries />
       </AdminDetailsView>
-    </OverridableContext.Provider>,
-    domContainer
+    </OverridableContext.Provider>
   );

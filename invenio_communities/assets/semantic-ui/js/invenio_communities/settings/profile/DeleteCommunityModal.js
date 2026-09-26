@@ -5,7 +5,7 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React, { Component } from "react";
+import { Component, createRef } from "react";
 import {
   Button,
   Icon,
@@ -31,8 +31,8 @@ export class DeleteCommunityModal extends Component {
       inputSlug: "",
       error: undefined,
     };
-    this.checkboxRef = React.createRef();
-    this.openModalBtnRef = React.createRef();
+    this.checkboxRef = createRef();
+    this.openModalBtnRef = createRef();
     this.state = this.INITIAL_STATE;
   }
 

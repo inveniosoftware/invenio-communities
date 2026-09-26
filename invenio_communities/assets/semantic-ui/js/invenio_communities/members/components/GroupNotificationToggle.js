@@ -5,7 +5,7 @@
 
 import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Checkbox } from "semantic-ui-react";
 import { errorSerializer } from "../../api/serializers";
 import { ErrorPopup } from "./ErrorPopup";
@@ -42,7 +42,7 @@ export class GroupNotificationToggle extends Component {
   };
 
   render() {
-    const { readOnly } = this.props;
+    const { readOnly = false } = this.props;
     const { notificationEnabled, actionSuccess, error } = this.state;
 
     if (readOnly) {
@@ -66,10 +66,4 @@ GroupNotificationToggle.propTypes = {
   initialValue: PropTypes.bool,
   updateAction: PropTypes.func,
   readOnly: PropTypes.bool,
-};
-
-GroupNotificationToggle.defaultProps = {
-  initialValue: false,
-  readOnly: false,
-  updateAction: undefined,
 };

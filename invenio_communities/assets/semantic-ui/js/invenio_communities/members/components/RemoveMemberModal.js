@@ -4,7 +4,7 @@
  */
 
 import { i18next } from "@translations/invenio_communities/i18next";
-import React, { Component } from "react";
+import { Component } from "react";
 import Overridable from "react-overridable";
 import { Button, Modal } from "semantic-ui-react";
 import { ErrorMessage } from "./ErrorMessage";

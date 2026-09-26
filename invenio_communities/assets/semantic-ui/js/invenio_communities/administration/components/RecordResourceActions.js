@@ -5,7 +5,7 @@
 
 import { RestoreConfirmation } from "./RestoreConfirmation";
 import TombstoneForm from "./TombstoneForm";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, Icon } from "semantic-ui-react";
 import { ActionModal, ActionForm } from "@js/invenio_administration";
@@ -89,7 +89,7 @@ export class RecordResourceActions extends Component {
   };
 
   render() {
-    const { actions, Element, resource } = this.props;
+    const { actions, Element = Button, resource } = this.props;
     const { modalOpen, modalHeader, modalBody } = this.state;
     return (
       <>
@@ -161,9 +161,4 @@ RecordResourceActions.propTypes = {
     order: PropTypes.number.isRequired,
   }),
   Element: PropTypes.node,
-};
-
-RecordResourceActions.defaultProps = {
-  Element: Button,
-  actions: undefined,
 };

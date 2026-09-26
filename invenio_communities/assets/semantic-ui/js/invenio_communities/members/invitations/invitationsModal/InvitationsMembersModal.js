@@ -7,7 +7,7 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { InvenioCommunitiesRoutesGenerator } from "../../../routes/appUrls";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { withState } from "react-searchkit";
 import { Button, Container, Modal, Tab } from "semantic-ui-react";
 import { InvitationsContext } from "../../../api/invitations/InvitationsContextProvider";
@@ -187,7 +187,7 @@ export class InvitationsMembersModal extends Component {
 
   render() {
     const { open, activeIndex } = this.state;
-    const { triggerButtonSize } = this.props;
+    const { triggerButtonSize = "medium" } = this.props;
     return (
       <Modal
         role="dialog"
@@ -237,10 +237,6 @@ InvitationsMembersModal.propTypes = {
   groupsEnabled: PropTypes.bool.isRequired,
   community: PropTypes.object.isRequired,
   triggerButtonSize: PropTypes.string,
-};
-
-InvitationsMembersModal.defaultProps = {
-  triggerButtonSize: "medium",
 };
 
 export const InvitationsMembersModalWithSearchKit = withState(InvitationsMembersModal);

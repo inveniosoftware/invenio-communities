@@ -5,7 +5,7 @@
 
 import { SearchAppResultsPane } from "@js/invenio_search_ui/components";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { RequestStatusFilter } from "@js/invenio_requests/search";
 import { Filters } from "../Filters";
 import { InvitationsContextProvider } from "../../api/invitations/InvitationsContextProvider";
@@ -17,8 +17,14 @@ import Overridable from "react-overridable";
 
 export class InvitationsSearchLayout extends Component {
   render() {
-    const { config, roles, rolesCanInvite, community, groupsEnabled, appName } =
-      this.props;
+    const {
+      config,
+      roles,
+      rolesCanInvite,
+      community,
+      groupsEnabled,
+      appName = "",
+    } = this.props;
 
     const filtersClass = new Filters(roles);
     const customFilters = filtersClass.getInvitationFilters();
@@ -94,8 +100,4 @@ InvitationsSearchLayout.propTypes = {
   community: PropTypes.object.isRequired,
   groupsEnabled: PropTypes.bool.isRequired,
   appName: PropTypes.string,
-};
-
-InvitationsSearchLayout.defaultProps = {
-  appName: "",
 };

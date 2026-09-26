@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { ModalContext } from "./index";
 import PropTypes from "prop-types";
 

@@ -6,15 +6,20 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import _truncate from "lodash/truncate";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Image, InvenioPopup } from "react-invenio-forms";
 import Overridable from "react-overridable";
 import { Button, Grid, Header, Item, Icon } from "semantic-ui-react";
 
 class CarouselItem extends Component {
   render() {
-    const { community, defaultLogo, className, showUploadBtn, canSubmitRecord } =
-      this.props;
+    const {
+      community,
+      defaultLogo,
+      className = "",
+      showUploadBtn = true,
+      canSubmitRecord,
+    } = this.props;
     return (
       <Overridable
         id="InvenioCommunities.CarouselItem.layout"
@@ -90,11 +95,6 @@ CarouselItem.propTypes = {
   className: PropTypes.string,
   showUploadBtn: PropTypes.bool,
   canSubmitRecord: PropTypes.bool.isRequired,
-};
-
-CarouselItem.defaultProps = {
-  className: "",
-  showUploadBtn: true,
 };
 
 export default Overridable.component("InvenioCommunities.CarouselItem", CarouselItem);

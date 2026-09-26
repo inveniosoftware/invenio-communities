@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import { Grid } from "semantic-ui-react";
 import { ResultsPerPage, Pagination, ResultsList } from "react-searchkit";
 import PropTypes from "prop-types";

@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: MIT
  */
 
+import { createRoot } from "react-dom/client";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik, useFormikContext } from "formik";
 import _get from "lodash/get";
 import _isEmpty from "lodash/isEmpty";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import { Component, Fragment } from "react";
 import {
   FieldLabel,
   RadioField,
@@ -270,7 +270,7 @@ class CommunityCreateForm extends Component {
                       <>
                         <Header as="h3">{i18next.t("Community visibility")}</Header>
                         {formConfig.access.visibility.map((item) => (
-                          <React.Fragment key={item.value}>
+                          <Fragment key={item.value}>
                             <RadioField
                               key={item.value}
                               fieldPath="access.visibility"
@@ -286,7 +286,7 @@ class CommunityCreateForm extends Component {
                               }}
                             />
                             <label className="helptext">{item.helpText}</label>
-                          </React.Fragment>
+                          </Fragment>
                         ))}
                       </>
                     )}
@@ -331,14 +331,16 @@ const canCreateRestricted = JSON.parse(domContainer.dataset.canCreateRestricted)
 const community = JSON.parse(domContainer.dataset.community);
 
 const overriddenComponents = overrideStore.getAll();
-ReactDOM.render(
+const root = createRoot(domContainer);
+
+root.render(
   <OverridableContext.Provider value={overriddenComponents}>
     <CommunityCreateForm
       formConfig={formConfig}
       canCreateRestricted={canCreateRestricted}
       community={community}
     />
-  </OverridableContext.Provider>,
-  domContainer
+  </OverridableContext.Provider>
 );
+
 export default CommunityCreateForm;

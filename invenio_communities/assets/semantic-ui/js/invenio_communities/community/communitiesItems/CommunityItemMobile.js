@@ -7,13 +7,12 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { CommunityTypeLabel } from "../labels";
 import { RestrictedLabel } from "../labels";
-import React from "react";
 import { Image } from "react-invenio-forms";
 import { Button, Grid, Icon, Popup, Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import OrganizationsList from "../../organizations/OrganizationsList";
 
-export const CommunityItemMobile = ({ result, index }) => {
+export const CommunityItemMobile = ({ result, index = null }) => {
   const communityType = result.ui?.type?.title_l10n;
   const canUpdate = result.ui.permissions.can_update;
   return (
@@ -136,8 +135,4 @@ export const CommunityItemMobile = ({ result, index }) => {
 CommunityItemMobile.propTypes = {
   result: PropTypes.object.isRequired,
   index: PropTypes.string,
-};
-
-CommunityItemMobile.defaultProps = {
-  index: null,
 };

@@ -4,13 +4,13 @@
  */
 
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Icon, Label } from "semantic-ui-react";
 import { Filters } from "../Filters";
 
 class FilterLabel extends Component {
   render() {
-    const { filter, currentQueryState, updateQueryState, roles } = this.props;
+    const { filter, currentQueryState, updateQueryState, roles = [] } = this.props;
     const currentFilters = currentQueryState.filters;
     const filtersClass = new Filters(roles);
     const displayValue = filtersClass.getDisplayValue(filter);
@@ -35,10 +35,6 @@ FilterLabel.propTypes = {
   currentQueryState: PropTypes.object.isRequired,
   filter: PropTypes.array.isRequired,
   roles: PropTypes.array,
-};
-
-FilterLabel.defaultProps = {
-  roles: [],
 };
 
 export default FilterLabel;

@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: MIT
  */
 
+import { createRoot } from "react-dom/client";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik, useFormikContext } from "formik";
 import _isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import { Component, Fragment } from "react";
 import {
   CustomFields,
   FieldLabel,
@@ -165,7 +165,7 @@ class CommunityCreateForm extends Component {
                     <>
                       <Header as="h3">{i18next.t("Community visibility")}</Header>
                       {formConfig.access.visibility.map((item) => (
-                        <React.Fragment key={item.value}>
+                        <Fragment key={item.value}>
                           <RadioField
                             key={item.value}
                             fieldPath="access.visibility"
@@ -181,7 +181,7 @@ class CommunityCreateForm extends Component {
                             }}
                           />
                           <label className="helptext">{item.helpText}</label>
-                        </React.Fragment>
+                        </Fragment>
                       ))}
                     </>
                   )}
@@ -221,12 +221,14 @@ const formConfig = JSON.parse(domContainer.dataset.formConfig);
 const customFields = JSON.parse(domContainer.dataset.customFields);
 const canCreateRestricted = JSON.parse(domContainer.dataset.canCreateRestricted);
 
-ReactDOM.render(
+const root = createRoot(domContainer);
+
+root.render(
   <CommunityCreateForm
     formConfig={formConfig}
     customFields={customFields}
     canCreateRestricted={canCreateRestricted}
-  />,
-  domContainer
+  />
 );
+
 export default CommunityCreateForm;
