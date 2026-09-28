@@ -10,6 +10,13 @@
 Changes
 =======
 
+Version v29.3.0 (released 2026-09-28)
+
+- dependencies: remove react-router-dom
+- service: add members_html link and use it in invitations groups modal
+- fix: prevent 500 on degenerate community parent field input
+- fix: fix is_current_user potentially frozen
+
 Version v29.2.0 (released 2026-09-21)
 
 - refactor(schema): align community schemas with custom-fields
