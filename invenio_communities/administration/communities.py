@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2022-2024 CERN.
-# SPDX-FileCopyrightText: 2025 KTH Royal Institute of Technology.
+# SPDX-FileCopyrightText: 2025-2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Invenio administration OAI-PMH view module."""
@@ -114,6 +114,7 @@ class CommunityDetailView(AdminResourceDetailView):
     item_field_list = {
         "slug": {
             "text": _("Slug"),
+            "link": "links.self_html",
             "order": 1,
         },
         "metadata.title": {"text": _("Title"), "order": 2},
