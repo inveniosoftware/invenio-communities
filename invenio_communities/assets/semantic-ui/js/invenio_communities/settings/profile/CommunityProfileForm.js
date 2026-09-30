@@ -422,6 +422,7 @@ class CommunityProfileForm extends Component {
                               label={i18next.t("Type")}
                             />
                           }
+                          noResultsMessage={i18next.t("No results found.")}
                           options={types.map((ct) => {
                             return {
                               value: ct.id,
@@ -491,6 +492,7 @@ class CommunityProfileForm extends Component {
                             />
                           }
                           noQueryMessage={i18next.t("Search for organizations...")}
+                          noResultsMessage={i18next.t("No results found.")}
                           allowAdditions
                           search={(filteredOptions, searchQuery) => filteredOptions}
                         />
