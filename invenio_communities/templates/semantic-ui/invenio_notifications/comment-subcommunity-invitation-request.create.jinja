@@ -7,7 +7,8 @@
 {% set invenio_request_event = notification.context.request_event %}
 
 {# created_by is either a resolved user or an email (for guests) #}
-{% set event_creator_name = invenio_request_event.created_by.username or invenio_request_event.created_by %}
+{% set event_creator_name = invenio_request_event.created_by.profile.full_name
+    or (invenio_request_event.created_by.username and "@" ~ invenio_request_event.created_by.username) %}
 {% set request_id = invenio_request.id %}
 {% set request_event_content = invenio_request_event.payload.content | safe %}
 {% set request_title = invenio_request.title | safe %}
@@ -28,7 +29,11 @@
 {%- block html_body -%}
 <table style="font-family:'Lato',Helvetica,Arial,sans-serif;border-spacing:15px">
     <tr>
-        <td>{{ _("'@{user_name}' commented on '{request_title}':").format(user_name=event_creator_name, request_title=request_title) }}</td>
+        {%- if event_creator_name -%}
+            {{ _("'{user_name}' commented on '{request_title}':").format(user_name=event_creator_name, request_title=request_title) }}
+        {%- else -%}
+            {{ _("A new comment was posted on '{request_title}':").format(request_title=request_title) }}
+        {%- endif -%}
     </tr>
     <tr>
         <td><em>{{ request_event_content }}</em></td>
@@ -46,7 +51,7 @@
 {%- endblock html_body %}
 
 {%- block plain_body -%}
-{{ _("@{user_name} commented on '{request_title}'").format(user_name=event_creator_name, request_title=request_title) }}.
+{{ _("{user_name} commented on '{request_title}'").format(user_name=event_creator_name, request_title=request_title) }}.
 
 {{ request_event_content }}
 
@@ -56,7 +61,7 @@
 
 {# Markdown for Slack/Mattermost/chat #}
 {%- block md_body -%}
-{{ _("*@{user_name}* commented on *{request_title}*").format(user_name=event_creator_name, request_title=request_title) }}.
+{{ _("*{user_name}* commented on *{request_title}*").format(user_name=event_creator_name, request_title=request_title) }}.
 
 {{ request_event_content }}
 

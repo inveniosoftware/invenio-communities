@@ -8,7 +8,8 @@
 {% set recipient_is_requester = recipient.data.id == requester.id  %}
 {% set community = request.receiver %}
 {% set community_title = community["metadata"]["title"] %}
-{% set requester_name = requester.username or requester.profile.full_name %}
+{% set requester_name = requester.profile.full_name
+    or (requester.username and "@" ~ requester.username) %}
 {% set request_link = (
   invenio_url_for("invenio_app_rdm_requests.user_dashboard_request_view", request_pid_value=request.id)
   if recipient_is_requester else
@@ -21,7 +22,7 @@
 {%- if recipient_is_requester -%}
 ⌛️ {{ _("Your request to join the community '{community_title}' expired").format(community_title=community_title) }}
 {%- else -%}
-⌛️ {{ _("The request from '@{user_name}' to join the community '{community_title}' expired").format(user_name=requester_name, community_title=community_title) }}
+⌛️ {{ _("The request from '{user_name}' to join the community '{community_title}' expired").format(user_name=requester_name, community_title=community_title) }}
 {%- endif -%}
 {%- endblock subject -%}
 
@@ -32,7 +33,7 @@
       {%- if recipient_is_requester -%}
       {{ _("Your request to join the community '{community_title}' expired").format(community_title=community_title) }}.
       {%- else -%}
-      {{ _("The request from '@{user_name}' to join the community '{community_title}' expired").format(user_name=requester_name, community_title=community_title) }}.
+      {{ _("The request from '{user_name}' to join the community '{community_title}' expired").format(user_name=requester_name, community_title=community_title) }}.
       {%- endif -%}
     </td>
   </tr>
@@ -53,7 +54,7 @@
 {%- if recipient_is_requester -%}
 {{ _("Your request to join the community '{community_title}' expired").format(community_title=community_title) }}.
 {%- else -%}
-{{ _("The request from '@{user_name}' to join the community '{community_title}' expired").format(user_name=requester_name, community_title=community_title) }}.
+{{ _("The request from '{user_name}' to join the community '{community_title}' expired").format(user_name=requester_name, community_title=community_title) }}.
 {%- endif %}
 
 {{ _("Check out the membership request") }}: {{ request_link }} .
@@ -67,7 +68,7 @@
 {%- if recipient_is_requester -%}
 {{ _("Your request to join the community *{community_title}* expired").format(community_title=community_title) }}.
 {%- else -%}
-{{ _("The request from *@{user_name}* to join the community *{community_title}* expired").format(user_name=requester_name, community_title=community_title) }}.
+{{ _("The request from *{user_name}* to join the community *{community_title}* expired").format(user_name=requester_name, community_title=community_title) }}.
 {%- endif %}
 
 [{{ _("Check out the membership request") }}]({{ request_link }})
