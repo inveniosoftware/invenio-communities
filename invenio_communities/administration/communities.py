@@ -20,7 +20,8 @@ from invenio_communities.communities.schema import CommunityFeaturedSchema
 class CommunityListView(AdminResourceListView):
     """Search admin view."""
 
-    api_endpoint = "/communities"
+    api_endpoint = "/communities"  # Deprecated
+    api_endpoint_name = "communities.search"
     name = "communities"
     resource_config = "communities_resource"
     search_request_headers = {"Accept": "application/vnd.inveniordm.v1+json"}
@@ -90,7 +91,8 @@ class CommunityDetailView(AdminResourceDetailView):
     """Admin community detail view."""
 
     url = "/communities/<pid_value>"
-    api_endpoint = "/communities"
+    api_endpoint = "/communities"  # Deprecated
+    api_endpoint_name = "communities.search"
     name = "community-details"
     resource_config = "communities_resource"
     title = _("Community")

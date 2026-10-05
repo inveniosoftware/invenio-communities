@@ -21,7 +21,7 @@ classifiers = [
   "Development Status :: 5 - Production/Stable",
 ]
 dependencies = [
-  "invenio-administration>=7.0.0,<8.0.0",
+  "invenio-administration>=7.3.0,<8.0.0",
   "invenio-collections>=10.0.0,<11.0.0",
   "invenio-oaiserver>=6.0.0,<7.0.0",
   "invenio-records-resources>=11.0.0,<12.0.0",
