@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v28.3.0 (released 2026-10-05)
+
+- feat+fix: make membership-request role configurable
+
 Version v28.2.3 (released 2026-09-24)
 
 - fix: prevent 500 on degenerate community parent field input
