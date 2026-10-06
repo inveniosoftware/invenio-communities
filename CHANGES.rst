@@ -10,6 +10,12 @@
 Changes
 =======
 
+Version v29.4.0 (released 2026-10-06)
+
+- members: make membership-request role configurable
+- deps: update translation tooling dependencies
+- fix(translations): add no results message to select fields explicitly
+
 Version v29.3.0 (released 2026-09-28)
 
 - dependencies: remove react-router-dom
