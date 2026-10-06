@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v28.3.1 (released 2026-10-06)
+
+- deps: update translation tooling dependencies
+
 Version v28.3.0 (released 2026-10-05)
 
 - feat+fix: make membership-request role configurable
