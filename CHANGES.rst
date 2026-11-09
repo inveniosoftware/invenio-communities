@@ -10,6 +10,13 @@
 Changes
 =======
 
+Version v30.0.0 (released 2026-11-10)
+
+- chore(setup): bump dependencies
+- feat: upgrade to react 18
+- fix(translations): add no results message to select fields explicitly
+- members: make membership-request role configurable
+
 Version v29.3.0 (released 2026-09-28)
 
 - dependencies: remove react-router-dom
