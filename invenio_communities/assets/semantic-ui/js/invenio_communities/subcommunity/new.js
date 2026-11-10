@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2024 CERN.
+ * SPDX-FileCopyrightText: 2026 Ubiquity Press.
  * SPDX-License-Identifier: MIT
  */
 
@@ -7,16 +8,14 @@ import { createRoot } from "react-dom/client";
 import { i18next } from "@translations/invenio_communities/i18next";
 import { Formik, useFormikContext } from "formik";
 import _get from "lodash/get";
-import _isEmpty from "lodash/isEmpty";
 import PropTypes from "prop-types";
 import { Component, Fragment } from "react";
 import {
   FieldLabel,
   RadioField,
-  SelectField,
+  RemoteSelectField,
   TextField,
   withCancel,
-  http,
 } from "react-invenio-forms";
 import { Button, Divider, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../api";
@@ -63,35 +62,37 @@ IdentifierField.propTypes = {
   formConfig: PropTypes.object.isRequired,
 };
 
+// Hierarchies are one level deep: communities that already have a parent, or
+// that allow children (even with none yet), can't become subcommunities.
+const ELIGIBLE_COMMUNITIES_QUERY = "NOT _exists_:parent.id AND NOT children.allow:true";
+
+// Characters with special meaning in OpenSearch query string syntax.
+const QUERY_STRING_SPECIAL_CHARS = /[+\-=&|><!(){}[\]^"~*?:\\/]/g;
+
+const buildCommunitiesQuery = (searchQuery) => {
+  const terms = (searchQuery || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((term) => `${term.replace(QUERY_STRING_SPECIAL_CHARS, "\\$&")}*`);
+  if (terms.length === 0) {
+    return ELIGIBLE_COMMUNITIES_QUERY;
+  }
+  return `(${terms.join(" AND ")}) AND ${ELIGIBLE_COMMUNITIES_QUERY}`;
+};
+
+const serializeCommunities = (communities) =>
+  communities.map((community) => ({
+    text: community.metadata.title,
+    value: community.id,
+    key: community.id,
+  }));
+
 class CommunityCreateForm extends Component {
   state = {
     error: "",
     hasCommunity: false,
-    communities: [],
   };
-
-  componentDidMount() {
-    withCancel(
-      http
-        .get("/api/user/communities?sort=newest")
-        .then((response) => response.data)
-        .then((data) => {
-          this.setState({
-            communities: data?.hits?.hits
-              .filter((item) => !item?.parent?.id)
-              .filter((item) => !item?.children?.allow === true)
-              .map((item) => ({
-                text: item.metadata.title,
-                value: item.id,
-                key: item.id,
-              })),
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-    );
-  }
 
   componentWillUnmount() {
     this.cancellableCreate && this.cancellableCreate.cancel();
@@ -133,6 +134,7 @@ class CommunityCreateForm extends Component {
     } catch (error) {
       if (error === "UNMOUNTED") return;
 
+      setSubmitting(false);
       const { errors, message } = communityErrorSerializer(error);
 
       if (message) {
@@ -156,7 +158,7 @@ class CommunityCreateForm extends Component {
 
   render() {
     const { formConfig, canCreateRestricted, community } = this.props;
-    const { hasCommunity, communities, error } = this.state;
+    const { hasCommunity, error } = this.state;
 
     return (
       <Overridable
@@ -228,7 +230,7 @@ class CommunityCreateForm extends Component {
                       </Form.Group>
                     </div>
                     {hasCommunity && (
-                      <SelectField
+                      <RemoteSelectField
                         label={
                           <FieldLabel
                             icon="user"
@@ -238,10 +240,16 @@ class CommunityCreateForm extends Component {
                           />
                         }
                         fieldPath="metadata.community"
-                        options={communities}
-                        defaultValue="Loading..."
+                        suggestionAPIUrl="/api/user/communities"
+                        suggestionAPIQueryParams={{ sort: "newest" }}
+                        searchQueryParamName="q"
+                        preSearchChange={buildCommunitiesQuery}
+                        serializeSuggestions={serializeCommunities}
+                        placeholder={i18next.t("Search for one of your communities")}
+                        noQueryMessage={i18next.t("Search for one of your communities")}
+                        noResultsMessage={i18next.t("No eligible communities found.")}
+                        clearable
                         required
-                        disabled={_isEmpty(communities)}
                       />
                     )}
                     {!hasCommunity && (
