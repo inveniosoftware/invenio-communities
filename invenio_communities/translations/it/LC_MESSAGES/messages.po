@@ -11,7 +11,6 @@
 # Fare Fare <fare@polito.it>, 2024
 # Tibor Simko <tibor.simko@cern.ch>, 2025
 # 
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: invenio-communities 19.1.0\n"

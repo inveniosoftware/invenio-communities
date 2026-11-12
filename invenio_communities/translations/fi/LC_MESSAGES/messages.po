@@ -1,0 +1,1419 @@
+# Translations template for invenio-communities.
+# Copyright (C) 2026 CERN
+# This file is distributed under the same license as the invenio-communities
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+# 
+# Translators:
+# Matti Lassila <matti.lassila@gmail.com>, 2026
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: invenio-communities 28.1.0\n"
+"Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
+"POT-Creation-Date: 2026-06-22 20:51+0000\n"
+"PO-Revision-Date: 2016-08-18 12:29+0000\n"
+"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2026\n"
+"Language-Team: Finnish (https://app.transifex.com/inveniosoftware/teams/23537/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: invenio_communities/config.py:69 invenio_communities/config.py:171
+#: invenio_communities/config.py:213
+#: invenio_communities/members/services/config.py:38
+#: invenio_communities/members/services/config.py:81
+#: invenio_communities/members/services/config.py:112
+msgid "Best match"
+msgstr "Paras osuma"
+
+#: invenio_communities/config.py:73 invenio_communities/config.py:179
+#: invenio_communities/config.py:221
+#: invenio_communities/members/services/config.py:89
+#: invenio_communities/members/services/config.py:120
+msgid "Newest"
+msgstr "Uusin"
+
+#: invenio_communities/config.py:77 invenio_communities/config.py:183
+#: invenio_communities/config.py:225
+#: invenio_communities/members/services/config.py:93
+#: invenio_communities/members/services/config.py:124
+msgid "Oldest"
+msgstr "Vanhin"
+
+#: invenio_communities/config.py:81
+msgid "Version"
+msgstr "Versio"
+
+#: invenio_communities/config.py:85
+msgid "Recently updated"
+msgstr "Hiljattain päivitetty"
+
+#: invenio_communities/config.py:89
+msgid "Least recently updated"
+msgstr "Vanhimmin päivitetty"
+
+#: invenio_communities/config.py:93
+msgid "Newest activity"
+msgstr ""
+
+#: invenio_communities/config.py:97
+msgid "Oldest activity"
+msgstr ""
+
+#: invenio_communities/communities/services/facets.py:35
+#: invenio_communities/config.py:107
+msgid "Reader"
+msgstr "Lukija"
+
+#: invenio_communities/config.py:108
+msgid "Can view restricted records."
+msgstr "Voi nähdä rajoitetut tietueet."
+
+#: invenio_communities/communities/services/facets.py:37
+#: invenio_communities/config.py:113
+msgid "Curator"
+msgstr "Kuraattori"
+
+#: invenio_communities/config.py:114
+msgid "Can curate records and view restricted records."
+msgstr "Voi kuratoida tietueita ja nähdä rajoitetut tietueet."
+
+#: invenio_communities/communities/services/facets.py:36
+#: invenio_communities/config.py:120
+msgid "Manager"
+msgstr "Ylläpitäjä"
+
+#: invenio_communities/config.py:122
+msgid "Can manage members, curate records and view restricted records."
+msgstr ""
+"Voi hallita jäseniä, kuratoida tietueita ja nähdä rajoitetut tietueet."
+
+#: invenio_communities/communities/services/facets.py:34
+#: invenio_communities/config.py:131
+msgid "Owner"
+msgstr "Omistaja"
+
+#: invenio_communities/config.py:132
+msgid "Full administrative access to the entire community."
+msgstr "Täydet ylläpito-oikeudet koko yhteisöön."
+
+#: invenio_communities/config.py:175 invenio_communities/config.py:217
+#: invenio_communities/members/services/config.py:42
+#: invenio_communities/members/services/config.py:85
+#: invenio_communities/members/services/config.py:116
+msgid "Name"
+msgstr "Nimi"
+
+#: invenio_communities/errors.py:24
+#, python-format
+msgid "A featured community entry with %(q)s does not exist."
+msgstr "Esillä olevaa yhteisömerkintää %(q)s ei ole olemassa."
+
+#: invenio_communities/errors.py:35
+msgid "No logo exists for this community."
+msgstr "Tällä yhteisöllä ei ole logoa."
+
+#: invenio_communities/errors.py:47
+#, python-format
+msgid ""
+"Logo size limit exceeded. Limit: %(limit_value)s %(limit_unit)s Given: "
+"%(file_size_value)s %(file_size_unit)s"
+msgstr ""
+"Logon kokoraja ylittyi. Raja: %(limit_value)s %(limit_unit)s Annettu: "
+"%(file_size_value)s %(file_size_unit)s"
+
+#: invenio_communities/errors.py:64
+#, python-format
+msgid ""
+"There is %(num)s request open for this community. Please, resolve it before "
+"deleting this community."
+msgid_plural ""
+"There are %(num)s requests open for this community. Please, resolve all of "
+"them before deleting this community."
+msgstr[0] ""
+"Tälle yhteisölle on %(num)s avoin pyyntö. Ratkaise se ennen yhteisön "
+"poistamista."
+msgstr[1] ""
+"Tälle yhteisölle on %(num)s avointa pyyntöä. Ratkaise ne kaikki ennen "
+"yhteisön poistamista."
+
+#: invenio_communities/errors.py:96
+msgid ""
+"Cannot set community as the default. The record has not been added to the "
+"community."
+msgstr ""
+"Yhteisöä ei voida asettaa oletukseksi. Tietuetta ei ole lisätty yhteisöön."
+
+#: invenio_communities/administration/communities.py:27
+#: invenio_communities/administration/communities.py:28
+#: invenio_communities/administration/communities.py:29
+#: invenio_communities/ext.py:145
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:9
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:21
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:18
+msgid "Communities"
+msgstr "Yhteisöt"
+
+#: invenio_communities/ext.py:150
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:57
+#: invenio_communities/templates/semantic-ui/invenio_communities/new.html:8
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:23
+msgid "New community"
+msgstr "Uusi yhteisö"
+
+#: invenio_communities/ext.py:159
+msgid "Requests"
+msgstr "Pyynnöt"
+
+#: invenio_communities/ext.py:166
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:16
+msgid "Members"
+msgstr "Jäsenet"
+
+#: invenio_communities/ext.py:174
+msgid "Settings"
+msgstr "Asetukset"
+
+#: invenio_communities/ext.py:182
+msgid "Curation policy"
+msgstr "Kuraatiokäytäntö"
+
+#: invenio_communities/ext.py:190
+msgid "About"
+msgstr "Tietoja"
+
+#: invenio_communities/roles.py:60
+msgid "Only one role be defined as owner."
+msgstr "Vain yksi rooli voidaan määrittää omistajaksi."
+
+#: invenio_communities/roles.py:62
+msgid "One role must be defined as owner."
+msgstr "Yksi rooli on määritettävä omistajaksi."
+
+#: invenio_communities/administration/communities.py:40
+#: invenio_communities/administration/communities.py:116
+msgid "Slug"
+msgstr ""
+
+#: invenio_communities/administration/communities.py:41
+#: invenio_communities/administration/communities.py:119
+msgid "Title"
+msgstr "Otsikko"
+
+#: invenio_communities/administration/communities.py:43
+#: invenio_communities/administration/communities.py:121
+#: invenio_communities/communities/services/facets.py:12
+msgid "Type"
+msgstr "Tyyppi"
+
+#: invenio_communities/administration/communities.py:44
+#: invenio_communities/communities/services/config.py:51
+msgid "Featured"
+msgstr "Nostettu"
+
+#: invenio_communities/administration/communities.py:45
+#: invenio_communities/administration/communities.py:122
+msgid "Created"
+msgstr "Luotu"
+
+#: invenio_communities/administration/communities.py:50
+#: invenio_communities/administration/communities.py:108
+msgid "Feature"
+msgstr ""
+
+#: invenio_communities/administration/communities.py:56
+msgid "Delete"
+msgstr "Poista"
+
+#: invenio_communities/administration/communities.py:62
+msgid "Restore"
+msgstr "Palauta"
+
+#: invenio_communities/administration/communities.py:96
+msgid "Community"
+msgstr "Yhteisö"
+
+#: invenio_communities/communities/schema.py:49
+#, python-format
+msgid "Field cannot be blank or longer than %(max)s characters."
+msgstr "Kenttä ei voi olla tyhjä tai pidempi kuin %(max)s merkkiä."
+
+#: invenio_communities/communities/schema.py:58
+#, python-format
+msgid "Field cannot be longer than %(max)s characters."
+msgstr "Kenttä ei voi olla pidempi kuin %(max)s merkkiä."
+
+#: invenio_communities/communities/schema.py:69
+msgid "The ID must not be an Universally Unique IDentifier (UUID)."
+msgstr "Tunniste ei saa olla UUID (Universally Unique Identifier)."
+
+#: invenio_communities/communities/schema.py:238
+msgid "The identifier should contain only letters, numbers, or dashes."
+msgstr "Tunniste saa sisältää vain kirjaimia, numeroita tai tavuviivoja."
+
+#: invenio_communities/communities/schema.py:331
+msgid "start date"
+msgstr "alkamispäivä"
+
+#: invenio_communities/communities/schema.py:332
+msgid "Accepted format: YYYY-MM-DD hh:mm"
+msgstr "Hyväksytty muoto: VVVV-KK-PP hh:mm"
+
+#: invenio_communities/communities/schema.py:344
+msgid "Deleted community"
+msgstr "Poistettu yhteisö"
+
+#: invenio_communities/communities/schema.py:345
+msgid "The community was deleted."
+msgstr "Yhteisö poistettiin."
+
+#: invenio_communities/communities/resources/config.py:65
+#: invenio_communities/members/resources/config.py:54
+msgid "The record has been deleted."
+msgstr "Tietue on poistettu."
+
+#: invenio_communities/communities/resources/ui_schema.py:46
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: invenio_communities/communities/resources/ui_schema.py:53
+msgid "System (automatic)"
+msgstr "Järjestelmä (automaattinen)"
+
+#: invenio_communities/communities/resources/ui_schema.py:55
+msgid "Admin"
+msgstr "Ylläpito"
+
+#: invenio_communities/communities/services/components.py:35
+msgid "A community with this identifier already exists."
+msgstr "Tällä tunnisteella on jo olemassa yhteisö."
+
+#: invenio_communities/communities/services/components.py:53
+msgid "The ID should be modified through the renaming URL instead."
+msgstr "Tunnistetta tulee muuttaa uudelleennimeämisen URL-osoitteen kautta."
+
+#: invenio_communities/communities/services/components.py:61
+msgid "A new ID value is required for the renaming."
+msgstr "Uusi tunnistearvo vaaditaan uudelleennimeämistä varten."
+
+#: invenio_communities/communities/services/components.py:143
+msgid "The community is not public."
+msgstr "Yhteisö ei ole julkinen."
+
+#: invenio_communities/communities/services/components.py:172
+#, python-format
+msgid "parent.communities.ids:%(id)s"
+msgstr "parent.communities.ids:%(id)s"
+
+#: invenio_communities/communities/services/components.py:318
+msgid "Assigned parent is not allowed to be a parent."
+msgstr "Määritetty ylätaso ei saa toimia ylätasona."
+
+#: invenio_communities/communities/services/components.py:322
+msgid "Community allowed to be a parent can't be a child."
+msgstr "Ylätasoksi sallittu yhteisö ei voi olla alataso."
+
+#: invenio_communities/communities/services/components.py:326
+msgid "Assigned parent community cannot also have a parent."
+msgstr "Määritetyllä ylätasoyhteisöllä ei voi olla omaa ylätasoa."
+
+#: invenio_communities/communities/services/components.py:330
+msgid "Assigned parent community cannot be the same as child."
+msgstr "Määritetty ylätasoyhteisö ei voi olla sama kuin alataso."
+
+#: invenio_communities/communities/services/components.py:333
+msgid "Assigned parent community does not exist."
+msgstr "Määritettyä ylätasoyhteisöä ei ole olemassa."
+
+#: invenio_communities/communities/services/facets.py:14
+msgid "Organization"
+msgstr "Organisaatio"
+
+#: invenio_communities/communities/services/facets.py:15
+msgid "Event"
+msgstr "Tapahtuma"
+
+#: invenio_communities/communities/services/facets.py:16
+msgid "Topic"
+msgstr "Aihe"
+
+#: invenio_communities/communities/services/facets.py:17
+msgid "Project"
+msgstr "Projekti"
+
+#: invenio_communities/communities/services/facets.py:23
+#: invenio_communities/communities/services/facets.py:32
+#: invenio_communities/communities/services/facets.py:43
+#: invenio_communities/members/services/facets.py:32
+msgid "Visibility"
+msgstr "Näkyvyys"
+
+#: invenio_communities/communities/services/facets.py:25
+#: invenio_communities/members/services/facets.py:33
+#: invenio_communities/views/communities.py:27
+#: invenio_communities/views/communities.py:44
+msgid "Public"
+msgstr "Julkinen"
+
+#: invenio_communities/communities/services/facets.py:26
+#: invenio_communities/communities/services/facets.py:46
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:14
+#: invenio_communities/views/communities.py:35
+msgid "Restricted"
+msgstr "Rajoitettu"
+
+#: invenio_communities/communities/services/facets.py:45
+#: invenio_communities/members/services/facets.py:33
+msgid "Hidden"
+msgstr "Piilotettu"
+
+#: invenio_communities/communities/services/service.py:210
+msgid "Missing data for required field."
+msgstr "Pakollisesta kentästä puuttuu tietoja."
+
+#: invenio_communities/members/resources/config.py:40
+msgid "Invalid member specified."
+msgstr "Virheellinen jäsen määritetty."
+
+#: invenio_communities/members/resources/config.py:47
+msgid ""
+"One of the submitted entity is already a member or pending a decision. The "
+"entire action was cancelled."
+msgstr ""
+
+#: invenio_communities/members/services/components.py:29
+#: invenio_communities/members/services/components.py:38
+msgid "Community must be defined."
+msgstr "Yhteisö on määriteltävä."
+
+#: invenio_communities/members/services/components.py:44
+#, python-format
+msgid "Member must be 'MemberMixin' or 'dict' but was %(type)s"
+msgstr "Jäsenen on oltava 'MemberMixin' tai 'dict', mutta oli %(type)s"
+
+#: invenio_communities/members/services/facets.py:14
+msgid "Role"
+msgstr "Rooli"
+
+#: invenio_communities/members/services/facets.py:20
+#: invenio_communities/members/services/facets.py:38
+msgid "Status"
+msgstr "Tila"
+
+#: invenio_communities/members/services/facets.py:22
+msgid "Submitted"
+msgstr "Lähetetty"
+
+#: invenio_communities/members/services/facets.py:23
+msgid "Expired"
+msgstr "Vanhentunut"
+
+#: invenio_communities/members/services/facets.py:24
+msgid "Accepted"
+msgstr "Hyväksytty"
+
+#: invenio_communities/members/services/facets.py:25
+msgid "Declined"
+msgstr "Hylätty"
+
+#: invenio_communities/members/services/facets.py:26
+msgid "Cancelled"
+msgstr "Peruttu"
+
+#: invenio_communities/members/services/facets.py:39
+#: invenio_communities/views/communities.py:65
+#: invenio_communities/views/communities.py:108
+msgid "Open"
+msgstr "Avoin"
+
+#: invenio_communities/members/services/facets.py:39
+#: invenio_communities/views/communities.py:74
+#: invenio_communities/views/communities.py:114
+msgid "Closed"
+msgstr "Suljettu"
+
+#: invenio_communities/members/services/fields.py:18
+msgid "Invalid role."
+msgstr "Virheellinen rooli."
+
+#: invenio_communities/members/services/fields.py:41
+msgid "Not a valid role to serialize."
+msgstr "Ei kelvollinen rooli sarjallistettavaksi."
+
+#: invenio_communities/members/services/request.py:167
+msgid "Community invitation"
+msgstr "Kutsu yhteisöön"
+
+#: invenio_communities/members/services/request.py:283
+msgid "Membership request"
+msgstr "Jäsenyyspyyntö"
+
+#: invenio_communities/members/services/schemas.py:124
+msgid ""
+"Missing fields 'role' and/or 'visible' and/or 'group_notification_enabled'."
+msgstr ""
+
+#: invenio_communities/members/services/schemas.py:160
+msgid "Untitled"
+msgstr "Nimeämätön"
+
+#: invenio_communities/members/services/service.py:196
+msgid "Must be false"
+msgstr "Täytyy olla epätosi"
+
+#: invenio_communities/members/services/service.py:218
+msgid "Invalid member type: email"
+msgstr "Virheellinen jäsentyyppi: sähköposti"
+
+#: invenio_communities/members/services/service.py:482
+#: invenio_communities/members/services/service.py:613
+msgid "A community must have at least one owner."
+msgstr "Yhteisössä on oltava vähintään yksi omistaja."
+
+#: invenio_communities/members/services/service.py:520
+msgid "You cannot change your own role."
+msgstr "Et voi muuttaa omaa rooliasi."
+
+#: invenio_communities/members/services/service.py:528
+msgid "You can only set public visibility on your own membership."
+msgstr "Voit asettaa julkisen näkyvyyden vain omalle jäsenyydellesi."
+
+#: invenio_communities/members/services/service.py:537
+#, python-format
+msgid "You will join as \"%(role)s\" (changed from: \"%(previous)s\")."
+msgstr "Liityt roolilla \"%(role)s\" (muutettu roolista: \"%(previous)s\")."
+
+#: invenio_communities/members/services/service.py:722
+#, python-format
+msgid "Invitation to join \"%(community)s\""
+msgstr "Kutsu liittyä yhteisöön \"%(community)s\""
+
+#: invenio_communities/members/services/service.py:725
+#, python-format
+msgid "You will join as \"%(role)s\"."
+msgstr "Liityt roolilla \"%(role)s\"."
+
+#: invenio_communities/members/services/service.py:874
+#, python-format
+msgid "Request to join \"%(community)s\""
+msgstr "Pyyntö liittyä yhteisöön \"%(community)s\""
+
+#: invenio_communities/requests/user_moderation/actions.py:69
+msgid "User was blocked"
+msgstr "Käyttäjä estettiin"
+
+#: invenio_communities/subcommunities/services/request.py:61
+msgid "Subcommunity request"
+msgstr "Alayhteisöpyyntö"
+
+#: invenio_communities/subcommunities/services/request.py:148
+msgid "Subcommunity invitation"
+msgstr "Kutsu alayhteisöön"
+
+#: invenio_communities/subcommunities/services/schema.py:47
+msgid "Either community_id or community should be provided."
+msgstr "Joko community_id tai community on annettava."
+
+#: invenio_communities/subcommunities/services/service.py:82
+msgid "Parent community does not accept subcommunities."
+msgstr "Ylätason yhteisö ei hyväksy alayhteisöjä."
+
+#: invenio_communities/subcommunities/services/service.py:111
+#, python-format
+msgid "Inclusion of subcommunity \"%(community)s\""
+msgstr "Alayhteisön \"%(community)s\" liittäminen"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:27
+msgid ""
+"Organize, curate and collaborate on records for your institution, project, "
+"topic or event."
+msgstr ""
+"Järjestä, kuratoi ja tee yhteistyötä tietueiden parissa organisaatiotasi, "
+"projektiasi, aihettasi tai tapahtumaasi varten."
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:40
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:41
+#: invenio_communities/templates/semantic-ui/invenio_communities/search.html:8
+msgid "Search communities"
+msgstr "Hae yhteisöjä"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:46
+msgid "Search"
+msgstr "Haku"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:70
+msgid "My communities"
+msgstr "Omat yhteisöt"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:72
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:84
+msgid "See all"
+msgstr "Näytä kaikki"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/frontpage.html:82
+msgid "New communities"
+msgstr "Uudet yhteisöt"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:8
+msgid "Tombstone"
+msgstr "Poistomerkintä"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:18
+msgid "Gone"
+msgstr "Poistettu"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:23
+#, python-format
+msgid ""
+"\n"
+"        The community you are trying to access was removed from %(sitename)s. The\n"
+"        metadata of the community is kept for archival purposes."
+msgstr ""
+"\n"
+"        Yhteisö, johon yrität päästä, on poistettu sivustolta %(sitename)s.\n"
+"        Yhteisön metatiedot säilytetään arkistointitarkoituksiin."
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:32
+msgid "Reason for removal:"
+msgstr "Poistamisen syy:"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:35
+msgid "Removed by:"
+msgstr "Poistanut:"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:44
+msgid "Removal note:"
+msgstr "Poistomerkintä:"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/tombstone.html:48
+msgid "Date of removal:"
+msgstr "Poistopäivä:"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:27
+msgid "Membership discussion"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:137
+msgid "Submission to this community is only allowed to community members."
+msgstr "Tähän yhteisöön voivat lähettää vain yhteisön jäsenet."
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:144
+msgid "New upload"
+msgstr "Uusi aineisto"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/header.html:152
+msgid "Manage community"
+msgstr "Hallinnoi yhteisöä"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/new_subcommunity.html:8
+msgid "New subcommunity"
+msgstr "Uusi alayhteisö"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:8
+msgid " about"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:17
+msgid "Awards"
+msgstr "Palkinnot"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:33
+msgid "Visit external website"
+msgstr "Siirry ulkoiselle sivustolle"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/about/index.html:34
+msgid "Opens in new tab"
+msgstr "Avautuu uuteen välilehteen"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/curation_policy/index.html:8
+msgid " curation policy"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:9
+msgid "Community visibility"
+msgstr "Yhteisön näkyvyys"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/macros/access-status-label.html:10
+msgid "The community is restricted to users with access."
+msgstr "Yhteisö on rajoitettu vain käyttöoikeuden omaaville käyttäjille."
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:9
+msgid " members"
+msgstr " jäsentä"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:17
+msgid "Invitations"
+msgstr "Kutsut"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/members/base.html:18
+msgid "Membership Requests"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/requests/index.html:9
+msgid " requests"
+msgstr " pyyntöä"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:8
+msgid " settings"
+msgstr " asetukset"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:16
+msgid "Profile"
+msgstr "Profiili"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:17
+msgid "Privileges"
+msgstr "Oikeudet"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:18
+msgid "Submission policy"
+msgstr "Lähetyskäytäntö"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:19
+msgid "Pages"
+msgstr "Sivut"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/settings/base.html:20
+msgid "Collections"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:11
+msgid " subcommunities"
+msgstr " alayhteisöä"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:22
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:35
+msgid "Subcommunities"
+msgstr "Alayhteisöt"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/details/subcommunity/index.html:30
+msgid "Browse"
+msgstr "Selaa"
+
+#: invenio_communities/templates/semantic-ui/invenio_communities/macros/communities_carousel.html:7
+msgid "Featured communities"
+msgstr "Nostetut yhteisöt"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:24
+#, python-brace-format
+msgid "💬 New comment on '{request_title}'"
+msgstr "💬 Uusi kommentti kohteessa '{request_title}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:31
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:30
+#, python-brace-format
+msgid "'@{user_name}' commented on '{request_title}':"
+msgstr "'@{user_name}' kommentoi kohdetta '{request_title}':"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:37
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:62
+msgid "Check out the request"
+msgstr "Katso pyyntö"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:37
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:44
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:63
+msgid "This is an auto-generated message. To manage notifications, visit your"
+msgstr "Tämä on automaattisesti luotu viesti. Hallitaksesi ilmoituksia siirry"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:37
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:44
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:42
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:63
+msgid "account settings"
+msgstr "tiliasetuksiin"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:49
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:48
+#, python-brace-format
+msgid "@{user_name} commented on '{request_title}'"
+msgstr "@{user_name} kommentoi kohdetta '{request_title}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:52
+#, python-brace-format
+msgid "Check out the request: {request_link}"
+msgstr "Katso pyyntö: {request_link}"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-invitation-request.create.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/comment-subcommunity-request.create.jinja:58
+#, python-brace-format
+msgid "*@{user_name}* commented on *{request_title}*"
+msgstr "*@{user_name}* kommentoi kohdetta *{request_title}*"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:19
+#, python-brace-format
+msgid ""
+"✅ @{user_name} accepted the invitation to join community "
+"'{community_title}'."
+msgstr "✅ @{user_name} hyväksyi kutsun liittyä yhteisöön '{community_title}'."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:25
+#, python-brace-format
+msgid ""
+"'@{user_name}' accepted the invitation to join your community "
+"'{community_title}'"
+msgstr "'@{user_name}' hyväksyi kutsun liittyä yhteisöösi '{community_title}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:27
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:27
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:50
+msgid " with the following message:"
+msgstr " seuraavalla viestillä:"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:37
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:69
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:31
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:67
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:53
+msgid "Check out the invitation"
+msgstr "Katso kutsu"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:49
+#, python-brace-format
+msgid ""
+"@{user_name} accepted the invitation to join your community "
+"'{community_title}'"
+msgstr "@{user_name} hyväksyi kutsun liittyä yhteisöösi '{community_title}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:64
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:61
+msgid "with the following message:"
+msgstr "seuraavalla viestillä:"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:56
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:46
+msgid "Check out the invitation:"
+msgstr "Katso kutsu:"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.accept.jinja:61
+#, python-brace-format
+msgid ""
+"*@{user_name}* accepted the invitation to join your community "
+"*{community_title}*"
+msgstr "*@{user_name}* hyväksyi kutsun liittyä yhteisöösi *{community_title}*"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:18
+#, python-brace-format
+msgid "❌ Community member invitation cancelled for @{user_name}"
+msgstr "❌ Yhteisöjäsenen kutsu peruttiin käyttäjälle @{user_name}"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:24
+#, python-brace-format
+msgid ""
+"The invitation for '@{user_name}' to join community '{community_title}' was "
+"cancelled"
+msgstr ""
+"Kutsu, jolla '@{user_name}' liittyisi yhteisöön '{community_title}', "
+"peruttiin"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:48
+#, python-brace-format
+msgid ""
+"The invitation for @{user_name} to join your community '{community_title}' "
+"was cancelled"
+msgstr ""
+"Kutsu, jolla @{user_name} liittyisi yhteisöösi '{community_title}', "
+"peruttiin"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.cancel.jinja:60
+#, python-brace-format
+msgid ""
+"The invitation for *@{user_name}* to join your community "
+"*'{community_title}'* was cancelled"
+msgstr ""
+"Kutsu, jolla *@{user_name}* liittyisi yhteisöösi *'{community_title}'*, "
+"peruttiin"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:18
+#, python-brace-format
+msgid "⛔️ @{user_name} declined the invitation to join '{community_title}'"
+msgstr "⛔️ @{user_name} hylkäsi kutsun liittyä '{community_title}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:24
+#, python-brace-format
+msgid ""
+"'@{user_name}' declined the invitation to join your community "
+"'{community_title}'"
+msgstr "'@{user_name}' hylkäsi kutsun liittyä yhteisöösi '{community_title}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:48
+#, python-brace-format
+msgid ""
+"@{user_name} declined the invitation to join your community "
+"{community_title}"
+msgstr "@{user_name} hylkäsi kutsun liittyä yhteisöösi {community_title}"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.decline.jinja:60
+#, python-brace-format
+msgid ""
+"*@{user_name}* declined the invitation to join your community "
+"*{community_title}*"
+msgstr "*@{user_name}* hylkäsi kutsun liittyä yhteisöösi *{community_title}*"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:22
+#, python-brace-format
+msgid ""
+"⌛️ The invitation for '@{user_name}' to join community '{community_title}' "
+"expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:28
+#, python-brace-format
+msgid ""
+"The invitation for '@{user_name}' to join community '{community_title}' "
+"expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:43
+#, python-brace-format
+msgid ""
+"The invitation for '@{user_name}' to join community '{community_title}' "
+"expired."
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.expire.jinja:50
+#, python-brace-format
+msgid ""
+"The invitation for *@{user_name}* to join community *{community_title}* "
+"expired."
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:18
+#, python-brace-format
+msgid "📬 New invitation to join the community '{community_title}' as '{role}'"
+msgstr "📬 Uusi kutsu liittyä yhteisöön '{community_title}' roolissa '{role}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:24
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:48
+#, python-brace-format
+msgid ""
+"You have been invited to join community '{community_title}' as '{role}'"
+msgstr ""
+"Sinut on kutsuttu liittymään yhteisöön '{community_title}' roolissa '{role}'"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-invitation.submit.jinja:60
+#, python-brace-format
+msgid ""
+"You have been invited to join community *{community_title}* as *{role}*"
+msgstr ""
+"Sinut on kutsuttu liittymään yhteisöön *{community_title}* roolissa *{role}*"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:16
+#, python-brace-format
+msgid "Request to join the community '{community_title}' was accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:24
+#, python-brace-format
+msgid ""
+"The request to join the community '{community_title}' as '{role}' was "
+"accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:28
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:28
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:43
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:29
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:44
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:54
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:40
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:59
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:73
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:63
+msgid "Check out the membership request"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:41
+#, python-brace-format
+msgid "The request to join the community '{community_title}' was accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:45
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:46
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:54
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your "
+"account settings"
+msgstr ""
+"Tämä on automaattisesti luotu viesti. Hallitaksesi ilmoituksia, siirry "
+"tiliasetuksiisi"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:51
+#, python-brace-format
+msgid "The request to join the community *{community_title}* was accepted"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.accept.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:56
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:75
+#, python-brace-format
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your "
+"[account settings]({account_settings_link})"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:18
+#, python-brace-format
+msgid ""
+"The request from '@{requester_name}' to join the community "
+"'{community_title}' was cancelled"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:41
+#, python-brace-format
+msgid ""
+"The membership request from '@{requester_name}' to join the community "
+"'{community_title}' was cancelled"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:51
+#, python-brace-format
+msgid ""
+"The membership request from *@{requester_name}* to join the community "
+"*{community_title}* was cancelled"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.cancel.jinja:55
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:65
+#, python-brace-format
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your [account\n"
+"settings]({account_settings_link})"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:16
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:25
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:42
+#, python-brace-format
+msgid "The request to join the community '{community_title}' was declined"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.decline.jinja:52
+#, python-brace-format
+msgid "The request to join the community *{community_title}* was declined"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:22
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:33
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:54
+#, python-brace-format
+msgid "Your request to join the community '{community_title}' expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:24
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:56
+#, python-brace-format
+msgid ""
+"The request from '@{user_name}' to join the community '{community_title}' "
+"expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:68
+#, python-brace-format
+msgid "Your request to join the community *{community_title}* expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.expire.jinja:70
+#, python-brace-format
+msgid ""
+"The request from *@{user_name}* to join the community *{community_title}* "
+"expired"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:19
+#, python-brace-format
+msgid ""
+"New request from '@{user_name}' to join the community '{community_title}'"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:26
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:49
+#, python-brace-format
+msgid ""
+"'@{user_name}' wants to join the community '{community_title}' as '{role}'"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/community-membership-request.submit.jinja:60
+#, python-brace-format
+msgid ""
+"*@{user_name}* wants to join the community *{community_title}* as *{role}*"
+msgstr ""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:26
+#, python-brace-format
+msgid ""
+"✅ Invitation accepted for {community_title} to join the "
+"{parent_community_title} community"
+msgstr ""
+"✅ Kutsu hyväksyttiin: {community_title} liittyy yhteisöön "
+"{parent_community_title}"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:48
+#, python-brace-format
+msgid ""
+"@{username} accepted the invitation for \"{community_title}\" to join as a "
+"subcommunity of \"{parent_community_title}\"."
+msgstr ""
+"@{username} hyväksyi kutsun, että \"{community_title}\" liittyy "
+"alayhteisöksi yhteisöön \"{parent_community_title}\"."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:35
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:63
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:60
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:34
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:58
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:36
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:60
+msgid "View the request"
+msgstr "Näytä pyyntö"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:50
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:52
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:50
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:50
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:50
+msgid "View the request at:"
+msgstr "Näytä pyyntö osoitteessa:"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:56
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:53
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:51
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:53
+msgid ""
+"This is an auto-generated message. To manage notifications, visit your "
+"account settings at: "
+msgstr ""
+"Tämä on automaattisesti luotu viesti. Hallitaksesi ilmoituksia siirry "
+"tiliasetuksiisi: "
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.accept.jinja:58
+#, python-brace-format
+msgid ""
+"@{username} accepted the invitation the request for \"{community_title}\" to"
+" join as a subcommunity of \"{parent_community_title}\"."
+msgstr ""
+"@{username} hyväksyi kutsupyynnön, jossa \"{community_title}\" liittyy "
+"alayhteisöksi yhteisöön \"{parent_community_title}\"."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:25
+#, python-brace-format
+msgid "📬 Invitation to join the {parent_community_title} community"
+msgstr "📬 Kutsu liittyä yhteisöön {parent_community_title}"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:31
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:50
+#, python-brace-format
+msgid ""
+"We would like to invite your community \"{community_title}\" to join as a "
+"subcommunity of \"{parent_community_title}\""
+msgstr ""
+"Haluaisimme kutsua yhteisönne \"{community_title}\" liittymään alayhteisöksi"
+" yhteisöön \"{parent_community_title}\""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:38
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:54
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:65
+#, python-brace-format
+msgid "This invitation will expire on {expires_at}."
+msgstr "Tämä kutsu vanhenee {expires_at}."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.create.jinja:61
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:56
+#, python-brace-format
+msgid ""
+"The community *{community_title}* has requested to join as a subcommunity of"
+" *{parent_community_title}*"
+msgstr ""
+"Yhteisö *{community_title}* on pyytänyt liittyä alayhteisöksi yhteisöön "
+"*{parent_community_title}*"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:26
+#, python-brace-format
+msgid ""
+"⛔️ Subcommunity invitation declined for {community_title} to join the "
+"{parent_community_title} community"
+msgstr ""
+"⛔️ Alayhteisökutsu hylättiin: {community_title} liittyminen yhteisöön "
+"{parent_community_title}"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.decline.jinja:58
+#, python-brace-format
+msgid ""
+"@{username} declined the invitation for \"{community_title}\" to join as a "
+"subcommunity of \"{parent_community_title}\"."
+msgstr ""
+"@{username} hylkäsi kutsun, että \"{community_title}\" liittyy alayhteisöksi"
+" yhteisöön \"{parent_community_title}\"."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:23
+#, python-brace-format
+msgid ""
+"⌛️ The invitation for {community_title} to join the "
+"'{parent_community_title}' community expired"
+msgstr ""
+"⌛️ Kutsu, jolla {community_title} liittyisi yhteisöön "
+"'{parent_community_title}', vanhentui"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:29
+#, python-brace-format
+msgid ""
+"The invitation for '{community_title}' to join the "
+"'{parent_community_title}' community has expired."
+msgstr ""
+"Kutsu, jolla '{community_title}' liittyisi yhteisöön "
+"'{parent_community_title}', on vanhentunut."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:44
+#, python-brace-format
+msgid ""
+"The invitation for {community_title} to join the '{parent_community_title}' "
+"community has expired."
+msgstr ""
+"Kutsu, jolla {community_title} liittyisi yhteisöön "
+"'{parent_community_title}', on vanhentunut."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-invitation-request.expire.jinja:51
+#, python-brace-format
+msgid ""
+"The invitation for *{community_title}* to join community "
+"*{parent_community_title}* has expired."
+msgstr ""
+"Kutsu, jolla *{community_title}* liittyisi yhteisöön "
+"*{parent_community_title}*, on vanhentunut."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:26
+#, python-brace-format
+msgid ""
+"✅ Subcommunity request accepted for \"{community_title}\" to join "
+"\"{parent_community_title}\""
+msgstr ""
+"✅ Alayhteisöpyyntö hyväksyttiin: \"{community_title}\" liittyy "
+"\"{parent_community_title}\""
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.accept.jinja:58
+#, python-brace-format
+msgid ""
+"The community manager @{username} accepted the request for "
+"\"{community_title}\" to join as a subcommunity of "
+"\"{parent_community_title}\"."
+msgstr ""
+"Yhteisön ylläpitäjä @{username} hyväksyi pyynnön, että \"{community_title}\""
+" liittyy alayhteisöksi yhteisöön \"{parent_community_title}\"."
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:24
+#, python-brace-format
+msgid ""
+"📬 Subcommunity request for \"{community_title}\" to join "
+"\"{parent_community_title}\""
+msgstr ""
+"📬 Yhteisön \"{community_title}\" pyyntö liittyä yhteisön "
+"\"{parent_community_title}\" alayhteisöksi"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:30
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.create.jinja:46
+#, python-brace-format
+msgid ""
+"The community \"{community_title}\" has requested to join as a subcommunity "
+"of \"{parent_community_title}\""
+msgstr ""
+"Yhteisö \"{community_title}\" on pyytänyt liittyä alayhteisöksi yhteisöön "
+"\"{parent_community_title}”"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:26
+#, python-brace-format
+msgid ""
+"⛔️ Subcommunity request declined for \"{community_title}\" to join "
+"\"{parent_community_title}\""
+msgstr ""
+"⛔️ Alayhteisöpyyntö hylättiin: \"{community_title}\" liittyminen "
+"\"{parent_community_title}”"
+
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:32
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:48
+#: invenio_communities/templates/semantic-ui/invenio_notifications/subcommunity-request.decline.jinja:58
+#, python-brace-format
+msgid ""
+"The community manager @{username} declined the request for "
+"\"{community_title}\" to join as a subcommunity of "
+"\"{parent_community_title}\"."
+msgstr ""
+"Yhteisön ylläpitäjä @{username} hylkäsi pyynnön, että \"{community_title}\" "
+"liittyy alayhteisöksi yhteisöön \"{parent_community_title}”."
+
+#: invenio_communities/views/communities.py:31
+msgid "Your community is publicly accessible and shows up in search results."
+msgstr "Yhteisösi on julkisesti saavutettavissa ja näkyy hakutuloksissa."
+
+#: invenio_communities/views/communities.py:38
+msgid "Your community is restricted to users with access."
+msgstr "Yhteisösi on rajattu vain käyttöoikeuden omaaville käyttäjille."
+
+#: invenio_communities/views/communities.py:48
+msgid ""
+"Members who have set their visibility to public are visible to anyone. "
+"Members with hidden visibility are only visible to other members."
+msgstr ""
+"Jäsenet, joiden näkyvyys on asetettu julkiseksi, näkyvät kaikille. "
+"Piilotetun näkyvyyden valinneet jäsenet näkyvät vain muille jäsenille."
+
+#: invenio_communities/views/communities.py:53
+msgid "Members-only"
+msgstr "Vain jäsenille"
+
+#: invenio_communities/views/communities.py:57
+msgid ""
+"Members in your community are only visible to other members of the "
+"community."
+msgstr "Yhteisösi jäsenet näkyvät vain muille yhteisön jäsenille."
+
+#: invenio_communities/views/communities.py:69
+msgid ""
+"All authenticated users can submit records to the community. If the "
+"community is restricted, then only members can submit records to it."
+msgstr ""
+"Kaikki kirjautuneet käyttäjät voivat lähettää tietueita yhteisöön. Jos "
+"yhteisö on rajoitettu, vain jäsenet voivat lähettää siihen tietueita."
+
+#: invenio_communities/views/communities.py:77
+msgid "Only members can submit records to the community."
+msgstr "Vain jäsenet voivat tallentaa aineistoja yhteisöön."
+
+#: invenio_communities/views/communities.py:83
+msgid "Review all submissions"
+msgstr "Tarkista kaikki tallennukset"
+
+#: invenio_communities/views/communities.py:86
+msgid "All submissions to the community must be reviewed."
+msgstr "Kaikki yhteisöön tehtävät lähetykset on tarkistettava."
+
+#: invenio_communities/views/communities.py:89
+msgid "Allow curators, managers and owners to publish without review"
+msgstr ""
+"Salli kuraattorien, ylläpitäjien ja omistajien julkaista ilman tarkistusta"
+
+#: invenio_communities/views/communities.py:93
+msgid ""
+"Submissions to the community by default requires review, but curators, "
+"managers and owners can publish directly without review."
+msgstr ""
+"Yhteisöön tehtävät tallennukset vaativat oletuksena tarkistuksen, mutta "
+"kuraattorit, ylläpitäjät ja omistajat voivat julkaista suoraan ilman "
+"tarkistusta."
+
+#: invenio_communities/views/communities.py:97
+msgid "Allow all members to publish without review"
+msgstr "Salli kaikkien jäsenten julkaista ilman tarkistusta"
+
+#: invenio_communities/views/communities.py:101
+msgid ""
+"Submissions to the community by default requires review, but all community "
+"members can publish directly without review."
+msgstr ""
+"Yhteisöön tehtävät tallennukset vaativat oletuksena tarkistuksen, mutta "
+"kaikki yhteisön jäsenet voivat julkaista suoraan ilman tarkistusta."
+
+#: invenio_communities/views/communities.py:111
+msgid "Users can request to join your community."
+msgstr "Käyttäjät voivat pyytää liittymistä yhteisöösi."
+
+#: invenio_communities/views/communities.py:118
+msgid ""
+"Users cannot request to join your community. Only invited users can become "
+"members of your community."
+msgstr ""
+"Käyttäjät eivät voi pyytää liittymistä yhteisöösi. Vain kutsutut käyttäjät "
+"voivat liittyä yhteisösi jäseniksi."
