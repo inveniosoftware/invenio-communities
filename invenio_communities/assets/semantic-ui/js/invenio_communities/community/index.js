@@ -11,3 +11,4 @@ export { CommunityItem } from "./communitiesItems/CommunityItem";
 export { CommunityCompactItem } from "./communitiesItems/CommunityCompactItem";
 export { default as CommunitiesCardGroup } from "./CommunitiesCardGroup";
 export * from "./searchComponents";
+export { CommunityLogo } from "./CommunityLogo";

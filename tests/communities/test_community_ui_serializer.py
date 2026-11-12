@@ -74,3 +74,16 @@ def test_ui_serializer(app, community, users, any_user):
         serialized_record["ui"]["permissions"]
         == require_review_expected_data["permissions"]
     )
+
+
+def test_ui_serializer_logo_url(app, community):
+    data = community.to_dict()
+    assert "logo" not in data["links"]
+    serialized = UICommunityJSONSerializer().dump_obj(data)
+    assert serialized["ui"]["logo_url"].endswith(
+        "/static/images/square-placeholder.png"
+    )
+
+    data["links"]["logo"] = "https://127.0.0.1:5000/api/communities/1/logo?v=md5:abc"
+    serialized = UICommunityJSONSerializer().dump_obj(data)
+    assert serialized["ui"]["logo_url"] == data["links"]["logo"]

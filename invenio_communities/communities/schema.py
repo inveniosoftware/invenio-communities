@@ -251,6 +251,8 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
 
     is_verified = fields.Boolean(dump_only=True)
 
+    logo = fields.Method("dump_logo", dump_only=True)
+
     theme = fields.Nested(CommunityThemeSchema, allow_none=True)
 
     tombstone = fields.Nested(TombstoneSchema, dump_only=True)
@@ -258,6 +260,18 @@ class BaseCommunitySchema(BaseRecordSchema, FieldPermissionsMixin):
     deletion_status = fields.Nested(DeletionStatusSchema, dump_only=True)
 
     children = NestedAttribute(ChildrenSchema)
+
+    def dump_logo(self, obj):
+        """Logo file checksum and size, or ``None`` when there's no logo."""
+        logo = obj.logo
+        if not logo.exists:
+            return None
+        # Documents indexed before this field have no checksum until reindexed
+        return {
+            k: v
+            for k, v in {"checksum": logo.checksum, "size": logo.size}.items()
+            if v is not None
+        }
 
     @post_dump
     def post_dump(self, data, many, **kwargs):

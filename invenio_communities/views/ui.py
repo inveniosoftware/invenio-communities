@@ -11,7 +11,6 @@ from babel.dates import format_datetime
 from flask import Blueprint, current_app, g, render_template, request, url_for
 from flask_login import current_user
 from invenio_pidstore.errors import PIDDeletedError, PIDDoesNotExistError
-from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.errors import PermissionDenied
 
 from invenio_communities.communities.resources.serializer import (
@@ -19,7 +18,7 @@ from invenio_communities.communities.resources.serializer import (
 )
 from invenio_communities.proxies import current_communities
 
-from ..errors import CommunityDeletedError, LogoNotFoundError
+from ..errors import CommunityDeletedError
 from ..searchapp import search_app_context
 from .communities import (
     communities_about,
@@ -247,16 +246,9 @@ def create_ui_blueprint(app):
     @blueprint.app_template_filter("resolve_community_logo")
     def resolve_community_logo(logo_link, community_id):
         """Returns placeholder image link if passed community doesn't have a logo."""
-        community_service = current_service_registry.get("communities")
-
-        try:
-            community_service.read_logo(
-                identity=g.identity,
-                id_=community_id,
-            )
-        except LogoNotFoundError:
+        # The service omits the logo link when the community has no logo
+        if not logo_link:
             return url_for("static", filename="images/square-placeholder.png")
-
         return logo_link
 
     @blueprint.app_context_processor

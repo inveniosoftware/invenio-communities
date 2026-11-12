@@ -77,6 +77,7 @@ class CommunitiesField(SystemField):
                     "slug",
                     "theme",
                     "is_verified",
+                    "logo",
                     "version_id",
                     "metadata.title",
                     "metadata.type",

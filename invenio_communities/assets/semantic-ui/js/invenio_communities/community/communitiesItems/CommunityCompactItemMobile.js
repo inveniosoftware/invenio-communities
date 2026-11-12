@@ -6,9 +6,10 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { RestrictedLabel } from "../labels";
 import _truncate from "lodash/truncate";
-import { Image, InvenioPopup } from "react-invenio-forms";
+import { InvenioPopup } from "react-invenio-forms";
 import { Icon, Label, Popup } from "semantic-ui-react";
 import PropTypes from "prop-types";
+import { CommunityLogo } from "../CommunityLogo";
 
 export const CommunityCompactItemMobile = ({
   result,
@@ -29,11 +30,10 @@ export const CommunityCompactItemMobile = ({
     >
       <div className="display-grid auto-column-grid no-wrap">
         <div className="flex align-items-center">
-          <Image
+          <CommunityLogo
             wrapped
             size="mini"
-            src={links.logo}
-            alt=""
+            community={result}
             className="community-image rel-mr-1"
           />
 

@@ -6,10 +6,11 @@
 
 import _truncate from "lodash/truncate";
 import { Component } from "react";
-import { Image, withCancel } from "react-invenio-forms";
+import { withCancel } from "react-invenio-forms";
 import { Card, Grid, Message, Placeholder } from "semantic-ui-react";
 import { http } from "react-invenio-forms";
 import PropTypes from "prop-types";
+import { CommunityLogo } from "./CommunityLogo";
 
 const PlaceholderLoader = ({ size = 5, isLoading, children, ...props }) => {
   const PlaceholderItem = () => (
@@ -59,11 +60,11 @@ class CommunityCard extends Component {
     const { community, defaultLogo } = this.props;
     return (
       <Card fluid href={`/communities/${community.slug}`}>
-        <Image
+        <CommunityLogo
           wrapped
           centered
           ui={false}
-          src={community.links.logo}
+          community={community}
           fallbackSrc={defaultLogo}
           loadFallbackFirst
         />

@@ -31,6 +31,7 @@ from ..dumpers.featured import FeaturedDumperExt
 from . import models
 from .systemfields.access import CommunityAccessField
 from .systemfields.deletion_status import CommunityDeletionStatusField
+from .systemfields.logo import LogoField
 from .systemfields.parent_community import ParentCommunityField
 from .systemfields.pidslug import PIDSlugField
 from .systemfields.tombstone import TombstoneField
@@ -79,6 +80,7 @@ class Community(Record):
         # Don't delete, we'll manage in the service
         delete=False,
     )
+    logo = LogoField()
 
     relations = MultiRelationsField(
         funding_award=PIDListRelation(
