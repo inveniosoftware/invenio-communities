@@ -6,7 +6,7 @@
 import { Component } from "react";
 import { Grid, Segment, Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import { Image } from "react-invenio-forms";
+import { CommunityLogo } from "../CommunityLogo";
 
 export default class FeaturedCommunity extends Component {
   render() {
@@ -28,7 +28,7 @@ export default class FeaturedCommunity extends Component {
         <Segment compact className="m-auto">
           <a href={community.links.self_html}>
             <div className="featured-community">
-              <Image className="m-auto" src={community.links.logo} />
+              <CommunityLogo className="m-auto" community={community} />
               <Header as="h3">{community.metadata.title}</Header>
             </div>
           </a>

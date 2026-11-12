@@ -334,15 +334,7 @@ class CommunityProfileForm extends Component {
   };
 
   render() {
-    const {
-      types,
-      customFields,
-      community,
-      hasLogo,
-      defaultLogo,
-      logoMaxSize,
-      permissions,
-    } = this.props;
+    const { types, customFields, community, logoMaxSize, permissions } = this.props;
     const { error } = this.state;
     return (
       <Formik
@@ -631,8 +623,6 @@ class CommunityProfileForm extends Component {
                   >
                     <LogoUploader
                       community={community}
-                      hasLogo={hasLogo}
-                      defaultLogo={defaultLogo}
                       onError={this.setGlobalError}
                       logoMaxSize={logoMaxSize}
                     />
@@ -663,8 +653,6 @@ class CommunityProfileForm extends Component {
 
 CommunityProfileForm.propTypes = {
   community: PropTypes.object.isRequired,
-  defaultLogo: PropTypes.string.isRequired,
-  hasLogo: PropTypes.bool.isRequired,
   logoMaxSize: PropTypes.number.isRequired,
   customFields: PropTypes.object.isRequired,
   types: PropTypes.array.isRequired,

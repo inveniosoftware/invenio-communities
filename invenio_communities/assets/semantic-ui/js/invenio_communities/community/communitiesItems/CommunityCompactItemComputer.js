@@ -7,9 +7,10 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import PropTypes from "prop-types";
 import _truncate from "lodash/truncate";
 
-import { Image, InvenioPopup } from "react-invenio-forms";
+import { InvenioPopup } from "react-invenio-forms";
 import { Icon, Label, Item, Popup } from "semantic-ui-react";
 import { RestrictedLabel } from "../labels";
+import { CommunityLogo } from "../CommunityLogo";
 
 export const CommunityCompactItemComputer = ({
   result,
@@ -29,11 +30,10 @@ export const CommunityCompactItemComputer = ({
       className={`community-item tablet computer only display-grid auto-column-grid align-items-start no-wrap ${itemClassName}`}
     >
       <div className="flex">
-        <Image
+        <CommunityLogo
           wrapped
           size="tiny"
-          src={links.logo}
-          alt=""
+          community={result}
           className="community-image rel-mr-2"
         />
         <div>

@@ -8,6 +8,7 @@
 from flask import g
 from flask_resources import BaseObjectSchema
 from idutils import detect_identifier_schemes, to_url
+from invenio_base import invenio_url_for
 from invenio_i18n import get_locale
 from invenio_i18n import lazy_gettext as _
 from invenio_records_resources.services.custom_fields import CustomFieldsSchemaUI
@@ -108,6 +109,14 @@ class UICommunitySchema(BaseObjectSchema):
     )
 
     permissions = fields.Method("get_permissions", dump_only=True)
+
+    logo_url = fields.Method("get_logo_url", dump_only=True)
+
+    def get_logo_url(self, obj):
+        """Logo link, or the placeholder image when the community has no logo."""
+        return obj.get("links", {}).get("logo") or invenio_url_for(
+            "static", filename="images/square-placeholder.png"
+        )
 
     def get_organizations(self, obj):
         """Get organizations with metadata."""
