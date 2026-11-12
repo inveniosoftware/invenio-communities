@@ -7,10 +7,10 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { CommunityTypeLabel } from "../labels";
 import { RestrictedLabel } from "../labels";
-import { Image } from "react-invenio-forms";
 import { Button, Grid, Icon, Popup, Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import OrganizationsList from "../../organizations/OrganizationsList";
+import { CommunityLogo } from "../CommunityLogo";
 
 export const CommunityItemComputer = ({ result }) => {
   const communityType = result.ui?.type?.title_l10n;
@@ -25,12 +25,11 @@ export const CommunityItemComputer = ({ result }) => {
         className="pl-0"
       >
         <div className="flex align-items-center">
-          <Image
+          <CommunityLogo
             wrapped
-            src={result.links.logo}
+            community={result}
             size="tiny"
             className="community-image rel-mr-2"
-            alt=""
           />
           <div>
             {result.access.visibility === "restricted" && (

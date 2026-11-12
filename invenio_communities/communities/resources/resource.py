@@ -5,7 +5,7 @@
 
 """Invenio Communities Resource API."""
 
-from flask import g
+from flask import current_app, g, request
 from flask_resources import (
     from_conf,
     request_parser,
@@ -121,9 +121,19 @@ class CommunityResource(RecordResource):
         is_restricted = community["access"]["visibility"] == "restricted"
 
         try:
-            return item.send_file(restricted=is_restricted)
+            response = item.send_file(restricted=is_restricted)
         except StorageError as e:
             raise LogoFileNotFoundError() from e
+
+        version = request.args.get("v")
+        if version and version == item.data.get("checksum"):
+            cache_control = response.cache_control
+            cache_control.max_age = current_app.config["COMMUNITIES_LOGO_CACHE_MAX_AGE"]
+            cache_control.immutable = True
+            cache_control.public = not is_restricted
+            cache_control.private = is_restricted
+            response.expires = None
+        return response
 
     @request_view_args
     @request_stream

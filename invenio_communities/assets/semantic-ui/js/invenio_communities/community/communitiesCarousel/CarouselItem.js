@@ -7,9 +7,10 @@ import { i18next } from "@translations/invenio_communities/i18next";
 import _truncate from "lodash/truncate";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { Image, InvenioPopup } from "react-invenio-forms";
+import { InvenioPopup } from "react-invenio-forms";
 import Overridable from "react-overridable";
 import { Button, Grid, Header, Item, Icon } from "semantic-ui-react";
+import { CommunityLogo } from "../CommunityLogo";
 
 class CarouselItem extends Component {
   render() {
@@ -31,7 +32,7 @@ class CarouselItem extends Component {
           className={`carousel flex align-items-center ${className}`}
           key={community.id}
         >
-          <Image size="small" src={community.links.logo} fallbackSrc={defaultLogo} />
+          <CommunityLogo size="small" community={community} fallbackSrc={defaultLogo} />
           <Item.Content>
             <Item.Header as={Grid} stackable className="rel-pb-1">
               <Grid.Column computer="10" tablet="16" className="pl-0 pb-0">

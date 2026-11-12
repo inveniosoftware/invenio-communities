@@ -18,7 +18,6 @@ from jinja2 import TemplateError
 from invenio_communities.proxies import current_communities
 
 from ..communities.resources.ui_schema import TypesSchema
-from ..errors import LogoNotFoundError
 from .decorators import pass_community
 from .template_loader import CommunityThemeChoiceJinjaLoader
 
@@ -357,12 +356,6 @@ def communities_settings(pid_value, community, community_ui):
         "types": [{"id": i["id"], "title": i["title"]} for i in list(_types.hits)]
     }
     types_serialized = TypesSchema().dump(types_json)
-    try:
-        current_communities.service.read_logo(g.identity, pid_value)
-        logo = True
-    except LogoNotFoundError:
-        logo = False
-
     logo_size_limit = 10**6
     max_size = current_app.config["COMMUNITIES_LOGO_MAX_FILE_SIZE"]
     if isinstance(max_size, int) and max_size > 0:
@@ -373,7 +366,6 @@ def communities_settings(pid_value, community, community_ui):
         theme=community_ui.get("theme", {}),
         community_ui=community_ui,
         community=community,
-        has_logo=True if logo else False,
         logo_quota=logo_size_limit,
         types=types_serialized["types"],
         permissions=permissions,  # hide/show UI components

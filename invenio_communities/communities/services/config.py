@@ -80,6 +80,17 @@ def children_allowed(record, _):
         return False
 
 
+def logo_exists(record, _):
+    """Determine if the logo link should be rendered."""
+    return record.logo.exists
+
+
+def logo_version(record, vars):
+    """Add the logo checksum to the link, so the response can be cached."""
+    if record.logo.checksum:
+        vars.setdefault("args", {})["v"] = record.logo.checksum
+
+
 class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     """Communities service configuration."""
 
@@ -122,7 +133,12 @@ class CommunityServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         "members_html": CommunityUIEndpointLink(
             "invenio_communities.members", params=["pid_value"]
         ),
-        "logo": CommunityEndpointLink("communities.read_logo", params=["pid_value"]),
+        "logo": CommunityEndpointLink(
+            "communities.read_logo",
+            params=["pid_value"],
+            when=logo_exists,
+            vars=logo_version,
+        ),
         "rename": CommunityEndpointLink("communities.rename", params=["pid_value"]),
         "members": CommunityEndpointLink(
             "community_members.search", params=["pid_value"]

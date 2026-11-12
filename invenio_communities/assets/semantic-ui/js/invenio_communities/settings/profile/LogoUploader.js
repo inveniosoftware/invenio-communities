@@ -7,30 +7,26 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
-import { humanReadableBytes } from "react-invenio-forms";
-import { Image } from "react-invenio-forms";
+import { http, humanReadableBytes } from "react-invenio-forms";
 import { Button, Divider, Header, Icon, Message } from "semantic-ui-react";
 import { CommunityApi } from "../../api";
+import { CommunityLogo } from "../../community/CommunityLogo";
 import { DeleteButton } from "./DeleteButton";
 import PropTypes from "prop-types";
 
-function noCacheUrl(url) {
-  const result = new URL(url);
-  const randomValue = new Date().getMilliseconds() * 5;
-  result.searchParams.set("no-cache", randomValue.toString());
-  return result.toString();
-}
-
-const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize }) => {
+const LogoUploader = ({ community, onError, logoMaxSize }) => {
   /* State */
   // props initilization is fine since original props don't change after
   // initial mounting.
-  const [logoUrl, logoSetUrl] = useState(community.links.logo);
+  const [logoCommunity, setLogoCommunity] = useState(community);
   const [logoUpdated, logoSetUpdated] = useState(false);
-  const [logoExists, logoSetExists] = useState(hasLogo);
 
-  // Nicer naming
-  const logoDefault = defaultLogo;
+  // Refetch so the logo URL (versioned, or the placeholder) comes from the backend
+  const refreshLogo = async () => {
+    const response = await http.get(community.links.self);
+    setLogoCommunity(response.data);
+    logoSetUpdated(true);
+  };
 
   let dropzoneParams = {
     preventDropOnDocument: true,
@@ -40,11 +36,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
       try {
         const client = new CommunityApi();
         await client.updateLogo(community.id, file);
-
-        const logoUrlNoCache = noCacheUrl(logoUrl);
-        logoSetUrl(logoUrlNoCache);
-        logoSetUpdated(true);
-        logoSetExists(true);
+        await refreshLogo();
         onError({ response: { data: { message: "", errors: null, status: null } } });
       } catch (error) {
         onError(error);
@@ -67,11 +59,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
   const deleteLogo = async () => {
     const client = new CommunityApi();
     await client.deleteLogo(community.id);
-
-    const logoUrlNoCache = noCacheUrl(logoUrl);
-    logoSetUrl(logoUrlNoCache);
-    logoSetUpdated(true);
-    logoSetExists(false);
+    await refreshLogo();
   };
 
   return (
@@ -83,12 +71,10 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
             <Header as="h2" size="small" className="mt-0">
               {i18next.t("Profile picture")}
             </Header>
-            <Image
+            <CommunityLogo
               /* Change in key will cause a remounting. */
-              key={logoUrl}
-              src={logoUrl}
-              fallbackSrc={logoDefault}
-              loadFallbackFirst
+              key={logoCommunity.ui?.logo_url}
+              community={logoCommunity}
               fluid
               wrapped
               rounded
@@ -114,7 +100,7 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
               fileSize: humanReadableBytes(logoMaxSize, true),
             })}
           </label>
-          {logoExists && (
+          {logoCommunity.logo && (
             <DeleteButton
               id="delete-picture-button"
               label={i18next.t("Delete picture")}
@@ -145,8 +131,6 @@ const LogoUploader = ({ community, defaultLogo, hasLogo, onError, logoMaxSize })
 
 LogoUploader.propTypes = {
   community: PropTypes.object.isRequired,
-  defaultLogo: PropTypes.string.isRequired,
-  hasLogo: PropTypes.bool.isRequired,
   onError: PropTypes.func.isRequired,
   logoMaxSize: PropTypes.number.isRequired,
 };
