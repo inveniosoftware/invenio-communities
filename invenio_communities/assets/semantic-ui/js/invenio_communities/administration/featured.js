@@ -31,7 +31,7 @@ export class FeaturedEntries extends Component {
   fetchData = async () => {
     const { data } = this.props;
     try {
-      this.setState({ loading: true });
+      this.setState({ loading: true, error: undefined });
       const cancellableFetch = withCancel(
         InvenioAdministrationCommunitiesApi.getFeatured(data.links.featured)
       );
@@ -56,9 +56,11 @@ export class FeaturedEntries extends Component {
         {!loading && !error && (
           <Table celled striped collapsing>
             <Table.Header>
-              <Table.HeaderCell>{i18next.t("Start date")}</Table.HeaderCell>
-              <Table.HeaderCell>{i18next.t("Active")}</Table.HeaderCell>
-              <Table.HeaderCell>{i18next.t("Actions")}</Table.HeaderCell>
+              <Table.Row>
+                <Table.HeaderCell>{i18next.t("Start date")}</Table.HeaderCell>
+                <Table.HeaderCell>{i18next.t("Active")}</Table.HeaderCell>
+                <Table.HeaderCell>{i18next.t("Actions")}</Table.HeaderCell>
+              </Table.Row>
             </Table.Header>
             <Table.Body>
               {featuredList?.hits?.hits.map((row) => {
