@@ -147,7 +147,7 @@ export class RecordResourceActions extends Component {
 }
 
 RecordResourceActions.propTypes = {
-  resource: PropTypes.object,
+  resource: PropTypes.object.isRequired,
   successCallback: PropTypes.func.isRequired,
   actions: PropTypes.objectOf(
     PropTypes.shape({
