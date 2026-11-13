@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2023 CERN.
- * SPDX-FileCopyrightText: 2025 KTH Royal Institute of Technology.
+ * SPDX-FileCopyrightText: 2025-2026 KTH Royal Institute of Technology.
  * SPDX-License-Identifier: MIT
  */
 
@@ -43,10 +43,7 @@ export class DeleteCommunityModal extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { loading, modalOpen } = this.state;
     if (!loading && modalOpen && modalOpen !== prevState.modalOpen) {
-      const {
-        current: { inputRef },
-      } = this.checkboxRef;
-      inputRef.current.focus();
+      this.checkboxRef.current?.focus();
     }
   }
 
