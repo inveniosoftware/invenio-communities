@@ -26,6 +26,7 @@ const listUIEndpoint = domContainer.dataset.listEndpoint;
 const resourceSchema = JSON.parse(domContainer.dataset.resourceSchema);
 const uiSchema = JSON.parse(domContainer.dataset?.uiConfig);
 const requestHeaders = JSON.parse(domContainer.dataset?.requestHeaders);
+const name = domContainer.dataset?.name;
 
 const createdBySystem = (data) => data?.system_created;
 
@@ -47,24 +48,30 @@ const overridenComponents = {
 };
 
 domContainer &&
-  createRoot(domContainer).render(
-    <OverridableContext.Provider value={overridenComponents}>
-      <AdminDetailsView
-        title={title}
-        actions={actions}
-        apiEndpoint={apiEndpoint}
-        columns={fields}
-        displayEdit={displayEdit}
-        displayDelete={displayDelete}
-        pid={pidValue}
-        idKeyPath={idKeyPath}
-        resourceName={resourceName}
-        listUIEndpoint={listUIEndpoint}
-        resourceSchema={resourceSchema}
-        requestHeaders={requestHeaders}
-        uiSchema={uiSchema}
-      >
-        <FeaturedEntries />
-      </AdminDetailsView>
-    </OverridableContext.Provider>
-  );
+  (() => {
+    if (!domContainer._invenioReactRoot) {
+      domContainer._invenioReactRoot = createRoot(domContainer);
+    }
+    domContainer._invenioReactRoot.render(
+      <OverridableContext.Provider value={overridenComponents}>
+        <AdminDetailsView
+          title={title}
+          actions={actions}
+          apiEndpoint={apiEndpoint}
+          columns={fields}
+          displayEdit={displayEdit}
+          displayDelete={displayDelete}
+          pid={pidValue}
+          idKeyPath={idKeyPath}
+          resourceName={resourceName}
+          listUIEndpoint={listUIEndpoint}
+          resourceSchema={resourceSchema}
+          requestHeaders={requestHeaders}
+          uiSchema={uiSchema}
+          name={name}
+        >
+          <FeaturedEntries />
+        </AdminDetailsView>
+      </OverridableContext.Provider>
+    );
+  })();
