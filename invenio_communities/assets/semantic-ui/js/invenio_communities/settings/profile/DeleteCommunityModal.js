@@ -43,10 +43,15 @@ export class DeleteCommunityModal extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { loading, modalOpen } = this.state;
     if (!loading && modalOpen && modalOpen !== prevState.modalOpen) {
-      const {
-        current: { inputRef },
-      } = this.checkboxRef;
-      inputRef.current.focus();
+      const checkboxNode = this.checkboxRef.current;
+      if (!checkboxNode) {
+        return;
+      }
+      if (checkboxNode.inputRef?.current?.focus) {
+        checkboxNode.inputRef.current.focus();
+      } else if (typeof checkboxNode.focus === "function") {
+        checkboxNode.focus();
+      }
     }
   }
 
