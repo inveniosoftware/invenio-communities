@@ -91,17 +91,22 @@ export class RecordResourceActions extends Component {
   render() {
     const { actions, Element = Button, resource } = this.props;
     const { modalOpen, modalHeader, modalBody } = this.state;
+    const isDeleted = resource?.deletion_status?.is_deleted;
     return (
       <>
-        {Object.entries(actions).map(([actionKey, actionConfig]) => {
-          if (actionKey === "delete" && !resource.deletion_status.is_deleted) {
+        {Object.entries(actions || {}).map(([actionKey, actionConfig]) => {
+          const modalData = {
+            payloadSchema: actionConfig.payload_schema,
+            dataName: actionConfig.text,
+            dataActionKey: actionKey,
+            actionConfig: actionConfig,
+          };
+          const handleClick = (e) => this.onModalTriggerClick(e, modalData);
+          if (actionKey === "delete" && !isDeleted) {
             return (
               <Element
                 key={actionKey}
-                onClick={this.onModalTriggerClick}
-                payloadSchema={actionConfig.payload_schema}
-                dataName={actionConfig.text}
-                dataActionKey={actionKey}
+                onClick={handleClick}
                 icon
                 fluid
                 labelPosition="left"
@@ -110,14 +115,11 @@ export class RecordResourceActions extends Component {
                 {actionConfig.text}...
               </Element>
             );
-          } else if (actionKey === "restore" && resource.deletion_status.is_deleted) {
+          } else if (actionKey === "restore" && isDeleted) {
             return (
               <Element
                 key={actionKey}
-                onClick={this.onModalTriggerClick}
-                payloadSchema={actionConfig.payload_schema}
-                dataName={actionConfig.text}
-                dataActionKey={actionKey}
+                onClick={handleClick}
                 icon
                 fluid
                 labelPosition="left"
@@ -126,17 +128,9 @@ export class RecordResourceActions extends Component {
                 {actionConfig.text}...
               </Element>
             );
-          } else if (!resource.deletion_status.is_deleted && actionKey !== "restore") {
+          } else if (!isDeleted && actionKey !== "restore") {
             return (
-              <Element
-                key={actionKey}
-                onClick={(e, data) =>
-                  this.onModalTriggerClick(e, { ...data, actionConfig: actionConfig })
-                }
-                payloadSchema={actionConfig.payload_schema}
-                dataName={actionConfig.text}
-                dataActionKey={actionKey}
-              >
+              <Element key={actionKey} onClick={handleClick}>
                 {actionConfig.text}...
               </Element>
             );
@@ -153,12 +147,14 @@ export class RecordResourceActions extends Component {
 }
 
 RecordResourceActions.propTypes = {
-  resource: PropTypes.object.isRequired,
+  resource: PropTypes.object,
   successCallback: PropTypes.func.isRequired,
-  actions: PropTypes.shape({
-    text: PropTypes.string.isRequired,
-    payload_schema: PropTypes.object.isRequired,
-    order: PropTypes.number.isRequired,
-  }),
-  Element: PropTypes.node,
+  actions: PropTypes.objectOf(
+    PropTypes.shape({
+      text: PropTypes.string,
+      payload_schema: PropTypes.object,
+      order: PropTypes.number,
+    })
+  ),
+  Element: PropTypes.elementType,
 };
