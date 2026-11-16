@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v30.0.2 (released 2026-11-16)
+
+- fix: semantic ui regressions
+
 Version v30.0.1 (released 2026-11-16)
 
 - fix: delete community modal focus issue
