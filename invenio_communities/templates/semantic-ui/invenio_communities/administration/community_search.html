@@ -4,7 +4,6 @@
 #}
 {% extends "invenio_administration/search.html" %}
 
-{% block javascript %}
-  {{ super() }}
+{% block admin_search_js %}
   {{ webpack['invenio-communities-admin-search.js'] }}
 {% endblock %}
