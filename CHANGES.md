@@ -1,39 +1,38 @@
-..
-    SPDX-FileCopyrightText: 2016-2025 CERN.
-    SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
-    SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
-    SPDX-FileCopyrightText: 2026 Northwestern University.
-    SPDX-FileCopyrightText: 2026 TU Wien.
-    SPDX-License-Identifier: MIT
+<!--
+SPDX-FileCopyrightText: 2016-2025 CERN.
+SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
+SPDX-FileCopyrightText: 2026 Northwestern University.
+SPDX-FileCopyrightText: 2026 TU Wien.
+SPDX-License-Identifier: MIT
+-->
 
+# Changes
 
-Changes
-=======
-
-Version v30.0.2 (released 2026-11-16)
+## Version v30.0.2 (released 2026-11-16)
 
 - fix: semantic ui regressions
 
-Version v30.0.1 (released 2026-11-16)
+## Version v30.0.1 (released 2026-11-16)
 
 - fix: delete community modal focus issue
 - fix: react 18 render issue on admin details view
 
-Version v30.0.0 (released 2026-11-10)
+## Version v30.0.0 (released 2026-11-10)
 
 - chore(setup): bump dependencies
 - feat: upgrade to react 18
 - fix(translations): add no results message to select fields explicitly
 - members: make membership-request role configurable
 
-Version v29.3.0 (released 2026-09-28)
+## Version v29.3.0 (released 2026-09-28)
 
 - dependencies: remove react-router-dom
 - service: add members_html link and use it in invitations groups modal
 - fix: prevent 500 on degenerate community parent field input
 - fix: fix is_current_user potentially frozen
 
-Version v29.2.0 (released 2026-09-21)
+## Version v29.2.0 (released 2026-09-21)
 
 - refactor(schema): align community schemas with custom-fields
     * remove `partial()` calls from schemas since they're not needed and
@@ -55,31 +54,31 @@ Version v29.2.0 (released 2026-09-21)
     community or not by being a link to communities_home and the link
     is not recomputed.
 
-Version v29.1.1 (released 2026-08-04)
+## Version v29.1.1 (released 2026-08-04)
 
 - fix(build): include mo files
 - fix(ci): run tests on maint-*
 
-Version v29.1.0 (released 2026-07-23)
+## Version v29.1.0 (released 2026-07-23)
 
 - fix(awards): drop organizations from funding award relation
 - fix(alembic): alter index safely
 
-Version v29.0.2 (released 2026-07-09)
+## Version v29.0.2 (released 2026-07-09)
 
 - fix(errors): add error handler for StorageError exceptions
 
-Version v29.0.1 (released 2026-07-09)
+## Version v29.0.1 (released 2026-07-09)
 
 - fix(members): debounce user/group search in invitation and share modals
 
-Version v29.0.0 (released 2026-06-18)
+## Version v29.0.0 (released 2026-06-18)
 
 - chore(setup): bump dependencies
 - chore(git-blame): ignore the SPDX license header commit
 - chore(licenses): update license headers to use SPDX
 
-Version v28.1.0 (released 2026-06-12)
+## Version v28.1.0 (released 2026-06-12)
 
 - feat(manager): Add API to search accepted community requests
 - refactor(models): Deprecate CommunityRelationMixin class
@@ -87,14 +86,14 @@ Version v28.1.0 (released 2026-06-12)
 - fix: custom fields serialization
 - feat: added overridable blocks around community invitations modal
 
-Version v28.0.0 (released 2026-06-05)
+## Version v28.0.0 (released 2026-06-05)
 
 - chore(setup): bump dependencies
 - feat: add member name to community member removal modal
 - feat: added blocks to communities templates
 - fix(ui): new community form typo
 
-Version v27.0.0 (released 2026-05-29)
+## Version v27.0.0 (released 2026-05-29)
 
 - chore(setup): bump dependencies
 - fix: moved dependency to depends_on
@@ -120,22 +119,22 @@ Version v27.0.0 (released 2026-05-29)
 - feat(mshp-req): add permission to search membership requests
 - feat(mshp-req): don't show community membership request in community requests
 
-Version v26.1.1 (released 2026-04-29)
+## Version v26.1.1 (released 2026-04-29)
 
 - fix(inv): show discussion for invitation requests by generating self_html
 
-Version v26.1.0 (released 2026-04-21)
+## Version v26.1.0 (released 2026-04-21)
 
 - feat(moderation): handle `actor_id` and `note` in user block callback
 - fix(components): handle tombstone `removed_by` value
     * In case the tombstone's `removed_by` value is already set use it
       instead of always defaulting to setting it to the system identity.
 
-Version v26.0.1 (released 2026-04-20)
+## Version v26.0.1 (released 2026-04-20)
 
 - i18n: fix strings formatting in schema and error messages
 
-Version v26.0.0 (released 2026-04-02)
+## Version v26.0.0 (released 2026-04-02)
 
 - feat(collections): add feature flag to enable/disable collections
 - feat(collections): add template for UI
@@ -145,26 +144,26 @@ Version v26.0.0 (released 2026-04-02)
 - feat(mshp-req): generate self_html link and redirect on frontend for membership request
 - fix(invitations): de-emphasize search by email in InvitationsModal
 
-Version v25.0.0 (released 2026-03-18)
+## Version v25.0.0 (released 2026-03-18)
 
 - change(setup): upgrade invenio-vocabularies, invenio-jobs
 
-Version v24.0.1 (released 2026-03-17)
+## Version v24.0.1 (released 2026-03-17)
 
 - fix(alembic): correct `down_revision` of group notifications migration
 
-Version v24.0.0 (released 2026-03-10)
+## Version v24.0.0 (released 2026-03-10)
 
 - feat(members): add group notifications enable toggle,
                  breaking change: alembic upgrade, index upgrade
 
-Version v23.1.0 (released 2026-03-04)
+## Version v23.1.0 (released 2026-03-04)
 
 - feat(facets): register overriden range facet element
 - fix: size error on community image upload doesn't go away after image
 - fix(tests): add files.enabled to subcommunity request
 
-Version v23.0.0 (released 2026-02-02)
+## Version v23.0.0 (released 2026-02-02)
 
 - fix(tests): remove not existing route
 - fix(tests): add mocks
@@ -177,50 +176,50 @@ Version v23.0.0 (released 2026-02-02)
 - refactor(schema): remove usage of object_key
 - fix(black): fix style to meet Black 26 standard
 
-Version v22.0.0 (released 2025-12-12)
+## Version v22.0.0 (released 2025-12-12)
 
 - chore(setup): bump major version of invenio-requests
 
-Version v21.2.0 (released 2025-12-08)
+## Version v21.2.0 (released 2025-12-08)
 
 - feat: add link to submission request from communities modal
 - fix(admin): wrap missing admin panel i18n strings
 
-Version v21.1.1 (released 2025-10-22)
+## Version v21.1.1 (released 2025-10-22)
 
 - feat(fixtures): add community UUID assignment
 
-Version v21.1.0 (released 2025-10-01)
+## Version v21.1.0 (released 2025-10-01)
 
 - feat(config): add last activity sort options
 - installation: bump invenio-requests to v10.2.0
 
-Version v21.0.0 (released 2025-09-22)
+## Version v21.0.0 (released 2025-09-22)
 
 - installation: bump invenio-requests
 
-Version v20.2.0 (released 2025-09-05)
+## Version v20.2.0 (released 2025-09-05)
 
 - setup: bump major version of invenio-vocabularies
 
-Version v20.1.0 (released 2025-09-05)
+## Version v20.1.0 (released 2025-09-05)
 
 - setup: bump major version of invenio-requests
 - views: fix handle permission denied error in the UI view functions
 - fix: correct community topic typo
 
-Version v20.0.0 (released 2025-08-01)
+## Version v20.0.0 (released 2025-08-01)
 
 - setup: bump major dependencies of invenio-requests
   * Bumps a major version to isolate the invenio-requests major bump.
 
-Version v19.2.0 (released 2025-07-17)
+## Version v19.2.0 (released 2025-07-17)
 
 - i18n: pulled translations
 - js: add slug to subcommunity initial values
 - i18n:push translations
 
-Version v19.1.0 (released 2025-07-02)
+## Version v19.1.0 (released 2025-07-02)
 
 - i18n: run js compile catalog
 - i18n: run js extract msgs
@@ -244,7 +243,7 @@ Version v19.1.0 (released 2025-07-02)
 - using translated string for displaying role
 - membership-request [#855]: disable button until feature fully merged [+]
 
-Version v19.0.0 (released 2025-06-03)
+## Version v19.0.0 (released 2025-06-03)
 
 - setup: bump major dependencies
 - fix: ChangedInMarshmallow4Warning
@@ -253,62 +252,62 @@ Version v19.0.0 (released 2025-06-03)
 - readthedocs: Create .readthedocs.yaml
 - readme: remove experimental tag
 
-Version v18.3.0 (released 2025-05-08)
+## Version v18.3.0 (released 2025-05-08)
 
 - services: include Opensearch meta in the results
 - dependencies: depend explicitly on invenio-records-resources
 - fix: rename community variable in templates
 - requests views: add community objects to template context
 
-Version v18.2.0 (released 2025-04-22)
+## Version v18.2.0 (released 2025-04-22)
 
 - urls: integrate invenio_url_for
 
-Version v18.1.0 (released 2025-04-08)
+## Version v18.1.0 (released 2025-04-08)
 
 - bug: humanize byte size error on community image upload
 - assets: include missing JS on admin community_search.html closes #910
 - notifs: exclude system_user
 
-Version v18.0.0 (released 2025-02-13)
+## Version v18.0.0 (released 2025-02-13)
 
 - Promote to stable release
 - administration: fix UI
 
-Version v18.0.0.dev2 (released 2025-01-23)
+## Version v18.0.0.dev2 (released 2025-01-23)
 
-Version v18.0.0.dev1 (released 2024-12-12)
+## Version v18.0.0.dev1 (released 2024-12-12)
 
 - setup: change to reusable workflows
 - setup: bump major dependencies
 - service: allow passing custom expires_at
 
-Version v17.8.1 (released 2025-01-16)
+## Version v17.8.1 (released 2025-01-16)
 
 - Revert "notifications: add comment notification for record and membership"
     * This is actually a breaking change since it introduces a new
       set of notification templates that will potentialy not be
       styled if overridden in an instance's overlay.
 
-Version v17.8.0 (released 2025-01-15)
+## Version v17.8.0 (released 2025-01-15)
 
 - organizations: updated knownOrganizations to use id
 - notifications: add comment notification for record and membership
 
-Version v17.7.1 (released 2024-12-13)
+## Version v17.7.1 (released 2024-12-13)
 
 - schema: skip unknown fields when loading organizations
 
-Version v17.7.0 (released 2024-12-13)
+## Version v17.7.0 (released 2024-12-13)
 
 - service: allow passing custom expires_at
 
-Version v17.6.1 (released 2024-12-11)
+## Version v17.6.1 (released 2024-12-11)
 
 - mappings: add `identifiers` to parent organizations
     * Adds the missing `identifiers` property to parent communities.
 
-Version v17.6.0 (released 2024-12-09)
+## Version v17.6.0 (released 2024-12-09)
 
 - notifications: add comment notification for subcoms
     fix new subcommunity title
@@ -320,14 +319,14 @@ Version v17.6.0 (released 2024-12-09)
     * Removes the dependence on the invenio-admin action need.
     * Adds some more test cases for featured communities.
 
-Version v17.5.1 (released 2024-11-28)
+## Version v17.5.1 (released 2024-11-28)
 
 - settings-ui: fix organizations metadata payload
     * Fixes a bug where organizations selected from the search in the
       profile form, should also submit the `id` so that it's linked to the
       affiliation vocabulary entry.
 
-Version v17.5.0 (released 2024-11-27)
+## Version v17.5.0 (released 2024-11-27)
 
 - subcommunities: implement invitation request
     * Allows parent communities to create requests to invite other
@@ -335,71 +334,71 @@ Version v17.5.0 (released 2024-11-27)
 - config: add LogoNotFoundError
 - communities: config: Update static page URLs to prevent name collisions
 
-Version v17.4.0 (released 2024-11-11)
+## Version v17.4.0 (released 2024-11-11)
 
 - admin: change default number of results from 10 to 20
 - UI/UX: improve display of ROR information in select field
 
-Version v17.3.2 (released 2024-10-18)
+## Version v17.3.2 (released 2024-10-18)
 
 - ui: avoid exceptions if organizations list and request membership are not defined
 - ui: verified icon display logic change
 
-Version v17.3.1 (released 2024-10-18)
+## Version v17.3.1 (released 2024-10-18)
 
 - communities-ui: make verified icon display depend on parent community
 
-Version v17.3.0 (released 2024-10-17)
+## Version v17.3.0 (released 2024-10-17)
 
 - Added verified icon and parent community
 
-Version v17.2.0 (released 2024-10-16)
+## Version v17.2.0 (released 2024-10-16)
 
 - subcommunities: updated page layout
 
-Version 17.1.3 (released 2024-10-15)
+## Version 17.1.3 (released 2024-10-15)
 
 - subcommunities: revert UI serializer config change
 
-Version v17.1.2 (released 2024-10-11)
+## Version v17.1.2 (released 2024-10-11)
 
 - chore: fix tests
 - subcommunities: moved endpoint to communities resource
 
-Version v17.1.1 (released 2024-10-10)
+## Version v17.1.1 (released 2024-10-10)
 
 - setup: bump invenio-search-ui to fix dependency installation
 
-Version v17.1.0 (released 2024-10-10)
+## Version v17.1.0 (released 2024-10-10)
 
 - webpack: update axios and react-searchkit (due to axios upgrade) major versions
 
-Version v17.0.0 (released 2024-10-08)
+## Version v17.0.0 (released 2024-10-08)
 
 - mappings: updated awards with subj and orgs
 
-Version v16.0.0 (released 2024-10-04)
+## Version v16.0.0 (released 2024-10-04)
 
 - installation: bump invenio-vocabularies
 
-Version v15.2.2 (released 2024-10-04)
+## Version v15.2.2 (released 2024-10-04)
 
 - subcommunities: temporary fix for self link
 
-Version v15.2.1 (released 2024-10-01)
+## Version v15.2.1 (released 2024-10-01)
 
 - subcommunities: fix error getting whether children allowed
 - subcommunities: added i18n translate messages
 
-Version v15.2.0 (released 2024-09-27)
+## Version v15.2.0 (released 2024-09-27)
 
 - Added subcommunities endpoint and page
 
-Version v15.1.1 (released 2024-09-26)
+## Version v15.1.1 (released 2024-09-26)
 
 * Return raw JSON instead of doing content negotiation for logo update responses.
 
-Version v15.1.0 (released 2024-09-26)
+## Version v15.1.0 (released 2024-09-26)
 
 - subcommunities: handle vnd.inveniordm.v1+json
 - resource: remove response handler from featured communities
@@ -408,32 +407,32 @@ Version v15.1.0 (released 2024-09-26)
 - bug: fix display of non-ROR orgs and fix commas
 - UX: link org name to ROR
 
-Version v15.0.0 (released 2024-08-26)
+## Version v15.0.0 (released 2024-08-26)
 - improve communities mapping with edge_ngram analyzer and accent analyzer
 
-Version v14.10.0 (released 2024-08-26)
+## Version v14.10.0 (released 2024-08-26)
 
 - fixes defaults for COMMUNITIES_CUSTOM_FIELDS
 - deprecated record_policy in favour of record_submission_policy
 - add new policy to allow only members of a community to submit records
 
-Version v14.9.0 (released 2024-08-22)
+## Version v14.9.0 (released 2024-08-22)
 
 - bump invenio-vocabularies
 
-Version v14.8.0 (released 2024-08-22)
+## Version v14.8.0 (released 2024-08-22)
 
 - bump invenio-requests
 
-Version v14.7.0 (released 2024-08-22)
+## Version v14.7.0 (released 2024-08-22)
 
 - package: bump react-invenio-forms
 
-Version 14.6.1 (released 2024-08-09)
+## Version 14.6.1 (released 2024-08-09)
 
 - permissions: implement missing excludes clause in ReviewPolicy generator
 
-Version 14.6.0 (released 2024-08-09)
+## Version 14.6.0 (released 2024-08-09)
 
 - settings-ui: [#855] set membership policy
 - fix(logo): not fully deleted
@@ -443,23 +442,23 @@ Version 14.6.0 (released 2024-08-09)
 - invitation: Update RichEditor to use inputValue
 - services: use and adjust vnd.inveniordm.v1+json http accept header
 
-Version 14.5.1 (released 2024-06-28)
+## Version 14.5.1 (released 2024-06-28)
 
 - subcommunity: updated fieldpaths and error handling
 - subcommunity: updated error mapping in the ui
 
-Version 14.5.0 (released 2024-06-28)
+## Version 14.5.0 (released 2024-06-28)
 
 - subcommunities: pass "payload" to request creation
 
-Version 14.4.0 (released 2024-06-28)
+## Version 14.4.0 (released 2024-06-28)
 
 - subcommunity: updated fieldpaths in the ui
 - subcommunities: fix request redirect url
 - errors: added subcommunities errors
 - subcommunities: check for parent children allow
 
-Version 14.3.0 (released 2024-06-27)
+## Version 14.3.0 (released 2024-06-27)
 
 - subcommunities: made the request form overridable
 - subcommunities: pass community object
@@ -468,7 +467,7 @@ Version 14.3.0 (released 2024-06-27)
 - profile: rename award label
     * closes https://github.com/inveniosoftware/invenio-app-rdm/issues/2602
 
-Version 14.2.0 (released 2024-06-24)
+## Version 14.2.0 (released 2024-06-24)
 
 - subcommunities: fixed redirect url after new request
 - subcommunities: add notifications
@@ -477,7 +476,7 @@ Version 14.2.0 (released 2024-06-24)
 - bug: filter out communities that have a parent or can have children (#1154)
 - bug: allow adding existing communities
 
-Version 14.1.0 (released 2024-06-20)
+## Version 14.1.0 (released 2024-06-20)
 
 - mappings: add dynamic mappings for user profiles and preferences
 - community-ui: improve creation UX
@@ -485,23 +484,23 @@ Version 14.1.0 (released 2024-06-20)
 - subcommunities: initial minimal feature implementation
 - ui: fixed tombstone dumping
 
-Version 14.0.0 (released 2024-06-04)
+## Version 14.0.0 (released 2024-06-04)
 
 - installation: bump invenio-vocabularies
 
-Version 13.0.3 (released 2024-05-15)
+## Version 13.0.3 (released 2024-05-15)
 
 - components: fix parent update permissions
 
-Version 13.0.2 (released 2024-05-07)
+## Version 13.0.2 (released 2024-05-07)
 
 - groups: moved groups config and permission generator to invenio-users-resources
 
-Version 13.0.1 (released 2024-04-15)
+## Version 13.0.1 (released 2024-04-15)
 
 - fix: community theme and menus visibility
 
-Version 13.0.0 (released 2024-04-10)
+## Version 13.0.0 (released 2024-04-10)
 
 - ext: space-out community menu items
 - systemfields: dump `@v` field during indexing
@@ -509,36 +508,36 @@ Version 13.0.0 (released 2024-04-10)
 - records: optimize performance of is_verified
 - models: fix memberships querying
 
-Version 12.2.0 (released 2024-03-23)
+## Version 12.2.0 (released 2024-03-23)
 
 - application: fix before_first_request deprecation
 
-Version 12.1.1 (released 2024-03-12)
+## Version 12.1.1 (released 2024-03-12)
 
 - components: fix backwards compatibility with community children
 
-Version 12.1.0 (released 2024-03-06)
+## Version 12.1.0 (released 2024-03-06)
 
 - global: implement access.members_visibility field
 - services: added bulk update parent method (#1112)
 - custom_fields: added custom vocab flag
 
-Version 12.0.1 (released 2024-03-04)
+## Version 12.0.1 (released 2024-03-04)
 
 - bump react-invenio-forms
 - reorder the community's menu items
 - move `filter_dict_keys` util to invenio-records
 
-Version 12.0.0 (released 2024-02-19)
+## Version 12.0.0 (released 2024-02-19)
 
 - major version bump on invenio-users-resources (through invenio-requests)
 
-Version 11.1.1 (released 2024-02-19)
+## Version 11.1.1 (released 2024-02-19)
 
 - mappings: change "dynamic" values to string
 - ui: removed console.log from communitiesCarousel (#1077)
 
-Version 11.1.0 (released 2024-02-19)
+## Version 11.1.0 (released 2024-02-19)
 
 - mappings: add parent.children
 - dump: add children allow
@@ -546,20 +545,20 @@ Version 11.1.0 (released 2024-02-19)
 - mappings: fix parent.theme.style key
 - mappings: fix type mismatch for funding.award.number
 
-Version 11.0.0 (released 2024-02-16)
+## Version 11.0.0 (released 2024-02-16)
 
 - systemfields: add children
 - systemfields: index communities in records
 - horizon: community home page (#1081)
 
-Version 10.1.0 (released 2024-02-09)
+## Version 10.1.0 (released 2024-02-09)
 
 - parent_community: dereference parent community
 - parent: dereference in systemfield
 - theme: handle null values
 - parent_community: fix derefencing
 
-Version 10.0.0 (released 2024-02-09)
+## Version 10.0.0 (released 2024-02-09)
 
 - mappings: update to theme.style
 - systemfields: add parent community
@@ -570,11 +569,11 @@ Version 10.0.0 (released 2024-02-09)
 - global: always serialize Community.theme
 - models: add index on bucket_id
 
-Version 9.0.0 (released 2024-01-31)
+## Version 9.0.0 (released 2024-01-31)
 
 - installation: bump dependencies
 
-Version 8.0.0 (released 2024-01-16)
+## Version 8.0.0 (released 2024-01-16)
 
 - global: add support for community theming
 - adds new data field called `theme`
@@ -582,91 +581,88 @@ Version 8.0.0 (released 2024-01-16)
 - enables feature only for system user at the moment programmtically
 - disables indexing of community theme information
 
-Version 7.18.0 (released 2023-12-12)
+## Version 7.18.0 (released 2023-12-12)
 
 - replaced ckeditor with tinymce due to license issue
 - split CommunitiesCardGroup definition and rendering
 - changed "featured-communities" id on communities frontpage to "new-communities".
   WARNING: If you are overriding invenio-communities/frontpage.html, make that change in your template.
 
-Version 7.17.0 (released 2023-11-10)
+## Version 7.17.0 (released 2023-11-10)
 
 - assets: add overridable id to profile form
 - assets: increase the char limit on community page description
 
-Version 7.16.5 (released 2023-11-07)
+## Version 7.16.5 (released 2023-11-07)
 
 - views: always show add community menu
 
-Version 7.16.4 (released 2023-11-01)
+## Version 7.16.4 (released 2023-11-01)
 
 - schema: avoid loading None value in custom fields
 - translation: fix ngettext function expected parameter
 
-Version 7.16.3 (released 2023-10-27)
+## Version 7.16.3 (released 2023-10-27)
 
 - ui: fix identity in jinja filter
 
-Version 7.16.2 (released 2023-10-26)
+## Version 7.16.2 (released 2023-10-26)
 
 - community logo: fix rendering a placeholder
 
-Version 7.16.1 (released 2023-10-25)
+## Version 7.16.1 (released 2023-10-25)
 
 - community-settings: bump curation policy and page length to 5k chars
 
-Version 7.16.0 (released 2023-10-25)
+## Version 7.16.0 (released 2023-10-25)
 
 - community-settings: use custom URL field
 - emails: removed html tags from strings
 - featured: make new upload btn optional
 
-Version 7.15.3 (released 2023-10-23)
+## Version 7.15.3 (released 2023-10-23)
 
 - schema: bump allowed curation policy and page length to 5k chars
 
-Version 7.15.2 (released 2023-10-13)
+## Version 7.15.2 (released 2023-10-13)
 
 - ui: allow trailing slashes
 
-Version 7.15.1 (released 2023-10-11)
+## Version 7.15.1 (released 2023-10-11)
 
 - community: fix deletion modal fields UI
 
-Version 7.15.0 (released 2023-10-10)
+## Version 7.15.0 (released 2023-10-10)
 
 - header: add manage community button
 
-Version 7.14.0 (released 2023-10-04)
+## Version 7.14.0 (released 2023-10-04)
 
 - default community: add possibility to set to None
 - searchapp: reduce the pagination options to 10 and 20
 
-Version 7.13.1 (released 2023-10-02)
+## Version 7.13.1 (released 2023-10-02)
 
 - communities: replace lru_cache with invenio_cache to ensure that cache expiration
   using a TTL is correctly handled
 
-Version 7.13.0 (released 2023-10-02)
+## Version 7.13.0 (released 2023-10-02)
 
 - notifications: add notifications on invitation actions
 - settings menu: rename curation policy menu item to review policy
 - settings: remove hidden divider from pages
 
-Version 7.12.1 (released 2023-09-28)
-------------------------------------
+## Version 7.12.1 (released 2023-09-28)
 
 - fix service utility to cache community's slug
 
-Version 7.12.0 (released 2023-09-28)
-------------------------------------
+## Version 7.12.0 (released 2023-09-28)
 
 - add service utility to cache community's slug
 - service: fix sort param modifying sort options variable
 - community settings: toggle danger zone area based on permissions
 
-Version 7.11.0 (released 2023-09-25)
-------------------------------------
+## Version 7.11.0 (released 2023-09-25)
 
 - services: add community deletion
 - moderation: delete communities of blocked user
@@ -674,29 +670,24 @@ Version 7.11.0 (released 2023-09-25)
 - resource: add revision check on delete header
 - ui: add accessibility attributes
 
-Version 7.10.1 (released 2023-09-22)
-------------------------------------
+## Version 7.10.1 (released 2023-09-22)
 
 - ui: allow redirecting to another page when clicking on
   the community's list item
 - fix an issue with wrongly updating users in the db when
   fetching community's members
 
-
-Version 7.10.0 (released 2023-09-21)
-------------------------------------
+## Version 7.10.0 (released 2023-09-21)
 
 - resources: add etag headers
 
-Version 7.9.0 (released 2023-09-19)
------------------------------------
+## Version 7.9.0 (released 2023-09-19)
 
 - communities: implement service methods for deletion
 - CommunityCompactItem: add external icon and target blank
 - communities-profile: fix custom funding form
 
-Version 7.8.0 (released 2023-09-18)
------------------------------------
+## Version 7.8.0 (released 2023-09-18)
 
 - github: drop python 3.7 as it has reached end of life
 - communities: add data model for community deletion
@@ -704,164 +695,132 @@ Version 7.8.0 (released 2023-09-18)
 - ui: safely render community `description`
 - delete community modal: fix styling
 
-Version 7.7.4 (released 2023-09-14)
------------------------------------
+## Version 7.7.4 (released 2023-09-14)
 
 - installation: bump invenio-vocabularies
 
-Version 7.7.3 (released 2023-09-14)
------------------------------------
+## Version 7.7.3 (released 2023-09-14)
 
 - search bar: add aria-label
 - a11y: added ids to TextFields
 
-Version 7.7.2 (released 2023-09-12)
------------------------------------
+## Version 7.7.2 (released 2023-09-12)
 
 - service: exclude created requests from search
 
-Version 7.7.1 (released 2023-09-04)
------------------------------------
+## Version 7.7.1 (released 2023-09-04)
 
 - components: fix visibility permission check on edit
 
-
-Version 7.7.0 (released 2023-08-30)
------------------------------------
+## Version 7.7.0 (released 2023-08-30)
 
 - oai-pmh: take oai sets prefix from config
 
-Version 7.6.0 (released 2023-08-23)
------------------------------------
+## Version 7.6.0 (released 2023-08-23)
 
 - communities: add `is_verified` field to sort communities based on owner verified status
 - user-moderation: implement `on_approve` action to reindex user communities
 
-Version 7.5.0 (released 2023-08-17)
------------------------------------
+## Version 7.5.0 (released 2023-08-17)
 
 - permissions: extract base permissions
 
-Version 7.4.0 (released 2023-08-09)
------------------------------------
+## Version 7.4.0 (released 2023-08-09)
 
 - add user moderation callback hooks
 - UI improvements
 
-Version 7.3.0 (released 2023-08-02)
------------------------------------
+## Version 7.3.0 (released 2023-08-02)
 
 - members and invitations: Add invite button to members tab, a11y fixes, UI fixes
 
-Version 7.2.3 (released 2023-07-26)
------------------------------------
+## Version 7.2.3 (released 2023-07-26)
 
 - ui: align search with "My account" header
 
-Version 7.2.2 (released 2023-07-24)
------------------------------------
+## Version 7.2.2 (released 2023-07-24)
 
 - templates: access message and mark subject for translation
 
-Version 7.2.1 (released 2023-07-24)
------------------------------------
+## Version 7.2.1 (released 2023-07-24)
 
 - inject create permissions to communities search
 
-Version 7.2.0 (released 2023-07-21)
------------------------------------
+## Version 7.2.0 (released 2023-07-21)
 
 - notifications: add member invitation notification
 
-Version 7.1.2 (released 2023-07-18)
------------------------------------
+## Version 7.1.2 (released 2023-07-18)
 
 - ui: fix mobile version
 
-Version 7.1.1 (released 2023-07-17)
------------------------------------
+## Version 7.1.1 (released 2023-07-17)
 
 - actions: reorder actions
 
-Version 7.0.1 (released 2023-07-05)
------------------------------------
+## Version 7.0.1 (released 2023-07-05)
 
 - tests: fix users update
 
-Version 7.0.0 (released 2023-06-15)
------------------------------------
+## Version 7.0.0 (released 2023-06-15)
 
 - cache: adds unmanaged groups to be cached and loaded in the identity
 - adds identity cache
 - add groups as community members
 - assets: display metrics on deletion modal
 
-Version 6.7.0 (released 2023-06-07)
------------------------------------
+## Version 6.7.0 (released 2023-06-07)
 
 - notifications: add member recipient generator
 - tests: add notification member recipient generator test case
 - services: add extra_filter param
 - services: provide explicit scan params
 
-Version 6.6.1 (released 2023-06-02)
------------------------------------
+## Version 6.6.1 (released 2023-06-02)
 
 - schemas: use parent class for CommunityGhostSchema stub
 
-Version 6.6.0 (released 2023-05-26)
------------------------------------
+## Version 6.6.0 (released 2023-05-26)
 
 - configure number of items in communities carousel
 - add placeholder in communities carousel
 - introduce a configuration to disallow the creation of a restricted community
 - fix a11y for tabs and modals in communities settings
 
-Version 6.5.0 (released 2023-05-05)
------------------------------------
+## Version 6.5.0 (released 2023-05-05)
 
 - update mappings of members and invitations
 - add configurable community permission policy
 
-Version 6.4.0 (released 2023-04-25)
------------------------------------
+## Version 6.4.0 (released 2023-04-25)
 
 - update mappings of members and invitations
 
-Version 6.3.0 (released 2023-04-20)
------------------------------------
+## Version 6.3.0 (released 2023-04-20)
 
 - search: add query parser mappings and allowed terms list
 - assets: change import components from invenio-vocabularies and react-invenio-forms
 
-Version 6.2.1 (released 2023-04-06)
------------------------------------
+## Version 6.2.1 (released 2023-04-06)
 
 - improve UX of community deletion modal
 
-Version 6.2.0 (released 2023-04-06)
------------------------------------
+## Version 6.2.0 (released 2023-04-06)
 
 - add custom fields of community to display on about page
 - allow blank curation policy page and about page
 - add extra filter to community service
 
-Version 6.1.1 (released 2023-03-28)
------------------------------------
+## Version 6.1.1 (released 2023-03-28)
 
 - refactor requests components
 
-
-Version 6.1.0 (released 2023-03-24)
------------------------------------
+## Version 6.1.0 (released 2023-03-24)
 
 - deny deletion of a community if there are open requests
 - add ghost community when the community cannot be resolved
 
-
-Version 6.0.0 (released 2023-03-20)
------------------------------------
-
+## Version 6.0.0 (released 2023-03-20)
 
 - upgrade community settings layout
 - split pages configuration
@@ -870,169 +829,133 @@ Version 6.0.0 (released 2023-03-20)
 - rename service component configuration variable
 - add configurable error handler
 
-
-Version 5.5.0 (released 2023-03-13)
------------------------------------
-
+## Version 5.5.0 (released 2023-03-13)
 
 - requests: add community inclusion request tyoe
 - rename permission policy for direct publish
 
-
-Version 5.4.0 (released 2023-03-10)
------------------------------------
+## Version 5.4.0 (released 2023-03-10)
 
 - assets: add abstraction and reusability to search component
 - access systemfield: update class attributes tuples into enums
 - access systemfield: update validation to a class function
 - service: add configurable components
 
-Version 5.3.0 (released 2023-03-10)
------------------------------------
+## Version 5.3.0 (released 2023-03-10)
 
 - Custom fields: add multiple custom field widget loaders
 - ui serializer: add permissions
 - assets: refactor community components
 
-
-Version 5.2.0 (released 2023-03-03)
------------------------------------
+## Version 5.2.0 (released 2023-03-03)
 
 - remove deprecated flask_babelex dependency and imports
 - upgrade invenio dependencies
 
-Version 5.1.0 (released 2023-02-24)
------------------------------------
+## Version 5.1.0 (released 2023-02-24)
 
 - profile: add about and curation policy tab
 - generators: fix permission check for communities on serializers
 
-Version 5.0.1 (released 2023-02-20)
------------------------------------
+## Version 5.0.1 (released 2023-02-20)
 
 - members: add support to read the memberships of an identity (service layer only)
 
-Version 5.0.0 (released 2023-02-09)
------------------------------------
+## Version 5.0.0 (released 2023-02-09)
 
 - datamodel: add new `access.review_policy` subfield
 - permisssions: add policy for direct publish
 
-Version 4.1.2 (released 2023-02-07)
------------------------------------
+## Version 4.1.2 (released 2023-02-07)
 
 - a11y: add missing area labels
 - detail: fix restricted label in community details page
 
-Version 4.1.1 (released 2023-01-26)
------------------------------------
+## Version 4.1.1 (released 2023-01-26)
 
 - assets: remove namespace from requests overridable ids
 
-Version 4.1.0 (released 2023-01-26)
------------------------------------
+## Version 4.1.0 (released 2023-01-26)
 
 - assets: normalise overridable ids
 
-Version 4.0.7 (released 2023-01-24)
------------------------------------
+## Version 4.0.7 (released 2023-01-24)
 
 - featured: add feature flag for administration panel
 
-
-Version 4.0.6 (released 2023-01-20)
------------------------------------
+## Version 4.0.6 (released 2023-01-20)
 
 - featured: add tooltip to featured community schema field
 
-Version 4.0.5 (released 2023-01-05)
------------------------------------
+## Version 4.0.5 (released 2023-01-05)
 
 - featured: add overridable id to featured communities component
 - assets: refactor eslint warnings
 - community: details page styling adjustments
 
-Version 4.0.4 (released 2022-12-05)
------------------------------------
+## Version 4.0.4 (released 2022-12-05)
 
 - permissions: add featured community list action to administration permissions
 
-Version 4.0.3 (released 2022-12-02)
------------------------------------
+## Version 4.0.3 (released 2022-12-02)
 
 - community details search: add search results counter and sort
 
-Version 4.0.2 (released 2022-12-01)
------------------------------------
+## Version 4.0.2 (released 2022-12-01)
 
 - Add identity to links template expand method.
 - Add identity to field resolver pick_resolved_fields method.
 
-Version 4.0.1 (released 2022-11-29)
------------------------------------
+## Version 4.0.1 (released 2022-11-29)
 
 - fixtures: add option to feature communities
 
-Version 4.0.0 (released 2022-11-25)
------------------------------------
+## Version 4.0.0 (released 2022-11-25)
 
 - Add links to search results
 - Add i18 translations
 - Use centralized Axios configuration
 
-Version 3.2.5 (released 2022-11-16)
------------------------------------
+## Version 3.2.5 (released 2022-11-16)
 
 - Ensure members service using bulk indexing in the `rebuild_index` method
 
-
-Version 3.2.4 (released 2022-11-14)
------------------------------------
+## Version 3.2.4 (released 2022-11-14)
 
 - Added Jinja macro to render featured communities section
 
-
-Version 3.2.3 (released 2022-11-03)
------------------------------------
+## Version 3.2.3 (released 2022-11-03)
 
 - Add logo to demo data
 - Refactor styling
 
-
-Version 3.2.2 (released 2022-10-26)
------------------------------------
+## Version 3.2.2 (released 2022-10-26)
 
 - Add featured communities carousel component
 
-Version 3.2.1 (released 2022-10-26)
------------------------------------
+## Version 3.2.1 (released 2022-10-26)
 
 - Remove obsolete imports
 
-Version 3.2.0 (released 2022-10-24)
------------------------------------
+## Version 3.2.0 (released 2022-10-24)
 - Upgrade invenio-assets
 - Upgrade to node v18
 - Add responsive classes to community request search
 - Fix overflowing content
 
-Version 3.1.0 (released 2022-10-04)
------------------------------------
+## Version 3.1.0 (released 2022-10-04)
 - Add OpenSearch v2
 
-Version 3.0.1 (yanked)
+## Version 3.0.1 (yanked)
 
-Version 3.0.0 (released 2022-09-27)
------------------------------------
+## Version 3.0.0 (released 2022-09-27)
 - Drop Elasticsearch < 7
 - Add OpenSearch v1
 
-Version 2.8.8 (released 2022-07-12)
------------------------------------
+## Version 2.8.8 (released 2022-07-12)
 - Bugfix: display community logo in the header
 
-Version 2.8.7 (released 2022-07-08)
------------------------------------
+## Version 2.8.7 (released 2022-07-08)
 
 - Add multiple destinations search bar
 - Search: redesign community search result item
@@ -1040,8 +963,7 @@ Version 2.8.7 (released 2022-07-08)
 - Settings: add file logo size limit
 - Add error handling for UUID
 
-Version 2.8.6 (released 2022-07-01)
------------------------------------
+## Version 2.8.6 (released 2022-07-01)
 - Requests search: add expanded fields, re-design list view
 - Community: update members table, add responsive width for grid columns
 - Members: reserve space for success/error icon, clean up table class
@@ -1049,19 +971,16 @@ Version 2.8.6 (released 2022-07-01)
 - Community header: add community visibility to header
 - Dependencies: bump minor version of invenio-requests
 
-Version 2.8.5 (released 2022-06-24)
------------------------------------
+## Version 2.8.5 (released 2022-06-24)
 - i18n: fix naming
 
-Version 2.8.4 (released 2022-06-23)
------------------------------------
+## Version 2.8.4 (released 2022-06-23)
 
 - i18n: add german to list of languages
 - Homepage: align searchbar and button
 - Page subheader: add mobile class
 
-Version 2.8.3 (released 2022-06-21)
------------------------------------
+## Version 2.8.3 (released 2022-06-21)
 
 - Resources: add UI serializer
 - i18n: clean up translation strings
@@ -1069,8 +988,7 @@ Version 2.8.3 (released 2022-06-21)
 - Settings ui: fix state behaviour
 - Members landing page: fix alignment
 
-Version 2.8.2 (released 2022-06-08)
------------------------------------
+## Version 2.8.2 (released 2022-06-08)
 
 - Search bar: fix search event propagation
 - UI: remove redundant components
@@ -1078,27 +996,21 @@ Version 2.8.2 (released 2022-06-08)
 - Global: pin sphinx package
 - Global: add black formatter
 
-Version 2.8.1 (released 2022-05-24)
+## Version 2.8.1 (released 2022-05-24)
 
 - Rename featured communities section
 
-Version 2.8.0 (released 2022-05-23)
+## Version 2.8.0 (released 2022-05-23)
 
-
-Version 2.3.1 (released 2021-06-10)
------------------------------------
+## Version 2.3.1 (released 2021-06-10)
 
 - Remove invenio dependencies to depend only on rdm-records.
 
-
-Version 2.3.0 (released 2021-05-28)
------------------------------------
+## Version 2.3.0 (released 2021-05-28)
 
 - Improve visual feedback when changing permissions.
 - Align facets with new records-resources faceting paradigm.
 
-
-Version 2.2.5 (released 2021-04-29)
------------------------------------
+## Version 2.2.5 (released 2021-04-29)
 
 - Initial public release.

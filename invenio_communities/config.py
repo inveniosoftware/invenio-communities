@@ -259,9 +259,9 @@ COMMUNITIES_MEMBERSHIP_REQUESTS_EXPIRES_IN = timedelta(days=30)
 COMMUNITIES_MEMBERSHIP_REQUESTS_DEFAULT_ROLE = "reader"
 """Role assigned to a member who joins via a membership request.
 
-Must be the ``name`` of one of the roles defined in ``COMMUNITIES_ROLES``.
-Deployments that customise ``COMMUNITIES_ROLES`` (and therefore may not define a
-``reader`` role) can point this at their own lowest-privilege role."""
+Must be the `name` of one of the roles defined in `COMMUNITIES_ROLES`.
+Deployments that customise `COMMUNITIES_ROLES` (and therefore may not define a
+`reader` role) can point this at their own lowest-privilege role."""
 
 COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""
@@ -269,16 +269,18 @@ COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 COMMUNITIES_NAMESPACES = {}
 """Custom fields namespaces.
 
-.. code-block:: python
-    {<namespace>: <uri>, ...}
+```python
+{<namespace>: <uri>, ...}
+```
 
 For example:
 
-.. code-block:: python
-    {
-        "cern": "https://cern.ch/terms",
-        "dwc": "http://rs.tdwg.org/dwc/terms/"
-    }
+```python
+{
+    "cern": "https://cern.ch/terms",
+    "dwc": "http://rs.tdwg.org/dwc/terms/"
+}
+```
 
 """
 
@@ -287,22 +289,22 @@ COMMUNITIES_CUSTOM_FIELDS = []
 
 Of the shape:
 
-.. code-block:: python
-
-    [
-        <custom-field-class-type(name='field')>,
-        # ...
-        <custom-field-class-type(name='fieldN')>'
-    ]
+```python
+[
+    <custom-field-class-type(name='field')>,
+    # ...
+    <custom-field-class-type(name='fieldN')>'
+]
+```
 
 For example:
 
-.. code-block:: python
-
-    [
-        TextCF(name="experiment"),
-        ...
-    ]
+```python
+[
+    TextCF(name="experiment"),
+    ...
+]
+```
 """
 
 COMMUNITIES_CUSTOM_FIELDS_UI = []
@@ -310,44 +312,44 @@ COMMUNITIES_CUSTOM_FIELDS_UI = []
 
 Of the shape:
 
-.. code-block:: python
+```python
+[{
+    section: <section_name>,
+    fields: [
+        {
+            field: "path-to-field",  # this should be validated against the defined fields in `RDM_CUSTOM_FIELDS`
+            ui_widget: "<ui-widget-name>",  # predefined or user defined ui widget
+            props: {
+                label:"<ui-label-to-display>",
+                placeholder:"<placeholder-passed-to-widget>",
+                icon:"<icon-passed-to-widget>",
+                description:"<description-passed-to-widget>",
+            }
+        },
+    ],
 
-    [{
-        section: <section_name>,
-        fields: [
-            {
-                field: "path-to-field",  # this should be validated against the defined fields in `RDM_CUSTOM_FIELDS`
-                ui_widget: "<ui-widget-name>",  # predefined or user defined ui widget
-                props: {
-                    label:"<ui-label-to-display>",
-                    placeholder:"<placeholder-passed-to-widget>",
-                    icon:"<icon-passed-to-widget>",
-                    description:"<description-passed-to-widget>",
-                }
-            },
-        ],
-
-        # ...
-    }]
+    # ...
+}]
+```
 
 For example:
 
-.. code-block:: python
-
-    [{
-        "section": "CERN Experiment"
-        "fields" : [{
-            field: "experiment",  # this should be validated against the defined fields in `RDM_CUSTOM_FIELDS`
-            ui_widget: "CustomTextField",  # user defined widget in my-site
-            props: {
-                label: "Experiment",
-                placeholder: "Type an experiment...",
-                icon: "pencil",
-                description: "You should fill this field with one of the experiments e.g LHC, ATLAS etc.",
-            }
-        },
-        ...
-    }]
+```python
+[{
+    "section": "CERN Experiment"
+    "fields" : [{
+        field: "experiment",  # this should be validated against the defined fields in `RDM_CUSTOM_FIELDS`
+        ui_widget: "CustomTextField",  # user defined widget in my-site
+        props: {
+            label: "Experiment",
+            placeholder: "Type an experiment...",
+            icon: "pencil",
+            description: "You should fill this field with one of the experiments e.g LHC, ATLAS etc.",
+        }
+    },
+    ...
+}]
+```
 """
 
 COMMUNITIES_ALLOW_RESTRICTED = True

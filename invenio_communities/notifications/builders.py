@@ -177,9 +177,10 @@ class CommunityMembershipRequestSubmittedNotificationBuilder(
     def build(cls, request, role, message=None):
         """Build notification with request context.
 
-        :param request: api.Request
-        :param role: string
-        :param message: string
+        Args:
+            request: api.Request
+            role: string
+            message: string
         """
         return Notification(
             type=cls.type,

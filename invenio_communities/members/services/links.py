@@ -31,8 +31,9 @@ def _is_context_action_possible(member, context):
     - member has a request
     - context has action
 
-    :param member: api.Member (where Member represents an invitation or mshp request)
-    :param context: dict
+    Args:
+        member: api.Member (where Member represents an invitation or mshp request)
+        context: dict
     """
     action_id = context["action"]
     request_type_id = member["request"].get("type", "community-invitation")
@@ -85,9 +86,12 @@ class MemberRequestActionsEndpointLinks:
         (only search/search_invitations/search_membership_requests contexts), we
         can embed the logic to determine the available actions here.
 
-        :param obj: api.Member
-        :param context: dict of context variables
-        :return: list<str>
+        Args:
+            obj: api.Member
+            context: dict of context variables
+
+        Returns:
+            list<str>
         """
         # No request actions for active member or members without request
         # (members that were added directly)
@@ -123,8 +127,9 @@ class MemberRequestActionsEndpointLinks:
     def should_render(self, obj, context):
         """Only render if any action would render.
 
-        :param obj: api.Member
-        :param context: dict of context variables
+        Args:
+            obj: api.Member
+            context: dict of context variables
         """
         return any(
             self._endpoint_link.should_render(
@@ -136,8 +141,9 @@ class MemberRequestActionsEndpointLinks:
     def expand(self, obj, context):
         """Expand the endpoints.
 
-        :param obj: api.Member
-        :param context: dict of context data
+        Args:
+            obj: api.Member
+            context: dict of context data
         """
         links = {}
 
@@ -169,9 +175,12 @@ class MemberRequestCommunityDashboardEndpointLink:
     def _select_link(self, obj, context):
         """Select EndpointLink corresponding to type of request of Member.
 
-        :param obj: api.Member
-        :param context: dict of context variables
-        return EndpointLink
+        Args:
+            obj: api.Member
+            context: dict of context variables
+
+        Returns:
+            EndpointLink
         """
         member = obj
 

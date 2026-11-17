@@ -17,14 +17,15 @@ class CommunityThemeJinjaLoader(ThemeJinjaLoader):
     template lookup, the loader sequentially applies prefixes to the template
     name, until a template source is found.
 
-    The prefixes are defined via the ``APP_THEME`` configuration variable. This loader
+    The prefixes are defined via the `APP_THEME` configuration variable. This loader
     ensures that the `<brand>` theme takes precedence in the theme lookup.
     """
 
     def __init__(self, app, loader, brand):
         """Initialize loader.
 
-        :param brand: community brand to be looked up first.
+        Args:
+            brand: community brand to be looked up first.
         """
         self.brand = brand
         super().__init__(app, loader)
@@ -58,7 +59,8 @@ class CommunityThemeChoiceJinjaLoader(ChoiceLoader):
     def __init__(self, brand):
         """Initialize loader.
 
-        :param brand: community brand to be load .
+        Args:
+            brand: community brand to be load .
         """
         self.app = current_app._get_current_object()
 

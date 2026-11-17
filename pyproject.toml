@@ -7,7 +7,7 @@
 [project]
 name = "invenio-communities"
 description = "InvenioRDM module for the communities feature."
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
 authors = [
@@ -116,7 +116,6 @@ tests = [
   "invenio-db[postgresql,mysql]>=2.2.0,<3.0.0",
   "pytest-black>=0.6.0",
   "pytest-invenio>=4.0.0,<5.0.0",
-  "sphinx>=4.5.0",
 ]
 
 [build-system]
@@ -176,7 +175,7 @@ profile = "black"
 add_ignore = "D401"
 
 [tool.pytest.ini_options]
-addopts = '--black --isort --pydocstyle --doctest-glob="*.rst" --doctest-modules --cov=invenio_communities --cov-report=term-missing'
+addopts = '--black --isort --pydocstyle --doctest-modules --cov=invenio_communities --cov-report=term-missing'
 filterwarnings = ["ignore::marshmallow.warnings.RemovedInMarshmallow4Warning"]
 testpaths = "tests invenio_communities"
 live_server_scope = "module"

@@ -510,7 +510,7 @@ class CommunityService(RecordService):
     def delete(
         self, identity, id_, data=None, expand=False, revision_id=None, uow=None
     ):
-        """Alias for ``delete_community()``."""
+        """Alias for `delete_community()`."""
         return self.delete_community(
             identity, id_, data, revision_id=revision_id, expand=expand, uow=uow
         )
@@ -724,9 +724,10 @@ class CommunityService(RecordService):
     def bulk_update_parent(self, identity, community_ids, parent_id, uow=None):
         """Bulk updates communities with a new parent.
 
-        :param identity: The identity of the user performing the action.
-        :param community_ids: The list of community IDs to add to the new parent.
-        :param parent_id: The ID of the new parent community.
+        Args:
+            identity: The identity of the user performing the action.
+            community_ids: The list of community IDs to add to the new parent.
+            parent_id: The ID of the new parent community.
         """
         parent = self.read(identity, parent_id)
         for comm_id in community_ids:
@@ -776,9 +777,10 @@ def get_cached_community_slug(
 ):
     """Cache community's slug.
 
-    :param community_id: the UUID of the community's record.
-    :param community_service_id: the id of the service registered in the service
-        register, in case it have been overridden.
+    Args:
+        community_id: the UUID of the community's record.
+        community_service_id: the id of the service registered in the service
+            register, in case it have been overridden.
 
     Note: this by-passes any permission check, use it with caution!
 

@@ -67,7 +67,8 @@ class RequestSchema(Schema):
         In that case, at that time, it meant the request was of type
         "community-invitation" and this function reflects that.
 
-        :param member_request: dict Member["request"] field
+        Args:
+            member_request: dict Member["request"] field
         """
         # just in case empty
         if member_request:
