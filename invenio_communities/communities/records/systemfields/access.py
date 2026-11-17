@@ -82,7 +82,8 @@ class CommunityAccess:
     ):
         """Create a new CommunityAccess object.
 
-        :param visibility: The visibility level.
+        Args:
+            visibility: The visibility level.
         """
         self.visibility = visibility or VisibilityEnum.PUBLIC
         self.members_visibility = members_visibility or MembersVisibilityEnum.PUBLIC
@@ -220,7 +221,7 @@ class CommunityAccess:
     ):
         """Create a new Access object from the specified 'access' property.
 
-        The new ``CommunityAccess`` object will be populated with new instances
+        The new `CommunityAccess` object will be populated with new instances
         from the configured classes.
         """
         errors = []

@@ -30,15 +30,15 @@ CommunityRoleNeed = partial(_Need, "community")
 
 You can create a community role need like below:
 
-.. code-block:: python
-
-    need = CommunityRoleNeed(community.id, 'manager')
-    # Community role needs can be identified by their method attribute
-    assert need.method == 'community
-    # The community identifier can be accessed via the value attribute
-    assert need.value == community.id
-    # The role held within the community can be accessed via the role attribute
-    assert need.role == 'manager
+```python
+need = CommunityRoleNeed(community.id, 'manager')
+# Community role needs can be identified by their method attribute
+assert need.method == 'community
+# The community identifier can be accessed via the value attribute
+assert need.value == community.id
+# The role held within the community can be accessed via the role attribute
+assert need.role == 'manager
+```
 """
 
 
@@ -66,7 +66,7 @@ class IfRestrictedBase(Generator):
         """Get the "then" or "else" generators."""
         if record is None:
             # TODO - when permissions on links are checked, the record is not
-            # passes properly, causing below ``record.access`` to fail.
+            # passes properly, causing below `record.access` to fail.
             return self.else_
         # Get the field value, using then_value as default only if None
         # This handles both string and boolean fields correctly
@@ -247,7 +247,8 @@ class IfCommunityAllowsMembershipRequests(ConditionalGenerator):
     def _condition(self, record=None, **kwargs):
         """Condition to choose generators.
 
-        :param record: api.Community
+        Args:
+            record: api.Community
         """
         config_enabled = bool(
             current_app.config.get("COMMUNITIES_ALLOW_MEMBERSHIP_REQUESTS")
@@ -262,7 +263,8 @@ class AuthenticatedUserButNotCommunityMember(Generator):
     def needs(self, record=None, **kwargs):
         """Required needs.
 
-        :param record: api.Community
+        Args:
+            record: api.Community
         """
         return [authenticated_user]
 
@@ -273,7 +275,8 @@ class AuthenticatedUserButNotCommunityMember(Generator):
         this point mean valid memberships. This is the same assumption as
         `CommunityMembers` below.
 
-        :param record: api.Community
+        Args:
+            record: api.Community
 
         """
         if not record:

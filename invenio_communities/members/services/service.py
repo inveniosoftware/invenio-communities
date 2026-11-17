@@ -972,9 +972,12 @@ class MemberService(RecordService):
         """
         Return request id of invitation/membership request pending for user+community.
 
-        :param cls: Description
-        :param user_id: Description
-        :param community_id: Description
-        :return: UUID: id of active request associated with user and community
+        Args:
+            cls: Description
+            user_id: Description
+            community_id: Description
+
+        Returns:
+            UUID: id of active request associated with user and community
         """
         return self.record_cls.get_pending_request_id(identity.id, community_id)

@@ -13,9 +13,9 @@ class CommunitiesFieldContext(SystemFieldContext):
     CommunitiesField. I.e. when you access the field through the class, for
     instance:
 
-    .. code-block:: python
-
-        Record.communities.query_by_community(community)
+    ```python
+    Record.communities.query_by_community(community)
+    ```
     """
 
     def query_by_community(self, community_or_id):

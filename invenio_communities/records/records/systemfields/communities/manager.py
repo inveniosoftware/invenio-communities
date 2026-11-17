@@ -174,7 +174,7 @@ class CommunitiesRelationManager:
         """Set the default community.
 
         Note, the community must already have been added to the community. If
-        not, then use ``.add(community, default=True)`` instead.
+        not, then use `.add(community, default=True)` instead.
         """
         id_ = self._to_id(community_or_id)
         if id_ and id_ not in self._communities_ids:

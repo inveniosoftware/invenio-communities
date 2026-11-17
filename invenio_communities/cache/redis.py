@@ -25,17 +25,21 @@ class IdentityRedisCache(IdentityCache):
     def get(self, key):
         """Return the key value.
 
-        :param key: the object's key
-        :return: the stored object
+        Args:
+            key: the object's key
+
+        Returns:
+            the stored object
         """
         return self.cache.get(key)
 
     def set(self, key, value, timeout=None):
         """Cache the object.
 
-        :param key: the object's key
-        :param value: the stored object
-        :param timeout: the cache timeout in seconds
+        Args:
+            key: the object's key
+            value: the stored object
+            timeout: the cache timeout in seconds
         """
         timeout = timeout or self.timeout
         self.cache.set(key, value, timeout=timeout)
@@ -58,8 +62,9 @@ class IdentityRedisCache(IdentityCache):
     def append(self, key, value):
         """Appends a new value to a list.
 
-        :param key: the object's key
-        :param value: the stored list
+        Args:
+            key: the object's key
+            value: the stored list
         """
         values_list = self.cache.get(key)
         if values_list:

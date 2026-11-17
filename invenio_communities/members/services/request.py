@@ -40,12 +40,13 @@ def is_request_created_by_current_user(obj, vars):
     Because this is called in the context of a RequestType, the received obj
     can be a Request or RequestEvent, so better to trust the vars content.
 
-    :param request: api.Request|api.RequestEvent
-    :param vars: dict: context variables w/ keys:
-        "permission_policy_cls" for api.Request
-        "identity"
-        "request"
-        "request_type"
+    Args:
+        request: api.Request|api.RequestEvent
+        vars: dict: context variables w/ keys:
+            "permission_policy_cls" for api.Request
+            "identity"
+            "request"
+            "request_type"
     """
     request = vars["request"]
     id_creator = str(request.created_by.reference_dict.get("user"))
@@ -59,12 +60,13 @@ def update_vars_for_user_dashboard_request_view(obj, vars):
     Because this is called in the context of a RequestType, the received obj
     can be a Request or RequestEvent so better to trust the vars content.
 
-    :param obj: api.Request|api.RequestEvent
-    :param vars: dict: context variables w/ keys:
-        "permission_policy_cls" for api.Request
-        "identity"
-        "request"
-        "request_type"
+    Args:
+        obj: api.Request|api.RequestEvent
+        vars: dict: context variables w/ keys:
+            "permission_policy_cls" for api.Request
+            "identity"
+            "request"
+            "request_type"
     """
     vars.update(request_pid_value=str(vars["request"].id))
 
@@ -75,12 +77,13 @@ def update_vars_for_community_dashboard_request_view(obj, vars):
     Because this is called in the context of a RequestType, the received obj
     can be a Request or RequestEvent so better to trust the vars content.
 
-    :param obj: api.Request|api.RequestEvent
-    :param vars: dict: context variables w/ keys:
-        "permission_policy_cls" for api.Request
-        "identity"
-        "request"
-        "request_type"
+    Args:
+        obj: api.Request|api.RequestEvent
+        vars: dict: context variables w/ keys:
+            "permission_policy_cls" for api.Request
+            "identity"
+            "request"
+            "request_type"
     """
     request = vars["request"]
     # The topic holds a CommunityPKProxy

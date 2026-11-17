@@ -20,7 +20,8 @@ class RoleField(fields.Str):
     def __init__(self, *args, **kwargs):
         """Field constructor.
 
-        :param roles: A role registry. Defaults to the current roles.
+        Args:
+            roles: A role registry. Defaults to the current roles.
         """
         self.roles = kwargs.pop("roles", current_roles)
         super().__init__(*args, **kwargs)

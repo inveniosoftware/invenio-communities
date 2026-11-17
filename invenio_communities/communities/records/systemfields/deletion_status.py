@@ -60,7 +60,7 @@ class CommunityDeletionStatus:
         """Check if self and other are equal.
 
         This allows checking against other instances of the same type, strings,
-        and ``CommunityDeletionStatusEnum`` values.
+        and `CommunityDeletionStatusEnum` values.
         """
         if isinstance(other, type(self)):
             return self.status == other.status

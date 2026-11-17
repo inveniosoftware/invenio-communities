@@ -4,11 +4,11 @@
 """JS/CSS bundles for communities.
 
 You include one of the bundles in a page like the example below (using
-``comunities`` bundle as an example):
+`comunities` bundle as an example):
 
-.. code-block:: html
-
-    {{ webpack['communities.js']}}
+```html
+{{ webpack['communities.js']}}
+```
 
 """
 

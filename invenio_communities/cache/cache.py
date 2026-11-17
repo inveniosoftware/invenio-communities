@@ -24,16 +24,18 @@ class IdentityCache(ABC):
     def get(self, key):
         """Return the key value.
 
-        :param key: the object's key
+        Args:
+            key: the object's key
         """
 
     @abstractmethod
     def set(self, key, value, timeout=None):
         """Cache the object.
 
-        :param key: the object's key
-        :param value: the stored object
-        :param timeout: the cache timeout in seconds
+        Args:
+            key: the object's key
+            value: the stored object
+            timeout: the cache timeout in seconds
         """
 
     @abstractmethod

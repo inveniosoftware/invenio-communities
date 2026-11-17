@@ -32,7 +32,7 @@ class Tombstone:
         """Set the removal reason, referencing the corresponding vocabulary.
 
         If the value is a string, it will be turned into a dictionary of the
-        shape ``{"id": value}``.
+        shape `{"id": value}`.
         """
         # NOTE: the validity of the reference is checked
         #       in the record's relations systemfield
@@ -62,9 +62,9 @@ class Tombstone:
 
         If the value is a string or integer, it is assumed that the
         reference is a user and the value will be turned into a dictionary
-        of the shape ``{"user": value}``.
-        If the value is a referenceable entity (such as a ``User`` object),
-        the ``ResolverRegistry`` will be used to create a reference dict.
+        of the shape `{"user": value}`.
+        If the value is a referenceable entity (such as a `User` object),
+        the `ResolverRegistry` will be used to create a reference dict.
         """
         if value is None:
             self._removed_by = None
@@ -116,7 +116,7 @@ class Tombstone:
 
     @property
     def removed_by_proxy(self):
-        """Resolve the entity proxy for ``self.removed_by``."""
+        """Resolve the entity proxy for `self.removed_by`."""
         if self.removed_by is None:
             return None
         else:

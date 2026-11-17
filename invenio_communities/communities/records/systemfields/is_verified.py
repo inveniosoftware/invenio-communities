@@ -16,7 +16,7 @@ class IsVerifiedField(CalculatedIndexedField):
         super().__init__(key=key, **kwargs)
 
     def calculate(self, record):
-        """Calculate the ``is_verified`` property of the record."""
+        """Calculate the `is_verified` property of the record."""
         # import here due to circular import
         from invenio_communities.members.records.api import Member
 

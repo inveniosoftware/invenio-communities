@@ -18,10 +18,10 @@ class CommunityRelationMixin:
 
     Usage:
 
-    .. code-block:: python
-
-        class CommunityRecordM2M(db.Model, CommunityRelationMixin):
-            __record_model__ = MyParentRecord
+    ```python
+    class CommunityRecordM2M(db.Model, CommunityRelationMixin):
+        __record_model__ = MyParentRecord
+    ```
     """
 
     __record_model__ = None
