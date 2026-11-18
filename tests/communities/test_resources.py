@@ -5,11 +5,16 @@
 """Community resources tests."""
 
 import copy
+import hashlib
 from io import BytesIO
 from uuid import uuid4
 
+from invenio_access.permissions import system_identity
+
+from invenio_communities.communities.entity_resolvers import pick_fields
 from invenio_communities.communities.records.api import Community
 from invenio_communities.members import Member
+from invenio_communities.proxies import current_communities
 
 
 def _assert_single_item_response(response):
@@ -585,10 +590,8 @@ def test_logo_flow(
     assert res.status_code == 201
     created_community = res.json
     id_ = created_community["id"]
-    assert (
-        created_community["links"]["logo"]
-        == f"https://127.0.0.1:5000/api/communities/{id_}/logo"
-    )
+    assert created_community["logo"] is None
+    assert "logo" not in created_community["links"]
     Member.index.refresh()
 
     # Get non-existent logo
@@ -612,11 +615,40 @@ def test_logo_flow(
     )
     assert res.status_code == 200
     assert res.json["size"] == 4
+    assert (
+        res.json["links"]["self"]
+        == f"https://127.0.0.1:5000/api/communities/{id_}/logo"
+    )
+
+    # Logo state and versioned link are on the community, in DB reads and search
+    checksum = f"md5:{hashlib.md5(b'logo').hexdigest()}"
+    logo_link = f"https://127.0.0.1:5000/api/communities/{id_}/logo?v={checksum}"
+    res = client.get(f"/communities/{id_}", headers=headers)
+    assert res.json["logo"] == {"checksum": checksum, "size": 4}
+    assert res.json["links"]["logo"] == logo_link
+    Community.index.refresh()
+    res = client.get("/communities", headers=headers, query_string={"q": f"id:{id_}"})
+    hit = res.json["hits"]["hits"][0]
+    assert hit["logo"] == {"checksum": checksum, "size": 4}
+    assert hit["links"]["logo"] == logo_link
 
     # Get logo
     res = client.get(f"/communities/{id_}/logo")
     assert res.status_code == 200
     assert res.data == b"logo"
+    assert "immutable" not in res.headers.get("Cache-Control", "")
+
+    # Versioned URL is cached forever
+    res = client.get(f"/communities/{id_}/logo", query_string={"v": checksum})
+    assert res.status_code == 200
+    assert res.cache_control.public
+    assert res.cache_control.immutable
+    assert res.cache_control.max_age == 31536000
+
+    # Stale version is not cached
+    res = client.get(f"/communities/{id_}/logo", query_string={"v": "md5:stale"})
+    assert res.status_code == 200
+    assert not res.cache_control.immutable
 
     # Update logo again
     res = client.put(
@@ -634,6 +666,10 @@ def test_logo_flow(
     res = client.get(f"/communities/{id_}/logo")
     assert res.status_code == 200
     assert res.data == b"new_logo"
+    new_checksum = f"md5:{hashlib.md5(b'new_logo').hexdigest()}"
+    res = client.get(f"/communities/{id_}", headers=headers)
+    assert res.json["logo"] == {"checksum": new_checksum, "size": 8}
+    assert res.json["links"]["logo"].endswith(f"?v={new_checksum}")
 
     # Delete logo with unauthorized user
     with app.test_client() as anon_client:
@@ -648,8 +684,117 @@ def test_logo_flow(
     res = client.get(f"/communities/{id_}/logo")
     assert res.status_code == 404
     assert res.json["message"] == "No logo exists for this community."
+    res = client.get(f"/communities/{id_}", headers=headers)
+    assert res.json["logo"] is None
+    assert "logo" not in res.json["links"]
+    Community.index.refresh()
+    res = client.get("/communities", headers=headers, query_string={"q": f"id:{id_}"})
+    assert "logo" not in res.json["hits"]["hits"][0]["links"]
 
     # TODO: Delete community and try all of the above operations
+
+
+def test_logo_state_missing_from_dump(
+    app, client, location, minimal_community, headers, db, search_clear, owner
+):
+    """Old documents without logo state are assumed to have a logo while reindexing."""
+    client = owner.login(client)
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    record = Community.get_record(res.json["id"])
+
+    dump = record.dumps()
+    assert dump["logo"] == {"exists": False}
+    assert Community.loads(dict(dump)).logo.exists is False
+    del dump["logo"]
+    loaded = Community.loads(dump)
+    assert loaded.logo.exists is True
+    assert loaded.logo.checksum is None
+
+
+def test_logo_entity_resolver_links(
+    app, client, location, minimal_community, headers, db, search_clear, owner
+):
+    """Expanded communities only link a logo that exists or may exist."""
+    client = owner.login(client)
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    community = current_communities.service.read(system_identity, res.json["id"])
+    community_dict = community.to_dict()
+    assert community_dict["logo"] is None
+    assert pick_fields(system_identity, community_dict)["links"] == {}
+
+    del community_dict["logo"]
+    links = pick_fields(system_identity, community_dict)["links"]
+    assert links["logo"].endswith(f"/communities/{res.json['id']}/logo")
+
+    client.put(
+        f"/communities/{res.json['id']}/logo",
+        headers={"content-type": "application/octet-stream"},
+        data=BytesIO(b"logo"),
+    )
+    community_dict = current_communities.service.read(
+        system_identity, res.json["id"]
+    ).to_dict()
+    checksum = f"md5:{hashlib.md5(b'logo').hexdigest()}"
+    assert community_dict["logo"] == {"checksum": checksum, "size": 4}
+    links = pick_fields(system_identity, community_dict)["links"]
+    assert links["logo"].endswith(f"/logo?v={checksum}")
+
+
+def test_logo_search_filter(
+    app, client, location, minimal_community, headers, db, search_clear, owner
+):
+    """Communities can be filtered by whether they have a logo."""
+    client = owner.login(client)
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    community_id = res.json["id"]
+    Community.index.refresh()
+
+    def search(q):
+        res = client.get("/communities", query_string={"q": q}, headers=headers)
+        return [hit["id"] for hit in res.json["hits"]["hits"]]
+
+    assert search("logo.exists:false") == [community_id]
+    assert search("logo.exists:true") == []
+
+    client.put(
+        f"/communities/{community_id}/logo",
+        headers={"content-type": "application/octet-stream"},
+        data=BytesIO(b"logo"),
+    )
+    Community.index.refresh()
+    assert search("logo.exists:true") == [community_id]
+    assert search("logo.exists:false") == []
+
+
+def test_logo_field(
+    app, client, location, minimal_community, headers, db, search_clear, owner
+):
+    """Setting, replacing and deleting the logo through the record field."""
+    client = owner.login(client)
+    res = client.post("/communities", headers=headers, json=minimal_community)
+    record = Community.get_record(res.json["id"])
+    assert record.logo.exists is False
+    assert record.logo.file is None
+
+    record.logo = BytesIO(b"logo")
+    assert record.logo.exists is True
+    assert record.logo.checksum == f"md5:{hashlib.md5(b'logo').hexdigest()}"
+    assert record.logo.size == 4
+    assert record.logo.file.key == "logo"
+
+    record.logo = BytesIO(b"new_logo")
+    assert record.logo.size == 8
+
+    del record.logo
+    assert record.logo.exists is False
+    assert record.logo.file is None
+    assert "logo" not in record.files
+
+    record.logo = BytesIO(b"logo")
+    record.logo = None
+    assert record.logo.exists is False
+    assert "logo" not in record.files
+    assert "logo" not in record
 
 
 def test_logo_max_content_length(
@@ -663,10 +808,7 @@ def test_logo_max_content_length(
     assert res.status_code == 201
     created_community = res.json
     id_ = created_community["id"]
-    assert (
-        created_community["links"]["logo"]
-        == f"https://127.0.0.1:5000/api/communities/{id_}/logo"
-    )
+    assert "logo" not in created_community["links"]
     Member.index.refresh()
 
     # Update app max size for community logos

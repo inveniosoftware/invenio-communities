@@ -19,6 +19,7 @@ from invenio_records_resources.references.entity_resolvers import (
 from ..generators import CommunityRoleNeed
 from ..proxies import current_communities, current_roles
 from .records.api import Community
+from .records.systemfields.logo import Logo
 from .schema import CommunityGhostSchema
 from .services.config import CommunityServiceConfig
 
@@ -30,20 +31,24 @@ def pick_fields(identity, community_dict):
     if community_dict.get("is_ghost", False):
         return community_dict
 
+    # API dumps have ``null`` for no logo. For backwards compatibility while
+    # reindexing, a missing ``logo`` key means an old document, so assume a logo.
+    logo = community_dict.get("logo", {})
     fake_community_obj = SimpleNamespace(
         id=community_dict["id"],
         slug=community_dict["slug"],
+        logo=Logo({"exists": False} if logo is None else logo),
     )
-    logo = current_communities.service.links_item_tpl.expand(
+    links = current_communities.service.links_item_tpl.expand(
         identity, fake_community_obj
-    )["logo"]
+    )
 
     metadata = community_dict["metadata"]
     access = community_dict["access"]
     return {
         "id": community_dict["id"],
         "slug": community_dict["slug"],
-        "links": {"logo": logo},
+        "links": {"logo": links["logo"]} if "logo" in links else {},
         "metadata": {
             "title": metadata["title"],
             "description": metadata.get("description"),

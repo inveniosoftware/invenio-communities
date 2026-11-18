@@ -7,10 +7,10 @@
 import { i18next } from "@translations/invenio_communities/i18next";
 import { CommunityTypeLabel } from "../labels";
 import { RestrictedLabel } from "../labels";
-import { Image } from "react-invenio-forms";
 import { Button, Grid, Icon, Popup, Header } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import OrganizationsList from "../../organizations/OrganizationsList";
+import { CommunityLogo } from "../CommunityLogo";
 
 export const CommunityItemMobile = ({ result, index = null }) => {
   const communityType = result.ui?.type?.title_l10n;
@@ -32,12 +32,11 @@ export const CommunityItemMobile = ({ result, index = null }) => {
           className="pl-0 pr-0"
         >
           <div className="flex align-items-center">
-            <Image
+            <CommunityLogo
               wrapped
-              src={result.links.logo}
+              community={result}
               size="mini"
               className="community-image rel-mr-1"
-              alt=""
             />
             <div>
               <Header as="a" className="ui medium header" href={result.links.self_html}>

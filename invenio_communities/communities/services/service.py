@@ -237,7 +237,7 @@ class CommunityService(RecordService):
         """Read the community's logo."""
         record = self.record_cls.pid.resolve(id_)
         self.require_permission(identity, "read", record=record)
-        logo_file = record.files.get("logo")
+        logo_file = record.logo.file
         if logo_file is None:
             raise LogoNotFoundError()
         return self.files.file_result_item(
@@ -262,13 +262,13 @@ class CommunityService(RecordService):
         if content_length and content_length > logo_size_limit:
             raise LogoSizeLimitError(logo_size_limit, content_length)
 
-        record.files["logo"] = stream
-        uow.register(RecordCommitOp(record))
+        record.logo = stream
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
 
         return self.files.file_result_item(
             self.files,
             identity,
-            record.files["logo"],
+            record.logo.file,
             record,
             links_tpl=self.files.file_links_item_tpl(id_),
         )
@@ -279,13 +279,12 @@ class CommunityService(RecordService):
         record = self.record_cls.pid.resolve(id_)
         # update permission on community is required to be able to remove logo.
         self.require_permission(identity, "update", record=record)
-        deleted_file = record.files.pop("logo", None)
+        deleted_file = record.logo.file
         if deleted_file is None:
             raise LogoNotFoundError()
+        record.logo = None
 
-        deleted_file.delete(force=True)
-
-        uow.register(RecordCommitOp(record))
+        uow.register(RecordCommitOp(record, indexer=self.indexer))
 
         return self.files.file_result_item(
             self.files,

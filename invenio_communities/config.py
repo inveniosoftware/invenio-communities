@@ -266,6 +266,9 @@ Deployments that customise ``COMMUNITIES_ROLES`` (and therefore may not define a
 COMMUNITIES_LOGO_MAX_FILE_SIZE = 10**6
 """Community logo size quota, in bytes."""
 
+COMMUNITIES_LOGO_CACHE_MAX_AGE = 365 * 24 * 60 * 60
+"""Cache lifetime in seconds of logo responses requested with the current checksum, defaults to one year."""
+
 COMMUNITIES_NAMESPACES = {}
 """Custom fields namespaces.
 

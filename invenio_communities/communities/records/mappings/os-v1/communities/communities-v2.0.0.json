@@ -354,6 +354,20 @@
           }
         }
       },
+      "logo": {
+        "type": "object",
+        "properties": {
+          "exists": {
+            "type": "boolean"
+          },
+          "checksum": {
+            "type": "keyword"
+          },
+          "size": {
+            "type": "long"
+          }
+        }
+      },
       "children": {
         "type": "object",
         "properties": {
