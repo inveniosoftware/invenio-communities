@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2016-2026 CERN.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """JS/CSS bundles for communities.
@@ -47,9 +48,9 @@ communities = WebpackThemeBundle(
                 "react-invenio-forms": "^5.0.0",
                 "axios": "^1.7.7",
                 "formik": "^2.4.9",
-                "i18next": "^20.3.0",
+                "i18next": "^27.1.1",
                 "@hugerte/hugerte-react": "^2.0.2",
-                "i18next-browser-languagedetector": "^6.1.0",
+                "i18next-browser-languagedetector": "^8.3.0",
                 "lodash": "^4.17.0",
                 "luxon": "^1.23.0",
                 "path": "^0.12.0",
@@ -57,7 +58,7 @@ communities = WebpackThemeBundle(
                 "qs": "^6.9.0",
                 "react": "^18.3.1",
                 "react-dom": "^18.3.1",
-                "react-i18next": "^11.11.0",
+                "react-i18next": "^18.0.1",
                 "react-redux": "^7.2.0",
                 "react-searchkit": "^4.0.0",
                 "redux": "^4.0.0",
