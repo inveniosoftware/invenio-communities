@@ -183,9 +183,9 @@ def test_community_invitation_accept_notification(
         assert f"/communities/{community_slug}/requests/{request_id}" in html
         # role titles will be capitalized
         assert (
-            "'@{who}' accepted the invitation to join your community '{title}'".format(
-                who=new_user.user.username
-                or new_user.user.user_profile.get("full_name"),
+            "'{who}' accepted the invitation to join your community '{title}'".format(
+                who=new_user.user.user_profile.get("full_name")
+                or (new_user.user.username and f"@{new_user.user.username}"),
                 title=community["metadata"]["title"],
             )
             in html
@@ -234,9 +234,9 @@ def test_community_invitation_cancel_notification(
         assert "/me/requests/{}".format(request_id) in html
         # role titles will be capitalized
         assert (
-            "The invitation for '@{who}' to join community '{title}' was cancelled".format(
-                who=new_user.user.username
-                or new_user.user.user_profile.get("full_name"),
+            "The invitation for '{who}' to join community '{title}' was cancelled".format(
+                who=new_user.user.user_profile.get("full_name")
+                or (new_user.user.username and f"@{new_user.user.username}"),
                 title=community["metadata"]["title"],
             )
             in html
@@ -287,9 +287,9 @@ def test_community_invitation_decline_notification(
         assert f"/communities/{community_slug}/requests/{request_id}" in html
         # role titles will be capitalized
         assert (
-            "'@{who}' declined the invitation to join your community '{title}'".format(
-                who=new_user.user.username
-                or new_user.user.user_profile.get("full_name"),
+            "'{who}' declined the invitation to join your community '{title}'".format(
+                who=new_user.user.user_profile.get("full_name")
+                or (new_user.user.username and f"@{new_user.user.username}"),
                 title=community["metadata"]["title"],
             )
             in html
@@ -343,10 +343,12 @@ def test_community_invitation_expire_notification(
         msg_to_manager = get_msg_to_email(outbox, manager.email)
         msg_to_invitee = get_msg_to_email(outbox, new_user.email)
 
-        who = new_user.user.username or new_user.user.user_profile.get("full_name")
+        who = new_user.user.user_profile.get("full_name") or (
+            new_user.user.username and f"@{new_user.user.username}"
+        )
         title = community["metadata"]["title"]
         expiration_sentence = (
-            f"The invitation for '@{who}' to join community '{title}' expired."
+            f"The invitation for '{who}' to join community '{title}' expired."
         )
 
         # Check manager content for key information
@@ -398,8 +400,8 @@ def test_request_membership_emits_notification(
         assert {"manager@example.org", "owner@owner.org"} == all_send_to
         request_id = request_result.id
         community_slug = community._record.slug
-        requester_name = requester.user.username or requester.user.user_profile.get(
-            "full_name"
+        requester_name = requester.user.user_profile.get("full_name") or (
+            requester.user.username and f"@{new_user.user.username}"
         )
         community_title = community["metadata"]["title"]
         role = "reader"
@@ -454,8 +456,8 @@ def test_cancel_membership_request_emits_notification(
         assert 2 == len(outbox)
         all_send_to = reduce(lambda s, m: m.send_to | s, outbox, set())
         assert {manager_user.email, owner.email} == all_send_to
-        requester_name = requester.user.username or requester.user.user_profile.get(
-            "full_name"
+        requester_name = requester.user.user_profile.get("full_name") or (
+            requester.user.username and f"@{new_user.user.username}"
         )
         community_title = community["metadata"]["title"]
         community_slug = community._record.slug
@@ -610,8 +612,8 @@ def test_expire_membership_request_emits_notification(
 
         community_title = community_result["metadata"]["title"]
         community_slug = community_result._record.slug
-        requester_name = requester.user.username or requester.user.user_profile.get(
-            "full_name"
+        requester_name = requester.user.user_profile.get("full_name") or (
+            requester.user.username and f"@{new_user.user.username}"
         )
 
         # Msg to manager
